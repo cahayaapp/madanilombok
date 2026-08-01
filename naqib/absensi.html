@@ -1,0 +1,2087 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <!-- CAHAYA WHITE-LABEL CONFIG -->
+  <script src="../config/tenant-config.js"></script>
+  <script src="../config/master-data.js"></script>
+  <script src="../js/cahaya-config-runtime.js" defer></script>
+
+  <meta charset="UTF-8" />
+  <title>CAHAYA APP – Absensi Program</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
+  <link rel="stylesheet" href="../../css/cahaya-theme.css" />
+
+  <style>
+    :root {
+      --abs-primary: var(--primary, #2878ff);
+      --abs-primary-dark: var(--primary-dark, #1557d5);
+      --abs-cyan: var(--cyan, #19c6e6);
+      --abs-purple: var(--purple, #7667f5);
+      --abs-green: var(--green, #29c58d);
+      --abs-orange: var(--orange, #ff9f43);
+      --abs-red: var(--red, #ff5d6c);
+      --abs-bg: var(--bg-main, #f5f8ff);
+      --abs-card: #ffffff;
+      --abs-text: var(--text-main, #1f2d4d);
+      --abs-heading: var(--text-heading, #152347);
+      --abs-muted: var(--text-muted, #71809e);
+      --abs-border: var(--border, #e5ebf5);
+      --abs-shadow: 0 14px 38px rgba(35, 78, 160, 0.10);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      width: 100%;
+      min-height: 100%;
+      margin: 0;
+      overflow-x: hidden;
+    }
+
+    body {
+      padding: 22px;
+      color: var(--abs-text);
+      font-family: "Nunito", "Poppins", sans-serif;
+      background:
+        radial-gradient(circle at 5% 3%, rgba(25, 198, 230, 0.12), transparent 25%),
+        radial-gradient(circle at 97% 9%, rgba(118, 103, 245, 0.10), transparent 26%),
+        linear-gradient(180deg, #f4f8ff 0%, #f9fbff 48%, #f5f8ff 100%);
+    }
+
+    button,
+    input,
+    select {
+      font: inherit;
+    }
+
+    .attendance-page {
+      width: 100%;
+      max-width: 1180px;
+      margin: 0 auto;
+      animation: pageIn 0.45s ease both;
+    }
+
+    @keyframes pageIn {
+      from {
+        opacity: 0;
+        transform: translateY(12px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* =========================================================
+       HERO
+       ========================================================= */
+    .attendance-hero {
+      position: relative;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 24px;
+      align-items: center;
+      min-height: 210px;
+      margin-bottom: 18px;
+      padding: 32px 34px;
+      overflow: hidden;
+      color: #ffffff;
+      border-radius: 28px;
+      background:
+        radial-gradient(circle at 88% 16%, rgba(255,255,255,0.24), transparent 22%),
+        linear-gradient(135deg, #1877f2 0%, #2878ff 44%, #19bfe4 100%);
+      box-shadow: 0 20px 48px rgba(40, 120, 255, 0.25);
+    }
+
+    .attendance-hero::before,
+    .attendance-hero::after {
+      content: "";
+      position: absolute;
+      pointer-events: none;
+    }
+
+    .attendance-hero::before {
+      width: 220px;
+      height: 220px;
+      right: -70px;
+      top: -95px;
+      border: 38px solid rgba(255,255,255,0.09);
+      border-radius: 50%;
+    }
+
+    .attendance-hero::after {
+      width: 100px;
+      height: 100px;
+      right: 225px;
+      bottom: -64px;
+      border-radius: 28px;
+      background: rgba(255,255,255,0.09);
+      transform: rotate(35deg);
+    }
+
+    .hero-copy,
+    .hero-user {
+      position: relative;
+      z-index: 2;
+    }
+
+    .hero-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      margin-bottom: 12px;
+      padding: 7px 12px;
+      color: #ffffff;
+      font-size: 0.7rem;
+      font-weight: 900;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+      border: 1px solid rgba(255,255,255,0.24);
+      border-radius: 999px;
+      background: rgba(255,255,255,0.16);
+      backdrop-filter: blur(8px);
+    }
+
+    .attendance-hero h1 {
+      margin: 0 0 8px;
+      color: #ffffff;
+      font-size: clamp(1.65rem, 4vw, 2.55rem);
+      font-weight: 900;
+      line-height: 1.12;
+      letter-spacing: -0.7px;
+    }
+
+    .attendance-hero p {
+      max-width: 690px;
+      margin: 0;
+      color: rgba(255,255,255,0.88);
+      font-size: 0.92rem;
+      font-weight: 650;
+      line-height: 1.7;
+    }
+
+    .hero-user {
+      min-width: 225px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 15px;
+      border: 1px solid rgba(255,255,255,0.22);
+      border-radius: 18px;
+      background: rgba(255,255,255,0.14);
+      backdrop-filter: blur(10px);
+    }
+
+    .hero-avatar {
+      width: 48px;
+      height: 48px;
+      flex: 0 0 48px;
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+      color: var(--abs-primary-dark);
+      font-size: 1.1rem;
+      font-weight: 900;
+      border: 3px solid rgba(255,255,255,0.72);
+      border-radius: 15px;
+      background: #ffffff;
+    }
+
+    .hero-avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .hero-user-copy {
+      min-width: 0;
+    }
+
+    .hero-user-copy strong,
+    .hero-user-copy span {
+      display: block;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .hero-user-copy strong {
+      color: #ffffff;
+      font-size: 0.88rem;
+      font-weight: 900;
+    }
+
+    .hero-user-copy span {
+      margin-top: 3px;
+      color: rgba(255,255,255,0.76);
+      font-size: 0.68rem;
+      font-weight: 700;
+    }
+
+    /* =========================================================
+       SUMMARY
+       ========================================================= */
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(6, minmax(0, 1fr));
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+
+    .summary-card {
+      position: relative;
+      min-width: 0;
+      overflow: hidden;
+      padding: 17px;
+      border: 1px solid var(--abs-border);
+      border-radius: 18px;
+      background: #ffffff;
+      box-shadow: 0 8px 24px rgba(35, 78, 160, 0.07);
+    }
+
+    .summary-card::after {
+      content: "";
+      position: absolute;
+      width: 62px;
+      height: 62px;
+      top: -25px;
+      right: -23px;
+      border-radius: 50%;
+      background: var(--summary-soft, #eaf3ff);
+    }
+
+    .summary-label {
+      position: relative;
+      z-index: 1;
+      display: block;
+      margin-bottom: 7px;
+      color: var(--abs-muted);
+      font-size: 0.66rem;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 0.45px;
+    }
+
+    .summary-value {
+      position: relative;
+      z-index: 1;
+      display: block;
+      overflow: hidden;
+      color: var(--summary-color, var(--abs-primary));
+      font-size: 1.2rem;
+      font-weight: 900;
+      line-height: 1.12;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .summary-card.scope {
+      grid-column: span 2;
+      --summary-color: var(--abs-primary-dark);
+      --summary-soft: #eaf3ff;
+    }
+
+    .summary-card.total {
+      --summary-color: var(--abs-purple);
+      --summary-soft: #f0eeff;
+    }
+
+    .summary-card.hadir {
+      --summary-color: #169769;
+      --summary-soft: #e8fbf4;
+    }
+
+    .summary-card.terlambat {
+      --summary-color: #c97919;
+      --summary-soft: #fff4e7;
+    }
+
+    .summary-card.tidak-hadir {
+      --summary-color: #d93b4b;
+      --summary-soft: #fff0f2;
+    }
+
+    /* =========================================================
+       PANEL
+       ========================================================= */
+    .attendance-panel {
+      margin-bottom: 18px;
+      padding: 24px;
+      border: 1px solid rgba(225, 233, 246, 0.94);
+      border-radius: 23px;
+      background: rgba(255,255,255,0.97);
+      box-shadow: var(--abs-shadow);
+    }
+
+    .panel-heading {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 18px;
+      margin-bottom: 20px;
+    }
+
+    .panel-heading h2,
+    .panel-heading h3 {
+      margin: 0;
+      color: var(--abs-heading);
+      font-size: 1.18rem;
+      font-weight: 900;
+      line-height: 1.25;
+    }
+
+    .panel-heading p {
+      margin: 5px 0 0;
+      color: var(--abs-muted);
+      font-size: 0.78rem;
+      font-weight: 650;
+      line-height: 1.55;
+    }
+
+    .filter-grid {
+      display: grid;
+      grid-template-columns: minmax(220px, 1.15fr) repeat(2, minmax(190px, 1fr));
+      gap: 15px;
+      align-items: end;
+    }
+
+    .form-group {
+      min-width: 0;
+    }
+
+    .form-group label {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      margin-bottom: 8px;
+      color: var(--abs-heading);
+      font-size: 0.76rem;
+      font-weight: 900;
+    }
+
+    .form-control {
+      width: 100%;
+      min-height: 50px;
+      padding: 12px 15px;
+      color: var(--abs-text);
+      font-size: 0.88rem;
+      font-weight: 750;
+      outline: none;
+      border: 1.5px solid #dfe7f3;
+      border-radius: 14px;
+      background: #f8faff;
+      transition: 0.2s ease;
+    }
+
+    .form-control:hover {
+      border-color: #c7d7ed;
+      background: #ffffff;
+    }
+
+    .form-control:focus {
+      border-color: var(--abs-primary);
+      background: #ffffff;
+      box-shadow: 0 0 0 4px rgba(40,120,255,0.11);
+    }
+
+    .select-featured {
+      color: var(--abs-primary-dark);
+      border-color: #bcd4fb;
+      background: #f3f8ff;
+    }
+
+    .program-info {
+      min-height: 25px;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      margin-top: 7px;
+      color: var(--abs-primary);
+      font-size: 0.71rem;
+      font-weight: 850;
+    }
+
+    .program-info:empty {
+      min-height: 0;
+      margin-top: 0;
+    }
+
+    .scope-note {
+      display: none;
+      grid-column: 1 / -1;
+      margin-top: 1px;
+      padding: 11px 13px;
+      color: #365985;
+      font-size: 0.75rem;
+      font-weight: 700;
+      line-height: 1.55;
+      border: 1px solid #d9e8ff;
+      border-radius: 12px;
+      background: #f3f8ff;
+    }
+
+    .scope-note.show {
+      display: block;
+    }
+
+    /* =========================================================
+       TOOLBAR
+       ========================================================= */
+    .list-toolbar {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto auto;
+      gap: 10px;
+      align-items: center;
+      margin-bottom: 15px;
+    }
+
+    .search-wrapper {
+      position: relative;
+      min-width: 0;
+    }
+
+    .search-wrapper::before {
+      content: "⌕";
+      position: absolute;
+      top: 50%;
+      left: 15px;
+      z-index: 2;
+      color: #8b99b2;
+      font-size: 1.1rem;
+      font-weight: 900;
+      transform: translateY(-50%);
+      pointer-events: none;
+    }
+
+    .search-input {
+      padding-left: 43px;
+    }
+
+    .toolbar-button {
+      min-height: 46px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      padding: 11px 16px;
+      color: var(--abs-primary);
+      font-size: 0.76rem;
+      font-weight: 900;
+      cursor: pointer;
+      border: 1px solid #cfe0fb;
+      border-radius: 13px;
+      background: #f3f8ff;
+      transition: 0.2s ease;
+      white-space: nowrap;
+    }
+
+    .toolbar-button:hover {
+      color: #ffffff;
+      border-color: var(--abs-primary);
+      background: var(--abs-primary);
+      box-shadow: 0 8px 18px rgba(40,120,255,0.18);
+      transform: translateY(-1px);
+    }
+
+    .toolbar-button.green {
+      color: #16835f;
+      border-color: #cceee1;
+      background: #edfbf6;
+    }
+
+    .toolbar-button.green:hover {
+      color: #ffffff;
+      border-color: var(--abs-green);
+      background: var(--abs-green);
+      box-shadow: 0 8px 18px rgba(41,197,141,0.20);
+    }
+
+    .toolbar-button:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+    }
+
+    /* =========================================================
+       ATTENDANCE LIST
+       ========================================================= */
+    .attendance-list {
+      overflow: hidden;
+      border: 1px solid var(--abs-border);
+      border-radius: 18px;
+      background: #ffffff;
+    }
+
+    .attendance-list-head {
+      display: grid;
+      grid-template-columns: 42px minmax(210px, 1fr) minmax(355px, 0.92fr);
+      gap: 12px;
+      align-items: center;
+      padding: 12px 16px;
+      color: #61718d;
+      font-size: 0.65rem;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      border-bottom: 1px solid var(--abs-border);
+      background: #f4f7fc;
+    }
+
+    .attendance-list-head .head-status {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 7px;
+      text-align: center;
+    }
+
+    .attendance-row {
+      display: grid;
+      grid-template-columns: 42px minmax(210px, 1fr) minmax(355px, 0.92fr);
+      gap: 12px;
+      align-items: center;
+      min-height: 72px;
+      padding: 11px 16px;
+      border-bottom: 1px solid #edf2fa;
+      background: #ffffff;
+      transition: background 0.18s ease, transform 0.18s ease;
+    }
+
+    .attendance-row:last-child {
+      border-bottom: none;
+    }
+
+    .attendance-row:hover {
+      background: #f9fbff;
+    }
+
+    .row-number {
+      width: 31px;
+      height: 31px;
+      display: grid;
+      place-items: center;
+      color: #6d7d99;
+      font-size: 0.72rem;
+      font-weight: 900;
+      border: 1px solid #e1e8f2;
+      border-radius: 10px;
+      background: #f5f8fd;
+    }
+
+    .student-block {
+      min-width: 0;
+    }
+
+    .student-name {
+      display: block;
+      overflow: hidden;
+      color: var(--abs-heading);
+      font-size: 0.84rem;
+      font-weight: 900;
+      line-height: 1.35;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .student-meta {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+      margin-top: 5px;
+    }
+
+    .usrah-chip {
+      display: inline-flex;
+      align-items: center;
+      padding: 4px 8px;
+      color: #3e67a6;
+      font-size: 0.59rem;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 0.35px;
+      border: 1px solid #d8e6fb;
+      border-radius: 999px;
+      background: #f0f6ff;
+    }
+
+    .status-options {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(55px, 1fr));
+      gap: 7px;
+    }
+
+    .status-option {
+      position: relative;
+      display: block;
+      cursor: pointer;
+    }
+
+    .status-option input {
+      position: absolute;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .status-box {
+      min-height: 42px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      padding: 8px 7px;
+      color: #78869f;
+      font-size: 0.67rem;
+      font-weight: 900;
+      border: 1.5px solid #dfe7f3;
+      border-radius: 11px;
+      background: #f8faff;
+      transition: 0.18s ease;
+    }
+
+    .status-box b {
+      font-size: 0.78rem;
+    }
+
+    .status-option:hover .status-box {
+      color: var(--status-color);
+      border-color: var(--status-color);
+      background: var(--status-soft);
+    }
+
+    .status-option input:checked + .status-box {
+      color: #ffffff;
+      border-color: var(--status-color);
+      background: var(--status-color);
+      box-shadow: 0 7px 16px color-mix(in srgb, var(--status-color) 24%, transparent);
+      transform: translateY(-1px);
+    }
+
+    .status-option.hadir {
+      --status-color: #29b782;
+      --status-soft: #eafaf4;
+    }
+
+    .status-option.terlambat {
+      --status-color: #ef9a35;
+      --status-soft: #fff5e9;
+    }
+
+    .status-option.izin {
+      --status-color: #3984ee;
+      --status-soft: #edf5ff;
+    }
+
+    .status-option.sakit {
+      --status-color: #806ee7;
+      --status-soft: #f1efff;
+    }
+
+    .status-option.alfa {
+      --status-color: #ef5b68;
+      --status-soft: #fff0f2;
+    }
+
+    .attendance-row.status-hadir {
+      box-shadow: inset 4px 0 0 #29b782;
+      background: #fbfffd;
+    }
+
+    .attendance-row.status-terlambat {
+      box-shadow: inset 4px 0 0 #ef9a35;
+      background: #fffdfa;
+    }
+
+    .attendance-row.status-izin {
+      box-shadow: inset 4px 0 0 #3984ee;
+      background: #fbfdff;
+    }
+
+    .attendance-row.status-sakit {
+      box-shadow: inset 4px 0 0 #806ee7;
+      background: #fdfcff;
+    }
+
+    .attendance-row.status-alfa {
+      box-shadow: inset 4px 0 0 #ef5b68;
+      background: #fffdfd;
+    }
+
+    .empty-state {
+      padding: 48px 20px;
+      color: var(--abs-muted);
+      text-align: center;
+      font-size: 0.8rem;
+      font-weight: 700;
+      line-height: 1.6;
+    }
+
+    .empty-state-icon {
+      width: 68px;
+      height: 68px;
+      display: grid;
+      place-items: center;
+      margin: 0 auto 13px;
+      color: var(--abs-primary);
+      font-size: 1.75rem;
+      border-radius: 22px;
+      background: #edf5ff;
+    }
+
+    /* =========================================================
+       SAVE
+       ========================================================= */
+    .save-area {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(260px, 0.42fr);
+      gap: 16px;
+      align-items: center;
+      margin-top: 18px;
+      padding: 18px;
+      border: 1px solid #dce8f8;
+      border-radius: 18px;
+      background: linear-gradient(135deg, #f7faff, #f1f8ff);
+    }
+
+    .save-copy strong {
+      display: block;
+      color: var(--abs-heading);
+      font-size: 0.9rem;
+      font-weight: 900;
+    }
+
+    .save-copy span {
+      display: block;
+      margin-top: 4px;
+      color: var(--abs-muted);
+      font-size: 0.73rem;
+      font-weight: 650;
+      line-height: 1.5;
+    }
+
+    .btn-save {
+      width: 100%;
+      min-height: 52px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 13px 20px;
+      color: #ffffff;
+      font-size: 0.86rem;
+      font-weight: 900;
+      cursor: pointer;
+      border: none;
+      border-radius: 14px;
+      background: linear-gradient(135deg, var(--abs-primary), var(--abs-cyan));
+      box-shadow: 0 12px 26px rgba(40,120,255,0.24);
+      transition: 0.2s ease;
+    }
+
+    .btn-save:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 15px 30px rgba(40,120,255,0.30);
+    }
+
+    .btn-save:disabled {
+      opacity: 0.58;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+    }
+
+    /* =========================================================
+       LOADER + TOAST
+       ========================================================= */
+    #loadingOverlay {
+      position: fixed;
+      inset: 0;
+      z-index: 3000;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      color: var(--abs-heading);
+      text-align: center;
+      background: rgba(246,249,255,0.95);
+      backdrop-filter: blur(10px);
+      transition: 0.35s ease;
+    }
+
+    .loader-mark {
+      width: 76px;
+      height: 76px;
+      display: grid;
+      place-items: center;
+      margin-bottom: 16px;
+      color: #ffffff;
+      font-size: 1.8rem;
+      border-radius: 25px;
+      background: linear-gradient(135deg, var(--abs-primary), var(--abs-cyan));
+      box-shadow: 0 15px 32px rgba(40,120,255,0.23);
+      animation: loaderPulse 1.2s ease-in-out infinite alternate;
+    }
+
+    #loadingText {
+      font-size: 0.95rem;
+      font-weight: 900;
+    }
+
+    @keyframes loaderPulse {
+      from {
+        transform: scale(0.94);
+      }
+      to {
+        transform: scale(1.04);
+      }
+    }
+
+    .toast {
+      position: fixed;
+      left: 50%;
+      bottom: 24px;
+      z-index: 5000;
+      width: min(420px, calc(100vw - 28px));
+      display: flex;
+      align-items: flex-start;
+      gap: 11px;
+      padding: 14px 16px;
+      color: var(--abs-heading);
+      border: 1px solid #dce7f5;
+      border-radius: 15px;
+      background: #ffffff;
+      box-shadow: 0 18px 45px rgba(22,44,89,0.20);
+      opacity: 0;
+      pointer-events: none;
+      transform: translate(-50%, 25px);
+      transition: 0.28s ease;
+    }
+
+    .toast.show {
+      opacity: 1;
+      pointer-events: auto;
+      transform: translate(-50%, 0);
+    }
+
+    .toast-icon {
+      width: 36px;
+      height: 36px;
+      flex: 0 0 36px;
+      display: grid;
+      place-items: center;
+      border-radius: 12px;
+      background: #edf5ff;
+    }
+
+    .toast.success .toast-icon {
+      background: #e8fbf4;
+    }
+
+    .toast.error .toast-icon {
+      background: #fff0f2;
+    }
+
+    .toast strong,
+    .toast span {
+      display: block;
+    }
+
+    .toast strong {
+      font-size: 0.8rem;
+      font-weight: 900;
+    }
+
+    .toast span {
+      margin-top: 2px;
+      color: var(--abs-muted);
+      font-size: 0.72rem;
+      font-weight: 650;
+      line-height: 1.45;
+    }
+
+    /* =========================================================
+       RESPONSIVE
+       ========================================================= */
+    @media (max-width: 1020px) {
+      .summary-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+
+      .summary-card.scope {
+        grid-column: span 1;
+      }
+
+      .attendance-list-head,
+      .attendance-row {
+        grid-template-columns: 38px minmax(180px, 0.7fr) minmax(330px, 1fr);
+      }
+    }
+
+    @media (max-width: 800px) {
+      body {
+        padding: 10px;
+      }
+
+      .attendance-hero {
+        grid-template-columns: 1fr;
+        min-height: 0;
+        padding: 25px 20px;
+        border-radius: 22px;
+      }
+
+      .hero-user {
+        min-width: 0;
+        width: 100%;
+      }
+
+      .summary-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 9px;
+      }
+
+      .summary-card {
+        padding: 14px;
+        border-radius: 15px;
+      }
+
+      .summary-card.scope {
+        grid-column: span 2;
+      }
+
+      .summary-value {
+        font-size: 1.02rem;
+      }
+
+      .attendance-panel {
+        padding: 18px 13px;
+        border-radius: 19px;
+      }
+
+      .filter-grid {
+        grid-template-columns: 1fr;
+        gap: 13px;
+      }
+
+      .list-toolbar {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .search-wrapper {
+        grid-column: 1 / -1;
+      }
+
+      .toolbar-button {
+        width: 100%;
+        padding: 10px 9px;
+      }
+
+      .attendance-list {
+        overflow: visible;
+        border: none;
+        background: transparent;
+      }
+
+      .attendance-list-head {
+        display: none;
+      }
+
+      .attendance-list-body {
+        display: grid;
+        gap: 11px;
+      }
+
+      .attendance-row {
+        display: grid;
+        grid-template-columns: 38px minmax(0, 1fr);
+        gap: 10px;
+        min-height: 0;
+        padding: 14px 12px;
+        border: 1px solid var(--abs-border);
+        border-radius: 16px;
+        box-shadow: 0 7px 20px rgba(35,78,160,0.06);
+      }
+
+      .attendance-row:last-child {
+        border-bottom: 1px solid var(--abs-border);
+      }
+
+      .student-name {
+        white-space: normal;
+      }
+
+      .status-options {
+        grid-column: 1 / -1;
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+        gap: 5px;
+        margin-top: 3px;
+      }
+
+      .status-box {
+        min-height: 42px;
+        flex-direction: column;
+        gap: 0;
+        padding: 5px 2px;
+        font-size: 0.55rem;
+        line-height: 1.1;
+      }
+
+      .status-box b {
+        font-size: 0.76rem;
+      }
+
+      .save-area {
+        grid-template-columns: 1fr;
+        padding: 15px;
+      }
+    }
+
+    @media (max-width: 420px) {
+      .attendance-hero {
+        padding: 22px 17px;
+      }
+
+      .attendance-hero h1 {
+        font-size: 1.55rem;
+      }
+
+      .attendance-hero p {
+        font-size: 0.8rem;
+      }
+
+      .hero-user {
+        padding: 12px;
+      }
+
+      .summary-card {
+        min-height: 84px;
+      }
+
+      .summary-label {
+        font-size: 0.58rem;
+      }
+
+      .status-box span {
+        display: none;
+      }
+
+      .status-box {
+        min-height: 38px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+  </style>
+
+  <!-- Tampilan minimal: header internal dan ringkasan disembunyikan tanpa mengubah sistem -->
+  <style id="cahaya-minimal-cleanup">
+    .attendance-hero,
+.summary-grid {
+      display: none !important;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="loadingOverlay">
+    <div class="loader-mark">📋</div>
+    <div id="loadingText">Menyiapkan data program...</div>
+  </div>
+
+  <div id="appToast" class="toast" role="status" aria-live="polite">
+    <div class="toast-icon" id="toastIcon">✓</div>
+    <div>
+      <strong id="toastTitle">Berhasil</strong>
+      <span id="toastMessage">Data berhasil disimpan.</span>
+    </div>
+  </div>
+
+  <main class="attendance-page">
+    <section class="attendance-hero">
+      <div class="hero-copy">
+        <span class="hero-label">Program Harian Santri</span>
+        <h1>Absensi Program</h1>
+        <p>
+          Catat kehadiran kegiatan santri secara cepat, rapi, dan terhubung
+          dengan sistem pembinaan CAHAYA.
+        </p>
+      </div>
+
+      <div class="hero-user">
+        <div class="hero-avatar" id="heroAvatar">N</div>
+        <div class="hero-user-copy">
+          <strong id="heroUserName">Naqib</strong>
+          <span id="heroUserRole">Penginput Program</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="summary-grid" aria-label="Ringkasan absensi">
+      <article class="summary-card scope">
+        <span class="summary-label">Cakupan</span>
+        <strong class="summary-value" id="summaryScope">Belum dipilih</strong>
+      </article>
+
+      <article class="summary-card total">
+        <span class="summary-label">Total Santri</span>
+        <strong class="summary-value" id="summaryTotal">0</strong>
+      </article>
+
+      <article class="summary-card hadir">
+        <span class="summary-label">Hadir</span>
+        <strong class="summary-value" id="summaryHadir">0</strong>
+      </article>
+
+      <article class="summary-card terlambat">
+        <span class="summary-label">Terlambat</span>
+        <strong class="summary-value" id="summaryTerlambat">0</strong>
+      </article>
+
+      <article class="summary-card tidak-hadir">
+        <span class="summary-label">Izin · Sakit · Alfa</span>
+        <strong class="summary-value" id="summaryTidakHadir">0</strong>
+      </article>
+    </section>
+
+    <section class="attendance-panel">
+      <div class="panel-heading">
+        <div>
+          <h2>Informasi Program</h2>
+          <p>Pilih cakupan usrah, tanggal, dan kegiatan yang akan diabsen.</p>
+        </div>
+      </div>
+
+      <div class="filter-grid">
+        <div class="form-group">
+          <label for="selectUsrahGlobal">🏠 Pilih Usrah</label>
+          <select class="form-control select-featured" id="selectUsrahGlobal" onchange="gantiUsrah()">
+            <option value="">Memuat daftar usrah...</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="tanggal">📅 Tanggal Pelaksanaan</label>
+          <input type="date" class="form-control" id="tanggal" />
+        </div>
+
+        <div class="form-group">
+          <label for="program">🕋 Program / Kegiatan</label>
+          <select class="form-control" id="program" onchange="updateInfoPoin()">
+            <option value="">-- Pilih Program --</option>
+          </select>
+          <div class="program-info" id="infoPoin"></div>
+        </div>
+
+        <div class="scope-note" id="scopeNote"></div>
+      </div>
+    </section>
+
+    <section class="attendance-panel">
+      <div class="panel-heading">
+        <div>
+          <h3>Daftar Santri</h3>
+          <p id="listDescription">Pilih usrah untuk menampilkan santri.</p>
+        </div>
+      </div>
+
+      <div class="list-toolbar">
+        <div class="search-wrapper">
+          <input
+            type="search"
+            class="form-control search-input"
+            id="searchSantri"
+            placeholder="Cari nama santri..."
+            oninput="filterSantri()"
+            autocomplete="off"
+          />
+        </div>
+
+        <button type="button" class="toolbar-button green" id="btnMarkAll" onclick="markAll()" disabled>
+          ✓ Semua Hadir
+        </button>
+
+        <button type="button" class="toolbar-button" onclick="resetStatus()">
+          ↺ Atur Ulang
+        </button>
+      </div>
+
+      <div class="attendance-list">
+        <div class="attendance-list-head">
+          <div>No.</div>
+          <div>Nama Santri</div>
+          <div class="head-status">
+            <span>Hadir</span>
+            <span>Terlambat</span>
+            <span>Izin</span>
+            <span>Sakit</span>
+            <span>Alfa</span>
+          </div>
+        </div>
+
+        <div class="attendance-list-body" id="santriList">
+          <div class="empty-state">
+            <div class="empty-state-icon">👥</div>
+            Pilih usrah untuk menampilkan data santri.
+          </div>
+        </div>
+      </div>
+
+      <div class="save-area">
+        <div class="save-copy">
+          <strong>Simpan absensi program</strong>
+          <span>
+            Periksa kembali tanggal, kegiatan, dan status kehadiran sebelum
+            mengirim data ke server.
+          </span>
+        </div>
+
+        <button class="btn-save" id="btnSimpanAbsen" onclick="simpan()" disabled>
+          💾 Simpan Absensi
+        </button>
+      </div>
+    </section>
+  </main>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+    import {
+      getDatabase,
+      ref,
+      push,
+      get,
+      update
+    } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+
+    const firebaseConfig = window.CAHAYA_CONFIG.firebase;
+
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+
+    const PILIHAN_SEMUA_PUTRA = "__SEMUA_USRAH_PUTRA__";
+    const PILIHAN_SEMUA_PUTRI = "__SEMUA_USRAH_PUTRI__";
+
+    const CAKUPAN_KHUSUS = {
+      [PILIHAN_SEMUA_PUTRA]: {
+        label: "Semua Usrah Putra",
+        nomor: [1, 2, 3, 4, 5, 6]
+      },
+      [PILIHAN_SEMUA_PUTRI]: {
+        label: "Semua Usrah Putri",
+        nomor: [7, 8]
+      }
+    };
+
+    let user = {};
+    try {
+      user = JSON.parse(
+        localStorage.getItem("cahayaCurrentUser") || "{}"
+      );
+    } catch (error) {
+      console.warn("Data pengguna lokal tidak terbaca:", error);
+    }
+
+    let namaNaqibLokal = localStorage.getItem("namaNaqib");
+
+    if (!namaNaqibLokal) {
+      namaNaqibLokal =
+        user.label ||
+        user.nama ||
+        user.username ||
+        "Naqib";
+
+      namaNaqibLokal = String(namaNaqibLokal)
+        .replace(
+          /^Mu'?allim(ah)?\s+|^Naqib(ah)?\s+|^Mrs\s+/i,
+          ""
+        )
+        .trim();
+    }
+
+    let usrahAktif = "";
+    let daftarSantriAktif = [];
+    let dataUsrahCloud = {};
+    let masterPoinProgram = {};
+    let toastTimer = null;
+
+    function escapeHtml(value = "") {
+      return String(value)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#39;");
+    }
+
+    function tanggalLokalHariIni() {
+      const now = new Date();
+      return [
+        now.getFullYear(),
+        String(now.getMonth() + 1).padStart(2, "0"),
+        String(now.getDate()).padStart(2, "0")
+      ].join("-");
+    }
+
+    function nomorUsrahDariKunci(kunci = "") {
+      const cocok = String(kunci).match(/\d+/);
+      return cocok ? Number(cocok[0]) : null;
+    }
+
+    function labelUsrah(kunci = "") {
+      const teks = String(kunci).trim();
+
+      if (!teks) return "Usrah";
+
+      if (/^usrah\s+/i.test(teks)) {
+        return teks.replace(/^usrah\s+/i, "Usrah ");
+      }
+
+      return `Usrah ${teks}`;
+    }
+
+    function normalisasiDaftarSantri(value) {
+      let daftar = [];
+
+      if (Array.isArray(value)) {
+        daftar = value;
+      } else if (value && typeof value === "object") {
+        daftar = Object.values(value);
+      }
+
+      return daftar
+        .map(item => {
+          if (typeof item === "string") return item.trim();
+
+          return String(
+            item?.nama ||
+            item?.namaSantri ||
+            item?.label ||
+            ""
+          ).trim();
+        })
+        .filter(Boolean);
+    }
+
+    function kunciUsrahTerurut() {
+      return Object.keys(dataUsrahCloud || {})
+        .sort((a, b) => {
+          const nomorA = nomorUsrahDariKunci(a);
+          const nomorB = nomorUsrahDariKunci(b);
+
+          if (nomorA !== null && nomorB !== null) {
+            return nomorA - nomorB;
+          }
+
+          if (nomorA !== null) return -1;
+          if (nomorB !== null) return 1;
+
+          return a.localeCompare(b, "id");
+        });
+    }
+
+    function kunciUntukPilihan(pilihan) {
+      const cakupan = CAKUPAN_KHUSUS[pilihan];
+
+      if (!cakupan) {
+        return pilihan && dataUsrahCloud[pilihan]
+          ? [pilihan]
+          : [];
+      }
+
+      return kunciUsrahTerurut().filter(kunci => {
+        const nomor = nomorUsrahDariKunci(kunci);
+        return cakupan.nomor.includes(nomor);
+      });
+    }
+
+    function infoPilihan(pilihan = usrahAktif) {
+      const cakupan = CAKUPAN_KHUSUS[pilihan];
+
+      if (cakupan) {
+        const kunci = kunciUntukPilihan(pilihan);
+
+        return {
+          label: cakupan.label,
+          kunci,
+          jenis: "gabungan",
+          deskripsi:
+            pilihan === PILIHAN_SEMUA_PUTRA
+              ? "Mencakup Usrah 1 sampai Usrah 6."
+              : "Mencakup Usrah 7 sampai Usrah 8."
+        };
+      }
+
+      return {
+        label: pilihan ? labelUsrah(pilihan) : "Belum dipilih",
+        kunci: pilihan ? [pilihan] : [],
+        jenis: "tunggal",
+        deskripsi: pilihan
+          ? `Menampilkan santri dari ${labelUsrah(pilihan)}.`
+          : "Pilih usrah untuk menampilkan santri."
+      };
+    }
+
+    function bangunDaftarSantri(pilihan) {
+      const info = infoPilihan(pilihan);
+      const hasil = [];
+
+      info.kunci.forEach(kunci => {
+        const daftar = normalisasiDaftarSantri(
+          dataUsrahCloud[kunci]
+        );
+
+        daftar.forEach(nama => {
+          hasil.push({
+            nama,
+            usrahAsal: kunci,
+            labelUsrahAsal: labelUsrah(kunci)
+          });
+        });
+      });
+
+      return hasil.sort((a, b) => {
+        const nomorA = nomorUsrahDariKunci(a.usrahAsal);
+        const nomorB = nomorUsrahDariKunci(b.usrahAsal);
+
+        if (nomorA !== null && nomorB !== null && nomorA !== nomorB) {
+          return nomorA - nomorB;
+        }
+
+        return a.nama.localeCompare(b.nama, "id");
+      });
+    }
+
+    function isiProfilPengguna() {
+      const nama =
+        user.label ||
+        user.nama ||
+        user.username ||
+        "Naqib";
+
+      const role = Array.isArray(user.akses)
+        ? user.akses.join(" • ")
+        : user.akses || "Penginput Program";
+
+      document.getElementById("heroUserName").textContent = nama;
+      document.getElementById("heroUserRole").textContent = role;
+
+      const avatar = document.getElementById("heroAvatar");
+
+      if (user.fotoProfil) {
+        avatar.innerHTML = `
+          <img src="${escapeHtml(user.fotoProfil)}" alt="Foto profil">
+        `;
+      } else {
+        avatar.textContent =
+          String(nama).trim().charAt(0).toUpperCase() || "N";
+      }
+    }
+
+    function tampilkanToast(type, title, message) {
+      const toast = document.getElementById("appToast");
+      const icon = document.getElementById("toastIcon");
+
+      toast.className = `toast ${type}`;
+      document.getElementById("toastTitle").textContent = title;
+      document.getElementById("toastMessage").textContent = message;
+
+      icon.textContent =
+        type === "success" ? "✓" :
+        type === "error" ? "!" :
+        "i";
+
+      requestAnimationFrame(() => {
+        toast.classList.add("show");
+      });
+
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => {
+        toast.classList.remove("show");
+      }, 3800);
+    }
+
+    function sembunyikanLoading() {
+      const overlay = document.getElementById("loadingOverlay");
+      overlay.style.opacity = "0";
+
+      setTimeout(() => {
+        overlay.style.display = "none";
+      }, 350);
+    }
+
+    function tampilkanErrorLoading(message) {
+      const overlay = document.getElementById("loadingOverlay");
+
+      overlay.innerHTML = `
+        <div class="loader-mark" style="background:linear-gradient(135deg,#ff5d6c,#ef4052);">!</div>
+        <div id="loadingText">Data program gagal dimuat</div>
+        <div style="max-width:480px;margin-top:8px;color:#71809e;font-size:.78rem;font-weight:650;line-height:1.55;">
+          ${escapeHtml(message)}
+        </div>
+      `;
+    }
+
+    function isiPilihanUsrah() {
+      const select = document.getElementById("selectUsrahGlobal");
+      select.innerHTML = "";
+
+      /*
+        Dua pilihan gabungan selalu diletakkan paling atas
+        sesuai permintaan.
+      */
+      select.add(
+        new Option(
+          "Semua Usrah Putra — Usrah 1–6",
+          PILIHAN_SEMUA_PUTRA
+        )
+      );
+
+      select.add(
+        new Option(
+          "Semua Usrah Putri — Usrah 7–8",
+          PILIHAN_SEMUA_PUTRI
+        )
+      );
+
+      const pemisah = new Option(
+        "──────── Pilih Satu Usrah ────────",
+        ""
+      );
+      pemisah.disabled = true;
+      select.add(pemisah);
+
+      kunciUsrahTerurut().forEach(kunci => {
+        select.add(
+          new Option(labelUsrah(kunci), kunci)
+        );
+      });
+
+      /*
+        Tetap prioritaskan usrah milik pengguna bila ditemukan.
+        Bila tidak ditemukan, pilih usrah tunggal pertama agar
+        pengguna tidak langsung mengabsen semua santri tanpa sengaja.
+      */
+      const ownKey = kunciUsrahTerurut().find(kunci => {
+        const keyNormal = String(kunci)
+          .toLowerCase()
+          .replace(/[^a-z0-9]/g, "");
+
+        const naqibNormal = String(namaNaqibLokal)
+          .toLowerCase()
+          .replace(/[^a-z0-9]/g, "");
+
+        return (
+          keyNormal === naqibNormal ||
+          keyNormal.includes(naqibNormal) ||
+          naqibNormal.includes(keyNormal)
+        );
+      });
+
+      const defaultKey =
+        ownKey ||
+        kunciUsrahTerurut()[0] ||
+        PILIHAN_SEMUA_PUTRA;
+
+      select.value = defaultKey;
+      usrahAktif = defaultKey;
+    }
+
+    function isiPilihanProgram(programData) {
+      const select = document.getElementById("program");
+
+      Object.entries(programData || {}).forEach(([key, value]) => {
+        if (value && typeof value === "object") {
+          const group = document.createElement("optgroup");
+          group.label = key;
+
+          Object.entries(value).forEach(([namaProgram, poin]) => {
+            masterPoinProgram[namaProgram] = Number(poin) || 0;
+
+            group.appendChild(
+              new Option(
+                `${namaProgram} (+${masterPoinProgram[namaProgram]})`,
+                namaProgram
+              )
+            );
+          });
+
+          select.appendChild(group);
+          return;
+        }
+
+        masterPoinProgram[key] = Number(value) || 0;
+
+        select.add(
+          new Option(
+            `${key} (+${masterPoinProgram[key]})`,
+            key
+          )
+        );
+      });
+    }
+
+    function statusSaatIni(row) {
+      return (
+        row.querySelector('input[type="radio"]:checked')?.value ||
+        "Hadir"
+      );
+    }
+
+    function updateRingkasan() {
+      const rows = [
+        ...document.querySelectorAll(".attendance-row")
+      ];
+
+      const counts = {
+        Hadir: 0,
+        Terlambat: 0,
+        Izin: 0,
+        Sakit: 0,
+        Alfa: 0
+      };
+
+      rows.forEach(row => {
+        const status = statusSaatIni(row);
+        counts[status] = (counts[status] || 0) + 1;
+      });
+
+      const info = infoPilihan();
+
+      document.getElementById("summaryScope").textContent =
+        info.label;
+
+      document.getElementById("summaryTotal").textContent =
+        rows.length;
+
+      document.getElementById("summaryHadir").textContent =
+        counts.Hadir;
+
+      document.getElementById("summaryTerlambat").textContent =
+        counts.Terlambat;
+
+      document.getElementById("summaryTidakHadir").textContent =
+        counts.Izin + counts.Sakit + counts.Alfa;
+
+      const program = document.getElementById("program").value;
+      document.getElementById("btnSimpanAbsen").disabled =
+        !rows.length || !program;
+    }
+
+    function buatStatusOption(index, status, singkatan, label) {
+      const className = status.toLowerCase();
+
+      return `
+        <label class="status-option ${className}">
+          <input
+            type="radio"
+            name="s_${index}"
+            value="${status}"
+            ${status === "Hadir" ? "checked" : ""}
+          >
+          <span class="status-box">
+            <b>${singkatan}</b>
+            <span>${label}</span>
+          </span>
+        </label>
+      `;
+    }
+
+    function renderDaftarSantri() {
+      const list = document.getElementById("santriList");
+      const info = infoPilihan();
+
+      daftarSantriAktif = bangunDaftarSantri(usrahAktif);
+
+      document.getElementById("summaryScope").textContent =
+        info.label;
+
+      document.getElementById("listDescription").textContent =
+        daftarSantriAktif.length
+          ? `${daftarSantriAktif.length} santri dalam ${info.label}.`
+          : `Belum ada santri dalam ${info.label}.`;
+
+      const scopeNote = document.getElementById("scopeNote");
+      scopeNote.textContent = info.deskripsi;
+      scopeNote.classList.toggle(
+        "show",
+        info.jenis === "gabungan"
+      );
+
+      document.getElementById("searchSantri").value = "";
+      document.getElementById("btnMarkAll").disabled =
+        !daftarSantriAktif.length;
+
+      if (!daftarSantriAktif.length) {
+        list.innerHTML = `
+          <div class="empty-state">
+            <div class="empty-state-icon">👥</div>
+            Data santri belum tersedia untuk ${escapeHtml(info.label)}.
+          </div>
+        `;
+
+        updateRingkasan();
+        return;
+      }
+
+      list.innerHTML = daftarSantriAktif
+        .map((item, index) => `
+          <article
+            class="attendance-row status-hadir"
+            data-index="${index}"
+            data-search="${escapeHtml(
+              `${item.nama} ${item.labelUsrahAsal}`.toLowerCase()
+            )}"
+          >
+            <div class="row-number">${index + 1}</div>
+
+            <div class="student-block">
+              <strong class="student-name">
+                ${escapeHtml(item.nama)}
+              </strong>
+
+              <div class="student-meta">
+                <span class="usrah-chip">
+                  ${escapeHtml(item.labelUsrahAsal)}
+                </span>
+              </div>
+            </div>
+
+            <div class="status-options">
+              ${buatStatusOption(index, "Hadir", "H", "Hadir")}
+              ${buatStatusOption(index, "Terlambat", "T", "Telat")}
+              ${buatStatusOption(index, "Izin", "I", "Izin")}
+              ${buatStatusOption(index, "Sakit", "S", "Sakit")}
+              ${buatStatusOption(index, "Alfa", "A", "Alfa")}
+            </div>
+          </article>
+        `)
+        .join("");
+
+      updateRingkasan();
+    }
+
+    document.addEventListener("DOMContentLoaded", async () => {
+      document.getElementById("tanggal").value =
+        tanggalLokalHariIni();
+
+      isiProfilPengguna();
+
+      try {
+        const [snapUsrah, snapProgram] = await Promise.all([
+          get(ref(db, "cahaya_app/master_usrah")),
+          get(ref(db, "cahaya_app/master_program_harian"))
+        ]);
+
+        dataUsrahCloud = snapUsrah.exists()
+          ? snapUsrah.val()
+          : {};
+
+        const programData = snapProgram.exists()
+          ? snapProgram.val()
+          : {};
+
+        isiPilihanUsrah();
+        isiPilihanProgram(programData);
+        renderDaftarSantri();
+        sembunyikanLoading();
+      } catch (error) {
+        console.error("Gagal memuat data program:", error);
+        tampilkanErrorLoading(
+          error?.message || "Terjadi kesalahan ketika membaca Firebase."
+        );
+      }
+
+      document.getElementById("santriList")
+        .addEventListener("change", event => {
+          if (event.target.type !== "radio") return;
+
+          const row = event.target.closest(".attendance-row");
+
+          row.className =
+            `attendance-row status-${event.target.value.toLowerCase()}`;
+
+          updateRingkasan();
+        });
+    });
+
+    window.gantiUsrah = function() {
+      usrahAktif =
+        document.getElementById("selectUsrahGlobal").value;
+
+      renderDaftarSantri();
+    };
+
+    window.updateInfoPoin = function() {
+      const program =
+        document.getElementById("program").value;
+
+      const info =
+        document.getElementById("infoPoin");
+
+      if (
+        program &&
+        Object.prototype.hasOwnProperty.call(
+          masterPoinProgram,
+          program
+        )
+      ) {
+        info.textContent =
+          `★ ${masterPoinProgram[program]} poin untuk status hadir`;
+      } else {
+        info.textContent = "";
+      }
+
+      updateRingkasan();
+    };
+
+    window.filterSantri = function() {
+      const keyword =
+        document.getElementById("searchSantri")
+          .value
+          .trim()
+          .toLowerCase();
+
+      let terlihat = 0;
+
+      document.querySelectorAll(".attendance-row")
+        .forEach(row => {
+          const cocok =
+            !keyword ||
+            row.dataset.search.includes(keyword);
+
+          row.style.display = cocok ? "" : "none";
+
+          if (cocok) terlihat++;
+        });
+
+      const info = infoPilihan();
+
+      document.getElementById("listDescription").textContent =
+        keyword
+          ? `${terlihat} santri cocok dengan pencarian.`
+          : `${daftarSantriAktif.length} santri dalam ${info.label}.`;
+    };
+
+    window.markAll = function() {
+      document.querySelectorAll(
+        '.attendance-row input[value="Hadir"]'
+      ).forEach(input => {
+        input.checked = true;
+
+        const row = input.closest(".attendance-row");
+        row.className = "attendance-row status-hadir";
+      });
+
+      updateRingkasan();
+
+      tampilkanToast(
+        "success",
+        "Semua santri ditandai hadir",
+        "Status seluruh santri telah diatur menjadi hadir."
+      );
+    };
+
+    window.resetStatus = function() {
+      markAll();
+      document.getElementById("searchSantri").value = "";
+      filterSantri();
+    };
+
+    window.simpan = async function() {
+      const tanggal =
+        document.getElementById("tanggal").value;
+
+      const program =
+        document.getElementById("program").value;
+
+      const info = infoPilihan();
+
+      if (!usrahAktif || !tanggal || !program) {
+        tampilkanToast(
+          "error",
+          "Data belum lengkap",
+          "Pilih usrah, tanggal, dan program kegiatan terlebih dahulu."
+        );
+        return;
+      }
+
+      if (!daftarSantriAktif.length) {
+        tampilkanToast(
+          "error",
+          "Data santri kosong",
+          "Tidak ada santri yang dapat disimpan pada pilihan ini."
+        );
+        return;
+      }
+
+      const poinDasar =
+        Object.prototype.hasOwnProperty.call(
+          masterPoinProgram,
+          program
+        )
+          ? masterPoinProgram[program]
+          : 20;
+
+      const keySantri = value => String(value || "")
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .toLowerCase()
+        .replace(/[^a-z0-9]/g, "");
+
+      let izinHariIni = {};
+      try {
+        const izinSnapshot = await get(
+          ref(db, `cahaya_app/izin_sakit_harian/${tanggal}`)
+        );
+        izinHariIni = izinSnapshot.exists() ? izinSnapshot.val() : {};
+      } catch (izinError) {
+        console.warn("Izin UKS tidak dapat dibaca:", izinError);
+      }
+
+      const izinByNama = new Map(
+        Object.values(izinHariIni || {})
+          .filter(item =>
+            item &&
+            item.statusAktif !== false &&
+            item.bolehTidakMengikutiPembelajaranHariIni === true
+          )
+          .map(item => [keySantri(item.namaSantri || item.namaSantriKey || ""), item])
+      );
+      let jumlahKoreksiUKS = 0;
+
+      const dataAbsen = daftarSantriAktif.map((item, index) => {
+        const statusAwal =
+          document.querySelector(
+            `input[name="s_${index}"]:checked`
+          )?.value || "Hadir";
+        const izinUKS = izinByNama.get(keySantri(item.nama));
+        const status = statusAwal === "Alfa" && izinUKS ? "Sakit" : statusAwal;
+
+        let poinFinal = 0;
+
+        if (status === "Hadir") {
+          poinFinal = poinDasar;
+        } else if (status === "Terlambat") {
+          poinFinal = -(poinDasar * 0.5);
+        } else if (status === "Alfa") {
+          poinFinal = -poinDasar;
+        }
+
+        if (status !== statusAwal) jumlahKoreksiUKS += 1;
+
+        return {
+          nama: item.nama.toUpperCase().trim(),
+          status,
+          poin: poinFinal,
+          ...(status !== statusAwal ? {
+            statusAsal: statusAwal,
+            dikoreksiOtomatisUKS: true,
+            idPemeriksaanUKS: izinUKS?.idPemeriksaan || "",
+            keteranganKoreksiUKS: izinUKS?.keteranganGuru || "Alfa diubah menjadi Sakit berdasarkan izin UKS.",
+            waktuKoreksiUKS: new Date().toISOString()
+          } : {}),
+
+          /*
+            Field baru ini menjaga asal kelompok ketika
+            menggunakan pilihan Semua Usrah Putra/Putri.
+          */
+          usrahAsal: item.usrahAsal
+        };
+      });
+
+      const namaPencatat =
+        user.label ||
+        user.nama ||
+        user.username ||
+        "Naqib";
+
+      const pilihanMilikSendiri =
+        info.jenis === "tunggal" &&
+        String(info.kunci[0] || "").toLowerCase() ===
+          String(namaNaqibLokal || "").toLowerCase();
+
+      const penginput = pilihanMilikSendiri
+        ? namaPencatat
+        : `${namaPencatat} (Cakupan ${info.label})`;
+
+      const log = {
+        tanggal,
+        program,
+
+        /*
+          Field usrah dipertahankan agar laporan lama tetap
+          dapat membaca log ini.
+        */
+        usrah:
+          info.jenis === "gabungan"
+            ? info.label
+            : usrahAktif,
+
+        labelUsrah: info.label,
+        jenisCakupan: info.jenis,
+        cakupanUsrah: info.kunci,
+        naqibPenginput: penginput,
+        jumlahSantri: dataAbsen.length,
+        data: dataAbsen,
+        waktu: new Date().toISOString()
+      };
+
+      const btn =
+        document.getElementById("btnSimpanAbsen");
+
+      btn.innerHTML = "⏳ Menyimpan...";
+      btn.disabled = true;
+
+      try {
+        const savedRef = await push(
+          ref(db, "cahaya_app/absensi_program_harian"),
+          log
+        );
+        const indexUpdates = {};
+        dataAbsen.forEach(item => {
+          const waliKey = String(item.nama||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]/g,'');
+          if(!waliKey || !savedRef.key) return;
+          indexUpdates[`cahaya_app/wali_index/${waliKey}/program/${savedRef.key}`] = {...log,data:[item]};
+        });
+        if(Object.keys(indexUpdates).length) await update(ref(db),indexUpdates);
+
+        tampilkanToast(
+          "success",
+          "Absensi berhasil disimpan",
+          jumlahKoreksiUKS
+            ? `${program} untuk ${info.label} tersimpan. ${jumlahKoreksiUKS} Alfa otomatis diubah menjadi Sakit berdasarkan izin UKS.`
+            : `${program} untuk ${info.label} telah tersimpan.`
+        );
+
+        btn.innerHTML = "✓ Data Tersimpan";
+
+        setTimeout(() => {
+          btn.innerHTML = "💾 Simpan Absensi";
+          updateRingkasan();
+        }, 1000);
+      } catch (error) {
+        console.error("Gagal menyimpan absensi:", error);
+
+        tampilkanToast(
+          "error",
+          "Absensi gagal disimpan",
+          error?.message || "Terjadi kesalahan ketika mengirim data."
+        );
+
+        btn.innerHTML = "💾 Simpan Absensi";
+        updateRingkasan();
+      }
+    };
+  </script>
+</body>
+</html>

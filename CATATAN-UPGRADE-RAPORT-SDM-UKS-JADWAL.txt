@@ -1,0 +1,66 @@
+UPGRADE CAHAYA APP — 29 JULI 2026
+====================================
+
+1. SETORAN TAHFIZ — JUMLAH BARIS MANUAL
+- Form Setoran Tahfiz sekarang memiliki field wajib "Jumlah Baris Mushaf".
+- Guru menghitung dan mengisi jumlah baris secara manual agar angka benar-benar sesuai setoran.
+- Data disimpan dalam field: baris, barisManual, metodeBaris=INPUT_MANUAL_GURU.
+- Ranking Tahfiz di Command Center hanya menjumlahkan field baris yang tersimpan.
+- Data lama tanpa jumlah baris tetap ditampilkan, tetapi tidak menambah ranking.
+
+2. SINKRONISASI JADWAL + SISTEM KELAS KE FIREBASE
+- Buka: admin/atur-jadwal.html
+- Klik "Muat Jadwal & Kelas dari Kode Terbaru".
+- Periksa data, lalu klik "Terapkan Jadwal + Sistem Kelas ke Firebase".
+- Snapshot yang dibawa paket ini: 148 sesi, 9 kelas, 107 santri.
+- Sinkronisasi memperbarui:
+  cahaya_app/jadwal_pelajaran
+  cahaya_app/master_akademik/kelas
+- Data guru, mapel, halqah, usrah, serta riwayat absensi tidak ditimpa.
+- Halaman tidak lagi bergantung pada fetch file JSON, sehingga tetap dapat dipakai ketika paket dibuka dari hosting/folder aplikasi.
+
+3. IZIN UKS OTOMATIS MENGUBAH ALFA MENJADI SAKIT
+- Jika UKS memberi izin tidak belajar/tidak mengikuti kegiatan, sistem membaca izin pada:
+  cahaya_app/izin_sakit_harian/{tanggal}/{santri}
+- Absensi Pembelajaran dan Absensi Program Naqib yang baru disimpan tidak dapat mempertahankan status Alfa; status otomatis menjadi Sakit.
+- Jika Alfa sudah tersimpan lebih dulu pada hari yang sama, saat pemeriksaan UKS disimpan sistem mengoreksi record lama menjadi Sakit.
+- Poin Alfa diubah menjadi 0.
+- Jejak audit tersimpan di cahaya_app/koreksi_absensi_uks.
+- Record diberi metadata dikoreksiOtomatisUKS, idPemeriksaanUKS, statusAsal, dan waktuKoreksiUKS.
+
+4. RAPORT SDM TERINTEGRASI
+- Halaman baru: supervisor/raport-sdm.html
+- Dapat dibuka dari menu "Raport SDM Terintegrasi" pada Main Dashboard.
+- Mendukung periode Harian dan Bulanan.
+- Setiap personil disusun berdasarkan akun Firestore users dan aktivitas aktual.
+- Satu orang dapat memiliki beberapa peran sekaligus.
+- Indikator yang dibaca meliputi:
+  * Guru: jadwal wajib, kehadiran, ketepatan waktu, input pembelajaran, keterlambatan, jadwal tanpa data.
+  * Naqib: blok terjadwal, jurnal terisi, rerata pelaksanaan, program/tugas tidak terlaksana.
+  * Tahfiz: sesi setoran, jumlah santri, total baris manual, kelengkapan input baris.
+  * Kesehatan/UKS: jurnal harian, nilai kinerja, tugas tidak terlaksana, pemeriksaan santri.
+  * Sarpras: jurnal, nilai kinerja, tugas tidak terlaksana.
+  * Kebersihan & Keamanan: jurnal, nilai kinerja, tugas tidak terlaksana.
+  * Observer: jumlah observasi, rerata hasil, temuan perbaikan, urgensi tinggi.
+  * Konselor/Penindakan: jumlah penindakan dan santri yang ditangani.
+  * Supervisor: tindak lanjut yang dibuat dan statusnya.
+- Nilai akhir hanya dihitung dari indikator yang memiliki dasar data. Aktivitas tanpa standar kuantitatif tetap ditampilkan tetapi tidak dipaksakan menjadi nilai.
+- Raport individu memuat kekuatan, perhatian, rekomendasi, aktivitas, riwayat tindak lanjut, serta tombol Cetak/PDF.
+- Tombol "Buat Tindak Lanjut" mengirim identitas, nilai, periode, dan temuan ke form supervisor/tindak-lanjut-sdm.html.
+
+5. FILE YANG BERUBAH
+- admin/atur-jadwal.html
+- admin/users.html
+- guru/inputSetoranTahfiz.html
+- guru/absensiPembelajaran.html
+- naqib/absensi.html
+- kesehatan/pemeriksaan.html
+- pimpinan/dashboard-pimpinan.html
+- supervisor/raport-sdm.html (baru)
+- supervisor/tindak-lanjut-sdm.html
+- main-dashboard.html
+
+6. PEMERIKSAAN TEKNIS
+- Seluruh JavaScript pada file yang diubah telah lolos node --check.
+- Snapshot jadwal/master kelas berhasil diparsing dan diverifikasi: 148 sesi, 9 kelas, 107 santri.
+- Simulasi Raport Guru dengan satu jadwal, satu kehadiran tepat waktu, dan satu input KBM menghasilkan nilai 100%.

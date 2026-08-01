@@ -1,0 +1,1412 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <!-- CAHAYA WHITE-LABEL CONFIG -->
+  <script src="../config/tenant-config.js"></script>
+  <script src="../config/master-data.js"></script>
+  <script src="../js/cahaya-config-runtime.js" defer></script>
+
+  <meta charset="UTF-8">
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>Monitoring Absensi Guru | CAHAYA APP</title>
+
+  <link rel="stylesheet" href="../css/cahaya-theme.css">
+
+  <style>
+    :root {
+      --primary: #2878ff;
+      --cyan: #19c6e6;
+      --green: #29c58d;
+      --orange: #ff9f43;
+      --purple: #7667f5;
+      --red: #ff5d6c;
+      --ink: #152347;
+      --text: #33415e;
+      --muted: #71809e;
+      --border: #e2eaf6;
+      --shadow: 0 17px 42px rgba(35,78,160,.11);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      min-height: 100vh;
+      margin: 0;
+      padding: 18px;
+      color: var(--text);
+      font-family: "Nunito", "Poppins", Arial, sans-serif;
+      background:
+        radial-gradient(circle at 0% 0%, rgba(25,198,230,.11), transparent 26%),
+        radial-gradient(circle at 100% 0%, rgba(118,103,245,.10), transparent 25%),
+        linear-gradient(180deg, #f4f8ff, #fbfdff);
+    }
+
+    button,
+    input,
+    select {
+      font: inherit;
+    }
+
+    .page {
+      width: min(1200px, 100%);
+      margin: 0 auto;
+    }
+
+    .toolbar {
+      display: grid;
+      grid-template-columns:
+        minmax(210px, .95fr)
+        180px
+        180px
+        minmax(220px, 1.2fr)
+        auto;
+      gap: 10px;
+      align-items: center;
+      margin-top: 0;
+      padding: 17px;
+      position: relative;
+      overflow: hidden;
+      border: 1px solid rgba(40,120,255,.20);
+      border-radius: 20px;
+      background:
+        radial-gradient(circle at 97% 0%, rgba(25,198,230,.18), transparent 31%),
+        linear-gradient(135deg, #edf5ff 0%, #f9fbff 55%, #eefcff 100%);
+      box-shadow: 0 15px 36px rgba(40,120,255,.12);
+    }
+
+    .toolbar::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 20px;
+      right: 20px;
+      height: 4px;
+      border-radius: 0 0 10px 10px;
+      background: linear-gradient(90deg, var(--primary), var(--cyan));
+    }
+
+    .toolbar::after {
+      content: "";
+      width: 120px;
+      height: 120px;
+      position: absolute;
+      right: -68px;
+      bottom: -78px;
+      border: 22px solid rgba(40,120,255,.05);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+
+    .toolbar > * {
+      position: relative;
+      z-index: 1;
+    }
+
+    .toolbar-clock {
+      min-width: 0;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .toolbar-clock-icon {
+      width: 42px;
+      height: 42px;
+      flex: 0 0 42px;
+      display: grid;
+      place-items: center;
+      color: #ffffff;
+      font-size: 1rem;
+      border-radius: 13px;
+      background: linear-gradient(135deg, var(--primary), var(--cyan));
+      box-shadow: 0 9px 20px rgba(40,120,255,.20);
+    }
+
+    .toolbar-clock small,
+    .toolbar-clock strong {
+      display: block;
+    }
+
+    .toolbar-clock small {
+      color: #657691;
+      font-size: .55rem;
+      font-weight: 900;
+      letter-spacing: .35px;
+      text-transform: uppercase;
+    }
+
+    .toolbar-clock strong {
+      margin-top: 4px;
+      color: #1557d5;
+      font-size: .86rem;
+      font-weight: 950;
+    }
+
+    .control {
+      width: 100%;
+      min-height: 44px;
+      padding: 9px 11px;
+      color: var(--ink);
+      font-size: .72rem;
+      font-weight: 850;
+      outline: none;
+      border: 1.4px solid #dce5f2;
+      border-radius: 11px;
+      background: #f8faff;
+    }
+
+    .control:focus {
+      border-color: var(--primary);
+      background: #fff;
+      box-shadow: 0 0 0 4px rgba(40,120,255,.09);
+    }
+
+    .button {
+      min-height: 44px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      padding: 9px 13px;
+      color: #175cb9;
+      font-size: .7rem;
+      font-weight: 900;
+      cursor: pointer;
+      border: 1px solid #cfe1ff;
+      border-radius: 11px;
+      background: #edf5ff;
+    }
+
+    .summary {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0,1fr));
+      gap: 10px;
+      margin-top: 13px;
+    }
+
+    .summary-card {
+      padding: 14px;
+      border: 1px solid var(--border);
+      border-radius: 15px;
+      background: #fff;
+      box-shadow: 0 6px 18px rgba(35,78,160,.05);
+    }
+
+    .summary-card small {
+      display: block;
+      color: var(--muted);
+      font-size: .55rem;
+      font-weight: 900;
+      letter-spacing: .55px;
+      text-transform: uppercase;
+    }
+
+    .summary-card strong {
+      display: block;
+      margin-top: 5px;
+      color: var(--ink);
+      font-size: 1.25rem;
+      font-weight: 950;
+    }
+
+    .panel {
+      margin-top: 13px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      background: #fff;
+      box-shadow: var(--shadow);
+    }
+
+    .panel-head {
+      padding: 17px 19px;
+      border-bottom: 1px solid #e9eef6;
+      background: linear-gradient(135deg, #fff, #f8fbff);
+    }
+
+    .panel-head h2 {
+      margin: 0;
+      color: var(--ink);
+      font-size: 1rem;
+      font-weight: 950;
+    }
+
+    .panel-head p {
+      margin: 5px 0 0;
+      color: var(--muted);
+      font-size: .66rem;
+      font-weight: 650;
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      min-width: 950px;
+      border-collapse: collapse;
+    }
+
+    th,
+    td {
+      padding: 12px 13px;
+      text-align: left;
+      border-bottom: 1px solid #edf2f8;
+    }
+
+    th {
+      color: #65738d;
+      font-size: .57rem;
+      font-weight: 900;
+      letter-spacing: .55px;
+      text-transform: uppercase;
+      background: #f5f8fc;
+    }
+
+    td {
+      color: var(--text);
+      font-size: .7rem;
+      font-weight: 700;
+      vertical-align: top;
+    }
+
+    tbody tr:hover {
+      background: #fbfdff;
+    }
+
+    .teacher {
+      color: var(--ink);
+      font-weight: 950;
+    }
+
+    .time {
+      color: var(--primary);
+      font-size: .82rem;
+      font-weight: 950;
+    }
+
+    .badge {
+      display: inline-flex;
+      padding: 5px 8px;
+      font-size: .54rem;
+      font-weight: 900;
+      border-radius: 999px;
+    }
+
+    .badge.putra {
+      color: #1762c7;
+      border: 1px solid #d4e5ff;
+      background: #eaf3ff;
+    }
+
+    .badge.putri {
+      color: #b33a78;
+      border: 1px solid #ffd6e9;
+      background: #fff0f7;
+    }
+
+    .badge.valid {
+      color: #147a59;
+      border: 1px solid #c9eddf;
+      background: #eafaf4;
+    }
+
+    .badge.on-time {
+      color: #147a59;
+      border: 1px solid #c9eddf;
+      background: #eafaf4;
+    }
+
+    .badge.late {
+      color: #b46112;
+      border: 1px solid #f2d3a8;
+      background: #fff6e8;
+    }
+
+    .schedule-time {
+      display: block;
+      margin-top: 4px;
+      color: var(--muted);
+      font-size: .58rem;
+      font-weight: 800;
+      line-height: 1.4;
+    }
+
+    .empty {
+      padding: 38px 18px;
+      color: var(--muted);
+      text-align: center;
+      font-size: .75rem;
+      font-weight: 700;
+      line-height: 1.6;
+    }
+
+    @media (max-width: 820px) {
+      .toolbar {
+        grid-template-columns: 1fr;
+        padding: 15px 13px;
+        border-radius: 18px;
+      }
+
+      .toolbar-clock {
+        padding-bottom: 11px;
+        border-bottom: 1px solid rgba(40,120,255,.12);
+      }
+
+
+      body {
+        padding: 10px;
+      }
+.toolbar {
+        grid-template-columns: 1fr;
+      }
+
+      .summary {
+        grid-template-columns: repeat(2, minmax(0,1fr));
+      }
+    }
+
+    @media (max-width: 440px) {
+      .summary {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <main class="page">
+<section class="toolbar info-toolbar">
+      <div class="toolbar-clock">
+        <span class="toolbar-clock-icon">⏱️</span>
+        <div>
+          <small>Filter Monitoring • Waktu Sistem</small>
+          <strong id="clock">00:00:00 WIB</strong>
+        </div>
+      </div>
+      <input
+        type="date"
+        class="control"
+        id="dateFilter"
+      >
+
+      <select
+        class="control"
+        id="unitFilter"
+      >
+        <option value="ALL">Semua Unit</option>
+        <option value="PUTRA">Pondok Putra</option>
+        <option value="PUTRI">Pondok Putri</option>
+      </select>
+
+      <input
+        type="search"
+        class="control"
+        id="searchInput"
+        placeholder="Cari guru, mapel, atau kelas..."
+      >
+
+      <button
+        type="button"
+        class="button"
+        id="exportButton"
+      >
+        ⇩ Unduh CSV
+      </button>
+    </section>
+
+    <section class="summary">
+      <article class="summary-card">
+        <small>Total Kehadiran</small>
+        <strong id="totalCount">0</strong>
+      </article>
+
+      <article class="summary-card">
+        <small>Unit Putra</small>
+        <strong id="putraCount">0</strong>
+      </article>
+
+      <article class="summary-card">
+        <small>Unit Putri</small>
+        <strong id="putriCount">0</strong>
+      </article>
+
+      <article class="summary-card">
+        <small>Lokasi Valid</small>
+        <strong id="validCount">0</strong>
+      </article>
+    </section>
+
+    <section class="panel">
+      <header class="panel-head">
+        <h2>Daftar Guru yang Sudah Absen</h2>
+        <p id="dateLabel">Memuat data kehadiran...</p>
+      </header>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Jadwal & Tiba</th>
+              <th>Guru</th>
+              <th>Mapel dan Kelas</th>
+              <th>Status</th>
+              <th>Unit</th>
+              <th>Lokasi</th>
+              <th>Metode</th>
+            </tr>
+          </thead>
+
+          <tbody id="attendanceBody"></tbody>
+        </table>
+
+        <div class="empty" id="emptyState">
+          Memuat data absensi...
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    window.addEventListener("load", function () {
+      window.setTimeout(function () {
+        var empty =
+          document.getElementById("emptyState");
+
+        if (
+          empty &&
+          (
+            empty.textContent.trim() ===
+              "Memuat data absensi..." ||
+            empty.textContent.includes(
+              "Memuat data absensi dari Firebase"
+            )
+          )
+        ) {
+          empty.textContent =
+            "Monitoring belum berhasil terhubung. Periksa koneksi internet, lalu muat ulang halaman.";
+        }
+      }, 15000);
+    });
+  </script>
+
+  <script type="module">
+    import {
+      initializeApp
+    } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+
+    import {
+      getDatabase,
+      ref,
+      onValue,
+      get,
+      query,
+      orderByChild,
+      equalTo
+    } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+
+    const FIREBASE_CONFIG = window.CAHAYA_CONFIG.firebase;
+
+    const PATHS = {
+      attendance:
+        "cahaya_app/absensi_guru",
+
+      attendanceLog:
+        "cahaya_app/log_absensi_guru"
+    };
+
+    const TIMEZONE =
+      "Asia/Jakarta";
+
+    function escapeHtml(value = "") {
+      return String(value)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#39;");
+    }
+
+    function normalizeIdentity(value = "") {
+      return String(value)
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, " ")
+        .replace(/\s+/g, " ")
+        .trim();
+    }
+
+    function jakartaParts(date = new Date()) {
+      const parts =
+        new Intl.DateTimeFormat(
+          "en-CA",
+          {
+            timeZone: TIMEZONE,
+            weekday: "long",
+            year: "numeric",
+            month: "2-digit",
+            day: "2-digit",
+            hour: "2-digit",
+            minute: "2-digit",
+            second: "2-digit",
+            hourCycle: "h23"
+          }
+        ).formatToParts(date);
+
+      const map = {};
+
+      parts.forEach(part => {
+        if (part.type !== "literal") {
+          map[part.type] = part.value;
+        }
+      });
+
+      return map;
+    }
+
+    function jakartaDateKey(date = new Date()) {
+      const parts =
+        jakartaParts(date);
+
+      return (
+        `${parts.year}-` +
+        `${parts.month}-` +
+        `${parts.day}`
+      );
+    }
+
+    function jakartaTimeLabel(date = new Date()) {
+      const parts =
+        jakartaParts(date);
+
+      return (
+        `${parts.hour}:` +
+        `${parts.minute}:` +
+        `${parts.second}`
+      );
+    }
+
+    function dateFromInput(value) {
+      const [year, month, day] =
+        String(value || "")
+          .split("-")
+          .map(Number);
+
+      return new Date(
+        year || 2026,
+        (month || 1) - 1,
+        day || 1,
+        12,
+        0,
+        0
+      );
+    }
+
+    function formatDateIndonesia(value) {
+      return new Intl.DateTimeFormat(
+        "id-ID",
+        {
+          weekday: "long",
+          day: "numeric",
+          month: "long",
+          year: "numeric"
+        }
+      ).format(
+        dateFromInput(value)
+      );
+    }
+
+
+    const app = initializeApp(
+      FIREBASE_CONFIG
+    );
+
+    const db = getDatabase(app);
+
+    let unsubscribe = null;
+    let allRecords = [];
+
+    function normalizeRecord(record = {}) {
+      return {
+        ...record,
+
+        namaGuru:
+          record.namaGuru ||
+          record.guru ||
+          record.nama ||
+          "Guru",
+
+        mapel:
+          record.mapel ||
+          record.mataPelajaran ||
+          "Mapel",
+
+        kelas:
+          record.kelas ||
+          record.namaRuang ||
+          "Kelas",
+
+        unit:
+          record.unit ||
+          (
+            /putri/i.test(
+              String(
+                record.kelas ||
+                record.namaRuang ||
+                ""
+              )
+            )
+              ? "PUTRI"
+              : "PUTRA"
+          ),
+
+        waktuTibaWIB:
+          record.waktuTibaWIB ||
+          record.waktuTiba ||
+          record.jamTiba ||
+          "—"
+      };
+    }
+
+    function flattenRecords(
+      value
+    ) {
+      const records = [];
+
+      Object.values(value || {})
+        .forEach(teacherNode => {
+          if (
+            !teacherNode ||
+            typeof teacherNode !==
+              "object"
+          ) {
+            return;
+          }
+
+          const directRecord =
+            teacherNode.namaGuru ||
+            teacherNode.mapel ||
+            teacherNode.jadwalId ||
+            teacherNode.waktuTibaWIB;
+
+          if (directRecord) {
+            records.push(
+              normalizeRecord(
+                teacherNode
+              )
+            );
+            return;
+          }
+
+          Object.values(teacherNode)
+            .forEach(record => {
+              if (
+                record &&
+                typeof record ===
+                  "object"
+              ) {
+                records.push(
+                  normalizeRecord(
+                    record
+                  )
+                );
+              }
+            });
+        });
+
+      return records;
+    }
+
+    function flattenLogRecords(
+      value,
+      dateKey
+    ) {
+      return Object.values(value || {})
+        .filter(record => {
+          return (
+            record &&
+            typeof record ===
+              "object" &&
+            String(record.tanggal || "") ===
+              dateKey
+          );
+        })
+        .map(normalizeRecord);
+    }
+
+    function recordIdentity(record) {
+      return String(
+        record.idAbsensi ||
+        [
+          record.tanggal,
+          record.guruKey ||
+            record.namaGuru,
+          record.jadwalId ||
+            record.mapel,
+          record.sesiId ||
+            record.jadwalLabel,
+          record.kelas
+        ].join("|")
+      );
+    }
+
+    function mergeRecords(
+      ...groups
+    ) {
+      const unique =
+        new Map();
+
+      groups
+        .flat()
+        .forEach(record => {
+          if (!record) return;
+
+          unique.set(
+            recordIdentity(record),
+            record
+          );
+        });
+
+      return [...unique.values()]
+        .sort((a, b) => {
+          const timeA =
+            Number(
+              a.waktuTibaServer ||
+              a.dibuatPada
+            ) || 0;
+
+          const timeB =
+            Number(
+              b.waktuTibaServer ||
+              b.dibuatPada
+            ) || 0;
+
+          if (timeA !== timeB) {
+            return timeA - timeB;
+          }
+
+          return String(
+            a.waktuTibaWIB || ""
+          ).localeCompare(
+            String(
+              b.waktuTibaWIB || ""
+            )
+          );
+        });
+    }
+
+    async function loadLogFallback(
+      dateKey
+    ) {
+      try {
+        const snapshot =
+          await get(
+            query(
+              ref(
+                db,
+                PATHS.attendanceLog
+              ),
+              orderByChild(
+                "tanggal"
+              ),
+              equalTo(
+                dateKey
+              )
+            )
+          );
+
+        return flattenLogRecords(
+          snapshot.val(),
+          dateKey
+        );
+      } catch (error) {
+        console.warn(
+          "Log cadangan tidak dapat dibaca:",
+          error
+        );
+
+        /*
+          Bila query membutuhkan index yang belum tersedia,
+          baca log dan filter di browser sebagai cadangan kedua.
+        */
+        try {
+          const snapshot =
+            await get(
+              ref(
+                db,
+                PATHS.attendanceLog
+              )
+            );
+
+          return flattenLogRecords(
+            snapshot.val(),
+            dateKey
+          );
+        } catch (secondError) {
+          console.warn(
+            "Seluruh log cadangan gagal dibaca:",
+            secondError
+          );
+
+          return [];
+        }
+      }
+    }
+
+    function filteredRecords() {
+      const unit =
+        document.getElementById(
+          "unitFilter"
+        ).value;
+
+      const query =
+        normalizeIdentity(
+          document.getElementById(
+            "searchInput"
+          ).value
+        );
+
+      return allRecords.filter(
+        record => {
+          if (
+            unit !== "ALL" &&
+            record.unit !== unit
+          ) {
+            return false;
+          }
+
+          if (!query) return true;
+
+          const haystack =
+            normalizeIdentity(
+              [
+                record.namaGuru,
+                record.mapel,
+                record.kelas,
+                record.namaRuang,
+                record.unit
+              ].join(" ")
+            );
+
+          return haystack.includes(
+            query
+          );
+        }
+      );
+    }
+
+    function render() {
+      const records =
+        filteredRecords();
+
+      document.getElementById(
+        "totalCount"
+      ).textContent =
+        records.length;
+
+      document.getElementById(
+        "putraCount"
+      ).textContent =
+        records.filter(
+          item =>
+            item.unit === "PUTRA"
+        ).length;
+
+      document.getElementById(
+        "putriCount"
+      ).textContent =
+        records.filter(
+          item =>
+            item.unit === "PUTRI"
+        ).length;
+
+      document.getElementById(
+        "validCount"
+      ).textContent =
+        records.filter(
+          item =>
+            [
+              "VALID",
+              "DIKECUALIKAN"
+            ].includes(
+              item.lokasiGuru?.status
+            )
+        ).length;
+
+      const body =
+        document.getElementById(
+          "attendanceBody"
+        );
+
+      const empty =
+        document.getElementById(
+          "emptyState"
+        );
+
+      if (!records.length) {
+        body.innerHTML = "";
+        empty.style.display =
+          "block";
+
+        empty.textContent =
+          "Belum ada guru yang melakukan absensi pada tanggal dan filter ini.";
+        return;
+      }
+
+      empty.style.display = "none";
+
+      body.innerHTML =
+        records
+          .map(record => {
+            const rawDistance =
+              record.lokasiGuru
+                ?.jarakMeter;
+
+            const rawAccuracy =
+              record.lokasiGuru
+                ?.akurasiMeter;
+
+            const distance =
+              rawDistance === null ||
+              rawDistance === undefined ||
+              rawDistance === ""
+                ? null
+                : Number(rawDistance);
+
+            const accuracy =
+              rawAccuracy === null ||
+              rawAccuracy === undefined ||
+              rawAccuracy === ""
+                ? null
+                : Number(rawAccuracy);
+
+            const radiusExempt =
+              record.lokasiGuru?.status ===
+              "DIKECUALIKAN";
+
+            const isLate =
+              record.statusKehadiran ===
+              "TERLAMBAT";
+
+            const method =
+              record.metodeAbsensi ===
+                "SCAN_QR"
+                ? "Scan QR"
+                : "Kode Kelas";
+
+            return `
+              <tr>
+                <td>
+                  <span class="time">
+                    ${escapeHtml(
+                      record.waktuTibaWIB ||
+                      "—"
+                    )}
+                  </span>
+
+                  <span class="schedule-time">
+                    Jadwal:
+                    ${escapeHtml(
+                      record.jadwalLabel ||
+                      (
+                        record.jadwalMulai &&
+                        record.jadwalSelesai
+                          ? `${record.jadwalMulai}–${record.jadwalSelesai}`
+                          : "—"
+                      )
+                    )}
+                  </span>
+                </td>
+
+                <td>
+                  <span class="teacher">
+                    ${escapeHtml(
+                      record.namaGuru ||
+                      "Guru"
+                    )}
+                  </span>
+                </td>
+
+                <td>
+                  <strong>
+                    ${escapeHtml(
+                      record.mapel ||
+                      "Mapel"
+                    )}
+                  </strong>
+                  <br>
+                  ${escapeHtml(
+                    record.kelas ||
+                    record.namaRuang ||
+                    "Kelas"
+                  )}
+
+                  ${
+                    record.sesiLabel
+                      ? `
+                        <span class="schedule-time">
+                          ${escapeHtml(record.sesiLabel)}
+                        </span>
+                      `
+                      : ""
+                  }
+                </td>
+
+                <td>
+                  <span class="badge ${isLate ? "late" : "on-time"}">
+                    ${escapeHtml(
+                      record.statusKehadiranLabel ||
+                      (
+                        isLate
+                          ? `Terlambat ${Number(record.keterlambatanMenit) || 0} menit`
+                          : "Tepat Waktu"
+                      )
+                    )}
+                  </span>
+                </td>
+
+                <td>
+                  <span class="badge ${String(record.unit || "").toLowerCase()}">
+                    ${escapeHtml(
+                      record.unit ||
+                      "—"
+                    )}
+                  </span>
+                </td>
+
+                <td>
+                  <span class="badge valid">
+                    ${
+                      radiusExempt
+                        ? "Tanpa Radius"
+                        : "Valid"
+                    }
+                  </span>
+                  <br><br>
+                  Jarak:
+                  ${
+                    radiusExempt
+                      ? "Dikecualikan"
+                      : (
+                          Number.isFinite(distance)
+                            ? `${distance} m`
+                            : "—"
+                        )
+                  }
+                  <br>
+                  Akurasi:
+                  ${
+                    radiusExempt
+                      ? "Tidak diperlukan"
+                      : (
+                          Number.isFinite(accuracy)
+                            ? `${accuracy} m`
+                            : "—"
+                        )
+                  }
+                </td>
+
+                <td>
+                  ${escapeHtml(method)}
+                  <br>
+                  <small>
+                    ${escapeHtml(
+                      record.kodeKelas ||
+                      ""
+                    )}
+                  </small>
+                </td>
+              </tr>
+            `;
+          })
+          .join("");
+    }
+
+    function listenDate() {
+      if (
+        typeof unsubscribe ===
+        "function"
+      ) {
+        unsubscribe();
+      }
+
+      const dateKey =
+        document.getElementById(
+          "dateFilter"
+        ).value;
+
+      const dateLabel =
+        document.getElementById(
+          "dateLabel"
+        );
+
+      const empty =
+        document.getElementById(
+          "emptyState"
+        );
+
+      dateLabel.textContent =
+        `${formatDateIndonesia(
+          dateKey
+        )} • Menyinkronkan Firebase`;
+
+      allRecords = [];
+
+      empty.style.display =
+        "block";
+
+      empty.textContent =
+        "Memuat data absensi dari Firebase...";
+
+      unsubscribe =
+        onValue(
+          ref(
+            db,
+            `${PATHS.attendance}/${dateKey}`
+          ),
+          async snapshot => {
+            const primaryRecords =
+              flattenRecords(
+                snapshot.val()
+              );
+
+            const logRecords =
+              await loadLogFallback(
+                dateKey
+              );
+
+            allRecords =
+              mergeRecords(
+                primaryRecords,
+                logRecords
+              );
+
+            dateLabel.textContent =
+              `${formatDateIndonesia(
+                dateKey
+              )} • ${
+                primaryRecords.length
+                  ? "Data utama Firebase"
+                  : (
+                      logRecords.length
+                        ? "Data log cadangan Firebase"
+                        : "Belum ada absensi"
+                    )
+              }`;
+
+            render();
+          },
+          async error => {
+            console.error(
+              "Data utama absensi gagal dimuat:",
+              error
+            );
+
+            const logRecords =
+              await loadLogFallback(
+                dateKey
+              );
+
+            allRecords =
+              mergeRecords(
+                logRecords
+              );
+
+            dateLabel.textContent =
+              `${formatDateIndonesia(
+                dateKey
+              )} • ${
+                logRecords.length
+                  ? "Data log cadangan Firebase"
+                  : "Firebase gagal dibaca"
+              }`;
+
+            render();
+
+            if (!logRecords.length) {
+              empty.textContent =
+                `Firebase belum dapat dibaca: ${
+                  error?.message ||
+                  "izin database atau koneksi bermasalah"
+                }`;
+            }
+          }
+        );
+    }
+
+    function exportCsv() {
+      const records =
+        filteredRecords();
+
+      if (!records.length) {
+        alert(
+          "Belum ada data untuk diunduh."
+        );
+        return;
+      }
+
+      const rows = [
+        [
+          "Tanggal",
+          "Jadwal Mulai",
+          "Jadwal Selesai",
+          "Sesi",
+          "Waktu Tiba",
+          "Status Kehadiran",
+          "Keterlambatan Menit",
+          "Nama Guru",
+          "Mapel",
+          "Kelas",
+          "Unit",
+          "Ruang",
+          "Metode",
+          "Kode Kelas",
+          "Jarak Meter",
+          "Akurasi Meter",
+          "Status Lokasi"
+        ],
+
+        ...records.map(
+          record => [
+            record.tanggal || "",
+            record.jadwalMulai || "",
+            record.jadwalSelesai || "",
+            record.sesiLabel || "",
+            record.waktuTibaWIB || "",
+            record.statusKehadiranLabel ||
+              record.statusKehadiran ||
+              "",
+            record.keterlambatanMenit ?? "",
+            record.namaGuru || "",
+            record.mapel || "",
+            record.kelas || "",
+            record.unit || "",
+            record.namaRuang || "",
+            record.metodeAbsensi || "",
+            record.kodeKelas || "",
+            record.lokasiGuru
+              ?.jarakMeter ?? "",
+            record.lokasiGuru
+              ?.akurasiMeter ?? "",
+            record.lokasiGuru
+              ?.status || ""
+          ]
+        )
+      ];
+
+      const csv =
+        rows
+          .map(row =>
+            row
+              .map(value =>
+                `"${String(value)
+                  .replace(/"/g, '""')}"`
+              )
+              .join(",")
+          )
+          .join("\n");
+
+      const blob =
+        new Blob(
+          ["\ufeff", csv],
+          {
+            type:
+              "text/csv;charset=utf-8"
+          }
+        );
+
+      const url =
+        URL.createObjectURL(blob);
+
+      const anchor =
+        document.createElement("a");
+
+      anchor.href = url;
+      anchor.download =
+        `absensi-guru-${
+          document.getElementById(
+            "dateFilter"
+          ).value
+        }.csv`;
+
+      anchor.click();
+
+      URL.revokeObjectURL(url);
+    }
+
+    function updateClock() {
+      document.getElementById(
+        "clock"
+      ).textContent =
+        `${jakartaTimeLabel()} WIB`;
+    }
+
+    function initializeMonitoring() {
+      document.getElementById(
+        "dateFilter"
+      ).value =
+        jakartaDateKey();
+
+      document.getElementById(
+        "dateFilter"
+      ).addEventListener(
+        "change",
+        listenDate
+      );
+
+      document.getElementById(
+        "unitFilter"
+      ).addEventListener(
+        "change",
+        render
+      );
+
+      document.getElementById(
+        "searchInput"
+      ).addEventListener(
+        "input",
+        render
+      );
+
+      document.getElementById(
+        "exportButton"
+      ).addEventListener(
+        "click",
+        exportCsv
+      );
+
+      updateClock();
+
+      setInterval(
+        updateClock,
+        1000
+      );
+
+      listenDate();
+    }
+
+    if (
+      document.readyState ===
+      "loading"
+    ) {
+      document.addEventListener(
+        "DOMContentLoaded",
+        initializeMonitoring,
+        {
+          once: true
+        }
+      );
+    } else {
+      initializeMonitoring();
+    }
+  </script>
+</body>
+</html>

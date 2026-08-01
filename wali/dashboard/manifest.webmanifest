@@ -1,0 +1,18 @@
+{
+  "name": "CAHAYA APP – Portal Wali Santri",
+  "short_name": "Portal Wali",
+  "description": "Portal informasi, laporan, dan komunikasi wali santri Pesantren Cahaya Fajrul Islam.",
+  "start_url": "index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f3f7ff",
+  "theme_color": "#075e54",
+  "icons": [
+    {
+      "src": "../../assets/logofi.png",
+      "sizes": "any",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

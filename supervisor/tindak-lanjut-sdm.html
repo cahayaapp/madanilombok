@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <!-- CAHAYA WHITE-LABEL CONFIG -->
+  <script src="../config/tenant-config.js"></script>
+  <script src="../config/master-data.js"></script>
+  <script src="../js/cahaya-config-runtime.js" defer></script>
+
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Tindak Lanjut SDM • CAHAYA</title>
+<style>
+:root{--ink:#17304d;--muted:#728399;--line:#e4eaf1;--bg:#f5f8fc;--blue:#2563eb;--green:#16a34a;--amber:#f59e0b;--red:#ef4444;--violet:#7c3aed}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--ink)}.wrap{max-width:1280px;margin:auto;padding:18px}.hero{border-radius:24px;padding:22px;color:#fff;background:linear-gradient(120deg,#183a6b,#366dd1 55%,#6d5bd0);box-shadow:0 18px 45px rgba(35,72,135,.18)}.hero h1{margin:0;font-size:1.45rem}.hero p{margin:7px 0 0;color:#dce8ff;font-size:.8rem;line-height:1.5}.grid{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:14px;margin-top:14px}.card{background:#fff;border:1px solid var(--line);border-radius:20px;box-shadow:0 10px 30px rgba(20,45,80,.07);overflow:hidden}.head{padding:15px 17px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;gap:10px}.head h2{margin:0;font-size:.9rem}.body{padding:15px}.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.field{display:grid;gap:5px}.field.full{grid-column:1/-1}.field label{font-size:.58rem;color:#66798f;font-weight:900;text-transform:uppercase}.field input,.field select,.field textarea{width:100%;border:1px solid #dce4ee;border-radius:11px;padding:10px;color:#2d4460;background:#fff;outline:none;font:inherit;font-size:.72rem}.field textarea{min-height:80px;resize:vertical}.standard{grid-column:1/-1;border-radius:14px;padding:12px;background:#f8fafc;border:1px solid #e5ebf2}.standard strong{display:block;font-size:.72rem}.standard p{margin:4px 0 0;font-size:.62rem;color:#74859a;line-height:1.45}.pill{display:inline-flex;border-radius:999px;padding:5px 8px;font-size:.52rem;font-weight:900}.good{background:#e9f8ef;color:#16794f}.warn{background:#fff4df;color:#aa650e}.bad{background:#ffeaee;color:#c83d4c}.info{background:#ebf3ff;color:#2866b1}.btn{border:0;border-radius:11px;padding:10px 13px;font-weight:900;font-size:.65rem;cursor:pointer}.primary{background:#2467d6;color:#fff}.soft{background:#edf3fb;color:#46627f}.actions{display:flex;gap:8px;justify-content:flex-end;margin-top:11px}.metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:10px}.metric{border:1px solid var(--line);border-radius:12px;padding:10px}.metric small{display:block;color:#8493a5;font-size:.48rem;font-weight:900}.metric b{display:block;margin-top:4px;font-size:.95rem}.table-wrap{overflow:auto;border:1px solid var(--line);border-radius:13px}.table{border-collapse:collapse;width:100%;min-width:850px}.table th{background:#f6f8fb;color:#77869a;font-size:.48rem;text-transform:uppercase;text-align:left;padding:9px;position:sticky;top:0}.table td{font-size:.57rem;padding:9px;border-top:1px solid #edf1f5;vertical-align:top;color:#3e5570}.name{font-weight:950}.small{font-size:.49rem;color:#8290a2}.empty{text-align:center;padding:30px;color:#8796a8;font-size:.65rem}.filter{display:flex;gap:7px;flex-wrap:wrap}.filter input,.filter select{border:1px solid #dce4ee;border-radius:9px;padding:7px;font-size:.6rem}.row-btn{border:0;border-radius:8px;background:#eef4ff;color:#2563a8;font-weight:900;padding:5px 7px;font-size:.5rem;cursor:pointer}@media(max-width:900px){.grid{grid-template-columns:1fr}.form-grid{grid-template-columns:1fr}.field.full,.standard{grid-column:auto}.metrics{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="hero"><h1>🎯 Tindak Lanjut Kinerja SDM</h1><p>Catat apresiasi, coaching, briefing ulang, teguran edukatif, target perbaikan, dan hasil tindak lanjut. Standar rekomendasi otomatis mengikuti skor kinerja.</p></div>
+  <div class="grid">
+    <section class="card"><div class="head"><h2>Form Tindak Lanjut</h2><span id="modeBadge" class="pill info">Baru</span></div><div class="body">
+      <form id="form">
+        <div class="form-grid">
+          <div class="field"><label>Tanggal</label><input type="date" id="tanggal" required></div>
+          <div class="field"><label>Nilai Kinerja (%)</label><input type="number" id="skor" min="0" max="100" step="0.1" required></div>
+          <div class="field"><label>Nama SDM</label><input id="nama" placeholder="Nama personil" required></div>
+          <div class="field"><label>Peran / Bidang</label><input id="peran" placeholder="Guru, Naqib, UKS, Sarpras..." required></div>
+          <div class="field"><label>Sumber Penilaian</label><select id="sumber"><option>Kehadiran Guru</option><option>Jurnal Naqib</option><option>Tahfiz</option><option>Jurnal UKS</option><option>Jurnal Sarpras</option><option>Kebersihan & Keamanan</option><option>Observasi</option><option>Lainnya</option></select></div>
+          <div class="field"><label>Periode</label><input id="periode" placeholder="Contoh: Pekan 28 Juli 2026"></div>
+          <div class="standard"><strong id="standardTitle">Standar tindak lanjut</strong><p id="standardText">Masukkan nilai kinerja untuk memunculkan rekomendasi.</p></div>
+          <div class="field full"><label>Temuan / Dasar Tindak Lanjut</label><textarea id="temuan" placeholder="Apa yang sudah baik atau perlu diperbaiki?" required></textarea></div>
+          <div class="field full"><label>Tindakan Supervisor</label><textarea id="tindakan" required></textarea></div>
+          <div class="field"><label>Target Berikutnya</label><input id="target" placeholder="Contoh: ≥95% pekan berikutnya"></div>
+          <div class="field"><label>Batas Evaluasi</label><input type="date" id="batas"></div>
+          <div class="field"><label>Status</label><select id="status"><option>Terjadwal</option><option>Dalam Proses</option><option>Selesai</option></select></div>
+          <div class="field"><label>Supervisor</label><input id="supervisor" placeholder="Nama supervisor"></div>
+          <div class="field full"><label>Hasil / Catatan Evaluasi</label><textarea id="hasil" placeholder="Diisi setelah tindak lanjut berlangsung"></textarea></div>
+        </div>
+        <div class="actions"><button type="button" class="btn soft" id="resetBtn">Reset</button><button class="btn primary" id="saveBtn">Simpan Tindak Lanjut</button></div>
+      </form>
+    </div></section>
+    <section class="card"><div class="head"><h2>Riwayat Tindak Lanjut</h2><div class="filter"><input id="search" placeholder="Cari nama / bidang"><select id="filterStatus"><option value="">Semua status</option><option>Terjadwal</option><option>Dalam Proses</option><option>Selesai</option></select></div></div><div class="body"><div class="metrics" id="metrics"></div><div class="table-wrap"><table class="table"><thead><tr><th>Tanggal</th><th>SDM</th><th>Skor</th><th>Jenis</th><th>Tindakan</th><th>Status</th><th>Aksi</th></tr></thead><tbody id="tbody"></tbody></table></div></div></section>
+  </div>
+</div>
+<script type="module">
+import {initializeApp,getApps} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import {getDatabase,ref,push,set,onValue,remove,query,limitToLast} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+const cfg = window.CAHAYA_CONFIG.firebase;
+const app=getApps().length?getApps()[0]:initializeApp(cfg),db=getDatabase(app),PATH="cahaya_app/tindak_lanjut_sdm";
+const $=id=>document.getElementById(id);let rows=[],editId="";
+const esc=v=>String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const today=()=>{const d=new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`};
+function standard(score){score=Number(score);if(!Number.isFinite(score))return{level:"Belum Dinilai",cls:"info",text:"Masukkan nilai kinerja untuk memunculkan rekomendasi.",action:""};if(score>=100)return{level:"Apresiasi Unggul",cls:"good",text:"Kinerja mencapai standar penuh. Berikan apresiasi spesifik, dokumentasikan praktik baik, dan minta konsistensi dipertahankan.",action:"Berikan apresiasi atas disiplin/kinerja 100%, dokumentasikan praktik baik yang perlu dipertahankan, dan tetapkan target konsistensi pada periode berikutnya."};if(score>=90)return{level:"Apresiasi & Penguatan",cls:"good",text:"Kinerja sangat baik. Apresiasi capaian dan beri satu penguatan kecil agar stabil mendekati 100%.",action:"Apresiasi capaian yang sudah sangat baik, sampaikan satu area penguatan yang masih tersisa, dan pantau konsistensinya."};if(score>=75)return{level:"Coaching Penguatan",cls:"warn",text:"Kinerja cukup, tetapi belum stabil. Lakukan briefing/coaching singkat, sepakati hambatan dan target perbaikan yang terukur.",action:"Lakukan briefing/coaching penguatan: klarifikasi hambatan, ulangi standar kerja yang diharapkan, sepakati target perbaikan, dan evaluasi kembali dalam 7 hari."};return{level:"Teguran & Briefing Ulang",cls:"bad",text:"Kinerja di bawah 75%. Lakukan tabayyun, teguran edukatif, briefing ulang SOP, target wajib, serta evaluasi ulang. Bila berulang, eskalasi pembinaan.",action:"Lakukan tabayyun dan teguran edukatif, briefing ulang SOP/standar kerja, tetapkan target wajib yang terukur, evaluasi ulang maksimal 7 hari, dan eskalasi pembinaan bila performa rendah berulang."}}
+function updateStandard(){const st=standard($("skor").value);$("standardTitle").textContent=st.level;$("standardTitle").className=st.cls;$("standardText").textContent=st.text;if(!editId||!$("tindakan").value.trim())$("tindakan").value=st.action;if(!$("target").value&&Number.isFinite(Number($("skor").value)))$("target").value=Number($("skor").value)<75?"Minimal 75% dan meningkat pada evaluasi berikutnya":"Pertahankan/tingkatkan performa pada periode berikutnya"}
+function profileName(){try{const u=JSON.parse(localStorage.getItem("cahayaCurrentUser")||"{}");return u.nama||u.name||u.username||""}catch{return""}}
+function resetForm(){editId="";$("form").reset();$("tanggal").value=today();$("supervisor").value=profileName();$("modeBadge").textContent="Baru";$("modeBadge").className="pill info";updateStandard()}
+function payload(){const st=standard($("skor").value);return{tanggal:$("tanggal").value,namaSDM:$("nama").value.trim(),peran:$("peran").value.trim(),sumber:$("sumber").value,periode:$("periode").value.trim(),skor:Number($("skor").value),kategoriTindakLanjut:st.level,temuan:$("temuan").value.trim(),tindakan:$("tindakan").value.trim(),target:$("target").value.trim(),batasEvaluasi:$("batas").value,status:$("status").value,supervisor:$("supervisor").value.trim(),hasil:$("hasil").value.trim(),waktuSimpan:new Date().toISOString()}}
+$("form").addEventListener("submit",async e=>{e.preventDefault();const data=payload();if(!data.namaSDM||!data.peran||!data.tanggal||!Number.isFinite(data.skor))return alert("Lengkapi data wajib.");const target=editId?ref(db,`${PATH}/${editId}`):push(ref(db,PATH));if(editId)data.waktuUpdate=new Date().toISOString();else data.dibuatPada=data.waktuSimpan;await set(target,data);resetForm()});
+$("skor").addEventListener("input",updateStandard);$("resetBtn").addEventListener("click",resetForm);$("search").addEventListener("input",render);$("filterStatus").addEventListener("change",render);
+window.editRow=id=>{const r=rows.find(x=>x.id===id);if(!r)return;editId=id;const map={tanggal:"tanggal",skor:"skor",namaSDM:"nama",peran:"peran",sumber:"sumber",periode:"periode",temuan:"temuan",tindakan:"tindakan",target:"target",batasEvaluasi:"batas",status:"status",supervisor:"supervisor",hasil:"hasil"};Object.entries(map).forEach(([k,id2])=>{if($(id2))$(id2).value=r[k]??""});$("modeBadge").textContent="Edit";$("modeBadge").className="pill warn";updateStandard();scrollTo({top:0,behavior:"smooth"})};
+window.deleteRow=async id=>{if(confirm("Hapus catatan tindak lanjut ini?"))await remove(ref(db,`${PATH}/${id}`))};
+function clsStatus(s){return s==="Selesai"?"good":s==="Dalam Proses"?"warn":"info"}
+function render(){const q=$("search").value.toLowerCase().trim(),fs=$("filterStatus").value;const f=rows.filter(r=>(!q||`${r.namaSDM} ${r.peran} ${r.sumber}`.toLowerCase().includes(q))&&(!fs||r.status===fs));const done=rows.filter(r=>r.status==="Selesai").length,low=rows.filter(r=>Number(r.skor)<75).length;$("metrics").innerHTML=`<div class="metric"><small>Total</small><b>${rows.length}</b></div><div class="metric"><small>Selesai</small><b>${done}</b></div><div class="metric"><small>Proses</small><b>${rows.filter(r=>r.status==="Dalam Proses").length}</b></div><div class="metric"><small>Skor &lt;75</small><b>${low}</b></div>`;$("tbody").innerHTML=f.length?f.map(r=>`<tr><td>${esc(r.tanggal)}</td><td><span class="name">${esc(r.namaSDM)}</span><div class="small">${esc(r.peran)} • ${esc(r.sumber)}</div></td><td><span class="pill ${Number(r.skor)<75?'bad':Number(r.skor)>=90?'good':'warn'}">${esc(r.skor)}%</span></td><td>${esc(r.kategoriTindakLanjut)}</td><td>${esc(r.tindakan)}<div class="small">Target: ${esc(r.target||'—')}</div></td><td><span class="pill ${clsStatus(r.status)}">${esc(r.status)}</span></td><td><button class="row-btn" onclick="editRow('${esc(r.id)}')">Edit</button> <button class="row-btn" onclick="deleteRow('${esc(r.id)}')">Hapus</button></td></tr>`).join(""):`<tr><td colspan="7"><div class="empty">Belum ada tindak lanjut.</div></td></tr>`}
+onValue(query(ref(db,PATH),limitToLast(500)),snap=>{rows=Object.entries(snap.val()||{}).map(([id,v])=>({id,...v})).sort((a,b)=>String(b.tanggal||"").localeCompare(String(a.tanggal||""))||String(b.waktuSimpan||"").localeCompare(String(a.waktuSimpan||"")));render()});
+resetForm();
+const reportParams=new URLSearchParams(location.search);
+if(reportParams.has("nama")){
+  $("nama").value=reportParams.get("nama")||"";
+  $("peran").value=reportParams.get("peran")||"";
+  $("periode").value=reportParams.get("periode")||"";
+  $("temuan").value=reportParams.get("temuan")||"";
+  const scoreParam=Number(reportParams.get("skor"));
+  if(Number.isFinite(scoreParam)){ $("skor").value=scoreParam; updateStandard(); }
+}
+</script>
+</body></html>

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <!-- CAHAYA WHITE-LABEL CONFIG -->
+  <script src="../config/tenant-config.js"></script>
+  <script src="../config/master-data.js"></script>
+  <script src="../js/cahaya-config-runtime.js" defer></script>
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <meta name="theme-color" content="#2878ff">
+  <title>Observasi Pengasuhan | CAHAYA APP</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@500;600;700;800;900;1000&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="observer.css">
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+</head>
+<body>
+  <div id="observerApp"></div>
+  <script>window.OBSERVER_PAGE_CONFIG={"type":"pengasuhan","title":"Observasi Pengasuhan","shortTitle":"Pengasuhan","icon":"🕌","subtitle":"Pengamatan pelaksanaan program santri: ketepatan waktu, kehadiran PIC, partisipasi, ketertiban, pengawasan, kesesuaian tujuan, keamanan, dan kebersihan setelah program.","formDescription":"Pilih program yang sedang berjalan dan catat kondisi faktual pelaksanaannya.","fields":[{"name":"tanggal","label":"Tanggal","type":"date","required":true},{"name":"waktu","label":"Waktu","type":"time","required":true},{"name":"program","label":"Nama Program","type":"select","required":true,"placeholder":"Pilih program","options":["Bangun dan Persiapan Subuh","Salat Berjamaah","Wirid dan Zikir","Bahasa Arab","Makan Santri","Halqah Al-Qur’an","Olahraga","Mandi dan Kebersihan Diri","Mentoring Individu","Mentoring Kelompok","Program Pekanan","Persiapan Tidur","Lainnya"]},{"name":"lokasi","label":"Lokasi","placeholder":"Masjid, aula, asrama, lapangan, dll.","required":true},{"name":"pic","label":"PIC/Pendamping","placeholder":"Nama penanggung jawab program","required":true},{"name":"kelompok","label":"Kelompok/Usrah","placeholder":"Bila relevan"},{"name":"jumlahPeserta","label":"Jumlah Peserta","type":"number","min":0,"placeholder":"0"}],"indicators":[["Ketepatan waktu program","Program dimulai dan berakhir sesuai jadwal."],["Kehadiran PIC","Penanggung jawab hadir di lokasi dan menjalankan tugas."],["Kejelasan instruksi","Arahan program disampaikan dengan jelas."],["Partisipasi santri","Santri mengikuti kegiatan dan tidak berkeliaran tanpa kepentingan."],["Ketertiban program","Kegiatan berjalan teratur, tenang, dan terkendali."],["Pengawasan pendamping","Pendamping aktif mengamati dan membina santri."],["Kesesuaian tujuan","Pelaksanaan program sesuai tujuan pendidikan dan pengasuhan."],["Pencatatan kehadiran","Kehadiran atau ketidakhadiran santri tercatat."],["Kebersihan setelah program","Area ditinggalkan dalam keadaan bersih dan rapi."],["Keamanan kegiatan","Tidak terdapat kondisi yang membahayakan santri."]],"problemCategories":["Program/Sistem","SDM Pendamping","Jadwal","Kedisiplinan Santri","Sarana Prasarana","Koordinasi","Lainnya"]};</script>
+  <script src="observer-common.js"></script>
+</body>
+</html>

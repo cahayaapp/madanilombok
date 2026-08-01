@@ -1,0 +1,1405 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <!-- CAHAYA WHITE-LABEL CONFIG -->
+  <script src="../../config/tenant-config.js"></script>
+  <script src="../../config/master-data.js"></script>
+  <script src="../../js/cahaya-config-runtime.js" defer></script>
+
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#2878ff" />
+  <title>Informasi Penting Wali Santri | CAHAYA APP</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@500;600;700;800;900;1000&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+  <style>
+    :root{
+      --primary:#2878ff;
+      --primary-dark:#1557d5;
+      --cyan:#19c6e6;
+      --purple:#7667f5;
+      --orange:#ff9f43;
+      --green:#29c58d;
+      --red:#ff5d6c;
+      --ink:#152347;
+      --text:#33415f;
+      --muted:#71809e;
+      --line:#e2eaf6;
+      --soft:#f5f8ff;
+      --card:#ffffff;
+      --shadow:0 15px 42px rgba(35,78,160,.10);
+      --shadow-soft:0 8px 23px rgba(35,78,160,.07);
+    }
+
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      min-width:320px;
+      min-height:100vh;
+      color:var(--text);
+      font-family:"Nunito","Plus Jakarta Sans",Arial,sans-serif;
+      background:
+        radial-gradient(circle at 4% 0%,rgba(25,198,230,.12),transparent 26%),
+        radial-gradient(circle at 100% 4%,rgba(118,103,245,.10),transparent 25%),
+        linear-gradient(180deg,#f3f7ff,#fbfdff);
+    }
+
+    button,select,input{font:inherit}
+    button{cursor:pointer}
+
+    .app{
+      width:min(1180px,100%);
+      margin:0 auto;
+      padding:18px 18px 46px;
+    }
+
+    .hero{
+      position:relative;
+      overflow:hidden;
+      display:grid;
+      grid-template-columns:minmax(0,1fr);
+      gap:25px;
+      align-items:center;
+      padding:31px 32px;
+      border:1px solid rgba(255,255,255,.34);
+      border-radius:28px;
+      color:#fff;
+      background:
+        radial-gradient(circle at 88% 16%,rgba(255,255,255,.24),transparent 24%),
+        linear-gradient(130deg,#176cf1 0%,#2878ff 46%,#19c6e6 115%);
+      box-shadow:0 22px 50px rgba(40,120,255,.24);
+    }
+
+    .hero::after{
+      content:"";
+      position:absolute;
+      width:230px;height:230px;
+      right:-90px;bottom:-145px;
+      border:35px solid rgba(255,255,255,.09);
+      border-radius:50%;
+    }
+
+    .hero-copy{position:relative;z-index:2;max-width:920px}
+    .kicker{
+      display:inline-flex;
+      align-items:center;
+      gap:7px;
+      margin-bottom:12px;
+      padding:6px 11px;
+      border:1px solid rgba(255,255,255,.26);
+      border-radius:999px;
+      background:rgba(255,255,255,.14);
+      font-size:.64rem;
+      font-weight:950;
+      letter-spacing:.8px;
+      text-transform:uppercase;
+    }
+    .hero h1{
+      margin:0;
+      font-size:clamp(2rem,5vw,3.1rem);
+      line-height:1.04;
+      letter-spacing:-1.2px;
+      font-weight:1000;
+    }
+    .hero p{
+      max-width:760px;
+      margin:11px 0 0;
+      color:rgba(255,255,255,.88);
+      font-size:.86rem;
+      font-weight:700;
+      line-height:1.7;
+    }
+
+    .nav-tabs{
+      position:sticky;
+      top:0;
+      z-index:20;
+      display:grid;
+      grid-template-columns:repeat(4,minmax(0,1fr));
+      gap:7px;
+      margin:16px 0;
+      padding:6px;
+      overflow-x:auto;
+      border:1px solid #dce7f6;
+      border-radius:17px;
+      background:rgba(239,245,255,.94);
+      box-shadow:0 9px 24px rgba(35,78,160,.07);
+      backdrop-filter:blur(14px);
+      scrollbar-width:none;
+    }
+    .nav-tabs::-webkit-scrollbar{display:none}
+    .tab-btn{
+      min-height:48px;
+      padding:9px 12px;
+      color:#657692;
+      font-size:.73rem;
+      font-weight:950;
+      border:1px solid transparent;
+      border-radius:12px;
+      background:transparent;
+      white-space:nowrap;
+      transition:.18s ease;
+    }
+    .tab-btn:hover{color:var(--primary);background:#fff}
+    .tab-btn.active{
+      color:#fff;
+      border-color:var(--primary);
+      background:linear-gradient(135deg,var(--primary),var(--cyan));
+      box-shadow:0 8px 18px rgba(40,120,255,.20);
+    }
+
+    .tab-panel{display:none;animation:panelIn .28s ease both}
+    .tab-panel.active{display:block}
+    @keyframes panelIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+    .section-card{
+      overflow:hidden;
+      margin-bottom:17px;
+      border:1px solid var(--line);
+      border-radius:23px;
+      background:rgba(255,255,255,.98);
+      box-shadow:var(--shadow);
+    }
+    .section-head{
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-start;
+      gap:16px;
+      padding:22px 23px 17px;
+      border-bottom:1px solid #edf2fa;
+      background:
+        radial-gradient(circle at 97% 0%,rgba(40,120,255,.08),transparent 28%),
+        linear-gradient(180deg,#fff,#fbfdff);
+    }
+    .title-wrap{display:flex;align-items:center;gap:12px;min-width:0}
+    .section-icon{
+      width:46px;height:46px;flex:0 0 46px;
+      display:grid;place-items:center;
+      border-radius:15px;
+      font-size:1.25rem;
+      background:#eaf3ff;color:var(--primary);
+      box-shadow:0 8px 17px rgba(40,120,255,.12);
+    }
+    .section-head h2{margin:0;color:var(--ink);font-size:1.15rem;font-weight:1000;line-height:1.28}
+    .section-head p{margin:4px 0 0;color:var(--muted);font-size:.72rem;font-weight:700;line-height:1.5}
+    .actions{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+    .btn{
+      min-height:42px;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:7px;
+      padding:9px 14px;
+      color:#fff;
+      font-size:.7rem;
+      font-weight:950;
+      text-decoration:none;
+      border:1px solid transparent;
+      border-radius:12px;
+      background:linear-gradient(135deg,var(--primary),var(--cyan));
+      box-shadow:0 8px 17px rgba(40,120,255,.18);
+      transition:.18s ease;
+    }
+    .btn:hover{transform:translateY(-1px);box-shadow:0 11px 22px rgba(40,120,255,.23)}
+    .btn.secondary{
+      color:#1765cc;
+      border-color:#d3e3fb;
+      background:#edf5ff;
+      box-shadow:none;
+    }
+    .btn.orange{background:linear-gradient(135deg,#ef8128,#ffae49)}
+    .body-pad{padding:20px 22px 23px}
+
+    .calendar-toolbar{
+      display:grid;
+      grid-template-columns:auto minmax(180px,1fr) auto;
+      gap:12px;
+      align-items:center;
+      margin-bottom:15px;
+    }
+    .month-select{
+      width:100%;
+      min-height:44px;
+      padding:9px 12px;
+      color:var(--ink);
+      font-size:.8rem;
+      font-weight:900;
+      outline:none;
+      border:1.5px solid #dce6f3;
+      border-radius:12px;
+      background:#f8faff;
+    }
+    .month-select:focus{border-color:var(--primary);box-shadow:0 0 0 4px rgba(40,120,255,.09)}
+    .month-nav{
+      width:42px;height:42px;
+      display:grid;place-items:center;
+      padding:0;
+      color:var(--primary);
+      font-weight:1000;
+      border:1px solid #d7e5fa;
+      border-radius:12px;
+      background:#edf5ff;
+    }
+    .month-nav:disabled{opacity:.4;cursor:not-allowed}
+    .calendar-status{
+      display:flex;
+      align-items:center;
+      gap:9px;
+      margin-bottom:15px;
+      padding:11px 13px;
+      color:#5c6c86;
+      font-size:.69rem;
+      font-weight:850;
+      border:1px solid #e1e8f3;
+      border-radius:13px;
+      background:#f8faff;
+    }
+    .status-dot{width:9px;height:9px;border-radius:50%;background:#ff9f43;box-shadow:0 0 0 4px rgba(255,159,67,.12)}
+    .calendar-status.online .status-dot{background:var(--green);box-shadow:0 0 0 4px rgba(41,197,141,.13)}
+    .calendar-status.error .status-dot{background:var(--red);box-shadow:0 0 0 4px rgba(255,93,108,.13)}
+    .agenda-month-head{
+      display:flex;align-items:end;justify-content:space-between;gap:12px;
+      margin-bottom:12px;
+    }
+    .agenda-month-head h3{margin:0;color:var(--ink);font-size:1.15rem;font-weight:1000}
+    .agenda-month-head span{color:var(--muted);font-size:.68rem;font-weight:800}
+    .agenda-list{display:grid;gap:10px}
+    .agenda-item{
+      display:grid;
+      grid-template-columns:70px minmax(0,1fr) auto;
+      gap:13px;
+      align-items:center;
+      padding:13px;
+      border:1px solid #e2eaf5;
+      border-radius:16px;
+      background:#fff;
+      box-shadow:0 5px 16px rgba(35,78,160,.045);
+    }
+    .date-box{
+      min-height:62px;
+      display:grid;
+      place-items:center;
+      align-content:center;
+      padding:8px;
+      color:#1768d7;
+      border:1px solid #d7e7ff;
+      border-radius:13px;
+      background:#edf5ff;
+      text-align:center;
+    }
+    .date-box strong{font-size:1.35rem;line-height:1;font-weight:1000}
+    .date-box span{margin-top:4px;font-size:.52rem;font-weight:950;text-transform:uppercase}
+    .agenda-copy{min-width:0}
+    .agenda-title{display:block;color:var(--ink);font-size:.82rem;font-weight:1000;line-height:1.38}
+    .agenda-desc{margin-top:5px;color:var(--muted);font-size:.66rem;font-weight:700;line-height:1.48}
+    .agenda-range{margin-top:5px;color:#51617b;font-size:.62rem;font-weight:850}
+    .type-chip{
+      padding:6px 9px;
+      border-radius:999px;
+      font-size:.53rem;
+      font-weight:1000;
+      text-transform:uppercase;
+      white-space:nowrap;
+    }
+    .type-kunjungan{color:#7650d3;background:#f1edff;border:1px solid #ddd4ff}
+    .type-libur{color:#d84759;background:#fff0f2;border:1px solid #ffd7dc}
+    .type-ujian{color:#ce751f;background:#fff3e6;border:1px solid #ffe0bf}
+    .type-hari-besar{color:#0d8060;background:#eafaf4;border:1px solid #cdeee1}
+    .type-acara-wali{color:#1768d7;background:#edf5ff;border:1px solid #d6e7ff}
+    .empty{
+      padding:28px 18px;
+      color:var(--muted);
+      font-size:.76rem;
+      font-weight:750;
+      line-height:1.6;
+      text-align:center;
+      border:1px dashed #ccd8e9;
+      border-radius:16px;
+      background:#fbfdff;
+    }
+
+    .highlight-grid{
+      display:grid;
+      grid-template-columns:repeat(3,minmax(0,1fr));
+      gap:11px;
+      margin-bottom:16px;
+    }
+    .highlight-card{
+      padding:15px;
+      border:1px solid #e2eaf5;
+      border-radius:16px;
+      background:linear-gradient(180deg,#fff,#f9fbff);
+    }
+    .highlight-card .ico{
+      width:38px;height:38px;display:grid;place-items:center;
+      margin-bottom:9px;border-radius:12px;
+      background:#edf5ff;color:var(--primary);font-size:1rem;
+    }
+    .highlight-card b{display:block;color:var(--ink);font-size:.77rem;font-weight:1000;line-height:1.35}
+    .highlight-card span{display:block;margin-top:4px;color:var(--muted);font-size:.65rem;font-weight:700;line-height:1.48}
+
+    .document-reader{
+      overflow:hidden;
+      border:1px solid #dfe8f4;
+      border-radius:18px;
+      background:#fff;
+    }
+    .doc-banner{
+      padding:18px 19px;
+      color:#fff;
+      background:linear-gradient(135deg,#176cf1,#2878ff 55%,#19c6e6);
+    }
+    .doc-banner.orange{background:linear-gradient(135deg,#e97722,#ff9f43 58%,#ffc35b)}
+    .doc-banner h3{margin:0;font-size:1.06rem;font-weight:1000}
+    .doc-banner p{margin:6px 0 0;color:rgba(255,255,255,.88);font-size:.7rem;font-weight:700;line-height:1.5}
+    .doc-content{padding:19px}
+    .doc-section{margin-bottom:18px}
+    .doc-section:last-child{margin-bottom:0}
+    .doc-section h4{
+      display:flex;align-items:center;gap:8px;
+      margin:0 0 9px;
+      color:var(--ink);
+      font-size:.84rem;font-weight:1000;
+    }
+    .number-list{display:grid;gap:8px;counter-reset:item}
+    .number-item{
+      display:grid;
+      grid-template-columns:31px minmax(0,1fr);
+      gap:10px;
+      align-items:start;
+      padding:11px 12px;
+      border:1px solid #e5ebf4;
+      border-radius:13px;
+      background:#fbfdff;
+      font-size:.7rem;
+      font-weight:700;
+      line-height:1.55;
+    }
+    .number-item::before{
+      counter-increment:item;
+      content:counter(item);
+      width:29px;height:29px;display:grid;place-items:center;
+      color:#fff;font-size:.66rem;font-weight:1000;
+      border-radius:10px;
+      background:linear-gradient(135deg,var(--primary),var(--cyan));
+    }
+    .permit-grid{
+      display:grid;
+      grid-template-columns:repeat(2,minmax(0,1fr));
+      gap:10px;
+    }
+    .permit-card{
+      padding:13px;
+      border:1px solid #e3eaf5;
+      border-radius:15px;
+      background:#fff;
+    }
+    .permit-card b{display:block;color:var(--ink);font-size:.75rem;font-weight:1000}
+    .permit-card p{margin:5px 0 0;color:var(--muted);font-size:.67rem;font-weight:700;line-height:1.52}
+    .duration-table{width:100%;border-collapse:separate;border-spacing:0;overflow:hidden;border:1px solid #e0e8f3;border-radius:14px}
+    .duration-table th,.duration-table td{padding:11px 12px;text-align:left;border-bottom:1px solid #e9eef6;vertical-align:top}
+    .duration-table th{color:#536482;font-size:.62rem;font-weight:1000;text-transform:uppercase;background:#f3f7fd}
+    .duration-table td{color:#3f4e68;font-size:.68rem;font-weight:700;line-height:1.5}
+    .duration-table tr:last-child td{border-bottom:0}
+    .warning-box{
+      margin-top:12px;
+      padding:12px 13px;
+      color:#8d5312;
+      font-size:.68rem;
+      font-weight:850;
+      line-height:1.55;
+      border:1px solid #f4d09e;
+      border-radius:13px;
+      background:#fff8eb;
+    }
+
+
+    @media(max-width:850px){
+      .hero{grid-template-columns:1fr}
+      .highlight-grid{grid-template-columns:1fr}
+    }
+
+    @media(max-width:650px){
+      .app{padding:10px 10px 34px}
+      .hero{padding:23px 18px;border-radius:22px}
+      .nav-tabs{grid-template-columns:repeat(4,max-content);top:0}
+      .tab-btn{min-width:142px}
+      .section-card{border-radius:19px}
+      .section-head{flex-direction:column;padding:18px 15px 14px}
+      .actions{width:100%;justify-content:stretch}
+      .actions .btn{flex:1}
+      .body-pad{padding:15px}
+      .calendar-toolbar{grid-template-columns:42px minmax(0,1fr) 42px}
+      .agenda-item{grid-template-columns:58px minmax(0,1fr);align-items:start}
+      .type-chip{grid-column:2;justify-self:start}
+      .date-box{min-height:56px}
+      .permit-grid{grid-template-columns:1fr}
+      .duration-table{display:block;overflow-x:auto}
+    }
+  
+
+    /* =========================================================
+       PENYEMPURNAAN UX 2026 — READABILITY, MOBILE, ACCESSIBILITY
+       ========================================================= */
+    :root{
+      --reader-paper:#f4efe6;
+      --reader-sepia:#e8dcc4;
+      --reader-night:#172033;
+      --reader-toolbar:#ffffff;
+      --reader-radius:22px;
+    }
+
+    a,button,select,input{touch-action:manipulation}
+    button:focus-visible,a:focus-visible,select:focus-visible,input:focus-visible{
+      outline:3px solid rgba(40,120,255,.22);
+      outline-offset:2px;
+    }
+    .tab-btn,.btn,.month-nav,.pdf-tool-btn,.chapter-btn{
+      -webkit-tap-highlight-color:transparent;
+    }
+    .section-head p,.hero p,.agenda-desc,.highlight-card span,.number-item,
+    .permit-card p,.duration-table td,.warning-box,.book-meta span{
+      text-wrap:pretty;
+    }
+
+    /* Sedikit menaikkan keterbacaan desktop tanpa membuat layout padat. */
+    .hero p{font-size:.94rem}
+    .tab-btn{font-size:.79rem}
+    .section-head p{font-size:.79rem}
+    .btn{font-size:.76rem}
+    .calendar-status{font-size:.76rem}
+    .agenda-month-head span{font-size:.74rem}
+    .agenda-title{font-size:.9rem}
+    .agenda-desc{font-size:.75rem}
+    .agenda-range{font-size:.7rem}
+    .type-chip{font-size:.61rem}
+    .highlight-card b{font-size:.86rem}
+    .highlight-card span{font-size:.74rem}
+    .doc-banner p{font-size:.78rem}
+    .doc-section h4{font-size:.92rem}
+    .number-item{font-size:.78rem}
+    .permit-card b{font-size:.84rem}
+    .permit-card p{font-size:.76rem}
+    .duration-table th{font-size:.69rem}
+    .duration-table td{font-size:.76rem}
+    .warning-box{font-size:.76rem}
+
+    .number-copy{min-width:0;display:block}
+    .number-copy strong{display:inline;font-weight:1000;color:var(--ink);white-space:nowrap}
+    .nowrap{white-space:nowrap}
+
+    /* =========================================================
+       KARTU DOKUMEN TATA TERTIB PESANTREN
+       ========================================================= */
+    .rules-resource{
+      display:grid;
+      grid-template-columns:230px minmax(0,1fr);
+      gap:24px;
+      align-items:center;
+      padding:22px;
+      overflow:hidden;
+      position:relative;
+      border:1px solid #dfe8f4;
+      border-radius:20px;
+      background:
+        radial-gradient(circle at 98% 0%,rgba(40,120,255,.09),transparent 31%),
+        linear-gradient(145deg,#ffffff,#f7faff);
+      box-shadow:var(--shadow-soft);
+    }
+    .rules-resource::after{
+      content:"";
+      width:170px;height:170px;
+      position:absolute;right:-90px;bottom:-105px;
+      border:28px solid rgba(40,120,255,.055);
+      border-radius:50%;
+      pointer-events:none;
+    }
+    .rules-cover{
+      min-height:285px;
+      display:grid;
+      place-items:center;
+      position:relative;
+      z-index:1;
+      overflow:hidden;
+      border:1px solid #dce6f3;
+      border-radius:17px;
+      background:linear-gradient(145deg,#edf4ff,#ffffff);
+      box-shadow:0 14px 32px rgba(30,59,112,.14);
+    }
+    .rules-cover img{width:100%;height:100%;display:block;object-fit:cover}
+    .rules-cover-fallback{
+      width:100%;height:100%;min-height:285px;
+      display:none;
+      place-items:center;
+      align-content:center;
+      gap:13px;
+      padding:25px;
+      color:#fff;
+      text-align:center;
+      background:
+        radial-gradient(circle at 80% 10%,rgba(255,255,255,.20),transparent 25%),
+        linear-gradient(145deg,#1557d5,#2878ff 58%,#19c6e6);
+    }
+    .rules-cover-fallback span{font-size:3rem}
+    .rules-cover-fallback strong{font-size:1.35rem;line-height:1.25;font-weight:1000}
+    .rules-copy{min-width:0;position:relative;z-index:1}
+    .rules-kicker{
+      display:inline-flex;
+      margin-bottom:10px;
+      padding:6px 10px;
+      color:#1765cc;
+      font-size:.68rem;
+      font-weight:1000;
+      letter-spacing:.65px;
+      text-transform:uppercase;
+      border:1px solid #d4e4fb;
+      border-radius:999px;
+      background:#edf5ff;
+    }
+    .rules-copy h3{margin:0;color:var(--ink);font-size:1.35rem;font-weight:1000;line-height:1.28}
+    .rules-copy>p{margin:10px 0 0;color:#5e6d86;font-size:.84rem;font-weight:720;line-height:1.68}
+    .rules-feature-grid{display:grid;gap:9px;margin-top:16px}
+    .rules-feature{
+      display:grid;
+      grid-template-columns:40px minmax(0,1fr);
+      gap:10px;
+      align-items:start;
+      padding:11px 12px;
+      border:1px solid #e1e9f5;
+      border-radius:13px;
+      background:rgba(255,255,255,.88);
+    }
+    .rules-feature>span{
+      width:38px;height:38px;
+      display:grid;place-items:center;
+      border-radius:11px;
+      background:#edf5ff;
+      font-size:1rem;
+    }
+    .rules-feature strong{display:block;color:var(--ink);font-size:.79rem;font-weight:1000;line-height:1.35}
+    .rules-feature small{display:block;margin-top:3px;color:var(--muted);font-size:.7rem;font-weight:700;line-height:1.48}
+    .rules-note{
+      margin-top:14px;
+      padding:12px 13px;
+      color:#77501d;
+      font-size:.75rem;
+      font-weight:850;
+      line-height:1.55;
+      border:1px solid #f0d29f;
+      border-radius:13px;
+      background:#fff8eb;
+    }
+    .rules-actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:15px}
+
+    @media(max-width:850px){
+      .rules-resource{grid-template-columns:180px minmax(0,1fr);gap:18px}
+      .rules-cover,.rules-cover-fallback{min-height:230px}
+    }
+
+    @media(max-width:650px){
+      body{font-size:16px}
+      .app{padding:9px 9px calc(28px + env(safe-area-inset-bottom))}
+      .hero{gap:15px;padding:21px 17px;border-radius:21px}
+      .hero h1{font-size:1.8rem;line-height:1.08;letter-spacing:-.65px}
+      .hero p{font-size:.94rem;line-height:1.65}
+      .kicker{font-size:.72rem;padding:7px 10px}
+
+      .nav-tabs{gap:7px;margin:12px 0;padding:6px;scroll-snap-type:x mandatory}
+      .tab-btn{min-width:162px;min-height:50px;padding:10px 13px;font-size:.82rem;scroll-snap-align:start}
+      .section-card{margin-bottom:14px;border-radius:18px}
+      .section-head{gap:13px;padding:17px 14px 14px}
+      .title-wrap{align-items:flex-start}
+      .section-icon{width:44px;height:44px;flex-basis:44px;border-radius:14px}
+      .section-head h2{font-size:1.08rem;line-height:1.34}
+      .section-head p{font-size:.88rem;line-height:1.58}
+      .actions{gap:8px}
+      .btn{min-height:46px;padding:10px 13px;font-size:.82rem;border-radius:12px}
+      .body-pad{padding:14px}
+
+      .month-select{min-height:47px;font-size:.9rem}
+      .month-nav{width:44px;height:44px;font-size:1rem}
+      .calendar-status{padding:12px;font-size:.84rem;line-height:1.45}
+      .agenda-month-head{align-items:flex-start}
+      .agenda-month-head h3{font-size:1.08rem}
+      .agenda-month-head span{font-size:.8rem}
+      .agenda-item{grid-template-columns:61px minmax(0,1fr);gap:11px;padding:12px}
+      .date-box{min-height:60px}
+      .date-box strong{font-size:1.42rem}
+      .date-box span{font-size:.66rem}
+      .agenda-title{font-size:.98rem;line-height:1.4}
+      .agenda-desc{font-size:.86rem;line-height:1.55}
+      .agenda-range{font-size:.79rem;line-height:1.45}
+      .type-chip{font-size:.69rem;padding:6px 9px}
+      .empty{padding:24px 15px;font-size:.88rem}
+
+      .highlight-card{padding:14px}
+      .highlight-card .ico{width:40px;height:40px;font-size:1.08rem}
+      .highlight-card b{font-size:.95rem}
+      .highlight-card span{font-size:.85rem;line-height:1.56}
+      .doc-banner{padding:17px 15px}
+      .doc-banner h3{font-size:1rem;line-height:1.35}
+      .doc-banner p{font-size:.86rem;line-height:1.55}
+      .doc-content{padding:14px}
+      .doc-section h4{font-size:.97rem}
+      .number-item{grid-template-columns:34px minmax(0,1fr);padding:12px;font-size:.88rem;line-height:1.6}
+      .number-item::before{width:32px;height:32px;font-size:.75rem}
+      .permit-card{padding:13px}
+      .permit-card b{font-size:.93rem}
+      .permit-card p{font-size:.86rem;line-height:1.58}
+      .duration-table th{font-size:.75rem;white-space:nowrap}
+      .duration-table td{font-size:.84rem;line-height:1.55;min-width:145px}
+      .warning-box{padding:13px;font-size:.86rem;line-height:1.6}
+
+      .rules-resource{grid-template-columns:1fr;gap:17px;padding:15px;border-radius:17px}
+      .rules-cover{width:min(230px,72vw);min-height:285px;margin:0 auto}
+      .rules-cover-fallback{min-height:285px}
+      .rules-kicker{font-size:.72rem}
+      .rules-copy h3{font-size:1.18rem;line-height:1.35;text-align:center}
+      .rules-copy>p{font-size:.88rem;line-height:1.65;text-align:left}
+      .rules-feature{grid-template-columns:42px minmax(0,1fr);padding:12px}
+      .rules-feature strong{font-size:.9rem}
+      .rules-feature small{font-size:.82rem;line-height:1.5}
+      .rules-note{font-size:.84rem;line-height:1.58}
+      .rules-actions{display:grid;grid-template-columns:1fr}
+      .rules-actions .btn{width:100%}
+    }
+
+    @media(max-width:390px){
+      .hero h1{font-size:1.65rem}
+      .hero p{font-size:.9rem}
+      .tab-btn{min-width:150px}
+      .section-head h2{font-size:1rem}
+      .btn{font-size:.78rem}
+      .rules-cover{width:min(210px,76vw);min-height:270px}
+      .rules-cover-fallback{min-height:270px}
+    }
+
+    @media(prefers-reduced-motion:reduce){
+      *,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;transition-duration:.01ms!important}
+    }
+
+  </style>
+</head>
+<body>
+  <main class="app">
+    <header class="hero">
+      <div class="hero-copy">
+        <span class="kicker">📌 Wali Santri</span>
+        <h1>Informasi Penting</h1>
+        <p>
+          Pusat informasi resmi bagi wali santri: agenda pendidikan yang perlu diketahui keluarga,
+          prosedur perizinan, ketentuan penitipan barang, serta Tata Tertib Pesantren.
+        </p>
+      </div>
+</header>
+
+    <nav class="nav-tabs" aria-label="Menu Informasi Penting">
+      <button class="tab-btn active" data-tab="kalender">📅 Kalender Wali</button>
+      <button class="tab-btn" data-tab="izin">📝 Perizinan Khusus</button>
+      <button class="tab-btn" data-tab="barang">📦 Penitipan Barang</button>
+      <button class="tab-btn" data-tab="disiplin">📘 Tata Tertib Pesantren</button>
+    </nav>
+
+    <section class="tab-panel active" id="tab-kalender">
+      <article class="section-card">
+        <div class="section-head">
+          <div class="title-wrap">
+            <div class="section-icon">📅</div>
+            <div>
+              <h2>Kalender Penting untuk Wali Santri</h2>
+              <p>Hanya menampilkan agenda yang berkaitan dengan keluarga, liburan, ujian, dan kegiatan besar pesantren.</p>
+            </div>
+          </div>
+          <div class="actions">
+            <button class="btn" type="button" id="downloadCalendarPdf">⬇️ Download PDF</button>
+          </div>
+        </div>
+        <div class="body-pad">
+          <div class="calendar-toolbar">
+            <button class="month-nav" id="prevMonth" type="button">←</button>
+            <select class="month-select" id="monthSelect" aria-label="Pilih bulan kalender"></select>
+            <button class="month-nav" id="nextMonth" type="button">→</button>
+          </div>
+
+          <div class="calendar-status" id="calendarStatus">
+            <span class="status-dot"></span>
+            <span id="calendarStatusText">Menghubungkan kalender pendidikan...</span>
+          </div>
+
+          <div class="agenda-month-head">
+            <h3 id="agendaMonthTitle">Agenda Bulan</h3>
+            <span id="agendaCount">0 agenda penting</span>
+          </div>
+          <div class="agenda-list" id="importantAgendaList">
+            <div class="empty">Memuat agenda penting dari Kalender Pendidikan...</div>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <section class="tab-panel" id="tab-izin">
+      <article class="section-card">
+        <div class="section-head">
+          <div class="title-wrap">
+            <div class="section-icon">📝</div>
+            <div>
+              <h2>SOP Perizinan Khusus</h2>
+              <p>Pedoman izin pulang atau meninggalkan pesantren untuk keperluan yang telah ditetapkan.</p>
+            </div>
+          </div>
+          <div class="actions">
+            <button class="btn" type="button" onclick="downloadSopPdf('izin')">⬇️ PDF</button>
+            <a class="btn secondary" href="sop-perizinan-khusus.docx" download>⬇️ DOCX</a>
+          </div>
+        </div>
+
+        <div class="body-pad">
+          <div class="highlight-grid">
+            <div class="highlight-card"><div class="ico">🩺</div><b>Alasan Terbatas</b><span>Izin hanya diberikan untuk musibah, medis, kontrol, walimah keluarga inti, haji/umrah, dan kelahiran saudara kandung.</span></div>
+            <div class="highlight-card"><div class="ico">📄</div><b>Wajib Dokumen</b><span>Izin medis dan kontrol harus didukung surat dari divisi kesehatan atau fasilitas kesehatan.</span></div>
+            <div class="highlight-card"><div class="ico">⏱️</div><b>Waktu Terukur</b><span>Lama izin mengikuti kategori keperluan dan santri wajib kembali tepat waktu.</span></div>
+          </div>
+
+          <div class="document-reader">
+            <div class="doc-banner">
+              <h3>SOP PERIZINAN KHUSUS</h3>
+              <p>Santri dapat diizinkan pulang atau meninggalkan pesantren untuk keperluan tertentu dengan ketentuan berikut.</p>
+            </div>
+            <div class="doc-content">
+              <div class="doc-section">
+                <h4>✅ Keperluan yang Dapat Diizinkan</h4>
+                <div class="permit-grid">
+                  <div class="permit-card"><b>1. Musibah</b><p>Kematian atau sakit keras yang menimpa orang tua, paman/bibi, kakek/nenek, atau saudara kandung.</p></div>
+                  <div class="permit-card"><b>2. Berobat / Tindakan Medis</b><p>Perawatan di luar pesantren setelah maksimal tiga hari di UKS belum menunjukkan kesembuhan dan telah diterbitkan surat izin berobat.</p></div>
+                  <div class="permit-card"><b>3. Kontrol / Medical Check Up</b><p>Kontrol rutin dengan menunjukkan surat jadwal kontrol ulang dari rumah sakit, puskesmas, atau klinik.</p></div>
+                  <div class="permit-card"><b>4. Walimatul Ursy</b><p>Hanya untuk pernikahan orang tua atau saudara kandung.</p></div>
+                  <div class="permit-card"><b>5. Safar Haji / Umrah</b><p>Mendampingi pengantaran orang tua, kakek/nenek, atau saudara kandung ke bandara.</p></div>
+                  <div class="permit-card"><b>6. Kelahiran / Aqiqah</b><p>Hanya apabila kelahiran atau aqiqah tersebut adalah saudara kandung santri.</p></div>
+                </div>
+              </div>
+
+              <div class="doc-section">
+                <h4>📋 Prosedur Perizinan</h4>
+                <div class="number-list">
+                  <div class="number-item">Orang tua atau wali menyampaikan keperluan izin kepada pengurus, pengasuh, atau naqib secara langsung, melalui telepon, atau WhatsApp.</div>
+                  <div class="number-item">Santri meminta surat izin kepada pengurus atau bagian pengasuhan.</div>
+                  <div class="number-item">Santri dijemput oleh orang tua atau pihak yang telah diberi kepercayaan dan tanggung jawab.</div>
+                  <div class="number-item">Setelah kembali, santri wajib melapor dan menyerahkan surat izin kepada bagian pengasuhan atau pengurus.</div>
+                  <div class="number-item">Keterlambatan kembali tanpa alasan yang dapat diterima menyebabkan santri dianggap alfa pada seluruh program dan halaqah selama keterlambatan.</div>
+                </div>
+              </div>
+
+              <div class="doc-section">
+                <h4>⏳ Lama Masa Perizinan</h4>
+                <table class="duration-table">
+                  <thead><tr><th>Keperluan</th><th>Lama Izin</th></tr></thead>
+                  <tbody>
+                    <tr><td>Orang tua meninggal dunia</td><td>3 hari</td></tr>
+                    <tr><td>Kakek/nenek, paman/bibi, atau saudara kandung meninggal</td><td>1 hari</td></tr>
+                    <tr><td>Menjenguk orang tua sakit keras</td><td>1 hari</td></tr>
+                    <tr><td>Menjenguk kakek/nenek, paman/bibi, atau saudara kandung sakit keras</td><td>½ hari</td></tr>
+                    <tr><td>Pengobatan / tindakan medis</td><td>1 hari, kecuali ada surat dokter yang menetapkan masa istirahat lebih lama</td></tr>
+                    <tr><td>Kontrol / check up</td><td>Kembali ke pesantren pada hari yang sama; tidak boleh menginap</td></tr>
+                    <tr><td>Walimah, pengantaran haji/umrah, atau aqiqah</td><td>1 hari</td></tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <div class="warning-box">⚠️ Untuk izin medis, wali wajib menyerahkan atau mengirimkan surat keterangan dokter, rumah sakit, klinik, atau puskesmas kepada divisi kesehatan apabila santri harus menjalani pemulihan di rumah.</div>
+            </div>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <section class="tab-panel" id="tab-barang">
+      <article class="section-card">
+        <div class="section-head">
+          <div class="title-wrap">
+            <div class="section-icon">📦</div>
+            <div>
+              <h2>SOP Pengantaran & Penitipan Barang</h2>
+              <p>Ketentuan waktu, prosedur penyerahan, batas frekuensi, dan barang yang tidak boleh dikirim.</p>
+            </div>
+          </div>
+          <div class="actions">
+            <button class="btn orange" type="button" onclick="downloadSopPdf('barang')">⬇️ PDF</button>
+            <a class="btn secondary" href="sop-penitipan-barang.docx" download>⬇️ DOCX</a>
+          </div>
+        </div>
+
+        <div class="body-pad">
+          <div class="highlight-grid">
+            <div class="highlight-card"><div class="ico">🕓</div><b>Senin-Sabtu</b><span>Pengantaran hanya diterima pukul 16.00-17.00 WIB.</span></div>
+            <div class="highlight-card"><div class="ico">3×</div><b>Maksimal 3 Kali</b><span>Batas penitipan adalah tiga kali dalam satu bulan di luar jadwal kunjungan.</span></div>
+            <div class="highlight-card"><div class="ico">🛡️</div><b>Melalui Pos Keamanan</b><span>Seluruh barang wajib dilaporkan dan dicatat di pos keamanan.</span></div>
+          </div>
+
+          <div class="document-reader">
+            <div class="doc-banner orange">
+              <h3>SOP PENGANTARAN & PENITIPAN BARANG</h3>
+              <p>Seluruh wali dan pihak yang mendapat amanah mengantar barang wajib mengikuti ketentuan berikut.</p>
+            </div>
+            <div class="doc-content">
+              <div class="number-list">
+                <div class="number-item"><div class="number-copy"><strong>Waktu penitipan:</strong> Senin–Sabtu pukul <span class="nowrap">16.00–17.00 WIB</span>. Di luar waktu tersebut barang tidak diterima.</div></div>
+                <div class="number-item">Cantumkan nama santri, kelas/asrama, dan daftar isi barang pada selembar catatan, lalu masukkan ke dalam kantong atau plastik titipan.</div>
+                <div class="number-item">Wali atau pihak pengantar wajib melapor dan mengisi buku penitipan barang di pos keamanan depan gerbang pesantren.</div>
+                <div class="number-item">Wali dilarang bertemu langsung dengan santri atau membawa kendaraan ke depan asrama, kecuali dalam kondisi mendesak dan telah memperoleh izin petugas keamanan.</div>
+                <div class="number-item">Penitipan barang dibatasi maksimal tiga kali dalam satu bulan, di luar waktu kunjungan bulanan.</div>
+                <div class="number-item">Pastikan paket tidak berisi barang atau makanan yang dilarang: HP, rokok/vape, novel/anime atau bacaan bertema cinta/dewasa, bumbu penyedap, mi instan, minuman instan, dan makanan terlalu pedas.</div>
+                <div class="number-item">Setelah barang diserahkan dan buku penitipan diisi, wali segera meninggalkan area pesantren.</div>
+              </div>
+              <div class="warning-box">📌 Penitipan barang bukan waktu kunjungan. Ketentuan ini dibuat agar distribusi barang tertib, aman, dan tidak mengganggu program santri.</div>
+            </div>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <section class="tab-panel" id="tab-disiplin">
+      <article class="section-card">
+        <div class="section-head">
+          <div class="title-wrap">
+            <div class="section-icon">📘</div>
+            <div>
+              <h2>Tata Tertib Pesantren</h2>
+              <p>Pedoman resmi kehidupan santri, pembinaan karakter, penanganan pelanggaran, serta konsekuensi edukatif di Pesantren Cahaya Fajrul Islam.</p>
+            </div>
+          </div>
+          <div class="actions">
+            <a class="btn" href="buku-induk-kedisiplinan.pdf" download="tata-tertib-pesantren.pdf">⬇️ Unduh PDF</a>
+            <a class="btn secondary" href="buku-induk-kedisiplinan.pdf" target="_blank" rel="noopener">↗️ Buka Dokumen</a>
+          </div>
+        </div>
+
+        <div class="body-pad">
+          <section class="rules-resource" aria-label="Dokumen Tata Tertib Pesantren">
+            <div class="rules-cover">
+              <img src="cover-buku-kedisiplinan.jpg" alt="Sampul Tata Tertib Pesantren" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='grid'">
+              <div class="rules-cover-fallback" aria-hidden="true">
+                <span>📘</span>
+                <strong>Tata Tertib<br>Pesantren</strong>
+              </div>
+            </div>
+
+            <div class="rules-copy">
+              <span class="rules-kicker">Pedoman Resmi Santri 2026/2027</span>
+              <h3>Tata Tertib Pesantren Cahaya Fajrul Islam</h3>
+              <p>
+                Dokumen ini menjadi rujukan bersama bagi santri, wali santri, guru, naqib, konselor, dan seluruh pengurus dalam menjaga kehidupan pesantren yang tertib, aman, mendidik, dan berorientasi pada pembentukan karakter CAHAYA.
+              </p>
+
+              <div class="rules-feature-grid">
+                <div class="rules-feature">
+                  <span>⚖️</span>
+                  <div><strong>Ketentuan Kedisiplinan</strong><small>Hak, kewajiban, larangan, dan standar perilaku santri.</small></div>
+                </div>
+                <div class="rules-feature">
+                  <span>🤝</span>
+                  <div><strong>Pembinaan Edukatif</strong><small>Tabayyun, konseling, refleksi, perbaikan, dan pemulihan.</small></div>
+                </div>
+                <div class="rules-feature">
+                  <span>🛡️</span>
+                  <div><strong>Perlindungan Bersama</strong><small>Pedoman untuk menjaga keamanan dan kenyamanan lingkungan pesantren.</small></div>
+                </div>
+              </div>
+
+              <div class="rules-note">
+                📌 Mohon wali santri membaca dan memahami dokumen ini bersama ananda agar aturan pesantren menjadi kesepahaman dan komitmen bersama.
+              </div>
+
+              <div class="rules-actions">
+                <a class="btn" href="buku-induk-kedisiplinan.pdf" target="_blank" rel="noopener">📖 Baca Tata Tertib</a>
+                <a class="btn secondary" href="buku-induk-kedisiplinan.pdf" download="tata-tertib-pesantren.pdf">⬇️ Simpan PDF</a>
+              </div>
+            </div>
+          </section>
+        </div>
+      </article>
+    </section>
+  </main>
+
+  <script>
+    "use strict";
+const ACADEMIC_MONTHS = [
+      {year:2026,month:6,label:"Juli 2026"},
+      {year:2026,month:7,label:"Agustus 2026"},
+      {year:2026,month:8,label:"September 2026"},
+      {year:2026,month:9,label:"Oktober 2026"},
+      {year:2026,month:10,label:"November 2026"},
+      {year:2026,month:11,label:"Desember 2026"},
+      {year:2027,month:0,label:"Januari 2027"},
+      {year:2027,month:1,label:"Februari 2027"},
+      {year:2027,month:2,label:"Maret 2027"},
+      {year:2027,month:3,label:"April 2027"},
+      {year:2027,month:4,label:"Mei 2027"},
+      {year:2027,month:5,label:"Juni 2027"}
+    ];
+
+    const firebaseConfig = window.CAHAYA_CONFIG.firebase;
+    if(!firebase.apps.length) firebase.initializeApp(firebaseConfig);
+    const dbRT = firebase.database();
+    const CALENDAR_PATH = "kalender_pendidikan/ta_2026_2027/events";
+
+    let allImportantEvents = [];
+    let selectedMonthIndex = getInitialMonthIndex();
+
+    const els = {
+      monthSelect:document.getElementById("monthSelect"),
+      prevMonth:document.getElementById("prevMonth"),
+      nextMonth:document.getElementById("nextMonth"),
+      agendaMonthTitle:document.getElementById("agendaMonthTitle"),
+      agendaCount:document.getElementById("agendaCount"),
+      importantAgendaList:document.getElementById("importantAgendaList"),
+      calendarStatus:document.getElementById("calendarStatus"),
+      calendarStatusText:document.getElementById("calendarStatusText"),
+      downloadCalendarPdf:document.getElementById("downloadCalendarPdf")
+    };
+
+    function escapeHtml(value){
+      return String(value??"")
+        .replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;")
+        .replace(/"/g,"&quot;").replace(/'/g,"&#039;");
+    }
+
+    function getInitialMonthIndex(){
+      const now=new Date();
+      const found=ACADEMIC_MONTHS.findIndex(item=>item.year===now.getFullYear()&&item.month===now.getMonth());
+      return found>=0?found:0;
+    }
+
+    function parseLocalDate(value){
+      if(!value)return null;
+      const text=String(value).trim();
+      const match=text.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+      if(match){
+        const d=new Date(Number(match[1]),Number(match[2])-1,Number(match[3]));
+        return Number.isNaN(d.getTime())?null:d;
+      }
+      const d=new Date(text);
+      return Number.isNaN(d.getTime())?null:d;
+    }
+
+    function isoDate(date){
+      return `${date.getFullYear()}-${String(date.getMonth()+1).padStart(2,"0")}-${String(date.getDate()).padStart(2,"0")}`;
+    }
+
+    function normalizeEvent(raw={},id=""){
+      const date=raw.date||raw.tanggal||"";
+      const startDate=raw.startDate||raw.start||raw.mulai||date;
+      const endDate=raw.endDate||raw.end||raw.selesai||startDate;
+      const title=raw.title||raw.nama||raw.name||"Agenda Kalender";
+      return {
+        id:raw.id||id,
+        title,
+        type:String(raw.type||raw.jenis||"").toLowerCase(),
+        date:date||startDate,
+        startDate,
+        endDate,
+        description:raw.description||raw.keterangan||raw.note||""
+      };
+    }
+
+    function toEvents(value){
+      if(!value)return[];
+      if(Array.isArray(value))return value.filter(Boolean).map((item,index)=>normalizeEvent(item,String(index)));
+      return Object.entries(value).map(([id,item])=>normalizeEvent(item||{},id));
+    }
+
+    function classifyImportantEvent(event){
+      const text=`${event.title} ${event.type} ${event.description}`.toLowerCase();
+
+      const excluded=[
+        "forum guru","mengajar guru","kbm","pembelajaran rutin","materi pertemuan",
+        "rapat guru","piket","halaqah rutin","mentoring rutin","absensi"
+      ];
+      const strongParent=[
+        "penjengukan","kunjungan santri","kunjungan wali","wali santri","orang tua",
+        "family gathering","parenting","pertemuan wali","temu wali","silaturahmi wali",
+        "milad pesantren","wisuda","haflah","akhirussanah","graduation",
+        "pembagian rapor","pengambilan rapor","daftar ulang","kedatangan santri","kembali ke pondok"
+      ];
+      const holidays=[
+        "libur","kepulangan","pulang santri","cuti bersama","idul fitri","idul adha",
+        "maulid","isra mi'raj","tahun baru hijriah","hari santri","hari kemerdekaan",
+        "natal","tahun baru","hari besar"
+      ];
+      const exams=[
+        "ujian","uas","uts","pas","pat","asesmen","sumatif","triwulan","tes akhir",
+        "evaluasi semester"
+      ];
+
+      if(strongParent.some(k=>text.includes(k))) return {important:true,category:"acara-wali",label:"Agenda Wali"};
+      if(holidays.some(k=>text.includes(k))||event.type.includes("libur")||event.type.includes("hari-besar")) return {important:true,category:"libur",label:"Libur / Hari Besar"};
+      if(exams.some(k=>text.includes(k))||event.type.includes("ujian")||event.type.includes("rapor")) return {important:true,category:"ujian",label:"Ujian / Evaluasi"};
+      if(text.includes("penjengukan")||text.includes("kunjungan")) return {important:true,category:"kunjungan",label:"Penjengukan"};
+      if(excluded.some(k=>text.includes(k))) return {important:false};
+      return {important:false};
+    }
+
+    function eventMonthKeys(event){
+      const start=parseLocalDate(event.startDate||event.date);
+      const end=parseLocalDate(event.endDate||event.startDate||event.date)||start;
+      if(!start)return[];
+      const keys=[];
+      const cursor=new Date(start.getFullYear(),start.getMonth(),1);
+      const limit=new Date(end.getFullYear(),end.getMonth(),1);
+      while(cursor<=limit){
+        keys.push(`${cursor.getFullYear()}-${String(cursor.getMonth()+1).padStart(2,"0")}`);
+        cursor.setMonth(cursor.getMonth()+1);
+      }
+      return keys;
+    }
+
+    function eventCategory(event){
+      return event._classification||classifyImportantEvent(event);
+    }
+
+    function formatDateRange(event){
+      const start=parseLocalDate(event.startDate||event.date);
+      const end=parseLocalDate(event.endDate||event.startDate||event.date)||start;
+      if(!start)return"";
+      const opts={day:"numeric",month:"long",year:"numeric"};
+      if(isoDate(start)===isoDate(end)) return start.toLocaleDateString("id-ID",{weekday:"long",...opts});
+      return `${start.toLocaleDateString("id-ID",opts)} - ${end.toLocaleDateString("id-ID",opts)}`;
+    }
+
+    function dateBoxParts(event){
+      const start=parseLocalDate(event.startDate||event.date);
+      if(!start)return{day:"-",month:""};
+      return{
+        day:String(start.getDate()).padStart(2,"0"),
+        month:start.toLocaleDateString("id-ID",{month:"short"}).replace(".","")
+      };
+    }
+
+    function eventsForMonth(index){
+      const item=ACADEMIC_MONTHS[index];
+      const key=`${item.year}-${String(item.month+1).padStart(2,"0")}`;
+      return allImportantEvents
+        .filter(event=>eventMonthKeys(event).includes(key))
+        .sort((a,b)=>String(a.startDate||a.date).localeCompare(String(b.startDate||b.date)));
+    }
+
+    function populateMonths(){
+      els.monthSelect.innerHTML=ACADEMIC_MONTHS.map((item,index)=>
+        `<option value="${index}">${escapeHtml(item.label)}</option>`
+      ).join("");
+      els.monthSelect.value=String(selectedMonthIndex);
+    }
+
+    function renderMonth(){
+      const month=ACADEMIC_MONTHS[selectedMonthIndex];
+      const events=eventsForMonth(selectedMonthIndex);
+      els.monthSelect.value=String(selectedMonthIndex);
+      els.agendaMonthTitle.textContent=month.label;
+      els.agendaCount.textContent=`${events.length} agenda penting`;
+      els.prevMonth.disabled=selectedMonthIndex===0;
+      els.nextMonth.disabled=selectedMonthIndex===ACADEMIC_MONTHS.length-1;
+
+      if(!events.length){
+        els.importantAgendaList.innerHTML=`<div class="empty">Belum ada agenda penting untuk wali santri pada ${escapeHtml(month.label)}.</div>`;
+        return;
+      }
+
+      els.importantAgendaList.innerHTML=events.map(event=>{
+        const parts=dateBoxParts(event);
+        const cat=eventCategory(event);
+        return`
+          <article class="agenda-item">
+            <div class="date-box"><strong>${parts.day}</strong><span>${escapeHtml(parts.month)}</span></div>
+            <div class="agenda-copy">
+              <span class="agenda-title">${escapeHtml(event.title)}</span>
+              ${event.description?`<div class="agenda-desc">${escapeHtml(event.description)}</div>`:""}
+              <div class="agenda-range">${escapeHtml(formatDateRange(event))}</div>
+            </div>
+            <span class="type-chip type-${escapeHtml(cat.category)}">${escapeHtml(cat.label)}</span>
+          </article>`;
+      }).join("");
+    }
+
+    async function loadCalendar(){
+      try{
+        const snapshot=window.CahayaBandwidth
+          ? await window.CahayaBandwidth.readCompat(dbRT,CALENDAR_PATH,{ttl:60*60000,limit:500})
+          : await dbRT.ref(CALENDAR_PATH).limitToLast(500).once("value");
+        const rawEvents=toEvents(snapshot.val());
+        allImportantEvents=rawEvents.map(event=>{
+          event._classification=classifyImportantEvent(event);
+          return event;
+        }).filter(event=>event._classification.important);
+        els.calendarStatus.className="calendar-status online";
+        els.calendarStatusText.textContent=`Kalender tersambung • ${allImportantEvents.length} agenda penting ditemukan`;
+        renderMonth();
+      }catch(error){
+        els.calendarStatus.className="calendar-status error";
+        els.calendarStatusText.textContent="Kalender belum dapat dimuat. Periksa koneksi atau Firebase Rules.";
+        els.importantAgendaList.innerHTML=`<div class="empty">Data kalender tidak dapat dibaca saat ini.</div>`;
+        console.error(error);
+      }
+    }
+
+    function bindTabs(){
+      const buttons=[...document.querySelectorAll(".tab-btn")];
+      const panels=[...document.querySelectorAll(".tab-panel")];
+      buttons.forEach((button,index)=>{
+        button.setAttribute("role","tab");
+        button.setAttribute("aria-controls",`tab-${button.dataset.tab}`);
+        button.setAttribute("aria-selected",button.classList.contains("active")?"true":"false");
+        button.addEventListener("click",()=>{
+          const target=button.dataset.tab;
+          buttons.forEach(btn=>{
+            const active=btn===button;
+            btn.classList.toggle("active",active);
+            btn.setAttribute("aria-selected",String(active));
+          });
+          panels.forEach(panel=>panel.classList.toggle("active",panel.id===`tab-${target}`));
+          button.scrollIntoView({behavior:"smooth",block:"nearest",inline:"center"});
+          if(target==="disiplin"&&!pdfDoc)loadBookPdf().catch(()=>{});
+        });
+        button.addEventListener("keydown",event=>{
+          if(event.key!=="ArrowRight"&&event.key!=="ArrowLeft")return;
+          event.preventDefault();
+          const nextIndex=(index+(event.key==="ArrowRight"?1:-1)+buttons.length)%buttons.length;
+          buttons[nextIndex].focus();
+          buttons[nextIndex].click();
+        });
+      });
+      document.querySelector(".nav-tabs")?.setAttribute("role","tablist");
+      panels.forEach(panel=>panel.setAttribute("role","tabpanel"));
+    }
+
+    els.monthSelect.addEventListener("change",()=>{
+      selectedMonthIndex=Number(els.monthSelect.value);
+      renderMonth();
+    });
+    els.prevMonth.addEventListener("click",()=>{
+      if(selectedMonthIndex>0){selectedMonthIndex--;renderMonth();}
+    });
+    els.nextMonth.addEventListener("click",()=>{
+      if(selectedMonthIndex<ACADEMIC_MONTHS.length-1){selectedMonthIndex++;renderMonth();}
+    });
+
+    function pdfHeader(doc,titleLines,subtitle){
+      const pageW=doc.internal.pageSize.getWidth();
+      doc.setFillColor(241,246,255);
+      doc.roundedRect(12,10,pageW-24,37,4,4,"F");
+      doc.setTextColor(21,35,71);
+      doc.setFont("helvetica","bold");
+      doc.setFontSize(14);
+      titleLines.forEach((line,index)=>doc.text(line,17,18+(index*7)));
+      if(subtitle){
+        doc.setFont("helvetica","normal");
+        doc.setFontSize(7.5);
+        doc.setTextColor(102,117,143);
+        doc.text(subtitle,17,43);
+      }
+      doc.setDrawColor(40,120,255);
+      doc.setLineWidth(.8);
+      doc.line(12,50,pageW-12,50);
+      return 57;
+    }
+
+    function pdfFooter(doc){
+      const count=doc.internal.getNumberOfPages();
+      for(let i=1;i<=count;i++){
+        doc.setPage(i);
+        const pageW=doc.internal.pageSize.getWidth();
+        const pageH=doc.internal.pageSize.getHeight();
+        doc.setDrawColor(218,227,240);
+        doc.setLineWidth(.3);
+        doc.line(12,pageH-13,pageW-12,pageH-13);
+        doc.setFont("helvetica","normal");
+        doc.setFontSize(7);
+        doc.setTextColor(112,128,153);
+        doc.text("Pesantren Cahaya Fajrul Islam • CAHAYA APP",12,pageH-8);
+        doc.text(`Halaman ${i} dari ${count}`,pageW-12,pageH-8,{align:"right"});
+      }
+    }
+
+    function ensureSpace(doc,y,needed,titleLines,subtitle){
+      const pageH=doc.internal.pageSize.getHeight();
+      if(y+needed>pageH-20){
+        doc.addPage();
+        return pdfHeader(doc,titleLines,subtitle);
+      }
+      return y;
+    }
+
+    els.downloadCalendarPdf.addEventListener("click",()=>{
+      const {jsPDF}=window.jspdf;
+      const doc=new jsPDF({unit:"mm",format:"a4",orientation:"portrait"});
+      const title=["KALENDER","INFORMASI","WALI SANTRI"];
+      let y=pdfHeader(doc,title,"Tahun Ajaran 2026/2027");
+
+      doc.setFont("helvetica","normal");
+      doc.setFontSize(8.4);
+      doc.setTextColor(69,83,107);
+      const intro="Dokumen ini hanya memuat agenda yang perlu diketahui wali santri: penjengukan, libur dan kepulangan, ujian, hari besar, serta kegiatan yang melibatkan keluarga.";
+      const introLines=doc.splitTextToSize(intro,184);
+      doc.text(introLines,13,y);
+      y+=introLines.length*4.2+5;
+
+      ACADEMIC_MONTHS.forEach((month,idx)=>{
+        const events=eventsForMonth(idx);
+        if(!events.length)return;
+        y=ensureSpace(doc,y,18,title,"Tahun Ajaran 2026/2027");
+        doc.setFillColor(234,243,255);
+        doc.roundedRect(12,y-4,186,10,2.5,2.5,"F");
+        doc.setFont("helvetica","bold");
+        doc.setFontSize(10.5);
+        doc.setTextColor(23,104,215);
+        doc.text(month.label,16,y+2.5);
+        y+=11;
+
+        events.forEach(event=>{
+          const cat=eventCategory(event);
+          const titleLines=doc.splitTextToSize(event.title,138);
+          const descLines=event.description?doc.splitTextToSize(event.description,138):[];
+          const needed=12+(titleLines.length*4)+(descLines.length*3.7);
+          y=ensureSpace(doc,y,needed,title,"Tahun Ajaran 2026/2027");
+
+          doc.setFillColor(251,253,255);
+          doc.setDrawColor(224,233,246);
+          doc.roundedRect(12,y-2,186,needed-2,2.5,2.5,"FD");
+          doc.setFont("helvetica","bold");
+          doc.setFontSize(8);
+          doc.setTextColor(40,120,255);
+          doc.text(formatDateRange(event),16,y+3);
+          doc.setTextColor(21,35,71);
+          doc.setFontSize(9);
+          doc.text(titleLines,16,y+8);
+          const textY=y+8+(titleLines.length*4);
+          if(descLines.length){
+            doc.setFont("helvetica","normal");
+            doc.setFontSize(7.5);
+            doc.setTextColor(99,114,139);
+            doc.text(descLines,16,textY+1);
+          }
+          doc.setFont("helvetica","bold");
+          doc.setFontSize(6.8);
+          doc.setTextColor(91,104,126);
+          doc.text(cat.label,194,y+3,{align:"right"});
+          y+=needed+3;
+        });
+        y+=2;
+      });
+
+      if(!allImportantEvents.length){
+        doc.setFont("helvetica","italic");
+        doc.setFontSize(10);
+        doc.setTextColor(110,124,147);
+        doc.text("Belum ada agenda penting yang tersimpan di Kalender Pendidikan.",105,y,{align:"center"});
+      }
+      pdfFooter(doc);
+      doc.save("kalender-informasi-wali-santri-2026-2027.pdf");
+    });
+
+    const SOP_DATA={
+      izin:{
+        title:["SOP","PERIZINAN","KHUSUS"],
+        subtitle:"Pedoman Perizinan Santri",
+        sections:[
+          {heading:"Keperluan yang Dapat Diizinkan",items:[
+            "Musibah: kematian atau sakit keras orang tua, paman/bibi, kakek/nenek, atau saudara kandung.",
+            "Berobat atau tindakan medis setelah maksimal tiga hari dirawat di UKS dan telah diterbitkan surat izin berobat.",
+            "Kontrol atau medical check up dengan menunjukkan surat jadwal kontrol ulang.",
+            "Walimatul ursy hanya untuk pernikahan orang tua atau saudara kandung.",
+            "Pengantaran safar haji/umrah untuk orang tua, kakek/nenek, atau saudara kandung.",
+            "Kelahiran atau aqiqah saudara kandung."
+          ]},
+          {heading:"Prosedur Perizinan",items:[
+            "Wali menyampaikan keperluan izin kepada pengurus, pengasuh, atau naqib secara langsung, melalui telepon, atau WhatsApp.",
+            "Santri meminta surat izin kepada pengurus atau bagian pengasuhan.",
+            "Santri dijemput oleh orang tua atau pihak yang telah dipercaya.",
+            "Setelah kembali, santri wajib melapor dan menyerahkan surat izin kepada bagian pengasuhan.",
+            "Keterlambatan tanpa alasan yang dapat diterima menyebabkan santri dianggap alfa pada seluruh program dan halaqah."
+          ]},
+          {heading:"Lama Masa Perizinan",items:[
+            "Orang tua meninggal: 3 hari.",
+            "Kakek/nenek, paman/bibi, atau saudara kandung meninggal: 1 hari.",
+            "Menjenguk orang tua sakit keras: 1 hari.",
+            "Menjenguk keluarga lain yang disebutkan dalam SOP: 1/2 hari.",
+            "Pengobatan/tindakan medis: 1 hari, kecuali ada surat dokter.",
+            "Kontrol/check up: kembali pada hari yang sama dan tidak boleh menginap.",
+            "Walimah, pengantaran haji/umrah, dan aqiqah: 1 hari."
+          ]}
+        ]
+      },
+      barang:{
+        title:["SOP","PENITIPAN","BARANG"],
+        subtitle:"Pedoman Pengantaran dan Penitipan Barang Santri",
+        sections:[
+          {heading:"Ketentuan Penitipan",items:[
+            "Pengantaran diterima Senin-Sabtu pukul 16.00-17.00 WIB. Di luar waktu tersebut tidak diterima.",
+            "Cantumkan nama santri, kelas/asrama, serta daftar isi barang pada catatan yang dimasukkan ke kantong atau plastik.",
+            "Pengantar wajib melapor dan mengisi buku penitipan di pos keamanan.",
+            "Wali dilarang bertemu langsung dengan santri atau membawa kendaraan ke depan asrama tanpa izin petugas.",
+            "Penitipan dibatasi maksimal tiga kali dalam satu bulan di luar waktu kunjungan.",
+            "Paket tidak boleh berisi HP, rokok/vape, bacaan bertema cinta/dewasa, penyedap, mi instan, minuman instan, atau makanan terlalu pedas.",
+            "Setelah penitipan selesai, wali segera meninggalkan area pesantren."
+          ]}
+        ]
+      }
+    };
+
+    function downloadSopPdf(type){
+      const data=SOP_DATA[type];
+      const {jsPDF}=window.jspdf;
+      const doc=new jsPDF({unit:"mm",format:"a4",orientation:"portrait"});
+      let y=pdfHeader(doc,data.title,data.subtitle);
+
+      data.sections.forEach(section=>{
+        y=ensureSpace(doc,y,18,data.title,data.subtitle);
+        if(type==="barang") doc.setFillColor(255,246,232);
+        else doc.setFillColor(234,243,255);
+        doc.roundedRect(12,y-4,186,10,2.5,2.5,"F");
+        doc.setFont("helvetica","bold");
+        doc.setFontSize(10);
+        if(type==="barang") doc.setTextColor(211,119,29);
+        else doc.setTextColor(23,104,215);
+        doc.text(section.heading,16,y+2.5);
+        y+=11;
+
+        section.items.forEach((item,index)=>{
+          const lines=doc.splitTextToSize(item,166);
+          const needed=Math.max(11,lines.length*4.1+5);
+          y=ensureSpace(doc,y,needed,data.title,data.subtitle);
+          doc.setFillColor(249,251,255);
+          doc.setDrawColor(224,233,246);
+          doc.roundedRect(12,y-2,186,needed-1,2.5,2.5,"FD");
+          if(type==="barang") doc.setFillColor(255,159,67);
+          else doc.setFillColor(40,120,255);
+          doc.roundedRect(16,y+1,7,7,2,2,"F");
+          doc.setFont("helvetica","bold");
+          doc.setFontSize(7.5);
+          doc.setTextColor(255,255,255);
+          doc.text(String(index+1),19.5,y+5.8,{align:"center"});
+          doc.setFont("helvetica","normal");
+          doc.setFontSize(8.5);
+          doc.setTextColor(58,73,98);
+          doc.text(lines,27,y+5.4);
+          y+=needed+3;
+        });
+        y+=3;
+      });
+
+      pdfFooter(doc);
+      doc.save(type==="barang"?"sop-penitipan-barang.pdf":"sop-perizinan-khusus.pdf");
+    }
+    window.downloadSopPdf=downloadSopPdf;
+
+    bindTabs();
+    populateMonths();
+    renderMonth();
+    loadCalendar();
+  </script>
+</body>
+</html>

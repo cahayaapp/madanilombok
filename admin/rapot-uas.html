@@ -1,0 +1,2422 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <!-- CAHAYA WHITE-LABEL CONFIG -->
+  <script src="../config/tenant-config.js"></script>
+  <script src="../config/master-data.js"></script>
+  <script src="../js/cahaya-config-runtime.js" defer></script>
+
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>e-Raport Santri - Pesantren Cahaya Fajrul Islam</title>
+
+  <style>
+    :root{
+      --navy:#16345f;
+      --navy-soft:#2a4d7b;
+      --gold:#b78a22;
+      --gold-soft:#f8efd9;
+      --ink:#1f2937;
+      --muted:#64748b;
+      --line:#dbe3ee;
+      --paper:#ffffff;
+      --bg:#f3f6fa;
+      --success:#166534;
+      --danger:#b91c1c;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0; background:var(--bg); color:var(--ink);
+      font-family:Arial, Helvetica, sans-serif; font-size:14px;
+    }
+    .app-shell{max-width:1180px; margin:0 auto; padding:24px 16px 40px}
+    .panel{
+      background:#fff; border:1px solid var(--line); border-radius:14px;
+      box-shadow:0 8px 24px rgba(15,23,42,.06); padding:20px; margin-bottom:18px;
+    }
+    .page-heading{display:flex; align-items:center; gap:14px; margin-bottom:18px}
+    .page-heading .badge{
+      width:46px; height:46px; display:flex; align-items:center; justify-content:center;
+      color:#fff; background:var(--navy); border-radius:12px; font-size:23px;
+    }
+    h1,h2,h3,p{margin:0}
+    h1{font-size:22px; color:var(--navy); line-height:1.25}
+    .subheading{color:var(--muted); margin-top:4px; font-size:13px}
+    .filter-grid{
+      display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:14px;
+    }
+    .field label{display:block; font-weight:700; color:var(--navy); font-size:12px; margin-bottom:7px}
+    .field select{
+      width:100%; min-height:40px; border:1px solid #cbd5e1; border-radius:8px;
+      background:#fff; color:var(--ink); padding:0 10px; font-size:14px; outline:none;
+    }
+    .field select:focus{border-color:var(--gold); box-shadow:0 0 0 3px rgba(183,138,34,.12)}
+    .button-row{display:flex; flex-wrap:wrap; gap:10px; margin-top:18px}
+    .btn{
+      border:0; border-radius:8px; min-height:40px; padding:0 15px; font-weight:700; cursor:pointer;
+      font-size:13px; transition:.2s ease;
+    }
+    .btn-primary{background:var(--navy); color:#fff}
+    .btn-primary:hover{background:#0e284d}
+    .btn-print{background:var(--gold); color:#fff}
+    .btn-print:hover{background:#9d741b}
+    .btn-outline{background:#fff; color:var(--navy); border:1px solid #b9c6d6}
+    .btn:disabled{opacity:.55; cursor:not-allowed}
+    .helper{margin-top:12px; color:var(--muted); font-size:12px; line-height:1.5}
+    .sync-status{
+      display:inline-flex; align-items:center; gap:7px; margin-top:10px;
+      padding:7px 10px; border-radius:999px; font-size:11px; font-weight:700;
+      color:#1d4ed8; background:#eff6ff; border:1px solid #bfdbfe;
+    }
+    .sync-status::before{
+      content:""; width:7px; height:7px; border-radius:50%; background:#22c55e;
+      box-shadow:0 0 0 3px rgba(34,197,94,.13);
+    }
+    .sync-status.is-syncing{color:#7c3f00;background:#fff7ed;border-color:#fed7aa}
+    .sync-status.is-syncing::before{background:#f59e0b;box-shadow:0 0 0 3px rgba(245,158,11,.13)}
+    .sync-status.is-error{color:#b91c1c;background:#fef2f2;border-color:#fecaca}
+    .sync-status.is-error::before{background:#ef4444;box-shadow:0 0 0 3px rgba(239,68,68,.13)}
+    .empty-state{
+      border:1px dashed #cbd5e1; border-radius:10px; padding:38px 20px; text-align:center;
+      color:var(--muted); background:#fafcff;
+    }
+
+    /* Lembar raport */
+    #reportArea{display:none}
+    #reportList{display:grid; gap:22px}
+    .report-paper.report-item{page-break-after:always; break-after:page}
+    .report-paper.report-item:last-child{page-break-after:auto; break-after:auto}
+    .report-paper{
+      position:relative; background:var(--paper); border:1px solid var(--line); padding:30px;
+      box-shadow:0 8px 24px rgba(15,23,42,.06); overflow:hidden;
+    }
+    .report-paper::before{
+      content:""; position:absolute; inset:0; pointer-events:none; z-index:0;
+      background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='260' height='180' viewBox='0 0 260 180'%3E%3Cg transform='rotate(-45 130 90)'%3E%3Ctext x='8' y='95' font-family='Arial, Helvetica, sans-serif' font-size='15' font-weight='700' fill='%2316345f' fill-opacity='0.08'%3EPESANTREN CAHAYA FAJRUL ISLAM%3C/text%3E%3C/g%3E%3C/svg%3E");
+      background-repeat:repeat; background-size:190px 130px;
+    }
+    .report-paper > *{position:relative; z-index:1}
+    .report-head{
+      display:grid; grid-template-columns:240px 1fr; align-items:center; gap:18px;
+      padding-bottom:16px; border-bottom:3px solid var(--navy);
+    }
+    .logo-wrap{
+      width:220px; min-height:78px; display:flex; align-items:center; justify-content:flex-start;
+    }
+    .logo-wrap img{max-width:220px; max-height:84px; width:100%; height:auto; object-fit:contain; object-position:left center}
+    .report-head-right{display:flex; align-items:center; justify-content:flex-end; min-height:78px}
+    .report-title-block{text-align:right}
+    .report-title-main{
+      font-weight:800; color:var(--navy); font-size:27px; line-height:1.15;
+      text-transform:uppercase; letter-spacing:.4px;
+    }
+    .identity-grid{
+      display:grid; grid-template-columns:repeat(2, minmax(0,1fr)); gap:10px 34px; padding:18px 0 14px;
+      font-size:13px; align-items:start;
+    }
+    .identity-item{display:grid; grid-template-columns:120px 12px 1fr; min-height:20px}
+    .identity-key{font-weight:700; color:var(--navy)}
+    .section-title{
+      margin:18px 0 9px; color:var(--navy); font-size:14px; font-weight:800;
+      border-left:4px solid var(--gold); padding-left:9px;
+    }
+    .section-caption{font-size:12px; color:var(--muted); margin:-2px 0 9px 13px}
+    .summary-grid{
+      display:grid; grid-template-columns:1.4fr repeat(3,1fr); gap:10px; margin-bottom:14px;
+    }
+    .summary-card{
+      padding:10px 12px; border:1px solid var(--line); border-radius:8px; background:#fbfdff;
+    }
+    .summary-card span{display:block; font-size:11px; color:var(--muted); margin-bottom:3px}
+    .summary-card strong{color:var(--navy); font-size:18px}
+    .decision-card{border-width:2px}
+    .decision-card .decision-badge{display:block; font-size:14px; font-weight:800; line-height:1.35; text-transform:uppercase}
+    .decision-card .decision-note{display:block; margin-top:6px; font-size:11px; line-height:1.45; color:#334155}
+    .decision-card.decision-up{background:#ecfdf5; border-color:#22c55e}
+    .decision-card.decision-up .decision-badge{color:#166534}
+    .decision-card.decision-conditional{background:#fff7ed; border-color:#fb923c}
+    .decision-card.decision-conditional .decision-badge{color:#c2410c}
+    .decision-card.decision-stay{background:#fef2f2; border-color:#ef4444}
+    .decision-card.decision-stay .decision-badge{color:#b91c1c}
+    .decision-card.decision-undetermined{background:#f8fafc; border-color:#94a3b8}
+    .decision-card.decision-undetermined .decision-badge{color:#334155}
+    .report-paper{border-radius:24px; border:1px solid rgba(22,52,95,.14); box-shadow:0 18px 42px rgba(15,23,42,.08)}
+    .report-head{padding:22px 24px; margin:-30px -30px 18px; background:linear-gradient(135deg, rgba(22,52,95,.08), rgba(183,138,34,.08)); border-bottom:3px solid var(--navy)}
+    .report-title-main{letter-spacing:.8px; text-shadow:0 1px 0 rgba(255,255,255,.7)}
+    .identity-grid{background:linear-gradient(180deg, rgba(255,255,255,.88), rgba(247,250,255,.95)); border:1px solid #dce5f0; border-radius:18px; padding:16px 18px; margin-bottom:18px}
+    .identity-item strong{color:#102a4d; font-size:15px}
+    .summary-card{border-radius:16px; box-shadow:inset 0 1px 0 rgba(255,255,255,.7)}
+    .section-title{display:inline-flex; align-items:center; background:#fff; padding-right:10px}
+    .insight-grid{display:grid; grid-template-columns:1.05fr 1.4fr; gap:14px; margin-bottom:14px}
+    .premium-box{border:1px solid #dbe3ee; border-radius:18px; background:linear-gradient(180deg, rgba(255,255,255,.96), rgba(248,251,255,.96)); padding:14px; box-shadow:0 10px 22px rgba(15,23,42,.04)}
+    .premium-box-title{display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:10px}
+    .premium-box-title h3{margin:0; color:var(--navy); font-size:14px; font-weight:800}
+    .premium-badge{font-size:10px; font-weight:800; letter-spacing:.6px; color:#8b6512; background:var(--gold-soft); border:1px solid rgba(183,138,34,.16); border-radius:999px; padding:4px 8px; text-transform:uppercase}
+    .tahfiz-stats{display:grid; grid-template-columns:repeat(3,1fr); gap:10px}
+    .tahfiz-stat{border:1px solid #d8e1ee; border-radius:16px; padding:12px 10px; background:#fff; text-align:center}
+    .tahfiz-stat .label{display:block; color:var(--muted); font-size:11px; margin-bottom:6px}
+    .tahfiz-stat .value{display:block; color:var(--navy); font-weight:800; font-size:22px}
+    .ranking-meta{display:flex; flex-wrap:wrap; gap:8px; margin:4px 0 10px}
+    .ranking-pill{padding:5px 10px; border-radius:999px; background:#eef4fb; color:var(--navy); font-size:11px; font-weight:700}
+    .ranking-table{width:100%; border-collapse:separate; border-spacing:0 6px; font-size:12px}
+    .ranking-table th{font-size:11px; color:var(--muted); text-align:left; padding:0 10px 4px; border:none; background:transparent}
+    .ranking-table td{padding:9px 10px; background:#fff; border-top:1px solid #dbe3ee; border-bottom:1px solid #dbe3ee}
+    .ranking-table td:first-child{border-left:1px solid #dbe3ee; border-radius:12px 0 0 12px}
+    .ranking-table td:last-child{border-right:1px solid #dbe3ee; border-radius:0 12px 12px 0}
+    .ranking-table tr.highlight td{background:#f6fbff; border-color:#9bb6d7}
+    .rank-number{font-weight:800; color:var(--navy)}
+    .top-rank{display:inline-flex; align-items:center; justify-content:center; min-width:26px; height:26px; border-radius:50%; background:linear-gradient(135deg, #d6a93b, #f5e3b4); color:#6b4c07; font-weight:800}
+    .rank-note{margin-top:8px; font-size:11px; color:var(--muted); line-height:1.45}
+    .score-table{border-collapse:separate; border-spacing:0; overflow:hidden; border-radius:16px}
+    .score-table th:first-child{border-top-left-radius:14px}
+    .score-table th:last-child{border-top-right-radius:14px}
+    .score-table td,.score-table th{background-clip:padding-box}
+    .score-table tr:nth-child(even) td{background:rgba(248,251,255,.86)}
+    .cahaya-card{border-radius:16px; background:rgba(255,255,255,.92); box-shadow:0 5px 16px rgba(15,23,42,.03)}
+    .followup-box{border-radius:16px; background:rgba(255,255,255,.92)}
+    .signature-area{padding-top:8px}
+    #printPageNumbers{display:none; position:absolute; inset:0; pointer-events:none}
+    .page-print-number{display:none; position:absolute; right:6px; font-size:10px; color:#56657c}
+    table{width:100%; border-collapse:collapse}
+    .score-table{font-size:12px}
+    .score-table th,.score-table td{border:1px solid #bfcbd8; padding:8px 7px; vertical-align:top}
+    .score-table th{background:#eaf0f7; color:var(--navy); text-align:center; font-weight:800}
+    .score-table td.center{text-align:center; vertical-align:middle}
+    .status-pass{color:var(--success); font-weight:800}
+    .status-remedial{color:var(--danger); font-weight:800}
+    .report-note{
+      margin-top:9px; color:var(--muted); font-size:11px; font-style:italic; line-height:1.4;
+    }
+    .cahaya-grid{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+    .cahaya-card{border:1px solid var(--line); border-radius:8px; padding:11px 12px; min-height:105px}
+    .cahaya-card h3{font-size:12.5px; color:var(--navy); margin-bottom:6px}
+    .cahaya-card p{font-size:12px; line-height:1.55; color:#334155; white-space:pre-line}
+    .followup-box{border:1px solid var(--line); border-radius:8px; padding:12px; margin-top:10px}
+    .followup-label{font-size:12px; color:var(--navy); font-weight:800; margin-bottom:4px}
+    .followup-text{font-size:12px; line-height:1.55; white-space:pre-line}
+    .signature-area{
+      display:grid; grid-template-columns:1fr 1fr; gap:40px; margin-top:30px; text-align:center; font-size:12px;
+    }
+    .signature-line{margin-top:54px; border-top:1px solid #64748b; padding-top:5px; font-weight:700; color:var(--navy)}
+    .print-date{text-align:right; margin-top:18px; color:var(--muted); font-size:11px}
+    #loadingOverlay{
+      position:fixed; inset:0; z-index:9999; display:flex; align-items:center; justify-content:center;
+      background:rgba(255,255,255,.88); backdrop-filter:blur(3px);
+    }
+    .loader-box{padding:18px 22px; border-radius:12px; background:#fff; border:1px solid var(--line); color:var(--navy); font-weight:700; box-shadow:0 10px 30px rgba(15,23,42,.12)}
+    @media(max-width:800px){
+      .filter-grid{grid-template-columns:1fr 1fr}
+      .report-paper{padding:18px}
+      .identity-grid{grid-template-columns:1fr; gap:8px}
+      .cahaya-grid{grid-template-columns:1fr}
+      .report-head{grid-template-columns:1fr; gap:10px}
+      .report-head-right{justify-content:flex-end!important}
+      .report-title-block{text-align:right!important;width:100%!important}
+      .report-title-main{font-size:20px}
+      .logo-wrap{width:190px; min-height:64px}
+      .logo-wrap img{max-width:190px; max-height:68px; width:100%; height:auto}
+      .identity-grid{grid-template-columns:repeat(2, minmax(0,1fr)); gap:8px 18px}
+      .summary-grid{grid-template-columns:repeat(2, minmax(0,1fr))}
+      .meta-grid{grid-template-columns:1fr}
+      .tahfiz-stats{grid-template-columns:repeat(3,1fr)}
+      .score-table{font-size:11px}
+      .score-table th,.score-table td{padding:6px 5px}
+    }
+    @media(max-width:500px){
+      .filter-grid{grid-template-columns:1fr}
+      .identity-item{grid-template-columns:108px 10px 1fr}
+      .summary-grid{grid-template-columns:1fr}
+      .tahfiz-stats{grid-template-columns:1fr}
+      .app-shell{padding:15px 10px 30px}
+      .panel{padding:15px}
+    }
+    @media print{
+      @page{size:A4 portrait; margin:11mm}
+      body{background:#fff; font-size:11pt}
+      .app-shell{max-width:none; margin:0; padding:0}
+      .screen-only,.panel.filter-panel,.page-heading{display:none!important}
+      #reportArea{display:block!important}
+      .report-paper{border:0; box-shadow:none; padding:0; border-radius:0}
+      .report-head{grid-template-columns:200px 1fr; gap:12px; padding:12px 14px 10px; margin:0 0 12px; border-radius:14px}
+      .logo-wrap{width:190px; min-height:68px}
+      .logo-wrap img{max-width:190px; max-height:72px; width:100%; height:auto}
+      .report-head-right{justify-content:flex-end}
+      .report-title-block{text-align:right}
+      .report-title-main{font-size:16pt}
+      .identity-grid{grid-template-columns:repeat(2, minmax(0,1fr)); padding:11px 0 8px; font-size:10pt}
+      .identity-item{grid-template-columns:102px 11px 1fr}
+      .section-title{margin:12px 0 6px; font-size:11pt}
+      .section-caption{font-size:8.5pt; margin-bottom:6px}
+      .summary-grid{gap:7px; margin-bottom:8px}
+      .summary-card{padding:7px 8px}
+      .summary-card strong{font-size:14pt}
+      .insight-grid{grid-template-columns:1fr 1.2fr; gap:10px; margin-bottom:10px}
+      .premium-box{padding:10px; border-radius:14px}
+      .premium-box-title h3{font-size:10.5pt}
+      .premium-badge{font-size:7.2pt; padding:3px 7px}
+      .tahfiz-stat{padding:9px 6px; border-radius:12px}
+      .tahfiz-stat .label{font-size:8pt; margin-bottom:3px}
+      .tahfiz-stat .value{font-size:15pt}
+      .ranking-meta{gap:6px; margin:2px 0 8px}
+      .ranking-pill{font-size:8pt; padding:4px 8px}
+      .ranking-table{font-size:8.4pt; border-spacing:0 4px}
+      .ranking-table th{font-size:7.4pt; padding:0 7px 3px}
+      .ranking-table td{padding:6px 7px}
+      .rank-note{font-size:7.7pt; margin-top:5px}
+      .decision-card .decision-badge{font-size:9.2pt}
+      .decision-card .decision-note{font-size:7.8pt; margin-top:4px; line-height:1.35}
+      .score-table{font-size:8.7pt}
+      .score-table th,.score-table td{padding:5px 4px}
+      .cahaya-grid{gap:6px}
+      .cahaya-card{padding:7px 8px; min-height:0; break-inside:avoid}
+      .cahaya-card h3{font-size:9.3pt; margin-bottom:3px}
+      .cahaya-card p,.followup-text{font-size:8.7pt; line-height:1.38}
+      .followup-box{padding:8px; margin-top:6px; break-inside:avoid}
+      .followup-label{font-size:9pt}
+      .signature-area{margin-top:22px; font-size:9pt}
+      .signature-line{margin-top:42px}
+      .print-date{font-size:8pt; margin-top:11px}
+      .report-note{font-size:8pt; margin-top:5px}
+      .print-page-number{display:block; position:fixed; right:0; bottom:0; font-size:8pt; color:#475569}
+          }
+
+    /* =========================================================
+       FINAL PREMIUM RAPORT LAYOUT — COMPACT RUANGGURU STYLE
+       ========================================================= */
+    :root{
+      --rg-blue:#1c58d9;
+      --rg-blue-deep:#103d9f;
+      --rg-sky:#eef5ff;
+      --rg-indigo:#263d9f;
+      --rg-mint:#eaf9f0;
+      --rg-orange:#fff2e6;
+      --rg-red:#fff0f1;
+    }
+    .report-paper{
+      max-width:980px;
+      margin:0 auto;
+      padding:22px;
+      border:0;
+      border-radius:22px;
+      background:#fff;
+      box-shadow:0 18px 50px rgba(16,42,91,.14);
+    }
+    .report-paper::before{opacity:.72;background-size:245px 165px}
+    .report-head{
+      grid-template-columns:205px 1fr;
+      gap:18px;
+      min-height:104px;
+      padding:16px 20px;
+      margin:0 0 12px;
+      border:0;
+      border-radius:18px;
+      background:linear-gradient(135deg, var(--rg-blue-deep) 0%, var(--rg-blue) 56%, #5288ff 100%);
+      box-shadow:0 10px 24px rgba(28,88,217,.20);
+      color:#fff;
+      overflow:hidden;
+      position:relative;
+    }
+    .report-head::after{
+      content:"";
+      position:absolute;
+      width:230px;height:230px;right:-92px;top:-125px;
+      border:28px solid rgba(255,255,255,.11);border-radius:50%;
+    }
+    .logo-wrap{
+      width:185px; min-height:70px; padding:0;
+      border-radius:0; background:transparent;
+      box-shadow:none;
+      position:relative; z-index:1;
+    }
+    .logo-wrap img{max-width:175px;max-height:60px;object-position:left center}
+    .report-head-right{min-height:70px;position:relative;z-index:1;display:flex;justify-content:flex-end;align-items:center}
+    .report-title-block{text-align:right;width:100%}
+    .report-title-main{
+      color:#16345f;
+      font-size:28px;
+      line-height:1.04;
+      letter-spacing:.45px;
+      text-shadow:none;
+      font-weight:900;
+    }
+    .report-title-main::after{
+      content:"LAPORAN HASIL BELAJAR SANTRI";
+      display:block;
+      margin-top:7px;
+      font-size:10px;
+      line-height:1;
+      font-weight:800;
+      letter-spacing:1.7px;
+      color:#6b7c96;
+    }
+    .identity-grid{
+      display:grid;
+      grid-template-columns:repeat(4,minmax(0,1fr));
+      gap:1px;
+      padding:0;
+      margin:0 0 12px;
+      overflow:hidden;
+      border:1px solid #d6e3f8;
+      border-radius:15px;
+      background:#d6e3f8;
+    }
+    .identity-item{
+      display:flex;
+      flex-direction:column;
+      gap:4px;
+      min-height:56px;
+      padding:10px 11px;
+      background:rgba(255,255,255,.97);
+    }
+    .identity-item > span:nth-child(2){display:none}
+    .identity-key{
+      font-size:9.5px;
+      letter-spacing:.4px;
+      text-transform:uppercase;
+      color:#72819b;
+      font-weight:800;
+    }
+    .identity-item strong{font-size:13px;line-height:1.2;color:#183157}
+    .section-title{
+      display:flex;
+      align-items:center;
+      gap:8px;
+      width:100%;
+      margin:13px 0 3px;
+      padding:0;
+      border:0;
+      background:transparent;
+      color:#183157;
+      font-size:14px;
+      font-weight:800;
+    }
+    .section-title::before{
+      content:"";
+      width:7px;height:19px;border-radius:99px;
+      background:linear-gradient(180deg,var(--rg-blue),#79a7ff);
+      flex:0 0 auto;
+    }
+    .section-caption{margin:0 0 8px 15px;font-size:10.5px;line-height:1.35;color:#71809a}
+    .summary-grid{
+      display:grid;
+      grid-template-columns:1.65fr 1fr 1fr;
+      gap:8px;
+      margin-bottom:8px;
+    }
+    .summary-card{
+      min-height:67px;
+      padding:10px 12px;
+      border:1px solid #dfe8f6;
+      border-radius:18px;
+      background:linear-gradient(180deg,#ffffff,#f7faff);
+      box-shadow:0 8px 20px rgba(132,154,189,.08);
+    }
+    .summary-card span{font-size:9.5px;margin-bottom:5px;text-transform:uppercase;letter-spacing:.28px;color:#7a89a4;font-weight:800}
+    .summary-card strong{font-size:19px;line-height:1;color:#19365f}
+    .decision-card{padding:10px 12px}
+    .decision-card .decision-badge{font-size:15px;line-height:1.1;color:#183157}
+    .decision-card .decision-note{margin-top:5px;font-size:10px;line-height:1.3;color:#4b5d78}
+    .decision-card.decision-up{background:linear-gradient(135deg,#edfdf3,#d9f7e5);border-color:#86dbad}
+    .decision-card.decision-conditional{background:linear-gradient(135deg,#fff8eb,#ffe5c6);border-color:#f7be7c}
+    .decision-card.decision-stay{background:linear-gradient(135deg,#fff3f4,#ffdfe2);border-color:#f5a6af}
+    .meta-grid{
+      display:grid;
+      grid-template-columns:1fr;
+      gap:8px;
+      margin:0 0 10px;
+      align-items:stretch;
+    }
+    .premium-box{
+      padding:12px 13px;
+      border:1px solid #dfe8f6;
+      border-radius:18px;
+      background:linear-gradient(180deg,#ffffff,#f8fbff);
+      box-shadow:0 8px 22px rgba(132,154,189,.08);
+    }
+    .premium-box-title{margin-bottom:8px}
+    .premium-box-title h3{font-size:12.8px;color:#183157}
+    .premium-badge{font-size:8px;padding:3px 7px;letter-spacing:.75px;border-radius:99px;background:#edf4ff;color:#285ac6;border-color:#d4e3ff}
+    .tahfiz-stats{gap:8px}
+    .tahfiz-stat{padding:10px 8px;border-radius:14px;border-color:#e1e8f4;background:linear-gradient(180deg,#ffffff,#f9fbff)}
+    .tahfiz-stat .label{margin-bottom:4px;font-size:9.5px;color:#7c8aa2}
+    .tahfiz-stat .value{font-size:20px;line-height:1;color:#183e82}
+    .tahfiz-note{margin-top:8px;font-size:9.5px;line-height:1.35;color:#73829b}
+    .ranking-box[hidden]{display:none!important}
+    .ranking-single{display:flex;align-items:center;gap:12px;padding:4px 0 0}
+    .ranking-number{
+      min-width:52px;height:52px;padding:0 7px;
+      display:flex;align-items:center;justify-content:center;
+      border-radius:16px;
+      background:linear-gradient(135deg,#f6c85f,#e7a71f);
+      color:#654600;
+      font-weight:900;font-size:23px;
+      box-shadow:0 5px 12px rgba(203,145,24,.18);
+    }
+    .ranking-detail{display:flex;flex-direction:column;gap:3px;min-width:0}
+    .ranking-detail strong{font-size:12px;color:#183157;line-height:1.2}
+    .ranking-detail span{font-size:9px;color:#73829b;line-height:1.3}
+    .score-table{
+      table-layout:fixed;
+      border-spacing:0;
+      border-collapse:separate;
+      overflow:hidden;
+      border:1px solid #dbe5f3;
+      border-radius:14px;
+      font-size:11px;
+      background:rgba(255,255,255,.96);
+    }
+    .score-table th,.score-table td{padding:7px 7px;border:0;border-bottom:1px solid #e5ebf4}
+    .score-table th{background:#e9f1ff;color:#184485;font-size:9px;letter-spacing:.25px;text-transform:uppercase}
+    .score-table tbody tr:last-child td{border-bottom:0}
+    .score-table tbody tr:nth-child(even) td{background:#f8fbff}
+    .score-table th:nth-child(1){width:38px}
+    .score-table th:nth-child(3){width:64px}
+    .score-table th:nth-child(4){width:105px}
+    .score-table th:nth-child(5){width:150px}
+    .report-note{margin:5px 0 0;font-size:9px;line-height:1.3;color:#76859f}
+    .cahaya-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+    .cahaya-card{
+      min-height:0;
+      padding:8px 9px;
+      border:1px solid #dce7f8;
+      border-radius:12px;
+      background:rgba(255,255,255,.95);
+      box-shadow:none;
+    }
+    .cahaya-card h3{font-size:11.8px;margin-bottom:5px;color:#183e82}
+    .cahaya-card p{font-size:11.2px;line-height:1.5;color:#3d506d}
+    .followup-box{margin-top:7px;padding:9px 10px;border:1px solid #dce7f8;border-radius:12px;background:rgba(255,255,255,.95)}
+    .followup-label{font-size:10px;margin-bottom:3px;color:#183e82}
+    .followup-text{font-size:11px;line-height:1.5;color:#3d506d}
+    .signature-area{margin-top:18px;display:grid;grid-template-columns:1fr 1fr;column-gap:90px;row-gap:26px;padding:0 12px;font-size:10px;align-items:end}
+    .signature-item{text-align:center}
+    .signature-item.signature-director{grid-column:1 / span 2;max-width:320px;justify-self:center;width:100%}
+    .signature-line{margin-top:34px;padding-top:4px;border-color:#8190a8;font-size:10px}
+    .print-date{margin-top:8px;font-size:8.5px;color:#72819b}
+    #rTahfizSection[hidden], #rRankingBox[hidden], #rMetaGrid[hidden]{display:none!important}
+    .report-head{background:linear-gradient(135deg,#edf4ff 0%,#f8fbff 58%,#fff8ec 100%); box-shadow:0 12px 30px rgba(128,149,183,.12)}
+    .identity-grid{box-shadow:0 8px 18px rgba(132,154,189,.08)}
+
+    @media(max-width:800px){
+      .report-paper{padding:16px;border-radius:18px}
+      .report-head{grid-template-columns:1fr;min-height:auto;padding:14px;margin:0 0 10px;border-radius:15px}
+      .report-head-right{justify-content:flex-end}
+      .report-title-block{text-align:right}
+      .identity-grid{grid-template-columns:1fr 1fr}
+      .summary-grid{grid-template-columns:1fr 1fr}
+      .meta-grid{grid-template-columns:1fr}
+      .cahaya-grid{grid-template-columns:1fr}
+    }
+    @media(max-width:500px){
+      .identity-grid{grid-template-columns:1fr}
+      .summary-grid{grid-template-columns:1fr}
+      .tahfiz-stats{grid-template-columns:repeat(3,1fr)}
+      .score-table{font-size:10px}
+      .score-table th:nth-child(5){width:116px}
+      .signature-area{grid-template-columns:1fr!important;row-gap:16px!important;column-gap:0!important}
+      .signature-item.signature-director{grid-column:auto!important;max-width:none!important;width:100%!important}
+    }
+    @media print{
+      @page{size:A4 portrait;margin:7mm 8mm 10mm}
+      html,body{background:#fff!important}
+      body{font-size:9pt;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+      .app-shell{padding:0!important;margin:0!important;max-width:none!important}
+      .report-paper{max-width:none!important;padding:0!important;border-radius:0!important;box-shadow:none!important;overflow:visible!important}
+      .report-paper::before{background-size:170px 118px;opacity:.68}
+      .report-head{
+        grid-template-columns:170px 1fr!important;
+        min-height:76px!important;
+        padding:10px 12px!important;
+        margin:0 0 8px!important;
+        border-radius:12px!important;
+        box-shadow:none!important;
+        break-inside:avoid;
+      }
+      .logo-wrap{width:155px!important;min-height:54px!important;padding:0!important;border-radius:0!important;background:transparent!important;box-shadow:none!important}
+      .logo-wrap img{max-width:150px!important;max-height:46px!important}
+      .report-title-main{font-size:16pt!important;letter-spacing:.35px!important;color:#16345f!important}
+      .report-title-main::after{font-size:6.8pt!important;margin-top:4px!important;letter-spacing:1px!important;color:#6b7c96!important}
+      .identity-grid{grid-template-columns:repeat(4,minmax(0,1fr))!important;margin:0 0 8px!important;border-radius:10px!important}
+      .identity-item{min-height:40px!important;padding:6px 7px!important;gap:2px!important}
+      .identity-key{font-size:6.9pt!important}
+      .identity-item strong{font-size:8.6pt!important}
+      .section-title{margin:9px 0 2px!important;font-size:10.5pt!important}
+      .section-title::before{width:5px!important;height:15px!important}
+      .section-caption{margin:0 0 5px 13px!important;font-size:7.5pt!important}
+      .summary-grid{grid-template-columns:1.65fr 1fr 1fr!important;gap:5px!important;margin-bottom:5px!important}
+      .summary-card{min-height:48px!important;padding:6px 7px!important;border-radius:10px!important}
+      .summary-card span{font-size:6.8pt!important;margin-bottom:3px!important}
+      .summary-card strong{font-size:13pt!important}
+      .decision-card .decision-badge{font-size:8.5pt!important}
+      .decision-card .decision-note{font-size:6.8pt!important;margin-top:2px!important;line-height:1.2!important}
+      .meta-grid{grid-template-columns:1fr!important;gap:5px!important;margin-bottom:6px!important}
+      .premium-box{padding:8px 9px!important;border-radius:12px!important}
+      .premium-box-title{margin-bottom:4px!important}
+      .premium-box-title h3{font-size:8.5pt!important}
+      .premium-badge{font-size:6.3pt!important;padding:2px 5px!important}
+      .tahfiz-stats{gap:5px!important}
+      .tahfiz-stat{padding:6px 5px!important;border-radius:10px!important}
+      .tahfiz-stat .label{font-size:7.2pt!important;margin-bottom:2px!important}
+      .tahfiz-stat .value{font-size:13.2pt!important}
+      .tahfiz-note{font-size:7pt!important;margin-top:4px!important;line-height:1.28!important}
+      .ranking-single{gap:7px!important;padding:3px 0 0!important}
+      .ranking-number{min-width:39px!important;height:39px!important;border-radius:11px!important;font-size:16pt!important}
+      .ranking-detail strong{font-size:7.8pt!important}
+      .ranking-detail span{font-size:6.7pt!important}
+      .score-table{font-size:7.7pt!important;border-radius:10px!important;break-inside:avoid}
+      .score-table th,.score-table td{padding:4px 4px!important}
+      .score-table th{font-size:6.4pt!important}
+      .score-table th:nth-child(1){width:30px!important}
+      .score-table th:nth-child(3){width:48px!important}
+      .score-table th:nth-child(4){width:79px!important}
+      .score-table th:nth-child(5){width:105px!important}
+      .report-note{font-size:6.5pt!important;margin-top:3px!important}
+      .cahaya-grid{gap:4px!important}
+      .cahaya-card{padding:5px 6px!important;border-radius:8px!important;break-inside:avoid}
+      .cahaya-card h3{font-size:8.6pt!important;margin-bottom:3px!important}
+      .cahaya-card p{font-size:8.1pt!important;line-height:1.38!important}
+      .followup-box{margin-top:4px!important;padding:5px 6px!important;border-radius:8px!important;break-inside:avoid}
+      .followup-label{font-size:7.6pt!important;margin-bottom:2px!important}
+      .followup-text{font-size:7.8pt!important;line-height:1.34!important}
+      .signature-area{margin-top:12px!important;display:grid!important;grid-template-columns:1fr 1fr!important;column-gap:58px!important;row-gap:20px!important;padding:0 8px!important;font-size:7.5pt!important;break-inside:avoid!important}
+      .signature-item.signature-director{grid-column:1 / span 2!important;max-width:240px!important;justify-self:center!important;width:100%!important}
+      .signature-line{margin-top:28px!important;padding-top:3px!important;font-size:7.5pt!important}
+      .print-date{margin-top:5px!important;font-size:6.5pt!important}
+      #printPageNumbers{display:block!important;position:absolute!important;inset:0!important;pointer-events:none!important}
+    }
+
+    @media print{
+      #reportList{display:block!important}
+      #reportList .report-paper.report-item{
+        page-break-after:always!important;
+        break-after:page!important;
+      }
+      #reportList .report-paper.report-item:last-child{
+        page-break-after:auto!important;
+        break-after:auto!important;
+      }
+    }
+  
+
+    /* =========================================================
+       PENYEMPURNAAN RAPORT — BIRU, KKM, TAHFIZ CAHAYA & TTD
+       ========================================================= */
+    :root{
+      --gold:#2563eb;
+      --gold-soft:#eaf2ff;
+    }
+    .report-head{
+      background:linear-gradient(135deg,#edf5ff 0%,#f8fbff 58%,#eaf3ff 100%);
+    }
+    .section-title::before{
+      background:linear-gradient(180deg,#2563eb,#7fb0ff);
+    }
+    .premium-badge{
+      background:#eaf2ff;
+      border-color:#cfe0ff;
+      color:#1d4ed8;
+    }
+    .decision-card.decision-conditional{
+      background:linear-gradient(135deg,#edf5ff,#dcecff);
+      border-color:#85b2ff;
+    }
+    .decision-card.decision-conditional .decision-badge{color:#1d4ed8}
+    .ranking-number{
+      background:linear-gradient(135deg,#1d4ed8,#60a5fa);
+      color:#fff;
+      box-shadow:0 5px 12px rgba(37,99,235,.20);
+    }
+    .summary-after-score{
+      margin-top:10px;
+      margin-bottom:8px;
+    }
+    .ranking-after-score{
+      margin-top:0;
+      margin-bottom:12px;
+    }
+    .kkm-card{
+      background:linear-gradient(135deg,#eff6ff,#dbeafe);
+      border-color:#bcd4ff;
+    }
+    .kkm-card strong{color:#1d4ed8}
+    .tahfiz-cahaya-box{
+      margin-top:9px;
+      padding:9px 10px;
+      border-radius:13px;
+      border:1px solid #cfe0ff;
+      background:linear-gradient(135deg,#eff6ff,#f9fbff);
+    }
+    .tahfiz-cahaya-title{
+      font-size:10px;
+      font-weight:900;
+      letter-spacing:.45px;
+      text-transform:uppercase;
+      color:#1d4ed8;
+      margin-bottom:4px;
+    }
+    .tahfiz-cahaya-text{
+      color:#38557e;
+      font-size:11px;
+      line-height:1.45;
+    }
+    .cahaya-card p{
+      font-size:12.8px;
+      line-height:1.57;
+    }
+    .followup-text{
+      font-size:12.6px;
+      line-height:1.57;
+    }
+    .signature-area{
+      margin-top:46px;
+      font-size:11.2px;
+    }
+    .signature-name{
+      min-height:60px;
+      display:flex;
+      align-items:flex-end;
+      justify-content:center;
+      padding:0 7px 4px;
+      border-bottom:1px solid #677992;
+      color:#183157;
+      font-size:12.4px;
+      font-weight:800;
+      line-height:1.22;
+    }
+    .signature-role{
+      margin-top:6px;
+      color:#50637e;
+      font-size:10.6px;
+      font-weight:700;
+    }
+    .signature-line{display:none!important}
+    .tahfiz-note{display:none!important}
+
+    @media print{
+      .summary-after-score{margin-top:6px!important;margin-bottom:5px!important}
+      .ranking-after-score{margin-bottom:6px!important}
+      .tahfiz-cahaya-box{margin-top:5px!important;padding:5px 6px!important;border-radius:8px!important}
+      .tahfiz-cahaya-title{font-size:7.4pt!important;margin-bottom:2px!important}
+      .tahfiz-cahaya-text{font-size:7.7pt!important;line-height:1.34!important}
+      .cahaya-card p{font-size:9.2pt!important;line-height:1.43!important}
+      .followup-text{font-size:8.9pt!important;line-height:1.42!important}
+      .signature-area{margin-top:30px!important;font-size:9.2pt!important}
+      .signature-name{min-height:48px!important;padding:0 5px 3px!important;font-size:9.7pt!important}
+      .signature-role{margin-top:4px!important;font-size:8.3pt!important}
+      #printPageNumbers{display:block!important;position:absolute!important;inset:0!important;pointer-events:none!important}
+      .page-print-number{
+        display:block!important;
+        position:absolute!important;
+        left:0!important;
+        right:0!important;
+        padding-right:4px!important;
+        text-align:right!important;
+        color:#475569!important;
+        font-size:7.5pt!important;
+        line-height:1!important;
+      }
+    }
+
+
+    /* =========================================================
+       OPTIMASI CETAK — PROPORSI ISI LEBIH PENUH 2 HALAMAN
+       ========================================================= */
+    @media print{
+      @page{size:A4 portrait;margin:7mm 8mm 10mm}
+
+      /* Memperbesar seluruh komponen isi agar halaman kedua tidak terlalu kosong. */
+      .report-head{
+        min-height:84px!important;
+        padding:12px 14px!important;
+        margin:0 0 10px!important;
+      }
+      .logo-wrap{width:162px!important;min-height:58px!important}
+      .logo-wrap img{max-width:156px!important;max-height:50px!important}
+      .report-title-main{font-size:17.5pt!important}
+      .report-title-main::after{font-size:7.4pt!important;margin-top:5px!important}
+
+      .identity-grid{margin:0 0 10px!important;border-radius:11px!important}
+      .identity-item{min-height:45px!important;padding:7px 8px!important;gap:3px!important}
+      .identity-key{font-size:7.4pt!important}
+      .identity-item strong{font-size:9.5pt!important;line-height:1.24!important}
+
+      .section-title{margin:11px 0 4px!important;font-size:11.6pt!important}
+      .section-title::before{width:6px!important;height:17px!important}
+      .section-caption{margin:0 0 6px 13px!important;font-size:8.1pt!important;line-height:1.35!important}
+
+      .score-table{font-size:8.7pt!important;border-radius:11px!important}
+      .score-table th,.score-table td{padding:5px 5px!important}
+      .score-table th{font-size:7.2pt!important}
+      .score-table th:nth-child(1){width:32px!important}
+      .score-table th:nth-child(3){width:52px!important}
+      .score-table th:nth-child(4){width:84px!important}
+      .score-table th:nth-child(5){width:112px!important}
+
+      .summary-after-score{margin-top:8px!important;margin-bottom:7px!important}
+      .summary-card{min-height:56px!important;padding:8px 9px!important;border-radius:12px!important}
+      .summary-card span{font-size:7.4pt!important;margin-bottom:4px!important}
+      .summary-card strong{font-size:14.5pt!important}
+      .decision-card .decision-badge{font-size:9.4pt!important}
+      .decision-card .decision-note{font-size:7.5pt!important;line-height:1.28!important}
+
+      .meta-grid{gap:7px!important;margin-bottom:8px!important}
+      .premium-box{padding:9px 10px!important;border-radius:13px!important}
+      .premium-box-title{margin-bottom:6px!important}
+      .premium-box-title h3{font-size:9.4pt!important}
+      .premium-badge{font-size:6.8pt!important;padding:3px 6px!important}
+      .tahfiz-stats{gap:6px!important}
+      .tahfiz-stat{padding:7px 6px!important;border-radius:11px!important}
+      .tahfiz-stat .label{font-size:7.8pt!important;margin-bottom:3px!important}
+      .tahfiz-stat .value{font-size:14.5pt!important}
+      .tahfiz-cahaya-box{margin-top:6px!important;padding:7px 8px!important;border-radius:10px!important}
+      .tahfiz-cahaya-title{font-size:8pt!important;margin-bottom:3px!important}
+      .tahfiz-cahaya-text{font-size:8.5pt!important;line-height:1.4!important}
+
+      .ranking-after-score{margin-bottom:8px!important}
+      .ranking-single{gap:9px!important;padding:4px 0 0!important}
+      .ranking-number{min-width:44px!important;height:44px!important;border-radius:12px!important;font-size:18pt!important}
+      .ranking-detail strong{font-size:8.8pt!important}
+      .ranking-detail span{font-size:7.5pt!important}
+
+      .cahaya-grid{gap:6px!important}
+      .cahaya-card{padding:7px 8px!important;border-radius:10px!important}
+      .cahaya-card h3{font-size:9.8pt!important;margin-bottom:4px!important}
+      .cahaya-card p{font-size:10.8pt!important;line-height:1.5!important}
+
+      .followup-box{margin-top:7px!important;padding:8px 9px!important;border-radius:10px!important}
+      .followup-label{font-size:9pt!important;margin-bottom:4px!important}
+      .followup-text{font-size:10.4pt!important;line-height:1.5!important}
+
+      .signature-area{margin-top:42px!important;font-size:10pt!important;column-gap:64px!important;row-gap:25px!important}
+      .signature-name{min-height:58px!important;padding:0 6px 4px!important;font-size:10.8pt!important}
+      .signature-role{margin-top:5px!important;font-size:9.1pt!important}
+      .print-date{margin-top:8px!important;font-size:7.2pt!important}
+      .page-print-number{font-size:8pt!important}
+    }
+
+</style>
+
+<style id="ruangguru-rapot-screen-override">
+  @media screen {
+    body {
+      margin: 0 !important;
+      color: #31415f !important;
+      font-family: "Nunito", "Poppins", Arial, sans-serif !important;
+      background:
+        radial-gradient(circle at 4% 2%, rgba(25,198,230,.10), transparent 24%),
+        radial-gradient(circle at 96% 6%, rgba(118,103,245,.09), transparent 23%),
+        linear-gradient(180deg, #f4f8ff 0%, #fbfdff 100%) !important;
+    }
+    .app-shell { max-width: 1180px !important; padding: 14px !important; }
+    .panel.filter-panel {
+      margin-bottom: 16px !important;
+      padding: 23px !important;
+      border: 1px solid #e2eaf6 !important;
+      border-radius: 22px !important;
+      background: rgba(255,255,255,.98) !important;
+      box-shadow: 0 12px 35px rgba(35,78,160,.09) !important;
+    }
+    .filter-grid { gap: 13px !important; }
+    .field label { margin-bottom: 7px !important; color: #152347 !important; font-size: .7rem !important; font-weight: 900 !important; }
+    .field select {
+      min-height: 46px !important;
+      padding: 9px 12px !important;
+      color: #31415f !important;
+      font-size: .8rem !important;
+      font-weight: 750 !important;
+      border: 1.5px solid #dfe7f3 !important;
+      border-radius: 12px !important;
+      background: #f8faff !important;
+    }
+    .field select:focus { border-color: #2878ff !important; background: #fff !important; box-shadow: 0 0 0 4px rgba(40,120,255,.09) !important; }
+    .button-row { gap: 8px !important; margin-top: 16px !important; }
+    .btn {
+      min-height: 43px !important;
+      padding: 9px 14px !important;
+      font-size: .7rem !important;
+      font-weight: 900 !important;
+      border-radius: 11px !important;
+    }
+    .btn-primary, .btn-print {
+      color: #fff !important;
+      background: linear-gradient(135deg, #2878ff, #19c6e6) !important;
+      box-shadow: 0 8px 18px rgba(40,120,255,.18) !important;
+    }
+    .btn-outline { color: #1765ce !important; border: 1px solid #cfe1ff !important; background: #edf5ff !important; }
+    .helper { margin-top: 12px !important; color: #71809e !important; font-size: .68rem !important; font-weight: 650 !important; line-height: 1.55 !important; }
+    .sync-status { border-radius: 999px !important; font-size: .62rem !important; font-weight: 900 !important; }
+    .empty-state {
+      padding: 38px 18px !important;
+      color: #71809e !important;
+      font-size: .75rem !important;
+      font-weight: 700 !important;
+      border: 1px dashed #d8e4f3 !important;
+      border-radius: 19px !important;
+      background: rgba(255,255,255,.78) !important;
+    }
+    .loader-box {
+      color: #1557d5 !important;
+      border: 1px solid #d6e5fb !important;
+      border-radius: 15px !important;
+      background: #fff !important;
+      box-shadow: 0 14px 34px rgba(40,120,255,.14) !important;
+    }
+    @media(max-width:800px){.app-shell{padding:9px!important}.panel.filter-panel{padding:18px 13px!important;border-radius:18px!important}}
+  }
+</style>
+
+  <script src="../js/cahaya-bandwidth.js"></script>
+</head>
+<body>
+
+<div id="loadingOverlay"><div class="loader-box">Memuat data e-Raport...</div></div>
+
+<main class="app-shell"><section class="panel filter-panel screen-only">
+    <div class="filter-grid">
+      <div class="field">
+        <label>Tahun Akademik</label>
+        <select id="tahunAkademik"></select>
+      </div>
+      <div class="field">
+        <label>Semester</label>
+        <select id="semester">
+          <option value="Genap" selected>Genap</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Kategori Halqah</label>
+        <select id="kategoriHalqah">
+          <option value="">Semua Kategori</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Kelas / Kelompok</label>
+        <select id="kelasKelompok">
+          <option value="">Semua Kelas / Kelompok</option>
+        </select>
+      </div>
+      <div class="field" style="grid-column:span 2">
+        <label>Nama Santri</label>
+        <select id="namaSantri">
+          <option value="">-- Pilih Santri --</option>
+          <option value="__SEMUA_SANTRI__">Semua Santri (Kelas / Filter Terpilih)</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="button-row">
+      <button class="btn btn-primary" id="btnTampilkan">TAMPILKAN E-RAPORT</button>
+      <button class="btn btn-print" id="btnCetak" disabled>CETAK RAPORT TAMPIL</button>
+      <button class="btn btn-outline" id="btnMuatUlang">MUAT ULANG DATA</button>
+    </div>
+    <p class="helper">Pilih <strong>Semua Santri (Kelas / Filter Terpilih)</strong> untuk menampilkan serta mencetak raport seluruh santri berdasarkan kategori, kelas, tahun akademik, dan semester yang dipilih. Nilai akademik diambil dari data UAS dengan <strong>Tanggal Ujian/Input 26 Juni–02 Juli</strong> sesuai tahun akademik yang dipilih. Tahfiz dihitung dari seluruh setoran sejak awal hingga 02 Juli. Asesmen dibaca dari asesmen akhir semester yang tersimpan. Perubahan nilai di Firebase akan memperbarui e-Raport secara otomatis. Bila terdapat riwayat nilai lama atau nilai 0 otomatis pada mapel yang sama, raport memakai nilai manual terbaru.</p>
+    <div class="sync-status is-syncing" id="syncStatus">Menghubungkan sinkronisasi nilai dengan Firebase...</div>
+  </section>
+
+  <section id="placeholderArea" class="empty-state screen-only">
+    Pilih filter dan nama santri, atau pilih <strong>Semua Santri</strong>, lalu tekan <strong>Tampilkan e-Raport</strong>.
+  </section>
+
+  <section id="reportArea">
+    <div id="reportList"></div>
+    <template id="reportTemplate">
+    <article class="report-paper report-item">
+      <header class="report-head">
+        <div class="logo-wrap">
+          <img src="../assets/logo-pesantren.png" alt="Logo Pesantren" onerror="this.style.display='none'">
+        </div>
+        <div class="report-head-right">
+          <div class="report-title-block">
+            <div class="report-title-main">Raport Keilmuan<br>dan Kepribadian</div>
+          </div>
+        </div>
+      </header>
+
+      <section class="identity-grid">
+        <div class="identity-item"><span class="identity-key">Nama Santri</span><span>:</span><strong id="rNama">-</strong></div>
+        <div class="identity-item"><span class="identity-key">Tahun Akademik</span><span>:</span><strong id="rTahun">-</strong></div>
+        <div class="identity-item"><span class="identity-key">Semester</span><span>:</span><strong id="rSemester">-</strong></div>
+        <div class="identity-item"><span class="identity-key">Kelas</span><span>:</span><strong id="rKelas">-</strong></div>
+      </section>
+
+      <h2 class="section-title">A. Rekap Nilai Ujian Akhir Semester</h2>
+
+      <table class="score-table">
+        <thead>
+          <tr>
+            <th style="width:40px">No.</th>
+            <th>Mata Pelajaran</th>
+            <th style="width:70px">Nilai</th>
+            <th style="width:108px">Keterangan</th>
+            <th style="width:150px">Guru / Penguji</th>
+          </tr>
+        </thead>
+        <tbody id="rNilaiBody"></tbody>
+      </table>
+
+      <div class="summary-grid summary-after-score">
+        <div class="summary-card decision-card decision-undetermined" id="rKeputusanCard">
+          <strong class="decision-badge" id="rKeputusanStatus">-</strong>
+          <span class="decision-note" id="rKeputusanNote">Status ditetapkan berdasarkan hasil evaluasi akhir semester.</span>
+        </div>
+        <div class="summary-card"><span>Rata-rata Nilai</span><strong id="rRataRata">-</strong></div>
+        <div class="summary-card kkm-card"><span>KKM</span><strong id="rKKM">70</strong></div>
+      </div>
+
+      <div class="meta-grid ranking-after-score" id="rMetaGrid">
+        <div class="premium-box ranking-box" id="rRankingBox" hidden>
+          <div class="premium-box-title">
+            <h3>Peringkat Kelas</h3>
+            <span class="premium-badge" id="rRankingBadge">Prestasi</span>
+          </div>
+          <div class="ranking-single">
+            <div class="ranking-number" id="rRankingPosisi">-</div>
+            <div class="ranking-detail">
+              <strong id="rRankingTotal">-</strong>
+              <span id="rRankingNote" hidden></span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <section id="rTahfizSection">
+        <h2 class="section-title">B. Ringkasan Hafalan Al-Qur'an</h2>
+        
+        <div class="premium-box tahfiz-box" id="rTahfizBox">
+          <div class="premium-box-title">
+            <h3>Rekap Tahfiz</h3>
+            <span class="premium-badge">Tahfiz</span>
+          </div>
+          <div class="tahfiz-stats">
+            <div class="tahfiz-stat"><span class="label">Jumlah Juz</span><span class="value" id="rTahfizJuz">-</span></div>
+            <div class="tahfiz-stat"><span class="label">Jumlah Halaman</span><span class="value" id="rTahfizHalaman">-</span></div>
+            <div class="tahfiz-stat"><span class="label">Jumlah Surat</span><span class="value" id="rTahfizSurat">-</span></div>
+          </div>
+          <div class="tahfiz-cahaya-box" id="rTahfizCahayaBox" hidden>
+            <div class="tahfiz-cahaya-title">🌟 Tahfiz CAHAYA</div>
+            <div class="tahfiz-cahaya-text" id="rTahfizCahayaText">-</div>
+          </div>
+        </div>
+      </section>
+
+      <h2 class="section-title">C. Asesmen Kepribadian CAHAYA</h2>
+      <p class="section-caption" id="rAsesmenInfo"></p>
+
+      <div class="cahaya-grid">
+        <div class="cahaya-card"><h3>🌙 Cinta Allah (Spiritual)</h3><p id="rSpiritual">-</p></div>
+        <div class="cahaya-card"><h3>🤝 Akhlak Mulia (Relasional)</h3><p id="rRelasional">-</p></div>
+        <div class="cahaya-card"><h3>💛 Hati Bersih (Emosional)</h3><p id="rEmosional">-</p></div>
+        <div class="cahaya-card"><h3>🧠 Akal Cerdas (Intelektual)</h3><p id="rIntelektual">-</p></div>
+        <div class="cahaya-card"><h3>💪 Fisik Berdaya</h3><p id="rFisik">-</p></div>
+      </div>
+
+      <div class="followup-box">
+        <div class="followup-label">Rangkuman Perkembangan Semester Ini</div>
+        <div class="followup-text" id="rRangkuman">-</div>
+      </div>
+      <div class="followup-box">
+        <div class="followup-label">Fokus Pembinaan Semester Berikutnya</div>
+        <div class="followup-text" id="rFokus">-</div>
+      </div>
+      <div class="followup-box">
+        <div class="followup-label">Catatan untuk Wali Santri</div>
+        <div class="followup-text" id="rCatatanWali">-</div>
+      </div>
+
+      <div class="signature-area">
+        <div class="signature-item">
+          <div class="signature-name" id="rNaqib">................................................</div>
+          <div class="signature-role" id="rNaqibRole">Naqib</div>
+        </div>
+        <div class="signature-item">
+          <div class="signature-name">................................................</div>
+          <div class="signature-role">Wali Santri</div>
+        </div>
+        <div class="signature-item signature-director">
+          <div class="signature-name">Multazam</div>
+          <div class="signature-role">Direktur</div>
+        </div>
+      </div>
+      <div class="print-date" id="rTanggalCetak"></div>
+      <div id="printPageNumbers"></div>
+    </article>
+    </template>
+  </section>
+</main>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+  import { getDatabase, ref, get, push, update, query, orderByChild, startAt, endAt, limitToLast } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+
+  const firebaseConfig = window.CAHAYA_CONFIG.firebase;
+
+  const app = initializeApp(firebaseConfig);
+  const db = getDatabase(app);
+  const NILAI_PATH = "cahaya_app/nilai_ujian_bulanan";
+
+  let masterAkademik = {};
+  let semuaNilai = [];
+  let semuaAsesmen = [];
+  let semuaTahfiz = [];
+  let stopPantauNilai = null;
+  let sedangSinkronNilaiNol = false;
+  let sedangBersihkanNilaiOtomatis = false;
+  let antreanSinkronNilai = Promise.resolve();
+  let timerRenderNilai = null;
+  let intervalCadanganNilai = null;
+
+  // Data mushaf digunakan untuk menghitung total juz, halaman, dan surat dari riwayat setoran.
+  const quranDb = [
+    { nama: "Al-Fatihah", ayat: 7, pages: 1 }, { nama: "Al-Baqarah", ayat: 286, pages: 48 }, { nama: "Ali 'Imran", ayat: 200, pages: 27 },
+    { nama: "An-Nisa'", ayat: 176, pages: 29 }, { nama: "Al-Ma'idah", ayat: 120, pages: 21 }, { nama: "Al-An'am", ayat: 165, pages: 23 },
+    { nama: "Al-A'raf", ayat: 206, pages: 26 }, { nama: "Al-Anfal", ayat: 75, pages: 10 }, { nama: "At-Taubah", ayat: 129, pages: 21 },
+    { nama: "Yunus", ayat: 109, pages: 13 }, { nama: "Hud", ayat: 123, pages: 13 }, { nama: "Yusuf", ayat: 111, pages: 13 },
+    { nama: "Ar-Ra'd", ayat: 43, pages: 6 }, { nama: "Ibrahim", ayat: 52, pages: 7 }, { nama: "Al-Hijr", ayat: 99, pages: 5 },
+    { nama: "An-Nahl", ayat: 128, pages: 14 }, { nama: "Al-Isra'", ayat: 111, pages: 11 }, { nama: "Al-Kahf", ayat: 110, pages: 11 },
+    { nama: "Maryam", ayat: 98, pages: 7 }, { nama: "Ta Ha", ayat: 135, pages: 10 }, { nama: "Al-Anbiya'", ayat: 112, pages: 10 },
+    { nama: "Al-Hajj", ayat: 78, pages: 10 }, { nama: "Al-Mu'minun", ayat: 118, pages: 8 }, { nama: "An-Nur", ayat: 64, pages: 9 },
+    { nama: "Al-Furqan", ayat: 77, pages: 7 }, { nama: "Asy-Syu'ara'", ayat: 227, pages: 10 }, { nama: "An-Naml", ayat: 93, pages: 9 },
+    { nama: "Al-Qasas", ayat: 88, pages: 11 }, { nama: "Al-'Ankabut", ayat: 69, pages: 8 }, { nama: "Ar-Rum", ayat: 60, pages: 6 },
+    { nama: "Luqman", ayat: 34, pages: 4 }, { nama: "As-Sajdah", ayat: 30, pages: 3 }, { nama: "Al-Ahzab", ayat: 73, pages: 10 },
+    { nama: "Saba'", ayat: 54, pages: 6 }, { nama: "Fatir", ayat: 45, pages: 6 }, { nama: "Ya Sin", ayat: 83, pages: 6 },
+    { nama: "As-Saffat", ayat: 182, pages: 7 }, { nama: "Sad", ayat: 88, pages: 5 }, { nama: "Az-Zumar", ayat: 75, pages: 9 },
+    { nama: "Ghafir", ayat: 85, pages: 9 }, { nama: "Fussilat", ayat: 54, pages: 6 }, { nama: "Asy-Syura", ayat: 53, pages: 6 },
+    { nama: "Az-Zukhruf", ayat: 89, pages: 7 }, { nama: "Ad-Dukhan", ayat: 59, pages: 3 }, { nama: "Al-Jasiyah", ayat: 37, pages: 4 },
+    { nama: "Al-Ahqaf", ayat: 35, pages: 5 }, { nama: "Muhammad", ayat: 38, pages: 4 }, { nama: "Al-Fath", ayat: 29, pages: 5 },
+    { nama: "Al-Hujurat", ayat: 18, pages: 3 }, { nama: "Qaf", ayat: 45, pages: 3 }, { nama: "Az-Zariyat", ayat: 60, pages: 3 },
+    { nama: "At-Tur", ayat: 49, pages: 3 }, { nama: "An-Najm", ayat: 62, pages: 3 }, { nama: "Al-Qamar", ayat: 55, pages: 3 },
+    { nama: "Ar-Rahman", ayat: 78, pages: 3 }, { nama: "Al-Waqi'ah", ayat: 96, pages: 3 }, { nama: "Al-Hadid", ayat: 29, pages: 4 },
+    { nama: "Al-Mujadilah", ayat: 22, pages: 3 }, { nama: "Al-Hasyr", ayat: 24, pages: 3 }, { nama: "Al-Mumtahanah", ayat: 13, pages: 3 },
+    { nama: "As-Saff", ayat: 14, pages: 2 }, { nama: "Al-Jumu'ah", ayat: 11, pages: 2 }, { nama: "Al-Munafiqun", ayat: 11, pages: 2 },
+    { nama: "At-Tagabun", ayat: 18, pages: 2 }, { nama: "At-Talaq", ayat: 12, pages: 2 }, { nama: "At-Tahrim", ayat: 12, pages: 2 },
+    // Juz 29 
+    { nama: "Al-Mulk", ayat: 30, pages: 2.5 }, { nama: "Al-Qalam", ayat: 52, pages: 2 }, { nama: "Al-Haqqah", ayat: 52, pages: 2 },
+    { nama: "Al-Ma'arij", ayat: 44, pages: 2 }, { nama: "Nuh", ayat: 28, pages: 1.5 }, { nama: "Al-Jinn", ayat: 28, pages: 2 },
+    { nama: "Al-Muzzammil", ayat: 20, pages: 1.5 }, { nama: "Al-Muddassir", ayat: 56, pages: 2 }, { nama: "Al-Qiyamah", ayat: 40, pages: 1 },
+    { nama: "Al-Insan", ayat: 31, pages: 2 }, { nama: "Al-Mursalat", ayat: 50, pages: 1.5 },
+    // Juz 30
+    { nama: "An-Naba'", ayat: 40, pages: 1.5 }, { nama: "An-Nazi'at", ayat: 46, pages: 1.5 }, { nama: "'Abasa", ayat: 42, pages: 1 },
+    { nama: "At-Takwir", ayat: 29, pages: 1 }, { nama: "Al-Infitar", ayat: 19, pages: 0.8 }, { nama: "Al-Mutaffifin", ayat: 36, pages: 1.2 },
+    { nama: "Al-Insyiqaq", ayat: 25, pages: 1 }, { nama: "Al-Buruj", ayat: 22, pages: 1 }, { nama: "At-Tariq", ayat: 17, pages: 0.5 },
+    { nama: "Al-A'la", ayat: 19, pages: 0.5 }, { nama: "Al-Gasyiyah", ayat: 26, pages: 1 }, { nama: "Al-Fajr", ayat: 30, pages: 1 },
+    { nama: "Al-Balad", ayat: 20, pages: 0.5 }, { nama: "Asy-Syams", ayat: 15, pages: 0.5 }, { nama: "Al-Lail", ayat: 21, pages: 1 },
+    { nama: "Ad-Duha", ayat: 11, pages: 0.5 }, { nama: "Asy-Syarh", ayat: 8, pages: 0.2 }, { nama: "At-Tin", ayat: 8, pages: 0.3 },
+    { nama: "Al-'Alaq", ayat: 19, pages: 0.5 }, { nama: "Al-Qadr", ayat: 5, pages: 0.2 }, { nama: "Al-Bayyinah", ayat: 8, pages: 0.5 },
+    { nama: "Az-Zalzalah", ayat: 8, pages: 0.3 }, { nama: "Al-'Adiyat", ayat: 11, pages: 0.5 }, { nama: "Al-Qari'ah", ayat: 11, pages: 0.5 },
+    { nama: "At-Takasur", ayat: 8, pages: 0.3 }, { nama: "Al-'Asr", ayat: 3, pages: 0.2 }, { nama: "Al-Humazah", ayat: 9, pages: 0.3 },
+    { nama: "Al-Fil", ayat: 5, pages: 0.2 }, { nama: "Quraisy", ayat: 4, pages: 0.2 }, { nama: "Al-Ma'un", ayat: 7, pages: 0.3 },
+    { nama: "Al-Kausar", ayat: 3, pages: 0.2 }, { nama: "Al-Kafirun", ayat: 6, pages: 0.3 }, { nama: "An-Nasr", ayat: 3, pages: 0.2 },
+    { nama: "Al-Lahab", ayat: 5, pages: 0.2 }, { nama: "Al-Ikhlas", ayat: 4, pages: 0.2 }, { nama: "Al-Falaq", ayat: 5, pages: 0.2 },
+    { nama: "An-Nas", ayat: 6, pages: 0.3 }
+  ];
+
+
+
+  const el = (id) => document.getElementById(id);
+  const normal = (value) => String(value || "").trim().toLowerCase();
+  // Khusus pencocokan nama: toleran terhadap spasi ganda, apostrof lurus/melengkung,
+  // titik, dan perbedaan huruf besar-kecil di sumber data yang berbeda.
+  const normalNama = (value) => String(value || "")
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[’‘`´]/g, "'")
+    .toLowerCase()
+    .replace(/[^a-z0-9]/g, "");
+  const kosong = (value, pengganti = "-") => {
+    const text = String(value ?? "").trim();
+    return text ? text : pengganti;
+  };
+
+  function formatTanggal(value) {
+    if (!value) return "-";
+    const date = new Date(value.includes?.("T") ? value : `${value}T00:00:00`);
+    if (Number.isNaN(date.getTime())) return value;
+    return date.toLocaleDateString("id-ID", { day:"2-digit", month:"long", year:"numeric" });
+  }
+
+  function getTahunSaatIni() {
+    const now = new Date();
+    const y = now.getFullYear();
+    return now.getMonth() >= 6 ? `${y}/${y + 1}` : `${y - 1}/${y}`;
+  }
+
+  function setOptions(select, items, firstLabel, selectedValue = "") {
+    const values = [...new Set(items.filter(Boolean))];
+    select.innerHTML = `<option value="">${firstLabel}</option>` + values.map(v =>
+      `<option value="${escapeAttr(v)}">${escapeHtml(v)}</option>`
+    ).join("");
+    if (selectedValue && values.includes(selectedValue)) select.value = selectedValue;
+  }
+
+  function escapeHtml(value) {
+    return String(value ?? "")
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;");
+  }
+
+  function escapeAttr(value) {
+    return escapeHtml(value);
+  }
+
+  /*
+    SUMBER NILAI UAS
+    Data berasal dari: cahaya_app/nilai_ujian_bulanan
+    Kolom utama yang digunakan adalah `tanggal_ujian`, yaitu tanggal yang dipilih
+    saat guru menginput nilai. Nilai masuk ke e-Raport bila tanggal tersebut
+    berada pada 26 Juni sampai 02 Juli (inklusif) pada akhir tahun akademik.
+
+    `timestamp` dan Firebase Push ID hanya menjadi cadangan untuk data lama
+    yang belum memiliki `tanggal_ujian`.
+  */
+  const FIREBASE_PUSH_CHARS = "-0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ_abcdefghijklmnopqrstuvwxyz";
+
+  function parseTanggalNilai(value) {
+    if (value === null || value === undefined || value === "") return null;
+    if (value instanceof Date && !Number.isNaN(value.getTime())) return value;
+
+    if (typeof value === "number") {
+      const waktu = value < 100000000000 ? value * 1000 : value;
+      const date = new Date(waktu);
+      return Number.isNaN(date.getTime()) ? null : date;
+    }
+
+    const text = String(value).trim();
+    if (!text) return null;
+
+    // YYYY-MM-DD atau YYYY-MM-DDTHH:mm:ss dibuat sebagai waktu lokal agar tidak bergeser zona waktu.
+    const iso = text.match(/^(\d{4})-(\d{2})-(\d{2})(?:[T\s](\d{1,2}):(\d{2})(?::(\d{2}))?)?(?:\.\d+)?(?:Z|[+-]\d{2}:?\d{2})?$/);
+    if (iso) {
+      const [, tahun, bulan, hari, jam = "0", menit = "0", detik = "0"] = iso;
+      const date = new Date(Number(tahun), Number(bulan) - 1, Number(hari), Number(jam), Number(menit), Number(detik));
+      return Number.isNaN(date.getTime()) ? null : date;
+    }
+
+    // Dukungan format DD/MM/YYYY, DD-MM-YYYY, dan DD.MM.YYYY (opsional waktu).
+    const indo = text.match(/^(\d{1,2})[\/\-.](\d{1,2})[\/\-.](\d{4})(?:[ T](\d{1,2}):(\d{2})(?::(\d{2}))?)?$/);
+    if (indo) {
+      const [, hari, bulan, tahun, jam = "0", menit = "0", detik = "0"] = indo;
+      const date = new Date(Number(tahun), Number(bulan) - 1, Number(hari), Number(jam), Number(menit), Number(detik));
+      return Number.isNaN(date.getTime()) ? null : date;
+    }
+
+    const parsed = new Date(text);
+    return Number.isNaN(parsed.getTime()) ? null : parsed;
+  }
+
+  function tanggalDariFirebasePushId(id) {
+    const key = String(id || "");
+    if (key.length < 8) return null;
+
+    let timestamp = 0;
+    for (let i = 0; i < 8; i++) {
+      const index = FIREBASE_PUSH_CHARS.indexOf(key.charAt(i));
+      if (index < 0) return null;
+      timestamp = (timestamp * 64) + index;
+    }
+
+    const date = new Date(timestamp);
+    return Number.isNaN(date.getTime()) ? null : date;
+  }
+
+  function ambilTanggalUas(item) {
+    // `tanggal_ujian` dibuat langsung oleh halaman Input Nilai Ujian Bulanan.
+    const kolomTanggal = [
+      "tanggal_ujian", "tanggalUjian", "tanggal_input", "tanggalInput",
+      "tanggal_entri", "tanggalEntri", "waktu_input", "waktuInput",
+      "createdAt", "created_at", "timestamp", "dibuat_pada", "tanggal"
+    ];
+
+    for (const kolom of kolomTanggal) {
+      const date = parseTanggalNilai(item?.[kolom]);
+      if (date) return date;
+    }
+
+    return tanggalDariFirebasePushId(item?.id);
+  }
+
+  function tahunAkhirDariTahunAkademik(tahunAkademik) {
+    const match = String(tahunAkademik || "").match(/(\d{4})\s*\/\s*(\d{4})/);
+    return match ? Number(match[2]) : null;
+  }
+
+  function tahunAkhirAkademik() {
+    const dariPilihan = tahunAkhirDariTahunAkademik(el("tahunAkademik")?.value);
+    if (dariPilihan) return dariPilihan;
+
+    const now = new Date();
+    return now.getFullYear();
+  }
+
+  function rentangInputUasUntukTahun(tahunAkhir) {
+    return {
+      mulai: new Date(tahunAkhir, 5, 26, 0, 0, 0, 0),
+      selesai: new Date(tahunAkhir, 6, 2, 23, 59, 59, 999)
+    };
+  }
+
+  // Periode UAS ini bersifat TETAP sesuai keputusan pengguna. Jangan diturunkan dari
+  // tahun_akademik pada record, karena formulir input pada awal Juli dapat otomatis
+  // memberi tahun 2026/2027 meski nilai tersebut merupakan UAS akhir 2025/2026.
+  const PERIODE_UAS = Object.freeze({
+    mulai: new Date(2026, 5, 26, 0, 0, 0, 0),
+    selesai: new Date(2026, 6, 2, 23, 59, 59, 999)
+  });
+
+  function rentangInputUas() {
+    return PERIODE_UAS;
+  }
+
+  function getLabelRentangUas() {
+    const { mulai, selesai } = rentangInputUas();
+    const opsi = { day: "2-digit", month: "long", year: "numeric" };
+    return `${mulai.toLocaleDateString("id-ID", opsi)}–${selesai.toLocaleDateString("id-ID", opsi)}`;
+  }
+
+  function semuaTanggalUasKandidat(item) {
+    // Beberapa entri lama memiliki tanggal_ujian yang tidak diperbarui, sementara
+    // timestamp/Firebase Push ID menunjukkan waktu input sebenarnya. Semua kandidat
+    // dicek agar tidak ada mapel UAS yang hilang hanya karena satu kolom tanggal salah.
+    const kolomTanggal = [
+      "tanggal_ujian", "tanggalUjian", "tanggal_input", "tanggalInput",
+      "tanggal_entri", "tanggalEntri", "waktu_input", "waktuInput",
+      "createdAt", "created_at", "timestamp", "dibuat_pada", "tanggal"
+    ];
+    const hasil = [];
+    kolomTanggal.forEach(kolom => {
+      const tanggal = parseTanggalNilai(item?.[kolom]);
+      if (tanggal) hasil.push(tanggal);
+    });
+    const dariPushId = tanggalDariFirebasePushId(item?.id);
+    if (dariPushId) hasil.push(dariPushId);
+    return hasil;
+  }
+
+  function nilaiMasukRentangUas(item) {
+    const { mulai, selesai } = rentangInputUas();
+    return semuaTanggalUasKandidat(item).some(tanggal => tanggal >= mulai && tanggal <= selesai);
+  }
+
+  function getNilaiRaport() {
+    // Tidak memakai tahun_akademik/semester sebagai filter data. Keduanya sering
+    // otomatis berubah ketika input dilakukan di masa transisi tahun ajaran.
+    // Patokan tunggal adalah tanggal entri UAS yang telah ditetapkan.
+    return semuaNilai.filter(nilaiMasukRentangUas);
+  }
+
+  /*
+    NILAI EFEKTIF PER MAPEL
+    Satu siswa kadang memiliki sisa entri lama atau nilai 0 otomatis. Pada raport,
+    nilai manual terbaru harus menang dan nilai 0 otomatis tidak boleh ikut dirata-ratakan.
+  */
+  function isNilaiOtomatis(item) {
+    return item?.nilai_diisi_otomatis === true ||
+      String(item?.nilai_diisi_otomatis || "").trim().toLowerCase() === "true";
+  }
+
+  function waktuPerubahanNilai(item) {
+    const kolomWaktu = [
+      "updatedAt", "updated_at", "lastUpdated", "last_updated",
+      "tanggal_update", "tanggalUpdate", "timestamp", "createdAt", "created_at"
+    ];
+
+    for (const kolom of kolomWaktu) {
+      const tanggal = parseTanggalNilai(item?.[kolom]);
+      if (tanggal) return tanggal.getTime();
+    }
+
+    const dariPushId = tanggalDariFirebasePushId(item?.id);
+    return dariPushId ? dariPushId.getTime() : 0;
+  }
+
+  function kunciNilaiSantriMapel(item) {
+    return [
+      normalNama(item?.nama_santri),
+      normal(item?.kategori_halqah),
+      normal(item?.kelas_kelompok),
+      normal(item?.mata_pelajaran)
+    ].join("¦");
+  }
+
+  function bacaNilaiAkhir(item) {
+    // Mendukung beberapa nama kolom agar perubahan dari halaman edit nilai
+    // tetap langsung terbaca meskipun menggunakan format lama/baru.
+    const kandidatKolom = [
+      "nilai_total", "nilaiTotal", "nilai_akhir", "nilaiAkhir",
+      "nilai_final", "nilaiFinal", "total_nilai", "totalNilai", "nilai"
+    ];
+
+    for (const kolom of kandidatKolom) {
+      const value = item?.[kolom];
+      if (value === "" || value === null || value === undefined) continue;
+      const angka = Number(value);
+      if (Number.isFinite(angka)) return angka;
+    }
+
+    return 0;
+  }
+
+  function bandingkanRekamanNilai(a, b) {
+    // Manual selalu menang atas angka 0 yang dibuat otomatis oleh sistem.
+    const statusA = isNilaiOtomatis(a) ? 0 : 1;
+    const statusB = isNilaiOtomatis(b) ? 0 : 1;
+    if (statusA !== statusB) return statusB - statusA;
+
+    // Untuk dua data manual, pakai perubahan paling akhir.
+    const waktuA = waktuPerubahanNilai(a);
+    const waktuB = waktuPerubahanNilai(b);
+    if (waktuA !== waktuB) return waktuB - waktuA;
+
+    // Cadangan agar hasil tetap konsisten bila waktu sama.
+    return String(b?.id || "").localeCompare(String(a?.id || ""));
+  }
+
+  function ambilRekamanNilaiEfektif(namaSantri) {
+    const kelompokMapel = new Map();
+
+    getNilaiRaport()
+      .filter(item => namaSama(item?.nama_santri, namaSantri))
+      .forEach(item => {
+        const mapelKey = normal(item?.mata_pelajaran) || "tanpa-mapel";
+        if (!kelompokMapel.has(mapelKey)) kelompokMapel.set(mapelKey, []);
+        kelompokMapel.get(mapelKey).push(item);
+      });
+
+    return [...kelompokMapel.values()]
+      .map(daftar => daftar.sort(bandingkanRekamanNilai)[0])
+      .filter(Boolean);
+  }
+
+  /*
+    KELENGKAPAN NILAI 0
+    Bila pada satu kelas/kelompok sudah ada nilai suatu mata pelajaran, tetapi
+    ada anggota kelas yang belum memiliki entri sama sekali untuk mata pelajaran
+    tersebut, e-Raport mengisi nilai 0 di Firebase. Data 0 diberi penanda sistem
+    agar asal-usulnya tetap dapat diaudit.
+  */
+  function ambilAnggotaKelompokNilai(kategoriNama, kelasNama) {
+    const daftarHalqah = masterAkademik?.halqah || {};
+    const kategoriEntry = Object.entries(daftarHalqah)
+      .find(([namaKategori]) => normal(namaKategori) === normal(kategoriNama));
+    if (!kategoriEntry) return [];
+
+    const kelasEntry = Object.entries(kategoriEntry[1] || {})
+      .find(([namaKelas]) => normal(namaKelas) === normal(kelasNama));
+    return Array.isArray(kelasEntry?.[1]) ? kelasEntry[1].filter(Boolean) : [];
+  }
+
+  function kunciKelompokMapel(item) {
+    return [
+      normal(item?.kategori_halqah),
+      normal(item?.kelas_kelompok),
+      normal(item?.mata_pelajaran)
+    ].join("¦");
+  }
+
+  function buatPayloadNilaiNol(template, namaSantri) {
+    const payload = {
+      tahun_akademik: template?.tahun_akademik || el("tahunAkademik")?.value || "",
+      semester: template?.semester || "Genap",
+      bulan: template?.bulan || "",
+      nama_santri: namaSantri,
+      kategori_halqah: template?.kategori_halqah || "",
+      kelas_kelompok: template?.kelas_kelompok || "",
+      mata_pelajaran: template?.mata_pelajaran || "",
+      materi_ujian: template?.materi_ujian || "",
+      guru_penguji: template?.guru_penguji || "",
+      tanggal_ujian: template?.tanggal_ujian || "2026-07-02",
+      nilai_total: 0,
+      nilai_diisi_otomatis: true,
+      keterangan_sistem: "Nilai 0 dibuat otomatis oleh e-Raport karena nilai UAS mata pelajaran ini belum diinput, sementara teman sekelas sudah memiliki nilai.",
+      timestamp: new Date().toISOString()
+    };
+
+    Object.entries(template || {}).forEach(([key, value]) => {
+      if (key.startsWith("nilai_") && !["nilai_total", "nilai_diisi_otomatis"].includes(key)) {
+        payload[key] = 0;
+      }
+      if (key.startsWith("bobot_") && key.endsWith("_persen")) {
+        payload[key] = value;
+      }
+    });
+
+    return payload;
+  }
+
+  function cariNilaiKosongUntukDiisiNol() {
+    const grupMapel = new Map();
+
+    getNilaiRaport().forEach(item => {
+      if (!item?.nama_santri || !item?.kategori_halqah || !item?.kelas_kelompok || !item?.mata_pelajaran) return;
+
+      const key = kunciKelompokMapel(item);
+      if (!grupMapel.has(key)) {
+        grupMapel.set(key, {
+          template: item,
+          namaTerinput: new Set()
+        });
+      }
+      grupMapel.get(key).namaTerinput.add(normalNama(item.nama_santri));
+    });
+
+    const kandidat = [];
+    grupMapel.forEach(({ template, namaTerinput }) => {
+      const anggotaKelas = ambilAnggotaKelompokNilai(template.kategori_halqah, template.kelas_kelompok);
+      anggotaKelas.forEach(namaSantri => {
+        if (namaSantri && !namaTerinput.has(normalNama(namaSantri))) {
+          kandidat.push(buatPayloadNilaiNol(template, namaSantri));
+        }
+      });
+    });
+
+    return kandidat;
+  }
+
+  async function sinkronkanNilaiNolKePusat() {
+    if (sedangSinkronNilaiNol) return 0;
+
+    const kandidat = cariNilaiKosongUntukDiisiNol();
+    if (!kandidat.length) return 0;
+
+    sedangSinkronNilaiNol = true;
+    try {
+      const pembaruan = {};
+      kandidat.forEach(payload => {
+        const idBaru = push(ref(db, NILAI_PATH)).key;
+        pembaruan[`${NILAI_PATH}/${idBaru}`] = payload;
+      });
+      await update(ref(db), pembaruan);
+      return kandidat.length;
+    } catch (error) {
+      console.warn("Sinkronisasi nilai 0 tidak dapat dilakukan:", error);
+      return 0;
+    } finally {
+      sedangSinkronNilaiNol = false;
+    }
+  }
+
+  function perbaruiStatusSinkron(teks, status = "ok") {
+    const node = el("syncStatus");
+    if (!node) return;
+    node.className = `sync-status${status === "syncing" ? " is-syncing" : status === "error" ? " is-error" : ""}`;
+    node.textContent = teks;
+  }
+
+  function waktuSinkronSekarang() {
+    return new Date().toLocaleTimeString("id-ID", {
+      hour: "2-digit", minute: "2-digit", second: "2-digit"
+    });
+  }
+
+  function jadwalkanPerbaruiRaportNilai() {
+    clearTimeout(timerRenderNilai);
+    timerRenderNilai = setTimeout(() => {
+      perbaruiRaportNilaiRealtime();
+    }, 120);
+  }
+
+  function perbaruiRaportNilaiRealtime() {
+    perbaruiAuditNilai();
+
+    if (el("reportArea")?.style.display === "block") {
+      daftarRaportTampil.forEach(({ nama, paper }) => {
+        isiRaportKeElemen(paper, nama);
+        siapkanNomorHalamanCetak(paper);
+      });
+    }
+
+    perbaruiStatusSinkron(`Sinkronisasi realtime aktif • Nilai terakhir diperbarui ${waktuSinkronSekarang()}`);
+  }
+
+  function cariNilaiOtomatisTergantikan() {
+    const manual = new Set(
+      getNilaiRaport()
+        .filter(item => !isNilaiOtomatis(item))
+        .map(kunciNilaiSantriMapel)
+    );
+
+    return getNilaiRaport()
+      .filter(item => isNilaiOtomatis(item))
+      .filter(item => manual.has(kunciNilaiSantriMapel(item)))
+      .map(item => item?.id)
+      .filter(Boolean);
+  }
+
+  async function bersihkanNilaiOtomatisTergantikan() {
+    if (sedangBersihkanNilaiOtomatis) return 0;
+
+    const ids = cariNilaiOtomatisTergantikan();
+    if (!ids.length) return 0;
+
+    sedangBersihkanNilaiOtomatis = true;
+    try {
+      const pembaruan = {};
+      ids.forEach(id => {
+        pembaruan[`${NILAI_PATH}/${id}`] = null;
+      });
+      await update(ref(db), pembaruan);
+      return ids.length;
+    } catch (error) {
+      console.warn("Nilai 0 otomatis belum dapat dibersihkan:", error);
+      return 0;
+    } finally {
+      sedangBersihkanNilaiOtomatis = false;
+    }
+  }
+
+  async function prosesPembaruanNilai() {
+    perbaruiStatusSinkron("Menyinkronkan perubahan nilai dari Firebase...", "syncing");
+
+    // Jika nilai manual sudah diisi, hapus sisa nilai 0 otomatis agar tidak lagi
+    // bercampur atau menurunkan nilai di raport.
+    const jumlahDibersihkan = await bersihkanNilaiOtomatisTergantikan();
+    if (jumlahDibersihkan > 0) return;
+
+    // Pastikan anggota kelas yang benar-benar belum memiliki nilai tetap diberi 0.
+    const jumlahBaru = await sinkronkanNilaiNolKePusat();
+    if (jumlahBaru > 0) return;
+
+    jadwalkanPerbaruiRaportNilai();
+  }
+
+  async function tarikNilaiTerbaruDariPusat() {
+    try {
+      const snapshot = await get(query(ref(db, NILAI_PATH), orderByChild("tanggal_ujian"), limitToLast(2500)));
+      semuaNilai = Object.entries(snapshot.val() || {}).map(([id, value]) => ({ id, ...value }));
+      jadwalkanPerbaruiRaportNilai();
+    } catch (error) {
+      console.warn("Gagal mengambil pembaruan nilai terbaru:", error);
+      perbaruiStatusSinkron("Sinkronisasi nilai tertunda. Periksa koneksi.", "error");
+    }
+  }
+
+  function mulaiPantauNilaiRealtime() {
+    // Mode hemat bandwidth: e-Raport tidak lagi memasang listener pada seluruh
+    // node nilai dan tidak menarik ulang data setiap 30 detik. Pembaruan hanya
+    // dilakukan saat halaman kembali aktif setelah jeda minimal lima menit.
+    if (stopPantauNilai) return;
+    let terakhirTarik = Date.now();
+    const refreshTerbatas = () => {
+      if (document.hidden || Date.now() - terakhirTarik < 5 * 60 * 1000) return;
+      terakhirTarik = Date.now();
+      tarikNilaiTerbaruDariPusat();
+    };
+    window.addEventListener("focus", refreshTerbatas);
+    document.addEventListener("visibilitychange", refreshTerbatas);
+    stopPantauNilai = () => {
+      window.removeEventListener("focus", refreshTerbatas);
+      document.removeEventListener("visibilitychange", refreshTerbatas);
+    };
+  }
+
+
+  function dapatkanTahunUasTerakhir() {
+    const kandidat = new Map();
+
+    semuaNilai.forEach(item => {
+      if (!nilaiMasukRentangUas(item) || !item?.tahun_akademik) return;
+      const tahun = String(item.tahun_akademik).trim();
+      const tgl = ambilTanggalUas(item)?.getTime() || 0;
+      const data = kandidat.get(tahun) || { jumlah: 0, terbaru: 0 };
+      data.jumlah += 1;
+      data.terbaru = Math.max(data.terbaru, tgl);
+      kandidat.set(tahun, data);
+    });
+
+    return [...kandidat.entries()]
+      .sort((a, b) => b[1].terbaru - a[1].terbaru || b[1].jumlah - a[1].jumlah || b[0].localeCompare(a[0], "id", { numeric: true }))
+      .map(([tahun]) => tahun)[0] || "";
+  }
+
+  function tahunCocok(recordYear, chosenYear) {
+    return !chosenYear || normal(recordYear) === normal(chosenYear);
+  }
+
+  function semesterCocok(recordSemester, chosenSemester) {
+    return !chosenSemester || normal(recordSemester) === normal(chosenSemester);
+  }
+
+  function isiPilihanTahun() {
+    const daftar = new Set([getTahunSaatIni()]);
+    semuaNilai.forEach(n => { if (n.tahun_akademik) daftar.add(n.tahun_akademik); });
+    semuaAsesmen.forEach(a => { if (a?.periode?.tahunPelajaran) daftar.add(a.periode.tahunPelajaran); });
+
+    daftar.add("2025/2026");
+    const sorted = [...daftar].sort((a, b) => b.localeCompare(a, "id", { numeric:true }));
+    // Tahun ini adalah label raport, bukan lagi penyaring data nilai UAS.
+    setOptions(el("tahunAkademik"), sorted, "Semua Tahun Akademik", "2025/2026");
+  }
+
+  function perbaruiAuditNilai() {
+    const audit = el("dataAudit");
+    if (!audit) return;
+    const totalSumber = semuaNilai.length;
+    const totalUas = getNilaiRaport().length;
+    const tanggalTertulis = getLabelRentangUas();
+    audit.innerHTML = `<strong>Audit data nilai:</strong> ${totalUas} entri UAS terbaca dari ${totalSumber} entri Firebase. Patokan: tanggal ${tanggalTertulis}; seluruh kategori digabungkan saat raport ditampilkan.`;
+  }
+
+  function isiPilihanKategori() {
+    const kategoriMaster = Object.keys(masterAkademik.halqah || {});
+    const kategoriDariNilai = getNilaiRaport().map(n => n.kategori_halqah);
+    const selected = el("kategoriHalqah").value;
+    setOptions(el("kategoriHalqah"), [...kategoriMaster, ...kategoriDariNilai], "Semua Kategori", selected);
+  }
+
+  function isiPilihanKelas() {
+    const kategori = el("kategoriHalqah").value;
+    const current = el("kelasKelompok").value;
+    let kelas = [];
+
+    if (kategori && masterAkademik?.halqah?.[kategori]) {
+      kelas.push(...Object.keys(masterAkademik.halqah[kategori]));
+    }
+
+    const tahun = el("tahunAkademik").value;
+    kelas.push(...getNilaiRaport()
+      .filter(n => tahunCocok(n.tahun_akademik, tahun))
+      .filter(n => !kategori || n.kategori_halqah === kategori)
+      .map(n => n.kelas_kelompok)
+    );
+
+    setOptions(el("kelasKelompok"), kelas.sort((a,b) => String(a).localeCompare(String(b), "id")), "Semua Kelas / Kelompok", current);
+  }
+
+  function getNamaTersedia() {
+    const tahun = el("tahunAkademik").value;
+    const semester = el("semester").value;
+    const kategori = el("kategoriHalqah").value;
+    const kelas = el("kelasKelompok").value;
+    const adaFilterKelasAtauKategori = Boolean(kategori || kelas);
+
+    // Gunakan Map agar nama yang sama dari sumber berbeda tidak terduplikasi,
+    // tetapi pencocokan tetap toleran terhadap spasi/apostrof/huruf besar-kecil.
+    const namaTerpilih = new Map();
+    const tambahNama = (nama) => {
+      const namaAsli = String(nama || "").trim();
+      const kunci = normalNama(namaAsli);
+      if (namaAsli && kunci && !namaTerpilih.has(kunci)) namaTerpilih.set(kunci, namaAsli);
+    };
+
+    // 1) Ambil daftar anggota dari Master Akademik sesuai kategori DAN/ATAU kelas yang dipilih.
+    //    Bila kategori kosong tetapi kelas sudah dipilih, semua kategori yang memiliki nama kelas itu diperiksa.
+    Object.entries(masterAkademik?.halqah || {}).forEach(([namaKategori, daftarKelas]) => {
+      if (kategori && normal(namaKategori) !== normal(kategori)) return;
+
+      Object.entries(daftarKelas || {}).forEach(([namaKelas, daftarSantri]) => {
+        if (kelas && normal(namaKelas) !== normal(kelas)) return;
+        if (Array.isArray(daftarSantri)) daftarSantri.forEach(tambahNama);
+      });
+    });
+
+    // 2) Tambahkan nama yang ditemukan pada data nilai UAS sesuai filter kategori/kelas.
+    getNilaiRaport()
+      .filter(n => !kategori || normal(n.kategori_halqah) === normal(kategori))
+      .filter(n => !kelas || normal(n.kelas_kelompok) === normal(kelas))
+      .forEach(n => tambahNama(n.nama_santri));
+
+    // 3) Data asesmen memang tidak menyimpan kelas. Karena itu, ketika kategori atau kelas
+    //    sudah dipilih, asesmen hanya boleh menambahkan nama yang telah terbukti menjadi anggota
+    //    kelas/filter tersebut dari Master Akademik atau data nilai. Ini mencegah seluruh santri
+    //    ikut muncul hanya karena mereka mempunyai data asesmen.
+    semuaAsesmen
+      .filter(a => tahunCocok(a?.periode?.tahunPelajaran, tahun))
+      .filter(a => semesterCocok(a?.periode?.semester, semester))
+      .forEach(a => {
+        const namaAsesmen = a?.namaSantri;
+        const kunci = normalNama(namaAsesmen);
+        if (!namaAsesmen) return;
+        if (!adaFilterKelasAtauKategori || namaTerpilih.has(kunci)) tambahNama(namaAsesmen);
+      });
+
+    return [...namaTerpilih.values()]
+      .sort((a,b) => String(a).localeCompare(String(b), "id"));
+  }
+
+  const SEMUA_SANTRI_VALUE = "__SEMUA_SANTRI__";
+
+  function isiPilihanSantri() {
+    const select = el("namaSantri");
+    const current = select.value;
+    const daftarNama = getNamaTersedia();
+
+    select.innerHTML = `
+      <option value="">-- Pilih Santri --</option>
+      <option value="${SEMUA_SANTRI_VALUE}">Semua Santri (Kelas / Filter Terpilih)</option>
+      ${daftarNama.map(nama => `<option value="${escapeAttr(nama)}">${escapeHtml(nama)}</option>`).join("")}
+    `;
+
+    if (current === SEMUA_SANTRI_VALUE || daftarNama.includes(current)) {
+      select.value = current;
+    }
+  }
+
+  function getDaftarSantriSesuaiFilter() {
+    return getNamaTersedia().filter(nama => nama && nama !== SEMUA_SANTRI_VALUE);
+  }
+
+  function namaSama(a, b) {
+    return normalNama(a) === normalNama(b);
+  }
+
+  function cariKelasIlmiyah(namaSantri) {
+    const kandidatKategori = ["Halqah Ilmiyah", "Halqah Ilmiyyah"];
+    for (const kategori of kandidatKategori) {
+      const kelompok = masterAkademik?.halqah?.[kategori] || {};
+      for (const [kelas, daftarSantri] of Object.entries(kelompok)) {
+        if (Array.isArray(daftarSantri) && daftarSantri.some(item => namaSama(item, namaSantri))) {
+          return kelas;
+        }
+      }
+    }
+
+    const dataIlmiyah = getNilaiRaport()
+      .filter(n => namaSama(n.nama_santri, namaSantri))
+      .filter(n => ["halqah ilmiyah", "halqah ilmiyyah"].includes(normal(n.kategori_halqah)))
+      .map(n => n.kelas_kelompok)
+      .filter(Boolean);
+
+    return dataIlmiyah[0] || "-";
+  }
+
+  /*
+    DAFTAR SANTRI TETAP DI KELAS 2025/2026
+    ------------------------------------------------
+    Daftar ini bersifat final. Hanya nama yang tercantum
+    di bawah ini berstatus TETAP DI KELAS. Untuk santri lain, nilai 60–69
+    ditampilkan sebagai 70 pada e-Raport; nilai di bawah 60 tetap ditampilkan
+    apa adanya dan menjadikan status NAiK KELAS BERSYARAT.
+
+    Penting: penyesuaian ini hanya untuk NILAI TAMPILAN e-Raport, ranking,
+    rata-rata, dan keputusan kenaikan. Nilai mentah pada Firebase tidak diubah.
+  */
+  const DAFTAR_TETAP_DI_KELAS_RAPAT = [
+    "FAHRIE OKTAVIRANO FITRIS",
+    "TEGAR HIDAYAT",
+    "MOHAMMAD IKHSAN HAIRULI",
+    "ALVIN HERFIANTINO",
+    "CAHYIS ISZAM",
+    "FAHRY AKBAR RAMDHANI",
+    "DZIKRI MUDHOFFAR",
+    "FAUZAN IBNI JABAR",
+    "HADINATA SAPUTRA",
+    "IHZA TRINANDI",
+    "M. ALMISKY PRATAMA",
+    "M. AQIL RIDHO",
+    "M. YASIR AL FAZAR JHIRA",
+    "MIKO VAJAR",
+    "M. FAISAL FIKRIANSYAH",
+    "JUANDA NUR ILHAM",
+    "M. ARYA MAHDI WAFI EL-FAUZANI",
+    "M. DIRGATAMA",
+    "M. USAMAH"
+  ];
+
+  const SET_TETAP_DI_KELAS_RAPAT = new Set(
+    DAFTAR_TETAP_DI_KELAS_RAPAT.map(normalNama)
+  );
+
+  function termasukTetapKelasKeputusanRapat(namaSantri) {
+    return SET_TETAP_DI_KELAS_RAPAT.has(normalNama(namaSantri));
+  }
+
+  function nilaiTampilKeputusanRapat(namaSantri, nilaiAsli) {
+    const angka = Number(nilaiAsli);
+    if (!Number.isFinite(angka)) return 0;
+
+    // Nilai santri yang secara khusus ditetapkan tetap di kelas tidak disesuaikan.
+    if (termasukTetapKelasKeputusanRapat(namaSantri)) return angka;
+
+    // Untuk selain daftar tetap di kelas, nilai 60–69 ditingkatkan menjadi 70.
+    return angka >= 60 && angka < 70 ? 70 : angka;
+  }
+
+  function ambilNilaiSantri(namaSantri) {
+    // Sesudah nama dipilih, raport mengambil seluruh mapel lintas Halqah.
+    // Jika ada riwayat duplikat pada mapel yang sama, hanya nilai manual terakhir
+    // yang dipakai; nilai 0 otomatis tidak ikut memengaruhi hasil.
+    return ambilRekamanNilaiEfektif(namaSantri)
+      .map(item => {
+        const nilaiAsli = bacaNilaiAkhir(item);
+        const nilai = nilaiTampilKeputusanRapat(namaSantri, nilaiAsli);
+        return {
+          mapel: kosong(item?.mata_pelajaran, "Mata Pelajaran"),
+          nilai,
+          nilaiAsli,
+          nilaiDisesuaikan: nilai !== nilaiAsli,
+          materi: kosong(item?.materi_ujian, ""),
+          guru: kosong(item?.guru_penguji, ""),
+          kategori: item?.kategori_halqah || "",
+          kelas: item?.kelas_kelompok || "",
+          id: item?.id || ""
+        };
+      })
+      .sort((a, b) => a.mapel.localeCompare(b.mapel, "id"));
+  }
+
+  function ambilAsesmenSantri(namaSantri) {
+    const tahun = el("tahunAkademik").value;
+    const semester = el("semester").value;
+
+    return semuaAsesmen
+      .filter(a => namaSama(a.namaSantri, namaSantri))
+      .filter(a => tahunCocok(a?.periode?.tahunPelajaran, tahun))
+      .filter(a => semesterCocok(a?.periode?.semester, semester))
+      .sort((a,b) => new Date(b.tanggalAsesmen || b.timestamp || 0) - new Date(a.tanggalAsesmen || a.timestamp || 0))[0] || null;
+  }
+
+  function cariIndexSurat(nama) {
+    const bersih = value => String(value || "").toLowerCase().replace(/[^a-z0-9]/g, "");
+    const target = bersih(nama);
+    return quranDb.findIndex(surat => bersih(surat.nama) === target);
+  }
+
+  function kalkulasiCapaianTahfiz(arrAyat) {
+    let totalSurat = 0;
+    let totalHalaman = 0;
+
+    quranDb.forEach((surat, index) => {
+      const ayatTercapai = Number(arrAyat[index]) || 0;
+      if (ayatTercapai > 0) {
+        totalSurat += 1;
+        totalHalaman += (ayatTercapai / surat.ayat) * surat.pages;
+      }
+    });
+
+    return {
+      juz: (totalHalaman / 20).toFixed(2),
+      halaman: Math.round(totalHalaman),
+      surat: totalSurat
+    };
+  }
+
+  function jalankanParserSetoran(teksSetoran, arrayTarget) {
+    const bagian = String(teksSetoran || "").split(",");
+    bagian.forEach(raw => {
+      const part = raw.trim();
+      if (!part) return;
+
+      const rentangBanyak = part.match(/(.*?)\s*s\/d\s*(.*?)\s*\(Ayat\s*(\d+)\)/i);
+      if (rentangBanyak) {
+        const idxAwal = cariIndexSurat(rentangBanyak[1]);
+        const idxAkhir = cariIndexSurat(rentangBanyak[2]);
+        const ayatAkhir = parseInt(rentangBanyak[3], 10);
+        if (idxAwal !== -1 && idxAkhir !== -1 && ayatAkhir) {
+          const awal = Math.min(idxAwal, idxAkhir);
+          const akhir = Math.max(idxAwal, idxAkhir);
+          for (let i = awal; i < akhir; i++) arrayTarget[i] = quranDb[i].ayat;
+          arrayTarget[akhir] = Math.max(arrayTarget[akhir], ayatAkhir);
+        }
+        return;
+      }
+
+      const rentangTunggal = part.match(/(.*?)\s*\(\s*\d+\s*-\s*(\d+)\s*\)/i);
+      if (rentangTunggal) {
+        const idx = cariIndexSurat(rentangTunggal[1]);
+        const ayatAkhir = parseInt(rentangTunggal[2], 10);
+        if (idx !== -1 && ayatAkhir) arrayTarget[idx] = Math.max(arrayTarget[idx], ayatAkhir);
+      }
+    });
+  }
+
+  /*
+    SUMBER TAHFIZ
+    Data berasal dari: cahaya_app/setoran_tahfiz.
+    Seluruh setoran sejak awal dipakai, dengan batas terakhir 02 Juli pada akhir
+    tahun akademik yang dipilih. Kolom `tanggal` adalah tanggal setoran utama.
+  */
+  function ambilTanggalSetoranTahfiz(record) {
+    const kolomTanggal = [
+      "tanggal", "tanggal_setoran", "tanggalSetoran", "waktuSimpan", "timestamp", "createdAt"
+    ];
+
+    for (const kolom of kolomTanggal) {
+      const date = parseTanggalNilai(record?.[kolom]);
+      if (date) return date;
+    }
+
+    return tanggalDariFirebasePushId(record?.id);
+  }
+
+  function batasTahfizRaport() {
+    return new Date(2026, 6, 2, 23, 59, 59, 999);
+  }
+
+  function setoranTahfizMasukRaport(record) {
+    const tanggalSetoran = ambilTanggalSetoranTahfiz(record);
+    return !!tanggalSetoran && tanggalSetoran <= batasTahfizRaport();
+  }
+
+  function ambilDataTahfizSantri(namaSantri) {
+    const pencapaian = new Array(quranDb.length).fill(0);
+    let jumlahSetoran = 0;
+    const setoranCahaya = [];
+
+    semuaTahfiz.filter(setoranTahfizMasukRaport).forEach(record => {
+      const dataSetoran = Array.isArray(record.data) ? record.data : [];
+      dataSetoran.forEach(item => {
+        if (namaSama(item?.nama, namaSantri)) {
+          jalankanParserSetoran(item?.setoran || "", pencapaian);
+          jumlahSetoran += 1;
+
+          const keterangan = String(item?.keterangan || "").toLowerCase();
+          if (keterangan.includes("disetorkan beserta terjemah")) {
+            setoranCahaya.push({
+              setoran: String(item?.setoran || "").trim(),
+              tanggal: ambilTanggalSetoranTahfiz(record)
+            });
+          }
+        }
+      });
+    });
+
+    if (!jumlahSetoran) {
+      return {
+        hasData: false,
+        juz: "-", halaman: "-", surat: "-",
+        hasCahaya: false,
+        cahayaText: ""
+      };
+    }
+
+    const total = kalkulasiCapaianTahfiz(pencapaian);
+    const hasData = Number(total.surat) > 0 || Number(total.halaman) > 0 || Number(total.juz) > 0;
+    const rangkumanCahaya = [...new Set(setoranCahaya.map(item => item.setoran).filter(Boolean))];
+    const tampilRangkuman = rangkumanCahaya.slice(0, 3).join("; ");
+    const sisa = Math.max(0, rangkumanCahaya.length - 3);
+
+    return {
+      hasData,
+      ...total,
+      hasCahaya: setoranCahaya.length > 0,
+      cahayaText: setoranCahaya.length > 0
+        ? `${setoranCahaya.length} setoran terintegrasi. ${tampilRangkuman}${sisa ? `; dan ${sisa} setoran lainnya.` : ""}`
+        : ""
+    };
+  }
+
+  function isKelasPutri(kelasNama) {
+    const key = normal(kelasNama);
+    return /(putri|akhwat|banat|fatimah|aisyah|hafshah|khadijah|zainab|ruqayyah|ummu|asma|sumayyah|maimunah|saudah)/.test(key);
+  }
+
+  function ambilAnggotaKelasIlmiyah(kelasNama) {
+    const kandidatKategori = ["Halqah Ilmiyah", "Halqah Ilmiyyah"];
+    for (const kategori of kandidatKategori) {
+      const kelompok = masterAkademik?.halqah?.[kategori] || {};
+      if (Array.isArray(kelompok[kelasNama])) return kelompok[kelasNama];
+    }
+    return [];
+  }
+
+  function ambilNilaiSantriUntukRanking(namaSantri) {
+    const daftar = ambilNilaiSantri(namaSantri).map(item => Number(item.nilai) || 0);
+    return {
+      total: daftar.reduce((a, b) => a + b, 0),
+      rata: daftar.length ? daftar.reduce((a, b) => a + b, 0) / daftar.length : 0,
+      jumlahMapel: daftar.length
+    };
+  }
+
+  function ambilPeringkatKelas(kelasNama, currentSantri) {
+    const anggota = ambilAnggotaKelasIlmiyah(kelasNama);
+    let kandidat = anggota.length ? anggota.slice() : getNilaiRaport().filter(n => n.kelas_kelompok === kelasNama).map(n => n.nama_santri);
+    kandidat = [...new Set(kandidat.filter(Boolean))];
+
+    const ranking = kandidat.map(nama => {
+      const nilai = ambilNilaiSantriUntukRanking(nama);
+      return { nama, total: nilai.total, rata: nilai.rata, jumlahMapel: nilai.jumlahMapel };
+    }).filter(item => item.jumlahMapel > 0)
+      .sort((a,b) => b.total - a.total || b.rata - a.rata || b.jumlahMapel - a.jumlahMapel || a.nama.localeCompare(b.nama, "id"));
+
+    const currentRank = ranking.findIndex(item => namaSama(item.nama, currentSantri)) + 1;
+    const limit = isKelasPutri(kelasNama) ? 3 : 5;
+    return { ranking, topList: ranking.slice(0, limit), currentRank, total: ranking.length, limit };
+  }
+
+  function statusNilai(nilai) {
+    return nilai >= 70
+      ? '<span class="status-pass">Tuntas</span>'
+      : '<span class="status-remedial">Perlu Penguatan</span>';
+  }
+
+  let daftarRaportTampil = [];
+  let sedangRenderRaport = false;
+
+  function setText(scope, id, value) {
+    const node = scope.querySelector(`#${id}`);
+    if (node) node.textContent = kosong(value);
+  }
+
+  function tampilkanNilai(scope, list) {
+    const tbody = scope.querySelector("#rNilaiBody");
+    if (!tbody) return;
+
+    if (!list.length) {
+      tbody.innerHTML = `<tr><td colspan="5" style="text-align:center;color:#64748b;padding:16px">Belum ditemukan nilai UAS periode 26 Juni–02 Juli 2026 untuk santri ini.</td></tr>`;
+      setText(scope, "rRataRata", "-");
+      setText(scope, "rKKM", "70");
+      return;
+    }
+
+    const rata = list.reduce((sum, item) => sum + item.nilai, 0) / list.length;
+    setText(scope, "rRataRata", rata.toFixed(1));
+    setText(scope, "rKKM", "70");
+
+    tbody.innerHTML = list.map((item, index) => `
+      <tr>
+        <td class="center">${index + 1}</td>
+        <td><strong>${escapeHtml(item.mapel)}</strong></td>
+        <td class="center"><strong>${item.nilai.toFixed(1)}</strong></td>
+        <td class="center">${statusNilai(item.nilai)}</td>
+        <td>${escapeHtml(kosong(item.guru))}</td>
+      </tr>
+    `).join("");
+  }
+
+  const RANGKUMAN_WAFI = "Alhamdulillah, Wafi menunjukkan beberapa potensi baik selama semester ini, terutama dalam adab berinteraksi, kerapian diri, dan kemampuan menjaga hubungan yang cukup positif dengan teman maupun pendamping. Wafi dikenal santun, kooperatif, serta mampu menjaga sikap hormat dalam keseharian di asrama. Namun demikian, masih terdapat beberapa aspek yang perlu diperkuat, khususnya kedisiplinan ibadah berjamaah, ketepatan waktu dalam mengikuti halqah, konsistensi belajar di kelas, penyelesaian tugas, serta pola tidur yang lebih sehat. Wafi juga perlu terus dibimbing agar lebih terbuka saat menerima evaluasi dan mampu menyelesaikan tanggung jawab komunal tanpa harus selalu diingatkan. Dengan pendampingan yang konsisten, pendekatan yang persuasif, serta dukungan Ayah/Bunda selama masa liburan, insyaAllah Wafi dapat bertumbuh menjadi pribadi yang lebih disiplin, bertanggung jawab, dan optimal dalam mengembangkan potensi dirinya.";
+
+  // Koreksi khusus asesmen Naufal:
+  // Data lama sempat memuat nama Fahrie pada narasi Naufal. Fungsi ini hanya
+  // bekerja ketika raport yang sedang dibuka adalah Naufal, sehingga data Fahrie
+  // yang sebenarnya tidak ikut berubah.
+  function koreksiNamaNaufal(teks, namaSantri = "") {
+    if (!namaSama(namaSantri, "NAUFAL AKBAR ALKHATIRI")) return teks;
+
+    const gantiNama = (nilai) => String(nilai ?? "")
+      .replace(/\bFahrie\s+Oktavirano\s+Fitris\b/gi, "Naufal Akbar Alkhatiri")
+      .replace(/\bFahrie\b/gi, "Naufal");
+
+    return Array.isArray(teks) ? teks.map(gantiNama) : gantiNama(teks);
+  }
+
+  function tampilkanAsesmen(scope, asesmen, namaSantri = "") {
+    const info = scope.querySelector("#rAsesmenInfo");
+
+    if (!asesmen) {
+      if (info) info.textContent = "";
+      setText(scope, "rSpiritual", "-");
+      setText(scope, "rRelasional", "-");
+      setText(scope, "rEmosional", "-");
+      setText(scope, "rIntelektual", "-");
+      setText(scope, "rFisik", "-");
+      setText(scope, "rRangkuman", "-");
+      setText(scope, "rFokus", "-");
+      setText(scope, "rCatatanWali", "-");
+      setText(scope, "rNaqib", "................................................");
+      return;
+    }
+
+    const narasi = asesmen.narasi || {};
+    const tindak = asesmen.tindakLanjut || {};
+    if (info) info.textContent = "";
+
+    setText(scope, "rSpiritual", koreksiNamaNaufal(narasi.spiritual, namaSantri));
+    setText(scope, "rRelasional", koreksiNamaNaufal(narasi.relasional, namaSantri));
+    setText(scope, "rEmosional", koreksiNamaNaufal(narasi.emosional, namaSantri));
+    setText(scope, "rIntelektual", koreksiNamaNaufal(narasi.intelektual, namaSantri));
+    setText(scope, "rFisik", koreksiNamaNaufal(narasi.fisik, namaSantri));
+    const rangkumanWafi = namaSama(namaSantri, "M. ARYA MAHDI WAFI EL-FAUZANI")
+      ? RANGKUMAN_WAFI
+      : tindak.rangkumanSemesterIni;
+    setText(scope, "rRangkuman", koreksiNamaNaufal(rangkumanWafi, namaSantri));
+    const fokus = Array.isArray(tindak.fokusSemesterBerikutnya)
+      ? tindak.fokusSemesterBerikutnya.join(", ")
+      : tindak.fokusSemesterBerikutnya;
+    setText(scope, "rFokus", koreksiNamaNaufal(fokus, namaSantri));
+    setText(scope, "rCatatanWali", koreksiNamaNaufal(tindak.catatanWaliSantri, namaSantri));
+    setText(scope, "rNaqib", asesmen.namaNaqib || "................................................");
+  }
+
+  function tampilkanTahfiz(scope, dataTahfiz) {
+    const section = scope.querySelector("#rTahfizSection");
+    const hasData = !!dataTahfiz?.hasData;
+    if (section) section.hidden = !hasData;
+    if (!hasData) return;
+
+    setText(scope, "rTahfizJuz", dataTahfiz.juz);
+    setText(scope, "rTahfizHalaman", dataTahfiz.halaman);
+    setText(scope, "rTahfizSurat", dataTahfiz.surat);
+
+    const cahayaBox = scope.querySelector("#rTahfizCahayaBox");
+    if (cahayaBox) cahayaBox.hidden = !dataTahfiz.hasCahaya;
+    if (dataTahfiz.hasCahaya) setText(scope, "rTahfizCahayaText", dataTahfiz.cahayaText);
+  }
+
+  function tampilkanPeringkat(scope, dataRanking) {
+    const rankingBox = scope.querySelector("#rRankingBox");
+    const metaGrid = scope.querySelector("#rMetaGrid");
+    const berhakPeringkat = dataRanking.currentRank > 0 && dataRanking.currentRank <= dataRanking.limit;
+
+    if (rankingBox) rankingBox.hidden = !berhakPeringkat;
+    if (metaGrid) metaGrid.hidden = !berhakPeringkat;
+    if (!berhakPeringkat) return;
+
+    setText(scope, "rRankingBadge", dataRanking.limit === 3 ? "Top 3 Putri" : "Top 5 Kelas");
+    setText(scope, "rRankingPosisi", `#${dataRanking.currentRank}`);
+    setText(scope, "rRankingTotal", `Peringkat ${dataRanking.currentRank} dari ${dataRanking.total} santri`);
+  }
+
+  function tentukanKeputusanKenaikan(list, namaSantri = "") {
+    // Daftar tetap di kelas mengalahkan kriteria otomatis jumlah remedial.
+    if (termasukTetapKelasKeputusanRapat(namaSantri)) {
+      return {
+        status: "TETAP DI KELAS",
+        note: "Memerlukan pendampingan dan penguatan pembelajaran secara intensif pada tahun berikutnya.",
+        className: "decision-stay"
+      };
+    }
+
+    // Selain daftar tetap di kelas, seluruh santri
+    // dinyatakan naik kelas. Ketika data nilai belum tersedia, status tetap naik kelas dan
+    // tidak diubah menjadi "data belum lengkap".
+    if (!list.length) {
+      return {
+        status: "NAIK KELAS",
+        note: "Pertahankan dan Tingkatkan Prestasinya.",
+        className: "decision-up"
+      };
+    }
+
+    // Nilai 60–69 untuk santri selain daftar tetap di kelas telah ditampilkan
+    // sebagai 70. Karena itu hanya nilai asli/tampil di bawah 60 yang membuat
+    // status menjadi naik kelas bersyarat.
+    const diBawahEnamPuluh = list.filter(item => Number(item.nilai) < 60);
+    if (diBawahEnamPuluh.length) {
+      return {
+        status: "NAIK KELAS BERSYARAT",
+        note: `Wajib remidial pada ${diBawahEnamPuluh.length} mata pelajaran.`,
+        className: "decision-conditional"
+      };
+    }
+
+    return {
+      status: "NAIK KELAS",
+      note: "Pertahankan dan Tingkatkan Prestasinya.",
+      className: "decision-up"
+    };
+  }
+
+  function siapkanNomorHalamanCetak(paper) {
+    const host = paper?.querySelector("#printPageNumbers");
+    if (!paper || !host) return;
+    host.innerHTML = "";
+
+    const pxPerMm = 96 / 25.4;
+    const pageContentHeight = (297 - 17) * pxPerMm;
+    const totalHeight = paper.scrollHeight;
+    const totalPages = Math.max(1, Math.ceil(totalHeight / pageContentHeight));
+
+    for (let i = 1; i <= totalPages; i++) {
+      const node = document.createElement("div");
+      node.className = "page-print-number";
+      node.textContent = `Halaman ${i} / ${totalPages}`;
+      node.style.top = `${(i * pageContentHeight) - 22}px`;
+      host.appendChild(node);
+    }
+  }
+
+  function isiRaportKeElemen(paper, nama) {
+    const daftarNilai = ambilNilaiSantri(nama);
+    const asesmen = ambilAsesmenSantri(nama);
+    const kelasIlmiyah = cariKelasIlmiyah(nama);
+    const keputusan = tentukanKeputusanKenaikan(daftarNilai, nama);
+    const dataTahfiz = ambilDataTahfizSantri(nama);
+    const dataRanking = ambilPeringkatKelas(kelasIlmiyah, nama);
+
+    setText(paper, "rNama", nama);
+    setText(paper, "rTahun", el("tahunAkademik").value || "-");
+    setText(paper, "rSemester", "Genap");
+    setText(paper, "rKelas", kelasIlmiyah);
+    setText(paper, "rNaqibRole", isKelasPutri(kelasIlmiyah) ? "Naqibah" : "Naqib");
+
+    tampilkanNilai(paper, daftarNilai);
+    tampilkanTahfiz(paper, dataTahfiz);
+    tampilkanPeringkat(paper, dataRanking);
+    tampilkanAsesmen(paper, asesmen, nama);
+
+    const decisionCard = paper.querySelector("#rKeputusanCard");
+    if (decisionCard) decisionCard.className = `summary-card decision-card ${keputusan.className}`;
+    setText(paper, "rKeputusanStatus", keputusan.status);
+    setText(paper, "rKeputusanNote", keputusan.note);
+
+    setText(
+      paper,
+      "rTanggalCetak",
+      `Dicetak pada ${new Date().toLocaleDateString("id-ID", { day:"2-digit", month:"long", year:"numeric" })}`
+    );
+  }
+
+  function buatElemenRaport(nama) {
+    const template = el("reportTemplate");
+    const paper = template?.content?.firstElementChild?.cloneNode(true);
+    if (!paper) return null;
+    isiRaportKeElemen(paper, nama);
+    return paper;
+  }
+
+  function jedaFrame() {
+    return new Promise(resolve => requestAnimationFrame(resolve));
+  }
+
+  async function tampilkanRaport() {
+    if (sedangRenderRaport) return;
+
+    const pilihanNama = el("namaSantri").value;
+    const daftarNama = pilihanNama === SEMUA_SANTRI_VALUE
+      ? getDaftarSantriSesuaiFilter()
+      : (pilihanNama ? [pilihanNama] : []);
+
+    if (!daftarNama.length) {
+      alert(pilihanNama === SEMUA_SANTRI_VALUE
+        ? "Belum ditemukan santri sesuai filter yang dipilih."
+        : "Pilih nama santri terlebih dahulu.");
+      return;
+    }
+
+    sedangRenderRaport = true;
+    el("btnTampilkan").disabled = true;
+    el("btnCetak").disabled = true;
+    el("loadingOverlay").style.display = "flex";
+    el("loadingOverlay").querySelector(".loader-box").textContent =
+      `Menyiapkan e-Raport 0 dari ${daftarNama.length} santri...`;
+
+    const reportList = el("reportList");
+    reportList.innerHTML = "";
+    daftarRaportTampil = [];
+    el("reportArea").style.display = "block";
+
+    try {
+      for (let index = 0; index < daftarNama.length; index++) {
+        const nama = daftarNama[index];
+        const paper = buatElemenRaport(nama);
+        if (paper) {
+          reportList.appendChild(paper);
+          daftarRaportTampil.push({ nama, paper });
+        }
+
+        if (index % 3 === 2 || index === daftarNama.length - 1) {
+          el("loadingOverlay").querySelector(".loader-box").textContent =
+            `Menyiapkan e-Raport ${index + 1} dari ${daftarNama.length} santri...`;
+          await jedaFrame();
+        }
+      }
+
+      daftarRaportTampil.forEach(({ paper }) => siapkanNomorHalamanCetak(paper));
+      el("placeholderArea").style.display = "none";
+      el("btnCetak").disabled = daftarRaportTampil.length === 0;
+      window.scrollTo({ top: el("reportArea").offsetTop - 10, behavior: "smooth" });
+    } catch (error) {
+      console.error(error);
+      alert("Terjadi kendala saat menampilkan e-Raport: " + error.message);
+    } finally {
+      sedangRenderRaport = false;
+      el("btnTampilkan").disabled = false;
+      el("loadingOverlay").style.display = "none";
+    }
+  }
+
+  async function muatTahfizLatar() {
+    try {
+      const tahunValue = String(el("tahunAkademik")?.value || "2025/2026");
+      const tahunAwal = Number((tahunValue.match(/\d{4}/) || ["2025"])[0]);
+      const mulai = `${tahunAwal}-07-01`;
+      const selesai = `${tahunAwal + 1}-07-02`;
+      const snapshot = await get(query(
+        ref(db, "cahaya_app/setoran_tahfiz"),
+        orderByChild("tanggal"),
+        startAt(mulai),
+        endAt(selesai),
+        limitToLast(2500)
+      ));
+      semuaTahfiz = Object.entries(snapshot.val() || {}).map(([id, value]) => ({ id, ...value }));
+
+      // Perbarui ringkasan tahfiz seluruh raport yang sedang ditampilkan.
+      daftarRaportTampil.forEach(({ nama, paper }) => {
+        tampilkanTahfiz(paper, ambilDataTahfizSantri(nama));
+        siapkanNomorHalamanCetak(paper);
+      });
+    } catch (error) {
+      console.warn("Data tahfiz belum dapat dimuat:", error);
+      semuaTahfiz = [];
+    }
+  }
+
+  async function muatData() {
+    el("loadingOverlay").style.display = "flex";
+    try {
+      // Hanya data inti yang memengaruhi pembukaan halaman dimuat di tahap awal.
+      const [masterSnap, nilaiSnap, asesmenSnap] = await Promise.all([
+        get(ref(db, "cahaya_app/master_akademik")),
+        get(query(ref(db, NILAI_PATH), orderByChild("tanggal_ujian"), limitToLast(2500))),
+        get(ref(db, "cahaya_app/asesmen_akhir_semester"))
+      ]);
+
+      masterAkademik = masterSnap.val() || {};
+      semuaNilai = Object.entries(nilaiSnap.val() || {}).map(([id, value]) => ({ id, ...value }));
+      semuaAsesmen = Object.entries(asesmenSnap.val() || {}).map(([id, value]) => ({ id, ...value }));
+
+      isiPilihanTahun();
+      el("semester").value = "Genap";
+      isiPilihanKategori();
+      isiPilihanKelas();
+      isiPilihanSantri();
+      perbaruiAuditNilai();
+
+      daftarRaportTampil = [];
+      el("reportList").innerHTML = "";
+      el("reportArea").style.display = "none";
+      el("btnCetak").disabled = true;
+
+      const jumlahNilaiRaport = getNilaiRaport().length;
+      if (!jumlahNilaiRaport) {
+        el("placeholderArea").innerHTML = "Belum ada data <strong>nilai UAS periode 26 Juni–02 Juli 2026</strong> pada database. Asesmen akhir semester tetap dapat dilihat bila tersedia.";
+      }
+    } catch (error) {
+      console.error(error);
+      alert("Gagal memuat data e-Raport: " + error.message);
+      el("placeholderArea").innerHTML = "Terjadi kendala saat mengambil data dari Firebase. Periksa koneksi dan aturan akses database.";
+    } finally {
+      // Overlay selalu dilepas agar halaman tetap dapat dipakai meski data tambahan belum siap.
+      el("loadingOverlay").style.display = "none";
+      muatTahfizLatar();
+      mulaiPantauNilaiRealtime();
+    }
+  }
+
+  el("tahunAkademik").addEventListener("change", () => {
+    isiPilihanKelas();
+    isiPilihanSantri();
+    perbaruiAuditNilai();
+  });
+  el("semester").addEventListener("change", () => {
+    isiPilihanSantri();
+    perbaruiAuditNilai();
+  });
+  el("kategoriHalqah").addEventListener("change", () => {
+    isiPilihanKelas();
+    isiPilihanSantri();
+    perbaruiAuditNilai();
+  });
+  el("kelasKelompok").addEventListener("change", () => {
+    isiPilihanSantri();
+    perbaruiAuditNilai();
+  });
+  el("btnTampilkan").addEventListener("click", tampilkanRaport);
+  el("btnCetak").addEventListener("click", () => window.print());
+  el("btnMuatUlang").addEventListener("click", muatData);
+  window.addEventListener("beforeprint", () => {
+    daftarRaportTampil.forEach(({ paper }) => siapkanNomorHalamanCetak(paper));
+  });
+  window.addEventListener("resize", () => {
+    if (el("reportArea").style.display === "block") {
+      daftarRaportTampil.forEach(({ paper }) => siapkanNomorHalamanCetak(paper));
+    }
+  });
+
+  muatData();
+</script>
+</body>
+</html>

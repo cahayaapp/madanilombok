@@ -1,0 +1,190 @@
+{
+  "rules": {
+    "cahaya_app": {
+      "absensi_program_harian": {
+        ".indexOn": [
+          "tanggal"
+        ]
+      },
+      "absensi_pembelajaran": {
+        ".indexOn": [
+          "tanggal"
+        ]
+      },
+      "setoran_tahfiz": {
+        ".indexOn": [
+          "tanggal"
+        ]
+      },
+      "nilai_ujian_bulanan": {
+        ".indexOn": [
+          "tanggal_ujian"
+        ]
+      },
+      "nilai_ujian": {
+        ".indexOn": [
+          "tanggal"
+        ]
+      },
+      "asesmen_cahaya_santri": {
+        ".indexOn": [
+          "tanggalAsesmen"
+        ]
+      },
+      "log_lapor_inisiatif": {
+        ".indexOn": [
+          "tanggal"
+        ]
+      },
+      "poin_manual": {
+        ".indexOn": [
+          "tanggal"
+        ]
+      },
+      "laporan_penindakan": {
+        ".indexOn": [
+          "tanggalPenindakan"
+        ]
+      },
+      "pemeriksaan_kesehatan": {
+        ".indexOn": [
+          "tanggalPemeriksaan"
+        ]
+      },
+      "perizinan_santri": {
+        ".indexOn": [
+          "tanggalPengajuan"
+        ]
+      },
+      "perizinan_ringkas": {
+        ".indexOn": [
+          "tanggalPengajuan",
+          "status",
+          "sumberPengajuan"
+        ]
+      },
+      "jurnal_piket_naqib": {
+        ".indexOn": [
+          "tanggal"
+        ]
+      },
+      "jurnal_kesehatan": {
+        ".indexOn": [
+          "tanggal"
+        ]
+      },
+      "jurnal_sarpras": {
+        ".indexOn": [
+          "tanggal"
+        ]
+      },
+      "jurnal_sarpras_harian": {
+        ".indexOn": [
+          "tanggal"
+        ]
+      },
+      "jurnal_keamanan_kebersihan": {
+        ".indexOn": [
+          "tanggal"
+        ]
+      },
+      "checklist_harian_sarpras": {
+        ".indexOn": [
+          "tanggal"
+        ]
+      },
+      "tindak_lanjut_sarpras": {
+        ".indexOn": [
+          "tanggalTindakan",
+          "status"
+        ]
+      },
+      "tindak_lanjut_sdm": {
+        ".indexOn": [
+          "tanggal",
+          "namaSDM"
+        ]
+      },
+      "keuangan": {
+        "transaksi_kantin": {
+          ".indexOn": [
+            "tanggal",
+            "santriKey",
+            "kasirKey"
+          ]
+        },
+        "pembayaran": {
+          ".indexOn": [
+            "tanggal",
+            "santriKey"
+          ]
+        }
+      },
+      "wali_index": {
+        "$santriKey": {
+          "program": {
+            ".indexOn": [
+              "tanggal"
+            ]
+          },
+          "pembelajaran": {
+            ".indexOn": [
+              "tanggal"
+            ]
+          },
+          "tahfiz": {
+            ".indexOn": [
+              "tanggal"
+            ]
+          },
+          "nilai_bulanan": {
+            ".indexOn": [
+              "tanggal_ujian"
+            ]
+          },
+          "asesmen": {
+            ".indexOn": [
+              "tanggalAsesmen"
+            ]
+          },
+          "laporan": {
+            ".indexOn": [
+              "tanggal"
+            ]
+          },
+          "poin_manual": {
+            ".indexOn": [
+              "tanggal"
+            ]
+          },
+          "penindakan": {
+            ".indexOn": [
+              "tanggalPenindakan"
+            ]
+          },
+          "kesehatan": {
+            ".indexOn": [
+              "tanggalPemeriksaan"
+            ]
+          },
+          "perizinan": {
+            ".indexOn": [
+              "tanggalPengajuan"
+            ]
+          }
+        }
+      },
+      "evaluasi_bulanan_naqib": {
+        ".indexOn": [
+          "namaSantri"
+        ]
+      }
+    },
+    "observasi_lapangan": {
+      ".indexOn": [
+        "tanggal",
+        "jenis"
+      ]
+    }
+  }
+}

@@ -1,0 +1,1664 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <!-- CAHAYA WHITE-LABEL CONFIG -->
+  <script src="../config/tenant-config.js"></script>
+  <script src="../config/master-data.js"></script>
+  <script src="../js/cahaya-config-runtime.js" defer></script>
+
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Manajemen Usrah | CAHAYA APP</title>
+
+  <link rel="stylesheet" href="../css/cahaya-theme.css" />
+
+  <style>
+    :root {
+      --mu-primary: var(--primary, #2878ff);
+      --mu-primary-dark: var(--primary-dark, #1557d5);
+      --mu-cyan: var(--cyan, #19c6e6);
+      --mu-green: var(--green, #25b983);
+      --mu-red: #ef5b67;
+      --mu-amber: #f5a524;
+      --mu-heading: var(--text-heading, #16264a);
+      --mu-text: var(--text-main, #34435f);
+      --mu-muted: var(--text-muted, #7b89a4);
+      --mu-border: var(--border, #e2eaf5);
+      --mu-soft: #f6f9ff;
+      --mu-shadow: 0 18px 48px rgba(35, 78, 160, 0.11);
+    }
+
+    * { box-sizing: border-box; }
+
+    html,
+    body {
+      width: 100%;
+      min-height: 100%;
+      margin: 0;
+      overflow-x: hidden;
+    }
+
+    body {
+      padding: 18px;
+      color: var(--mu-text);
+      font-family: "Nunito", "Poppins", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background:
+        radial-gradient(circle at 0 0, rgba(25, 198, 230, 0.12), transparent 29%),
+        radial-gradient(circle at 100% 0, rgba(118, 103, 245, 0.08), transparent 24%),
+        linear-gradient(180deg, #f4f8ff 0%, #fbfcff 100%);
+    }
+
+    button,
+    input,
+    select { font: inherit; }
+
+    button { -webkit-tap-highlight-color: transparent; }
+
+    .cahaya-container {
+      width: 100%;
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 0 !important;
+      animation: pageIn 0.38s ease both;
+    }
+
+    @keyframes pageIn {
+      from { opacity: 0; transform: translateY(9px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .workspace-card {
+      display: grid;
+      grid-template-columns: 330px minmax(0, 1fr);
+      min-height: min(760px, calc(100vh - 36px));
+      overflow: hidden;
+      border: 1px solid rgba(221, 231, 245, 0.95);
+      border-radius: 25px;
+      background: rgba(255, 255, 255, 0.97);
+      box-shadow: var(--mu-shadow);
+    }
+
+    .control-panel {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      gap: 22px;
+      padding: 28px;
+      overflow: hidden;
+      border-right: 1px solid #e8eef7;
+      background:
+        radial-gradient(circle at 0 0, rgba(25, 198, 230, 0.11), transparent 29%),
+        linear-gradient(180deg, #f7faff 0%, #f2f7ff 100%);
+    }
+
+    .control-panel::after {
+      content: "";
+      position: absolute;
+      width: 170px;
+      height: 170px;
+      right: -92px;
+      bottom: -92px;
+      border: 34px solid rgba(40, 120, 255, 0.05);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+
+    .control-section,
+    .sync-note {
+      position: relative;
+      z-index: 1;
+    }
+
+    .field-label {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 9px;
+      color: var(--mu-heading);
+      font-size: 0.72rem;
+      font-weight: 900;
+      letter-spacing: 0.15px;
+    }
+
+    .field-label .label-icon {
+      width: 29px;
+      height: 29px;
+      display: grid;
+      place-items: center;
+      border-radius: 10px;
+      background: #eaf3ff;
+    }
+
+    .form-control {
+      width: 100%;
+      min-height: 49px;
+      padding: 11px 14px !important;
+      color: var(--mu-text) !important;
+      font-size: 0.82rem !important;
+      font-weight: 750;
+      outline: none;
+      border: 1.5px solid #dce6f3 !important;
+      border-radius: 14px !important;
+      background: rgba(255, 255, 255, 0.96) !important;
+      transition: 0.2s ease !important;
+    }
+
+    .form-control:hover {
+      border-color: #c4d5ec !important;
+      background: #fff !important;
+    }
+
+    .form-control:focus {
+      border-color: var(--mu-primary) !important;
+      background: #fff !important;
+      box-shadow: 0 0 0 4px rgba(40, 120, 255, 0.1) !important;
+    }
+
+    .group-actions {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 9px;
+      margin-top: 11px;
+    }
+
+    .mini-action {
+      min-height: 43px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 9px 8px;
+      color: var(--mu-heading);
+      font-size: 0.66rem;
+      font-weight: 900;
+      cursor: pointer;
+      border: 1px solid #dbe6f4;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.92);
+      transition: 0.18s ease;
+    }
+
+    .mini-action svg {
+      width: 15px;
+      height: 15px;
+      flex: 0 0 15px;
+      stroke-width: 2.25;
+    }
+
+    .mini-action:hover {
+      transform: translateY(-1px);
+      background: #fff;
+      box-shadow: 0 8px 18px rgba(40, 120, 255, 0.09);
+    }
+
+    .mini-action.add:hover {
+      color: #16835b;
+      border-color: #bde7d7;
+    }
+
+    .mini-action.edit:hover {
+      color: #b66b00;
+      border-color: #f3d8a2;
+    }
+
+    .mini-action.delete:hover {
+      color: #d9424f;
+      border-color: #f5c0c5;
+    }
+
+    .soft-divider {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, #dce6f3 14%, #dce6f3 86%, transparent);
+    }
+
+    .add-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    #inputNamaBaru { text-transform: uppercase; }
+
+    .btn-primary,
+    .btn-save {
+      min-height: 50px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      padding: 12px 18px;
+      color: #fff;
+      font-size: 0.78rem;
+      font-weight: 900;
+      cursor: pointer;
+      border: none;
+      border-radius: 14px;
+      background: linear-gradient(135deg, var(--mu-primary), var(--mu-cyan));
+      box-shadow: 0 11px 24px rgba(40, 120, 255, 0.22);
+      transition: 0.2s ease;
+    }
+
+    .btn-primary:hover,
+    .btn-save:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 14px 28px rgba(40, 120, 255, 0.28);
+    }
+
+    .btn-primary:disabled,
+    .btn-save:disabled {
+      opacity: 0.58;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+    }
+
+    .btn-primary svg,
+    .btn-save svg {
+      width: 18px;
+      height: 18px;
+      stroke-width: 2.4;
+    }
+
+    .sync-note {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      margin-top: auto;
+      padding: 13px;
+      color: #64748f;
+      font-size: 0.68rem;
+      font-weight: 700;
+      line-height: 1.55;
+      border: 1px solid #dfe8f5;
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.76);
+    }
+
+    .sync-dot {
+      width: 9px;
+      height: 9px;
+      flex: 0 0 9px;
+      margin-top: 3px;
+      border-radius: 50%;
+      background: var(--mu-green);
+      box-shadow: 0 0 0 4px rgba(37, 185, 131, 0.12);
+    }
+
+    .member-panel {
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      padding: 28px;
+      background: #fff;
+    }
+
+    .list-toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      margin-bottom: 16px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid #e9eef7;
+    }
+
+    .list-heading {
+      min-width: 0;
+    }
+
+    .list-eyebrow {
+      display: block;
+      margin-bottom: 4px;
+      color: var(--mu-primary);
+      font-size: 0.61rem;
+      font-weight: 950;
+      letter-spacing: 0.75px;
+      text-transform: uppercase;
+    }
+
+    #currentUsrahLabel {
+      display: block;
+      overflow: hidden;
+      color: var(--mu-heading);
+      font-size: clamp(1.18rem, 2.8vw, 1.5rem);
+      font-weight: 950;
+      line-height: 1.25;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .count-pill {
+      flex: 0 0 auto;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 8px 12px;
+      color: var(--mu-primary-dark);
+      font-size: 0.68rem;
+      font-weight: 900;
+      border: 1px solid #d5e5fb;
+      border-radius: 999px;
+      background: #edf5ff;
+    }
+
+    .count-pill strong { font-size: 0.9rem; }
+
+    .search-wrap {
+      position: relative;
+      margin-bottom: 15px;
+    }
+
+    .search-wrap svg {
+      position: absolute;
+      top: 50%;
+      left: 15px;
+      width: 18px;
+      height: 18px;
+      color: #8a99b4;
+      transform: translateY(-50%);
+      pointer-events: none;
+    }
+
+    .search-input {
+      padding-left: 44px !important;
+      background: #f8faff !important;
+    }
+
+    .santri-list {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      align-content: start;
+      gap: 10px;
+      min-height: 180px;
+      margin-bottom: 18px;
+    }
+
+    .santri-item {
+      min-width: 0;
+      display: grid;
+      grid-template-columns: 38px minmax(0, 1fr) auto;
+      gap: 11px;
+      align-items: center;
+      padding: 11px 11px 11px 10px;
+      border: 1px solid #e2eaf5;
+      border-radius: 14px;
+      background: linear-gradient(180deg, #ffffff, #fbfdff);
+      transition: 0.18s ease;
+    }
+
+    .santri-item:hover {
+      border-color: #bad4f5;
+      background: #f7fbff;
+      box-shadow: 0 8px 20px rgba(40, 120, 255, 0.08);
+      transform: translateY(-1px);
+    }
+
+    .santri-number {
+      width: 38px;
+      height: 38px;
+      display: grid;
+      place-items: center;
+      color: var(--mu-primary-dark);
+      font-size: 0.7rem;
+      font-weight: 950;
+      border-radius: 12px;
+      background: #edf5ff;
+    }
+
+    .santri-name {
+      min-width: 0;
+      overflow: hidden;
+      color: var(--mu-heading);
+      font-size: 0.74rem;
+      font-weight: 850;
+      line-height: 1.4;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .member-actions {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .btn-move-member,
+    .btn-delete-member {
+      width: 34px;
+      height: 34px;
+      display: grid;
+      place-items: center;
+      padding: 0;
+      color: #c64b56;
+      cursor: pointer;
+      border: 1px solid #f2cfd3;
+      border-radius: 10px;
+      background: #fff5f6;
+      transition: 0.18s ease;
+    }
+
+    .btn-move-member {
+      color: var(--mu-primary-dark);
+      border: 1px solid #cfe0f7;
+      background: #eef6ff;
+    }
+
+    .btn-move-member svg,
+    .btn-delete-member svg {
+      width: 15px;
+      height: 15px;
+      stroke-width: 2.3;
+    }
+
+    .btn-move-member:hover {
+      color: #fff;
+      border-color: var(--mu-primary);
+      background: var(--mu-primary);
+      transform: scale(1.04);
+    }
+
+    .btn-delete-member:hover {
+      color: #fff;
+      border-color: var(--mu-red);
+      background: var(--mu-red);
+      transform: scale(1.04);
+    }
+
+    .empty-state {
+      grid-column: 1 / -1;
+      min-height: 210px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 24px;
+      color: var(--mu-muted);
+      text-align: center;
+      border: 1.5px dashed #d7e3f2;
+      border-radius: 17px;
+      background: #f9fbff;
+    }
+
+    .empty-icon {
+      width: 54px;
+      height: 54px;
+      display: grid;
+      place-items: center;
+      color: var(--mu-primary-dark);
+      font-size: 1.4rem;
+      border-radius: 18px;
+      background: #eaf3ff;
+    }
+
+    .empty-state strong {
+      color: var(--mu-heading);
+      font-size: 0.83rem;
+      font-weight: 900;
+    }
+
+    .empty-state span {
+      max-width: 320px;
+      font-size: 0.69rem;
+      font-weight: 650;
+      line-height: 1.55;
+    }
+
+    .save-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-top: auto;
+      padding-top: 17px;
+      border-top: 1px solid #e9eef7;
+    }
+
+    .save-status {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      color: var(--mu-muted);
+      font-size: 0.68rem;
+      font-weight: 750;
+    }
+
+    .save-status::before {
+      content: "";
+      width: 9px;
+      height: 9px;
+      flex: 0 0 9px;
+      border-radius: 50%;
+      background: #aab6ca;
+    }
+
+    .save-status.dirty {
+      color: #b36b00;
+    }
+
+    .save-status.dirty::before {
+      background: var(--mu-amber);
+      box-shadow: 0 0 0 4px rgba(245, 165, 36, 0.12);
+    }
+
+    .save-status.saved {
+      color: #18815d;
+    }
+
+    .save-status.saved::before {
+      background: var(--mu-green);
+      box-shadow: 0 0 0 4px rgba(37, 185, 131, 0.12);
+    }
+
+    .btn-save {
+      min-width: 220px;
+    }
+
+    .loading-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 3000;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      padding: 24px;
+      color: var(--mu-heading);
+      text-align: center;
+      background: rgba(246, 249, 255, 0.95);
+      backdrop-filter: blur(10px);
+      transition: 0.35s ease;
+    }
+
+    .loader-icon {
+      width: 70px;
+      height: 70px;
+      display: grid;
+      place-items: center;
+      color: #fff;
+      font-size: 1.7rem;
+      border-radius: 23px;
+      background: linear-gradient(135deg, var(--mu-primary), var(--mu-cyan));
+      box-shadow: 0 14px 30px rgba(40, 120, 255, 0.22);
+      animation: loaderPulse 1.1s ease-in-out infinite alternate;
+    }
+
+    .loading-overlay strong {
+      font-size: 0.88rem;
+      font-weight: 900;
+    }
+
+    @keyframes loaderPulse {
+      from { transform: scale(0.95); }
+      to { transform: scale(1.04); }
+    }
+
+    .toast-container {
+      position: fixed;
+      top: 18px;
+      right: 18px;
+      z-index: 5000;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      width: min(360px, calc(100vw - 36px));
+      pointer-events: none;
+    }
+
+    .toast {
+      display: grid;
+      grid-template-columns: 37px minmax(0, 1fr);
+      gap: 11px;
+      align-items: center;
+      padding: 12px 14px;
+      color: var(--mu-heading);
+      border: 1px solid #dce6f3;
+      border-radius: 15px;
+      background: rgba(255, 255, 255, 0.98);
+      box-shadow: 0 15px 34px rgba(37, 65, 125, 0.17);
+      animation: toastIn 0.26s ease both;
+      pointer-events: auto;
+    }
+
+    .toast-icon {
+      width: 37px;
+      height: 37px;
+      display: grid;
+      place-items: center;
+      border-radius: 12px;
+      background: #edf5ff;
+    }
+
+    .toast.success .toast-icon { background: #eaf9f3; }
+    .toast.error .toast-icon { background: #fff0f2; }
+    .toast.warning .toast-icon { background: #fff7e8; }
+
+    .toast strong {
+      display: block;
+      margin-bottom: 2px;
+      font-size: 0.75rem;
+      font-weight: 900;
+    }
+
+    .toast span {
+      display: block;
+      color: var(--mu-muted);
+      font-size: 0.65rem;
+      font-weight: 650;
+      line-height: 1.45;
+    }
+
+    @keyframes toastIn {
+      from { opacity: 0; transform: translateY(-8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      z-index: 4000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 18px;
+      background: rgba(20, 35, 68, 0.36);
+      backdrop-filter: blur(6px);
+    }
+
+    .modal-backdrop.show { display: flex; }
+
+    .dialog-card {
+      width: min(430px, 100%);
+      padding: 23px;
+      border: 1px solid rgba(225, 233, 245, 0.98);
+      border-radius: 21px;
+      background: #fff;
+      box-shadow: 0 28px 70px rgba(22, 38, 74, 0.24);
+      animation: dialogIn 0.22s ease both;
+    }
+
+    @keyframes dialogIn {
+      from { opacity: 0; transform: scale(0.96) translateY(8px); }
+      to { opacity: 1; transform: scale(1) translateY(0); }
+    }
+
+    .dialog-icon {
+      width: 48px;
+      height: 48px;
+      display: grid;
+      place-items: center;
+      margin-bottom: 13px;
+      color: var(--mu-primary-dark);
+      font-size: 1.3rem;
+      border-radius: 15px;
+      background: #edf5ff;
+    }
+
+    .dialog-card.danger .dialog-icon {
+      color: #c8404d;
+      background: #fff0f2;
+    }
+
+    .dialog-card h3 {
+      margin: 0 0 6px;
+      color: var(--mu-heading);
+      font-size: 1.03rem;
+      font-weight: 950;
+    }
+
+    .dialog-card p {
+      margin: 0 0 16px;
+      color: var(--mu-muted);
+      font-size: 0.73rem;
+      font-weight: 650;
+      line-height: 1.6;
+    }
+
+    .dialog-input,
+    .dialog-select { margin-bottom: 16px; }
+
+    .dialog-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 9px;
+    }
+
+    .dialog-btn {
+      min-height: 43px;
+      padding: 10px 16px;
+      font-size: 0.72rem;
+      font-weight: 900;
+      cursor: pointer;
+      border-radius: 12px;
+      transition: 0.18s ease;
+    }
+
+    .dialog-btn.cancel {
+      color: #64748b;
+      border: 1px solid #dce5f1;
+      background: #fff;
+    }
+
+    .dialog-btn.confirm {
+      color: #fff;
+      border: none;
+      background: linear-gradient(135deg, var(--mu-primary), var(--mu-cyan));
+    }
+
+    .dialog-card.danger .dialog-btn.confirm {
+      background: linear-gradient(135deg, #ef5b67, #dc3545);
+    }
+
+    .dialog-btn:hover { transform: translateY(-1px); }
+
+    @media (max-width: 900px) {
+      .workspace-card {
+        grid-template-columns: 290px minmax(0, 1fr);
+      }
+
+      .control-panel,
+      .member-panel { padding: 22px; }
+
+      .santri-list { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 720px) {
+      body { padding: 10px; }
+
+      .workspace-card {
+        display: block;
+        min-height: 0;
+        border-radius: 20px;
+      }
+
+      .control-panel {
+        gap: 17px;
+        padding: 18px;
+        border-right: none;
+        border-bottom: 1px solid #e8eef7;
+      }
+
+      .sync-note { margin-top: 0; }
+
+      .member-panel { padding: 18px; }
+
+      .save-bar {
+        align-items: stretch;
+        flex-direction: column;
+      }
+
+      .btn-save { width: 100%; min-width: 0; }
+    }
+
+    @media (max-width: 440px) {
+      .group-actions {
+        grid-template-columns: 1fr;
+      }
+
+      .mini-action {
+        justify-content: flex-start;
+        padding-inline: 13px;
+      }
+
+      .list-toolbar {
+        align-items: flex-start;
+      }
+
+      .santri-name {
+        font-size: 0.7rem;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="loading-overlay" id="loadingOverlay">
+  <div class="loader-icon">☁</div>
+  <strong>Memuat data usrah dari server...</strong>
+</div>
+
+<div class="toast-container" id="toastContainer"></div>
+
+<main class="cahaya-container">
+  <section class="workspace-card">
+    <aside class="control-panel">
+      <div class="control-section">
+        <label class="field-label" for="pilihUsrah">
+          <span class="label-icon">👥</span>
+          Kelompok Usrah
+        </label>
+        <select class="form-control" id="pilihUsrah" onchange="muatDaftarSantri()"></select>
+
+        <div class="group-actions">
+          <button class="mini-action add" type="button" onclick="tambahUsrah()" title="Buat kelompok usrah baru">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 5v14M5 12h14" stroke-linecap="round"/></svg>
+            Baru
+          </button>
+          <button class="mini-action edit" type="button" onclick="editNamaUsrah()" title="Ubah nama kelompok usrah">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 20h9" stroke-linecap="round"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L8 18l-4 1 1-4Z" stroke-linejoin="round"/></svg>
+            Ubah
+          </button>
+          <button class="mini-action delete" type="button" onclick="hapusUsrah()" title="Hapus kelompok usrah">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6" stroke-linecap="round" stroke-linejoin="round"/><path d="M10 11v5M14 11v5" stroke-linecap="round"/></svg>
+            Hapus
+          </button>
+        </div>
+      </div>
+
+      <div class="soft-divider"></div>
+
+      <div class="control-section">
+        <label class="field-label" for="inputNamaBaru">
+          <span class="label-icon">＋</span>
+          Tambah Anggota
+        </label>
+        <div class="add-stack">
+          <input
+            type="text"
+            class="form-control"
+            id="inputNamaBaru"
+            placeholder="NAMA LENGKAP SANTRI"
+            autocomplete="off"
+            onkeydown="if(event.key === 'Enter') tambahSantri()"
+          />
+          <button class="btn-primary" type="button" onclick="tambahSantri()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M15 19c0-2.2-2.7-4-6-4s-6 1.8-6 4" stroke-linecap="round"/><circle cx="9" cy="7" r="4"/><path d="M19 8v6M16 11h6" stroke-linecap="round"/></svg>
+            Tambahkan Santri
+          </button>
+        </div>
+      </div>
+
+      <div class="sync-note">
+        <span class="sync-dot"></span>
+        <span>Perubahan baru dikirim ke Firebase setelah tombol simpan ditekan.</span>
+      </div>
+    </aside>
+
+    <section class="member-panel">
+      <div class="list-toolbar">
+        <div class="list-heading">
+          <span class="list-eyebrow">Daftar Anggota</span>
+          <strong id="currentUsrahLabel">Memuat Usrah...</strong>
+        </div>
+        <span class="count-pill"><strong id="totalAnggota">0</strong> santri</span>
+      </div>
+
+      <div class="search-wrap">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.8-3.8" stroke-linecap="round"/></svg>
+        <input
+          type="search"
+          class="form-control search-input"
+          id="cariSantri"
+          placeholder="Cari nama santri dalam usrah ini..."
+          oninput="renderList()"
+        />
+      </div>
+
+      <div class="santri-list" id="wadahListSantri"></div>
+
+      <div class="save-bar">
+        <span class="save-status" id="saveStatus">Data siap digunakan</span>
+        <button class="btn-save" type="button" onclick="simpanPerubahan()" id="btnSimpan">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M5 4h12l2 2v14H5Z" stroke-linejoin="round"/><path d="M8 4v6h8V4M8 20v-6h8v6" stroke-linejoin="round"/></svg>
+          Simpan ke Server
+        </button>
+      </div>
+    </section>
+  </section>
+</main>
+
+<div class="modal-backdrop" id="dialogBackdrop" role="dialog" aria-modal="true" aria-hidden="true">
+  <div class="dialog-card" id="dialogCard">
+    <div class="dialog-icon" id="dialogIcon">✦</div>
+    <h3 id="dialogTitle">Konfirmasi</h3>
+    <p id="dialogMessage"></p>
+    <input type="text" class="form-control dialog-input" id="dialogInput" autocomplete="off" />
+    <select class="form-control dialog-select" id="dialogSelect"></select>
+    <div class="dialog-actions">
+      <button class="dialog-btn cancel" type="button" id="dialogCancel">Batal</button>
+      <button class="dialog-btn confirm" type="button" id="dialogConfirm">Lanjutkan</button>
+    </div>
+  </div>
+</div>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+  import { getDatabase, ref, get, set } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+
+  const firebaseConfig = window.CAHAYA_CONFIG.firebase;
+
+  const DATA_USRAH_2026_2027 = {
+    "Usrah 1": [
+      "ARYA DIFA ALSYA",
+      "K.A. M. ABDULLAH SHIDDIQ AGTSALI",
+      "MUHAMMAD ABIL IRWANSYAH",
+      "HAFIDZ ALRIZKY",
+      "HAFIDZ AL ROZI",
+      "REZFY FAKHRYAZKA",
+      "SYAHRUL RAMADHAN",
+      "WAFII FADHLURROHMAN",
+      "CAHYIS ISZAM",
+      "MUHAMMAD FAISAL FIKRIANSYAH",
+      "RAFA",
+      "RAFI RAMADHAN",
+      "MUHAMMAD ALLAM NUR HUSHAIN",
+      "MUHAMMAD FADHIL BUANA"
+    ],
+    "Usrah 2": [
+      "AKBAR PRAYOGA",
+      "GHOZY FATHURRAHMAN",
+      "BASRI AL HAZIQ ZULFAHMI",
+      "ALIF MUHAMMAD YUSUF",
+      "ALVIN HERFIANTINO",
+      "FAUZAN IBNI JABAR",
+      "NIZAM KABISAT",
+      "QHEIZAN ALQIZA ARISDA",
+      "WAHYU REYDINATA",
+      "AQIELA MARSYAH",
+      "FADIL NURHALIM",
+      "MUHAMMAD SYAKIR HUTABARAT",
+      "MUHAMMAD YASIR AL FAZAR JHIRA"
+    ],
+    "Usrah 3": [
+      "ANDES AFENDRA",
+      "AHMAD RIYADI",
+      "RENAL MARTIN",
+      "AHMAD MAULANA",
+      "ROID AFDAL",
+      "ILHAM",
+      "MAHESA AULIA GIFFARI",
+      "MUHAMMAD USAMAH",
+      "MIKO VAJAR",
+      "MUHAMMAD IZAM SAPUTRA",
+      "DARREN ATHAYA",
+      "REYNALDI MALIK IBRAHIM ALFARIDZI",
+      "AIRLANGGA AZKA ABQORI"
+    ],
+    "Usrah 4": [
+      "PRAWIRO PUJO TUNGGAL JATI",
+      "ALIF SAMUDRA",
+      "NAJMIHADI SYAUQII TAMAAM",
+      "MUHAMMAD RIJALUL KAMIL",
+      "ADITYA PUTRA IBRAHIM",
+      "MUHAMMAD ZIYAD ZHAZHA",
+      "BRILLY HANDRIAN",
+      "EZA FEBRI AL FADZRI",
+      "ABDULLAH MUKTI HAFIDZALLAH",
+      "REYFAS RAMADHAN",
+      "MUHAMMAD FIRAAS AL - INSYIROH",
+      "AHMAD FARHAAN",
+      "FAHRY AKBAR RAMDHANI"
+    ],
+    "Usrah 5": [
+      "ANGGA PRATAMA PUTRA",
+      "MUHAMMAD RAID MAHRUS",
+      "MUHAMMAD FAQIH HAFIDZALLAH",
+      "MUHAMAD YUSUF ARROSIYD",
+      "ZULFAQIH HAERUNNASIHIN",
+      "DAFFA AL MUSYARI",
+      "IHZA TRINANDI",
+      "NAUFAL AKBAR ALKHATIRI",
+      "DZIKRI MUDHOFFAR",
+      "ELLENO QUTHBIE HERMAWAN",
+      "HADINATA SAPUTRA",
+      "MUHAMMAD ALMISKY PRATAMA",
+      "MUHAMMAD AQIL RIDHO"
+    ],
+    "Usrah 6": [
+      "DANANG PRASDITYA SANTOSO",
+      "MUHAMMAD AL FALAH",
+      "ALEXY PRATAMA HADRIAN",
+      "AMIN SUGIONO",
+      "FATIR AL MUQMINUN HAKIM",
+      "MUHAMMAD RAFFI",
+      "ILHAM MAULANA",
+      "MEDIKA PRATAMA",
+      "MUHAMMAD BILAL ARIFI",
+      "RIFKI AHNAF",
+      "MUHAMMAD AFIF AL BAIHAQI",
+      "MUHAMMAD NABIL IRWANSYAH",
+      "M. UMAR HALIM RAHMAPUTRA",
+      "RIKI WARDANI",
+      "RIKO WARDANA",
+      "QENZO GAVRIEL ALIFIANDRA"
+    ],
+    "Usrah 7": [
+      "JESSICA PUTRY AYRA",
+      "NAMI RIA RAMADHANI",
+      "NAJIHA SHAFIYAH AFIFAH",
+      "NAURA ADELIA FITRI",
+      "QIARA ANJANI DIVANTI",
+      "NAYYA SALSABILLA",
+      "NAEVA MARNIA",
+      "ANISYA SEPTIANI",
+      "AISYAH NURUL AULIA",
+      "AISYAH NUR KHALIFAH",
+      "ADIBA AILA KHANZA",
+      "QONITA AZZAHRAH ALFANSYURI"
+    ],
+    "Usrah 8": [
+      "NYAYU MARLITSA ARDHANI",
+      "NABILA NUR WAMAWADDA AL- MAIRA",
+      "INAYAH NOURAH ANINDYA",
+      "FITRAH KIRANA",
+      "DINA RUHAYAH",
+      "DAFIA NAFLA SYAKIRA",
+      "WINDY WINDARI",
+      "WILDA",
+      "QELZA RAMADHANI ATH THAHIRA",
+      "GRINNETA NALANI PUTRI",
+      "GHENIS ANDIENTIAZ",
+      "EARLYTA ARSYFA SALSABILA",
+      "ASHIFA FITRI RAMADHONI"
+    ]
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getDatabase(app);
+
+  let dataUsrah = {};
+  let usrahAktif = [];
+  let dirty = false;
+  let dialogResolver = null;
+
+  const $ = (id) => document.getElementById(id);
+
+  function clone(value) {
+    return JSON.parse(JSON.stringify(value));
+  }
+
+  function escapeHtml(value) {
+    return String(value ?? "")
+      .replaceAll("&", "&amp;")
+      .replaceAll("<", "&lt;")
+      .replaceAll(">", "&gt;")
+      .replaceAll('"', "&quot;")
+      .replaceAll("'", "&#039;");
+  }
+
+  function normalisasiDaftar(value) {
+    let daftar = [];
+
+    if (Array.isArray(value)) {
+      daftar = value;
+    } else if (value && typeof value === "object") {
+      daftar = Object.values(value);
+    }
+
+    return [...new Set(
+      daftar
+        .map((item) => {
+          if (typeof item === "string") return item.trim();
+          return String(item?.nama || item?.namaSantri || item?.label || "").trim();
+        })
+        .filter(Boolean)
+    )];
+  }
+
+  function normalisasiData(raw) {
+    const hasil = {};
+
+    if (!raw || typeof raw !== "object") return hasil;
+
+    Object.entries(raw).forEach(([key, value]) => {
+      const namaKelompok = String(key || "").trim();
+      if (!namaKelompok) return;
+      hasil[namaKelompok] = normalisasiDaftar(value);
+    });
+
+    return hasil;
+  }
+
+  function punyaStrukturUsrahTerbaru(data) {
+    const wajib = Array.from({ length: 8 }, (_, index) => `Usrah ${index + 1}`);
+    return wajib.every((nama) => Object.prototype.hasOwnProperty.call(data || {}, nama));
+  }
+
+  function nomorUsrah(value) {
+    const cocok = String(value || "").match(/\d+/);
+    return cocok ? Number(cocok[0]) : Number.MAX_SAFE_INTEGER;
+  }
+
+  function urutkanNamaUsrah(a, b) {
+    const nomorA = nomorUsrah(a);
+    const nomorB = nomorUsrah(b);
+
+    if (nomorA !== nomorB) return nomorA - nomorB;
+    return String(a).localeCompare(String(b), "id");
+  }
+
+  function labelUsrah(value) {
+    const teks = String(value || "").trim();
+    if (!teks) return "Usrah";
+    return /^usrah\b/i.test(teks) ? teks.replace(/^usrah\b/i, "Usrah") : `Usrah ${teks}`;
+  }
+
+  function normalisasiNamaUsrah(value) {
+    const teks = String(value || "").trim().replace(/\s+/g, " ");
+    if (!teks) return "";
+
+    if (/^\d+$/.test(teks)) return `Usrah ${Number(teks)}`;
+
+    if (/^usrah\b/i.test(teks)) {
+      const bagian = teks.replace(/^usrah\b/i, "").trim();
+      if (/^\d+$/.test(bagian)) return `Usrah ${Number(bagian)}`;
+      return `Usrah ${bagian}`.trim();
+    }
+
+    return teks;
+  }
+
+  function setDirty(value, message = "") {
+    dirty = value;
+    const status = $("saveStatus");
+
+    status.classList.remove("dirty", "saved");
+
+    if (value) {
+      status.classList.add("dirty");
+      status.textContent = message || "Ada perubahan yang belum disimpan";
+    } else {
+      status.classList.add("saved");
+      status.textContent = message || "Semua perubahan sudah tersimpan";
+    }
+  }
+
+  function toast(title, message, type = "success") {
+    const container = $("toastContainer");
+    const item = document.createElement("div");
+    const icons = { success: "✓", error: "!", warning: "⚠", info: "i" };
+
+    item.className = `toast ${type}`;
+    item.innerHTML = `
+      <div class="toast-icon">${icons[type] || icons.info}</div>
+      <div>
+        <strong>${escapeHtml(title)}</strong>
+        <span>${escapeHtml(message)}</span>
+      </div>
+    `;
+
+    container.appendChild(item);
+    setTimeout(() => item.remove(), 3600);
+  }
+
+  function bukaDialog({
+    title,
+    message,
+    icon = "✦",
+    mode = "confirm",
+    defaultValue = "",
+    placeholder = "",
+    options = [],
+    selectedValue = "",
+    confirmText = "Lanjutkan",
+    danger = false
+  }) {
+    return new Promise((resolve) => {
+      dialogResolver = resolve;
+
+      const backdrop = $("dialogBackdrop");
+      const card = $("dialogCard");
+      const input = $("dialogInput");
+      const select = $("dialogSelect");
+
+      $("dialogTitle").textContent = title;
+      $("dialogMessage").textContent = message;
+      $("dialogIcon").textContent = icon;
+      $("dialogConfirm").textContent = confirmText;
+
+      card.classList.toggle("danger", danger);
+      input.style.display = mode === "input" ? "block" : "none";
+      select.style.display = mode === "select" ? "block" : "none";
+      input.value = defaultValue;
+      input.placeholder = placeholder;
+
+      select.innerHTML = "";
+      if (mode === "select") {
+        options.forEach((option) => {
+          const value = typeof option === "string" ? option : option.value;
+          const label = typeof option === "string" ? option : option.label;
+          select.add(new Option(label, value));
+        });
+        if (selectedValue && [...select.options].some((opt) => opt.value === selectedValue)) {
+          select.value = selectedValue;
+        }
+      }
+
+      backdrop.classList.add("show");
+      backdrop.setAttribute("aria-hidden", "false");
+
+      if (mode === "input") {
+        setTimeout(() => {
+          input.focus();
+          input.select();
+        }, 60);
+      } else if (mode === "select") {
+        setTimeout(() => select.focus(), 60);
+      } else {
+        setTimeout(() => $("dialogConfirm").focus(), 60);
+      }
+    });
+  }
+
+  function tutupDialog(result) {
+    const backdrop = $("dialogBackdrop");
+    backdrop.classList.remove("show");
+    backdrop.setAttribute("aria-hidden", "true");
+
+    if (dialogResolver) {
+      dialogResolver(result);
+      dialogResolver = null;
+    }
+  }
+
+  $("dialogCancel").addEventListener("click", () => tutupDialog(null));
+  $("dialogConfirm").addEventListener("click", () => {
+    const inputVisible = $("dialogInput").style.display !== "none";
+    const selectVisible = $("dialogSelect").style.display !== "none";
+    if (inputVisible) return tutupDialog($("dialogInput").value);
+    if (selectVisible) return tutupDialog($("dialogSelect").value);
+    tutupDialog(true);
+  });
+  $("dialogInput").addEventListener("keydown", (event) => {
+    if (event.key === "Enter") $("dialogConfirm").click();
+    if (event.key === "Escape") $("dialogCancel").click();
+  });
+  $("dialogSelect").addEventListener("keydown", (event) => {
+    if (event.key === "Enter") $("dialogConfirm").click();
+    if (event.key === "Escape") $("dialogCancel").click();
+  });
+  $("dialogBackdrop").addEventListener("click", (event) => {
+    if (event.target === $("dialogBackdrop")) tutupDialog(null);
+  });
+
+  window.initSelectUsrah = function(targetSelect = null) {
+    const select = $("pilihUsrah");
+    const previousValue = targetSelect || select.value;
+    select.innerHTML = "";
+
+    const keys = Object.keys(dataUsrah).sort(urutkanNamaUsrah);
+
+    if (!keys.length) {
+      select.innerHTML = '<option value="">Belum ada kelompok usrah</option>';
+      usrahAktif = [];
+      renderList();
+      return;
+    }
+
+    keys.forEach((namaUsrah) => {
+      select.add(new Option(labelUsrah(namaUsrah), namaUsrah));
+    });
+
+    if (previousValue && dataUsrah[previousValue]) {
+      select.value = previousValue;
+    } else {
+      select.selectedIndex = 0;
+    }
+
+    window.muatDaftarSantri();
+  };
+
+  window.muatDaftarSantri = function() {
+    const namaUsrah = $("pilihUsrah").value;
+    usrahAktif = namaUsrah ? normalisasiDaftar(dataUsrah[namaUsrah]) : [];
+    $("cariSantri").value = "";
+    renderList();
+  };
+
+  window.renderList = function() {
+    const namaUsrah = $("pilihUsrah").value;
+    const query = $("cariSantri").value.trim().toUpperCase();
+    const wadah = $("wadahListSantri");
+
+    $("currentUsrahLabel").textContent = namaUsrah ? labelUsrah(namaUsrah) : "Belum ada usrah";
+    $("totalAnggota").textContent = usrahAktif.length;
+
+    const daftarTampil = usrahAktif
+      .map((nama, indexAsli) => ({ nama, indexAsli }))
+      .filter((item) => !query || item.nama.toUpperCase().includes(query));
+
+    if (!daftarTampil.length) {
+      const sedangMencari = Boolean(query);
+      wadah.innerHTML = `
+        <div class="empty-state">
+          <div class="empty-icon">${sedangMencari ? "⌕" : "👤"}</div>
+          <strong>${sedangMencari ? "Nama tidak ditemukan" : "Belum ada anggota"}</strong>
+          <span>${sedangMencari ? "Coba gunakan kata pencarian yang lebih singkat." : "Tambahkan santri melalui panel di sebelah kiri."}</span>
+        </div>
+      `;
+      return;
+    }
+
+    wadah.innerHTML = daftarTampil.map(({ nama, indexAsli }, urutan) => `
+      <div class="santri-item">
+        <span class="santri-number">${String(urutan + 1).padStart(2, "0")}</span>
+        <span class="santri-name" title="${escapeHtml(nama)}">${escapeHtml(nama)}</span>
+        <div class="member-actions">
+          <button
+            class="btn-move-member"
+            type="button"
+            onclick="pindahSantri(${indexAsli})"
+            title="Pindahkan ${escapeHtml(nama)} ke usrah lain"
+            aria-label="Pindahkan ${escapeHtml(nama)} ke usrah lain"
+          >
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M8 7h11M15 3l4 4-4 4M16 17H5M9 13l-4 4 4 4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <button
+            class="btn-delete-member"
+            type="button"
+            onclick="hapusSantri(${indexAsli})"
+            title="Keluarkan ${escapeHtml(nama)}"
+            aria-label="Keluarkan ${escapeHtml(nama)}"
+          >
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 7h16M9 7V4h6v3M18 7l-1 13H7L6 7" stroke-linecap="round" stroke-linejoin="round"/><path d="M10 11v5M14 11v5" stroke-linecap="round"/></svg>
+          </button>
+        </div>
+      </div>
+    `).join("");
+  };
+
+  window.tambahUsrah = async function() {
+    const hasil = await bukaDialog({
+      title: "Buat Kelompok Usrah",
+      message: "Masukkan nama kelompok baru. Untuk kelompok bernomor, cukup tulis angka atau format “Usrah 9”.",
+      icon: "＋",
+      mode: "input",
+      placeholder: "Contoh: Usrah 9",
+      confirmText: "Buat Usrah"
+    });
+
+    const namaBaru = normalisasiNamaUsrah(hasil);
+    if (!namaBaru) return;
+
+    const bentrok = Object.keys(dataUsrah).find((key) => key.toLowerCase() === namaBaru.toLowerCase());
+    if (bentrok) {
+      toast("Kelompok sudah ada", `${labelUsrah(bentrok)} sudah tersedia.`, "warning");
+      return;
+    }
+
+    dataUsrah[namaBaru] = [];
+    setDirty(true);
+    window.initSelectUsrah(namaBaru);
+    toast("Usrah dibuat", `${labelUsrah(namaBaru)} siap diisi anggota.`, "success");
+  };
+
+  window.editNamaUsrah = async function() {
+    const namaLama = $("pilihUsrah").value;
+    if (!namaLama) {
+      toast("Pilih usrah", "Pilih kelompok yang akan diubah terlebih dahulu.", "warning");
+      return;
+    }
+
+    const hasil = await bukaDialog({
+      title: "Ubah Nama Usrah",
+      message: `Nama lama: ${labelUsrah(namaLama)}`,
+      icon: "✎",
+      mode: "input",
+      defaultValue: namaLama,
+      confirmText: "Simpan Nama"
+    });
+
+    const namaBaru = normalisasiNamaUsrah(hasil);
+    if (!namaBaru || namaBaru === namaLama) return;
+
+    const bentrok = Object.keys(dataUsrah).find(
+      (key) => key !== namaLama && key.toLowerCase() === namaBaru.toLowerCase()
+    );
+
+    if (bentrok) {
+      toast("Nama sudah dipakai", `${labelUsrah(bentrok)} sudah tersedia.`, "warning");
+      return;
+    }
+
+    dataUsrah[namaBaru] = normalisasiDaftar(dataUsrah[namaLama]);
+    delete dataUsrah[namaLama];
+    setDirty(true);
+    window.initSelectUsrah(namaBaru);
+    toast("Nama diperbarui", `Kelompok sekarang bernama ${labelUsrah(namaBaru)}.`, "success");
+  };
+
+  window.hapusUsrah = async function() {
+    const namaUsrah = $("pilihUsrah").value;
+    if (!namaUsrah) {
+      toast("Pilih usrah", "Pilih kelompok yang akan dihapus terlebih dahulu.", "warning");
+      return;
+    }
+
+    const jumlah = normalisasiDaftar(dataUsrah[namaUsrah]).length;
+    const lanjut = await bukaDialog({
+      title: "Hapus Kelompok Usrah?",
+      message: `${labelUsrah(namaUsrah)} beserta ${jumlah} anggota akan dihapus dari daftar lokal. Perubahan baru permanen setelah disimpan ke server.`,
+      icon: "!",
+      confirmText: "Hapus Usrah",
+      danger: true
+    });
+
+    if (!lanjut) return;
+
+    delete dataUsrah[namaUsrah];
+    setDirty(true);
+    window.initSelectUsrah();
+    toast("Usrah dihapus", `${labelUsrah(namaUsrah)} telah dihapus dari daftar lokal.`, "success");
+  };
+
+  window.tambahSantri = function() {
+    const namaUsrah = $("pilihUsrah").value;
+    if (!namaUsrah) {
+      toast("Belum ada usrah", "Buat atau pilih kelompok usrah terlebih dahulu.", "warning");
+      return;
+    }
+
+    const input = $("inputNamaBaru");
+    const namaBaru = input.value.trim().replace(/\s+/g, " ").toUpperCase();
+
+    if (!namaBaru) {
+      toast("Nama belum diisi", "Masukkan nama lengkap santri terlebih dahulu.", "warning");
+      input.focus();
+      return;
+    }
+
+    const lokasiDuplikat = Object.entries(dataUsrah).find(([, daftar]) =>
+      normalisasiDaftar(daftar).some((nama) => nama.toUpperCase() === namaBaru)
+    );
+
+    if (lokasiDuplikat) {
+      toast("Santri sudah terdaftar", `${namaBaru} sudah berada di ${labelUsrah(lokasiDuplikat[0])}.`, "warning");
+      return;
+    }
+
+    usrahAktif.push(namaBaru);
+    usrahAktif.sort((a, b) => a.localeCompare(b, "id"));
+    dataUsrah[namaUsrah] = [...usrahAktif];
+    input.value = "";
+    setDirty(true);
+    renderList();
+    toast("Santri ditambahkan", `${namaBaru} masuk ke ${labelUsrah(namaUsrah)}.`, "success");
+  };
+
+  window.pindahSantri = async function(index) {
+    const usrahAsal = $("pilihUsrah").value;
+    const namaSantri = usrahAktif[index];
+
+    if (!usrahAsal || !namaSantri) return;
+
+    const daftarTujuan = Object.keys(dataUsrah)
+      .filter((namaUsrah) => namaUsrah !== usrahAsal)
+      .sort(urutkanNamaUsrah);
+
+    if (!daftarTujuan.length) {
+      toast("Usrah tujuan belum tersedia", "Buat kelompok usrah lain sebelum memindahkan santri.", "warning");
+      return;
+    }
+
+    const usrahTujuan = await bukaDialog({
+      title: "Pindahkan Santri",
+      message: `Pilih usrah tujuan untuk ${namaSantri}. Santri akan dikeluarkan dari ${labelUsrah(usrahAsal)} dan dimasukkan ke kelompok tujuan.`,
+      icon: "⇄",
+      mode: "select",
+      options: daftarTujuan.map((namaUsrah) => ({
+        value: namaUsrah,
+        label: `${labelUsrah(namaUsrah)} · ${normalisasiDaftar(dataUsrah[namaUsrah]).length} santri`
+      })),
+      confirmText: "Pindahkan"
+    });
+
+    if (!usrahTujuan || !dataUsrah[usrahTujuan]) return;
+
+    const daftarTujuanAktif = normalisasiDaftar(dataUsrah[usrahTujuan]);
+    const sudahAda = daftarTujuanAktif.some(
+      (nama) => nama.toUpperCase() === namaSantri.toUpperCase()
+    );
+
+    if (sudahAda) {
+      toast("Data ganda dicegah", `${namaSantri} sudah ada di ${labelUsrah(usrahTujuan)}.`, "warning");
+      return;
+    }
+
+    usrahAktif.splice(index, 1);
+    dataUsrah[usrahAsal] = [...usrahAktif];
+    dataUsrah[usrahTujuan] = [...daftarTujuanAktif, namaSantri]
+      .sort((a, b) => a.localeCompare(b, "id"));
+
+    setDirty(true, `${namaSantri} dipindahkan dan belum disimpan`);
+    renderList();
+    toast(
+      "Santri dipindahkan",
+      `${namaSantri} dipindahkan dari ${labelUsrah(usrahAsal)} ke ${labelUsrah(usrahTujuan)}.`,
+      "success"
+    );
+  };
+
+  window.hapusSantri = async function(index) {
+    const namaUsrah = $("pilihUsrah").value;
+    const namaSantri = usrahAktif[index];
+    if (!namaUsrah || !namaSantri) return;
+
+    const lanjut = await bukaDialog({
+      title: "Keluarkan Santri?",
+      message: `${namaSantri} akan dikeluarkan dari ${labelUsrah(namaUsrah)}.`,
+      icon: "−",
+      confirmText: "Keluarkan",
+      danger: true
+    });
+
+    if (!lanjut) return;
+
+    usrahAktif.splice(index, 1);
+    dataUsrah[namaUsrah] = [...usrahAktif];
+    setDirty(true);
+    renderList();
+    toast("Santri dikeluarkan", `${namaSantri} telah dikeluarkan dari ${labelUsrah(namaUsrah)}.`, "success");
+  };
+
+  window.simpanPerubahan = async function() {
+    const btn = $("btnSimpan");
+    const htmlAwal = btn.innerHTML;
+
+    btn.disabled = true;
+    btn.innerHTML = `
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 3v4M12 17v4M4.2 4.2l2.9 2.9M16.9 16.9l2.9 2.9M3 12h4M17 12h4M4.2 19.8l2.9-2.9M16.9 7.1l2.9-2.9" stroke-linecap="round"/></svg>
+      Menyimpan...
+    `;
+
+    try {
+      const dataBersih = normalisasiData(dataUsrah);
+
+      await Promise.all([
+        set(ref(db, "cahaya_app/master_usrah"), dataBersih),
+        set(ref(db, "cahaya_app/meta/master_usrah_version"), "2026-2027-v1")
+      ]);
+
+      dataUsrah = dataBersih;
+      const namaUsrah = $("pilihUsrah").value;
+      usrahAktif = namaUsrah ? normalisasiDaftar(dataUsrah[namaUsrah]) : [];
+
+      localStorage.setItem("masterUsrahCache", JSON.stringify(dataUsrah));
+      setDirty(false, "Data usrah berhasil disimpan ke server");
+      toast("Tersimpan", "Data usrah telah tersinkron ke Firebase.", "success");
+    } catch (error) {
+      console.error(error);
+      setDirty(true, "Penyimpanan gagal. Coba kembali.");
+      toast("Gagal menyimpan", error.message || "Terjadi kendala saat menghubungi server.", "error");
+    } finally {
+      btn.disabled = false;
+      btn.innerHTML = htmlAwal;
+    }
+  };
+
+  async function inisialisasi() {
+    const overlay = $("loadingOverlay");
+
+    try {
+      const [snapshot, versionSnapshot] = await Promise.all([
+        get(ref(db, "cahaya_app/master_usrah")),
+        get(ref(db, "cahaya_app/meta/master_usrah_version"))
+      ]);
+
+      const dataCloud = snapshot.exists() ? normalisasiData(snapshot.val()) : {};
+      const versiCloud = versionSnapshot.exists() ? String(versionSnapshot.val()) : "";
+      const versiTerbaru = versiCloud === "2026-2027-v1";
+      const strukturTerbaru = punyaStrukturUsrahTerbaru(dataCloud);
+      const perluMigrasi = !snapshot.exists() || (!versiTerbaru && !strukturTerbaru);
+
+      if (perluMigrasi) {
+        dataUsrah = clone(DATA_USRAH_2026_2027);
+
+        await Promise.all([
+          set(ref(db, "cahaya_app/master_usrah"), dataUsrah),
+          set(ref(db, "cahaya_app/meta/master_usrah_version"), "2026-2027-v1")
+        ]);
+
+        toast(
+          "Data usrah diperbarui",
+          "Struktur terbaru Usrah 1–8 untuk tahun akademik 2026/2027 telah diterapkan.",
+          "success"
+        );
+      } else {
+        dataUsrah = dataCloud;
+
+        if (!versiTerbaru && strukturTerbaru) {
+          await set(ref(db, "cahaya_app/meta/master_usrah_version"), "2026-2027-v1");
+        }
+      }
+
+      localStorage.setItem("masterUsrahCache", JSON.stringify(dataUsrah));
+      window.initSelectUsrah();
+      setDirty(false, "Data usrah tersinkron dengan server");
+    } catch (error) {
+      console.error(error);
+
+      const cache = JSON.parse(localStorage.getItem("masterUsrahCache") || "null");
+      dataUsrah = normalisasiData(cache);
+
+      if (!Object.keys(dataUsrah).length) {
+        dataUsrah = clone(DATA_USRAH_2026_2027);
+      }
+
+      window.initSelectUsrah();
+      setDirty(true, "Mode offline: simpan kembali saat koneksi tersedia");
+      toast("Menggunakan data lokal", "Server belum dapat dihubungi. Data tetap dapat diedit.", "warning");
+    } finally {
+      overlay.style.opacity = "0";
+      setTimeout(() => { overlay.style.display = "none"; }, 330);
+    }
+  }
+
+  window.addEventListener("beforeunload", (event) => {
+    if (!dirty) return;
+    event.preventDefault();
+    event.returnValue = "";
+  });
+
+  document.addEventListener("DOMContentLoaded", inisialisasi);
+</script>
+
+</body>
+</html>

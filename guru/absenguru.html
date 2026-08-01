@@ -1,0 +1,3803 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <!-- CAHAYA WHITE-LABEL CONFIG -->
+  <script src="../config/tenant-config.js"></script>
+  <script src="../config/master-data.js"></script>
+  <script src="../js/cahaya-config-runtime.js" defer></script>
+
+  <meta charset="UTF-8">
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+  >
+
+  <title>Absen Guru | CAHAYA APP</title>
+
+  <link rel="stylesheet" href="../css/cahaya-theme.css">
+  <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
+
+  <style>
+    :root {
+      --primary: #2878ff;
+      --primary-dark: #1557d5;
+      --cyan: #19c6e6;
+      --green: #29c58d;
+      --orange: #ff9f43;
+      --red: #ff5d6c;
+      --purple: #7667f5;
+      --ink: #152347;
+      --text: #31415f;
+      --muted: #71809e;
+      --border: #e2eaf6;
+      --surface: #ffffff;
+      --bg: #f4f8ff;
+      --shadow: 0 18px 45px rgba(35,78,160,.12);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      min-height: 100%;
+      margin: 0;
+    }
+
+    body {
+      padding: 18px;
+      color: var(--text);
+      font-family: "Nunito", "Poppins", Arial, sans-serif;
+      background:
+        radial-gradient(circle at 0% 0%, rgba(25,198,230,.13), transparent 28%),
+        radial-gradient(circle at 100% 0%, rgba(118,103,245,.11), transparent 27%),
+        linear-gradient(180deg, #f3f7ff, #fbfdff);
+    }
+
+    button,
+    input,
+    select {
+      font: inherit;
+    }
+
+    .page {
+      width: min(860px, 100%);
+      margin: 0 auto;
+    }
+
+    .hero {
+      position: relative;
+      overflow: hidden;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 20px;
+      align-items: center;
+      padding: 28px 30px;
+      color: #fff;
+      border-radius: 27px;
+      background:
+        radial-gradient(circle at 88% 15%, rgba(255,255,255,.22), transparent 25%),
+        linear-gradient(135deg, #176cf1, #2878ff 52%, #14bddc);
+      box-shadow: 0 22px 50px rgba(40,120,255,.25);
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      width: 150px;
+      height: 150px;
+      right: -45px;
+      bottom: -75px;
+      border-radius: 38px;
+      background: rgba(255,255,255,.10);
+      transform: rotate(28deg);
+    }
+
+    .hero-copy {
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-label {
+      display: inline-flex;
+      padding: 6px 11px;
+      margin-bottom: 10px;
+      font-size: .63rem;
+      font-weight: 900;
+      letter-spacing: .7px;
+      text-transform: uppercase;
+      border: 1px solid rgba(255,255,255,.25);
+      border-radius: 999px;
+      background: rgba(255,255,255,.14);
+    }
+
+    .hero h1 {
+      margin: 0;
+      font-size: clamp(1.8rem, 5vw, 2.65rem);
+      font-weight: 950;
+      line-height: 1.08;
+    }
+
+    .hero p {
+      max-width: 560px;
+      margin: 9px 0 0;
+      color: rgba(255,255,255,.84);
+      font-size: .8rem;
+      font-weight: 650;
+      line-height: 1.6;
+    }
+
+    .teacher-card {
+      position: relative;
+      z-index: 1;
+      min-width: 230px;
+      padding: 14px;
+      border: 1px solid rgba(255,255,255,.22);
+      border-radius: 17px;
+      background: rgba(255,255,255,.14);
+      backdrop-filter: blur(10px);
+    }
+
+    .teacher-card small {
+      display: block;
+      color: rgba(255,255,255,.72);
+      font-size: .58rem;
+      font-weight: 900;
+      letter-spacing: .65px;
+      text-transform: uppercase;
+    }
+
+    .teacher-card strong {
+      display: block;
+      margin-top: 5px;
+      font-size: .94rem;
+      font-weight: 950;
+    }
+
+    .teacher-card span {
+      display: block;
+      margin-top: 4px;
+      color: #e7f5ff;
+      font-size: .63rem;
+      font-weight: 750;
+    }
+
+    .panel {
+      margin-top: 16px;
+      padding: 22px;
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      background: rgba(255,255,255,.98);
+      box-shadow: var(--shadow);
+    }
+
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 9px;
+      margin-bottom: 18px;
+    }
+
+    .step {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      padding: 11px;
+      border: 1px solid #e5ebf5;
+      border-radius: 14px;
+      background: #f8faff;
+    }
+
+    .step span {
+      width: 29px;
+      height: 29px;
+      flex: 0 0 29px;
+      display: grid;
+      place-items: center;
+      color: var(--primary);
+      font-size: .72rem;
+      font-weight: 950;
+      border-radius: 10px;
+      background: #eaf3ff;
+    }
+
+    .step strong {
+      color: var(--ink);
+      font-size: .66rem;
+      font-weight: 900;
+      line-height: 1.35;
+    }
+
+    .tabs {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      padding: 6px;
+      margin-bottom: 17px;
+      border: 1px solid #e1e9f5;
+      border-radius: 15px;
+      background: #f4f7fc;
+    }
+
+    .tab {
+      min-height: 43px;
+      color: #697995;
+      font-size: .72rem;
+      font-weight: 900;
+      cursor: pointer;
+      border: none;
+      border-radius: 11px;
+      background: transparent;
+    }
+
+    .tab.active {
+      color: #fff;
+      background: linear-gradient(135deg, var(--primary), var(--cyan));
+      box-shadow: 0 8px 18px rgba(40,120,255,.20);
+    }
+
+    .method {
+      display: none;
+    }
+
+    .method.active {
+      display: block;
+    }
+
+    #reader {
+      width: 100%;
+      min-height: 260px;
+      overflow: hidden;
+      border: 1px dashed #bfd4f5;
+      border-radius: 18px;
+      background: #f7faff;
+    }
+
+    #reader video {
+      border-radius: 15px;
+    }
+
+    .camera-actions,
+    .action-row {
+      display: flex;
+      gap: 9px;
+      flex-wrap: wrap;
+      margin-top: 12px;
+    }
+
+    .button {
+      min-height: 45px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      padding: 10px 15px;
+      font-size: .73rem;
+      font-weight: 900;
+      cursor: pointer;
+      border-radius: 13px;
+      transition: .18s ease;
+    }
+
+    .button-primary {
+      color: #fff;
+      border: none;
+      background: linear-gradient(135deg, var(--primary), #1f75ef 58%, var(--cyan));
+      box-shadow: 0 10px 22px rgba(40,120,255,.22);
+    }
+
+    .button-light {
+      color: var(--primary-dark);
+      border: 1px solid #cfe1ff;
+      background: #edf5ff;
+    }
+
+    .button-danger {
+      color: #c83c4d;
+      border: 1px solid #ffd1d7;
+      background: #fff1f3;
+    }
+
+    .button:disabled {
+      opacity: .5;
+      cursor: not-allowed;
+      box-shadow: none;
+      transform: none;
+    }
+
+    .input-label {
+      display: block;
+      margin-bottom: 7px;
+      color: var(--ink);
+      font-size: .72rem;
+      font-weight: 900;
+    }
+
+    .input {
+      width: 100%;
+      min-height: 52px;
+      padding: 12px 14px;
+      color: var(--ink);
+      font-size: .92rem;
+      font-weight: 850;
+      text-transform: uppercase;
+      outline: none;
+      border: 1.5px solid #dce6f4;
+      border-radius: 14px;
+      background: #f8faff;
+    }
+
+    .input:focus {
+      border-color: var(--primary);
+      background: #fff;
+      box-shadow: 0 0 0 4px rgba(40,120,255,.10);
+    }
+
+    .helper {
+      margin-top: 7px;
+      color: var(--muted);
+      font-size: .66rem;
+      font-weight: 650;
+      line-height: 1.5;
+    }
+
+    .result {
+      display: none;
+      margin-top: 17px;
+      padding: 17px;
+      border: 1px solid #d9e5f5;
+      border-radius: 17px;
+      background: #f8faff;
+    }
+
+    .result.show {
+      display: block;
+    }
+
+    .result.success {
+      border-color: #c8efdf;
+      background: #effbf6;
+    }
+
+    .result.error {
+      border-color: #ffd2d8;
+      background: #fff3f5;
+    }
+
+    .result h3 {
+      margin: 0 0 11px;
+      color: var(--ink);
+      font-size: .96rem;
+      font-weight: 950;
+    }
+
+    .detail-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0,1fr));
+      gap: 9px;
+    }
+
+    .detail {
+      min-width: 0;
+      padding: 10px 11px;
+      border: 1px solid rgba(215,226,241,.9);
+      border-radius: 12px;
+      background: rgba(255,255,255,.82);
+    }
+
+    .detail small {
+      display: block;
+      color: var(--muted);
+      font-size: .54rem;
+      font-weight: 900;
+      letter-spacing: .5px;
+      text-transform: uppercase;
+    }
+
+    .detail strong {
+      display: block;
+      margin-top: 4px;
+      overflow-wrap: anywhere;
+      color: var(--ink);
+      font-size: .73rem;
+      font-weight: 900;
+      line-height: 1.4;
+    }
+
+    .assignment-box {
+      display: none;
+      margin-top: 13px;
+    }
+
+    .assignment-box.show {
+      display: block;
+    }
+
+    .assignment-box select {
+      width: 100%;
+      min-height: 49px;
+      padding: 10px 12px;
+      color: var(--ink);
+      font-size: .78rem;
+      font-weight: 850;
+      outline: none;
+      border: 1.5px solid #dbe5f3;
+      border-radius: 13px;
+      background: #fff;
+    }
+
+    .confirm-panel {
+      display: none;
+      margin-top: 13px;
+      padding: 14px;
+      border: 1px solid #cae7dc;
+      border-radius: 15px;
+      background: #f1faf6;
+    }
+
+    .confirm-panel.show {
+      display: block;
+    }
+
+    .confirm-panel p {
+      margin: 0 0 11px;
+      color: #4f6f63;
+      font-size: .68rem;
+      font-weight: 700;
+      line-height: 1.55;
+    }
+
+    .notice {
+      margin-top: 14px;
+      padding: 12px 13px;
+      color: #765018;
+      font-size: .65rem;
+      font-weight: 700;
+      line-height: 1.55;
+      border: 1px solid #f2d9af;
+      border-radius: 13px;
+      background: #fff8ed;
+    }
+
+    #loading {
+      position: fixed;
+      inset: 0;
+      z-index: 5000;
+      display: grid;
+      place-items: center;
+      padding: 20px;
+      background: rgba(245,248,255,.95);
+      backdrop-filter: blur(10px);
+    }
+
+    .loading-card {
+      width: min(330px, 94vw);
+      padding: 25px;
+      color: var(--ink);
+      text-align: center;
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      background: #fff;
+      box-shadow: var(--shadow);
+    }
+
+    .loading-icon {
+      width: 62px;
+      height: 62px;
+      display: grid;
+      place-items: center;
+      margin: 0 auto 13px;
+      color: #fff;
+      font-size: 1.5rem;
+      border-radius: 20px;
+      background: linear-gradient(135deg, var(--primary), var(--cyan));
+      animation: pulse 1.1s infinite alternate;
+    }
+
+    @keyframes pulse {
+      from { transform: scale(.95); }
+      to { transform: scale(1.04); }
+    }
+
+    .mobile-topbar {
+      display: none;
+    }
+
+    .result-close {
+      display: none;
+    }
+
+    @media (max-width: 720px) {
+      html,
+      body {
+        width: 100%;
+        height: 100%;
+        min-height: 0;
+        overflow: hidden;
+        overscroll-behavior: none;
+      }
+
+      body {
+        padding: 6px;
+      }
+
+      .page {
+        width: 100%;
+        height: calc(var(--app-height, 100dvh) - 12px);
+        min-height: 0;
+        margin: 0;
+      }
+
+      .hero {
+        display: none !important;
+      }
+
+      .panel {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        min-height: 0;
+        display: flex;
+        flex-direction: column;
+        margin: 0;
+        padding: 8px;
+        overflow: hidden;
+        border-radius: 18px;
+        box-shadow: 0 12px 32px rgba(35,78,160,.14);
+      }
+
+      .mobile-topbar {
+        flex: 0 0 44px;
+        min-height: 44px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        padding: 7px 10px 7px 12px;
+        margin-bottom: 7px;
+        color: #fff;
+        border-radius: 13px;
+        background:
+          radial-gradient(circle at 92% 10%, rgba(255,255,255,.2), transparent 30%),
+          linear-gradient(135deg, #176cf1, #2878ff 58%, #14bddc);
+        box-shadow: 0 7px 18px rgba(40,120,255,.2);
+      }
+
+      .mobile-topbar-copy {
+        min-width: 0;
+      }
+
+      .mobile-topbar strong {
+        display: block;
+        font-size: .78rem;
+        font-weight: 950;
+        line-height: 1.1;
+      }
+
+      .mobile-topbar span {
+        display: block;
+        max-width: 58vw;
+        margin-top: 3px;
+        overflow: hidden;
+        color: rgba(255,255,255,.82);
+        font-size: .55rem;
+        font-weight: 750;
+        line-height: 1.1;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      .mobile-topbar-badge {
+        flex: 0 0 auto;
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        padding: 5px 8px;
+        font-size: .52rem;
+        font-weight: 900;
+        letter-spacing: .3px;
+        border: 1px solid rgba(255,255,255,.22);
+        border-radius: 999px;
+        background: rgba(255,255,255,.14);
+      }
+
+      .mobile-topbar-badge::before {
+        content: "";
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: #9fffdc;
+        box-shadow: 0 0 0 3px rgba(159,255,220,.16);
+      }
+
+      .steps,
+      .notice,
+      .helper {
+        display: none !important;
+      }
+
+      .tabs {
+        flex: 0 0 40px;
+        height: 40px;
+        gap: 5px;
+        padding: 4px;
+        margin: 0 0 7px;
+        border-radius: 12px;
+      }
+
+      .tab {
+        min-height: 32px;
+        padding: 5px 8px;
+        font-size: .65rem;
+        border-radius: 9px;
+      }
+
+      .method.active {
+        min-height: 0;
+        flex: 1 1 auto;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+      }
+
+      #method-code.active {
+        justify-content: center;
+        padding: 8px 4px 18px;
+      }
+
+      #reader {
+        min-height: 0;
+        height: auto;
+        flex: 1 1 auto;
+        overflow: hidden;
+        border-radius: 14px;
+      }
+
+      #reader > div,
+      #reader__scan_region,
+      #reader__dashboard {
+        max-width: 100% !important;
+      }
+
+      #reader__scan_region {
+        height: 100% !important;
+        min-height: 0 !important;
+        display: flex !important;
+        align-items: center;
+        justify-content: center;
+      }
+
+      #reader video {
+        width: 100% !important;
+        height: 100% !important;
+        min-height: 0 !important;
+        object-fit: cover;
+        border-radius: 12px;
+      }
+
+      .camera-actions,
+      .action-row {
+        flex: 0 0 auto;
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 6px;
+        margin-top: 7px;
+      }
+
+      .action-row {
+        grid-template-columns: 1fr;
+      }
+
+      .button {
+        min-height: 38px;
+        padding: 7px 10px;
+        font-size: .64rem;
+        border-radius: 10px;
+      }
+
+      .input-label {
+        margin-bottom: 5px;
+        font-size: .64rem;
+      }
+
+      .input {
+        min-height: 46px;
+        padding: 10px 12px;
+        font-size: .82rem;
+        border-radius: 12px;
+      }
+
+      .result {
+        position: absolute;
+        inset: 59px 8px 8px;
+        z-index: 80;
+        min-height: 0;
+        margin: 0;
+        padding: 10px;
+        overflow: hidden;
+        border-radius: 15px;
+        box-shadow: 0 18px 42px rgba(21,35,71,.22);
+      }
+
+      .result.show {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .result-close {
+        position: absolute;
+        top: 8px;
+        right: 8px;
+        z-index: 2;
+        width: 29px;
+        height: 29px;
+        display: grid;
+        place-items: center;
+        padding: 0;
+        color: #536581;
+        font-size: 1rem;
+        font-weight: 950;
+        cursor: pointer;
+        border: 1px solid #dce6f4;
+        border-radius: 9px;
+        background: rgba(255,255,255,.9);
+      }
+
+      .result h3 {
+        flex: 0 0 auto;
+        margin: 0 34px 7px 0;
+        font-size: .79rem;
+        line-height: 1.25;
+      }
+
+      .detail-grid {
+        min-height: 0;
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0,1fr));
+        gap: 5px;
+      }
+
+      .detail {
+        min-height: 39px;
+        padding: 6px 7px;
+        border-radius: 9px;
+      }
+
+      .detail small {
+        font-size: .44rem;
+        letter-spacing: .25px;
+      }
+
+      .detail strong {
+        margin-top: 2px;
+        font-size: .59rem;
+        line-height: 1.25;
+      }
+
+      .assignment-box {
+        flex: 0 0 auto;
+        margin-top: 7px;
+      }
+
+      .assignment-box select {
+        min-height: 40px;
+        padding: 7px 9px;
+        font-size: .64rem;
+        border-radius: 10px;
+      }
+
+      .confirm-panel {
+        flex: 0 0 auto;
+        margin-top: 7px;
+        padding: 8px;
+        border-radius: 11px;
+      }
+
+      .confirm-panel p {
+        margin: 0 0 7px;
+        font-size: .56rem;
+        line-height: 1.35;
+      }
+
+      .confirm-panel .button {
+        width: 100%;
+      }
+
+      #loading {
+        padding: 10px;
+      }
+
+      .loading-card {
+        width: min(290px, 90vw);
+        padding: 18px;
+        border-radius: 18px;
+      }
+
+      .loading-icon {
+        width: 50px;
+        height: 50px;
+        margin-bottom: 10px;
+        border-radius: 16px;
+      }
+    }
+
+    @media (max-width: 390px), (max-height: 680px) {
+      .mobile-topbar {
+        flex-basis: 40px;
+        min-height: 40px;
+        margin-bottom: 5px;
+      }
+
+      .tabs {
+        flex-basis: 36px;
+        height: 36px;
+        margin-bottom: 5px;
+      }
+
+      .tab {
+        min-height: 28px;
+      }
+
+      .result {
+        inset: 51px 6px 6px;
+        padding: 8px;
+      }
+
+      .detail {
+        min-height: 34px;
+        padding: 5px 6px;
+      }
+
+      .detail strong {
+        font-size: .55rem;
+      }
+
+      .confirm-panel p {
+        display: none;
+      }
+    }
+  </style>
+
+  <!-- Tampilan minimal: header internal dan ringkasan disembunyikan tanpa mengubah sistem -->
+  <style id="cahaya-minimal-cleanup">
+    .hero {
+      display: none !important;
+    }
+  </style>
+
+  <style id="cahaya-mobile-camera-visibility-fix">
+    /*
+      Menjaga tombol kamera selalu berada di dalam viewport pada HP pendek,
+      browser dengan toolbar dinamis, PWA, dan mode landscape.
+    */
+    @media (max-width: 720px) {
+      html,
+      body {
+        width: 100% !important;
+        height: var(--app-height, 100dvh) !important;
+        min-height: var(--app-height, 100dvh) !important;
+        max-height: var(--app-height, 100dvh) !important;
+        overflow: hidden !important;
+      }
+
+      body {
+        padding:
+          max(5px, env(safe-area-inset-top))
+          6px
+          max(5px, env(safe-area-inset-bottom)) !important;
+      }
+
+      .page {
+        width: 100% !important;
+        height: 100% !important;
+        min-height: 0 !important;
+        max-height: 100% !important;
+      }
+
+      .panel {
+        width: 100% !important;
+        height: 100% !important;
+        min-height: 0 !important;
+        max-height: 100% !important;
+        display: grid !important;
+        grid-template-rows: auto auto minmax(0, 1fr) !important;
+        overflow: hidden !important;
+      }
+
+      .mobile-topbar,
+      .tabs {
+        min-height: 0 !important;
+      }
+
+      .method.active {
+        width: 100% !important;
+        height: 100% !important;
+        min-height: 0 !important;
+        max-height: 100% !important;
+        overflow: hidden !important;
+      }
+
+      #method-scan.active {
+        display: grid !important;
+        grid-template-rows: minmax(0, 1fr) auto !important;
+        gap: 6px !important;
+      }
+
+      #reader {
+        grid-row: 1;
+        width: 100% !important;
+        height: 100% !important;
+        min-width: 0 !important;
+        min-height: 0 !important;
+        max-width: 100% !important;
+        max-height: 100% !important;
+        overflow: hidden !important;
+        contain: layout paint;
+      }
+
+      #reader > div {
+        width: 100% !important;
+        height: 100% !important;
+        min-width: 0 !important;
+        min-height: 0 !important;
+        max-width: 100% !important;
+        max-height: 100% !important;
+        display: flex !important;
+        flex-direction: column !important;
+        overflow: hidden !important;
+      }
+
+      #reader__scan_region {
+        width: 100% !important;
+        height: 100% !important;
+        min-width: 0 !important;
+        min-height: 0 !important;
+        max-width: 100% !important;
+        max-height: 100% !important;
+        flex: 1 1 auto !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        overflow: hidden !important;
+      }
+
+      #reader__dashboard {
+        display: none !important;
+      }
+
+      #reader video,
+      #reader canvas {
+        width: 100% !important;
+        height: 100% !important;
+        min-width: 0 !important;
+        min-height: 0 !important;
+        max-width: 100% !important;
+        max-height: 100% !important;
+        object-fit: cover !important;
+      }
+
+      #reader img {
+        max-width: 100% !important;
+        max-height: 100% !important;
+        object-fit: contain !important;
+      }
+
+      .camera-actions {
+        grid-row: 2;
+        position: relative;
+        z-index: 200;
+        width: 100%;
+        min-height: 38px;
+        flex: 0 0 auto !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        overflow: visible !important;
+        background: #ffffff;
+        border-radius: 10px;
+      }
+
+      .camera-actions .button {
+        width: 100%;
+        min-width: 0;
+        min-height: 38px !important;
+        padding: 7px 8px !important;
+      }
+
+      .result.show {
+        overflow-x: hidden !important;
+        overflow-y: auto !important;
+        overscroll-behavior: contain;
+        -webkit-overflow-scrolling: touch;
+      }
+    }
+
+    @media (max-width: 720px) and (max-height: 620px) {
+      body {
+        padding:
+          max(3px, env(safe-area-inset-top))
+          4px
+          max(3px, env(safe-area-inset-bottom)) !important;
+      }
+
+      .panel {
+        padding: 6px !important;
+        border-radius: 14px !important;
+      }
+
+      .mobile-topbar {
+        flex-basis: 36px !important;
+        min-height: 36px !important;
+        height: 36px !important;
+        margin-bottom: 4px !important;
+        padding: 5px 8px !important;
+        border-radius: 10px !important;
+      }
+
+      .mobile-topbar span,
+      .mobile-topbar-badge {
+        display: none !important;
+      }
+
+      .tabs {
+        flex-basis: 34px !important;
+        min-height: 34px !important;
+        height: 34px !important;
+        margin-bottom: 4px !important;
+        padding: 3px !important;
+      }
+
+      .tab {
+        min-height: 28px !important;
+        padding: 4px 6px !important;
+      }
+
+      #method-scan.active {
+        gap: 4px !important;
+      }
+
+      .camera-actions,
+      .camera-actions .button {
+        min-height: 35px !important;
+      }
+
+      .camera-actions .button {
+        font-size: .59rem !important;
+        padding: 5px 6px !important;
+      }
+    }
+
+    /*
+      HP landscape umumnya memiliki lebar di atas 720px tetapi tinggi pendek.
+      Aturan ini memastikan tampilan tetap satu layar dan tombol tidak tenggelam.
+    */
+    @media (hover: none) and (pointer: coarse) and (max-height: 560px) {
+      html,
+      body {
+        width: 100% !important;
+        height: var(--app-height, 100dvh) !important;
+        min-height: var(--app-height, 100dvh) !important;
+        max-height: var(--app-height, 100dvh) !important;
+        overflow: hidden !important;
+      }
+
+      body {
+        padding:
+          max(3px, env(safe-area-inset-top))
+          4px
+          max(3px, env(safe-area-inset-bottom)) !important;
+      }
+
+      .page {
+        width: 100% !important;
+        height: 100% !important;
+        min-height: 0 !important;
+        max-height: 100% !important;
+        margin: 0 !important;
+      }
+
+      .hero,
+      .steps,
+      .notice,
+      .helper {
+        display: none !important;
+      }
+
+      .panel {
+        position: relative;
+        width: 100% !important;
+        height: 100% !important;
+        min-height: 0 !important;
+        max-height: 100% !important;
+        display: grid !important;
+        grid-template-rows: auto auto minmax(0, 1fr) !important;
+        margin: 0 !important;
+        padding: 5px !important;
+        overflow: hidden !important;
+        border-radius: 13px !important;
+      }
+
+      .mobile-topbar {
+        min-height: 32px !important;
+        height: 32px !important;
+        display: flex !important;
+        margin-bottom: 3px !important;
+        padding: 4px 8px !important;
+        border-radius: 9px !important;
+      }
+
+      .mobile-topbar span,
+      .mobile-topbar-badge {
+        display: none !important;
+      }
+
+      .tabs {
+        min-height: 31px !important;
+        height: 31px !important;
+        display: grid !important;
+        grid-template-columns: 1fr 1fr !important;
+        gap: 4px !important;
+        margin: 0 0 3px !important;
+        padding: 3px !important;
+        border-radius: 9px !important;
+      }
+
+      .tab {
+        min-height: 25px !important;
+        padding: 3px 6px !important;
+        font-size: .58rem !important;
+        border-radius: 7px !important;
+      }
+
+      .method.active {
+        width: 100% !important;
+        height: 100% !important;
+        min-height: 0 !important;
+        max-height: 100% !important;
+        overflow: hidden !important;
+      }
+
+      #method-scan.active {
+        display: grid !important;
+        grid-template-rows: minmax(0, 1fr) auto !important;
+        gap: 3px !important;
+      }
+
+      #reader,
+      #reader > div,
+      #reader__scan_region {
+        width: 100% !important;
+        height: 100% !important;
+        min-width: 0 !important;
+        min-height: 0 !important;
+        max-width: 100% !important;
+        max-height: 100% !important;
+        overflow: hidden !important;
+      }
+
+      #reader > div {
+        display: flex !important;
+        flex-direction: column !important;
+      }
+
+      #reader__scan_region {
+        flex: 1 1 auto !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+      }
+
+      #reader__dashboard {
+        display: none !important;
+      }
+
+      #reader video,
+      #reader canvas {
+        width: 100% !important;
+        height: 100% !important;
+        max-width: 100% !important;
+        max-height: 100% !important;
+        object-fit: cover !important;
+      }
+
+      .camera-actions {
+        position: relative;
+        z-index: 200;
+        width: 100%;
+        min-height: 32px !important;
+        display: grid !important;
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+        gap: 4px !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        background: #ffffff;
+      }
+
+      .camera-actions .button {
+        min-width: 0 !important;
+        min-height: 32px !important;
+        padding: 4px 6px !important;
+        font-size: .56rem !important;
+        border-radius: 8px !important;
+      }
+
+      #method-code.active {
+        display: flex !important;
+        justify-content: center !important;
+        padding: 4px !important;
+      }
+
+      .result {
+        inset: 39px 5px 5px !important;
+      }
+
+      .result.show {
+        overflow-x: hidden !important;
+        overflow-y: auto !important;
+      }
+    }
+  </style>
+
+</head>
+
+<body>
+  <script>
+    (function syncMobileViewportHeight() {
+      var scheduledFrame = 0;
+
+      function readViewportHeight() {
+        var visualHeight =
+          window.visualViewport &&
+          Number(window.visualViewport.height);
+
+        var innerHeight =
+          Number(window.innerHeight);
+
+        return Math.max(
+          1,
+          Math.round(
+            visualHeight || innerHeight || 1
+          )
+        );
+      }
+
+      function applyHeight() {
+        scheduledFrame = 0;
+
+        document.documentElement.style.setProperty(
+          "--app-height",
+          readViewportHeight() + "px"
+        );
+      }
+
+      function scheduleHeightUpdate() {
+        if (scheduledFrame) {
+          cancelAnimationFrame(scheduledFrame);
+        }
+
+        scheduledFrame =
+          requestAnimationFrame(applyHeight);
+      }
+
+      applyHeight();
+
+      window.addEventListener(
+        "resize",
+        scheduleHeightUpdate,
+        { passive: true }
+      );
+
+      window.addEventListener(
+        "orientationchange",
+        function () {
+          scheduleHeightUpdate();
+          setTimeout(applyHeight, 120);
+          setTimeout(applyHeight, 420);
+        },
+        { passive: true }
+      );
+
+      window.addEventListener(
+        "pageshow",
+        scheduleHeightUpdate,
+        { passive: true }
+      );
+
+      window.addEventListener(
+        "focus",
+        scheduleHeightUpdate,
+        { passive: true }
+      );
+
+      document.addEventListener(
+        "visibilitychange",
+        function () {
+          if (!document.hidden) {
+            scheduleHeightUpdate();
+          }
+        }
+      );
+
+      if (window.visualViewport) {
+        window.visualViewport.addEventListener(
+          "resize",
+          scheduleHeightUpdate,
+          { passive: true }
+        );
+
+        window.visualViewport.addEventListener(
+          "scroll",
+          scheduleHeightUpdate,
+          { passive: true }
+        );
+      }
+    })();
+  </script>
+
+  <div id="loading">
+    <div class="loading-card">
+      <div class="loading-icon">⌖</div>
+      <strong>Menyiapkan Absensi Guru</strong>
+      <p style="margin:7px 0 0;color:#71809e;font-size:.72rem;font-weight:700;line-height:1.5;">
+        Memuat ruang kelas, jadwal, dan zona lokasi.
+      </p>
+    </div>
+  </div>
+
+  <main class="page">
+    <header class="hero">
+      <div class="hero-copy">
+        <span class="hero-label">CAHAYA APP • Uji Coba</span>
+        <h1>Absen Kehadiran Guru</h1>
+        <p>
+          Scan QR atau masukkan kode yang ditempel di ruang kelas.
+          Kehadiran hanya dapat dikonfirmasi dari zona Pondok Putra
+          atau Pondok Putri yang sesuai.
+        </p>
+      </div>
+
+      <div class="teacher-card">
+        <small>Guru yang Login</small>
+        <strong id="teacherName">Memuat...</strong>
+        <span id="teacherMeta">Mencocokkan jadwal guru</span>
+      </div>
+    </header>
+
+    <section class="panel">
+      <div class="mobile-topbar" aria-label="Identitas absensi guru">
+        <div class="mobile-topbar-copy">
+          <strong>Absensi Guru</strong>
+          <span id="mobileTeacherName">Memuat akun guru...</span>
+        </div>
+        <div class="mobile-topbar-badge">SIAP ABSEN</div>
+      </div>
+
+      <div class="steps">
+        <div class="step">
+          <span>1</span>
+          <strong>Scan QR atau masukkan kode kelas</strong>
+        </div>
+
+        <div class="step">
+          <span>2</span>
+          <strong>Izinkan browser membaca lokasi</strong>
+        </div>
+
+        <div class="step">
+          <span>3</span>
+          <strong>Pilih mapel lalu konfirmasi hadir</strong>
+        </div>
+      </div>
+
+      <div class="tabs">
+        <button
+          type="button"
+          class="tab active"
+          data-method="scan"
+        >
+          📷 Scan QR
+        </button>
+
+        <button
+          type="button"
+          class="tab"
+          data-method="code"
+        >
+          ⌨️ Masukkan Kode
+        </button>
+      </div>
+
+      <div class="method active" id="method-scan">
+        <div id="reader"></div>
+
+        <div class="camera-actions">
+          <button
+            type="button"
+            class="button button-primary"
+            id="startCameraButton"
+          >
+            📷 Buka Kamera
+          </button>
+
+          <button
+            type="button"
+            class="button button-danger"
+            id="stopCameraButton"
+            disabled
+          >
+            ■ Tutup Kamera
+          </button>
+        </div>
+
+        <div class="helper">
+          Arahkan kamera ke QR yang ditempel di ruang kelas.
+          Apabila kamera laptop sulit digunakan, pilih tab
+          “Masukkan Kode”.
+        </div>
+      </div>
+
+      <div class="method" id="method-code">
+        <label class="input-label" for="classCode">
+          Kode Kelas
+        </label>
+
+        <input
+          class="input"
+          id="classCode"
+          autocomplete="off"
+          placeholder="Contoh: K4P-8261"
+        >
+
+        <div class="action-row">
+          <button
+            type="button"
+            class="button button-primary"
+            id="checkCodeButton"
+          >
+            ✓ Periksa Kode & Lokasi
+          </button>
+        </div>
+
+        <div class="helper">
+          Kode terdapat pada poster QR di ruang kelas.
+          Lokasi tetap diperiksa meskipun menggunakan kode.
+        </div>
+      </div>
+
+      <section class="result" id="checkResult">
+        <button
+          type="button"
+          class="result-close"
+          id="closeResultButton"
+          aria-label="Tutup hasil pemeriksaan"
+        >×</button>
+
+        <h3 id="resultTitle">Hasil Pemeriksaan</h3>
+
+        <div class="detail-grid" id="resultDetails"></div>
+
+        <div class="assignment-box" id="assignmentBox">
+          <label class="input-label" for="assignmentSelect">
+            Mapel yang Sedang Diajarkan
+          </label>
+
+          <select id="assignmentSelect"></select>
+        </div>
+
+        <div class="confirm-panel" id="confirmPanel">
+          <p id="confirmText">
+            Pastikan ruang dan mapel sudah sesuai.
+          </p>
+
+          <button
+            type="button"
+            class="button button-primary"
+            id="confirmAttendanceButton"
+          >
+            ✓ Konfirmasi Kehadiran
+          </button>
+        </div>
+      </section>
+
+      <div class="notice">
+        Saat pertama kali digunakan, browser akan meminta izin kamera
+        dan lokasi. Pilih <b>Izinkan</b>. Jangan menutup permintaan lokasi
+        sebelum posisi berhasil ditemukan. Khusus <b>Kelas 4 Putri</b>,
+        lokasi tidak diminta karena pembelajarannya dapat dilakukan secara online.
+      </div>
+    </section>
+  </main>
+
+  <script>
+    window.addEventListener("load", function () {
+      window.setTimeout(function () {
+        var loading =
+          document.getElementById("loading");
+
+        if (
+          loading &&
+          loading.style.display !== "none"
+        ) {
+          loading.style.display = "none";
+
+          var teacherName =
+            document.getElementById("teacherName");
+
+          var teacherMeta =
+            document.getElementById("teacherMeta");
+
+          if (
+            teacherName &&
+            teacherName.textContent === "Memuat..."
+          ) {
+            teacherName.textContent =
+              "Halaman belum terhubung";
+          }
+
+          if (teacherMeta) {
+            teacherMeta.textContent =
+              "Muat ulang halaman. Data konfigurasi lokal sudah tersedia.";
+          }
+        }
+      }, 11000);
+    });
+  </script>
+
+  <script type="module">
+    import {
+      initializeApp
+    } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+
+    import {
+      getDatabase,
+      ref,
+      get,
+      set,
+      push,
+      serverTimestamp
+    } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+
+
+    /* CAHAYA APP — Konfigurasi Absensi Guru QR + Lokasi
+       Tahun Ajaran 2026/2027
+    */
+    
+    const FIREBASE_CONFIG = window.CAHAYA_CONFIG.firebase;
+    
+    const PATHS = {
+      settings: "cahaya_app/pengaturan_absensi_guru",
+      locations: "cahaya_app/pengaturan_absensi_guru/lokasi",
+      rooms: "cahaya_app/master_ruang_kelas",
+      attendance: "cahaya_app/absensi_guru",
+      attendanceLog: "cahaya_app/log_absensi_guru",
+      schedule: "cahaya_app/jadwal_pelajaran"
+    };
+    
+    const TIMEZONE = "Asia/Jakarta";
+    
+    const DEFAULT_LOCATIONS = {
+      pondok_putra: {
+        id: "pondok_putra",
+        nama: "Pondok Putra",
+        unit: "PUTRA",
+        latitude: -2.7583058,
+        longitude: 107.7125462,
+        radiusMeter: 700,
+        aktif: true,
+        sumberKoordinat: "Google Maps pengguna"
+      },
+    
+      pondok_putri: {
+        id: "pondok_putri",
+        nama: "Pondok Putri",
+        unit: "PUTRI",
+        latitude: -2.7458405,
+        longitude: 107.6472273,
+        radiusMeter: 700,
+        aktif: true,
+        sumberKoordinat: "Google Maps pengguna"
+      }
+    };
+    
+    const DEFAULT_ROOMS = {
+      kelas_1_putra: {
+        id: "kelas_1_putra",
+        namaRuang: "Kelas 1 Putra",
+        kelas: "Kelas 1 Putra",
+        nomorKelas: "1",
+        unit: "PUTRA",
+        lokasiId: "pondok_putra",
+        kodeKelas: "K1P-3742",
+        qrToken: "CAHAYA-QR-K1P-3742",
+        aktif: true
+      },
+    
+      kelas_2_putra: {
+        id: "kelas_2_putra",
+        namaRuang: "Kelas 2 Putra",
+        kelas: "Kelas 2 Putra",
+        nomorKelas: "2",
+        unit: "PUTRA",
+        lokasiId: "pondok_putra",
+        kodeKelas: "K2P-6185",
+        qrToken: "CAHAYA-QR-K2P-6185",
+        aktif: true
+      },
+    
+      kelas_3_putra: {
+        id: "kelas_3_putra",
+        namaRuang: "Kelas 3 Putra",
+        kelas: "Kelas 3 Putra",
+        nomorKelas: "3",
+        unit: "PUTRA",
+        lokasiId: "pondok_putra",
+        kodeKelas: "K3P-9407",
+        qrToken: "CAHAYA-QR-K3P-9407",
+        aktif: true
+      },
+    
+      kelas_4_putra: {
+        id: "kelas_4_putra",
+        namaRuang: "Kelas 4 Putra",
+        kelas: "Kelas 4 Putra",
+        nomorKelas: "4",
+        unit: "PUTRA",
+        lokasiId: "pondok_putra",
+        kodeKelas: "K4P-8261",
+        qrToken: "CAHAYA-QR-K4P-8261",
+        aktif: true
+      },
+    
+      kelas_5_putra: {
+        id: "kelas_5_putra",
+        namaRuang: "Kelas 5 Putra",
+        kelas: "Kelas 5 Putra",
+        nomorKelas: "5",
+        unit: "PUTRA",
+        lokasiId: "pondok_putra",
+        kodeKelas: "K5P-1538",
+        qrToken: "CAHAYA-QR-K5P-1538",
+        aktif: true
+      },
+    
+      kelas_1_putri: {
+        id: "kelas_1_putri",
+        namaRuang: "Kelas 1 Putri",
+        kelas: "Kelas 1 Putri",
+        nomorKelas: "1",
+        unit: "PUTRI",
+        lokasiId: "pondok_putri",
+        kodeKelas: "K1W-4729",
+        qrToken: "CAHAYA-QR-K1W-4729",
+        aktif: true
+      },
+    
+      kelas_2_putri: {
+        id: "kelas_2_putri",
+        namaRuang: "Kelas 2 Putri",
+        kelas: "Kelas 2 Putri",
+        nomorKelas: "2",
+        unit: "PUTRI",
+        lokasiId: "pondok_putri",
+        kodeKelas: "K2W-8054",
+        qrToken: "CAHAYA-QR-K2W-8054",
+        aktif: true
+      },
+    
+      kelas_3_putri: {
+        id: "kelas_3_putri",
+        namaRuang: "Kelas 3 Putri",
+        kelas: "Kelas 3 Putri",
+        nomorKelas: "3",
+        unit: "PUTRI",
+        lokasiId: "pondok_putri",
+        kodeKelas: "K3W-2617",
+        qrToken: "CAHAYA-QR-K3W-2617",
+        aktif: true
+      },
+    
+      kelas_4_putri: {
+        id: "kelas_4_putri",
+        namaRuang: "Kelas 4 Putri",
+        kelas: "Kelas 4 Putri",
+        nomorKelas: "4",
+        unit: "PUTRI",
+        lokasiId: "pondok_putri",
+        kodeKelas: "K4W-7391",
+        qrToken: "CAHAYA-QR-K4W-7391",
+    
+        bebasRadius: true,
+        jenisPembelajaran: "ONLINE",
+        alasanBebasRadius:
+          "Kelas online dengan guru dari luar lokasi pesantren.",
+    
+        aktif: true
+      }
+    };
+    
+    const DAYS_ID = {
+      0: "Ahad",
+      1: "Senin",
+      2: "Selasa",
+      3: "Rabu",
+      4: "Kamis",
+      5: "Jumat",
+      6: "Sabtu"
+    };
+    
+    const CLASS_SCHEDULE = {
+      1: { 1: "Aqidah", 2: "Fiqih", 3: "Shirah", 4: "Adab" },
+      2: { 1: "Fiqih", 2: "Adab", 3: "Shirah", 4: "Hadits" },
+      3: { 1: "Adab", 2: "Shirah", 3: "Hadits", 4: "Fiqih" },
+      4: {
+        1: "Aqidah Tasawuf",
+        2: "Hadits Ahkam",
+        3: "Nahwu Sharaf",
+        4: "Shirah"
+      },
+      5: {
+        1: "Aqidah Tasawuf",
+        2: "Hadits Ahkam",
+        3: "Balaghah",
+        4: "Manajemen dan Bisnis"
+      }
+    };
+    
+    const CLASS_TEACHERS = {
+      1: { 1: "FAIQ", 2: "RASYIDIN", 3: "NAQIEB", 4: "NAQIEB" },
+      2: { 1: "RASYIDIN", 2: "NAQIEB", 3: "RAHIEL", 4: "FAIQ" },
+      3: { 1: "NAQIEB", 2: "RAHIEL", 3: "FAIQ", 4: "RASYIDIN" },
+      4: { 1: "MULTAZAM", 2: "MULTAZAM", 3: "RASYIDIN", 4: "RAHIEL" },
+      5: { 1: "MULTAZAM", 2: "MULTAZAM", 3: "MULTAZAM", 4: "MULTAZAM" }
+    };
+    
+    const PUTRI_CLASS_SCHEDULE = {
+      1: { 1: "Aqidah", 2: "Fiqih", 3: "Shirah", 4: "Adab" },
+      2: { 1: "Fiqih", 2: "Adab", 3: "Hadits", 4: "Shirah" },
+      3: { 1: "Adab", 2: "Shirah", 3: "Fiqih", 4: "Hadits" },
+      4: {
+        1: "Aqidah Tasawuf",
+        2: "Hadits Ahkam",
+        5: ["Nahwu Sharaf", "Shirah"]
+      }
+    };
+    
+    const PUTRI_CLASS_TEACHERS = {
+      1: { 1: "FATIMAH", 2: "ALAMANDA", 3: "MEILISA", 4: "MEILISA" },
+      2: { 1: "ALAMANDA", 2: "FATIMAH", 3: "FATIMAH", 4: "ALAMANDA" },
+      3: { 1: "MEILISA", 2: "MEILISA", 3: "ALAMANDA", 4: "FATIMAH" },
+      4: {
+        1: "MULTAZAM",
+        2: "MULTAZAM",
+        5: ["MULTAZAM", "MULTAZAM"]
+      }
+    };
+    
+    const EXTRA_DAILY_SUBJECTS = {
+      putra: {
+        1: [
+          { subject: "Bahasa Arab", teacher: "HANIF" },
+          { subject: "Al-Qur’an", teacher: "HANIF" }
+        ],
+        2: [
+          { subject: "Bahasa Arab", teacher: "RAHIEL" },
+          { subject: "Bahasa Arab", teacher: "FAIQ" },
+          { subject: "Al-Qur’an", teacher: "FALAH" }
+        ],
+        3: [
+          { subject: "Bahasa Arab", teacher: "ZAKY" },
+          { subject: "Al-Qur’an", teacher: "RAHIEL" }
+        ],
+        4: [
+          { subject: "Bahasa Arab", teacher: "MULTAZAM" },
+          { subject: "Al-Qur’an", teacher: "ZAKY" }
+        ],
+        5: [
+          { subject: "Bahasa Arab", teacher: "MULTAZAM" },
+          { subject: "Al-Qur’an", teacher: "MULTAZAM" }
+        ]
+      },
+    
+      putri: {
+        1: [
+          { subject: "Bahasa Arab", teacher: "FATIMAH" },
+          { subject: "Al-Qur’an", teacher: "FATIMAH" }
+        ],
+        2: [
+          { subject: "Bahasa Arab", teacher: "MEILISA" },
+          { subject: "Al-Qur’an", teacher: "MEILISA" }
+        ],
+        3: [
+          { subject: "Bahasa Arab", teacher: "ALAMANDA" },
+          { subject: "Al-Qur’an", teacher: "ALAMANDA" }
+        ],
+        4: [
+          { subject: "Bahasa Arab", teacher: "ALAMANDA" },
+          { subject: "Al-Qur’an", teacher: "ALAMANDA" }
+        ]
+      }
+    };
+    
+    const SCHEDULE_SECTIONS = [
+      {
+        id: "putra",
+        label: "Putra",
+        unit: "PUTRA",
+        schedule: CLASS_SCHEDULE,
+        teachers: CLASS_TEACHERS,
+        extraDaily: EXTRA_DAILY_SUBJECTS.putra
+      },
+      {
+        id: "putri",
+        label: "Putri",
+        unit: "PUTRI",
+        schedule: PUTRI_CLASS_SCHEDULE,
+        teachers: PUTRI_CLASS_TEACHERS,
+        extraDaily: EXTRA_DAILY_SUBJECTS.putri
+      }
+    ];
+    
+    const TEACHER_ALIASES = {
+      MULTAZAM: [
+        "multazam",
+        "multazam zakaria",
+        "abah multazam",
+        "dr multazam zakaria"
+      ],
+      RASYIDIN: [
+        "rasyidin",
+        "rosyidin",
+        "abi rasyidin",
+        "abi rosyidin"
+      ],
+      NAQIEB: [
+        "naqieb",
+        "muhammad naqieb"
+      ],
+      ZAKY: [
+        "zaky",
+        "zaki",
+        "muhammad zaky",
+        "muhammad zaki"
+      ],
+      RAHIEL: [
+        "rahiel",
+        "mika rahiel",
+        "mika rahiel yusuf"
+      ],
+      FAIQ: [
+        "faiq",
+        "muhammad faiq"
+      ],
+      FALAH: [
+        "falah",
+        "al falah",
+        "muhammad al falah",
+        "m al falah"
+      ],
+      FATIMAH: ["fatimah"],
+      MEILISA: ["meilisa", "melisa"],
+      ALAMANDA: ["alamanda"],
+      HANIF: ["hanif"]
+    };
+    
+    function cloneData(value) {
+      return JSON.parse(JSON.stringify(value));
+    }
+    
+    function safeJson(value, fallback = {}) {
+      try {
+        return JSON.parse(value || "{}");
+      } catch (_) {
+        return fallback;
+      }
+    }
+    
+    function readActiveProfile() {
+      const local = safeJson(
+        localStorage.getItem("cahayaCurrentUser"),
+        {}
+      );
+    
+      let parentStorage = {};
+      let parentGlobal = {};
+    
+      try {
+        if (window.parent && window.parent !== window) {
+          parentStorage = safeJson(
+            window.parent.localStorage.getItem(
+              "cahayaCurrentUser"
+            ),
+            {}
+          );
+    
+          parentGlobal =
+            window.parent.cahayaCurrentUser &&
+            typeof window.parent.cahayaCurrentUser === "object"
+              ? window.parent.cahayaCurrentUser
+              : {};
+        }
+      } catch (error) {
+        console.warn(
+          "Profil dashboard utama tidak dapat dibaca:",
+          error
+        );
+      }
+    
+      return {
+        ...local,
+        ...parentStorage,
+        ...parentGlobal
+      };
+    }
+    
+    function teacherDisplayName(profile = {}) {
+      return (
+        profile.label ||
+        profile.nama ||
+        profile.namaTampilan ||
+        profile.displayName ||
+        profile.username ||
+        profile.email ||
+        "Guru CAHAYA"
+      );
+    }
+    
+    function normalizeIdentity(value = "") {
+      return String(value)
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .toLowerCase()
+        .replace(
+          /\b(abah|abi|ummi|ustadzah|ustadz|ust|muallimah|muallim|mualimah|mualim|naqibah|naqib|guru|bapak|ibu|pak|bu|dr|s pd|m pd|mpd|se)\b/g,
+          " "
+        )
+        .replace(/[^a-z0-9]+/g, " ")
+        .replace(/\s+/g, " ")
+        .trim();
+    }
+    
+    function compactIdentity(value = "") {
+      return normalizeIdentity(value)
+        .replace(/\s+/g, "");
+    }
+    
+    function detectTeacherCode(profile = {}) {
+      const emailPrefix =
+        String(profile.email || "").split("@")[0];
+    
+      const candidates = [
+        profile.label,
+        profile.nama,
+        profile.namaTampilan,
+        profile.displayName,
+        profile.username,
+        emailPrefix
+      ]
+        .filter(Boolean)
+        .map(normalizeIdentity)
+        .filter(Boolean);
+    
+      let best = {
+        code: "",
+        score: 0
+      };
+    
+      Object.entries(TEACHER_ALIASES)
+        .forEach(([code, aliases]) => {
+          aliases.forEach(alias => {
+            const normalizedAlias =
+              normalizeIdentity(alias);
+    
+            const compactAlias =
+              compactIdentity(alias);
+    
+            candidates.forEach(candidate => {
+              const compactCandidate =
+                compactIdentity(candidate);
+    
+              let score = 0;
+    
+              if (
+                candidate === normalizedAlias ||
+                compactCandidate === compactAlias
+              ) {
+                score = 100;
+              } else if (
+                normalizedAlias.length >= 4 &&
+                (
+                  candidate.includes(normalizedAlias) ||
+                  normalizedAlias.includes(candidate)
+                )
+              ) {
+                score = 80;
+              } else if (
+                compactAlias.length >= 4 &&
+                compactCandidate.includes(compactAlias)
+              ) {
+                score = 70;
+              }
+    
+              if (score > best.score) {
+                best = {
+                  code,
+                  score
+                };
+              }
+            });
+          });
+        });
+    
+      return best.code;
+    }
+    
+    function normalizeLessonEntries(
+      subjectValue,
+      teacherValue
+    ) {
+      if (!subjectValue) return [];
+    
+      if (Array.isArray(subjectValue)) {
+        return subjectValue
+          .map((item, index) => {
+            if (typeof item === "string") {
+              const teacher =
+                Array.isArray(teacherValue)
+                  ? teacherValue[index]
+                  : teacherValue;
+    
+              return {
+                subject: item,
+                teacher: teacher || "—"
+              };
+            }
+    
+            return {
+              subject: item.subject,
+              teacher: item.teacher || "—"
+            };
+          })
+          .filter(item => item.subject);
+      }
+    
+      return [
+        {
+          subject: subjectValue,
+          teacher: teacherValue || "—"
+        }
+      ];
+    }
+    
+    function scheduledEntries(
+      section,
+      classNumber,
+      dayNumber
+    ) {
+      const classKey = String(classNumber);
+    
+      const core = normalizeLessonEntries(
+        section.schedule?.[classKey]?.[dayNumber],
+        section.teachers?.[classKey]?.[dayNumber]
+      );
+    
+      const daily =
+        dayNumber >= 1 && dayNumber <= 4
+          ? section.extraDaily?.[classKey] || []
+          : [];
+    
+      return [...core, ...daily];
+    }
+    
+    function dateFromInput(
+      dateValue
+    ) {
+      if (!dateValue) return new Date();
+    
+      const [year, month, day] =
+        String(dateValue)
+          .split("-")
+          .map(Number);
+    
+      return new Date(
+        year,
+        (month || 1) - 1,
+        day || 1,
+        12,
+        0,
+        0
+      );
+    }
+    
+    const LEARNING_TIME_SLOTS = {
+      bahasaArab: [
+        {
+          sessionKey: "bahasa-arab-pagi",
+          sessionLabel: "Sesi Pagi",
+          start: "05:10",
+          end: "06:00"
+        }
+      ],
+
+      alQuran: [
+        {
+          sessionKey: "alquran-pagi",
+          sessionLabel: "Sesi Pagi",
+          start: "07:00",
+          end: "09:00"
+        },
+        {
+          sessionKey: "alquran-siang",
+          sessionLabel: "Sesi Siang",
+          start: "12:30",
+          end: "13:30"
+        }
+      ],
+
+      regular: [
+        {
+          sessionKey: "kbm-utama",
+          sessionLabel: "Sesi Utama",
+          start: "09:20",
+          end: "11:20"
+        }
+      ]
+    };
+
+    function learningSessionsForSubject(
+      subject = ""
+    ) {
+      const normalized =
+        compactIdentity(subject);
+
+      if (normalized === "bahasaarab") {
+        return cloneData(
+          LEARNING_TIME_SLOTS.bahasaArab
+        );
+      }
+
+      if (normalized === "alquran") {
+        return cloneData(
+          LEARNING_TIME_SLOTS.alQuran
+        );
+      }
+
+      return cloneData(
+        LEARNING_TIME_SLOTS.regular
+      );
+    }
+
+    function buildDailyAssignments(
+      dateValue
+    ) {
+      const dayNumber =
+        dateFromInput(dateValue).getDay();
+
+      if (onlineScheduleRows.length) {
+        return onlineScheduleRows
+          .filter(row => row && row.aktif !== false && Number(row.hari) === dayNumber)
+          .map((row, index) => ({
+            id: safeKey(row.id || [row.unit,row.kelas,row.hari,row.mapel,row.guruKode,row.sesi,index].join("-")),
+            sectionId: String(row.unit || "").toLowerCase(),
+            unit: String(row.unit || "").toUpperCase(),
+            section: String(row.unit || "").toUpperCase() === "PUTRI" ? "Putri" : "Putra",
+            classNumber: String(row.nomorKelas || String(row.kelas || "").match(/\d+/)?.[0] || ""),
+            className: row.kelas || `Kelas ${row.nomorKelas || ""} ${String(row.unit || "").toUpperCase() === "PUTRI" ? "Putri" : "Putra"}`,
+            subject: row.mapel || "Pelajaran",
+            teacher: String(row.guruKode || "").trim().toUpperCase(),
+            sessionKey: row.jenis || row.sesi || "regular",
+            sessionLabel: row.sesi || "KBM",
+            scheduleStart: row.jamMulai || "09:20",
+            scheduleEnd: row.jamSelesai || "11:20",
+            scheduleLabel: `${row.jamMulai || "09:20"}–${row.jamSelesai || "11:20"}`,
+            dayNumber,
+            dayLabel: DAYS_ID?.[dayNumber] || "Hari",
+            sumberJadwal: "Firebase"
+          }))
+          .sort((a,b) => String(a.scheduleStart).localeCompare(String(b.scheduleStart)) || a.className.localeCompare(b.className));
+      }
+
+      const assignments = [];
+
+      SCHEDULE_SECTIONS.forEach(section => {
+        Object.keys(section.schedule)
+          .forEach(classNumber => {
+            scheduledEntries(
+              section,
+              classNumber,
+              dayNumber
+            ).forEach((entry, index) => {
+              const className =
+                `Kelas ${classNumber} ${section.label}`;
+
+              const sessions =
+                learningSessionsForSubject(
+                  entry.subject
+                );
+
+              sessions.forEach(
+                (session, sessionIndex) => {
+                  const rawId = [
+                    section.id,
+                    classNumber,
+                    dayNumber,
+                    entry.teacher,
+                    entry.subject,
+                    index,
+                    session.sessionKey,
+                    sessionIndex
+                  ].join("-");
+
+                  assignments.push({
+                    id: safeKey(rawId),
+                    sectionId: section.id,
+                    unit: section.unit,
+                    section: section.label,
+                    classNumber:
+                      String(classNumber),
+                    className,
+                    subject: entry.subject,
+                    teacher:
+                      String(entry.teacher || "")
+                        .trim()
+                        .toUpperCase(),
+
+                    sessionKey:
+                      session.sessionKey,
+                    sessionLabel:
+                      session.sessionLabel,
+                    scheduleStart:
+                      session.start,
+                    scheduleEnd:
+                      session.end,
+                    scheduleLabel:
+                      `${session.start}–${session.end}`,
+
+                    dayNumber,
+                    dayLabel:
+                      DAYS_ID[dayNumber] || "Hari"
+                  });
+                }
+              );
+            });
+          });
+      });
+
+      return assignments;
+    }
+
+    function assignmentsForTeacherAndRoom(
+      dateValue,
+      teacherCode,
+      room
+    ) {
+      return buildDailyAssignments(dateValue)
+        .filter(item => {
+          return (
+            item.teacher === teacherCode &&
+            item.unit === room.unit &&
+            compactIdentity(item.className) ===
+              compactIdentity(room.kelas)
+          );
+        });
+    }
+    
+    function safeKey(value = "") {
+      const cleaned = normalizeIdentity(value)
+        .replace(/\s+/g, "-")
+        .replace(/[^a-z0-9-]/g, "")
+        .replace(/-+/g, "-")
+        .replace(/^-|-$/g, "");
+    
+      return cleaned || "data";
+    }
+    
+    function escapeHtml(value = "") {
+      return String(value)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#39;");
+    }
+    
+    function jakartaParts(
+      date = new Date()
+    ) {
+      const parts =
+        new Intl.DateTimeFormat(
+          "en-CA",
+          {
+            timeZone: TIMEZONE,
+            weekday: "long",
+            year: "numeric",
+            month: "2-digit",
+            day: "2-digit",
+            hour: "2-digit",
+            minute: "2-digit",
+            second: "2-digit",
+            hourCycle: "h23"
+          }
+        ).formatToParts(date);
+    
+      const map = {};
+    
+      parts.forEach(part => {
+        if (part.type !== "literal") {
+          map[part.type] = part.value;
+        }
+      });
+    
+      return map;
+    }
+    
+    function jakartaDateKey(
+      date = new Date()
+    ) {
+      const parts = jakartaParts(date);
+    
+      return `${parts.year}-${parts.month}-${parts.day}`;
+    }
+    
+    function jakartaTimeLabel(
+      date = new Date()
+    ) {
+      const parts = jakartaParts(date);
+    
+      return `${parts.hour}:${parts.minute}:${parts.second}`;
+    }
+    
+    function formatDateIndonesia(
+      dateValue
+    ) {
+      const date = dateFromInput(dateValue);
+    
+      return new Intl.DateTimeFormat(
+        "id-ID",
+        {
+          weekday: "long",
+          day: "numeric",
+          month: "long",
+          year: "numeric"
+        }
+      ).format(date);
+    }
+    
+    function haversineDistanceMeters(
+      lat1,
+      lon1,
+      lat2,
+      lon2
+    ) {
+      const toRad = value =>
+        value * Math.PI / 180;
+    
+      const earthRadius = 6371000;
+      const dLat = toRad(lat2 - lat1);
+      const dLon = toRad(lon2 - lon1);
+    
+      const firstLat = toRad(lat1);
+      const secondLat = toRad(lat2);
+    
+      const a =
+        Math.sin(dLat / 2) ** 2 +
+        Math.cos(firstLat) *
+        Math.cos(secondLat) *
+        Math.sin(dLon / 2) ** 2;
+    
+      return (
+        2 *
+        earthRadius *
+        Math.atan2(
+          Math.sqrt(a),
+          Math.sqrt(1 - a)
+        )
+      );
+    }
+    
+    function roomFromCredential(
+      rooms,
+      credential
+    ) {
+      const normalized =
+        String(credential || "")
+          .trim()
+          .toUpperCase();
+    
+      if (!normalized) return null;
+    
+      return Object.values(rooms || {})
+        .find(room => {
+          return (
+            room.aktif !== false &&
+            (
+              String(room.kodeKelas || "")
+                .trim()
+                .toUpperCase() === normalized ||
+              String(room.qrToken || "")
+                .trim()
+                .toUpperCase() === normalized
+            )
+          );
+        }) || null;
+    }
+
+
+    const app = initializeApp(
+      FIREBASE_CONFIG
+    );
+
+    const db = getDatabase(app);
+
+    let profile = readActiveProfile();
+    let teacherCode = "";
+    let onlineScheduleRows = [];
+    let rooms = cloneData(DEFAULT_ROOMS);
+    let locations =
+      cloneData(DEFAULT_LOCATIONS);
+
+    let qrScanner = null;
+    let scannerRunning = false;
+
+    let verifiedRoom = null;
+    let verifiedLocation = null;
+    let verifiedPosition = null;
+    let availableAssignments = [];
+    let selectedMethod = "";
+
+    const teacherName =
+      teacherDisplayName(profile);
+
+    function showLoading(show) {
+      document.getElementById(
+        "loading"
+      ).style.display =
+        show ? "grid" : "none";
+    }
+
+    function showResult(
+      type,
+      title,
+      details = []
+    ) {
+      const box =
+        document.getElementById(
+          "checkResult"
+        );
+
+      box.className =
+        `result show ${type || ""}`;
+
+      document.getElementById(
+        "resultTitle"
+      ).textContent = title;
+
+      document.getElementById(
+        "resultDetails"
+      ).innerHTML =
+        details
+          .map(item => `
+            <div class="detail">
+              <small>${escapeHtml(item.label)}</small>
+              <strong>${escapeHtml(item.value)}</strong>
+            </div>
+          `)
+          .join("");
+    }
+
+    function resetConfirmation() {
+      verifiedRoom = null;
+      verifiedLocation = null;
+      verifiedPosition = null;
+      availableAssignments = [];
+      selectedMethod = "";
+
+      document.getElementById(
+        "assignmentBox"
+      ).classList.remove("show");
+
+      document.getElementById(
+        "confirmPanel"
+      ).classList.remove("show");
+
+      document.getElementById(
+        "assignmentSelect"
+      ).innerHTML = "";
+    }
+
+    function hideResultPanel() {
+      const box =
+        document.getElementById(
+          "checkResult"
+        );
+
+      box.className = "result";
+      resetConfirmation();
+    }
+
+    function geolocationErrorMessage(
+      error
+    ) {
+      const messages = {
+        1: "Izin lokasi ditolak. Aktifkan izin lokasi pada browser.",
+        2: "Lokasi perangkat belum dapat ditemukan.",
+        3: "Pencarian lokasi terlalu lama. Coba kembali dekat jendela atau aktifkan layanan lokasi."
+      };
+
+      return (
+        messages[error?.code] ||
+        error?.message ||
+        "Lokasi perangkat gagal dibaca."
+      );
+    }
+
+    function getCurrentPosition() {
+      return new Promise(
+        (resolve, reject) => {
+          if (!navigator.geolocation) {
+            reject(
+              new Error(
+                "Browser ini tidak mendukung pembacaan lokasi."
+              )
+            );
+            return;
+          }
+
+          navigator.geolocation
+            .getCurrentPosition(
+              position =>
+                resolve(position),
+              error =>
+                reject(
+                  new Error(
+                    geolocationErrorMessage(
+                      error
+                    )
+                  )
+                ),
+              {
+                enableHighAccuracy: true,
+                timeout: 20000,
+                maximumAge: 0
+              }
+            );
+        }
+      );
+    }
+
+    async function processCredential(
+      credential,
+      method
+    ) {
+      resetConfirmation();
+
+      const room =
+        roomFromCredential(
+          rooms,
+          credential
+        );
+
+      if (!room) {
+        showResult(
+          "error",
+          "Kode Kelas Tidak Dikenali",
+          [
+            {
+              label: "Kode Dibaca",
+              value:
+                credential || "Kosong"
+            },
+            {
+              label: "Tindakan",
+              value:
+                "Periksa kembali poster QR di kelas."
+            }
+          ]
+        );
+        return;
+      }
+
+      const location =
+        locations[
+          room.lokasiId
+        ];
+
+      if (
+        !location ||
+        location.aktif === false
+      ) {
+        showResult(
+          "error",
+          "Zona Lokasi Belum Aktif",
+          [
+            {
+              label: "Ruang",
+              value: room.namaRuang
+            },
+            {
+              label: "Lokasi",
+              value:
+                room.lokasiId ||
+                "Belum ditentukan"
+            }
+          ]
+        );
+        return;
+      }
+
+      const radiusExempt =
+        room.bebasRadius === true;
+
+      showResult(
+        "",
+        radiusExempt
+          ? "Memeriksa QR/Kode Kelas Online..."
+          : "Memeriksa Lokasi Perangkat...",
+        [
+          {
+            label: "Ruang",
+            value: room.namaRuang
+          },
+          {
+            label: "Validasi Lokasi",
+            value:
+              radiusExempt
+                ? "Tidak diberlakukan untuk kelas ini"
+                : location.nama
+          }
+        ]
+      );
+
+      try {
+        let latitude = null;
+        let longitude = null;
+        let accuracy = null;
+        let roundedDistance = null;
+
+        const radius =
+          Number(
+            location.radiusMeter
+          ) || 700;
+
+        if (!radiusExempt) {
+          const position =
+            await getCurrentPosition();
+
+          latitude =
+            position.coords.latitude;
+
+          longitude =
+            position.coords.longitude;
+
+          accuracy =
+            Math.round(
+              position.coords.accuracy || 0
+            );
+
+          const distance =
+            haversineDistanceMeters(
+              latitude,
+              longitude,
+              Number(location.latitude),
+              Number(location.longitude)
+            );
+
+          roundedDistance =
+            Math.round(distance);
+
+          if (distance > radius) {
+            showResult(
+              "error",
+              "Anda Berada di Luar Zona Absensi",
+              [
+                {
+                  label: "Ruang",
+                  value: room.namaRuang
+                },
+                {
+                  label: "Zona Wajib",
+                  value: location.nama
+                },
+                {
+                  label: "Jarak Terdeteksi",
+                  value:
+                    `${roundedDistance} meter`
+                },
+                {
+                  label: "Radius Maksimal",
+                  value:
+                    `${radius} meter`
+                },
+                {
+                  label: "Akurasi Perangkat",
+                  value:
+                    `${accuracy} meter`
+                }
+              ]
+            );
+            return;
+          }
+        }
+
+        if (!teacherCode) {
+          showResult(
+            "error",
+            "Nama Akun Belum Cocok dengan Jadwal",
+            [
+              {
+                label: "Nama Login",
+                value: teacherName
+              },
+              {
+                label: "Ruang",
+                value: room.namaRuang
+              },
+              {
+                label: "Lokasi",
+                value:
+                  radiusExempt
+                    ? "Kelas online — tanpa radius"
+                    : `${roundedDistance} meter dari ${location.nama}`
+              }
+            ]
+          );
+          return;
+        }
+
+        const dateKey =
+          jakartaDateKey();
+
+        const assignments =
+          assignmentsForTeacherAndRoom(
+            dateKey,
+            teacherCode,
+            room
+          );
+
+        if (!assignments.length) {
+          showResult(
+            "error",
+            "Jadwal Mengajar Tidak Ditemukan",
+            [
+              {
+                label: "Guru",
+                value:
+                  `${teacherName} (${teacherCode})`
+              },
+              {
+                label: "Ruang",
+                value: room.namaRuang
+              },
+              {
+                label: "Tanggal",
+                value:
+                  formatDateIndonesia(
+                    dateKey
+                  )
+              },
+              {
+                label: "Lokasi",
+                value:
+                  radiusExempt
+                    ? "Kelas online — tanpa radius"
+                    : `${roundedDistance} meter dari ${location.nama}`
+              }
+            ]
+          );
+          return;
+        }
+
+        verifiedRoom = room;
+        verifiedLocation = location;
+        verifiedPosition = {
+          latitude,
+          longitude,
+          accuracy,
+          distanceMeter:
+            roundedDistance,
+          radiusExempt,
+          status:
+            radiusExempt
+              ? "DIKECUALIKAN"
+              : "VALID"
+        };
+
+        availableAssignments =
+          assignments;
+
+        selectedMethod = method;
+
+        showResult(
+          "success",
+          "Ruang dan Lokasi Berhasil Diverifikasi",
+          [
+            {
+              label: "Guru",
+              value: teacherName
+            },
+            {
+              label: "Ruang",
+              value: room.namaRuang
+            },
+            {
+              label: "Unit",
+              value: room.unit
+            },
+            {
+              label: "Validasi Lokasi",
+              value:
+                radiusExempt
+                  ? "Dikecualikan — Kelas Online"
+                  : "Valid"
+            },
+            {
+              label: "Jarak",
+              value:
+                radiusExempt
+                  ? "Tidak diperiksa"
+                  : `${roundedDistance} meter`
+            },
+            {
+              label: "Radius",
+              value:
+                radiusExempt
+                  ? "Tidak diberlakukan"
+                  : `${radius} meter`
+            },
+            {
+              label: "Akurasi",
+              value:
+                radiusExempt
+                  ? "Tidak diperlukan"
+                  : `${accuracy} meter`
+            }
+          ]
+        );
+
+        const select =
+          document.getElementById(
+            "assignmentSelect"
+          );
+
+        select.innerHTML =
+          assignments
+            .map(item => `
+              <option value="${item.id}">
+                ${escapeHtml(item.subject)} •
+                ${escapeHtml(item.sessionLabel)} •
+                ${escapeHtml(item.scheduleLabel)} •
+                ${escapeHtml(item.className)}
+              </option>
+            `)
+            .join("");
+
+        const recommended =
+          chooseBestAssignment(
+            assignments
+          );
+
+        if (recommended) {
+          select.value =
+            recommended.id;
+        }
+
+        document.getElementById(
+          "assignmentBox"
+        ).classList.add("show");
+
+        document.getElementById(
+          "confirmPanel"
+        ).classList.add("show");
+
+        document.getElementById(
+          "confirmText"
+        ).textContent =
+          assignments.length > 1
+            ? "Terdapat beberapa sesi pada kelas ini. Pilih mapel dan jam yang sedang berlangsung."
+            : `Mapel dan ruang sudah sesuai. Jadwal ${assignments[0].scheduleLabel}. Tekan konfirmasi untuk mencatat waktu tiba.`;
+      } catch (error) {
+        console.error(
+          "Lokasi gagal:",
+          error
+        );
+
+        showResult(
+          "error",
+          "Lokasi Tidak Dapat Diverifikasi",
+          [
+            {
+              label: "Ruang",
+              value: room.namaRuang
+            },
+            {
+              label: "Pesan",
+              value:
+                error?.message ||
+                "Pembacaan lokasi gagal."
+            }
+          ]
+        );
+      }
+    }
+
+    async function stopScanner() {
+      if (
+        !qrScanner ||
+        !scannerRunning
+      ) {
+        return;
+      }
+
+      try {
+        await qrScanner.stop();
+        await qrScanner.clear();
+      } catch (error) {
+        console.warn(
+          "Kamera belum dapat ditutup:",
+          error
+        );
+      }
+
+      scannerRunning = false;
+
+      document.getElementById(
+        "startCameraButton"
+      ).disabled = false;
+
+      document.getElementById(
+        "stopCameraButton"
+      ).disabled = true;
+    }
+
+    async function startScanner() {
+      if (
+        typeof Html5Qrcode ===
+        "undefined"
+      ) {
+        showResult(
+          "error",
+          "Pemindai QR Belum Tersedia",
+          [
+            {
+              label: "Solusi",
+              value:
+                "Gunakan tab Masukkan Kode."
+            }
+          ]
+        );
+        return;
+      }
+
+      await stopScanner();
+
+      qrScanner =
+        new Html5Qrcode(
+          "reader"
+        );
+
+      document.getElementById(
+        "startCameraButton"
+      ).disabled = true;
+
+      try {
+        await new Promise(resolve => {
+          requestAnimationFrame(() => {
+            requestAnimationFrame(resolve);
+          });
+        });
+
+        const readerElement =
+          document.getElementById("reader");
+
+        const readerRect =
+          readerElement.getBoundingClientRect();
+
+        const availableEdge =
+          Math.min(
+            Math.max(readerRect.width, 160),
+            Math.max(readerRect.height, 160)
+          );
+
+        const qrBoxSize =
+          Math.max(
+            120,
+            Math.min(
+              230,
+              Math.floor(availableEdge * 0.72)
+            )
+          );
+
+        await qrScanner.start(
+          {
+            facingMode:
+              "environment"
+          },
+          {
+            fps: 10,
+            qrbox: {
+              width: qrBoxSize,
+              height: qrBoxSize
+            }
+          },
+          async decodedText => {
+            await stopScanner();
+
+            await processCredential(
+              decodedText,
+              "SCAN_QR"
+            );
+          },
+          () => {}
+        );
+
+        scannerRunning = true;
+
+        document.getElementById(
+          "stopCameraButton"
+        ).disabled = false;
+      } catch (error) {
+        console.error(
+          "Kamera gagal dibuka:",
+          error
+        );
+
+        document.getElementById(
+          "startCameraButton"
+        ).disabled = false;
+
+        showResult(
+          "error",
+          "Kamera Tidak Dapat Dibuka",
+          [
+            {
+              label: "Pesan",
+              value:
+                error?.message ||
+                "Pastikan izin kamera diberikan."
+            },
+            {
+              label: "Alternatif",
+              value:
+                "Gunakan Masukkan Kode."
+            }
+          ]
+        );
+      }
+    }
+
+    function timeTextToMinutes(
+      value = "00:00"
+    ) {
+      const [hour, minute] =
+        String(value)
+          .split(":")
+          .map(Number);
+
+      return (
+        (hour || 0) * 60 +
+        (minute || 0)
+      );
+    }
+
+    function attendanceStatus(
+      arrivalTime,
+      scheduleStart
+    ) {
+      const arrivalMinutes =
+        timeTextToMinutes(arrivalTime);
+
+      const startMinutes =
+        timeTextToMinutes(scheduleStart);
+
+      const lateMinutes =
+        Math.max(
+          0,
+          arrivalMinutes - startMinutes
+        );
+
+      return {
+        status:
+          lateMinutes > 0
+            ? "TERLAMBAT"
+            : "TEPAT_WAKTU",
+
+        statusLabel:
+          lateMinutes > 0
+            ? `Terlambat ${lateMinutes} menit`
+            : "Tepat Waktu",
+
+        lateMinutes
+      };
+    }
+
+    function chooseBestAssignment(
+      assignments
+    ) {
+      if (!assignments.length) {
+        return null;
+      }
+
+      const now =
+        timeTextToMinutes(
+          jakartaTimeLabel()
+        );
+
+      const active =
+        assignments.find(item => {
+          const start =
+            timeTextToMinutes(
+              item.scheduleStart
+            );
+
+          const end =
+            timeTextToMinutes(
+              item.scheduleEnd
+            );
+
+          return (
+            now >= start &&
+            now <= end
+          );
+        });
+
+      if (active) {
+        return active;
+      }
+
+      return [...assignments]
+        .sort((a, b) => {
+          const distanceA =
+            Math.abs(
+              now -
+              timeTextToMinutes(
+                a.scheduleStart
+              )
+            );
+
+          const distanceB =
+            Math.abs(
+              now -
+              timeTextToMinutes(
+                b.scheduleStart
+              )
+            );
+
+          return distanceA - distanceB;
+        })[0];
+    }
+
+    function selectedAssignment() {
+      const selectedId =
+        document.getElementById(
+          "assignmentSelect"
+        ).value;
+
+      return (
+        availableAssignments.find(
+          item =>
+            item.id === selectedId
+        ) ||
+        availableAssignments[0] ||
+        null
+      );
+    }
+
+    async function confirmAttendance() {
+      const assignment =
+        selectedAssignment();
+
+      if (
+        !verifiedRoom ||
+        !verifiedLocation ||
+        !verifiedPosition ||
+        !assignment
+      ) {
+        showResult(
+          "error",
+          "Data Absensi Belum Lengkap",
+          [
+            {
+              label: "Tindakan",
+              value:
+                "Periksa kembali kode kelas dan lokasi."
+            }
+          ]
+        );
+        return;
+      }
+
+      const button =
+        document.getElementById(
+          "confirmAttendanceButton"
+        );
+
+      button.disabled = true;
+      button.textContent =
+        "⏳ Menyimpan Kehadiran...";
+
+      const dateKey =
+        jakartaDateKey();
+
+      const teacherKey =
+        safeKey(
+          profile.uid ||
+          profile.email ||
+          profile.username ||
+          teacherName
+        );
+
+      const attendanceRef =
+        ref(
+          db,
+          `${PATHS.attendance}/${dateKey}/${teacherKey}/${assignment.id}`
+        );
+
+      try {
+        const existing =
+          await get(
+            attendanceRef
+          );
+
+        if (existing.exists()) {
+          const value =
+            existing.val();
+
+          showResult(
+            "success",
+            "Kehadiran Sudah Tercatat",
+            [
+              {
+                label: "Guru",
+                value: teacherName
+              },
+              {
+                label: "Mapel",
+                value:
+                  assignment.subject
+              },
+              {
+                label: "Ruang",
+                value:
+                  verifiedRoom.namaRuang
+              },
+              {
+                label: "Jadwal",
+                value:
+                  value.jadwalLabel ||
+                  assignment.scheduleLabel
+              },
+              {
+                label: "Waktu Tiba",
+                value:
+                  value.waktuTibaWIB ||
+                  "Sudah tersimpan"
+              },
+              {
+                label: "Status",
+                value:
+                  value.statusKehadiranLabel ||
+                  value.statusKehadiran ||
+                  "Sudah hadir"
+              }
+            ]
+          );
+
+          document.getElementById(
+            "assignmentBox"
+          ).classList.remove("show");
+
+          document.getElementById(
+            "confirmPanel"
+          ).classList.remove("show");
+
+          return;
+        }
+
+        const localTime =
+          jakartaTimeLabel();
+
+        const attendanceResult =
+          attendanceStatus(
+            localTime,
+            assignment.scheduleStart
+          );
+
+        const record = {
+          idAbsensi:
+            `${teacherKey}-${assignment.id}`,
+
+          tanggal: dateKey,
+          tanggalLabel:
+            formatDateIndonesia(
+              dateKey
+            ),
+
+          waktuTibaWIB: localTime,
+          waktuTibaServer:
+            serverTimestamp(),
+
+          guruUid:
+            profile.uid || "",
+
+          guruKey: teacherKey,
+          guruKodeKalender:
+            teacherCode,
+          namaGuru: teacherName,
+          emailGuru:
+            profile.email || "",
+
+          jadwalId:
+            assignment.id,
+          hariJadwal:
+            assignment.dayLabel,
+
+          sesiId:
+            assignment.sessionKey,
+          sesiLabel:
+            assignment.sessionLabel,
+          jadwalMulai:
+            assignment.scheduleStart,
+          jadwalSelesai:
+            assignment.scheduleEnd,
+          jadwalLabel:
+            assignment.scheduleLabel,
+
+          mapel:
+            assignment.subject,
+          kelas:
+            assignment.className,
+          nomorKelas:
+            assignment.classNumber,
+          unit:
+            assignment.unit,
+
+          ruangId:
+            verifiedRoom.id,
+          namaRuang:
+            verifiedRoom.namaRuang,
+          lokasiId:
+            verifiedRoom.lokasiId,
+          namaLokasi:
+            verifiedLocation.nama,
+
+          metodeAbsensi:
+            selectedMethod,
+          kodeKelas:
+            verifiedRoom.kodeKelas,
+          qrToken:
+            selectedMethod ===
+              "SCAN_QR"
+              ? verifiedRoom.qrToken
+              : "",
+
+          lokasiGuru: {
+            latitude:
+              verifiedPosition.latitude,
+            longitude:
+              verifiedPosition.longitude,
+            akurasiMeter:
+              verifiedPosition.accuracy,
+            jarakMeter:
+              verifiedPosition.distanceMeter,
+            radiusMaksimalMeter:
+              verifiedPosition.radiusExempt
+                ? null
+                : (
+                    Number(
+                      verifiedLocation.radiusMeter
+                    ) || 700
+                  ),
+            validasiRadiusDiberlakukan:
+              !verifiedPosition.radiusExempt,
+            status:
+              verifiedPosition.status,
+            alasanPengecualian:
+              verifiedPosition.radiusExempt
+                ? (
+                    verifiedRoom.alasanBebasRadius ||
+                    "Kelas online."
+                  )
+                : ""
+          },
+
+          statusKehadiran:
+            attendanceResult.status,
+          statusKehadiranLabel:
+            attendanceResult.statusLabel,
+          keterlambatanMenit:
+            attendanceResult.lateMinutes,
+
+          sumber:
+            "ABSENSI_GURU_QR_LOKASI",
+
+          dibuatPada:
+            serverTimestamp(),
+
+          versi:
+            "Uji Coba 2026/2027"
+        };
+
+        await set(
+          attendanceRef,
+          record
+        );
+
+        const logRef =
+          push(
+            ref(
+              db,
+              PATHS.attendanceLog
+            )
+          );
+
+        await set(
+          logRef,
+          {
+            ...record,
+            idLog: logRef.key
+          }
+        );
+
+        const saved =
+          await get(
+            attendanceRef
+          );
+
+        const value =
+          saved.val() || record;
+
+        showResult(
+          "success",
+          "Absensi Berhasil Disimpan",
+          [
+            {
+              label: "Guru",
+              value: teacherName
+            },
+            {
+              label: "Mapel",
+              value:
+                assignment.subject
+            },
+            {
+              label: "Ruang",
+              value:
+                verifiedRoom.namaRuang
+            },
+            {
+              label: "Jadwal",
+              value:
+                assignment.scheduleLabel
+            },
+            {
+              label: "Waktu Tiba",
+              value:
+                value.waktuTibaWIB ||
+                localTime
+            },
+            {
+              label: "Status",
+              value:
+                attendanceResult.statusLabel
+            },
+            {
+              label: "Validasi Lokasi",
+              value:
+                verifiedPosition.radiusExempt
+                  ? "Tanpa radius — kelas online"
+                  : `${verifiedPosition.distanceMeter} meter`
+            },
+            {
+              label: "Metode",
+              value:
+                selectedMethod ===
+                  "SCAN_QR"
+                  ? "Scan QR"
+                  : "Kode Kelas"
+            }
+          ]
+        );
+
+        document.getElementById(
+          "assignmentBox"
+        ).classList.remove("show");
+
+        document.getElementById(
+          "confirmPanel"
+        ).classList.remove("show");
+
+        document.getElementById(
+          "classCode"
+        ).value = "";
+      } catch (error) {
+        console.error(
+          "Absensi gagal disimpan:",
+          error
+        );
+
+        showResult(
+          "error",
+          "Absensi Gagal Disimpan",
+          [
+            {
+              label: "Pesan",
+              value:
+                error?.message ||
+                "Terjadi kesalahan Firebase."
+            }
+          ]
+        );
+      } finally {
+        button.disabled = false;
+        button.textContent =
+          "✓ Konfirmasi Kehadiran";
+      }
+    }
+
+    async function loadData() {
+      document.getElementById(
+        "teacherName"
+      ).textContent =
+        teacherName;
+
+      const mobileTeacherName =
+        document.getElementById(
+          "mobileTeacherName"
+        );
+
+      if (mobileTeacherName) {
+        mobileTeacherName.textContent =
+          teacherName;
+      }
+
+      teacherCode =
+        detectTeacherCode(
+          profile
+        );
+
+      document.getElementById(
+        "teacherMeta"
+      ).textContent =
+        teacherCode
+          ? `Kode jadwal: ${teacherCode}`
+          : "Nama akun belum cocok dengan jadwal";
+
+      try {
+        const firebaseDataPromise =
+          Promise.all([
+            get(
+              ref(
+                db,
+                PATHS.locations
+              )
+            ),
+            get(
+              ref(
+                db,
+                PATHS.rooms
+              )
+            ),
+            get(
+              ref(
+                db,
+                PATHS.schedule
+              )
+            )
+          ]);
+
+        const timeoutPromise =
+          new Promise((_, reject) => {
+            setTimeout(
+              () => reject(
+                new Error(
+                  "Firebase terlalu lama merespons. Data bawaan digunakan."
+                )
+              ),
+              9000
+            );
+          });
+
+        const [
+          locationSnapshot,
+          roomSnapshot,
+          scheduleSnapshot
+        ] = await Promise.race([
+          firebaseDataPromise,
+          timeoutPromise
+        ]);
+
+        if (
+          locationSnapshot.exists()
+        ) {
+          locations = {
+            ...locations,
+            ...locationSnapshot.val()
+          };
+        }
+
+        if (
+          roomSnapshot.exists()
+        ) {
+          rooms = {
+            ...rooms,
+            ...roomSnapshot.val()
+          };
+        }
+
+        if (scheduleSnapshot?.exists()) {
+          const value = scheduleSnapshot.val();
+          onlineScheduleRows = Array.isArray(value)
+            ? value.filter(Boolean)
+            : Object.entries(value || {}).map(([id,row]) => ({ id, ...(row || {}) }));
+        }
+
+        /*
+          Data Firebase lama dapat menimpa konfigurasi bawaan.
+          Kelas 4 Putri selalu dikembalikan sebagai kelas online
+          yang tidak menggunakan validasi radius.
+        */
+        rooms.kelas_4_putri = {
+          ...DEFAULT_ROOMS.kelas_4_putri,
+          ...(rooms.kelas_4_putri || {}),
+          bebasRadius: true,
+          jenisPembelajaran: "ONLINE",
+          alasanBebasRadius:
+            "Kelas online dengan guru dari luar lokasi pesantren."
+        };
+      } catch (error) {
+        console.warn(
+          "Firebase belum dapat dibaca. Memakai data bawaan:",
+          error
+        );
+      } finally {
+        showLoading(false);
+      }
+    }
+
+    document
+      .querySelectorAll(".tab")
+      .forEach(tab => {
+        tab.addEventListener(
+          "click",
+          async () => {
+            const method =
+              tab.dataset.method;
+
+            document
+              .querySelectorAll(".tab")
+              .forEach(item =>
+                item.classList.toggle(
+                  "active",
+                  item === tab
+                )
+              );
+
+            document
+              .querySelectorAll(".method")
+              .forEach(item =>
+                item.classList.toggle(
+                  "active",
+                  item.id ===
+                    `method-${method}`
+                )
+              );
+
+            if (method !== "scan") {
+              await stopScanner();
+            }
+          }
+        );
+      });
+
+    document.getElementById(
+      "startCameraButton"
+    ).addEventListener(
+      "click",
+      startScanner
+    );
+
+    document.getElementById(
+      "stopCameraButton"
+    ).addEventListener(
+      "click",
+      stopScanner
+    );
+
+    document.getElementById(
+      "checkCodeButton"
+    ).addEventListener(
+      "click",
+      () => {
+        const value =
+          document.getElementById(
+            "classCode"
+          ).value;
+
+        processCredential(
+          value,
+          "KODE_KELAS"
+        );
+      }
+    );
+
+    document.getElementById(
+      "classCode"
+    ).addEventListener(
+      "keydown",
+      event => {
+        if (event.key === "Enter") {
+          event.preventDefault();
+
+          processCredential(
+            event.currentTarget.value,
+            "KODE_KELAS"
+          );
+        }
+      }
+    );
+
+    document.getElementById(
+      "closeResultButton"
+    ).addEventListener(
+      "click",
+      hideResultPanel
+    );
+
+    document.getElementById(
+      "confirmAttendanceButton"
+    ).addEventListener(
+      "click",
+      confirmAttendance
+    );
+
+    window.addEventListener(
+      "beforeunload",
+      () => {
+        stopScanner();
+      }
+    );
+
+    function initializeAttendancePage() {
+      loadData().catch(error => {
+        console.error(
+          "Inisialisasi halaman gagal:",
+          error
+        );
+
+        showLoading(false);
+
+        showResult(
+          "error",
+          "Halaman Belum Dapat Disiapkan",
+          [
+            {
+              label: "Pesan",
+              value:
+                error?.message ||
+                "Terjadi kesalahan saat menyiapkan halaman."
+            },
+            {
+              label: "Tindakan",
+              value:
+                "Muat ulang halaman dan pastikan koneksi internet tersedia."
+            }
+          ]
+        );
+      });
+    }
+
+    if (
+      document.readyState === "loading"
+    ) {
+      document.addEventListener(
+        "DOMContentLoaded",
+        initializeAttendancePage,
+        {
+          once: true
+        }
+      );
+    } else {
+      initializeAttendancePage();
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <!-- CAHAYA WHITE-LABEL CONFIG -->
+  <script src="../config/tenant-config.js"></script>
+  <script src="../config/master-data.js"></script>
+  <script src="../js/cahaya-config-runtime.js" defer></script>
+
+<meta charset="UTF-8">
+<title>CAHAYA APP – Supervisor</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  body{font-family:Arial, sans-serif;background:#eef2ff;margin:0;padding:0;color:#1f2937}
+  header{background:#1e3a8a;color:white;padding:14px 20px;display:flex;justify-content:space-between;align-items:center}
+  header h1{margin:0;font-size:1.2rem}
+  main{padding:20px;max-width:1200px;margin:auto}
+  section{background:white;border-radius:10px;padding:20px;margin-bottom:18px;box-shadow:0 4px 10px rgba(0,0,0,0.08)}
+  h2{color:#1e3a8a;margin-top:0}
+  button{background:#2563eb;color:white;border:none;padding:8px 14px;border-radius:8px;cursor:pointer;margin-top:8px}
+  button:hover{background:#1d4ed8}
+  .btn-secondary{background:#6b7280}
+  .btn-danger{background:#b91c1c}
+  table{width:100%;border-collapse:collapse;margin-top:10px}
+  th,td{border:1px solid #ddd;padding:8px;text-align:left;font-size:0.9rem}
+  th{background:#f3f4f6}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>CAHAYA APP – Supervisor</h1>
+  <div>
+    <button class="btn-secondary" onclick="goBack()">⬅️ Kembali</button>
+    <button onclick="logout()">Keluar</button>
+  </div>
+</header>
+
+<main>
+
+  <!-- 1. LAPORAN BULANAN SANTRI -->
+  <section>
+    <h2>📅 Laporan Bulanan Santri</h2>
+    <p>Berisi narasi perkembangan dimensi CAHAYA, persentase kehadiran, pelanggaran, dan nilai ujian.</p>
+    <div style="display:flex;gap:10px;flex-wrap:wrap">
+      <button onclick="tampilkanLaporanSantri()">Tampilkan Laporan</button>
+      <button onclick="exportPDF()">📄 Export PDF Satuan</button>
+      <button onclick="exportMassal()">📦 Export PDF Massal</button>
+    </div>
+    <div id="laporanSantriArea" style="margin-top:15px;min-height:100px;border-top:1px solid #ccc;padding-top:10px">
+      Pilih santri dan bulan untuk melihat laporan.
+    </div>
+  </section>
+
+  <!-- 2. KPI NAQIB -->
+  <section>
+    <h2>🧭 Laporan KPI Naqib</h2>
+    <p>Menampilkan capaian dan evaluasi kinerja Naqib.</p>
+    <button onclick="tampilkanKPINaqib()">Tampilkan KPI Naqib</button>
+    <div id="kpiNaqibArea" style="margin-top:10px"></div>
+  </section>
+
+  <!-- 3. KPI MUALLIM -->
+  <section>
+    <h2>📚 Laporan KPI Mu’allim</h2>
+    <p>Menampilkan capaian dan evaluasi kinerja Mu’allim.</p>
+    <button onclick="tampilkanKPIMuallim()">Tampilkan KPI Mu’allim</button>
+    <div id="kpiMuallimArea" style="margin-top:10px"></div>
+  </section>
+
+  <!-- 4. AUDIT KEBERSIHAN -->
+  <section>
+    <h2>🧼 Audit Kebersihan</h2>
+    <button onclick="tampilkanAudit()">Lihat Audit Kebersihan</button>
+    <div id="auditArea" style="margin-top:10px"></div>
+  </section>
+
+  <!-- 5. TEMUAN SAMPAH -->
+  <section>
+    <h2>🗑️ Temuan Sampah & Barang Terlantar</h2>
+    <button onclick="tampilkanTemuan()">Lihat Temuan</button>
+    <div id="temuanArea" style="margin-top:10px"></div>
+  </section>
+
+  <!-- 6. DAFTAR PELANGGARAN -->
+  <section>
+    <h2>🚨 Daftar Pelanggaran</h2>
+    <button onclick="tampilkanPelanggaran()">Lihat Daftar Pelanggaran</button>
+    <div id="pelanggaranArea" style="margin-top:10px"></div>
+  </section>
+
+  <!-- 7. BULLYING & FATAL -->
+  <section>
+    <h2>⚠️ Kasus Bullying & Pelanggaran Fatal</h2>
+    <button onclick="tampilkanBullying()">Lihat Kasus</button>
+    <div id="bullyingArea" style="margin-top:10px"></div>
+  </section>
+
+</main>
+
+<script>
+function goBack(){ window.location.href='fitur.html'; }
+function logout(){ localStorage.removeItem('cahayaCurrentUser'); window.location.href='../index.html'; }
+
+// Placeholder fungsi interaktif
+function tampilkanLaporanSantri(){ document.getElementById('laporanSantriArea').innerHTML='📊 Memuat laporan bulanan dari data asesmen Naqib & Mu’allim...'; }
+function exportPDF(){ alert('🧾 Fitur export PDF satuan segera diaktifkan.'); }
+function exportMassal(){ alert('📦 Fitur export PDF massal akan memproses semua santri sekaligus.'); }
+function tampilkanKPINaqib(){ document.getElementById('kpiNaqibArea').innerHTML='📈 Data KPI Naqib (menyusul).'; }
+function tampilkanKPIMuallim(){ document.getElementById('kpiMuallimArea').innerHTML='📘 Data KPI Mu’allim (menyusul).'; }
+function tampilkanAudit(){ document.getElementById('auditArea').innerHTML='🧽 Menampilkan hasil audit kebersihan.'; }
+function tampilkanTemuan(){ document.getElementById('temuanArea').innerHTML='🚮 Daftar temuan sampah dan barang terlantar.'; }
+function tampilkanPelanggaran(){ document.getElementById('pelanggaranArea').innerHTML='🚫 Daftar pelanggaran santri.'; }
+function tampilkanBullying(){ document.getElementById('bullyingArea').innerHTML='⚠️ Kasus bullying dan pelanggaran fatal.'; }
+</script>
+
+</body>
+</html>

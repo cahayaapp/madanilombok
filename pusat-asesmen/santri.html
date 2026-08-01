@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <!-- CAHAYA WHITE-LABEL CONFIG -->
+  <script src="../config/tenant-config.js"></script>
+  <script src="../config/master-data.js"></script>
+  <script src="../js/cahaya-config-runtime.js" defer></script>
+
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>CAHAYA APP - Asesmen CAHAYA Santri</title>
+
+  <!-- PANGGIL MASTER THEME CAHAYA -->
+  <link rel="stylesheet" href="../css/cahaya-theme.css" />
+
+  <style>
+    :root{--ac-primary:var(--primary,#2878ff);--ac-primary-dark:var(--primary-dark,#1557d5);--ac-cyan:var(--cyan,#19c6e6);--ac-green:var(--green,#25b983);--ac-heading:var(--text-heading,#16264a);--ac-text:var(--text-main,#2d3c5d);--ac-muted:var(--text-muted,#7483a0);--ac-border:var(--border,#e2eaf5);--ac-shadow:0 15px 38px rgba(35,78,160,.10)}
+    *{box-sizing:border-box}html,body{width:100%;min-height:100%;margin:0;overflow-x:hidden}body{padding:18px;color:var(--ac-text);font-family:"Nunito","Poppins",sans-serif;background:radial-gradient(circle at 0 0,rgba(25,198,230,.12),transparent 28%),radial-gradient(circle at 100% 5%,rgba(118,103,245,.09),transparent 24%),linear-gradient(180deg,#f4f8ff 0%,#fbfcff 100%)}button,input,select,textarea{font:inherit}.cahaya-container{width:100%;max-width:1060px;margin:0 auto;padding:0!important;animation:asesmenIn .4s ease both}@keyframes asesmenIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+    .asesmen-hero{position:relative;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:20px;align-items:center;min-height:170px;margin-bottom:18px;padding:29px 31px;overflow:hidden;color:#fff;text-align:left!important;border-radius:25px;background:radial-gradient(circle at 88% 12%,rgba(255,255,255,.24),transparent 25%),linear-gradient(135deg,#1d77ef 0%,#2d84ff 48%,#18bddf 100%);box-shadow:0 19px 44px rgba(40,120,255,.23)}.asesmen-hero:before{content:"";position:absolute;width:190px;height:190px;top:-104px;right:-58px;border:36px solid rgba(255,255,255,.08);border-radius:50%;pointer-events:none}.asesmen-hero:after{content:"✦";position:absolute;right:185px;bottom:13px;color:rgba(255,255,255,.16);font-size:4rem;font-weight:900}.asesmen-hero-copy{position:relative;z-index:1}.asesmen-kicker{display:inline-flex;align-items:center;margin-bottom:10px;padding:6px 11px;color:#fff;font-size:.66rem;font-weight:900;letter-spacing:.8px;text-transform:uppercase;border:1px solid rgba(255,255,255,.25);border-radius:999px;background:rgba(255,255,255,.15)}.asesmen-hero h2{margin:0!important;color:#fff!important;font-family:inherit!important;font-size:clamp(1.65rem,4vw,2.3rem)!important;font-weight:900!important;line-height:1.12!important}.asesmen-hero p{max-width:720px;margin:8px 0 0!important;color:rgba(255,255,255,.86)!important;font-size:.82rem!important;font-weight:650;line-height:1.6}.asesmen-hero-icon{position:relative;z-index:1;width:76px;height:76px;display:grid;place-items:center;color:var(--ac-primary-dark);font-size:2rem;border:5px solid rgba(255,255,255,.74);border-radius:24px;background:#fff;box-shadow:0 12px 28px rgba(16,52,120,.18)}
+    .cahaya-card{margin-bottom:17px!important;padding:24px!important;overflow:hidden;border:1px solid rgba(224,232,245,.96)!important;border-radius:22px!important;background:rgba(255,255,255,.98)!important;box-shadow:var(--ac-shadow)!important}.identity-card{position:relative;background:linear-gradient(135deg,rgba(255,255,255,.99),rgba(246,250,255,.99))!important}.identity-card:after{content:"";position:absolute;width:135px;height:135px;right:-58px;top:-58px;border-radius:50%;background:rgba(40,120,255,.055)}.identity-title{position:relative;z-index:1;display:flex;align-items:center;gap:10px;margin:0 0 16px!important;color:var(--ac-heading)!important;font-family:inherit!important;font-size:1.02rem!important;font-weight:900!important}.identity-title:before{content:"📋";width:39px;height:39px;display:grid;place-items:center;border-radius:13px;background:#edf5ff}.grid-2{position:relative;z-index:1;display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:14px!important;margin:0!important}.form-group{min-width:0;margin-bottom:14px!important}.form-group label{display:flex!important;align-items:center;gap:7px;margin-bottom:8px!important;color:var(--ac-heading)!important;font-size:.72rem!important;font-weight:900!important}.form-control{width:100%;min-height:48px;padding:11px 14px!important;color:var(--ac-text)!important;font-size:.82rem!important;font-weight:750;outline:none;border:1.5px solid #dfe7f3!important;border-radius:13px!important;background:#f8faff!important;transition:.2s ease!important}.form-control:hover{border-color:#c8d8ec!important;background:#fff!important}.form-control:focus{border-color:var(--ac-primary)!important;background:#fff!important;box-shadow:0 0 0 4px rgba(40,120,255,.10)!important}textarea.form-control{min-height:102px;resize:vertical;line-height:1.6}
+    .dimensi-header{position:relative;display:flex;align-items:center;gap:13px;margin-bottom:20px;padding-bottom:15px;border-bottom:1px solid #e8eef7}.dimensi-header:after{content:"";position:absolute;left:0;bottom:-1px;width:88px;height:3px;border-radius:999px;background:linear-gradient(90deg,var(--ac-primary),var(--ac-cyan))}.dimensi-icon{width:48px;height:48px;flex:0 0 48px;display:grid;place-items:center;color:var(--ac-primary-dark);font-size:1.35rem;border:1px solid #d6e5fb;border-radius:15px;background:linear-gradient(135deg,#eef6ff,#f7fbff);box-shadow:0 7px 16px rgba(40,120,255,.09)}.dimensi-title{margin:0!important;color:var(--ac-heading)!important;font-family:inherit!important;font-size:1.08rem!important;font-weight:900!important;line-height:1.3}
+    .question-block{margin-bottom:25px;padding:15px;border:1px solid #e6edf7;border-radius:17px;background:linear-gradient(180deg,#fbfdff,#f8fbff)}.question-title{display:block;margin-bottom:11px;color:var(--ac-heading);font-size:.78rem;font-weight:900;line-height:1.5}.radio-card-group{display:grid;gap:8px}.radio-card{position:relative;display:grid;grid-template-columns:26px minmax(0,1fr);gap:10px;align-items:flex-start;padding:11px 13px;cursor:pointer;border:1.5px solid #e0e8f3;border-radius:12px;background:#fff;transition:.18s ease}.radio-card:hover{border-color:#b9d3f6;background:#f6faff;box-shadow:0 6px 16px rgba(40,120,255,.07);transform:translateY(-1px)}.radio-card input[type=radio]{width:21px;height:21px;margin:0;cursor:pointer;accent-color:var(--ac-primary)}.radio-card .rc-text{color:#52627f;font-size:.72rem;font-weight:700;line-height:1.5}.radio-card:has(input:checked){border-color:var(--ac-primary);background:linear-gradient(135deg,#eef5ff,#f8fbff);box-shadow:0 7px 18px rgba(40,120,255,.11)}.radio-card:has(input:checked):after{content:"Dipilih";position:absolute;top:8px;right:9px;padding:3px 7px;color:#fff;font-size:.49rem;font-weight:900;text-transform:uppercase;letter-spacing:.35px;border-radius:999px;background:var(--ac-primary)}.radio-card:has(input:checked) .rc-text{padding-right:44px;color:var(--ac-primary-dark);font-weight:850}
+    .btn-generate{min-height:42px;display:inline-flex;align-items:center;justify-content:center;gap:7px;margin-bottom:10px;padding:9px 15px;color:#167654;font-size:.7rem;font-weight:900;cursor:pointer;border:1px solid #c8ecdf;border-radius:12px;background:#edfaf5;transition:.18s ease}.btn-generate:hover{color:#fff;border-color:var(--ac-green);background:var(--ac-green);box-shadow:0 8px 18px rgba(37,185,131,.20);transform:translateY(-1px)}.narasi-box{padding:13px;overflow:hidden;border:1px solid #dce7f5;border-left:5px solid var(--ac-primary);border-radius:14px;background:linear-gradient(135deg,#f7faff,#f1f8ff)}.narasi-box textarea{width:100%;min-height:112px;padding:0;color:var(--ac-text);font-size:.74rem;font-weight:650;line-height:1.65;outline:none;border:none;background:transparent;resize:vertical}
+    .chk-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px}.chk-card{min-height:58px;display:flex;align-items:center;gap:8px;padding:11px;color:var(--ac-heading);font-size:.67rem;font-weight:850;cursor:pointer;border:1.5px solid #e0e8f3;border-radius:12px;background:#fff;transition:.18s ease}.chk-card:hover{border-color:#bdd3f3;background:#f6faff;transform:translateY(-1px)}.chk-card input{width:19px;height:19px;flex:0 0 19px;margin:0;cursor:pointer;accent-color:var(--ac-primary)}.chk-card:has(input:checked){color:var(--ac-primary-dark);border-color:var(--ac-primary);background:#eef5ff;box-shadow:0 6px 15px rgba(40,120,255,.09)}
+    #btnSubmit{width:100%!important;min-height:52px;margin-top:18px!important;padding:13px 18px!important;color:#fff!important;font-size:.82rem!important;font-weight:900!important;cursor:pointer;border:none!important;border-radius:13px!important;background:linear-gradient(135deg,var(--ac-primary),var(--ac-cyan))!important;box-shadow:0 11px 24px rgba(40,120,255,.23)!important;transition:.2s ease!important}#btnSubmit:hover{transform:translateY(-2px);box-shadow:0 14px 28px rgba(40,120,255,.28)!important}#btnSubmit:disabled{opacity:.6;cursor:not-allowed;transform:none;box-shadow:none!important}
+    #loadingOverlay{position:fixed;inset:0;z-index:3000;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;color:var(--ac-heading);text-align:center;background:rgba(246,249,255,.95);backdrop-filter:blur(10px);transition:.35s ease}#loadingOverlay>div:first-child{width:72px;height:72px;display:grid;place-items:center;margin-bottom:14px!important;color:#fff;font-size:1.65rem!important;border-radius:23px;background:linear-gradient(135deg,var(--ac-primary),var(--ac-cyan));box-shadow:0 14px 30px rgba(40,120,255,.22);animation:loaderPulse 1.15s ease-in-out infinite alternate!important}#loadingOverlay>div:last-child{font-size:.9rem;font-weight:900!important}@keyframes loaderPulse{from{transform:scale(.95)}to{transform:scale(1.04)}}
+    @media(max-width:900px){.chk-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}@media(max-width:760px){body{padding:10px}.asesmen-hero{grid-template-columns:1fr;min-height:0;padding:23px 18px;border-radius:20px}.asesmen-hero-icon{width:62px;height:62px;font-size:1.55rem;border-radius:20px}.cahaya-card{padding:18px 13px!important;border-radius:18px!important}.grid-2{grid-template-columns:1fr!important}.question-block{padding:12px;border-radius:14px}.radio-card{grid-template-columns:23px minmax(0,1fr);padding:10px}.radio-card input[type=radio]{width:19px;height:19px}.radio-card:has(input:checked):after{display:none}.radio-card:has(input:checked) .rc-text{padding-right:0}.chk-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:440px){.asesmen-hero h2{font-size:1.5rem!important}.asesmen-hero p{font-size:.75rem!important}.dimensi-title{font-size:.96rem!important}.dimensi-icon{width:43px;height:43px;flex-basis:43px}.chk-grid{grid-template-columns:1fr}.btn-generate{width:100%}}@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+  
+
+    /* Tampilan minimal: header halaman tidak ditampilkan karena
+       sudah menyatu dengan header utama CAHAYA APP. */
+    .asesmen-hero {
+      display: none !important;
+    }
+</style>
+</head>
+
+<body>
+
+<div id="loadingOverlay">
+  <div style="font-size: 2.5rem; margin-bottom: 15px; animation: float 1.5s infinite alternate ease-in-out;">📋</div>
+  <div style="font-weight: 700;">Menyiapkan Instrumen Asesmen...</div>
+</div>
+
+<main class="cahaya-container">
+  <section class="asesmen-hero">
+    <div class="asesmen-hero-copy">
+      <span class="asesmen-kicker">Evaluasi Perkembangan Santri</span>
+      <h2>Asesmen CAHAYA Santri</h2>
+      <p>Evaluasi perkembangan lima dimensi santri berbasis observasi perilaku.</p>
+    </div>
+    <div class="asesmen-hero-icon">📋</div>
+  </section>
+
+  <div class="cahaya-card identity-card">
+    <h3 class="identity-title">Identitas Evaluasi</h3>
+    <div class="grid-2">
+      <div class="form-group">
+        <label>Tanggal Evaluasi</label>
+        <input type="date" class="form-control" id="tanggalAsesmen">
+      </div>
+      <div class="form-group">
+        <label>Usrah</label>
+        <select class="form-control" id="pilihUsrah" onchange="ubahUsrah()">
+          <option value="">-- Memuat Daftar Usrah --</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Nama Santri</label>
+        <select class="form-control" id="namaSantri" disabled>
+          <option value="">-- Pilih Usrah Terlebih Dahulu --</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <!-- DIMENSI 1: SPIRITUAL -->
+  <div class="cahaya-card">
+    <div class="dimensi-header">
+      <div class="dimensi-icon">🌙</div>
+      <h3 class="dimensi-title">1. Cinta Allah (Spiritual)</h3>
+    </div>
+
+    <div class="question-block">
+      <span class="question-title">1. Observasi Kesiapan Menuju Ibadah (Shalat Fardhu):</span>
+      <div class="radio-card-group">
+        <label class="radio-card"><input type="radio" name="sp1" value="1"><span class="rc-text">Membutuhkan >3 kali instruksi lisan atau tindakan tegas dari naqib untuk beranjak ke masjid.</span></label>
+        <label class="radio-card"><input type="radio" name="sp1" value="2"><span class="rc-text">Beranjak ke masjid setelah diingatkan 1-2 kali oleh naqib/pengurus.</span></label>
+        <label class="radio-card"><input type="radio" name="sp1" value="3"><span class="rc-text">Umumnya merespons panggilan azan secara mandiri tanpa perlu ditegur secara khusus.</span></label>
+        <label class="radio-card"><input type="radio" name="sp1" value="4"><span class="rc-text">Sangat mandiri; telah bersiap dengan pakaian rapi sebelum azan berkumandang.</span></label>
+        <label class="radio-card"><input type="radio" name="sp1" value="5"><span class="rc-text">Sangat teladan; berada di shaf terdepan sebelum azan dan aktif mengajak temannya.</span></label>
+      </div>
+    </div>
+
+    <div class="question-block">
+      <span class="question-title">2. Observasi Ketertiban Jamaah:</span>
+      <div class="radio-card-group">
+        <label class="radio-card"><input type="radio" name="sp2" value="1"><span class="rc-text">Tercatat sering masbuk lebih dari 1 rakaat atau tidak shalat berjamaah.</span></label>
+        <label class="radio-card"><input type="radio" name="sp2" value="2"><span class="rc-text">Kadang tertinggal takbiratul ihram pertama bersama imam.</span></label>
+        <label class="radio-card"><input type="radio" name="sp2" value="3"><span class="rc-text">Tertib mengikuti shalat dari awal hingga salam dengan baik.</span></label>
+        <label class="radio-card"><input type="radio" name="sp2" value="4"><span class="rc-text">Selalu mendapati takbiratul ihram bersama imam tanpa absen.</span></label>
+        <label class="radio-card"><input type="radio" name="sp2" value="5"><span class="rc-text">Selalu tepat waktu dan terlihat aktif melaksanakan shalat rawatib (qabliyah/ba'diyah).</span></label>
+      </div>
+    </div>
+
+    <div class="question-block">
+      <span class="question-title">3. Observasi Adab dalam Halaqah/Majelis:</span>
+      <div class="radio-card-group">
+        <label class="radio-card"><input type="radio" name="sp3" value="1"><span class="rc-text">Pasif, sering tertidur, atau mengobrol sendiri saat materi disampaikan.</span></label>
+        <label class="radio-card"><input type="radio" name="sp3" value="2"><span class="rc-text">Hadir secara fisik namun pandangan kosong atau kurang memperhatikan ustadz.</span></label>
+        <label class="radio-card"><input type="radio" name="sp3" value="3"><span class="rc-text">Duduk tertib mendengarkan penyampaian materi hingga selesai.</span></label>
+        <label class="radio-card"><input type="radio" name="sp3" value="4"><span class="rc-text">Menyimak dengan postur tubuh yang baik dan mencatat poin penting materi.</span></label>
+        <label class="radio-card"><input type="radio" name="sp3" value="5"><span class="rc-text">Mencatat dengan detail, antusias menyimak, dan aktif merespons/bertanya dalam majelis.</span></label>
+      </div>
+    </div>
+
+    <button class="btn-generate" onclick="generateNarasiSpiritual()">✨ Susun Narasi Observasi Spiritual</button>
+    <div class="narasi-box"><textarea id="narasiSpiritual" placeholder="Teks evaluasi akan otomatis digenerate di sini..."></textarea></div>
+  </div>
+
+  <!-- DIMENSI 2: RELASIONAL -->
+  <div class="cahaya-card">
+    <div class="dimensi-header">
+      <div class="dimensi-icon">🤝</div>
+      <h3 class="dimensi-title">2. Akhlak Mulia (Relasional)</h3>
+    </div>
+
+    <div class="question-block">
+      <span class="question-title">4. Observasi Adab kepada Asatidz/Pengurus:</span>
+      <div class="radio-card-group">
+        <label class="radio-card"><input type="radio" name="re1" value="1"><span class="rc-text">Pernah merespons dengan nada tinggi, membantah instruksi, atau menatap dengan tajam.</span></label>
+        <label class="radio-card"><input type="radio" name="re1" value="2"><span class="rc-text">Melaksanakan instruksi namun menunjukkan gestur enggan (cemberut/menggerutu lambat).</span></label>
+        <label class="radio-card"><input type="radio" name="re1" value="3"><span class="rc-text">Merespons panggilan dan instruksi dengan wajar dan kooperatif.</span></label>
+        <label class="radio-card"><input type="radio" name="re1" value="4"><span class="rc-text">Terbiasa mendahului salam, menundukkan pandangan, dan berbahasa sopan/krama.</span></label>
+        <label class="radio-card"><input type="radio" name="re1" value="5"><span class="rc-text">Sangat beradab; proaktif menawarkan bantuan kepada guru tanpa diminta.</span></label>
+      </div>
+    </div>
+
+    <div class="question-block">
+      <span class="question-title">5. Observasi Interaksi dengan Teman Sebaya:</span>
+      <div class="radio-card-group">
+        <label class="radio-card"><input type="radio" name="re2" value="1"><span class="rc-text">Tercatat terlibat >2 insiden perselisihan, mengejek, atau pertengkaran fisik/verbal.</span></label>
+        <label class="radio-card"><input type="radio" name="re2" value="2"><span class="rc-text">Lebih sering menyendiri secara ekstrem atau menunjukkan kesulitan bergaul.</span></label>
+        <label class="radio-card"><input type="radio" name="re2" value="3"><span class="rc-text">Mampu bermain dan berkomunikasi dengan teman kamarnya secara normal tanpa konflik.</span></label>
+        <label class="radio-card"><input type="radio" name="re2" value="4"><span class="rc-text">Memiliki interaksi sosial yang luas, ramah, dan disukai teman-temannya.</span></label>
+        <label class="radio-card"><input type="radio" name="re2" value="5"><span class="rc-text">Mampu menjadi penengah saat temannya berkonflik dan memiliki jiwa kepemimpinan positif.</span></label>
+      </div>
+    </div>
+
+    <div class="question-block">
+      <span class="question-title">6. Observasi Tanggung Jawab & Kepedulian (Amanah Piket):</span>
+      <div class="radio-card-group">
+        <label class="radio-card"><input type="radio" name="re3" value="1"><span class="rc-text">Sering meninggalkan tugas piket atau bersikap acuh pada fasilitas bersama.</span></label>
+        <label class="radio-card"><input type="radio" name="re3" value="2"><span class="rc-text">Melaksanakan tugas piket hanya jika diawasi atau ditegur langsung.</span></label>
+        <label class="radio-card"><input type="radio" name="re3" value="3"><span class="rc-text">Menyelesaikan porsi tugasnya sendiri dengan standar kebersihan cukup.</span></label>
+        <label class="radio-card"><input type="radio" name="re3" value="4"><span class="rc-text">Proaktif menjenguk teman sakit, meminjamkan barang, atau merapikan ruang bersama mandiri.</span></label>
+        <label class="radio-card"><input type="radio" name="re3" value="5"><span class="rc-text">Sangat teladan; mengambil inisiatif membersihkan asrama / membantu piket temannya secara sukarela.</span></label>
+      </div>
+    </div>
+
+    <button class="btn-generate" onclick="generateNarasiRelasional()">✨ Susun Narasi Observasi Relasional</button>
+    <div class="narasi-box"><textarea id="narasiRelasional" placeholder="Teks evaluasi akan otomatis digenerate di sini..."></textarea></div>
+  </div>
+
+  <!-- DIMENSI 3: EMOSIONAL -->
+  <div class="cahaya-card">
+    <div class="dimensi-header">
+      <div class="dimensi-icon">💛</div>
+      <h3 class="dimensi-title">3. Hati Bersih (Emosional)</h3>
+    </div>
+
+    <div class="question-block">
+      <span class="question-title">7. Observasi Respons Saat Kecewa/Marah:</span>
+      <div class="radio-card-group">
+        <label class="radio-card"><input type="radio" name="em1" value="1"><span class="rc-text">Melampiaskan marah dengan berteriak, membanting barang, atau merusak properti.</span></label>
+        <label class="radio-card"><input type="radio" name="em1" value="2"><span class="rc-text">Menunjukkan aksi ngambek berkepanjangan (mogok makan/kegiatan) saat keinginannya tidak dipenuhi.</span></label>
+        <label class="radio-card"><input type="radio" name="em1" value="3"><span class="rc-text">Tampak murung sesaat, namun mampu menenangkan diri kembali dalam waktu relatif wajar.</span></label>
+        <label class="radio-card"><input type="radio" name="em1" value="4"><span class="rc-text">Mampu mengomunikasikan kekecewaan secara lisan dengan runtut tanpa melukai orang lain.</span></label>
+        <label class="radio-card"><input type="radio" name="em1" value="5"><span class="rc-text">Sangat tangguh; merespons kondisi tidak menyenangkan dengan senyum, sabar, dan mencari solusi.</span></label>
+      </div>
+    </div>
+
+    <div class="question-block">
+      <span class="question-title">8. Observasi Respons Terhadap Nasihat/Kritik:</span>
+      <div class="radio-card-group">
+        <label class="radio-card"><input type="radio" name="em2" value="1"><span class="rc-text">Bersikap defensif ekstrim: membantah, mencari-cari alasan (excuse), atau menyalahkan orang lain.</span></label>
+        <label class="radio-card"><input type="radio" name="em2" value="2"><span class="rc-text">Diam tertunduk namun menunjukkan gestur penolakan internal atau mengulang kesalahan yang sama segera.</span></label>
+        <label class="radio-card"><input type="radio" name="em2" value="3"><span class="rc-text">Mendengarkan teguran dengan tenang dan mau mengakui kesalahan.</span></label>
+        <label class="radio-card"><input type="radio" name="em2" value="4"><span class="rc-text">Menerima masukan dengan lapang dada dan terlihat upaya perbaikan perilaku di hari berikutnya.</span></label>
+        <label class="radio-card"><input type="radio" name="em2" value="5"><span class="rc-text">Proaktif meminta umpan balik kepada Naqib/Guru untuk mengevaluasi kekurangan dirinya.</span></label>
+      </div>
+    </div>
+
+    <button class="btn-generate" onclick="generateNarasiEmosional()">✨ Susun Narasi Observasi Emosional</button>
+    <div class="narasi-box"><textarea id="narasiEmosional" placeholder="Teks evaluasi akan otomatis digenerate di sini..."></textarea></div>
+  </div>
+
+  <!-- DIMENSI 4: INTELEKTUAL -->
+  <div class="cahaya-card">
+    <div class="dimensi-header">
+      <div class="dimensi-icon">🧠</div>
+      <h3 class="dimensi-title">4. Akal Cerdas (Intelektual)</h3>
+    </div>
+
+    <div class="question-block">
+      <span class="question-title">9. Observasi Motivasi Belajar Harian:</span>
+      <div class="radio-card-group">
+        <label class="radio-card"><input type="radio" name="in1" value="1"><span class="rc-text">Sering menunda masuk kelas, absen membolos tanpa alasan syar'i, atau tertidur di kelas.</span></label>
+        <label class="radio-card"><input type="radio" name="in1" value="2"><span class="rc-text">Hadir ke kelas, namun terlihat malas-malasan dan tidak melengkapi alat tulis/buku.</span></label>
+        <label class="radio-card"><input type="radio" name="in1" value="3"><span class="rc-text">Disiplin menghadiri kegiatan akademik dan menyelesaikan porsi tugas wajarnya.</span></label>
+        <label class="radio-card"><input type="radio" name="in1" value="4"><span class="rc-text">Menunjukkan partisipasi aktif, mencatat dengan rapi, dan antusias dalam diskusi kelompok.</span></label>
+        <label class="radio-card"><input type="radio" name="in1" value="5"><span class="rc-text">Terlihat membaca literatur tambahan di luar jam kelas atau mampu menjadi tutor sebaya bagi temannya.</span></label>
+      </div>
+    </div>
+
+    <div class="question-block">
+      <span class="question-title">10. Observasi Daya Nalar (Berdasarkan Laporan Sekolah/Tahfiz):</span>
+      <div class="radio-card-group">
+        <label class="radio-card"><input type="radio" name="in2" value="1"><span class="rc-text">Sering mendapatkan nilai di bawah standar ketuntasan pada mayoritas evaluasi.</span></label>
+        <label class="radio-card"><input type="radio" name="in2" value="2"><span class="rc-text">Memerlukan bimbingan/remedial berulang untuk dapat memahami satu instruksi/materi pelajaran.</span></label>
+        <label class="radio-card"><input type="radio" name="in2" value="3"><span class="rc-text">Mampu menangkap instruksi dan materi dasar pelajaran dengan baik.</span></label>
+        <label class="radio-card"><input type="radio" name="in2" value="4"><span class="rc-text">Memiliki daya tangkap cepat, mudah menghafal, dan nilai akademik/tahfiz di atas rata-rata.</span></label>
+        <label class="radio-card"><input type="radio" name="in2" value="5"><span class="rc-text">Mampu berpikir analitis, merangkai argumen logis saat berdiskusi, dan berprestasi akademik tinggi.</span></label>
+      </div>
+    </div>
+
+    <button class="btn-generate" onclick="generateNarasiIntelektual()">✨ Susun Narasi Observasi Intelektual</button>
+    <div class="narasi-box"><textarea id="narasiIntelektual" placeholder="Teks evaluasi akan otomatis digenerate di sini..."></textarea></div>
+  </div>
+
+  <!-- DIMENSI 5: FISIK -->
+  <div class="cahaya-card">
+    <div class="dimensi-header">
+      <div class="dimensi-icon">💪</div>
+      <h3 class="dimensi-title">5. Fisik Berdaya (Physical)</h3>
+    </div>
+
+    <div class="question-block">
+      <span class="question-title">11. Observasi Kebersihan & Kerapian Pribadi:</span>
+      <div class="radio-card-group">
+        <label class="radio-card"><input type="radio" name="fi1" value="1"><span class="rc-text">Aroma tubuh tidak sedap, pakaian sering lusuh/kotor, dan area lemari sangat berantakan.</span></label>
+        <label class="radio-card"><input type="radio" name="fi1" value="2"><span class="rc-text">Kerapian diri kurang konsisten; rambut kadang panjang/tidak rapi atau memakai baju yang belum disetrika.</span></label>
+        <label class="radio-card"><input type="radio" name="fi1" value="3"><span class="rc-text">Menjaga standar mandi teratur, pakaian sesuai seragam, dan area lemari cukup wajar.</span></label>
+        <label class="radio-card"><input type="radio" name="fi1" value="4"><span class="rc-text">Selalu berpenampilan bersih, pakaian rapi/harum, dan penataan loker/kasurnya sangat terorganisir.</span></label>
+        <label class="radio-card"><input type="radio" name="fi1" value="5"><span class="rc-text">Sangat peduli kebersihan; menjadi contoh bagi teman kamarnya dalam merawat kerapian diri dan asrama.</span></label>
+      </div>
+    </div>
+
+    <div class="question-block">
+      <span class="question-title">12. Observasi Ketahanan Fisik & Jam Istirahat:</span>
+      <div class="radio-card-group">
+        <label class="radio-card"><input type="radio" name="fi2" value="1"><span class="rc-text">Tercatat sering jatuh sakit berulang kali dalam sebulan atau melanggar jam malam (begadang ekstrem).</span></label>
+        <label class="radio-card"><input type="radio" name="fi2" value="2"><span class="rc-text">Sering terlihat lesu, mengantuk berat di siang hari karena manajemen tidur yang kurang baik.</span></label>
+        <label class="radio-card"><input type="radio" name="fi2" value="3"><span class="rc-text">Mampu mengikuti ritme kegiatan harian dari subuh hingga malam tanpa kendala fisik berarti.</span></label>
+        <label class="radio-card"><input type="radio" name="fi2" value="4"><span class="rc-text">Sangat disiplin mematuhi jam tidur asrama dan selalu bangun dengan energi yang bugar.</span></label>
+        <label class="radio-card"><input type="radio" name="fi2" value="5"><span class="rc-text">Memiliki vitalitas fisik prima dan aktif/rutin melakukan kegiatan olahraga mandiri/ekstrakurikuler.</span></label>
+      </div>
+    </div>
+
+    <button class="btn-generate" onclick="generateNarasiFisik()">✨ Susun Narasi Observasi Fisik</button>
+    <div class="narasi-box"><textarea id="narasiFisik" placeholder="Teks evaluasi akan otomatis digenerate di sini..."></textarea></div>
+  </div>
+
+  <!-- RENCANA TINDAK LANJUT -->
+  <div class="cahaya-card">
+    <div class="dimensi-header">
+      <div class="dimensi-icon">📈</div>
+      <h3 class="dimensi-title">Rencana Tindak Lanjut</h3>
+    </div>
+
+    <div class="form-group">
+      <label>1. Catatan Evaluasi & Progres Bulan Ini</label>
+      <textarea class="form-control" id="evaluasiBulanIni" rows="3" placeholder="Tuliskan rangkuman capaian nyata atau hambatan utama ananda sepanjang bulan ini..."></textarea>
+    </div>
+
+    <div class="form-group" style="margin-top: 25px;">
+      <label>2. Fokus Perbaikan Prioritas Bulan Depan (Bisa Pilih > 1)</label>
+      <div class="chk-grid">
+        <label class="chk-card"><input type="checkbox" name="fokusBulanDepan" value="Spiritual (Ibadah)"> 🌙 Spiritual</label>
+        <label class="chk-card"><input type="checkbox" name="fokusBulanDepan" value="Relasional (Sosial)"> 🤝 Relasional</label>
+        <label class="chk-card"><input type="checkbox" name="fokusBulanDepan" value="Emosional (Kontrol)"> 💛 Emosional</label>
+        <label class="chk-card"><input type="checkbox" name="fokusBulanDepan" value="Intelektual (Akademik)"> 🧠 Intelektual</label>
+        <label class="chk-card"><input type="checkbox" name="fokusBulanDepan" value="Fisik (Kesehatan)"> 💪 Fisik</label>
+      </div>
+    </div>
+
+    <div class="form-group" style="margin-top: 25px;">
+      <label>3. Catatan Khusus untuk Wali Santri (Pesan Orang Tua)</label>
+      <textarea class="form-control" id="spesifikBulanDepan" rows="3" placeholder="Tuliskan pesan apresiasi atau area pendampingan yang membutuhkan kerjasama orang tua di rumah..."></textarea>
+    </div>
+
+    <button class="btn-cahaya btn-gold" id="btnSubmit" style="width: 100%; margin-top: 20px; padding: 15px; font-size: 1.1rem;" onclick="simpanAsesmen()">💾 SIMPAN ASESMEN CAHAYA</button>
+  </div>
+</main>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+  import { getDatabase, ref, push, get, set } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+
+  const firebaseConfig = window.CAHAYA_CONFIG.firebase;
+
+  const app = initializeApp(firebaseConfig);
+  const db = getDatabase(app);
+
+  // --- KECERDASAN PEMBERSIH NAMA ---
+  // Fungsi ini otomatis membuang awalan "Kak ", "Ustadz ", "Mu'allim", dll
+  // dan menjadikan namanya format kapital standar (Title Case)
+  function bersihkanNama(nama) {
+    if (!nama) return "";
+    // 1. Hapus sapaan/gelar di awal kata (case insensitive)
+    let bersih = nama.replace(/^(kak|mu'?allim(ah)?|naqib(ah)?|ustadz(ah)?|ust\.?|mrs|mr|dr\.?)\s+/i, "");
+    // 2. Hapus spasi berlebih
+    bersih = bersih.trim();
+    // 3. Ubah jadi Title Case (Contoh: "EVITA" -> "Evita") agar selalu cocok di database
+    return bersih.replace(/\w\S*/g, function(txt) {
+        return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+    });
+  }
+
+  // Pengguna dapat mengisi bila menu Asesmen diberikan melalui otorisasi.
+  const user = JSON.parse(
+    localStorage.getItem("cahayaCurrentUser") || "{}"
+  );
+
+  const rawNama =
+    user.label ||
+    user.nama ||
+    user.username ||
+    "Pengasesmen";
+
+  const namaPengasesmen = bersihkanNama(rawNama);
+
+  // Alias lama dipertahankan agar laporan sebelumnya tetap kompatibel.
+  const namaNaqib = namaPengasesmen;
+
+  let dataUsrahCloud = {};
+
+  function normalisasiDaftarSantri(value) {
+    let daftar = [];
+
+    if (Array.isArray(value)) {
+      daftar = value;
+    } else if (value && typeof value === "object") {
+      daftar = Object.values(value);
+    }
+
+    return daftar
+      .map(item => {
+        if (typeof item === "string") return item.trim();
+
+        return String(
+          item?.nama ||
+          item?.namaSantri ||
+          item?.label ||
+          ""
+        ).trim();
+      })
+      .filter(Boolean);
+  }
+
+  function nomorUsrah(value) {
+    const cocok = String(value || "").match(/\d+/);
+
+    return cocok
+      ? Number(cocok[0])
+      : Number.MAX_SAFE_INTEGER;
+  }
+
+  function labelUsrah(value) {
+    const teks = String(value || "").trim();
+
+    if (!teks) return "Usrah";
+    if (/^usrah\s+/i.test(teks)) return teks;
+
+    return `Usrah ${teks}`;
+  }
+
+  function isiDaftarUsrah() {
+    const selectUsrah =
+      document.getElementById("pilihUsrah");
+
+    selectUsrah.innerHTML =
+      '<option value="">-- Pilih Usrah --</option>';
+
+    Object.keys(dataUsrahCloud)
+      .sort((a, b) => {
+        const nomorA = nomorUsrah(a);
+        const nomorB = nomorUsrah(b);
+
+        if (nomorA !== nomorB) {
+          return nomorA - nomorB;
+        }
+
+        return String(a).localeCompare(
+          String(b),
+          "id"
+        );
+      })
+      .forEach(kunciUsrah => {
+        selectUsrah.add(
+          new Option(
+            labelUsrah(kunciUsrah),
+            kunciUsrah
+          )
+        );
+      });
+
+    if (selectUsrah.options.length === 1) {
+      selectUsrah.innerHTML =
+        '<option value="">Data usrah belum tersedia</option>';
+    }
+  }
+
+  window.ubahUsrah = function() {
+    const usrah =
+      document.getElementById("pilihUsrah").value;
+
+    const selectSantri =
+      document.getElementById("namaSantri");
+
+    if (!usrah) {
+      selectSantri.disabled = true;
+      selectSantri.innerHTML =
+        '<option value="">-- Pilih Usrah Terlebih Dahulu --</option>';
+      return;
+    }
+
+    const daftarSantri = normalisasiDaftarSantri(
+      dataUsrahCloud[usrah]
+    ).sort((a, b) => a.localeCompare(b, "id"));
+
+    selectSantri.innerHTML =
+      '<option value="">-- Pilih Santri --</option>';
+
+    if (!daftarSantri.length) {
+      selectSantri.disabled = true;
+      selectSantri.innerHTML =
+        '<option value="">Tidak ada santri dalam usrah ini</option>';
+      return;
+    }
+
+    daftarSantri.forEach(nama => {
+      selectSantri.add(new Option(nama, nama));
+    });
+
+    selectSantri.disabled = false;
+  };
+
+  document.addEventListener(
+    "DOMContentLoaded",
+    async function() {
+      document.getElementById(
+        "tanggalAsesmen"
+      ).value = new Date()
+        .toISOString()
+        .split("T")[0];
+
+      try {
+        const snapUsrah = await get(
+          ref(db, "cahaya_app/master_usrah")
+        );
+
+        dataUsrahCloud = snapUsrah.exists()
+          ? snapUsrah.val()
+          : {};
+
+        isiDaftarUsrah();
+        ubahUsrah();
+      } catch (error) {
+        console.error(
+          "Gagal memuat data Usrah",
+          error
+        );
+
+        document.getElementById(
+          "pilihUsrah"
+        ).innerHTML =
+          '<option value="">Gagal memuat daftar usrah</option>';
+
+        document.getElementById(
+          "namaSantri"
+        ).innerHTML =
+          '<option value="">Gagal memuat daftar santri</option>';
+      }
+
+      document.getElementById(
+        "loadingOverlay"
+      ).style.opacity = "0";
+
+      setTimeout(() => {
+        document.getElementById(
+          "loadingOverlay"
+        ).style.display = "none";
+      }, 500);
+    }
+  );
+
+  // FUNGSI GENERATE NARASI ANTI-BIAS
+  function getVal(name) {
+    const el = document.querySelector(`input[name="${name}"]:checked`);
+    return el ? el.value : null;
+  }
+
+  window.generateNarasiSpiritual = function() {
+    const v1 = getVal("sp1"), v2 = getVal("sp2"), v3 = getVal("sp3");
+    if(!v1 || !v2 || !v3) return alert("Pilih semua observasi Spiritual terlebih dahulu.");
+    
+    let narasi = "Berdasarkan observasi Dimensi Spiritual, ";
+    
+    if(v1 === "1") narasi += "ananda terpantau masih memerlukan dorongan lisan berulang dari pendamping agar bersiap menunaikan shalat fardhu. ";
+    else if(v1 === "2") narasi += "ananda sudah bersedia beranjak ke masjid meskipun sesekali masih perlu diingatkan oleh pendamping. ";
+    else if(v1 === "3" || v1 === "4") narasi += "ananda telah menunjukkan kemandirian dan kesadaran rutinitas ibadah, merespons panggilan azan tanpa perlu instruksi khusus. ";
+    else narasi += "ananda menunjukkan keteladanan yang sangat luar biasa, selalu bersiap lebih awal dan konsisten mengisi shaf terdepan sebelum azan berkumandang. ";
+
+    if(v2 === "1" || v2 === "2") narasi += "Pada pelaksanaan jamaah, ananda tercatat beberapa kali tertinggal takbiratul ihram (masbuk) yang memerlukan penertiban lebih lanjut. ";
+    else narasi += "Dalam ketertiban jamaah, ananda konsisten mengikuti jalannya shalat secara disiplin bersama imam dari awal hingga akhir. ";
+
+    if(v3 === "1" || v3 === "2") narasi += "Sementara itu dalam kegiatan majelis halaqah, fokus ananda masih sering teralihkan sehingga penyerapan materinya belum optimal.";
+    else if(v3 === "3") narasi += "Sementara itu dalam kegiatan majelis halaqah, ananda duduk dengan tertib dan menyimak materi dengan cukup baik.";
+    else narasi += "Hal ini disempurnakan dengan antusiasmenya dalam forum majelis halaqah, terlihat dari fokusnya menyimak dan mencatat poin-poin ilmu secara mandiri.";
+
+    document.getElementById("narasiSpiritual").value = narasi;
+  }
+
+  window.generateNarasiRelasional = function() {
+    const v1 = getVal("re1"), v2 = getVal("re2"), v3 = getVal("re3");
+    if(!v1 || !v2 || !v3) return alert("Pilih semua observasi Relasional terlebih dahulu.");
+    
+    let narasi = "Pada catatan observasi Dimensi Relasional (Sosial & Adab), ";
+
+    if(v1 === "1" || v1 === "2") narasi += "kami mengidentifikasi ananda perlu lebih banyak bimbingan terkait tata krama dan cara merespons instruksi asatidz dengan sikap yang lebih kooperatif. ";
+    else narasi += "ananda konsisten memperlihatkan sikap hormat, santun berbahasa, dan kooperatif saat berinteraksi dengan asatidz. ";
+
+    if(v2 === "1" || v2 === "2") narasi += "Dalam pergaulan asrama, dinamika interaksi ananda masih diwarnai riwayat perselisihan atau kesulitan membangun hubungan yang seimbang dengan teman sebaya. ";
+    else if(v2 === "3") narasi += "Dalam pergaulan asrama, ananda memiliki interaksi yang wajar dan kondusif bersama rekan kamarnya. ";
+    else narasi += "Dalam pergaulan asrama, ananda tampil sebagai figur yang ramah, memiliki ikatan sosial yang luas, bahkan mampu memediasi teman yang berselisih. ";
+
+    if(v3 === "1" || v3 === "2") narasi += "Terkait tanggung responsibility komunal, ananda masih belum sepenuhnya menuntaskan kewajiban piket harian tanpa pengawasan. ";
+    else if(v3 === "3") narasi += "Terkait tanggung jawab komunal, ananda menjalankan tugas piketnya secara teratur dan wajar. ";
+    else narasi += "Rasa tanggung jawab ini terlihat kuat pada inisiatifnya menjaga kebersihan ruang publik serta kepedulian tingginya terhadap rekan asrama yang sakit atau membutuhkan bantuan.";
+
+    document.getElementById("narasiRelasional").value = narasi;
+  }
+
+  window.generateNarasiEmosional = function() {
+    const v1 = getVal("em1"), v2 = getVal("em2");
+    if(!v1 || !v2) return alert("Pilih semua observasi Emosional terlebih dahulu.");
+    
+    let narasi = "Secara psikologis pada Dimensi Emosional, ";
+
+    if(v1 === "1" || v1 === "2") narasi += "ananda terlihat belum menemukan metode yang tepat untuk menyalurkan kekecewaannya, yang kadang bermanifestasi pada pelampiasan kemarahan yang tidak terkontrol atau sikap mogok aktivitas. ";
+    else if(v1 === "3") narasi += "ananda memiliki kemampuan menenangkan diri yang cukup wajar ketika dihadapkan pada situasi yang kurang menyenangkan. ";
+    else narasi += "ananda membuktikan kematangan kontrol diri yang sangat baik, mampu mengomunikasikan kekecewaan secara asertif, tenang, dan mencari jalan keluar yang solutif tanpa memicu keributan. ";
+
+    if(v2 === "1" || v2 === "2") narasi += "Hal ini sejalan dengan respons defensif yang sering muncul ketika ananda menerima evaluasi atau teguran atas perilakunya, yang masih membutuhkan pendampingan persuasif dari konselor.";
+    else if(v2 === "3") narasi += "Ketika menerima teguran/nasihat, ananda bersedia mendengarkan dan mencoba merefleksikan kesalahannya.";
+    else narasi += "Keterbukaan hatinya sangat menonjol saat menerima teguran/nasihat; ia meresponsnya dengan lapang dada dan segera melakukan perbaikan perilaku secara nyata di hari berikutnya.";
+
+    document.getElementById("narasiEmosional").value = narasi;
+  }
+
+  window.generateNarasiIntelektual = function() {
+    const v1 = getVal("in1"), v2 = getVal("in2");
+    if(!v1 || !v2) return alert("Pilih semua observasi Intelektual terlebih dahulu.");
+    
+    let narasi = "Dalam perkembangan akademik dan Dimensi Intelektual, ";
+
+    if(v1 === "1" || v1 === "2") narasi += "tingkat partisipasi ananda di kelas masih fluktuatif, seringkali diwarnai demotivasi yang berdampak pada keterlambatan masuk kelas atau kelalaian penyelesaian tugas. ";
+    else if(v1 === "3") narasi += "ananda memiliki kedisiplinan yang stabil untuk mengikuti agenda belajar serta menyelesaikan standar tugas wajibnya. ";
+    else narasi += "ananda memperlihatkan gairah belajar yang mengesankan, aktif berkontribusi positif di kelas, dan menginisiasi eksplorasi wawasan di luar jam wajib. ";
+
+    if(v2 === "1" || v2 === "2") narasi += "Daya tangkap analitisnya masih memerlukan sesi remedial terarah, mengingat evaluasi bulanannya seringkali berada di bawah garis ketuntasan.";
+    else if(v2 === "3") narasi += "Daya tangkap kognitifnya berada pada tingkat rata-rata yang mampu menyerap substansi materi dasar dengan wajar.";
+    else narasi += "Tajamnya nalar analitis ananda dibuktikan dengan pencapaian nilai akademis/tahfiz yang superior, bahkan ia mampu menjadi sumber referensi (tutor sebaya) bagi rekan sekelasnya.";
+
+    document.getElementById("narasiIntelektual").value = narasi;
+  }
+
+  window.generateNarasiFisik = function() {
+    const v1 = getVal("fi1"), v2 = getVal("fi2");
+    if(!v1 || !v2) return alert("Pilih semua observasi Fisik terlebih dahulu.");
+    
+    let narasi = "Terkait manajemen diri dan Dimensi Fisik, ";
+
+    if(v1 === "1" || v1 === "2") narasi += "aspek sanitasi personal serta tata letak lokernya masih jauh di bawah standar kerapian asrama, menandakan kurangnya kesadaran akan kebersihan ruang hidupnya. ";
+    else narasi += "ananda berhasil merawat kerapian personal secara konsisten; hal ini tampak dari pakaiannya yang terawat serta manajemen loker/area tidur yang selalu bersih. ";
+
+    if(v2 === "1" || v2 === "2") narasi += "Pola ini berimbas pada ketahanan fisiknya yang rentan menurun, sering kali disebabkan oleh kebiasaan mengabaikan jam tidur malam yang sehat.";
+    else if(v2 === "3") narasi += "Vitalitasnya cukup terjaga untuk mengikuti mobilitas kegiatan asrama tanpa keluhan fisik yang berarti.";
+    else narasi += "Kedisiplinannya dalam mengelola gizi dan kepatuhan jam istirahat malam memberikan dampak langsung pada stamina tubuhnya yang selalu bugar dalam menuntaskan agenda padat harian pesantren.";
+
+    document.getElementById("narasiFisik").value = narasi;
+  }
+
+  window.simpanAsesmen = async function() {
+    const tanggal =
+      document.getElementById("tanggalAsesmen").value;
+
+    const usrah =
+      document.getElementById("pilihUsrah").value;
+
+    const santri =
+      document.getElementById("namaSantri").value;
+
+    if(!usrah) {
+      alert("⚠️ Mohon pilih Usrah terlebih dahulu.");
+      return;
+    }
+
+    if(!santri) {
+      alert("⚠️ Mohon pilih Nama Santri yang akan dinilai.");
+      return;
+    }
+
+    const btn = document.getElementById("btnSubmit");
+    btn.innerHTML = "⏳ MENYIMPAN KE DATABASE..."; btn.disabled = true;
+
+    // Ambil Fokus Perbaikan
+    const fokusDepan = [];
+    document.querySelectorAll('input[name="fokusBulanDepan"]:checked').forEach(cb => {
+      fokusDepan.push(cb.value);
+    });
+
+    const payload = {
+      tanggalAsesmen: tanggal,
+      namaSantri: santri,
+
+      usrah: usrah,
+      usrahDipilih: usrah,
+      labelUsrah: labelUsrah(usrah),
+
+      namaPengasesmen: namaPengasesmen,
+      peranPengasesmen:
+        user.akses ||
+        user.role ||
+        "",
+
+      // Field lama dipertahankan untuk kompatibilitas.
+      namaNaqib: namaNaqib,
+
+      observasiPilihan: {
+        spiritual: { sp1: getVal("sp1"), sp2: getVal("sp2"), sp3: getVal("sp3") },
+        relasional: { re1: getVal("re1"), re2: getVal("re2"), re3: getVal("re3") },
+        emosional: { em1: getVal("em1"), em2: getVal("em2") },
+        intelektual: { in1: getVal("in1"), in2: getVal("in2") },
+        fisik: { fi1: getVal("fi1"), fi2: getVal("fi2") }
+      },
+
+      narasi: {
+        spiritual: document.getElementById("narasiSpiritual").value.trim(),
+        relasional: document.getElementById("narasiRelasional").value.trim(),
+        emosional: document.getElementById("narasiEmosional").value.trim(),
+        intelektual: document.getElementById("narasiIntelektual").value.trim(),
+        fisik: document.getElementById("narasiFisik").value.trim()
+      },
+
+      tindakLanjut: {
+        evaluasiBulanIni: document.getElementById("evaluasiBulanIni").value.trim(),
+        fokusBulanDepan: fokusDepan,
+        pesanWaliSantri: document.getElementById("spesifikBulanDepan").value.trim()
+      },
+
+      timestamp: new Date().toISOString()
+    };
+
+    try {
+      const savedRef = await push(ref(db, "cahaya_app/asesmen_cahaya_santri"), payload);
+      const waliKey = String(santri||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]/g,'');
+      if(waliKey && savedRef.key) await set(ref(db,`cahaya_app/wali_index/${waliKey}/asesmen/${savedRef.key}`),payload);
+      alert(`✅ BERHASIL!\nLaporan Asesmen CAHAYA atas nama ${santri} telah tersimpan.`);
+      window.scrollTo(0,0);
+      setTimeout(() => location.reload(), 1000);
+    } catch(err) {
+      alert("❌ Gagal menyimpan data: " + err.message);
+      btn.innerHTML = "💾 SIMPAN ASESMEN CAHAYA"; btn.disabled = false;
+    }
+  };
+</script>
+</body>
+</html>

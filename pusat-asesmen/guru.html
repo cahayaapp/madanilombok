@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <!-- CAHAYA WHITE-LABEL CONFIG -->
+  <script src="../config/tenant-config.js"></script>
+  <script src="../config/master-data.js"></script>
+  <script src="../js/cahaya-config-runtime.js" defer></script>
+
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>CAHAYA APP - Self-Assessment Guru (Pekanan)</title>
+  
+  <!-- PANGGIL MASTER THEME CAHAYA -->
+  <link rel="stylesheet" href="../css/cahaya-theme.css" />
+  
+  <style>
+    /* CSS Khusus Evaluasi & Indikator KPI */
+    .kpi-section {
+      background: #fff; border: 1px solid var(--input-border);
+      border-radius: var(--radius-lg); padding: 25px; margin-bottom: 25px;
+      box-shadow: var(--shadow-sm);
+    }
+    .kpi-header {
+      display: flex; justify-content: space-between; align-items: center;
+      border-bottom: 2px dashed #cbd5e1; padding-bottom: 15px; margin-bottom: 20px;
+    }
+    .kpi-title {
+      font-family: 'Playfair Display', serif; font-size: 1.4rem; color: var(--navy-dark); font-weight: 800; margin: 0;
+    }
+
+    .kpi-item {
+      margin-bottom: 20px; padding: 15px; background: #f8fafc;
+      border-radius: 8px; border-left: 4px solid var(--gold-main); transition: 0.3s;
+    }
+    .kpi-item label { font-weight: 800; color: var(--navy-dark); font-size: 0.95rem; margin-bottom: 5px; display: block; }
+    .kpi-desc { font-size: 0.8rem; color: var(--text-muted); margin-bottom: 15px; line-height: 1.4; }
+
+    /* Select Option styling */
+    select.kpi-select { font-weight: 600; color: var(--navy-dark); background-color: #fff; border: 1px solid #cbd5e1; }
+    select.kpi-select option { white-space: normal; }
+    select.kpi-select:focus { border-color: var(--gold-main); box-shadow: 0 0 0 3px rgba(212,175,55,0.1); }
+    select.kpi-select:disabled { background: #f1f5f9; color: #94a3b8; border-color: #cbd5e1; }
+
+    /* Custom Layout untuk Input Ganda (Target vs Realisasi) */
+    .target-realisasi-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+    .tr-box { background: #fff; border: 1px solid #cbd5e1; padding: 10px 15px; border-radius: 8px; }
+    .tr-box span { display: block; font-size: 0.75rem; color: var(--text-muted); font-weight: 700; text-transform: uppercase; margin-bottom: 5px; }
+    .tr-box input { width: 100%; border: none; border-bottom: 2px solid var(--gold-main); border-radius: 0; padding: 5px 0; font-size: 1.1rem; font-weight: 800; color: var(--navy-dark); text-align: center; background: transparent; outline: none; }
+
+    /* Jurnal Refleksi */
+    .refleksi-box { background: rgba(212,175,55,0.05); border: 1px solid rgba(212,175,55,0.3); padding: 20px; border-radius: 12px; margin-bottom: 15px; }
+    .refleksi-box label { display: block; color: var(--navy-dark); font-weight: 700; margin-bottom: 8px; font-size: 0.9rem; }
+    .refleksi-box textarea { width: 100%; border: 1px solid #cbd5e1; border-radius: 8px; padding: 12px; font-size: 0.9rem; font-family: inherit; resize: vertical; outline: none; }
+    .refleksi-box textarea:focus { border-color: var(--gold-main); }
+
+    /* Grid Custom 3 Kolom untuk Header Info */
+    .grid-info-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px; margin-bottom: 0; }
+
+    /* Sticky Score Board */
+    .score-board {
+      position: sticky; bottom: 20px; background: linear-gradient(135deg, var(--navy-dark), #0f172a);
+      padding: 20px 25px; border-radius: var(--radius-lg);
+      display: flex; justify-content: center; align-items: center; text-align: center;
+      box-shadow: 0 10px 25px rgba(15,23,42,0.4); z-index: 100;
+    }
+
+    #loadingOverlay { position: fixed; inset: 0; background: rgba(255,255,255,0.9); backdrop-filter: blur(5px); z-index: 3000; display: flex; flex-direction: column; justify-content: center; align-items: center; color: var(--navy-dark); font-family: 'Playfair Display', serif; font-size: 1.2rem; transition: 0.5s; }
+
+    @media(max-width: 768px) {
+      .score-board button { width: 100%; }
+      .grid-info-3 { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<div id="loadingOverlay">
+  <div style="font-size: 2.5rem; margin-bottom: 15px; animation: float 1.5s infinite alternate ease-in-out;">📚</div>
+  <div style="font-weight: 700;">Menyiapkan Instrumen Asesmen Guru...</div>
+</div>
+
+<main class="cahaya-container">
+  <div style="text-align: center; margin-bottom: 30px;">
+    <h2 style="font-family:'Playfair Display',serif; font-size:2rem; font-weight:800; color:var(--navy-dark); line-height:1.2; margin-bottom:5px;">Self-Assessment Guru</h2>
+    <p style="color:var(--text-muted); font-size:0.9rem;">Evaluasi Pekanan Kinerja Akademik, Keteladanan, dan KBM CAHAYA</p>
+  </div>
+
+  <div class="cahaya-card" style="margin-bottom: 25px;">
+    <div class="grid-info-3">
+      <div class="form-group" style="margin-bottom: 0;">
+        <label>Bulan Evaluasi</label>
+        <input type="month" class="form-control" id="periodeBulan">
+      </div>
+      <div class="form-group" style="margin-bottom: 0;">
+        <label>Pekan Ke-</label>
+        <select class="form-control" id="periodePekan" onchange="togglePekan4()" style="font-weight:bold; color:var(--navy-dark);">
+          <option value="1">Pekan 1</option>
+          <option value="2">Pekan 2</option>
+          <option value="3">Pekan 3</option>
+          <option value="4">Pekan 4 (Akhir Bulan)</option>
+        </select>
+      </div>
+      <div class="form-group" style="margin-bottom: 0;">
+        <label>Nama Pengajar</label>
+        <input type="text" class="form-control" id="namaGuru" readonly style="background: #f1f5f9; font-weight: bold;">
+      </div>
+    </div>
+  </div>
+
+  <form id="formKPI">
+    <!-- BAGIAN A: KEDISIPLINAN & ADMINISTRASI -->
+    <div class="kpi-section">
+      <div class="kpi-header">
+        <h3 class="kpi-title">A. Kedisiplinan & Tanggung Jawab Akademik</h3>
+      </div>
+      
+      <div class="kpi-item">
+        <label>1. Kehadiran Tepat Waktu di Kelas</label>
+        <div class="kpi-desc">Seberapa konsisten kehadiran Anda di majelis/kelas dibandingkan dengan waktu kedatangan santri pekan ini?</div>
+        <select class="form-control kpi-select val-skala" id="d1">
+          <option value="0">-- Pilih Pernyataan --</option>
+          <option value="1">Saya sering terlambat dan datang setelah seluruh santri menunggu lama di kelas.</option>
+          <option value="2">Saya hadir pas pada waktunya, terkadang bersamaan dengan datangnya santri.</option>
+          <option value="3">Saya hadir tepat waktu, namun masih terlihat terburu-buru dalam menyiapkan diri.</option>
+          <option value="4">Saya konsisten hadir 5-10 menit sebelum kelas dimulai untuk menenangkan diri dan mengecek kesiapan ruangan.</option>
+          <option value="5">Sangat teladan; saya selalu hadir jauh sebelum murid tiba, menyambut kedatangan mereka, dan telah duduk rapi di majelis.</option>
+        </select>
+      </div>
+
+      <div class="kpi-item">
+        <label>2. Kedisiplinan Absensi Halqah (CAHAYA APP)</label>
+        <div class="kpi-desc">Bagaimana kedisiplinan Anda dalam menginput kehadiran santri di aplikasi pekan ini?</div>
+        <select class="form-control kpi-select val-skala" id="d2">
+          <option value="0">-- Pilih Pernyataan --</option>
+          <option value="1">Sering tidak mengisi absen, atau merapel pengisian berminggu-minggu kemudian.</option>
+          <option value="2">Baru mengisi absensi ketika ditagih oleh bagian akademik atau koordinator.</option>
+          <option value="3">Mengisi absensi secara rutin, namun sering tertunda hingga keesokan harinya.</option>
+          <option value="4">Disiplin mengisi absensi dan jurnal mengajar pada hari yang sama setelah kelas selesai.</option>
+          <option value="5">Sangat disiplin; absensi langsung diisi secara real-time di dalam kelas, sehingga data kehadiran tercatat sangat akurat.</option>
+        </select>
+      </div>
+
+      <div class="kpi-item" id="itemUjianBulanan">
+        <label>3. Disiplin Input Nilai Ujian Bulanan/Semester <span style="color:#ef4444; font-size:0.8rem;">(Hanya Pekan 4)</span></label>
+        <div class="kpi-desc">Bagaimana kedisiplinan Anda dalam menginput nilai Sistem Evaluasi Pendidikan (Syafawi, Tahriri, dll) ke dalam sistem?</div>
+        <div id="wrap_d3" style="display: none;">
+          <select class="form-control kpi-select val-skala" id="d3">
+            <option value="0">-- Pilih Pernyataan --</option>
+            <option value="1">Sering menunda, tidak melaksanakan ujian sesuai ketentuan, atau belum menginput nilai sama sekali.</option>
+            <option value="2">Ujian dilaksanakan, namun penginputan nilai ke sistem sangat terlambat dan butuh ditegur berulang kali.</option>
+            <option value="3">Melaksanakan ujian dan menginput nilai, namun kadang masih melebihi batas tenggat waktu yang ditentukan.</option>
+            <option value="4">Disiplin; ujian terlaksana dengan baik dan nilai diinput tepat waktu ke dalam sistem CAHAYA APP.</option>
+            <option value="5">Sangat teladan; ujian terlaksana sesuai standar, nilai diinput seketika, dan aktif memberikan umpan balik hasil evaluasi kepada santri.</option>
+          </select>
+        </div>
+        <div id="msg_d3_disabled" style="color:var(--text-muted); font-size:0.85rem; font-style:italic; padding: 12px; background: #e2e8f0; border-radius:6px; margin-top: 10px;">
+          ⚠️ Poin ini dikecualikan (dikosongkan) karena input nilai Sistem Evaluasi Pendidikan Akademik hanya dinilai pada akhir bulan (Pekan 4).
+        </div>
+      </div>
+
+      <div class="kpi-item">
+        <label>4. Review Tashnif (Karya Tulis) Santri</label>
+        <div class="kpi-desc">Seberapa rutin Anda membaca, mengoreksi, dan memberi catatan pada tashnif santri pada akhir pekan ini?</div>
+        <div class="target-realisasi-grid">
+          <div class="tr-box">
+            <span>Target Review (Lembar/Buku)</span>
+            <input type="number" id="tashnif_target" min="1" placeholder="Misal: 5">
+          </div>
+          <div class="tr-box">
+            <span>Telah Direview Pekan Ini</span>
+            <input type="number" id="tashnif_real" min="0" placeholder="Misal: 5">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- BAGIAN B: PERSIAPAN & KETELADANAN -->
+    <div class="kpi-section">
+      <div class="kpi-header">
+        <h3 class="kpi-title">B. Keteladanan & Persiapan Ruhiyah</h3>
+      </div>
+      
+      <div class="kpi-item">
+        <label>5. Keteladanan Adab & Kecintaan pada Ilmu</label>
+        <div class="kpi-desc">Sejauh mana Anda menampilkan sosok "Guru Pembelajar" dan teladan kebaikan baik di dalam maupun di luar kelas pekan ini?</div>
+        <select class="form-control kpi-select val-skala" id="p1">
+          <option value="0">-- Pilih Pernyataan --</option>
+          <option value="1">Saya merasa pernah bersikap kurang adab (emosional/kasar) di depan santri pekan ini.</option>
+          <option value="2">Saya mengajar sekadar menggugurkan kewajiban tanpa memperlihatkan antusiasme pribadi terhadap ilmu.</option>
+          <option value="3">Saya menjaga tutur kata dan adab standar sebagai pengajar saat berinteraksi dengan santri.</option>
+          <option value="4">Saya konsisten menunjukkan adab mulia, sering terlihat membaca kitab oleh santri di luar kelas.</option>
+          <option value="5">Sangat menonjol; saya menjadi role model nyata yang berhasil memotivasi santri untuk mencintai ilmu melalui akhlak dan keseharian saya.</option>
+        </select>
+      </div>
+
+      <div class="kpi-item">
+        <label>6. Persiapan Materi Pembelajaran</label>
+        <div class="kpi-desc">Bagaimana kesiapan Anda secara materiil (bahan ajar/kitab) sebelum masuk kelas pekan ini?</div>
+        <select class="form-control kpi-select val-skala" id="p2">
+          <option value="0">-- Pilih Pernyataan --</option>
+          <option value="1">Masuk kelas tanpa persiapan, hanya mengandalkan ingatan atau improvisasi saat mengajar.</option>
+          <option value="2">Hanya membaca materi sekilas sesaat sebelum kelas dimulai.</option>
+          <option value="3">Mempersiapkan materi dengan membaca ulang bagian kitab yang akan diajarkan.</option>
+          <option value="4">Sangat siap; menguasai syarah materi, menyiapkan dalil referensi pendukung, dan tau alur pengajaran.</option>
+          <option value="5">Persiapan matang; materi terstruktur kuat, menyiapkan pemantik/ilustrasi relevan, dan memiliki skema evaluasi harian untuk materi tersebut.</option>
+        </select>
+      </div>
+
+      <div class="kpi-item">
+        <label>7. Praktik "Mindful Praying" & Tajdidun Niat</label>
+        <div class="kpi-desc">Bagaimana Anda menghadirkan suasana ruhiyah (mengingat Allah) di awal dan akhir pembelajaran?</div>
+        <select class="form-control kpi-select val-skala" id="p3">
+          <option value="0">-- Pilih Pernyataan --</option>
+          <option value="1">Langsung masuk ke materi tanpa memimpin doa pembuka/penutup.</option>
+          <option value="2">Membuka/menutup kelas hanya dengan salam dan basmalah singkat secara formalitas.</option>
+          <option value="3">Memimpin doa standar sebelum dan sesudah belajar dengan tartil.</option>
+          <option value="4">Secara eksplisit mengajak santri meluruskan niat menuntut ilmu hanya untuk Allah sebelum mulai belajar.</option>
+          <option value="5">Sangat khusyuk; memimpin doa sekaligus menyentuh hati santri, mengingatkan bahwa semua ilmu milik Allah dan harus dicari demi ridha-Nya.</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- BAGIAN C: KUALITAS KBM -->
+    <div class="kpi-section">
+      <div class="kpi-header">
+        <h3 class="kpi-title">C. Kualitas KBM & Metode Pembelajaran</h3>
+      </div>
+
+      <div class="kpi-item">
+        <label>8. Pemantauan Setoran Hafalan Matan</label>
+        <div class="kpi-desc">Bagaimana kualitas Anda dalam menyimak setoran hafalan matan santri pekan ini?</div>
+        <select class="form-control kpi-select val-skala" id="k1">
+          <option value="0">-- Pilih Pernyataan --</option>
+          <option value="1">Agenda setoran matan sering dilewatkan atau diabaikan.</option>
+          <option value="2">Menyimak setoran secara massal/kurang teliti, asal santri sudah hafal.</option>
+          <option value="3">Menyimak satu persatu dan mencatat progres hafalan mereka di buku/aplikasi.</option>
+          <option value="4">Menyimak teliti, mengoreksi makhraj/tajwid/struktur kalimat matan yang keliru secara langsung.</option>
+          <option value="5">Sangat komprehensif; menyimak dengan presisi, memotivasi santri, dan memberikan tips khusus cara menghafal matan yang efektif.</option>
+        </select>
+      </div>
+
+      <div class="kpi-item">
+        <label>9. Kualitas Penjelasan Syarah Materi</label>
+        <div class="kpi-desc">Seberapa baik kemampuan Anda dalam membedah dan memahamkan teks kitab (syarah) kepada santri?</div>
+        <select class="form-control kpi-select val-skala" id="k2">
+          <option value="0">-- Pilih Pernyataan --</option>
+          <option value="1">Hanya sekadar membaca teks dan menterjemahkannya kata perkata secara kaku.</option>
+          <option value="2">Menjelaskan materi secara monoton sehingga santri terlihat kebingungan atau bosan.</option>
+          <option value="3">Menjelaskan materi dengan bahasa yang cukup mudah dipahami oleh santri.</option>
+          <option value="4">Penjelasan syarah sangat baik, mengaitkan ibrah teks dengan konteks kehidupan nyata santri.</option>
+          <option value="5">Sangat mendalam dan mencerahkan; penjelasan terstruktur, argumentatif, mudah dicerna, serta merangsang santri untuk berpikir lebih jauh.</option>
+        </select>
+      </div>
+
+      <div class="kpi-item">
+        <label>10. Interaksi & Menghidupkan Diskusi Kelas</label>
+        <div class="kpi-desc">Bagaimana tingkat partisipasi santri saat Anda memberi kesempatan bertanya/berpendapat?</div>
+        <select class="form-control kpi-select val-skala" id="k3">
+          <option value="0">-- Pilih Pernyataan --</option>
+          <option value="1">Kelas sangat pasif, saya mengajar satu arah tanpa ada kesempatan bertanya.</option>
+          <option value="2">Ada kesempatan bertanya, namun santri diam dan tidak berani merespons.</option>
+          <option value="3">Interaksi cukup berjalan, namun didominasi oleh 1-2 santri yang itu-itu saja.</option>
+          <option value="4">Saya berhasil menggugah keberanian banyak santri untuk aktif bertanya dan merespons studi kasus.</option>
+          <option value="5">Suasana kelas sangat hidup; dialog interaktif terjadi dua arah secara natural, kritis, antusias, dan tetap beradab.</option>
+        </select>
+      </div>
+
+      <div class="kpi-item">
+        <label>11. Bimbingan Penjelajahan Mandiri Kitab Syarah</label>
+        <div class="kpi-desc">Apakah Anda memberikan ruang bagi santri untuk mencari referensi (tahqiq) mandiri di kitab syarah dan memantaunya?</div>
+        <select class="form-control kpi-select val-skala" id="k4">
+          <option value="0">-- Pilih Pernyataan --</option>
+          <option value="1">Tidak pernah memberi kesempatan santri untuk membedah rujukan kitab sendiri.</option>
+          <option value="2">Hanya menginstruksikan santri untuk membaca, namun tidak dipantau hasilnya.</option>
+          <option value="3">Memberikan waktu khusus bagi santri untuk mencari jawaban dari kitab secara mandiri.</option>
+          <option value="4">Memberi waktu baca dan secara aktif berkeliling memandu cara mereka menavigasi kitab.</option>
+          <option value="5">Sangat efektif; membimbing metodologi pencarian referensi hingga santri mahir dan antusias menemukan sendiri istinbath hukum dari syarah.</option>
+        </select>
+      </div>
+
+      <div class="kpi-item">
+        <label>12. Pelaksanaan & Bimbingan "Peer Teaching"</label>
+        <div class="kpi-desc">Seberapa baik penerapan metode santri mengajar santri (Peer Teaching) di akhir sesi pembelajaran Anda?</div>
+        <select class="form-control kpi-select val-skala" id="k5">
+          <option value="0">-- Pilih Pernyataan --</option>
+          <option value="1">Metode peer teaching tidak pernah diterapkan di kelas pekan ini.</option>
+          <option value="2">Sekadar menunjuk santri maju ke depan menjelaskan, tanpa ada arahan kerangka materi.</option>
+          <option value="3">Memberikan waktu khusus agar santri berpasangan/berkelompok untuk saling mengulang materi.</option>
+          <option value="4">Menerapkan peer teaching dengan terstruktur, memantau kelompok, dan meluruskan pemahaman yang keliru.</option>
+          <option value="5">Peer teaching berjalan sangat hidup; santri fasih menjelaskan ulang materi kepada temannya dengan bahasa yang runtut dan pemahaman yang akurat.</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- BAGIAN D: JURNAL REFLEKSI GURU -->
+    <div class="kpi-section">
+      <div class="kpi-header">
+        <h3 class="kpi-title">D. Jurnal Refleksi Diri</h3>
+      </div>
+
+      <div class="refleksi-box">
+        <label>📝 Evaluasi Niat & Ruhiyah Mengajar</label>
+        <textarea id="refleksiNiat" rows="3" placeholder="Tuliskan muhasabah (evaluasi diri) terkait niat Anda dalam mengajar pekan ini. Apakah masih terjaga keikhlasannya atau mulai terserang rasa jenuh?"></textarea>
+      </div>
+
+      <div class="refleksi-box">
+        <label>🎯 Komitmen Perbaikan Pekan Depan</label>
+        <textarea id="refleksiPerbaikan" rows="3" placeholder="Metode apa yang ingin Anda perbaiki di kelas pekan depan? (misal: ingin lebih sabar, memperbanyak ilustrasi, dll)"></textarea>
+      </div>
+
+      <div class="refleksi-box" style="border-color: #fca5a5; background: #fef2f2;">
+        <label style="color: #dc2626;">⚠️ Santri yang Membutuhkan Perhatian Khusus</label>
+        <textarea id="refleksiSantri" rows="3" placeholder="Sebutkan nama santri yang terlihat kesulitan menangkap materi, pasif, atau bermasalah secara adab di kelas Anda pekan ini, beserta catatan singkatnya..."></textarea>
+      </div>
+    </div>
+  </form>
+</main>
+
+<div class="score-board">
+  <button class="btn-cahaya btn-gold" id="btnSimpan" onclick="simpanAsesmenGuru()" style="padding: 15px 40px; font-size: 1.1rem; width: 100%; max-width: 400px;">💾 SIMPAN SELF-ASSESSMENT</button>
+</div>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+  import { getDatabase, ref, push } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+
+  const firebaseConfig = window.CAHAYA_CONFIG.firebase;
+
+  const app = initializeApp(firebaseConfig);
+  const db = getDatabase(app);
+
+  const user = JSON.parse(localStorage.getItem('cahayaCurrentUser') || '{}');
+  let namaLogin = localStorage.getItem('namaGuru') || user.username || user.label || "Pengajar Akademik";
+  namaLogin = namaLogin.replace(/^Mu'?allim(ah)?\s+|^Ustadz(ah)?\s+|^Mrs\s+/i, "").trim();
+  namaLogin = namaLogin.charAt(0).toUpperCase() + namaLogin.slice(1).toLowerCase();
+
+  document.addEventListener('DOMContentLoaded', () => {
+    document.getElementById('namaGuru').value = namaLogin;
+    
+    // Default Bulan Ini
+    const today = new Date();
+    const mm = String(today.getMonth() + 1).padStart(2, '0');
+    const yyyy = today.getFullYear();
+    document.getElementById('periodeBulan').value = `${yyyy}-${mm}`;
+
+    togglePekan4(); // Inisiasi tampilan pekan
+
+    document.getElementById('loadingOverlay').style.opacity = '0';
+    setTimeout(() => document.getElementById('loadingOverlay').style.display = 'none', 500);
+  });
+
+  // Logika Khusus Ujian Bulanan (Hanya Pekan 4)
+  window.togglePekan4 = function() {
+    const pekan = document.getElementById('periodePekan').value;
+    const wrapD3 = document.getElementById('wrap_d3');
+    const msgD3 = document.getElementById('msg_d3_disabled');
+    const d3 = document.getElementById('d3');
+
+    if (pekan === '4') {
+      wrapD3.style.display = 'block';
+      msgD3.style.display = 'none';
+      d3.disabled = false;
+    } else {
+      wrapD3.style.display = 'none';
+      msgD3.style.display = 'block';
+      d3.disabled = true;
+      d3.value = '0';
+    }
+  };
+
+  // Fungsi utilitas untuk rasio target (Bagian Tashnif)
+  function hitungRasio(idTarget, idReal, maxSkor) {
+    let t = parseFloat(document.getElementById(idTarget).value) || 0;
+    let r = parseFloat(document.getElementById(idReal).value) || 0;
+    if (t === 0) return 0; 
+    let pct = r / t;
+    if (pct > 1) pct = 1; 
+    return pct * maxSkor;
+  }
+
+  function kalkulasiSkorGuru() {
+    let totalPoin = 0;
+    const pekan = document.getElementById('periodePekan').value;
+    
+    // Jika Pekan 4: Ada 11 Pertanyaan Skala (55) + 1 Rasio Tashnif (5) = Max 60
+    // Jika Pekan 1-3: Ada 10 Pertanyaan Skala (50) + 1 Rasio Tashnif (5) = Max 55
+    let maxSkorDasar = (pekan === '4') ? 60 : 55;
+
+    // 1. Skala Pilihan Ganda Dasar (10 Item, selalu dihitung)
+    const arraySkala = ['d1', 'd2', 'p1', 'p2', 'p3', 'k1', 'k2', 'k3', 'k4', 'k5'];
+    arraySkala.forEach(id => {
+      totalPoin += parseFloat(document.getElementById(id).value) || 0;
+    });
+
+    // Tambahan Skala Ujian Bulanan (Hanya dihitung jika Pekan 4)
+    if (pekan === '4') {
+      totalPoin += parseFloat(document.getElementById('d3').value) || 0;
+    }
+
+    // 2. Input Rasio (Tashnif) - Bobot 5
+    totalPoin += hitungRasio('tashnif_target', 'tashnif_real', 5);
+
+    // Normalisasi ke 100%
+    let persentaseAkhir = (totalPoin / maxSkorDasar) * 100;
+    if(persentaseAkhir > 100) persentaseAkhir = 100;
+
+    let predikat = "RASIB (BUTUH PEMBINAAN)";
+    if(persentaseAkhir >= 90) predikat = "MUMTAZ (SANGAT BAIK)";
+    else if(persentaseAkhir >= 75) predikat = "JAYYID JIDDAN (BAIK)";
+    else if(persentaseAkhir >= 60) predikat = "MAQBUL (CUKUP)";
+
+    return { skor: persentaseAkhir.toFixed(1), predikat: predikat };
+  }
+
+  window.simpanAsesmenGuru = async function() {
+    const bulan = document.getElementById('periodeBulan').value;
+    const pekan = document.getElementById('periodePekan').value;
+
+    if(!bulan) return alert("⚠️ Mohon isi periode bulan evaluasi.");
+
+    if (document.getElementById('tashnif_target').value === "" || document.getElementById('tashnif_real').value === "") {
+        return alert("⚠️ Mohon lengkapi angka 'Target' dan 'Realisasi' pada poin Review Tashnif.");
+    }
+
+    // Validasi Kelengkapan Dropdown (Kecuali yang di-disable)
+    let skalaError = false;
+    document.querySelectorAll('.val-skala:not(:disabled)').forEach(el => {
+      if(el.value === "0") skalaError = true;
+    });
+    
+    if(skalaError) return alert("⚠️ Mohon lengkapi seluruh pernyataan evaluasi (pilih opsi yang tersedia) sebelum menyimpan.");
+
+    if(!document.getElementById('refleksiNiat').value.trim() || !document.getElementById('refleksiPerbaikan').value.trim()) {
+        return alert("⚠️ Jurnal Refleksi (Evaluasi Niat & Komitmen Perbaikan) wajib diisi sebagai muhasabah diri.");
+    }
+
+    const btn = document.getElementById('btnSimpan');
+    btn.innerHTML = "⏳ MENGKALKULASI & MENYIMPAN...";
+    btn.disabled = true;
+
+    const hasil = kalkulasiSkorGuru();
+
+    const payload = {
+      namaGuru: document.getElementById('namaGuru').value,
+      periodeBulan: bulan,
+      periodePekan: `Pekan ${pekan}`,
+      tanggalSubmit: new Date().toISOString(),
+      skorAkhir: parseFloat(hasil.skor),
+      predikat: hasil.predikat,
+      
+      observasi: {
+        d1_hadir: document.getElementById('d1').value,
+        d2_absen: document.getElementById('d2').value,
+        d3_ujian: pekan === '4' ? document.getElementById('d3').value : null,
+        d4_tashnif_target: parseFloat(document.getElementById('tashnif_target').value) || 0,
+        d4_tashnif_real: parseFloat(document.getElementById('tashnif_real').value) || 0,
+        
+        p1_adab: document.getElementById('p1').value,
+        p2_persiapan: document.getElementById('p2').value,
+        p3_doa: document.getElementById('p3').value,
+        
+        k1_matan: document.getElementById('k1').value,
+        k2_syarah: document.getElementById('k2').value,
+        k3_interaksi: document.getElementById('k3').value,
+        k4_penjelajahan: document.getElementById('k4').value,
+        k5_peerteaching: document.getElementById('k5').value
+      },
+      
+      jurnalRefleksi: {
+        evaluasiNiat: document.getElementById('refleksiNiat').value.trim(),
+        komitmenPerbaikan: document.getElementById('refleksiPerbaikan').value.trim(),
+        santriButuhPerhatian: document.getElementById('refleksiSantri').value.trim()
+      }
+    };
+
+    try {
+      await push(ref(db, 'cahaya_app/self_asesmen_guru'), payload);
+      alert(`✅ Alhamdulillah! Evaluasi Kinerja Akademik ${payload.periodePekan} berhasil disubmit.\n\nRingkasan Evaluasi Anda:\nSkor: ${payload.skorAkhir}%\nPredikat: ${payload.predikat}\n\nJazakumullah khairan atas keteladanan Anda di kelas pekan ini.`);
+      location.reload();
+    } catch (e) {
+      alert("❌ Gagal menyimpan evaluasi: " + e.message);
+    } finally {
+      btn.innerHTML = "💾 SIMPAN SELF-ASSESSMENT";
+      btn.disabled = false;
+    }
+  };
+</script>
+</body>
+</html>

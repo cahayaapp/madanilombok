@@ -1,0 +1,3627 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <!-- CAHAYA WHITE-LABEL CONFIG -->
+  <script src="../config/tenant-config.js"></script>
+  <script src="../config/master-data.js"></script>
+  <script src="../js/cahaya-config-runtime.js" defer></script>
+
+  <meta charset="UTF-8" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+  />
+  <title>CAHAYA APP - Pemeriksaan Kesehatan Santri</title>
+
+  <link rel="stylesheet" href="../css/cahaya-theme.css" />
+
+  <style>
+    :root {
+      --pk-primary: var(--primary, #2878ff);
+      --pk-primary-dark: var(--primary-dark, #1557d5);
+      --pk-cyan: var(--cyan, #19c6e6);
+      --pk-green: var(--green, #25b983);
+      --pk-orange: var(--orange, #f59e42);
+      --pk-red: var(--red, #ef5968);
+      --pk-purple: var(--purple, #7667f5);
+      --pk-heading: var(--text-heading, #16264a);
+      --pk-text: var(--text-main, #2d3c5d);
+      --pk-muted: var(--text-muted, #7483a0);
+      --pk-border: var(--border, #e1e9f5);
+      --pk-shadow: 0 15px 38px rgba(35, 78, 160, 0.10);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      width: 100%;
+      min-height: 100%;
+      margin: 0;
+      overflow-x: hidden;
+    }
+
+    body {
+      padding: 18px;
+      color: var(--pk-text);
+      font-family: "Nunito", "Poppins", sans-serif;
+      background:
+        radial-gradient(circle at 0% 0%, rgba(25, 198, 230, 0.12), transparent 28%),
+        radial-gradient(circle at 100% 4%, rgba(37, 185, 131, 0.09), transparent 24%),
+        linear-gradient(180deg, #f4f8ff 0%, #fbfcff 100%);
+    }
+
+    button,
+    input,
+    select,
+    textarea {
+      font: inherit;
+    }
+
+    .exam-page {
+      width: 100%;
+      max-width: 1120px;
+      margin: 0 auto;
+      animation: pageIn 0.38s ease both;
+    }
+
+    @keyframes pageIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* PANELS */
+    .panel {
+      margin-bottom: 16px;
+      padding: 22px;
+      border: 1px solid rgba(224,232,245,0.96);
+      border-radius: 22px;
+      background: rgba(255,255,255,0.98);
+      box-shadow: var(--pk-shadow);
+    }
+
+    .panel-heading {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 17px;
+    }
+
+    .heading-copy {
+      display: flex;
+      align-items: flex-start;
+      gap: 11px;
+    }
+
+    .heading-icon {
+      width: 42px;
+      height: 42px;
+      flex: 0 0 42px;
+      display: grid;
+      place-items: center;
+      color: var(--pk-primary-dark);
+      font-size: 1.1rem;
+      border-radius: 13px;
+      background: #edf5ff;
+    }
+
+    .panel-heading h2,
+    .panel-heading h3 {
+      margin: 0;
+      color: var(--pk-heading);
+      font-size: 1.04rem;
+      font-weight: 900;
+      line-height: 1.25;
+    }
+
+    .panel-heading p {
+      margin: 5px 0 0;
+      color: var(--pk-muted);
+      font-size: 0.69rem;
+      font-weight: 650;
+      line-height: 1.5;
+    }
+
+    .section-number {
+      flex: 0 0 auto;
+      padding: 5px 9px;
+      color: var(--pk-primary);
+      font-size: 0.59rem;
+      font-weight: 900;
+      border: 1px solid #cee0fa;
+      border-radius: 999px;
+      background: #f1f6ff;
+    }
+
+    .notice {
+      display: flex;
+      align-items: flex-start;
+      gap: 9px;
+      margin-bottom: 16px;
+      padding: 12px 14px;
+      color: #2a6296;
+      font-size: 0.68rem;
+      font-weight: 700;
+      line-height: 1.52;
+      border: 1px solid #d5e8ff;
+      border-left: 5px solid var(--pk-primary);
+      border-radius: 12px;
+      background: #f2f8ff;
+    }
+
+    .notice.warning {
+      color: #895c1c;
+      border-color: #f4d9ad;
+      border-left-color: var(--pk-orange);
+      background: #fff8ed;
+    }
+
+    .notice.danger {
+      color: #a13242;
+      border-color: #f0c4ca;
+      border-left-color: var(--pk-red);
+      background: #fff0f2;
+    }
+
+    .notice strong {
+      color: var(--pk-heading);
+      font-weight: 900;
+    }
+
+
+    /* MINIMAL FRESH BLUE INFORMATION PANEL */
+    .info-panel {
+      position: relative;
+      overflow: hidden;
+      border-color: rgba(40,120,255,0.20) !important;
+      background:
+        radial-gradient(circle at 97% 0%, rgba(25,198,230,0.18), transparent 32%),
+        linear-gradient(135deg, #edf5ff 0%, #f9fbff 55%, #eefcff 100%) !important;
+      box-shadow: 0 15px 36px rgba(40,120,255,0.12) !important;
+    }
+
+    .info-panel::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 22px;
+      right: 22px;
+      height: 4px;
+      border-radius: 0 0 10px 10px;
+      background: linear-gradient(
+        90deg,
+        var(--pk-primary),
+        var(--pk-cyan)
+      );
+    }
+
+    .info-panel::after {
+      content: "";
+      width: 132px;
+      height: 132px;
+      position: absolute;
+      right: -74px;
+      bottom: -84px;
+      border: 24px solid rgba(40,120,255,0.05);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+
+    .info-panel .panel-heading {
+      position: relative;
+      z-index: 1;
+      margin-bottom: 18px;
+      padding-bottom: 15px;
+      border-bottom: 1px solid rgba(40,120,255,0.12);
+    }
+
+    .info-panel.simple-info .panel-heading {
+      justify-content: flex-start;
+      align-items: center;
+    }
+
+    .info-panel.simple-info .panel-heading::before {
+      content: "📝";
+      width: 44px;
+      height: 44px;
+      flex: 0 0 44px;
+      display: grid;
+      place-items: center;
+      color: #ffffff;
+      font-size: 1.04rem;
+      border-radius: 14px;
+      background: linear-gradient(
+        135deg,
+        var(--pk-primary),
+        var(--pk-cyan)
+      );
+      box-shadow: 0 9px 20px rgba(40,120,255,0.20);
+    }
+
+    .info-panel .panel-heading h2,
+    .info-panel .panel-heading h3 {
+      color: var(--pk-primary-dark);
+    }
+
+    .info-panel .panel-heading p {
+      color: #627493;
+    }
+
+    .info-panel .heading-icon {
+      color: #ffffff;
+      background: linear-gradient(
+        135deg,
+        var(--pk-primary),
+        var(--pk-cyan)
+      );
+      box-shadow: 0 9px 20px rgba(40,120,255,0.18);
+    }
+
+    .info-panel .form-grid,
+    .info-panel .notice {
+      position: relative;
+      z-index: 1;
+    }
+
+    .info-panel .form-label {
+      color: #254d84;
+    }
+
+    .info-panel .form-control {
+      border-color: #cddcf2;
+      background: rgba(255,255,255,0.94);
+      box-shadow: 0 5px 14px rgba(40,120,255,0.045);
+    }
+
+    .info-panel .form-control:hover {
+      border-color: #b8cdef;
+      background: #ffffff;
+    }
+
+    .info-panel .form-control:focus {
+      border-color: var(--pk-primary);
+      background: #ffffff;
+      box-shadow:
+        0 0 0 4px rgba(40,120,255,0.10),
+        0 8px 18px rgba(40,120,255,0.08);
+    }
+
+    @media (max-width: 760px) {
+      .info-panel {
+        padding: 18px 14px;
+        border-radius: 18px;
+      }
+
+      .info-panel::before {
+        left: 15px;
+        right: 15px;
+      }
+
+      .info-panel.simple-info .panel-heading::before {
+        width: 40px;
+        height: 40px;
+        flex-basis: 40px;
+        border-radius: 12px;
+      }
+    }
+
+
+    /* FORM */
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .form-grid.three {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .form-grid.two {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .form-group {
+      min-width: 0;
+      margin-bottom: 13px;
+    }
+
+    .form-group.full {
+      grid-column: 1 / -1;
+    }
+
+    .form-group.span-2 {
+      grid-column: span 2;
+    }
+
+    .form-label {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      margin-bottom: 7px;
+      color: var(--pk-heading);
+      font-size: 0.69rem;
+      font-weight: 900;
+    }
+
+    .helper {
+      display: block;
+      margin-top: 5px;
+      color: var(--pk-muted);
+      font-size: 0.57rem;
+      font-weight: 650;
+      line-height: 1.4;
+    }
+
+    .form-control {
+      width: 100%;
+      min-height: 46px;
+      padding: 10px 13px;
+      color: var(--pk-text);
+      font-size: 0.78rem;
+      font-weight: 750;
+      outline: none;
+      border: 1.5px solid #dfe7f3;
+      border-radius: 12px;
+      background: #f8faff;
+      transition: 0.18s ease;
+    }
+
+    textarea.form-control {
+      min-height: 92px;
+      resize: vertical;
+      line-height: 1.55;
+    }
+
+    .form-control:hover {
+      border-color: #c8d8ec;
+      background: #ffffff;
+    }
+
+    .form-control:focus {
+      border-color: var(--pk-primary);
+      background: #ffffff;
+      box-shadow: 0 0 0 4px rgba(40,120,255,0.09);
+    }
+
+    .form-control[readonly],
+    .form-control:disabled {
+      color: #53627d;
+      background: #f1f5fb;
+      cursor: not-allowed;
+    }
+
+    /* CHECKS */
+    .check-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 8px;
+    }
+
+    .check-grid.two {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .check-card {
+      position: relative;
+      display: grid;
+      grid-template-columns: 22px minmax(0, 1fr);
+      gap: 9px;
+      align-items: flex-start;
+      min-height: 55px;
+      padding: 11px 12px;
+      color: var(--pk-heading);
+      font-size: 0.67rem;
+      font-weight: 850;
+      cursor: pointer;
+      border: 1.5px solid #e0e8f3;
+      border-radius: 12px;
+      background: #ffffff;
+      transition: 0.17s ease;
+    }
+
+    .check-card:hover {
+      border-color: #bdd3f3;
+      background: #f6faff;
+      transform: translateY(-1px);
+    }
+
+    .check-card input {
+      width: 19px;
+      height: 19px;
+      margin: 0;
+      accent-color: var(--pk-primary);
+    }
+
+    .check-card span {
+      line-height: 1.43;
+    }
+
+    .check-card strong,
+    .check-card small {
+      display: block;
+    }
+
+    .check-card strong {
+      color: inherit;
+      font-size: 0.68rem;
+      font-weight: 900;
+    }
+
+    .check-card small {
+      margin-top: 3px;
+      color: var(--pk-muted);
+      font-size: 0.57rem;
+      font-weight: 650;
+      line-height: 1.4;
+    }
+
+    .check-card:has(input:checked) small {
+      color: inherit;
+      opacity: 0.78;
+    }
+
+    .check-card:has(input:checked) {
+      color: var(--pk-primary-dark);
+      border-color: var(--pk-primary);
+      background: #eef5ff;
+      box-shadow: 0 6px 15px rgba(40,120,255,0.09);
+    }
+
+    .check-card.red:has(input:checked) {
+      color: #ad3041;
+      border-color: var(--pk-red);
+      background: #fff0f2;
+      box-shadow: 0 6px 15px rgba(239,89,104,0.10);
+    }
+
+    /* VITALS */
+    .vital-grid {
+      display: grid;
+      grid-template-columns: repeat(6, minmax(0, 1fr));
+      gap: 9px;
+    }
+
+    .vital-card {
+      padding: 11px;
+      border: 1px solid #e1e9f4;
+      border-radius: 13px;
+      background: #f9fbfe;
+    }
+
+    .vital-card label {
+      display: block;
+      margin-bottom: 6px;
+      color: var(--pk-heading);
+      font-size: 0.61rem;
+      font-weight: 900;
+      line-height: 1.35;
+    }
+
+    .vital-input-wrap {
+      position: relative;
+    }
+
+    .vital-input {
+      width: 100%;
+      min-height: 42px;
+      padding: 8px 31px 8px 10px;
+      color: var(--pk-text);
+      font-size: 0.76rem;
+      font-weight: 850;
+      outline: none;
+      border: 1.4px solid #dce5f1;
+      border-radius: 10px;
+      background: #ffffff;
+    }
+
+    .vital-unit {
+      position: absolute;
+      top: 50%;
+      right: 9px;
+      color: var(--pk-muted);
+      font-size: 0.52rem;
+      font-weight: 800;
+      transform: translateY(-50%);
+      pointer-events: none;
+    }
+
+    /* MEDICATION */
+    .medicine-list {
+      display: grid;
+      gap: 9px;
+    }
+
+    .medicine-row {
+      display: grid;
+      grid-template-columns: 1.35fr 0.8fr 0.9fr 0.7fr 36px;
+      gap: 8px;
+      align-items: end;
+      padding: 11px;
+      border: 1px solid #e0e8f3;
+      border-radius: 13px;
+      background: #f9fbfe;
+    }
+
+    .medicine-row .form-group {
+      margin: 0;
+    }
+
+    .medicine-row {
+      grid-template-columns: minmax(240px, 1.65fr) minmax(105px, 0.55fr) minmax(145px, 0.75fr) minmax(185px, 0.95fr) 36px;
+      align-items: start;
+    }
+
+    .medicine-stock-info {
+      display: block;
+      min-height: 31px;
+      margin-top: 5px;
+      padding: 6px 8px;
+      color: var(--pk-muted);
+      font-size: 0.56rem;
+      font-weight: 700;
+      line-height: 1.4;
+      border: 1px solid #e0e8f3;
+      border-radius: 9px;
+      background: #ffffff;
+    }
+
+    .medicine-stock-info.ready {
+      color: #176f52;
+      border-color: #c8e9dc;
+      background: #ecfaf5;
+    }
+
+    .medicine-stock-info.warning {
+      color: #9b611b;
+      border-color: #f0d2a4;
+      background: #fff7e9;
+    }
+
+    .medicine-stock-info.danger {
+      color: #b33343;
+      border-color: #efc3ca;
+      background: #fff0f2;
+    }
+
+    .stock-link-note {
+      margin: 10px 0 12px;
+      padding: 11px 13px;
+      color: #28618e;
+      font-size: 0.65rem;
+      font-weight: 700;
+      line-height: 1.5;
+      border: 1px solid #d4e7fb;
+      border-left: 4px solid var(--pk-primary);
+      border-radius: 11px;
+      background: #f3f8ff;
+    }
+
+    .remove-button {
+      width: 36px;
+      height: 42px;
+      display: grid;
+      place-items: center;
+      color: #d64b5b;
+      font-size: 0.85rem;
+      font-weight: 900;
+      cursor: pointer;
+      border: 1px solid #f1cbd0;
+      border-radius: 10px;
+      background: #fff2f4;
+    }
+
+    .add-button {
+      min-height: 40px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      margin-top: 9px;
+      padding: 8px 12px;
+      color: #176f52;
+      font-size: 0.65rem;
+      font-weight: 900;
+      cursor: pointer;
+      border: 1px solid #c8e9dc;
+      border-radius: 10px;
+      background: #ecfaf5;
+    }
+
+    /* PERMISSION */
+    .permission-card {
+      position: relative;
+      overflow: hidden;
+      padding: 17px;
+      border: 2px solid #d8e6f8;
+      border-radius: 17px;
+      background: linear-gradient(135deg, #f8fbff, #f2f8ff);
+      transition: 0.2s ease;
+    }
+
+    .permission-card.active {
+      border-color: var(--pk-orange);
+      background: linear-gradient(135deg, #fffaf1, #fff4e4);
+      box-shadow: 0 10px 24px rgba(245,158,66,0.13);
+    }
+
+    .permission-check {
+      display: grid;
+      grid-template-columns: 26px minmax(0, 1fr);
+      gap: 11px;
+      align-items: flex-start;
+      cursor: pointer;
+    }
+
+    .permission-check input {
+      width: 23px;
+      height: 23px;
+      margin: 0;
+      accent-color: var(--pk-orange);
+    }
+
+    .permission-check strong,
+    .permission-check span {
+      display: block;
+    }
+
+    .permission-check strong {
+      color: var(--pk-heading);
+      font-size: 0.84rem;
+      font-weight: 950;
+      line-height: 1.35;
+    }
+
+    .permission-check span {
+      margin-top: 4px;
+      color: var(--pk-muted);
+      font-size: 0.64rem;
+      font-weight: 650;
+      line-height: 1.45;
+    }
+
+    .permission-fields {
+      display: none;
+      margin-top: 15px;
+      padding-top: 15px;
+      border-top: 1px solid #efd7b1;
+    }
+
+    .permission-fields.show {
+      display: block;
+    }
+
+    .home-preview {
+      margin-top: 14px;
+      padding: 13px;
+      border: 1px solid #dbe6f5;
+      border-radius: 13px;
+      background: #ffffff;
+    }
+
+    .home-preview strong,
+    .home-preview span {
+      display: block;
+    }
+
+    .home-preview strong {
+      color: var(--pk-heading);
+      font-size: 0.7rem;
+      font-weight: 900;
+    }
+
+    .home-preview span {
+      margin-top: 4px;
+      color: var(--pk-muted);
+      font-size: 0.62rem;
+      font-weight: 650;
+      line-height: 1.5;
+    }
+
+    /* ACTIONS */
+    .action-row {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto auto;
+      gap: 10px;
+      align-items: center;
+      margin-top: 17px;
+      padding: 15px;
+      border: 1px solid #dce8f8;
+      border-radius: 15px;
+      background: #f6faff;
+    }
+
+    .action-copy strong,
+    .action-copy span {
+      display: block;
+    }
+
+    .action-copy strong {
+      color: var(--pk-heading);
+      font-size: 0.79rem;
+      font-weight: 900;
+    }
+
+    .action-copy span {
+      margin-top: 3px;
+      color: var(--pk-muted);
+      font-size: 0.63rem;
+      font-weight: 650;
+      line-height: 1.45;
+    }
+
+    .button {
+      min-height: 45px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      padding: 10px 14px;
+      font-size: 0.7rem;
+      font-weight: 900;
+      cursor: pointer;
+      border-radius: 12px;
+      transition: 0.18s ease;
+      white-space: nowrap;
+    }
+
+    .print-button {
+      color: var(--pk-primary);
+      border: 1px solid #cfe0fa;
+      background: #f2f7ff;
+    }
+
+    .print-button:hover {
+      color: #ffffff;
+      border-color: var(--pk-primary);
+      background: var(--pk-primary);
+    }
+
+    .save-button {
+      color: #ffffff;
+      border: 1px solid transparent;
+      background: linear-gradient(135deg, var(--pk-primary), var(--pk-green));
+      box-shadow: 0 9px 20px rgba(40,120,255,0.20);
+    }
+
+    .save-button:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 12px 25px rgba(40,120,255,0.26);
+    }
+
+    .button:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+    }
+
+    /* LOADING / TOAST */
+    #loadingOverlay {
+      position: fixed;
+      inset: 0;
+      z-index: 3000;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      color: var(--pk-heading);
+      text-align: center;
+      background: rgba(246,249,255,0.95);
+      backdrop-filter: blur(10px);
+      transition: 0.35s ease;
+    }
+
+    .loader-mark {
+      width: 72px;
+      height: 72px;
+      display: grid;
+      place-items: center;
+      margin-bottom: 14px;
+      color: #ffffff;
+      font-size: 1.7rem;
+      border-radius: 23px;
+      background: linear-gradient(135deg, var(--pk-primary), var(--pk-green));
+      box-shadow: 0 14px 30px rgba(40,120,255,0.22);
+      animation: pulse 1.15s ease-in-out infinite alternate;
+    }
+
+    #loadingText {
+      font-size: 0.9rem;
+      font-weight: 900;
+    }
+
+    @keyframes pulse {
+      from { transform: scale(0.95); }
+      to { transform: scale(1.04); }
+    }
+
+    .toast {
+      position: fixed;
+      left: 50%;
+      bottom: 22px;
+      z-index: 5000;
+      width: min(450px, calc(100vw - 26px));
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 13px 15px;
+      color: var(--pk-heading);
+      border: 1px solid #dce7f5;
+      border-radius: 14px;
+      background: #ffffff;
+      box-shadow: 0 17px 42px rgba(22,44,89,0.20);
+      opacity: 0;
+      pointer-events: none;
+      transform: translate(-50%, 24px);
+      transition: 0.27s ease;
+    }
+
+    .toast.show {
+      opacity: 1;
+      pointer-events: auto;
+      transform: translate(-50%, 0);
+    }
+
+    .toast-icon {
+      width: 34px;
+      height: 34px;
+      flex: 0 0 34px;
+      display: grid;
+      place-items: center;
+      border-radius: 11px;
+      background: #edf5ff;
+    }
+
+    .toast.success .toast-icon {
+      background: #e8fbf4;
+    }
+
+    .toast.error .toast-icon {
+      background: #fff0f2;
+    }
+
+    .toast strong,
+    .toast span {
+      display: block;
+    }
+
+    .toast strong {
+      font-size: 0.76rem;
+      font-weight: 900;
+    }
+
+    .toast span {
+      margin-top: 2px;
+      color: var(--pk-muted);
+      font-size: 0.68rem;
+      font-weight: 650;
+      line-height: 1.42;
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 980px) {
+      .form-grid,
+      .form-grid.three,
+      .form-grid.two {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .vital-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+
+      .check-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 760px) {
+      body {
+        padding: 10px;
+      }
+.panel {
+        padding: 18px 13px;
+        border-radius: 18px;
+      }
+
+      .form-grid,
+      .form-grid.three,
+      .form-grid.two {
+        grid-template-columns: 1fr;
+      }
+
+      .form-group.full,
+      .form-group.span-2 {
+        grid-column: auto;
+      }
+
+      .medicine-row {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .remove-button {
+        width: 100%;
+      }
+
+      .action-row {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .action-copy {
+        grid-column: 1 / -1;
+      }
+    }
+
+    @media (max-width: 520px) {
+      .vital-grid,
+      .check-grid,
+      .check-grid.two {
+        grid-template-columns: 1fr;
+      }
+
+      .medicine-row {
+        grid-template-columns: 1fr;
+      }
+
+      .action-row {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media print {
+      body {
+        padding: 0;
+        background: #ffffff;
+      }
+
+      .hero,
+      .action-row,
+      #loadingOverlay,
+      .toast,
+      .add-button,
+      .remove-button,
+      .notice {
+        display: none !important;
+      }
+
+      .exam-page {
+        max-width: none;
+      }
+
+      .panel {
+        break-inside: avoid;
+        padding: 10px;
+        margin-bottom: 8px;
+        border: 1px solid #777;
+        border-radius: 0;
+        box-shadow: none;
+      }
+
+      .panel-heading {
+        margin-bottom: 8px;
+      }
+
+      .heading-icon,
+      .section-number {
+        display: none;
+      }
+
+      .form-control,
+      .vital-input {
+        min-height: 28px;
+        padding: 5px 6px;
+        font-size: 8px;
+        color: #000;
+        border: 1px solid #777;
+        background: #fff;
+      }
+
+      textarea.form-control {
+        min-height: 45px;
+      }
+
+      .form-label,
+      .vital-card label {
+        font-size: 7px;
+      }
+
+      .check-card {
+        min-height: 35px;
+        padding: 6px;
+        font-size: 7px;
+        border-color: #888;
+      }
+
+      .permission-card {
+        border: 1px solid #555;
+        background: #fff;
+      }
+
+      @page {
+        size: A4 portrait;
+        margin: 9mm;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div id="loadingOverlay">
+    <div class="loader-mark">🩺</div>
+    <div id="loadingText">Menyiapkan form pemeriksaan...</div>
+  </div>
+
+  <div id="appToast" class="toast" role="status" aria-live="polite">
+    <div class="toast-icon" id="toastIcon">✓</div>
+    <div>
+      <strong id="toastTitle">Berhasil</strong>
+      <span id="toastMessage">Pemeriksaan berhasil disimpan.</span>
+    </div>
+  </div>
+
+  <main class="exam-page">
+<!-- 1. IDENTITAS KUNJUNGAN -->
+    <section class="panel info-panel">
+      <div class="panel-heading">
+        <div class="heading-copy">
+          <div class="heading-icon">🗓️</div>
+          <div>
+            <h2>Identitas Kunjungan</h2>
+            <p>Waktu pelayanan dan petugas yang melakukan pemeriksaan.</p>
+          </div>
+        </div>
+        <span class="section-number">Bagian 1</span>
+      </div>
+
+      <div class="form-grid">
+        <div class="form-group">
+          <label class="form-label" for="pkTanggal">Tanggal Pemeriksaan</label>
+          <input type="date" class="form-control" id="pkTanggal">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="pkWaktu">Waktu Pemeriksaan</label>
+          <input type="time" class="form-control" id="pkWaktu">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="pkPetugas">Petugas Pemeriksa</label>
+          <input type="text" class="form-control" id="pkPetugas">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="pkSumberLaporan">Sumber Laporan</label>
+          <select class="form-control" id="pkSumberLaporan">
+            <option value="Kepala Pengasuhan">Kepala Pengasuhan</option>
+            <option value="Naqib/Naqibah">Naqib/Naqibah</option>
+            <option value="Guru">Guru</option>
+            <option value="Santri Datang Sendiri">Santri Datang Sendiri</option>
+            <option value="Teman Santri">Teman Santri</option>
+            <option value="Temuan Petugas Kesehatan">Temuan Petugas Kesehatan</option>
+            <option value="Lainnya">Lainnya</option>
+          </select>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. IDENTITAS SANTRI -->
+    <section class="panel">
+      <div class="panel-heading">
+        <div class="heading-copy">
+          <div class="heading-icon">👤</div>
+          <div>
+            <h2>Identitas Santri</h2>
+            <p>Pilih nama santri. Usrah, kelas, dan jenis kelamin terisi otomatis.</p>
+          </div>
+        </div>
+        <span class="section-number">Bagian 2</span>
+      </div>
+
+      <div class="form-grid">
+        <div class="form-group span-2">
+          <label class="form-label" for="pkSantri">Nama Santri</label>
+          <select
+            class="form-control"
+            id="pkSantri"
+            onchange="pilihSantri()"
+          >
+            <option value="">-- Memuat Daftar Santri --</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="pkUsrah">Usrah</label>
+          <input
+            type="text"
+            class="form-control"
+            id="pkUsrah"
+            readonly
+            placeholder="Terisi otomatis"
+          >
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="pkKelas">Kelas</label>
+          <input
+            type="text"
+            class="form-control"
+            id="pkKelas"
+            readonly
+            placeholder="Terisi otomatis"
+          >
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="pkJenisKelamin">Jenis Kelamin</label>
+          <input
+            type="text"
+            class="form-control"
+            id="pkJenisKelamin"
+            readonly
+            placeholder="Terisi otomatis"
+          >
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="pkUmur">Umur</label>
+          <input
+            type="number"
+            class="form-control"
+            id="pkUmur"
+            min="5"
+            max="30"
+            placeholder="Opsional"
+          >
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="pkBerat">Berat Badan</label>
+          <input
+            type="number"
+            class="form-control"
+            id="pkBerat"
+            min="10"
+            step="0.1"
+            placeholder="Opsional (kg)"
+          >
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. ANAMNESIS -->
+    <section class="panel">
+      <div class="panel-heading">
+        <div class="heading-copy">
+          <div class="heading-icon">💬</div>
+          <div>
+            <h2>Anamnesis / Riwayat Keluhan</h2>
+            <p>Catat keluhan utama, perjalanan keluhan, dan riwayat yang relevan.</p>
+          </div>
+        </div>
+        <span class="section-number">Bagian 3</span>
+      </div>
+
+      <div class="form-grid two">
+        <div class="form-group">
+          <label class="form-label" for="pkKeluhanUtama">Keluhan Utama</label>
+          <textarea
+            class="form-control"
+            id="pkKeluhanUtama"
+            placeholder="Contoh: Demam, sakit kepala, batuk, nyeri perut..."
+          ></textarea>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="pkRiwayatKeluhan">Riwayat Keluhan Sekarang</label>
+          <textarea
+            class="form-control"
+            id="pkRiwayatKeluhan"
+            placeholder="Mulai kapan, durasi, pencetus, gejala penyerta, sudah minum obat atau belum..."
+          ></textarea>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Gejala yang Dirasakan</label>
+        <div class="check-grid" id="symptomGrid">
+          <label class="check-card"><input type="checkbox" value="Demam"><span>Demam</span></label>
+          <label class="check-card"><input type="checkbox" value="Batuk"><span>Batuk</span></label>
+          <label class="check-card"><input type="checkbox" value="Pilek"><span>Pilek</span></label>
+          <label class="check-card"><input type="checkbox" value="Sakit Tenggorokan"><span>Sakit tenggorokan</span></label>
+          <label class="check-card"><input type="checkbox" value="Sakit Kepala"><span>Sakit kepala</span></label>
+          <label class="check-card"><input type="checkbox" value="Pusing"><span>Pusing</span></label>
+          <label class="check-card"><input type="checkbox" value="Mual"><span>Mual</span></label>
+          <label class="check-card"><input type="checkbox" value="Muntah"><span>Muntah</span></label>
+          <label class="check-card"><input type="checkbox" value="Nyeri Perut"><span>Nyeri perut</span></label>
+          <label class="check-card"><input type="checkbox" value="Diare"><span>Diare</span></label>
+          <label class="check-card"><input type="checkbox" value="Lemas"><span>Lemas</span></label>
+          <label class="check-card"><input type="checkbox" value="Nyeri Otot/Sendi"><span>Nyeri otot/sendi</span></label>
+          <label class="check-card"><input type="checkbox" value="Gatal/Ruam"><span>Gatal atau ruam</span></label>
+          <label class="check-card"><input type="checkbox" value="Cedera/Luka"><span>Cedera atau luka</span></label>
+          <label class="check-card"><input type="checkbox" value="Sesak Napas"><span>Sesak napas</span></label>
+        </div>
+      </div>
+
+      <div class="form-grid three" style="margin-top:13px;">
+        <div class="form-group">
+          <label class="form-label" for="pkRiwayatPenyakit">Riwayat Penyakit</label>
+          <textarea
+            class="form-control"
+            id="pkRiwayatPenyakit"
+            placeholder="Asma, maag, kejang, alergi, penyakit kronis, operasi, dll."
+          ></textarea>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="pkAlergi">Riwayat Alergi</label>
+          <textarea
+            class="form-control"
+            id="pkAlergi"
+            placeholder="Alergi obat, makanan, atau bahan tertentu. Tulis 'Tidak diketahui' bila belum ada data."
+          ></textarea>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="pkObatSebelumnya">Obat yang Sudah Dikonsumsi</label>
+          <textarea
+            class="form-control"
+            id="pkObatSebelumnya"
+            placeholder="Nama obat, dosis bila diketahui, dan waktu terakhir diminum."
+          ></textarea>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. TANDA VITAL -->
+    <section class="panel">
+      <div class="panel-heading">
+        <div class="heading-copy">
+          <div class="heading-icon">❤️</div>
+          <div>
+            <h2>Tanda Vital & Kondisi Umum</h2>
+            <p>Isi sesuai alat yang tersedia dan kompetensi petugas.</p>
+          </div>
+        </div>
+        <span class="section-number">Bagian 4</span>
+      </div>
+
+      <div class="vital-grid">
+        <div class="vital-card">
+          <label for="vSuhu">Suhu Tubuh</label>
+          <div class="vital-input-wrap">
+            <input type="number" step="0.1" class="vital-input" id="vSuhu">
+            <span class="vital-unit">°C</span>
+          </div>
+        </div>
+
+        <div class="vital-card">
+          <label for="vNadi">Nadi</label>
+          <div class="vital-input-wrap">
+            <input type="number" class="vital-input" id="vNadi">
+            <span class="vital-unit">x/mnt</span>
+          </div>
+        </div>
+
+        <div class="vital-card">
+          <label for="vNapas">Frekuensi Napas</label>
+          <div class="vital-input-wrap">
+            <input type="number" class="vital-input" id="vNapas">
+            <span class="vital-unit">x/mnt</span>
+          </div>
+        </div>
+
+        <div class="vital-card">
+          <label for="vSistolik">Tekanan Darah</label>
+          <div class="vital-input-wrap">
+            <input type="text" class="vital-input" id="vTekananDarah" placeholder="120/80">
+            <span class="vital-unit">mmHg</span>
+          </div>
+        </div>
+
+        <div class="vital-card">
+          <label for="vSpO2">Saturasi Oksigen</label>
+          <div class="vital-input-wrap">
+            <input type="number" class="vital-input" id="vSpO2" min="0" max="100">
+            <span class="vital-unit">%</span>
+          </div>
+        </div>
+
+        <div class="vital-card">
+          <label for="vNyeri">Skala Nyeri</label>
+          <div class="vital-input-wrap">
+            <input type="number" class="vital-input" id="vNyeri" min="0" max="10">
+            <span class="vital-unit">0–10</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-grid three" style="margin-top:13px;">
+        <div class="form-group">
+          <label class="form-label" for="pkKesadaran">Kesadaran</label>
+          <select class="form-control" id="pkKesadaran">
+            <option value="Sadar Penuh / Compos Mentis">Sadar penuh / compos mentis</option>
+            <option value="Mengantuk tetapi Mudah Dibangunkan">Mengantuk tetapi mudah dibangunkan</option>
+            <option value="Respons Menurun">Respons menurun</option>
+            <option value="Tidak Sadar">Tidak sadar</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="pkKondisiUmum">Kondisi Umum</label>
+          <select class="form-control" id="pkKondisiUmum">
+            <option value="Baik">Baik</option>
+            <option value="Tampak Sakit Ringan">Tampak sakit ringan</option>
+            <option value="Tampak Sakit Sedang">Tampak sakit sedang</option>
+            <option value="Tampak Sakit Berat">Tampak sakit berat</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="pkStatusHidrasi">Status Hidrasi</label>
+          <select class="form-control" id="pkStatusHidrasi">
+            <option value="Baik">Baik</option>
+            <option value="Diduga Dehidrasi Ringan">Diduga dehidrasi ringan</option>
+            <option value="Diduga Dehidrasi Sedang/Berat">Diduga dehidrasi sedang/berat</option>
+            <option value="Tidak Dinilai">Tidak dinilai</option>
+          </select>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. PEMERIKSAAN FISIK -->
+    <section class="panel">
+      <div class="panel-heading">
+        <div class="heading-copy">
+          <div class="heading-icon">🔎</div>
+          <div>
+            <h2>Pemeriksaan Fisik</h2>
+            <p>Catat temuan yang relevan. Hindari menuliskan kesimpulan yang belum diperiksa.</p>
+          </div>
+        </div>
+        <span class="section-number">Bagian 5</span>
+      </div>
+
+      <div class="form-grid two">
+        <div class="form-group">
+          <label class="form-label" for="fisikKepala">Kepala, Mata, Telinga, Hidung, Tenggorokan</label>
+          <textarea class="form-control" id="fisikKepala" placeholder="Temuan pemeriksaan..."></textarea>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="fisikNapas">Pernapasan / Dada</label>
+          <textarea class="form-control" id="fisikNapas" placeholder="Pola napas, suara napas, batuk, sesak, dll."></textarea>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="fisikPerut">Perut / Pencernaan</label>
+          <textarea class="form-control" id="fisikPerut" placeholder="Nyeri tekan, mual, muntah, diare, dll."></textarea>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="fisikKulit">Kulit, Luka, dan Ekstremitas</label>
+          <textarea class="form-control" id="fisikKulit" placeholder="Ruam, luka, bengkak, cedera, gerak, dll."></textarea>
+        </div>
+
+        <div class="form-group full">
+          <label class="form-label" for="fisikLain">Temuan Pemeriksaan Lain</label>
+          <textarea class="form-control" id="fisikLain" placeholder="Temuan lain yang dianggap penting..."></textarea>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6. TANDA BAHAYA -->
+    <section class="panel">
+      <div class="panel-heading">
+        <div class="heading-copy">
+          <div class="heading-icon">🚨</div>
+          <div>
+            <h2>Skrining Tanda Bahaya</h2>
+            <p>Centang bila ditemukan. Tanda bahaya memerlukan eskalasi atau rujukan sesuai SOP.</p>
+          </div>
+        </div>
+        <span class="section-number">Bagian 6</span>
+      </div>
+
+      <div class="check-grid two" id="redFlagGrid">
+        <label class="check-card red"><input type="checkbox" value="Gangguan kesadaran, pingsan, atau kejang"><span>Gangguan kesadaran, pingsan, atau kejang</span></label>
+        <label class="check-card red"><input type="checkbox" value="Kesulitan bernapas atau kebiruan"><span>Kesulitan bernapas atau tampak kebiruan</span></label>
+        <label class="check-card red"><input type="checkbox" value="Perdarahan yang sulit berhenti"><span>Perdarahan yang sulit berhenti</span></label>
+        <label class="check-card red"><input type="checkbox" value="Muntah terus-menerus atau tidak dapat minum"><span>Muntah terus-menerus atau tidak dapat minum</span></label>
+        <label class="check-card red"><input type="checkbox" value="Reaksi alergi berat"><span>Reaksi alergi berat atau pembengkakan cepat</span></label>
+        <label class="check-card red"><input type="checkbox" value="Cedera kepala, dugaan patah tulang, atau nyeri berat"><span>Cedera kepala, dugaan patah tulang, atau nyeri berat</span></label>
+      </div>
+    </section>
+
+    <!-- 7. ASESMEN DAN TINDAKAN -->
+    <section class="panel">
+      <div class="panel-heading">
+        <div class="heading-copy">
+          <div class="heading-icon">🧾</div>
+          <div>
+            <h2>Asesmen, Tindakan & Obat</h2>
+            <p>Catat kesimpulan pemeriksaan dan pelayanan yang benar-benar diberikan.</p>
+          </div>
+        </div>
+        <span class="section-number">Bagian 7</span>
+      </div>
+
+      <div class="form-grid two">
+        <div class="form-group">
+          <label class="form-label" for="pkAsesmen">Asesmen / Dugaan Masalah Kesehatan</label>
+          <textarea
+            class="form-control"
+            id="pkAsesmen"
+            placeholder="Tuliskan asesmen kerja, bukan diagnosis pasti bila belum ditegakkan oleh tenaga yang berwenang."
+          ></textarea>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="pkTindakan">Tindakan yang Diberikan</label>
+          <textarea
+            class="form-control"
+            id="pkTindakan"
+            placeholder="Istirahat, observasi, kompres, perawatan luka, oralit, edukasi, dll."
+          ></textarea>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Obat yang Diberikan dari Stok UKS</label>
+
+        <div class="form-grid two">
+          <div class="form-group">
+            <label class="form-label" for="pkUnitObat">Sumber Stok Obat</label>
+            <select
+              class="form-control"
+              id="pkUnitObat"
+              onchange="refreshMedicineRows()"
+            >
+              <option value="">-- Pilih Unit UKS --</option>
+              <option value="UKS Putra">UKS Putra</option>
+              <option value="UKS Putri">UKS Putri</option>
+            </select>
+            <span class="helper">
+              Otomatis mengikuti jenis kelamin santri, tetapi tetap dapat disesuaikan.
+            </span>
+          </div>
+        </div>
+
+        <div class="stock-link-note">
+          Setiap obat dipilih dari batch stok yang masih tersedia dan belum kedaluwarsa.
+          Saat pemeriksaan disimpan, jumlah stok berkurang otomatis dan tercatat
+          sebagai transaksi keluar yang terhubung dengan santri serta nomor pemeriksaan.
+        </div>
+
+        <div class="medicine-list" id="medicineList"></div>
+
+        <button type="button" class="add-button" onclick="addMedicineRow()">
+          ＋ Tambah Obat
+        </button>
+
+        <span class="helper">
+          Jumlah adalah total unit stok yang benar-benar diberikan kepada santri,
+          misalnya 3 tablet atau 1 sachet.
+        </span>
+      </div>
+
+      <div class="form-grid two" style="margin-top:14px;">
+        <div class="form-group">
+          <label class="form-label" for="pkEdukasi">Edukasi / Saran Kesehatan</label>
+          <textarea
+            class="form-control"
+            id="pkEdukasi"
+            placeholder="Istirahat, makan, hidrasi, kebersihan diri, kepatuhan obat, pembatasan aktivitas, dll."
+          ></textarea>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="pkTindakLanjut">Rencana Tindak Lanjut</label>
+          <textarea
+            class="form-control"
+            id="pkTindakLanjut"
+            placeholder="Kontrol ulang, pemantauan oleh Naqib, koordinasi wali santri, rujukan, dll."
+          ></textarea>
+        </div>
+      </div>
+    </section>
+
+    <!-- 8. DISPOSISI -->
+    <section class="panel">
+      <div class="panel-heading">
+        <div class="heading-copy">
+          <div class="heading-icon">➡️</div>
+          <div>
+            <h2>Keputusan Pelayanan / Disposisi</h2>
+            <p>Tentukan kondisi santri setelah pemeriksaan.</p>
+          </div>
+        </div>
+        <span class="section-number">Bagian 8</span>
+      </div>
+
+      <div class="form-grid three">
+        <div class="form-group">
+          <label class="form-label" for="pkDisposisi">Keputusan Setelah Pemeriksaan</label>
+          <select class="form-control" id="pkDisposisi" onchange="updateDispositionFields()">
+            <option value="Kembali Mengikuti Kegiatan">Kembali mengikuti kegiatan</option>
+            <option value="Mengikuti Kegiatan dengan Pembatasan">Mengikuti kegiatan dengan pembatasan</option>
+            <option value="Istirahat di UKS">Istirahat di UKS</option>
+            <option value="Istirahat di Asrama">Istirahat di asrama</option>
+            <option value="Dirujuk ke Fasilitas Kesehatan">Dirujuk ke fasilitas kesehatan</option>
+            <option value="Dijemput Wali Santri">Dijemput wali santri</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="pkRujukan">Tujuan Rujukan</label>
+          <input
+            type="text"
+            class="form-control"
+            id="pkRujukan"
+            placeholder="Puskesmas, klinik, rumah sakit, dll."
+          >
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="pkPendamping">Pendamping / Penanggung Jawab</label>
+          <input
+            type="text"
+            class="form-control"
+            id="pkPendamping"
+            placeholder="Nama pendamping bila dirujuk"
+          >
+        </div>
+      </div>
+    </section>
+
+    <!-- 9. STATUS PEMBELAJARAN -->
+    <section class="panel">
+      <div class="panel-heading">
+        <div class="heading-copy">
+          <div class="heading-icon">🏫</div>
+          <div>
+            <h2>Status Mengikuti Pembelajaran</h2>
+            <p>Pilih salah satu status. Bagian ini wajib diisi sebelum data dikirim.</p>
+          </div>
+        </div>
+        <span class="section-number">Bagian 9</span>
+      </div>
+
+      <div class="notice warning">
+        <span>🔒</span>
+        <div>
+          <strong>Privasi:</strong>
+          Beranda Guru hanya menerima nama santri, usrah, kelas, masa berlaku izin,
+          lokasi istirahat, dan keterangan singkat. Data medis lengkap tidak ditampilkan.
+        </div>
+      </div>
+
+      <div class="check-grid two" id="learningStatusGrid">
+        <label class="check-card">
+          <input
+            type="radio"
+            name="statusPembelajaran"
+            value="BOLEH_MENGIKUTI"
+            onchange="togglePermission()"
+          >
+          <span>
+            <strong>Boleh Mengikuti Pembelajaran</strong>
+            <small>Santri tetap dapat mengikuti kegiatan belajar hari ini.</small>
+          </span>
+        </label>
+
+        <label class="check-card red">
+          <input
+            type="radio"
+            name="statusPembelajaran"
+            value="TIDAK_MENGIKUTI"
+            onchange="togglePermission()"
+          >
+          <span>
+            <strong>Boleh Tidak Mengikuti Pembelajaran Hari Ini</strong>
+            <small>Santri mendapat izin sakit untuk tidak mengikuti pembelajaran.</small>
+          </span>
+        </label>
+      </div>
+
+      <div class="permission-card" id="permissionCard" style="margin-top:14px;">
+        <div class="permission-fields" id="permissionFields">
+          <div class="form-grid">
+            <div class="form-group">
+              <label class="form-label" for="izinTanggal">Tanggal Izin</label>
+              <input
+                type="date"
+                class="form-control"
+                id="izinTanggal"
+                onchange="updateHomePreview()"
+              >
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="izinMulai">Mulai Pukul</label>
+              <input
+                type="time"
+                class="form-control"
+                id="izinMulai"
+                onchange="updateHomePreview()"
+              >
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="izinSampai">Sampai Pukul</label>
+              <input
+                type="time"
+                class="form-control"
+                id="izinSampai"
+                value="20:00"
+                onchange="updateHomePreview()"
+              >
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="izinLokasi">Lokasi Istirahat</label>
+              <select
+                class="form-control"
+                id="izinLokasi"
+                onchange="updateHomePreview()"
+              >
+                <option value="UKS">UKS</option>
+                <option value="Asrama">Asrama</option>
+                <option value="Fasilitas Kesehatan">Fasilitas Kesehatan</option>
+                <option value="Pulang/Dijemput Wali">Pulang/Dijemput Wali</option>
+              </select>
+            </div>
+
+            <div class="form-group full">
+              <label class="form-label" for="izinKeteranganGuru">
+                Keterangan Singkat untuk Guru
+              </label>
+              <input
+                type="text"
+                class="form-control"
+                id="izinKeteranganGuru"
+                value="Sedang sakit dan mendapat izin dari petugas kesehatan."
+                maxlength="160"
+                oninput="updateHomePreview()"
+              >
+              <span class="helper">
+                Jangan menuliskan diagnosis, obat, atau informasi medis sensitif.
+              </span>
+            </div>
+          </div>
+
+          <div class="home-preview">
+            <strong>Pratinjau Informasi di Beranda Guru</strong>
+            <span id="homePreviewText">
+              Pilih nama santri dan status pembelajaran.
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <div class="action-row">
+        <div class="action-copy">
+          <strong>Simpan rekam pemeriksaan</strong>
+          <span>
+            Hanya identitas santri dan status pembelajaran yang wajib.
+            Seluruh isian kesehatan lainnya dapat dikosongkan.
+          </span>
+        </div>
+
+        <button
+          type="button"
+          class="button print-button"
+          onclick="cetakPemeriksaan()"
+        >
+          🖨️ Cetak
+        </button>
+
+        <button
+          type="button"
+          class="button save-button"
+          id="saveButton"
+          onclick="simpanPemeriksaan()"
+        >
+          💾 Simpan Pemeriksaan
+        </button>
+      </div>
+    </section>
+
+  </main>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+    import {
+      getDatabase,
+      ref,
+      get,
+      push,
+      update,
+      runTransaction,
+      query,
+      orderByChild,
+      equalTo,
+      limitToLast
+    } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+
+    const firebaseConfig = window.CAHAYA_CONFIG.firebase;
+
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+
+    const CAHAYA_PATH = "cahaya_app";
+    const DB_PATH = `${CAHAYA_PATH}/pemeriksaan_kesehatan`;
+    const PERMISSION_PATH = `${CAHAYA_PATH}/izin_sakit_harian`;
+    const STOCK_PATH = `${CAHAYA_PATH}/stok_obat_uks`;
+    const STOCK_TRANSACTION_PATH = `${CAHAYA_PATH}/transaksi_stok_obat_uks`;
+    const FORM_VERSION = "Form Pemeriksaan Kesehatan Santri Terintegrasi Stok 2026/2027";
+
+    let currentUser = {};
+    let studentDirectory = new Map();
+    let selectedStudentMeta = null;
+    let stockData = [];
+    let medicineCounter = 0;
+    let toastTimer = null;
+
+    try {
+      currentUser = JSON.parse(
+        localStorage.getItem("cahayaCurrentUser") || "{}"
+      );
+    } catch (error) {
+      console.warn("Data pengguna tidak terbaca:", error);
+    }
+
+    function escapeHtml(value = "") {
+      return String(value)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#39;");
+    }
+
+    function localDateValue() {
+      const now = new Date();
+
+      return [
+        now.getFullYear(),
+        String(now.getMonth() + 1).padStart(2, "0"),
+        String(now.getDate()).padStart(2, "0")
+      ].join("-");
+    }
+
+    function localTimeValue() {
+      const now = new Date();
+
+      return [
+        String(now.getHours()).padStart(2, "0"),
+        String(now.getMinutes()).padStart(2, "0")
+      ].join(":");
+    }
+
+    function daysUntil(dateValue) {
+      if (!dateValue) return Number.POSITIVE_INFINITY;
+
+      const today = new Date(`${localDateValue()}T00:00:00`);
+      const target = new Date(`${dateValue}T00:00:00`);
+
+      if (Number.isNaN(target.getTime())) {
+        return Number.POSITIVE_INFINITY;
+      }
+
+      return Math.ceil(
+        (target.getTime() - today.getTime()) /
+        (1000 * 60 * 60 * 24)
+      );
+    }
+
+    function numberValue(value) {
+      const number = Number(value);
+      return Number.isFinite(number) ? number : 0;
+    }
+
+    function formatNumber(value) {
+      return new Intl.NumberFormat("id-ID").format(
+        numberValue(value)
+      );
+    }
+
+    function formatDateId(value) {
+      if (!value) return "-";
+
+      const date = new Date(`${value}T12:00:00`);
+
+      if (Number.isNaN(date.getTime())) return value;
+
+      return new Intl.DateTimeFormat("id-ID", {
+        day: "numeric",
+        month: "short",
+        year: "numeric"
+      }).format(date);
+    }
+
+    function normalizedName(value = "") {
+      return String(value).trim().toUpperCase();
+    }
+
+    function normalizedKey(value = "") {
+      return String(value)
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .toLowerCase()
+        .replace(/[^a-z0-9]/g, "");
+    }
+
+    async function buildRetroactiveUksAttendanceCorrections({
+      tanggalIzin,
+      namaSantri,
+      idPemeriksaan,
+      waktuKoreksi
+    }) {
+      const correctionUpdates = {};
+      const correctedItems = [];
+      const targetKey = normalizedKey(namaSantri);
+
+      const sources = [
+        {
+          path: `${CAHAYA_PATH}/absensi_pembelajaran`,
+          jenis: "Pembelajaran",
+          labelField: "mapel"
+        },
+        {
+          path: `${CAHAYA_PATH}/absensi_program_harian`,
+          jenis: "Program Naqib",
+          labelField: "program"
+        }
+      ];
+
+      const snapshots = await Promise.all(
+        sources.map(source => get(query(
+          ref(db, source.path),
+          orderByChild("tanggal"),
+          equalTo(String(tanggalIzin || "")),
+          limitToLast(250)
+        )))
+      );
+
+      sources.forEach((source, sourceIndex) => {
+        const rootValue = snapshots[sourceIndex].exists()
+          ? snapshots[sourceIndex].val()
+          : {};
+
+        Object.entries(rootValue || {}).forEach(([recordId, record]) => {
+          if (String(record?.tanggal || "") !== String(tanggalIzin || "")) return;
+
+          const attendanceData = record?.data || {};
+          Object.entries(attendanceData).forEach(([itemKey, item]) => {
+            const status = String(item?.status || "").trim().toLowerCase();
+            if (normalizedKey(item?.nama || "") !== targetKey || status !== "alfa") return;
+
+            const itemPath = `${source.path}/${recordId}/data/${itemKey}`;
+            correctionUpdates[`${itemPath}/status`] = "Sakit";
+            correctionUpdates[`${itemPath}/poin`] = 0;
+            correctionUpdates[`${itemPath}/statusAsal`] = item?.status || "Alfa";
+            correctionUpdates[`${itemPath}/dikoreksiOtomatisUKS`] = true;
+            correctionUpdates[`${itemPath}/idPemeriksaanUKS`] = idPemeriksaan;
+            correctionUpdates[`${itemPath}/keteranganKoreksiUKS`] =
+              "Alfa diubah menjadi Sakit berdasarkan izin tidak belajar/tidak mengikuti kegiatan dari UKS pada hari yang sama.";
+            correctionUpdates[`${itemPath}/waktuKoreksiUKS`] = waktuKoreksi;
+            correctionUpdates[`${source.path}/${recordId}/koreksiUKSTerakhir`] = {
+              idPemeriksaan: idPemeriksaan,
+              namaSantri: namaSantri,
+              tanggalIzin: tanggalIzin,
+              waktuKoreksi: waktuKoreksi,
+              sistem: "AUTO_ALFA_KE_SAKIT_V1"
+            };
+
+            correctedItems.push({
+              sumber: source.jenis,
+              recordId,
+              itemKey,
+              kegiatan: record?.[source.labelField] || "",
+              kelasAtauUsrah: record?.kelas || record?.sub || record?.labelUsrah || record?.usrah || "",
+              statusSebelum: item?.status || "Alfa",
+              statusSesudah: "Sakit"
+            });
+          });
+        });
+      });
+
+      if (correctedItems.length) {
+        const auditKey = push(ref(db, `${CAHAYA_PATH}/koreksi_absensi_uks`)).key;
+        correctionUpdates[`${CAHAYA_PATH}/koreksi_absensi_uks/${auditKey}`] = {
+          idPemeriksaan,
+          namaSantri,
+          namaSantriKey: targetKey,
+          tanggalIzin,
+          waktuKoreksi,
+          jumlahKoreksi: correctedItems.length,
+          rincian: correctedItems,
+          sistem: "AUTO_ALFA_KE_SAKIT_V1"
+        };
+      }
+
+      return {
+        updates: correctionUpdates,
+        count: correctedItems.length,
+        items: correctedItems
+      };
+    }
+
+    function getUsrahNumber(value = "") {
+      const match = String(value).match(/\d+/);
+      return match ? Number(match[0]) : null;
+    }
+
+    function getGenderByUsrah(value = "") {
+      const number = getUsrahNumber(value);
+
+      if (number >= 1 && number <= 6) return "Putra";
+      if (number >= 7 && number <= 8) return "Putri";
+
+      return "Belum Terpetakan";
+    }
+
+    function labelUsrah(value = "") {
+      const text = String(value).trim();
+
+      if (!text) return "-";
+      if (/^usrah\s+/i.test(text)) return text;
+
+      return `Usrah ${text}`;
+    }
+
+    function userName() {
+      return (
+        currentUser.label ||
+        currentUser.nama ||
+        currentUser.username ||
+        "Petugas Kesehatan"
+      );
+    }
+
+    function userRole() {
+      if (Array.isArray(currentUser.akses)) {
+        return currentUser.akses.join(" • ");
+      }
+
+      return currentUser.akses || "Personil Kesehatan / UKS";
+    }
+
+    function normalizeStudentList(value) {
+      let list = [];
+
+      if (Array.isArray(value)) {
+        list = value;
+      } else if (value && typeof value === "object") {
+        list = Object.values(value);
+      }
+
+      return list
+        .map(item => {
+          if (typeof item === "string") return item.trim();
+
+          return String(
+            item?.nama ||
+            item?.namaSantri ||
+            item?.label ||
+            ""
+          ).trim();
+        })
+        .filter(Boolean);
+    }
+
+    function showToast(type, title, message) {
+      const toast = document.getElementById("appToast");
+
+      toast.className = `toast ${type}`;
+
+      document.getElementById("toastTitle").textContent = title;
+      document.getElementById("toastMessage").textContent = message;
+      document.getElementById("toastIcon").textContent =
+        type === "success" ? "✓" : "!";
+
+      requestAnimationFrame(() => {
+        toast.classList.add("show");
+      });
+
+      clearTimeout(toastTimer);
+
+      toastTimer = setTimeout(() => {
+        toast.classList.remove("show");
+      }, 4300);
+    }
+
+    function hideLoading() {
+      const overlay = document.getElementById("loadingOverlay");
+      overlay.style.opacity = "0";
+
+      setTimeout(() => {
+        overlay.style.display = "none";
+      }, 330);
+    }
+
+    function fillProfile() {
+      const name = userName();
+
+      document.getElementById(
+        "pkPetugas"
+      ).value = normalizedName(name);
+    }
+
+    function ensureStudent(name) {
+      const cleanName = String(name || "").trim();
+
+      if (!cleanName) return null;
+
+      const key = normalizedKey(cleanName);
+
+      if (!studentDirectory.has(key)) {
+        studentDirectory.set(key, {
+          nama: cleanName,
+          usrah: "",
+          kelas: "",
+          jenisKelamin: ""
+        });
+      }
+
+      return studentDirectory.get(key);
+    }
+
+    function genericPathPart(value = "") {
+      return [
+        "kelas",
+        "class",
+        "kelompok",
+        "group",
+        "santri",
+        "siswa",
+        "data",
+        "putra",
+        "putri",
+        "halqah",
+        "anggota"
+      ].includes(String(value).trim().toLowerCase());
+    }
+
+    function guessClassFromPath(path = []) {
+      const classIndex = path.findIndex(
+        part => ["kelas", "class"].includes(
+          String(part).trim().toLowerCase()
+        )
+      );
+
+      if (
+        classIndex >= 0 &&
+        path[classIndex + 1] &&
+        !genericPathPart(path[classIndex + 1])
+      ) {
+        return String(path[classIndex + 1]).trim();
+      }
+
+      const candidates = path
+        .filter(part => !genericPathPart(part))
+        .filter(part => {
+          const value = String(part).toLowerCase();
+
+          return (
+            value.includes("kelas") ||
+            value.includes("wustha") ||
+            value.includes("ulya") ||
+            value.includes("smp") ||
+            value.includes("sma") ||
+            value.includes("sd") ||
+            /^[ivx]+$/i.test(String(part).trim()) ||
+            /^\d{1,2}[a-z]?$/i.test(String(part).trim())
+          );
+        });
+
+      return candidates.length
+        ? String(candidates[candidates.length - 1]).trim()
+        : "";
+    }
+
+    function scanAcademicData(value, path = []) {
+      if (Array.isArray(value)) {
+        value.forEach(item => {
+          if (typeof item === "string") {
+            const student = ensureStudent(item);
+
+            if (student && !student.kelas) {
+              student.kelas = guessClassFromPath(path);
+            }
+
+            return;
+          }
+
+          scanAcademicData(item, path);
+        });
+
+        return;
+      }
+
+      if (!value || typeof value !== "object") return;
+
+      const directName =
+        value.nama ||
+        value.namaSantri ||
+        value.nama_santri ||
+        value.label ||
+        "";
+
+      if (typeof directName === "string" && directName.trim()) {
+        const student = ensureStudent(directName);
+
+        if (student) {
+          student.kelas =
+            value.kelas ||
+            value.namaKelas ||
+            value.kelasAkademik ||
+            value.rombel ||
+            student.kelas ||
+            guessClassFromPath(path);
+
+          student.usrah =
+            value.usrah ||
+            value.namaUsrah ||
+            student.usrah;
+
+          student.jenisKelamin =
+            value.jenisKelamin ||
+            value.gender ||
+            student.jenisKelamin;
+        }
+      }
+
+      Object.entries(value).forEach(([key, child]) => {
+        scanAcademicData(child, [...path, key]);
+      });
+    }
+
+    function buildStudentDirectory(
+      masterUsrah = {},
+      masterAkademik = {},
+      dataSantri = {}
+    ) {
+      studentDirectory = new Map();
+
+      Object.entries(masterUsrah || {}).forEach(([usrah, list]) => {
+        normalizeStudentList(list).forEach(name => {
+          const student = ensureStudent(name);
+
+          if (!student) return;
+
+          student.usrah = usrah;
+          student.jenisKelamin = getGenderByUsrah(usrah);
+        });
+      });
+
+      scanAcademicData(masterAkademik, ["master_akademik"]);
+      scanAcademicData(dataSantri, ["data_santri"]);
+
+      studentDirectory.forEach(student => {
+        if (!student.jenisKelamin && student.usrah) {
+          student.jenisKelamin =
+            getGenderByUsrah(student.usrah);
+        }
+      });
+    }
+
+    function fillStudentOptions() {
+      const select = document.getElementById("pkSantri");
+
+      select.innerHTML =
+        '<option value="">-- Pilih Nama Santri --</option>';
+
+      [...studentDirectory.values()]
+        .sort((a, b) =>
+          a.nama.localeCompare(b.nama, "id")
+        )
+        .forEach(student => {
+          select.add(
+            new Option(student.nama, normalizedKey(student.nama))
+          );
+        });
+
+      if (select.options.length === 1) {
+        select.innerHTML =
+          '<option value="">Data santri belum tersedia</option>';
+      }
+    }
+
+    function pilihSantri() {
+      const key =
+        document.getElementById("pkSantri").value;
+
+      selectedStudentMeta =
+        studentDirectory.get(key) || null;
+
+      document.getElementById("pkUsrah").value =
+        selectedStudentMeta?.usrah
+          ? labelUsrah(selectedStudentMeta.usrah)
+          : "";
+
+      document.getElementById("pkKelas").value =
+        selectedStudentMeta?.kelas || "Belum tersedia";
+
+      const gender =
+        selectedStudentMeta?.jenisKelamin ||
+        (
+          selectedStudentMeta?.usrah
+            ? getGenderByUsrah(selectedStudentMeta.usrah)
+            : ""
+        );
+
+      document.getElementById("pkJenisKelamin").value =
+        gender;
+
+      const unitSelect =
+        document.getElementById("pkUnitObat");
+
+      if (gender === "Putra") {
+        unitSelect.value = "UKS Putra";
+      } else if (gender === "Putri") {
+        unitSelect.value = "UKS Putri";
+      }
+
+      refreshMedicineRows();
+      updateHomePreview();
+    }
+
+    function selectedValues(containerId) {
+      return [
+        ...document.querySelectorAll(
+          `#${containerId} input[type="checkbox"]:checked`
+        )
+      ].map(input => input.value);
+    }
+
+    function getStockById(stockId) {
+      return stockData.find(item => item.id === stockId);
+    }
+
+    function stockUnitLabel(item) {
+      return item?.unitUKS || "Unit belum ditentukan";
+    }
+
+    function availableStock(unit, selectedId = "") {
+      return stockData
+        .filter(item => {
+          if (item.statusAktif === false) return false;
+          if (numberValue(item.stokSaatIni) <= 0) return false;
+          if (daysUntil(item.tanggalKedaluwarsa) < 0) return false;
+
+          const sameUnit =
+            !unit ||
+            item.unitUKS === unit ||
+            !item.unitUKS;
+
+          return sameUnit || item.id === selectedId;
+        })
+        .sort((a, b) => {
+          const dateA =
+            a.tanggalKedaluwarsa || "9999-12-31";
+
+          const dateB =
+            b.tanggalKedaluwarsa || "9999-12-31";
+
+          if (dateA !== dateB) {
+            return dateA.localeCompare(dateB);
+          }
+
+          return String(a.namaObat || "")
+            .localeCompare(String(b.namaObat || ""), "id");
+        });
+    }
+
+    function medicineOptions(selectedId = "") {
+      const unit =
+        document.getElementById("pkUnitObat")?.value || "";
+
+      const items = availableStock(unit, selectedId);
+
+      const options = [
+        '<option value="">-- Pilih Obat dari Stok --</option>'
+      ];
+
+      items.forEach(item => {
+        const label = [
+          item.namaObat || "-",
+          item.kekuatan || "",
+          `Batch ${item.nomorBatch || "-"}`,
+          `Stok ${formatNumber(item.stokSaatIni)} ${item.satuan || "unit"}`,
+          `ED ${formatDateId(item.tanggalKedaluwarsa)}`,
+          stockUnitLabel(item)
+        ].filter(Boolean).join(" • ");
+
+        options.push(
+          `<option value="${escapeHtml(item.id)}" ${
+            item.id === selectedId ? "selected" : ""
+          }>${escapeHtml(label)}</option>`
+        );
+      });
+
+      if (!items.length) {
+        options.push(
+          '<option value="" disabled>Tidak ada stok aktif pada unit ini</option>'
+        );
+      }
+
+      return options.join("");
+    }
+
+    function addMedicineRow(data = {}) {
+      medicineCounter++;
+
+      const id = medicineCounter;
+      const row = document.createElement("div");
+
+      row.className = "medicine-row";
+      row.id = `medicineRow_${id}`;
+      row.dataset.rowId = String(id);
+
+      row.innerHTML = `
+        <div class="form-group">
+          <label class="form-label">Obat / Batch Stok</label>
+          <select
+            class="form-control medicine-stock-select"
+            onchange="updateMedicineRow(${id})"
+          >
+            ${medicineOptions(data.stockId || "")}
+          </select>
+          <span
+            class="medicine-stock-info"
+            id="medicineInfo_${id}"
+          >
+            Pilih obat untuk melihat stok, batch, dan tanggal kedaluwarsa.
+          </span>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Jumlah Unit</label>
+          <input
+            type="number"
+            min="1"
+            step="1"
+            class="form-control medicine-quantity"
+            value="${escapeHtml(data.jumlah || "")}"
+            placeholder="0"
+            oninput="updateMedicineRow(${id})"
+          >
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Dosis/Takaran</label>
+          <input
+            type="text"
+            class="form-control medicine-dose"
+            value="${escapeHtml(data.dosis || "")}"
+            placeholder="Contoh: 1 tablet"
+          >
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Aturan Pakai</label>
+          <input
+            type="text"
+            class="form-control medicine-rule"
+            value="${escapeHtml(data.aturan || "")}"
+            placeholder="Contoh: 3×1 sesudah makan"
+          >
+        </div>
+
+        <button
+          type="button"
+          class="remove-button"
+          onclick="removeMedicineRow(${id})"
+          title="Hapus obat"
+        >
+          ×
+        </button>
+      `;
+
+      document.getElementById("medicineList").appendChild(row);
+
+      if (data.stockId) {
+        row.querySelector(".medicine-stock-select").value =
+          data.stockId;
+      }
+
+      updateMedicineRow(id);
+    }
+
+    function removeMedicineRow(id) {
+      const row = document.getElementById(`medicineRow_${id}`);
+
+      if (row) row.remove();
+
+      if (
+        document.querySelectorAll("#medicineList .medicine-row")
+          .length === 0
+      ) {
+        addMedicineRow();
+      }
+    }
+
+    function refreshMedicineRows() {
+      document
+        .querySelectorAll("#medicineList .medicine-row")
+        .forEach(row => {
+          const id = row.dataset.rowId;
+          const select =
+            row.querySelector(".medicine-stock-select");
+
+          const selectedId = select.value;
+
+          select.innerHTML =
+            medicineOptions(selectedId);
+
+          if (
+            selectedId &&
+            ![...select.options].some(
+              option => option.value === selectedId
+            )
+          ) {
+            select.value = "";
+          } else {
+            select.value = selectedId;
+          }
+
+          updateMedicineRow(id);
+        });
+    }
+
+    function updateMedicineRow(id) {
+      const row =
+        document.getElementById(`medicineRow_${id}`);
+
+      if (!row) return;
+
+      const stockId =
+        row.querySelector(".medicine-stock-select").value;
+
+      const quantity =
+        numberValue(
+          row.querySelector(".medicine-quantity").value
+        );
+
+      const info =
+        document.getElementById(`medicineInfo_${id}`);
+
+      const item = getStockById(stockId);
+
+      info.className = "medicine-stock-info";
+
+      if (!item) {
+        info.textContent =
+          "Pilih obat untuk melihat stok, batch, dan tanggal kedaluwarsa.";
+        return;
+      }
+
+      const available =
+        numberValue(item.stokSaatIni);
+
+      const remaining =
+        available - quantity;
+
+      const unitText =
+        `${formatNumber(available)} ${item.satuan || "unit"}`;
+
+      info.textContent =
+        `${stockUnitLabel(item)} • Batch ${item.nomorBatch || "-"} • ` +
+        `Tersedia ${unitText} • ED ${formatDateId(item.tanggalKedaluwarsa)}` +
+        (
+          quantity > 0
+            ? ` • Sisa setelah diberikan: ${formatNumber(remaining)} ${item.satuan || "unit"}`
+            : ""
+        );
+
+      if (quantity > available) {
+        info.classList.add("danger");
+      } else if (daysUntil(item.tanggalKedaluwarsa) <= 90) {
+        info.classList.add("warning");
+      } else {
+        info.classList.add("ready");
+      }
+    }
+
+    function collectMedicines() {
+      return [
+        ...document.querySelectorAll("#medicineList .medicine-row")
+      ]
+        .map(row => {
+          const stockId =
+            row.querySelector(".medicine-stock-select").value;
+
+          const quantity =
+            numberValue(
+              row.querySelector(".medicine-quantity").value
+            );
+
+          const dose =
+            row.querySelector(".medicine-dose").value.trim();
+
+          const rule =
+            row.querySelector(".medicine-rule").value.trim();
+
+          if (!stockId && !quantity && !dose && !rule) {
+            return null;
+          }
+
+          const stock = getStockById(stockId);
+
+          return {
+            stockId,
+            jumlah: quantity,
+            dosis: dose,
+            aturan: rule,
+            nama: stock?.namaObat || "",
+            satuan: stock?.satuan || "",
+            nomorBatch: stock?.nomorBatch || "",
+            tanggalKedaluwarsa:
+              stock?.tanggalKedaluwarsa || "",
+            unitUKS: stock?.unitUKS || "",
+            kekuatan: stock?.kekuatan || ""
+          };
+        })
+        .filter(Boolean);
+    }
+
+    function validateMedicineSelection(medicines) {
+      const selectedIds = new Set();
+
+      for (const medicine of medicines) {
+        if (!medicine.stockId) {
+          return {
+            valid: false,
+            message:
+              "Pilih obat dari stok atau hapus baris obat yang belum digunakan."
+          };
+        }
+
+        if (selectedIds.has(medicine.stockId)) {
+          return {
+            valid: false,
+            message:
+              "Batch obat yang sama tidak boleh dipilih lebih dari satu kali."
+          };
+        }
+
+        selectedIds.add(medicine.stockId);
+
+        const stock = getStockById(medicine.stockId);
+
+        if (!stock) {
+          return {
+            valid: false,
+            message:
+              "Salah satu batch obat tidak ditemukan. Muat ulang halaman."
+          };
+        }
+
+        if (medicine.jumlah <= 0) {
+          return {
+            valid: false,
+            message:
+              `Jumlah ${stock.namaObat} harus lebih dari nol.`
+          };
+        }
+
+        if (daysUntil(stock.tanggalKedaluwarsa) < 0) {
+          return {
+            valid: false,
+            message:
+              `${stock.namaObat} batch ${stock.nomorBatch} sudah kedaluwarsa.`
+          };
+        }
+
+        if (medicine.jumlah > numberValue(stock.stokSaatIni)) {
+          return {
+            valid: false,
+            message:
+              `Stok ${stock.namaObat} tidak cukup. Tersedia ` +
+              `${formatNumber(stock.stokSaatIni)} ${stock.satuan || "unit"}.`
+          };
+        }
+      }
+
+      return {
+        valid: true
+      };
+    }
+
+    function getLearningStatus() {
+      return (
+        document.querySelector(
+          'input[name="statusPembelajaran"]:checked'
+        )?.value || ""
+      );
+    }
+
+    function togglePermission() {
+      const permission =
+        getLearningStatus() === "TIDAK_MENGIKUTI";
+
+      document.getElementById("permissionCard")
+        .classList.toggle("active", permission);
+
+      document.getElementById("permissionFields")
+        .classList.toggle("show", permission);
+
+      if (permission) {
+        if (!document.getElementById("izinTanggal").value) {
+          document.getElementById("izinTanggal").value =
+            document.getElementById("pkTanggal").value ||
+            localDateValue();
+        }
+
+        if (!document.getElementById("izinMulai").value) {
+          document.getElementById("izinMulai").value =
+            document.getElementById("pkWaktu").value ||
+            localTimeValue();
+        }
+
+        if (!document.getElementById("izinSampai").value) {
+          document.getElementById("izinSampai").value = "20:00";
+        }
+
+        if (!document.getElementById("izinKeteranganGuru").value.trim()) {
+          document.getElementById("izinKeteranganGuru").value =
+            "Sedang sakit dan mendapat izin dari petugas kesehatan.";
+        }
+      }
+
+      updateHomePreview();
+    }
+
+    function updateHomePreview() {
+      const status = getLearningStatus();
+      const preview =
+        document.getElementById("homePreviewText");
+
+      if (!status) {
+        preview.textContent =
+          "Pilih nama santri dan status pembelajaran.";
+        return;
+      }
+
+      if (status === "BOLEH_MENGIKUTI") {
+        preview.textContent =
+          "Santri boleh mengikuti pembelajaran dan tidak dimasukkan ke daftar izin sakit di Beranda Guru.";
+        return;
+      }
+
+      const student =
+        selectedStudentMeta?.nama ||
+        "Nama santri belum dipilih";
+
+      const usrah =
+        selectedStudentMeta?.usrah
+          ? labelUsrah(selectedStudentMeta.usrah)
+          : "-";
+
+      const kelas =
+        selectedStudentMeta?.kelas || "";
+
+      const date =
+        document.getElementById("izinTanggal").value ||
+        document.getElementById("pkTanggal").value ||
+        localDateValue();
+
+      const start =
+        document.getElementById("izinMulai").value ||
+        document.getElementById("pkWaktu").value ||
+        localTimeValue();
+
+      const until =
+        document.getElementById("izinSampai").value ||
+        "20:00";
+
+      const location =
+        document.getElementById("izinLokasi").value ||
+        "UKS";
+
+      const note =
+        document.getElementById("izinKeteranganGuru").value.trim() ||
+        "Sedang sakit dan mendapat izin dari petugas kesehatan.";
+
+      preview.textContent =
+        `${student} • ${usrah}${kelas ? ` • ${kelas}` : ""} • ` +
+        `Izin tidak mengikuti pembelajaran tanggal ${date}, ` +
+        `pukul ${start}–${until}. Istirahat: ${location}. ${note}`;
+    }
+
+    function updateDispositionFields() {
+      const disposition =
+        document.getElementById("pkDisposisi").value;
+
+      const needsReferral =
+        disposition === "Dirujuk ke Fasilitas Kesehatan" ||
+        disposition === "Dijemput Wali Santri";
+
+      document.getElementById("pkRujukan").disabled =
+        !needsReferral;
+
+      document.getElementById("pkPendamping").disabled =
+        !needsReferral;
+    }
+
+    function validateForm() {
+      const studentKey =
+        document.getElementById("pkSantri").value;
+
+      if (!studentKey || !selectedStudentMeta) {
+        return {
+          valid: false,
+          message: "Nama santri wajib dipilih."
+        };
+      }
+
+      const learningStatus = getLearningStatus();
+
+      if (!learningStatus) {
+        return {
+          valid: false,
+          message:
+            "Status mengikuti pembelajaran wajib dipilih."
+        };
+      }
+
+      return {
+        valid: true
+      };
+    }
+
+    function createPermissionExpiry(date, time) {
+      const iso = `${date}T${time || "23:59"}:00`;
+
+      const parsed = new Date(iso);
+
+      return Number.isNaN(parsed.getTime())
+        ? ""
+        : parsed.toISOString();
+    }
+
+    async function simpanPemeriksaan() {
+      const validation = validateForm();
+
+      if (!validation.valid) {
+        showToast(
+          "error",
+          "Form belum lengkap",
+          validation.message
+        );
+        return;
+      }
+
+      const medicines = collectMedicines();
+      const medicineValidation =
+        validateMedicineSelection(medicines);
+
+      if (!medicineValidation.valid) {
+        showToast(
+          "error",
+          "Data obat belum sesuai",
+          medicineValidation.message
+        );
+        return;
+      }
+
+      const now = new Date();
+      const nowIso = now.toISOString();
+
+      const tanggal =
+        document.getElementById("pkTanggal").value ||
+        localDateValue();
+
+      const waktu =
+        document.getElementById("pkWaktu").value ||
+        localTimeValue();
+
+      const petugas =
+        normalizedName(
+          document.getElementById("pkPetugas").value
+        ) ||
+        normalizedName(userName());
+
+      const usrah =
+        selectedStudentMeta?.usrah || "";
+
+      const student =
+        normalizedName(
+          selectedStudentMeta?.nama || ""
+        );
+
+      const studentKey =
+        normalizedKey(student);
+
+      const learningStatus =
+        getLearningStatus();
+
+      const permission =
+        learningStatus === "TIDAK_MENGIKUTI";
+
+      const redFlags =
+        selectedValues("redFlagGrid");
+
+      const medicineUnit =
+        document.getElementById("pkUnitObat").value;
+
+      const recordKey =
+        push(ref(db, DB_PATH)).key;
+
+      const medicineRequests = medicines.map(medicine => ({
+        ...medicine,
+        transactionId:
+          push(ref(db, STOCK_TRANSACTION_PATH)).key
+      }));
+
+      const baseRecord = {
+        idPemeriksaan: recordKey,
+        formVersi: FORM_VERSION,
+
+        tanggalPemeriksaan: tanggal,
+        waktuPemeriksaan: waktu,
+        waktuSimpan: nowIso,
+        periodeBulan: tanggal.slice(0, 7),
+
+        petugasPemeriksa: petugas,
+        petugasPemeriksaKey: normalizedKey(petugas),
+        peranPetugas: userRole(),
+        sumberLaporan:
+          document.getElementById("pkSumberLaporan").value,
+
+        identitasSantri: {
+          namaSantri: student,
+          namaSantriKey: studentKey,
+          usrah,
+          labelUsrah: labelUsrah(usrah),
+          kelas:
+            selectedStudentMeta?.kelas || "",
+          jenisKelamin:
+            selectedStudentMeta?.jenisKelamin ||
+            getGenderByUsrah(usrah),
+          umur:
+            Number(document.getElementById("pkUmur").value) || null,
+          beratBadanKg:
+            Number(document.getElementById("pkBerat").value) || null
+        },
+
+        anamnesis: {
+          keluhanUtama:
+            document.getElementById("pkKeluhanUtama").value.trim(),
+          riwayatKeluhanSekarang:
+            document.getElementById("pkRiwayatKeluhan").value.trim(),
+          gejala: selectedValues("symptomGrid"),
+          riwayatPenyakit:
+            document.getElementById("pkRiwayatPenyakit").value.trim(),
+          alergi:
+            document.getElementById("pkAlergi").value.trim(),
+          obatSebelumnya:
+            document.getElementById("pkObatSebelumnya").value.trim()
+        },
+
+        tandaVital: {
+          suhuC:
+            Number(document.getElementById("vSuhu").value) || null,
+          nadiPerMenit:
+            Number(document.getElementById("vNadi").value) || null,
+          napasPerMenit:
+            Number(document.getElementById("vNapas").value) || null,
+          tekananDarah:
+            document.getElementById("vTekananDarah").value.trim(),
+          spo2Persen:
+            Number(document.getElementById("vSpO2").value) || null,
+          skalaNyeri:
+            Number(document.getElementById("vNyeri").value) || 0,
+          kesadaran:
+            document.getElementById("pkKesadaran").value,
+          kondisiUmum:
+            document.getElementById("pkKondisiUmum").value,
+          statusHidrasi:
+            document.getElementById("pkStatusHidrasi").value
+        },
+
+        pemeriksaanFisik: {
+          kepalaMataTelingaHidungTenggorokan:
+            document.getElementById("fisikKepala").value.trim(),
+          pernapasanDada:
+            document.getElementById("fisikNapas").value.trim(),
+          perutPencernaan:
+            document.getElementById("fisikPerut").value.trim(),
+          kulitLukaEkstremitas:
+            document.getElementById("fisikKulit").value.trim(),
+          lainnya:
+            document.getElementById("fisikLain").value.trim()
+        },
+
+        skriningTandaBahaya: {
+          ditemukan: redFlags.length > 0,
+          daftar: redFlags
+        },
+
+        asesmenDanPelayanan: {
+          asesmen:
+            document.getElementById("pkAsesmen").value.trim(),
+          tindakan:
+            document.getElementById("pkTindakan").value.trim(),
+          obatDiberikan: [],
+          unitStokObat: medicineUnit,
+          stokDikurangiOtomatis:
+            medicineRequests.length > 0,
+          edukasi:
+            document.getElementById("pkEdukasi").value.trim(),
+          rencanaTindakLanjut:
+            document.getElementById("pkTindakLanjut").value.trim()
+        },
+
+        disposisi: {
+          keputusan:
+            document.getElementById("pkDisposisi").value,
+          tujuanRujukan:
+            document.getElementById("pkRujukan").value.trim(),
+          pendamping:
+            document.getElementById("pkPendamping").value.trim()
+        },
+
+        statusPembelajaran: learningStatus,
+
+        izinPembelajaran: {
+          statusPembelajaran: learningStatus,
+          bolehTidakMengikutiPembelajaranHariIni: permission,
+          tanggalIzin:
+            permission
+              ? document.getElementById("izinTanggal").value
+              : "",
+          mulaiPukul:
+            permission
+              ? document.getElementById("izinMulai").value
+              : "",
+          sampaiPukul:
+            permission
+              ? document.getElementById("izinSampai").value
+              : "",
+          lokasiIstirahat:
+            permission
+              ? document.getElementById("izinLokasi").value
+              : "",
+          keteranganUntukGuru:
+            permission
+              ? document.getElementById("izinKeteranganGuru").value.trim()
+              : ""
+        },
+
+        statusRekam: "AKTIF",
+        dibuatOleh: userName(),
+        dibuatPada: nowIso
+      };
+
+      const permissionDate =
+        permission
+          ? (
+              document.getElementById("izinTanggal").value ||
+              tanggal
+            )
+          : tanggal;
+
+      const publicPermission = permission
+        ? {
+            idPemeriksaan: recordKey,
+
+            namaSantri: student,
+            namaSantriKey: studentKey,
+            usrah,
+            labelUsrah: labelUsrah(usrah),
+            kelas:
+              selectedStudentMeta?.kelas || "",
+            jenisKelamin:
+              selectedStudentMeta?.jenisKelamin ||
+              getGenderByUsrah(usrah),
+
+            tanggalIzin: permissionDate,
+            mulaiPukul:
+              document.getElementById("izinMulai").value ||
+              waktu,
+            sampaiPukul:
+              document.getElementById("izinSampai").value ||
+              "20:00",
+            berlakuSampai:
+              createPermissionExpiry(
+                permissionDate,
+                document.getElementById("izinSampai").value ||
+                "20:00"
+              ),
+
+            bolehTidakMengikutiPembelajaranHariIni: true,
+            statusIzin: "IZIN SAKIT",
+            statusAktif: true,
+
+            lokasiIstirahat:
+              document.getElementById("izinLokasi").value ||
+              "UKS",
+
+            keteranganGuru:
+              document.getElementById("izinKeteranganGuru").value.trim() ||
+              "Sedang sakit dan mendapat izin dari petugas kesehatan.",
+
+            petugasPemeriksa: petugas,
+            diperbaruiPada: nowIso,
+
+            sumberData: "Pemeriksaan Kesehatan UKS",
+            tampilDiBerandaGuru: true
+          }
+        : null;
+
+      const button =
+        document.getElementById("saveButton");
+
+      button.disabled = true;
+      button.innerHTML = "⏳ Memeriksa Stok Terbaru...";
+
+      let stockCommitted = false;
+      let processedMedicines = [];
+      let abortReason =
+        "Transaksi stok gagal karena data stok berubah.";
+
+      try {
+        /*
+          Ambil data terbaru tepat sebelum transaksi.
+          Data ini juga menjadi nilai awal bila callback transaksi
+          pertama kali menerima null karena cache belum lengkap.
+        */
+        const freshSnapshot = await get(
+          ref(db, STOCK_PATH)
+        );
+
+        const freshStocks =
+          freshSnapshot.exists()
+            ? freshSnapshot.val()
+            : {};
+
+        for (const request of medicineRequests) {
+          const stock = freshStocks[request.stockId];
+
+          if (!stock) {
+            throw new Error(
+              `Batch stok ${request.nama || "obat"} tidak ditemukan. ` +
+              `Silakan pilih ulang obat dari daftar stok terbaru.`
+            );
+          }
+
+          if (daysUntil(stock.tanggalKedaluwarsa) < 0) {
+            throw new Error(
+              `${stock.namaObat} batch ${stock.nomorBatch} sudah kedaluwarsa.`
+            );
+          }
+
+          if (
+            numberValue(stock.stokSaatIni) <
+            request.jumlah
+          ) {
+            throw new Error(
+              `Stok ${stock.namaObat} tidak cukup. ` +
+              `Tersedia ${formatNumber(stock.stokSaatIni)} ` +
+              `${stock.satuan || "unit"}.`
+            );
+          }
+        }
+
+        button.innerHTML =
+          "⏳ Mengurangi Stok Obat...";
+
+        const fallbackStocks =
+          JSON.parse(JSON.stringify(freshStocks));
+
+        const stockResult = await runTransaction(
+          ref(db, STOCK_PATH),
+          currentStocks => {
+            /*
+              Firebase dapat memanggil callback pertama dengan null.
+              Gunakan hasil get() terbaru sebagai nilai awal,
+              lalu Firebase tetap akan melakukan retry bila server berubah.
+            */
+            const workingStocks =
+              currentStocks
+                ? { ...currentStocks }
+                : JSON.parse(JSON.stringify(fallbackStocks));
+
+            const currentProcessed = [];
+
+            for (const request of medicineRequests) {
+              const stock =
+                workingStocks[request.stockId];
+
+              if (!stock) {
+                abortReason =
+                  `Batch stok ${request.nama || "obat"} tidak ditemukan. ` +
+                  `Silakan pilih ulang obat.`;
+                return;
+              }
+
+              const available =
+                numberValue(stock.stokSaatIni);
+
+              if (daysUntil(stock.tanggalKedaluwarsa) < 0) {
+                abortReason =
+                  `${stock.namaObat} batch ${stock.nomorBatch} sudah kedaluwarsa.`;
+                return;
+              }
+
+              if (available < request.jumlah) {
+                abortReason =
+                  `Stok ${stock.namaObat} tidak cukup. ` +
+                  `Tersedia ${formatNumber(available)} ` +
+                  `${stock.satuan || "unit"}.`;
+                return;
+              }
+
+              const stockAfter =
+                available - request.jumlah;
+
+              workingStocks[request.stockId] = {
+                ...stock,
+                stokSaatIni: stockAfter,
+                totalStokKeluar:
+                  numberValue(stock.totalStokKeluar) +
+                  request.jumlah,
+                tanggalPengeluaranTerakhir: tanggal,
+                waktuUpdate: nowIso,
+                pemeriksaanTerakhirId: recordKey,
+                santriPenerimaTerakhir: student
+              };
+
+              currentProcessed.push({
+                transactionId: request.transactionId,
+                stockId: request.stockId,
+
+                nama:
+                  stock.namaObat || request.nama,
+                kekuatan:
+                  stock.kekuatan || request.kekuatan,
+                bentukSediaan:
+                  stock.bentukSediaan || "",
+                kategori:
+                  stock.kategori || "",
+
+                nomorBatch:
+                  stock.nomorBatch || request.nomorBatch,
+                tanggalKedaluwarsa:
+                  stock.tanggalKedaluwarsa ||
+                  request.tanggalKedaluwarsa,
+
+                unitUKS:
+                  stock.unitUKS ||
+                  request.unitUKS ||
+                  medicineUnit,
+
+                jumlah: request.jumlah,
+                satuan:
+                  stock.satuan || request.satuan,
+
+                dosis: request.dosis,
+                aturan: request.aturan,
+
+                stokSebelum: available,
+                stokSesudah: stockAfter,
+                dikurangiOtomatis: true
+              });
+            }
+
+            processedMedicines = currentProcessed;
+
+            return workingStocks;
+          },
+          {
+            applyLocally: false
+          }
+        );
+
+        if (!stockResult.committed) {
+          throw new Error(abortReason);
+        }
+
+        stockCommitted = true;
+
+        button.innerHTML =
+          "⏳ Menyimpan Rekam Pemeriksaan...";
+
+        const record = {
+          ...baseRecord,
+          asesmenDanPelayanan: {
+            ...baseRecord.asesmenDanPelayanan,
+            obatDiberikan: processedMedicines
+          }
+        };
+
+        const updates = {
+          [`${DB_PATH}/${recordKey}`]: record,
+          [`${CAHAYA_PATH}/wali_index/${studentKey}/kesehatan/${recordKey}`]: record
+        };
+
+        /*
+          Izin keluar karena rujukan sakit hanya diajukan oleh UKS.
+          Data masuk ke antrean Pimpinan dan belum berlaku sebelum disetujui.
+        */
+        const dispositionDecision =
+          record.disposisi?.keputusan || "";
+
+        const requiresMedicalPermit = [
+          "Dirujuk ke Fasilitas Kesehatan",
+          "Dijemput Wali Santri"
+        ].includes(dispositionDecision);
+
+        let medicalPermitKey = "";
+
+        if (requiresMedicalPermit) {
+          medicalPermitKey = push(
+            ref(db, `${CAHAYA_PATH}/perizinan_santri`)
+          ).key;
+
+          updates[
+            `${CAHAYA_PATH}/perizinan_santri/${medicalPermitKey}`
+          ] = {
+            idIzin: medicalPermitKey,
+            idPemeriksaan: recordKey,
+            linkedPemeriksaanId: recordKey,
+
+            namaSantri: student,
+            namaSantriKey: studentKey,
+            kelas: selectedStudentMeta?.kelas || "",
+            usrah,
+            jenisKelamin:
+              selectedStudentMeta?.jenisKelamin ||
+              getGenderByUsrah(usrah),
+
+            jenisIzin: "Rujukan Medis",
+            sumberPengajuan: "UKS",
+            pengaju: petugas,
+            pengajuPeran: userRole(),
+
+            tanggalPengajuan: tanggal,
+            diajukanPada: nowIso,
+            tanggalMulai: tanggal,
+            rencanaKembali: `${tanggal}T20:00`,
+
+            tujuan:
+              record.disposisi?.tujuanRujukan ||
+              dispositionDecision,
+            tujuanRujukan:
+              record.disposisi?.tujuanRujukan || "",
+            pendamping:
+              record.disposisi?.pendamping || "",
+
+            alasan:
+              record.anamnesis?.keluhanUtama ||
+              "Rujukan berdasarkan pemeriksaan UKS.",
+            asesmenUKS:
+              record.asesmenDanPelayanan?.asesmen || "",
+            tindakanUKS:
+              record.asesmenDanPelayanan?.tindakan || "",
+            disposisiUKS: dispositionDecision,
+
+            status: "MENUNGGU_PIMPINAN",
+            sopVersi: "SOP_PERIZINAN_KHUSUS_2026",
+            suratDokter: null,
+            riwayatStatus: [
+              {
+                status: "MENUNGGU_PIMPINAN",
+                waktu: nowIso,
+                oleh: petugas,
+                catatan:
+                  "Pengajuan rujukan medis dibuat oleh UKS."
+              }
+            ]
+          };
+
+          updates[`${CAHAYA_PATH}/wali_index/${studentKey}/perizinan/${medicalPermitKey}`] = updates[`${CAHAYA_PATH}/perizinan_santri/${medicalPermitKey}`];
+          updates[`${CAHAYA_PATH}/perizinan_ringkas/${medicalPermitKey}`] = updates[`${CAHAYA_PATH}/perizinan_santri/${medicalPermitKey}`];
+        }
+
+        processedMedicines.forEach(medicine => {
+          updates[
+            `${STOCK_TRANSACTION_PATH}/${medicine.transactionId}`
+          ] = {
+            jenisTransaksi: "KELUAR",
+            subJenisTransaksi: "PELAYANAN_PASIEN",
+            sumberTransaksi: "PEMERIKSAAN_KESEHATAN",
+
+            stockId: medicine.stockId,
+            idPemeriksaan: recordKey,
+
+            tanggalTransaksi: tanggal,
+            waktuTransaksi: nowIso,
+
+            namaObat: medicine.nama,
+            kekuatan: medicine.kekuatan,
+            nomorBatch: medicine.nomorBatch,
+            tanggalKedaluwarsa:
+              medicine.tanggalKedaluwarsa,
+
+            unitUKS: medicine.unitUKS,
+
+            jumlah: medicine.jumlah,
+            satuan: medicine.satuan,
+
+            stokSebelum: medicine.stokSebelum,
+            stokSesudah: medicine.stokSesudah,
+
+            dosis: medicine.dosis,
+            aturanPakai: medicine.aturan,
+
+            keperluan: "Pelayanan Santri",
+            namaSantriPenerima: student,
+            namaSantriKey: studentKey,
+            usrah,
+            kelas:
+              selectedStudentMeta?.kelas || "",
+
+            petugas,
+            keterangan:
+              `Obat diberikan pada pemeriksaan ${recordKey}.`,
+            formVersi: FORM_VERSION
+          };
+        });
+
+        let jumlahKoreksiAbsensiUKS = 0;
+        let koreksiAbsensiUKSError = "";
+
+        if (permission) {
+          updates[
+            `${PERMISSION_PATH}/${permissionDate}/${studentKey}`
+          ] = publicPermission;
+
+          try {
+            const correctionResult = await buildRetroactiveUksAttendanceCorrections({
+              tanggalIzin: permissionDate,
+              namaSantri: student,
+              idPemeriksaan: recordKey,
+              waktuKoreksi: nowIso
+            });
+            Object.assign(updates, correctionResult.updates);
+            jumlahKoreksiAbsensiUKS = correctionResult.count;
+          } catch (correctionError) {
+            koreksiAbsensiUKSError = correctionError?.message || String(correctionError);
+            console.warn("Koreksi retroaktif absensi UKS tertunda:", correctionError);
+            const auditKey = push(ref(db, `${CAHAYA_PATH}/koreksi_absensi_uks`)).key;
+            updates[`${CAHAYA_PATH}/koreksi_absensi_uks/${auditKey}`] = {
+              idPemeriksaan: recordKey,
+              namaSantri: student,
+              namaSantriKey: studentKey,
+              tanggalIzin: permissionDate,
+              waktuKoreksi: nowIso,
+              jumlahKoreksi: 0,
+              status: "TERTUNDA",
+              alasan: koreksiAbsensiUKSError,
+              sistem: "AUTO_ALFA_KE_SAKIT_V1"
+            };
+          }
+        } else {
+          updates[
+            `${PERMISSION_PATH}/${tanggal}/${studentKey}`
+          ] = null;
+        }
+
+        try {
+          await update(ref(db), updates);
+        } catch (recordError) {
+          /*
+            Bila pencatatan pemeriksaan gagal setelah stok berkurang,
+            kembalikan jumlah stok agar audit tidak selisih.
+          */
+          await runTransaction(
+            ref(db, STOCK_PATH),
+            currentStocks => {
+              if (!currentStocks) return currentStocks;
+
+              const restored = {
+                ...currentStocks
+              };
+
+              medicineRequests.forEach(request => {
+                const stock =
+                  restored[request.stockId];
+
+                if (!stock) return;
+
+                restored[request.stockId] = {
+                  ...stock,
+                  stokSaatIni:
+                    numberValue(stock.stokSaatIni) +
+                    request.jumlah,
+                  totalStokKeluar: Math.max(
+                    0,
+                    numberValue(stock.totalStokKeluar) -
+                    request.jumlah
+                  ),
+                  waktuUpdate:
+                    new Date().toISOString(),
+                  catatanRollbackTerakhir:
+                    `Rollback pemeriksaan ${recordKey}`
+                };
+              });
+
+              return restored;
+            },
+            {
+              applyLocally: false
+            }
+          );
+
+          stockCommitted = false;
+          throw recordError;
+        }
+
+        const infoKoreksiUKS = permission
+          ? (
+              jumlahKoreksiAbsensiUKS
+                ? ` ${jumlahKoreksiAbsensiUKS} absensi Alfa hari ini otomatis diubah menjadi Sakit.`
+                : (koreksiAbsensiUKSError
+                    ? " Izin sakit tersimpan; koreksi absensi lama akan dijaga pada input berikutnya."
+                    : " Tidak ditemukan absensi Alfa yang perlu dikoreksi.")
+            )
+          : "";
+
+        const infoPerizinanMedis = medicalPermitKey
+          ? " Pengajuan izin rujukan medis juga telah dikirim ke Pimpinan untuk mendapatkan persetujuan."
+          : "";
+
+        showToast(
+          "success",
+          "Pemeriksaan dan stok berhasil disimpan",
+          (medicineRequests.length
+            ? `${medicineRequests.length} jenis obat tercatat dan stok berkurang otomatis.`
+            : (
+                permission
+                  ? "Santri juga dimasukkan ke daftar izin sakit di Beranda Guru."
+                  : "Rekam pemeriksaan berhasil disimpan."
+              )) + infoKoreksiUKS + infoPerizinanMedis
+        );
+
+        button.innerHTML =
+          "✓ Pemeriksaan Tersimpan";
+
+        const stockSnapshot = await get(
+          ref(db, STOCK_PATH)
+        );
+
+        stockData = stockSnapshot.exists()
+          ? Object.entries(stockSnapshot.val()).map(
+              ([id, value]) => ({
+                id,
+                ...value
+              })
+            )
+          : [];
+
+        refreshMedicineRows();
+
+        setTimeout(() => {
+          button.innerHTML =
+            "💾 Simpan Pemeriksaan";
+        }, 1400);
+      } catch (error) {
+        console.error(
+          "Gagal menyimpan pemeriksaan dan stok:",
+          error
+        );
+
+        showToast(
+          "error",
+          "Pemeriksaan gagal disimpan",
+          error?.message ||
+          "Terjadi kesalahan saat menyimpan data."
+        );
+
+        button.innerHTML =
+          "💾 Simpan Pemeriksaan";
+      } finally {
+        button.disabled = false;
+      }
+    }
+
+    function cetakPemeriksaan() {
+      const validation = validateForm();
+
+      if (!validation.valid) {
+        showToast(
+          "error",
+          "Form belum lengkap",
+          validation.message
+        );
+        return;
+      }
+
+      window.print();
+    }
+
+    document.addEventListener("DOMContentLoaded", async () => {
+      document.getElementById("pkTanggal").value =
+        localDateValue();
+
+      document.getElementById("pkWaktu").value =
+        localTimeValue();
+
+      document.getElementById("izinTanggal").value =
+        localDateValue();
+
+      document.getElementById("izinMulai").value =
+        localTimeValue();
+
+      fillProfile();
+      addMedicineRow();
+      updateDispositionFields();
+      updateHomePreview();
+
+      try {
+        const [
+          usrahSnapshot,
+          academicSnapshot,
+          studentSnapshot,
+          stockSnapshot
+        ] = await Promise.all([
+          get(ref(db, "cahaya_app/master_usrah")),
+          get(ref(db, "cahaya_app/master_akademik")),
+          get(ref(db, "cahaya_app/data_santri")),
+          get(ref(db, STOCK_PATH))
+        ]);
+
+        buildStudentDirectory(
+          usrahSnapshot.exists()
+            ? usrahSnapshot.val()
+            : {},
+          academicSnapshot.exists()
+            ? academicSnapshot.val()
+            : {},
+          studentSnapshot.exists()
+            ? studentSnapshot.val()
+            : {}
+        );
+
+        stockData = stockSnapshot.exists()
+          ? Object.entries(stockSnapshot.val()).map(
+              ([id, value]) => ({
+                id,
+                ...value
+              })
+            )
+          : [];
+
+        fillStudentOptions();
+        refreshMedicineRows();
+      } catch (error) {
+        console.error(
+          "Gagal memuat direktori santri:",
+          error
+        );
+
+        document.getElementById("pkSantri").innerHTML =
+          '<option value="">Gagal memuat daftar santri</option>';
+      }
+
+      hideLoading();
+    });
+
+    window.pilihSantri = pilihSantri;
+    window.addMedicineRow = addMedicineRow;
+    window.removeMedicineRow = removeMedicineRow;
+    window.updateMedicineRow = updateMedicineRow;
+    window.refreshMedicineRows = refreshMedicineRows;
+    window.togglePermission = togglePermission;
+    window.updateHomePreview = updateHomePreview;
+    window.updateDispositionFields = updateDispositionFields;
+    window.simpanPemeriksaan = simpanPemeriksaan;
+    window.cetakPemeriksaan = cetakPemeriksaan;
+  </script>
+</body>
+</html>

@@ -1,0 +1,261 @@
+/* ==========================================================
+   🌙 CAHAYA APP - WALI STYLE (Modern Responsive Edition)
+   Berlaku untuk Dashboard, Progres Harian, dan Progres Bulanan
+   ========================================================== */
+
+/* ==== RESET ==== */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  height: 100%;
+  font-family: "Poppins", sans-serif;
+  background: #f7f9fc;
+  color: #1e293b;
+  line-height: 1.7;
+}
+
+/* ==== HEADER ==== */
+header {
+  background: linear-gradient(135deg, #0f766e, #115e59);
+  color: white;
+  padding: 1rem 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  border-bottom: 3px solid #0d9488;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15);
+}
+
+header h1 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+header .nav-buttons {
+  display: flex;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+
+header button {
+  border: none;
+  border-radius: 10px;
+  padding: 0.6rem 1rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+header .btn-primary {
+  background: #2563eb;
+  color: #fff;
+}
+header .btn-primary:hover { background: #1e40af; }
+
+header .btn-secondary {
+  background: #e2e8f0;
+  color: #1e293b;
+}
+header .btn-secondary:hover { background: #cbd5e1; }
+
+header .btn-danger {
+  background: #f43f5e;
+  color: white;
+}
+header .btn-danger:hover { background: #e11d48; }
+
+/* ==== MAIN CONTAINER ==== */
+main {
+  max-width: 1200px;
+  margin: 1.5rem auto;
+  padding: 1rem;
+}
+
+/* ==== CARD COMPONENT ==== */
+.card {
+  background: white;
+  border-radius: 16px;
+  padding: 1.5rem 1.8rem;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.06);
+  margin-bottom: 2rem;
+  transition: transform 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-3px);
+}
+
+/* ==== SECTION TITLES ==== */
+.section-title {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #0f766e;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.8rem;
+}
+
+.section-title i {
+  font-size: 1.3rem;
+}
+
+/* ==== FILTER AREA ==== */
+.filter-box {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+  align-items: center;
+  margin-bottom: 1.2rem;
+}
+
+.filter-box select,
+.filter-box input,
+.filter-box button {
+  padding: 10px 14px;
+  border-radius: 10px;
+  border: 1px solid #cbd5e1;
+  font-size: 1rem;
+  background: #fff;
+}
+
+.filter-box button {
+  background: #0f766e;
+  color: white;
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s;
+}
+.filter-box button:hover {
+  background: #115e59;
+}
+
+/* ==== TABLE ==== */
+.table-wrapper {
+  overflow-x: auto;
+  border-radius: 14px;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  color: #1f2937;
+  border-radius: 10px;
+  min-width: 700px;
+}
+
+th, td {
+  padding: 12px 14px;
+  border-bottom: 1px solid #e2e8f0;
+  text-align: center;
+  font-size: 0.95rem;
+}
+
+th {
+  background: #f3f4f6;
+  color: #0f172a;
+  font-weight: 700;
+}
+
+tr:last-child td {
+  border-bottom: none;
+}
+
+tr:nth-child(even) td {
+  background: #fafafa;
+}
+
+tbody tr:hover td {
+  background: #f0fdfa;
+  transition: background 0.2s;
+}
+
+/* ==== KEHADIRAN COLORS ==== */
+.hadir-cell {
+  background: #dcfce7 !important;
+  color: #065f46;
+  font-weight: 600;
+}
+
+.izin-cell {
+  background: #dbeafe !important;
+  color: #1e40af;
+  font-weight: 600;
+}
+
+.sakit-cell {
+  background: #fef9c3 !important;
+  color: #854d0e;
+  font-weight: 600;
+}
+
+.alfa-cell {
+  background: #fee2e2 !important;
+  color: #991b1b;
+  font-weight: 600;
+}
+
+/* ==== MUTED TEXT ==== */
+.muted {
+  color: #6b7280;
+  font-size: 0.95rem;
+  text-align: center;
+}
+
+/* ==== RESPONSIVE ==== */
+@media (max-width: 768px) {
+  header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  header h1 {
+    font-size: 1.1rem;
+  }
+
+  main {
+    padding: 0.5rem;
+  }
+
+  .card {
+    padding: 1.2rem;
+    border-radius: 12px;
+  }
+
+  th, td {
+    font-size: 0.85rem;
+    padding: 10px 8px;
+  }
+
+  .filter-box {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .filter-box select,
+  .filter-box button {
+    width: 100%;
+  }
+}
+
+/* ==== FOOTER ==== */
+footer {
+  text-align: center;
+  padding: 1rem;
+  color: #64748b;
+  font-size: 0.9rem;
+}

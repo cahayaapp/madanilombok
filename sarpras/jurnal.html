@@ -1,0 +1,1818 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <!-- CAHAYA WHITE-LABEL CONFIG -->
+  <script src="../config/tenant-config.js"></script>
+  <script src="../config/master-data.js"></script>
+  <script src="../js/cahaya-config-runtime.js" defer></script>
+
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>CAHAYA APP - Jurnal Sarana & Prasarana</title>
+
+  <link rel="stylesheet" href="../css/cahaya-theme.css" />
+
+  <style>
+    :root {
+      --jk-primary: var(--primary, #2878ff);
+      --jk-primary-dark: var(--primary-dark, #1557d5);
+      --jk-cyan: var(--cyan, #19c6e6);
+      --jk-green: var(--green, #25b983);
+      --jk-orange: var(--orange, #f59e42);
+      --jk-red: var(--red, #ef5968);
+      --jk-purple: var(--purple, #7667f5);
+      --jk-heading: var(--text-heading, #16264a);
+      --jk-text: var(--text-main, #2d3c5d);
+      --jk-muted: var(--text-muted, #7483a0);
+      --jk-border: var(--border, #e1e9f5);
+      --jk-shadow: 0 15px 38px rgba(35, 78, 160, 0.10);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      width: 100%;
+      min-height: 100%;
+      margin: 0;
+      overflow-x: hidden;
+    }
+
+    body {
+      padding: 18px;
+      color: var(--jk-text);
+      font-family: "Nunito", "Poppins", sans-serif;
+      background:
+        radial-gradient(circle at 0% 0%, rgba(25, 198, 230, 0.12), transparent 27%),
+        radial-gradient(circle at 100% 4%, rgba(37, 185, 131, 0.09), transparent 24%),
+        linear-gradient(180deg, #f4f8ff 0%, #fbfcff 100%);
+    }
+
+    button,
+    input,
+    select,
+    textarea {
+      font: inherit;
+    }
+
+    .journal-page {
+      width: 100%;
+      max-width: 1080px;
+      margin: 0 auto;
+      animation: pageIn 0.38s ease both;
+    }
+
+    @keyframes pageIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* PANELS */
+    .journal-panel {
+      margin-bottom: 16px;
+      padding: 23px;
+      border: 1px solid rgba(224,232,245,0.95);
+      border-radius: 22px;
+      background: rgba(255,255,255,0.98);
+      box-shadow: var(--jk-shadow);
+    }
+
+    .panel-heading {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 18px;
+    }
+
+    .panel-heading h2,
+    .panel-heading h3 {
+      margin: 0;
+      color: var(--jk-heading);
+      font-size: 1.08rem;
+      font-weight: 900;
+      line-height: 1.25;
+    }
+
+    .panel-heading p {
+      margin: 5px 0 0;
+      color: var(--jk-muted);
+      font-size: 0.71rem;
+      font-weight: 650;
+      line-height: 1.5;
+    }
+
+    .notice {
+      display: flex;
+      align-items: flex-start;
+      gap: 9px;
+      margin-bottom: 17px;
+      padding: 12px 14px;
+      color: #2a6296;
+      font-size: 0.7rem;
+      font-weight: 700;
+      line-height: 1.52;
+      border: 1px solid #d5e8ff;
+      border-left: 5px solid var(--jk-primary);
+      border-radius: 12px;
+      background: #f2f8ff;
+    }
+
+    .notice strong {
+      color: var(--jk-heading);
+      font-weight: 900;
+    }
+
+
+    /* MINIMAL FRESH BLUE INFORMATION PANEL */
+    .info-panel {
+      position: relative;
+      overflow: hidden;
+      border-color: rgba(40,120,255,0.20) !important;
+      background:
+        radial-gradient(circle at 97% 0%, rgba(25,198,230,0.18), transparent 32%),
+        linear-gradient(135deg, #edf5ff 0%, #f9fbff 55%, #eefcff 100%) !important;
+      box-shadow: 0 15px 36px rgba(40,120,255,0.12) !important;
+    }
+
+    .info-panel::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 22px;
+      right: 22px;
+      height: 4px;
+      border-radius: 0 0 10px 10px;
+      background: linear-gradient(
+        90deg,
+        var(--jk-primary),
+        var(--jk-cyan)
+      );
+    }
+
+    .info-panel::after {
+      content: "";
+      width: 132px;
+      height: 132px;
+      position: absolute;
+      right: -74px;
+      bottom: -84px;
+      border: 24px solid rgba(40,120,255,0.05);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+
+    .info-panel .panel-heading {
+      position: relative;
+      z-index: 1;
+      margin-bottom: 18px;
+      padding-bottom: 15px;
+      border-bottom: 1px solid rgba(40,120,255,0.12);
+    }
+
+    .info-panel.simple-info .panel-heading {
+      justify-content: flex-start;
+      align-items: center;
+    }
+
+    .info-panel.simple-info .panel-heading::before {
+      content: "📝";
+      width: 44px;
+      height: 44px;
+      flex: 0 0 44px;
+      display: grid;
+      place-items: center;
+      color: #ffffff;
+      font-size: 1.04rem;
+      border-radius: 14px;
+      background: linear-gradient(
+        135deg,
+        var(--jk-primary),
+        var(--jk-cyan)
+      );
+      box-shadow: 0 9px 20px rgba(40,120,255,0.20);
+    }
+
+    .info-panel .panel-heading h2,
+    .info-panel .panel-heading h3 {
+      color: var(--jk-primary-dark);
+    }
+
+    .info-panel .panel-heading p {
+      color: #627493;
+    }
+
+    .info-panel .heading-icon {
+      color: #ffffff;
+      background: linear-gradient(
+        135deg,
+        var(--jk-primary),
+        var(--jk-cyan)
+      );
+      box-shadow: 0 9px 20px rgba(40,120,255,0.18);
+    }
+
+    .info-panel .form-grid,
+    .info-panel .notice {
+      position: relative;
+      z-index: 1;
+    }
+
+    .info-panel .form-label {
+      color: #254d84;
+    }
+
+    .info-panel .form-control {
+      border-color: #cddcf2;
+      background: rgba(255,255,255,0.94);
+      box-shadow: 0 5px 14px rgba(40,120,255,0.045);
+    }
+
+    .info-panel .form-control:hover {
+      border-color: #b8cdef;
+      background: #ffffff;
+    }
+
+    .info-panel .form-control:focus {
+      border-color: var(--jk-primary);
+      background: #ffffff;
+      box-shadow:
+        0 0 0 4px rgba(40,120,255,0.10),
+        0 8px 18px rgba(40,120,255,0.08);
+    }
+
+    @media (max-width: 760px) {
+      .info-panel {
+        padding: 18px 14px;
+        border-radius: 18px;
+      }
+
+      .info-panel::before {
+        left: 15px;
+        right: 15px;
+      }
+
+      .info-panel.simple-info .panel-heading::before {
+        width: 40px;
+        height: 40px;
+        flex-basis: 40px;
+        border-radius: 12px;
+      }
+    }
+
+
+    /* FORM */
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 13px;
+    }
+
+    .form-group {
+      min-width: 0;
+    }
+
+    .form-group.full {
+      grid-column: 1 / -1;
+    }
+
+    .form-label {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      margin-bottom: 8px;
+      color: var(--jk-heading);
+      font-size: 0.72rem;
+      font-weight: 900;
+    }
+
+    .form-control {
+      width: 100%;
+      min-height: 48px;
+      padding: 11px 14px;
+      color: var(--jk-text);
+      font-size: 0.82rem;
+      font-weight: 750;
+      outline: none;
+      border: 1.5px solid #dfe7f3;
+      border-radius: 13px;
+      background: #f8faff;
+      transition: 0.2s ease;
+    }
+
+    textarea.form-control {
+      min-height: 108px;
+      resize: vertical;
+      line-height: 1.6;
+    }
+
+    .form-control:hover {
+      border-color: #c9d8ec;
+      background: #ffffff;
+    }
+
+    .form-control:focus {
+      border-color: var(--jk-primary);
+      background: #ffffff;
+      box-shadow: 0 0 0 4px rgba(40,120,255,0.10);
+    }
+
+    .form-control[readonly] {
+      color: #53627d;
+      background: #f1f5fb;
+      cursor: not-allowed;
+    }
+
+    /* PROGRESS */
+    .progress-wrap {
+      margin-bottom: 17px;
+      padding: 13px 15px;
+      border: 1px solid #dfe8f5;
+      border-radius: 14px;
+      background: #f8faff;
+    }
+
+    .progress-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 8px;
+    }
+
+    .progress-head strong {
+      color: var(--jk-heading);
+      font-size: 0.72rem;
+      font-weight: 900;
+    }
+
+    .progress-head span {
+      color: var(--jk-primary-dark);
+      font-size: 0.72rem;
+      font-weight: 900;
+    }
+
+    .progress-track {
+      height: 9px;
+      overflow: hidden;
+      border-radius: 999px;
+      background: #e3eaf4;
+    }
+
+    .progress-bar {
+      width: 0%;
+      height: 100%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, var(--jk-primary), var(--jk-green));
+      transition: width 0.3s ease;
+    }
+
+    /* CATEGORY */
+    .category-section {
+      margin-bottom: 16px;
+      overflow: hidden;
+      border: 1px solid var(--jk-border);
+      border-radius: 17px;
+      background: #ffffff;
+    }
+
+    .category-section:last-child {
+      margin-bottom: 0;
+    }
+
+    .category-header {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      padding: 14px 15px;
+      border-bottom: 1px solid var(--jk-border);
+      background: var(--category-soft);
+    }
+
+    .category-icon {
+      width: 42px;
+      height: 42px;
+      flex: 0 0 42px;
+      display: grid;
+      place-items: center;
+      color: var(--category-color);
+      font-size: 1.1rem;
+      border-radius: 13px;
+      background: #ffffff;
+    }
+
+    .category-header strong,
+    .category-header span {
+      display: block;
+    }
+
+    .category-header strong {
+      color: var(--jk-heading);
+      font-size: 0.82rem;
+      font-weight: 900;
+    }
+
+    .category-header span {
+      margin-top: 3px;
+      color: var(--jk-muted);
+      font-size: 0.6rem;
+      font-weight: 650;
+    }
+
+    .category-section.cleaning {
+      --category-color: #1a9b72;
+      --category-soft: #eefbf6;
+    }
+
+    .category-section.service {
+      --category-color: #5d57c9;
+      --category-soft: #f3f1ff;
+    }
+
+    .category-section.security {
+      --category-color: #2878ff;
+      --category-soft: #f0f6ff;
+    }
+
+    /* TASK */
+    .task-list {
+      display: grid;
+      gap: 0;
+    }
+
+    .task-card {
+      overflow: hidden;
+      border-bottom: 1px dashed #e4ebf5;
+      background: #ffffff;
+      transition: 0.18s ease;
+    }
+
+    .task-card:last-child {
+      border-bottom: none;
+    }
+
+    .task-card:hover {
+      background: #fbfdff;
+    }
+
+    .task-main {
+      display: grid;
+      grid-template-columns: 48px minmax(0, 1fr);
+      gap: 12px;
+      padding: 15px;
+    }
+
+    .task-number {
+      width: 42px;
+      height: 42px;
+      display: grid;
+      place-items: center;
+      color: #ffffff;
+      font-size: 0.78rem;
+      font-weight: 950;
+      border-radius: 13px;
+      background: linear-gradient(135deg, var(--jk-primary), #4b8cff);
+      box-shadow: 0 7px 15px rgba(40,120,255,0.18);
+    }
+
+    .task-title {
+      margin: 0;
+      color: var(--jk-heading);
+      font-size: 0.82rem;
+      font-weight: 900;
+      line-height: 1.35;
+    }
+
+    .task-standard {
+      margin: 5px 0 0;
+      color: var(--jk-muted);
+      font-size: 0.68rem;
+      font-weight: 650;
+      line-height: 1.52;
+    }
+
+    .task-meta {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      margin-top: 9px;
+    }
+
+    .meta-badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 4px 7px;
+      color: #4d6890;
+      font-size: 0.54rem;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+      border: 1px solid #dce6f3;
+      border-radius: 999px;
+      background: #f4f7fb;
+    }
+
+    .status-area {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 7px;
+      padding: 12px 15px;
+      border-top: 1px solid #edf2f8;
+      background: #f9fbfe;
+    }
+
+    .status-option {
+      position: relative;
+      cursor: pointer;
+    }
+
+    .status-option input {
+      position: absolute;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .status-box {
+      min-height: 43px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      padding: 8px 6px;
+      color: #76849d;
+      font-size: 0.62rem;
+      font-weight: 900;
+      text-align: center;
+      border: 1.5px solid #dfe7f2;
+      border-radius: 11px;
+      background: #ffffff;
+      transition: 0.16s ease;
+    }
+
+    .status-box b {
+      font-size: 0.76rem;
+    }
+
+    .status-option:hover .status-box {
+      color: var(--status-color);
+      border-color: var(--status-color);
+      background: var(--status-soft);
+    }
+
+    .status-option input:checked + .status-box {
+      color: #ffffff;
+      border-color: var(--status-color);
+      background: var(--status-color);
+      box-shadow: 0 7px 16px var(--status-shadow);
+      transform: translateY(-1px);
+    }
+
+    .status-option.done {
+      --status-color: #25b983;
+      --status-soft: #eafaf4;
+      --status-shadow: rgba(37,185,131,0.20);
+    }
+
+    .status-option.partial {
+      --status-color: #ef9a35;
+      --status-soft: #fff4e7;
+      --status-shadow: rgba(239,154,53,0.20);
+    }
+
+    .status-option.missed {
+      --status-color: #e75565;
+      --status-soft: #fff0f2;
+      --status-shadow: rgba(231,85,101,0.20);
+    }
+
+    .status-option.na {
+      --status-color: #7c89a2;
+      --status-soft: #f0f3f8;
+      --status-shadow: rgba(124,137,162,0.18);
+    }
+
+    .task-note-wrap {
+      display: none;
+      padding: 0 15px 14px;
+      background: #f9fbfe;
+    }
+
+    .task-note-wrap.show {
+      display: block;
+    }
+
+    .task-note {
+      width: 100%;
+      min-height: 42px;
+      padding: 10px 12px;
+      color: var(--jk-text);
+      font-size: 0.7rem;
+      font-weight: 650;
+      outline: none;
+      border: 1.5px solid #e0e7f2;
+      border-radius: 11px;
+      background: #ffffff;
+      resize: vertical;
+    }
+
+    .task-note:focus {
+      border-color: var(--jk-primary);
+      box-shadow: 0 0 0 3px rgba(40,120,255,0.08);
+    }
+
+    .task-card.state-done {
+      border-left: 5px solid var(--jk-green);
+    }
+
+    .task-card.state-partial {
+      border-left: 5px solid var(--jk-orange);
+    }
+
+    .task-card.state-missed {
+      border-left: 5px solid var(--jk-red);
+    }
+
+    .task-card.state-na {
+      border-left: 5px solid #8b98ae;
+      opacity: 0.88;
+    }
+
+    /* SCORE */
+    .score-box {
+      display: grid;
+      grid-template-columns: auto minmax(0, 1fr);
+      gap: 14px;
+      align-items: center;
+      margin-top: 18px;
+      padding: 16px;
+      border: 1px solid #dce8f8;
+      border-radius: 16px;
+      background: linear-gradient(135deg, #f7faff, #f1f8ff);
+    }
+
+    .score-circle {
+      width: 76px;
+      height: 76px;
+      display: grid;
+      place-items: center;
+      color: var(--jk-primary-dark);
+      font-size: 1.13rem;
+      font-weight: 950;
+      border: 7px solid #dfeaff;
+      border-radius: 50%;
+      background: #ffffff;
+    }
+
+    .score-copy strong,
+    .score-copy span {
+      display: block;
+    }
+
+    .score-copy strong {
+      color: var(--jk-heading);
+      font-size: 0.88rem;
+      font-weight: 900;
+    }
+
+    .score-copy span {
+      margin-top: 4px;
+      color: var(--jk-muted);
+      font-size: 0.68rem;
+      font-weight: 650;
+      line-height: 1.5;
+    }
+
+    /* SUBMIT */
+    .submit-row {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(250px, 0.42fr);
+      gap: 14px;
+      align-items: center;
+      margin-top: 17px;
+      padding: 16px;
+      border: 1px solid #dce8f8;
+      border-radius: 16px;
+      background: #f7faff;
+    }
+
+    .submit-copy strong,
+    .submit-copy span {
+      display: block;
+    }
+
+    .submit-copy strong {
+      color: var(--jk-heading);
+      font-size: 0.84rem;
+      font-weight: 900;
+    }
+
+    .submit-copy span {
+      margin-top: 4px;
+      color: var(--jk-muted);
+      font-size: 0.66rem;
+      font-weight: 650;
+      line-height: 1.45;
+    }
+
+    .submit-button {
+      width: 100%;
+      min-height: 50px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 12px 18px;
+      color: #ffffff;
+      font-size: 0.8rem;
+      font-weight: 900;
+      cursor: pointer;
+      border: none;
+      border-radius: 13px;
+      background: linear-gradient(135deg, var(--jk-primary), var(--jk-green));
+      box-shadow: 0 11px 24px rgba(40,120,255,0.23);
+      transition: 0.2s ease;
+    }
+
+    .submit-button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 14px 28px rgba(40,120,255,0.28);
+    }
+
+    .submit-button:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+    }
+
+    /* LOADING / TOAST */
+    #loadingOverlay {
+      position: fixed;
+      inset: 0;
+      z-index: 3000;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      color: var(--jk-heading);
+      text-align: center;
+      background: rgba(246,249,255,0.95);
+      backdrop-filter: blur(10px);
+      transition: 0.35s ease;
+    }
+
+    .loader-mark {
+      width: 72px;
+      height: 72px;
+      display: grid;
+      place-items: center;
+      margin-bottom: 14px;
+      color: #ffffff;
+      font-size: 1.7rem;
+      border-radius: 23px;
+      background: linear-gradient(135deg, var(--jk-primary), var(--jk-green));
+      box-shadow: 0 14px 30px rgba(40,120,255,0.22);
+      animation: pulse 1.15s ease-in-out infinite alternate;
+    }
+
+    #loadingText {
+      font-size: 0.9rem;
+      font-weight: 900;
+    }
+
+    @keyframes pulse {
+      from { transform: scale(0.95); }
+      to { transform: scale(1.04); }
+    }
+
+    .toast {
+      position: fixed;
+      left: 50%;
+      bottom: 22px;
+      z-index: 5000;
+      width: min(440px, calc(100vw - 26px));
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 13px 15px;
+      color: var(--jk-heading);
+      border: 1px solid #dce7f5;
+      border-radius: 14px;
+      background: #ffffff;
+      box-shadow: 0 17px 42px rgba(22,44,89,0.20);
+      opacity: 0;
+      pointer-events: none;
+      transform: translate(-50%, 24px);
+      transition: 0.27s ease;
+    }
+
+    .toast.show {
+      opacity: 1;
+      pointer-events: auto;
+      transform: translate(-50%, 0);
+    }
+
+    .toast-icon {
+      width: 34px;
+      height: 34px;
+      flex: 0 0 34px;
+      display: grid;
+      place-items: center;
+      border-radius: 11px;
+      background: #edf5ff;
+    }
+
+    .toast.success .toast-icon {
+      background: #e8fbf4;
+    }
+
+    .toast.error .toast-icon {
+      background: #fff0f2;
+    }
+
+    .toast strong,
+    .toast span {
+      display: block;
+    }
+
+    .toast strong {
+      font-size: 0.76rem;
+      font-weight: 900;
+    }
+
+    .toast span {
+      margin-top: 2px;
+      color: var(--jk-muted);
+      font-size: 0.68rem;
+      font-weight: 650;
+      line-height: 1.42;
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 900px) {
+.form-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 760px) {
+      body {
+        padding: 10px;
+      }
+.journal-panel {
+        padding: 18px 13px;
+        border-radius: 18px;
+      }
+
+      .form-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .form-group.full {
+        grid-column: auto;
+      }
+
+      .task-main {
+        grid-template-columns: 40px minmax(0, 1fr);
+        padding: 13px 11px;
+      }
+
+      .task-number {
+        width: 37px;
+        height: 37px;
+      }
+
+      .status-area {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        padding: 10px 11px;
+      }
+
+      .submit-row {
+        grid-template-columns: 1fr;
+        padding: 14px;
+      }
+    }
+
+    @media (max-width: 520px) {
+.score-box {
+        grid-template-columns: 1fr;
+        text-align: center;
+      }
+
+      .score-circle {
+        margin: 0 auto;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div id="loadingOverlay">
+    <div class="loader-mark">🏗️</div>
+    <div id="loadingText">Menyiapkan jurnal tugas...</div>
+  </div>
+
+  <div id="appToast" class="toast" role="status" aria-live="polite">
+    <div class="toast-icon" id="toastIcon">✓</div>
+    <div>
+      <strong id="toastTitle">Berhasil</strong>
+      <span id="toastMessage">Jurnal berhasil disimpan.</span>
+    </div>
+  </div>
+
+  <main class="journal-page">
+<section class="journal-panel info-panel simple-info">
+      <div class="panel-heading">
+        <div>
+          <h2>Informasi Jurnal</h2>
+          <p>Isi identitas personil dan tanggal pelaksanaan tugas.</p>
+        </div>
+      </div>
+
+      
+
+      <div class="form-grid">
+        <div class="form-group">
+          <label class="form-label" for="jkTanggal">📅 Tanggal</label>
+          <input type="date" class="form-control" id="jkTanggal">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="jkNama">👤 Nama Personil Sarpras</label>
+          <input type="text" class="form-control" id="jkNama">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="jkArea">🏫 Wilayah Tugas</label>
+          <select class="form-control" id="jkArea">
+            <option value="Seluruh Area Pesantren">Seluruh Area Pesantren</option>
+            <option value="Kompleks Putra">Kompleks Putra</option>
+            <option value="Kompleks Putri">Kompleks Putri</option>
+            <option value="Area Umum dan Kantor">Area Umum dan Kantor</option>
+            <option value="Gudang dan Operasional">Gudang dan Operasional</option>
+          </select>
+        </div>
+      </div>
+    </section>
+
+    <section class="journal-panel">
+      <div class="panel-heading">
+        <div>
+          <h3>Checklist Pelaksanaan Tugas</h3>
+          <p>Nilai seluruh indikator sesuai kondisi pelaksanaan di lapangan.</p>
+        </div>
+      </div>
+
+      <div class="progress-wrap">
+        <div class="progress-head">
+          <strong>Progres Pengisian</strong>
+          <span id="progressLabel">0 dari 10 dinilai</span>
+        </div>
+        <div class="progress-track">
+          <div class="progress-bar" id="progressBar"></div>
+        </div>
+      </div>
+
+      <div id="taskContainer"></div>
+
+      <div class="score-box">
+        <div class="score-circle" id="scoreCircle">0%</div>
+        <div class="score-copy">
+          <strong id="scorePredicate">Belum Dinilai</strong>
+          <span id="scoreDescription">
+            Nilai akan dihitung otomatis setelah indikator diisi.
+          </span>
+        </div>
+      </div>
+
+      <div class="form-group full" style="margin-top:17px;">
+        <label class="form-label" for="jkCatatan">
+          📌 Catatan Umum, Kendala, atau Kejadian Penting
+        </label>
+        <textarea
+          class="form-control"
+          id="jkCatatan"
+          rows="4"
+          placeholder="Tuliskan kerusakan, kebutuhan perbaikan, kondisi air/listrik, kendaraan, stok gudang, hasil belanja, atau tindak lanjut yang diperlukan..."
+        ></textarea>
+      </div>
+
+      <div class="submit-row">
+        <div class="submit-copy">
+          <strong>Simpan jurnal kinerja harian</strong>
+          <span>
+            Jurnal akan masuk sebagai data evaluasi harian dan bahan
+            rekap bulanan Supervisor.
+          </span>
+        </div>
+
+        <button
+          class="submit-button"
+          id="btnSimpanJurnal"
+          onclick="simpanJurnal()"
+        >
+          💾 Simpan Jurnal
+        </button>
+      </div>
+    </section>
+  </main>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+    import {
+      getDatabase,
+      ref,
+      get,
+      push,
+      set,
+      query,
+      orderByChild,
+      equalTo,
+      limitToLast
+    } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+
+    const firebaseConfig = window.CAHAYA_CONFIG.firebase;
+
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+
+    const DB_PATH = "cahaya_app/jurnal_sarpras";
+    const JOURNAL_VERSION = "Jurnal Sarana dan Prasarana 2026/2027";
+
+    const STATUS_CONFIG = {
+      terlaksana: {
+        label: "Terlaksana",
+        score: 100,
+        className: "done"
+      },
+      sebagian: {
+        label: "Sebagian",
+        score: 50,
+        className: "partial"
+      },
+      tidak: {
+        label: "Tidak Terlaksana",
+        score: 0,
+        className: "missed"
+      },
+      tidak_berlaku: {
+        label: "Tidak Berlaku",
+        score: null,
+        className: "na"
+      }
+    };
+
+    const TASK_GROUPS = [
+      {
+        id: "pemeriksaan",
+        label: "Pemeriksaan & Kontrol Sarpras",
+        icon: "🔍",
+        className: "cleaning",
+        description: "Pemeriksaan fasilitas, instalasi, kendaraan, dan gudang sarana prasarana.",
+        tasks: [
+          {
+            id: "SP-01",
+            no: 1,
+            title: "Memeriksa Fasilitas Pondok",
+            standard: "Memeriksa kondisi asrama santri, masjid, dapur, tempat wudhu, kamar mandi, perpustakaan, dan fasilitas utama lainnya; mencatat kerusakan atau kebutuhan perbaikan.",
+            category: "Kontrol Fasilitas"
+          },
+          {
+            id: "SP-02",
+            no: 2,
+            title: "Memeriksa Instalasi dan Ketersediaan Air",
+            standard: "Memeriksa instalasi air, ketersediaan air, aliran ke titik penggunaan, serta kondisi dan fungsi pompa air.",
+            category: "Instalasi Air"
+          },
+          {
+            id: "SP-03",
+            no: 3,
+            title: "Memeriksa Instalasi Listrik",
+            standard: "Memeriksa kondisi instalasi listrik, lampu, sakelar, stopkontak, MCB, dan potensi gangguan atau bahaya kelistrikan.",
+            category: "Instalasi Listrik"
+          },
+          {
+            id: "SP-04",
+            no: 4,
+            title: "Memeriksa Kendaraan Operasional",
+            standard: "Memeriksa kondisi kendaraan atau mobil operasional, termasuk bahan bakar, ban, oli, kebersihan, dan kesiapan digunakan.",
+            category: "Kendaraan Operasional"
+          },
+          {
+            id: "SP-05",
+            no: 5,
+            title: "Memeriksa Gudang Sarpras",
+            standard: "Memeriksa kebersihan, kerapian, keamanan, stok barang, dan pencatatan keluar-masuk barang di gudang sarana prasarana.",
+            category: "Gudang Sarpras"
+          }
+        ]
+      },
+      {
+        id: "pemeliharaan",
+        label: "Pemeliharaan & Layanan Harian",
+        icon: "🛠️",
+        className: "security",
+        description: "Pemenuhan kebutuhan harian dan penanganan kerusakan ringan.",
+        tasks: [
+          {
+            id: "SP-06",
+            no: 6,
+            title: "Menyiapkan Kebutuhan Air Minum Santri",
+            standard: "Memastikan kebutuhan air minum santri tersedia dalam jumlah cukup, wadah bersih, dan dapat diakses sesuai kebutuhan.",
+            category: "Layanan Air Minum"
+          },
+          {
+            id: "SP-07",
+            no: 7,
+            title: "Memperbaiki Kerusakan Ringan Sarpras",
+            standard: "Menangani kerusakan ringan yang dapat diperbaiki langsung; kerusakan yang membutuhkan teknisi atau biaya lebih besar wajib dicatat dan dilaporkan.",
+            category: "Perbaikan Ringan"
+          }
+        ]
+      },
+      {
+        id: "administrasi",
+        label: "Pelaporan, Belanja & Administrasi",
+        icon: "📋",
+        className: "service",
+        description: "Pelaporan hasil kontrol, belanja kebutuhan dapur, dan pertanggungjawaban nota.",
+        tasks: [
+          {
+            id: "SP-08",
+            no: 8,
+            title: "Melaporkan Hasil Checklist Harian Sarpras",
+            standard: "Menyampaikan hasil pemeriksaan harian kepada Supervisor, termasuk kondisi fasilitas, kerusakan, tindakan yang telah dilakukan, dan kebutuhan tindak lanjut.",
+            category: "Laporan Harian"
+          },
+          {
+            id: "SP-09",
+            no: 9,
+            title: "Belanja Kebutuhan Dapur Putra & Putri",
+            standard: "Melaksanakan belanja kebutuhan dapur sesuai daftar, jumlah, kualitas, anggaran, dan kebutuhan dapur putra serta putri.",
+            category: "Belanja Dapur"
+          },
+          {
+            id: "SP-10",
+            no: 10,
+            title: "Menyetorkan Nota Pembelian kepada Bendahara",
+            standard: "Menyerahkan nota pembelian bahan kebutuhan dapur kepada Bendahara secara lengkap, jelas, dan tepat waktu.",
+            category: "Administrasi Keuangan"
+          }
+        ]
+      }
+    ];
+
+    let currentUser = {};
+    let taskStates = {};
+    let toastTimer = null;
+
+    try {
+      currentUser = JSON.parse(
+        localStorage.getItem("cahayaCurrentUser") || "{}"
+      );
+    } catch (error) {
+      console.warn("Data pengguna tidak terbaca:", error);
+    }
+
+    function escapeHtml(value = "") {
+      return String(value)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#39;");
+    }
+
+    function localDateValue() {
+      const now = new Date();
+
+      return [
+        now.getFullYear(),
+        String(now.getMonth() + 1).padStart(2, "0"),
+        String(now.getDate()).padStart(2, "0")
+      ].join("-");
+    }
+
+    function userName() {
+      return (
+        currentUser.label ||
+        currentUser.nama ||
+        currentUser.username ||
+        "Personil"
+      );
+    }
+
+    function userRole() {
+      if (Array.isArray(currentUser.akses)) {
+        return currentUser.akses.join(" • ");
+      }
+
+      return currentUser.akses || "Sarana & Prasarana";
+    }
+
+    function normalizedName(value = "") {
+      return String(value).trim().toUpperCase();
+    }
+
+    function normalizedKey(value = "") {
+      return String(value)
+        .toLowerCase()
+        .replace(/[^a-z0-9]/g, "");
+    }
+
+    function allTasks() {
+      return TASK_GROUPS.flatMap(group =>
+        group.tasks.map(task => ({
+          ...task,
+          groupId: group.id,
+          groupLabel: group.label
+        }))
+      );
+    }
+
+    function showToast(type, title, message) {
+      const toast = document.getElementById("appToast");
+
+      toast.className = `toast ${type}`;
+
+      document.getElementById("toastTitle").textContent = title;
+      document.getElementById("toastMessage").textContent = message;
+      document.getElementById("toastIcon").textContent =
+        type === "success" ? "✓" : "!";
+
+      requestAnimationFrame(() => {
+        toast.classList.add("show");
+      });
+
+      clearTimeout(toastTimer);
+
+      toastTimer = setTimeout(() => {
+        toast.classList.remove("show");
+      }, 4100);
+    }
+
+    function hideLoading() {
+      const overlay = document.getElementById("loadingOverlay");
+      overlay.style.opacity = "0";
+
+      setTimeout(() => {
+        overlay.style.display = "none";
+      }, 330);
+    }
+
+    function fillProfile() {
+      const name = userName();
+
+      document.getElementById(
+        "jkNama"
+      ).value = normalizedName(name);
+    }
+
+    function taskStatus(taskId) {
+      return taskStates[taskId]?.status || "";
+    }
+
+    function taskNote(taskId) {
+      return taskStates[taskId]?.catatan || "";
+    }
+
+    function buildStatusOption(taskId, status, shortLabel, label) {
+      const config = STATUS_CONFIG[status];
+
+      return `
+        <label class="status-option ${config.className}">
+          <input
+            type="radio"
+            name="status_${escapeHtml(taskId)}"
+            value="${escapeHtml(status)}"
+            onchange="setTaskStatus('${escapeHtml(taskId)}', '${escapeHtml(status)}')"
+            ${taskStatus(taskId) === status ? "checked" : ""}
+          >
+
+          <span class="status-box">
+            <b>${escapeHtml(shortLabel)}</b>
+            <span>${escapeHtml(label)}</span>
+          </span>
+        </label>
+      `;
+    }
+
+    function renderTasks() {
+      const container = document.getElementById("taskContainer");
+
+      allTasks().forEach(task => {
+        taskStates[task.id] = {
+          status: "",
+          catatan: ""
+        };
+      });
+
+      container.innerHTML = TASK_GROUPS.map(group => `
+        <section class="category-section ${group.className}">
+          <div class="category-header">
+            <div class="category-icon">${group.icon}</div>
+            <div>
+              <strong>${escapeHtml(group.label)}</strong>
+              <span>${escapeHtml(group.description)}</span>
+            </div>
+          </div>
+
+          <div class="task-list">
+            ${group.tasks.map(task => `
+              <article
+                class="task-card"
+                id="card_${escapeHtml(task.id)}"
+              >
+                <div class="task-main">
+                  <div class="task-number">${task.no}</div>
+
+                  <div>
+                    <h4 class="task-title">
+                      ${escapeHtml(task.title)}
+                    </h4>
+
+                    <p class="task-standard">
+                      ${escapeHtml(task.standard)}
+                    </p>
+
+                    <div class="task-meta">
+                      <span class="meta-badge">
+                        ${escapeHtml(task.category)}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="status-area">
+                  ${buildStatusOption(task.id, "terlaksana", "✓", "Terlaksana")}
+                  ${buildStatusOption(task.id, "sebagian", "½", "Sebagian")}
+                  ${buildStatusOption(task.id, "tidak", "×", "Tidak")}
+                  ${buildStatusOption(task.id, "tidak_berlaku", "—", "Tidak Berlaku")}
+                </div>
+
+                <div
+                  class="task-note-wrap"
+                  id="noteWrap_${escapeHtml(task.id)}"
+                >
+                  <textarea
+                    class="task-note"
+                    id="note_${escapeHtml(task.id)}"
+                    placeholder="Jelaskan kendala, penyebab, temuan, atau alasan status ini..."
+                    oninput="setTaskNote('${escapeHtml(task.id)}', this.value)"
+                  ></textarea>
+                </div>
+              </article>
+            `).join("")}
+          </div>
+        </section>
+      `).join("");
+
+      updateSummary();
+    }
+
+    function setTaskStatus(taskId, status) {
+      if (!taskStates[taskId]) return;
+
+      taskStates[taskId].status = status;
+
+      const config = STATUS_CONFIG[status];
+      const card = document.getElementById(`card_${taskId}`);
+      const noteWrap = document.getElementById(`noteWrap_${taskId}`);
+
+      card.className = `task-card state-${config.className}`;
+
+      const needNote =
+        status === "sebagian" ||
+        status === "tidak" ||
+        status === "tidak_berlaku";
+
+      noteWrap.classList.toggle("show", needNote);
+
+      if (!needNote) {
+        taskStates[taskId].catatan = "";
+        document.getElementById(`note_${taskId}`).value = "";
+      }
+
+      updateSummary();
+    }
+
+    function setTaskNote(taskId, value) {
+      if (!taskStates[taskId]) return;
+      taskStates[taskId].catatan = String(value || "").trim();
+    }
+
+    function calculateResult() {
+      const tasks = allTasks();
+
+      let assessed = 0;
+      let active = 0;
+      let done = 0;
+      let partial = 0;
+      let missed = 0;
+      let notApplicable = 0;
+      let scoreSum = 0;
+
+      tasks.forEach(task => {
+        const status = taskStatus(task.id);
+
+        if (!status) return;
+
+        assessed++;
+
+        if (status === "tidak_berlaku") {
+          notApplicable++;
+          return;
+        }
+
+        active++;
+
+        if (status === "terlaksana") done++;
+        if (status === "sebagian") partial++;
+        if (status === "tidak") missed++;
+
+        scoreSum += STATUS_CONFIG[status].score;
+      });
+
+      const score = active
+        ? Math.round(scoreSum / active)
+        : 0;
+
+      let predicate = "Belum Dinilai";
+
+      if (active) {
+        if (score >= 90) predicate = "Sangat Baik";
+        else if (score >= 80) predicate = "Baik";
+        else if (score >= 70) predicate = "Cukup";
+        else predicate = "Perlu Pembinaan";
+      }
+
+      return {
+        total: tasks.length,
+        assessed,
+        active,
+        done,
+        partial,
+        missed,
+        notApplicable,
+        score,
+        predicate
+      };
+    }
+
+    function updateSummary() {
+      const result = calculateResult();
+
+      document.getElementById("progressLabel").textContent =
+        `${result.assessed} dari ${result.total} dinilai`;
+
+      const progress = result.total
+        ? Math.round((result.assessed / result.total) * 100)
+        : 0;
+
+      document.getElementById("progressBar").style.width =
+        `${progress}%`;
+
+      document.getElementById("scoreCircle").textContent =
+        `${result.score}%`;
+
+      document.getElementById("scorePredicate").textContent =
+        result.predicate;
+
+      let description =
+        "Nilai akan dihitung otomatis setelah indikator diisi.";
+
+      if (result.active) {
+        description =
+          result.predicate === "Sangat Baik"
+            ? "Pelaksanaan tugas Sarpras sangat konsisten dan sesuai standar."
+            : result.predicate === "Baik"
+              ? "Pelaksanaan tugas Sarpras baik dengan beberapa bagian yang perlu diperkuat."
+              : result.predicate === "Cukup"
+                ? "Pelaksanaan cukup, tetapi masih terdapat pemeriksaan atau layanan yang perlu diperbaiki."
+                : "Diperlukan coaching dan tindak lanjut Supervisor.";
+      }
+
+      document.getElementById("scoreDescription").textContent =
+        description;
+    }
+
+    function validateJournal() {
+      const tasks = allTasks();
+      const unassessed = tasks.filter(task => !taskStatus(task.id));
+
+      if (unassessed.length) {
+        return {
+          valid: false,
+          message:
+            `${unassessed.length} indikator belum dinilai. Lengkapi seluruh status sebelum menyimpan.`
+        };
+      }
+
+      const missingNotes = tasks.filter(task => {
+        const status = taskStatus(task.id);
+
+        const needNote =
+          status === "sebagian" ||
+          status === "tidak" ||
+          status === "tidak_berlaku";
+
+        return needNote && !taskNote(task.id);
+      });
+
+      if (missingNotes.length) {
+        return {
+          valid: false,
+          message:
+            `Lengkapi alasan pada ${missingNotes.length} indikator yang tidak terlaksana penuh atau tidak berlaku.`
+        };
+      }
+
+      const result = calculateResult();
+
+      if (!result.active) {
+        return {
+          valid: false,
+          message:
+            "Semua indikator ditandai Tidak Berlaku. Periksa kembali pengisian."
+        };
+      }
+
+      return {
+        valid: true,
+        result
+      };
+    }
+
+    function buildCategoryRecap(details) {
+      const categories = {};
+
+      details.forEach(item => {
+        if (!categories[item.kelompok]) {
+          categories[item.kelompok] = {
+            totalIndikator: 0,
+            indikatorAktif: 0,
+            terlaksana: 0,
+            sebagian: 0,
+            tidakTerlaksana: 0,
+            tidakBerlaku: 0,
+            skorTotal: 0,
+            persentase: 0
+          };
+        }
+
+        const row = categories[item.kelompok];
+        row.totalIndikator++;
+
+        if (item.statusKode === "tidak_berlaku") {
+          row.tidakBerlaku++;
+          return;
+        }
+
+        row.indikatorAktif++;
+        row.skorTotal += item.skor;
+
+        if (item.statusKode === "terlaksana") {
+          row.terlaksana++;
+        } else if (item.statusKode === "sebagian") {
+          row.sebagian++;
+        } else if (item.statusKode === "tidak") {
+          row.tidakTerlaksana++;
+        }
+      });
+
+      Object.values(categories).forEach(row => {
+        row.persentase = row.indikatorAktif
+          ? Math.round(row.skorTotal / row.indikatorAktif)
+          : 0;
+
+        delete row.skorTotal;
+      });
+
+      return categories;
+    }
+
+    async function findExistingJournal(tanggal, nama) {
+      const snapshot = await get(
+        query(
+          ref(db, DB_PATH),
+          orderByChild("tanggal"),
+          equalTo(tanggal),
+          limitToLast(200)
+        )
+      );
+
+      if (!snapshot.exists()) return null;
+
+      const data = snapshot.val() || {};
+      const nameKey = normalizedKey(nama);
+
+      for (const [key, value] of Object.entries(data)) {
+        const sameDate = value.tanggal === tanggal;
+        const sameName =
+          normalizedKey(value.namaPersonil || "") === nameKey;
+
+        if (sameDate && sameName) {
+          return {
+            key,
+            value
+          };
+        }
+      }
+
+      return null;
+    }
+
+    async function simpanJurnal() {
+      const validation = validateJournal();
+
+      if (!validation.valid) {
+        showToast(
+          "error",
+          "Jurnal belum lengkap",
+          validation.message
+        );
+        return;
+      }
+
+      const tanggal =
+        document.getElementById("jkTanggal").value;
+
+      const nama =
+        normalizedName(
+          document.getElementById("jkNama").value
+        );
+
+      const area =
+        document.getElementById("jkArea").value;
+
+      const catatan =
+        document.getElementById("jkCatatan")
+          .value
+          .trim();
+
+      if (!tanggal || !nama) {
+        showToast(
+          "error",
+          "Informasi belum lengkap",
+          "Tanggal dan nama personil Sarpras wajib diisi."
+        );
+        return;
+      }
+
+      const result = validation.result;
+      const now = new Date();
+
+      const details = allTasks().map(task => {
+        const statusCode = taskStatus(task.id);
+        const status = STATUS_CONFIG[statusCode];
+
+        return {
+          id: task.id,
+          nomor: task.no,
+          tugas: task.title,
+          standar: task.standard,
+          kategori: task.category,
+          kelompok: task.groupLabel,
+          statusKode: statusCode,
+          status: status.label,
+          skor: status.score,
+          catatan: taskNote(task.id)
+        };
+      });
+
+      const payload = {
+        tanggal,
+        periodeBulan: tanggal.slice(0, 7),
+        tahun: Number(tanggal.slice(0, 4)),
+        bulan: Number(tanggal.slice(5, 7)),
+
+        namaPersonil: nama,
+        namaPersonilKey: normalizedKey(nama),
+        wilayahTugas: area,
+        areaTugas: area,
+
+        penginput:
+          currentUser.label ||
+          currentUser.nama ||
+          currentUser.username ||
+          nama,
+
+        jurnalVersi: JOURNAL_VERSION,
+
+        waktuSubmit: now.toISOString(),
+        waktuUpdate: now.toISOString(),
+
+        totalTugas: result.total,
+        indikatorAktif: result.active,
+        tugasSelesai: result.done,
+        tugasSebagian: result.partial,
+        tugasTidakTerlaksana: result.missed,
+        tugasTidakBerlaku: result.notApplicable,
+
+        persentase: result.score,
+        persentaseKinerja: result.score,
+        predikatKinerja: result.predicate,
+
+        detailPelaksanaan: details,
+        rekapKategori: buildCategoryRecap(details),
+
+        catatanKejadian: catatan || "Nihil",
+
+        statusVerifikasiSupervisor: "Menunggu Verifikasi",
+        sumberPenilaian: "Jurnal Mandiri Personil Sarpras",
+        siapRekapHarian: true,
+        siapRekapBulanan: true
+      };
+
+      const button =
+        document.getElementById("btnSimpanJurnal");
+
+      button.disabled = true;
+      button.innerHTML = "⏳ Menyimpan...";
+
+      try {
+        const existing = await findExistingJournal(
+          tanggal,
+          nama
+        );
+
+        if (existing) {
+          payload.waktuSimpan =
+            existing.value.waktuSimpan ||
+            now.toISOString();
+
+          payload.diperbarui = true;
+
+          await set(
+            ref(db, `${DB_PATH}/${existing.key}`),
+            payload
+          );
+        } else {
+          payload.waktuSimpan = now.toISOString();
+          payload.diperbarui = false;
+
+          await push(ref(db, DB_PATH), payload);
+        }
+
+        showToast(
+          "success",
+          existing
+            ? "Jurnal berhasil diperbarui"
+            : "Jurnal berhasil disimpan",
+          `Skor kinerja ${result.score}% — ${result.predicate}.`
+        );
+
+        button.innerHTML = "✓ Jurnal Tersimpan";
+
+        setTimeout(() => {
+          button.innerHTML = "💾 Simpan Jurnal";
+        }, 1100);
+      } catch (error) {
+        console.error("Gagal menyimpan jurnal:", error);
+
+        showToast(
+          "error",
+          "Jurnal gagal disimpan",
+          error?.message || "Terjadi kesalahan saat mengirim data."
+        );
+
+        button.innerHTML = "💾 Simpan Jurnal";
+      } finally {
+        button.disabled = false;
+      }
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      document.getElementById("jkTanggal").value =
+        localDateValue();
+
+      fillProfile();
+      renderTasks();
+      hideLoading();
+    });
+
+    window.setTaskStatus = setTaskStatus;
+    window.setTaskNote = setTaskNote;
+    window.simpanJurnal = simpanJurnal;
+  </script>
+</body>
+</html>

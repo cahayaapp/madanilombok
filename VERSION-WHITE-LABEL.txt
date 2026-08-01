@@ -1,0 +1,8 @@
+CAHAYA APP 2026.08 WHITE-LABEL v1
+- White-label config pusat
+- Setup aplikasi dan import CSV
+- Chat pengurus/wali diperbaiki
+- Sidebar multi-peran dikelompokkan
+- Dashboard pimpinan berdasarkan ruang kontrol
+- Audit dan optimasi bandwidth
+- Foto besar dipisahkan dari record utama

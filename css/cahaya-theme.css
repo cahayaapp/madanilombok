@@ -1,0 +1,1986 @@
+/* =========================================================
+   CAHAYA APP — FRESH EDTECH GLOBAL THEME 2026/2027
+   Modern • Friendly • Responsive • Premium
+   ========================================================= */
+
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&family=Poppins:wght@400;500;600;700;800&display=swap');
+
+:root {
+  /* =======================================================
+     BRAND COLORS
+     ======================================================= */
+  --primary: #2878ff;
+  --primary-dark: #1557d5;
+  --primary-deep: #103b92;
+  --primary-light: #eaf3ff;
+  --primary-soft: #f4f8ff;
+
+  --cyan: #19c6e6;
+  --cyan-dark: #0ca6c6;
+  --cyan-soft: #e8fbff;
+
+  --purple: #7667f5;
+  --purple-dark: #5a49d8;
+  --purple-soft: #f0eeff;
+
+  --orange: #ff9f43;
+  --orange-dark: #e77d1d;
+  --orange-soft: #fff4e7;
+
+  --green: #29c58d;
+  --green-dark: #169769;
+  --green-soft: #e8fbf4;
+
+  --red: #ff5d6c;
+  --red-dark: #d93b4b;
+  --red-soft: #fff0f2;
+
+  --yellow: #fbc94b;
+  --yellow-soft: #fff9e5;
+
+  /* =======================================================
+     NEUTRAL COLORS
+     ======================================================= */
+  --navy-dark: #152347;
+  --navy-light: #273b68;
+
+  --gold-main: #ffb938;
+  --gold-dark: #e79a16;
+  --gold-light: #fff2c7;
+
+  --emerald-dark: #13785b;
+
+  --bg-main: #f5f8ff;
+  --bg-pearl: #f5f8ff;
+  --bg-card: #ffffff;
+  --bg-soft: #f8faff;
+
+  --text-main: #1f2d4d;
+  --text-heading: #152347;
+  --text-muted: #71809e;
+  --text-soft: #94a0b8;
+
+  --border: #e5ebf5;
+  --border-light: #edf2fa;
+  --input-border: #dfe7f3;
+
+  /* =======================================================
+     EFFECTS
+     ======================================================= */
+  --shadow-xs: 0 2px 8px rgba(28, 71, 148, 0.05);
+  --shadow-sm: 0 6px 18px rgba(28, 71, 148, 0.07);
+  --shadow-card: 0 12px 35px rgba(35, 78, 160, 0.09);
+  --shadow-card-hover: 0 18px 45px rgba(35, 78, 160, 0.14);
+  --shadow-btn: 0 10px 24px rgba(40, 120, 255, 0.25);
+  --shadow-primary: 0 12px 30px rgba(40, 120, 255, 0.22);
+  --shadow-purple: 0 12px 30px rgba(118, 103, 245, 0.22);
+
+  /* =======================================================
+     RADIUS
+     ======================================================= */
+  --radius-xs: 8px;
+  --radius-sm: 12px;
+  --radius-md: 16px;
+  --radius-lg: 22px;
+  --radius-xl: 30px;
+  --radius-pill: 999px;
+
+  /* =======================================================
+     TRANSITIONS
+     ======================================================= */
+  --transition-fast: 0.18s ease;
+  --transition: 0.28s ease;
+  --transition-slow: 0.4s ease;
+}
+
+/* =========================================================
+   1. GLOBAL RESET
+   ========================================================= */
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  min-height: 100vh;
+  position: relative;
+  overflow-x: hidden;
+  padding: 24px;
+
+  font-family: 'Nunito', 'Poppins', sans-serif;
+  font-size: 15px;
+  line-height: 1.65;
+  color: var(--text-main);
+
+  background:
+    radial-gradient(
+      circle at 5% 5%,
+      rgba(25, 198, 230, 0.11) 0,
+      rgba(25, 198, 230, 0) 25%
+    ),
+    radial-gradient(
+      circle at 95% 10%,
+      rgba(118, 103, 245, 0.10) 0,
+      rgba(118, 103, 245, 0) 25%
+    ),
+    linear-gradient(180deg, #f4f8ff 0%, #f9fbff 46%, #f5f8ff 100%);
+}
+
+/* Ornamen latar belakang lembut */
+body::before,
+body::after {
+  content: "";
+  position: fixed;
+  z-index: -1;
+  border-radius: 50%;
+  filter: blur(4px);
+  pointer-events: none;
+}
+
+body::before {
+  width: 310px;
+  height: 310px;
+  top: -140px;
+  left: -130px;
+  background: rgba(25, 198, 230, 0.10);
+}
+
+body::after {
+  width: 350px;
+  height: 350px;
+  right: -170px;
+  bottom: -160px;
+  background: rgba(118, 103, 245, 0.08);
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+button,
+a {
+  -webkit-tap-highlight-color: transparent;
+}
+
+a {
+  color: var(--primary);
+  text-decoration: none;
+  transition: var(--transition-fast);
+}
+
+a:hover {
+  color: var(--primary-dark);
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+::selection {
+  color: #ffffff;
+  background: var(--primary);
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 9px;
+  height: 9px;
+}
+
+::-webkit-scrollbar-track {
+  background: #eef3fb;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #c1cee3;
+  border: 2px solid #eef3fb;
+  border-radius: var(--radius-pill);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #9eafc9;
+}
+
+/* =========================================================
+   2. MAIN CONTAINER
+   ========================================================= */
+
+.cahaya-container {
+  width: 100%;
+  max-width: 1180px;
+  margin: 0 auto;
+  position: relative;
+  animation: cahayaFadeUp 0.5s ease both;
+}
+
+@keyframes cahayaFadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes cahayaFadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes cahayaPulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(40, 120, 255, 0.22);
+  }
+
+  50% {
+    box-shadow: 0 0 0 8px rgba(40, 120, 255, 0);
+  }
+}
+
+/* =========================================================
+   3. OPTIONAL PAGE HERO
+   Tambahkan class ini jika ingin header halaman lebih hidup.
+   ========================================================= */
+
+.cahaya-hero {
+  position: relative;
+  overflow: hidden;
+  margin-bottom: 24px;
+  padding: 32px 34px;
+  color: #ffffff;
+  border-radius: var(--radius-xl);
+
+  background:
+    radial-gradient(
+      circle at 85% 20%,
+      rgba(255, 255, 255, 0.22),
+      transparent 24%
+    ),
+    linear-gradient(
+      135deg,
+      #1877f2 0%,
+      #2878ff 42%,
+      #19bfe4 100%
+    );
+
+  box-shadow: 0 18px 45px rgba(40, 120, 255, 0.24);
+}
+
+.cahaya-hero::before {
+  content: "";
+  position: absolute;
+  width: 230px;
+  height: 230px;
+  right: -60px;
+  top: -115px;
+  border: 40px solid rgba(255, 255, 255, 0.09);
+  border-radius: 50%;
+}
+
+.cahaya-hero::after {
+  content: "";
+  position: absolute;
+  width: 110px;
+  height: 110px;
+  right: 180px;
+  bottom: -70px;
+  background: rgba(255, 255, 255, 0.09);
+  border-radius: 30px;
+  transform: rotate(35deg);
+}
+
+.cahaya-hero-content {
+  position: relative;
+  z-index: 2;
+  max-width: 760px;
+}
+
+.cahaya-hero-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  margin-bottom: 12px;
+  padding: 7px 13px;
+
+  color: #ffffff;
+  font-size: 0.72rem;
+  font-weight: 900;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+
+  background: rgba(255, 255, 255, 0.17);
+  border: 1px solid rgba(255, 255, 255, 0.23);
+  border-radius: var(--radius-pill);
+  backdrop-filter: blur(8px);
+}
+
+.cahaya-hero h1 {
+  margin: 0 0 8px;
+  color: #ffffff;
+  font-family: 'Nunito', sans-serif;
+  font-size: clamp(1.65rem, 4vw, 2.6rem);
+  font-weight: 900;
+  line-height: 1.15;
+  letter-spacing: -0.8px;
+}
+
+.cahaya-hero p {
+  max-width: 700px;
+  margin: 0;
+  color: rgba(255, 255, 255, 0.88);
+  font-size: 0.98rem;
+  font-weight: 600;
+}
+
+/* =========================================================
+   4. CARD DESIGN
+   ========================================================= */
+
+.cahaya-card {
+  position: relative;
+  overflow: hidden;
+  margin-bottom: 24px;
+  padding: 28px;
+
+  background: rgba(255, 255, 255, 0.97);
+  border: 1px solid rgba(225, 233, 246, 0.92);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+
+  transition:
+    transform var(--transition),
+    box-shadow var(--transition),
+    border-color var(--transition);
+}
+
+.cahaya-card:hover {
+  border-color: #d7e4f8;
+  box-shadow: var(--shadow-card-hover);
+}
+
+/* Aksen warna di bagian atas kartu */
+.cahaya-card.accent-primary::before,
+.cahaya-card.accent-cyan::before,
+.cahaya-card.accent-purple::before,
+.cahaya-card.accent-orange::before,
+.cahaya-card.accent-green::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 24px;
+  right: 24px;
+  height: 4px;
+  border-radius: 0 0 10px 10px;
+}
+
+.cahaya-card.accent-primary::before {
+  background: linear-gradient(90deg, var(--primary), var(--cyan));
+}
+
+.cahaya-card.accent-cyan::before {
+  background: linear-gradient(90deg, var(--cyan), #58def2);
+}
+
+.cahaya-card.accent-purple::before {
+  background: linear-gradient(90deg, var(--purple), #a49aff);
+}
+
+.cahaya-card.accent-orange::before {
+  background: linear-gradient(90deg, var(--orange), #ffc067);
+}
+
+.cahaya-card.accent-green::before {
+  background: linear-gradient(90deg, var(--green), #6cdeb6);
+}
+
+/* Judul kartu lama tetap kompatibel */
+.cahaya-title {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  margin-bottom: 22px;
+  padding-left: 17px;
+
+  color: var(--text-heading);
+  font-family: 'Nunito', sans-serif;
+  font-size: 1.3rem;
+  font-weight: 900;
+  line-height: 1.3;
+  letter-spacing: -0.2px;
+}
+
+.cahaya-title::before {
+  content: "";
+  width: 6px;
+  height: 30px;
+  flex: 0 0 6px;
+  position: absolute;
+  left: 0;
+
+  background: linear-gradient(
+    180deg,
+    var(--primary) 0%,
+    var(--cyan) 100%
+  );
+
+  border-radius: var(--radius-pill);
+  box-shadow: 0 5px 12px rgba(40, 120, 255, 0.22);
+}
+
+.cahaya-title small {
+  display: block;
+  margin-top: 3px;
+  color: var(--text-muted);
+  font-size: 0.76rem;
+  font-weight: 700;
+}
+
+.cahaya-subtitle {
+  margin-top: -13px;
+  margin-bottom: 22px;
+  padding-left: 18px;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+/* =========================================================
+   5. INFORMATION / STAT CARDS
+   ========================================================= */
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.stat-card {
+  position: relative;
+  overflow: hidden;
+  min-height: 130px;
+  padding: 21px;
+
+  background: #ffffff;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+
+  transition: var(--transition);
+}
+
+.stat-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-card);
+}
+
+.stat-card::after {
+  content: "";
+  position: absolute;
+  width: 78px;
+  height: 78px;
+  right: -22px;
+  top: -22px;
+  border-radius: 50%;
+  background: var(--stat-soft, var(--primary-light));
+}
+
+.stat-icon {
+  width: 46px;
+  height: 46px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  margin-bottom: 13px;
+  color: var(--stat-color, var(--primary));
+  font-size: 1.22rem;
+
+  background: var(--stat-soft, var(--primary-light));
+  border-radius: 15px;
+}
+
+.stat-value {
+  color: var(--text-heading);
+  font-size: 1.65rem;
+  font-weight: 900;
+  line-height: 1;
+}
+
+.stat-label {
+  margin-top: 7px;
+  color: var(--text-muted);
+  font-size: 0.78rem;
+  font-weight: 800;
+}
+
+.stat-card.primary {
+  --stat-color: var(--primary);
+  --stat-soft: var(--primary-light);
+}
+
+.stat-card.cyan {
+  --stat-color: var(--cyan-dark);
+  --stat-soft: var(--cyan-soft);
+}
+
+.stat-card.purple {
+  --stat-color: var(--purple);
+  --stat-soft: var(--purple-soft);
+}
+
+.stat-card.orange {
+  --stat-color: var(--orange-dark);
+  --stat-soft: var(--orange-soft);
+}
+
+.stat-card.green {
+  --stat-color: var(--green-dark);
+  --stat-soft: var(--green-soft);
+}
+
+/* =========================================================
+   6. FORM ELEMENTS
+   ========================================================= */
+
+.form-group {
+  position: relative;
+  margin-bottom: 19px;
+}
+
+.form-group label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+
+  margin-bottom: 8px;
+  color: var(--text-heading);
+  font-size: 0.79rem;
+  font-weight: 900;
+  letter-spacing: 0.25px;
+}
+
+.form-group label .required {
+  color: var(--red);
+}
+
+.form-helper,
+.form-text {
+  display: block;
+  margin-top: 7px;
+  color: var(--text-muted);
+  font-size: 0.73rem;
+  font-weight: 600;
+}
+
+.form-control {
+  width: 100%;
+  min-height: 50px;
+  padding: 13px 16px;
+
+  color: var(--text-main);
+  font-family: inherit;
+  font-size: 0.93rem;
+  font-weight: 700;
+
+  background: #f8faff;
+  border: 1.5px solid var(--input-border);
+  border-radius: 14px;
+  outline: none;
+
+  transition:
+    border-color var(--transition-fast),
+    box-shadow var(--transition-fast),
+    background var(--transition-fast),
+    transform var(--transition-fast);
+}
+
+.form-control:hover {
+  border-color: #c8d7ec;
+  background: #ffffff;
+}
+
+.form-control:focus {
+  color: var(--text-heading);
+  background: #ffffff;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 4px rgba(40, 120, 255, 0.11);
+}
+
+.form-control::placeholder {
+  color: #a6b2c6;
+  font-weight: 600;
+}
+
+textarea.form-control {
+  min-height: 125px;
+  resize: vertical;
+  line-height: 1.65;
+}
+
+select.form-control {
+  cursor: pointer;
+}
+
+.form-control:disabled,
+.form-control[readonly] {
+  color: #8a97ae;
+  cursor: not-allowed;
+  background: #f0f3f8;
+  border-color: #e3e8f0;
+}
+
+.form-control.is-valid {
+  border-color: var(--green);
+  background: var(--green-soft);
+}
+
+.form-control.is-invalid {
+  border-color: var(--red);
+  background: var(--red-soft);
+}
+
+/* Input dengan ikon */
+.input-wrapper {
+  position: relative;
+}
+
+.input-wrapper .input-icon {
+  position: absolute;
+  top: 50%;
+  left: 16px;
+  z-index: 2;
+
+  color: var(--text-muted);
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+.input-wrapper .form-control {
+  padding-left: 46px;
+}
+
+/* =========================================================
+   7. CHECKBOX & RADIO MODERN
+   ========================================================= */
+
+.check-option,
+.radio-option {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  cursor: pointer;
+}
+
+.check-option input,
+.radio-option input {
+  width: 19px;
+  height: 19px;
+  margin-top: 2px;
+  accent-color: var(--primary);
+  cursor: pointer;
+}
+
+.check-option span,
+.radio-option span {
+  color: var(--text-main);
+  font-size: 0.88rem;
+  font-weight: 700;
+}
+
+/* Pilihan berbentuk kartu */
+.option-card {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+
+  padding: 15px;
+  cursor: pointer;
+
+  background: #ffffff;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-md);
+
+  transition: var(--transition-fast);
+}
+
+.option-card:hover {
+  border-color: #bcd1f5;
+  background: var(--primary-soft);
+}
+
+.option-card input {
+  margin-top: 3px;
+  accent-color: var(--primary);
+}
+
+.option-card:has(input:checked) {
+  background: var(--primary-light);
+  border-color: var(--primary);
+  box-shadow: 0 6px 16px rgba(40, 120, 255, 0.10);
+}
+
+/* =========================================================
+   8. BUTTONS
+   ========================================================= */
+
+.btn-cahaya {
+  width: 100%;
+  min-height: 50px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+
+  padding: 13px 22px;
+  color: #ffffff;
+
+  font-family: 'Nunito', sans-serif;
+  font-size: 0.93rem;
+  font-weight: 900;
+  line-height: 1.2;
+  letter-spacing: 0.1px;
+
+  cursor: pointer;
+  border: none;
+  border-radius: 14px;
+  outline: none;
+
+  background: linear-gradient(
+    135deg,
+    var(--primary) 0%,
+    #377fff 52%,
+    var(--cyan-dark) 100%
+  );
+
+  box-shadow: var(--shadow-btn);
+
+  transition:
+    transform var(--transition-fast),
+    box-shadow var(--transition-fast),
+    filter var(--transition-fast);
+}
+
+.btn-cahaya:hover {
+  color: #ffffff;
+  transform: translateY(-2px);
+  filter: saturate(1.08);
+  box-shadow: 0 14px 30px rgba(40, 120, 255, 0.30);
+}
+
+.btn-cahaya:active {
+  transform: translateY(0) scale(0.985);
+}
+
+.btn-cahaya:focus-visible {
+  box-shadow:
+    0 0 0 4px rgba(40, 120, 255, 0.17),
+    var(--shadow-btn);
+}
+
+.btn-cahaya:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+/* Tombol tidak selalu harus penuh */
+.btn-auto {
+  width: auto;
+}
+
+.btn-sm {
+  min-height: 39px;
+  width: auto;
+  padding: 9px 15px;
+  border-radius: 11px;
+  font-size: 0.8rem;
+}
+
+.btn-lg {
+  min-height: 56px;
+  padding: 16px 27px;
+  border-radius: 17px;
+  font-size: 1rem;
+}
+
+.btn-gold {
+  color: #ffffff;
+  background: linear-gradient(
+    135deg,
+    var(--orange),
+    var(--gold-main)
+  );
+  box-shadow: 0 10px 24px rgba(255, 159, 67, 0.24);
+}
+
+.btn-purple {
+  background: linear-gradient(
+    135deg,
+    var(--purple),
+    #9287ff
+  );
+  box-shadow: var(--shadow-purple);
+}
+
+.btn-green {
+  background: linear-gradient(
+    135deg,
+    var(--green),
+    #20ac79
+  );
+  box-shadow: 0 10px 24px rgba(41, 197, 141, 0.22);
+}
+
+.btn-danger {
+  background: linear-gradient(
+    135deg,
+    var(--red),
+    #ed4052
+  );
+  box-shadow: 0 10px 24px rgba(255, 93, 108, 0.22);
+}
+
+.btn-light {
+  color: var(--primary);
+  background: var(--primary-light);
+  border: 1px solid #d5e5ff;
+  box-shadow: none;
+}
+
+.btn-light:hover {
+  color: var(--primary-dark);
+  background: #deebff;
+  box-shadow: 0 8px 18px rgba(40, 120, 255, 0.12);
+}
+
+.btn-outline {
+  color: var(--primary);
+  background: #ffffff;
+  border: 1.5px solid #bbd3f9;
+  box-shadow: none;
+}
+
+.btn-outline:hover {
+  color: #ffffff;
+  background: var(--primary);
+  border-color: var(--primary);
+  box-shadow: var(--shadow-btn);
+}
+
+.btn-group-cahaya {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.btn-group-cahaya .btn-cahaya {
+  width: auto;
+  flex: 1 1 180px;
+}
+
+/* =========================================================
+   9. TAB NAVIGATION
+   ========================================================= */
+
+.tab-nav {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  margin-bottom: 22px;
+  padding: 7px;
+  overflow-x: auto;
+
+  background: rgba(232, 239, 251, 0.75);
+  border: 1px solid #e2eaf6;
+  border-radius: 17px;
+
+  scrollbar-width: none;
+}
+
+.tab-nav::-webkit-scrollbar {
+  display: none;
+}
+
+.tab-btn {
+  flex: 0 0 auto;
+  min-height: 42px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+
+  padding: 10px 18px;
+  white-space: nowrap;
+
+  color: var(--text-muted);
+  font-family: inherit;
+  font-size: 0.82rem;
+  font-weight: 900;
+
+  cursor: pointer;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 12px;
+
+  transition: var(--transition-fast);
+}
+
+.tab-btn:hover {
+  color: var(--primary);
+  background: rgba(255, 255, 255, 0.75);
+}
+
+.tab-btn.active {
+  color: #ffffff;
+  background: linear-gradient(
+    135deg,
+    var(--primary),
+    #4286ff
+  );
+  border-color: var(--primary);
+  box-shadow: 0 8px 18px rgba(40, 120, 255, 0.22);
+}
+
+.tab-content {
+  display: none;
+}
+
+.tab-content.active {
+  display: block;
+  animation: cahayaFadeUp 0.35s ease both;
+}
+
+/* =========================================================
+   10. TABLES
+   ========================================================= */
+
+.table-responsive {
+  width: 100%;
+  overflow-x: auto;
+  margin-bottom: 20px;
+
+  background: #ffffff;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-xs);
+}
+
+.cahaya-table {
+  width: 100%;
+  min-width: 680px;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+.cahaya-table th {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+
+  padding: 14px 16px;
+  color: #526382;
+
+  font-size: 0.72rem;
+  font-weight: 900;
+  text-align: left;
+  text-transform: uppercase;
+  letter-spacing: 0.45px;
+
+  background: #f4f7fc;
+  border-bottom: 1px solid var(--border);
+}
+
+.cahaya-table th:first-child {
+  border-top-left-radius: var(--radius-md);
+}
+
+.cahaya-table th:last-child {
+  border-top-right-radius: var(--radius-md);
+}
+
+.cahaya-table td {
+  padding: 15px 16px;
+  color: var(--text-main);
+  font-size: 0.86rem;
+  font-weight: 650;
+  vertical-align: middle;
+
+  background: #ffffff;
+  border-bottom: 1px solid var(--border-light);
+
+  transition: background var(--transition-fast);
+}
+
+.cahaya-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.cahaya-table tbody tr:hover td {
+  background: #f7faff;
+}
+
+.cahaya-table td:first-child,
+.cahaya-table th:first-child {
+  padding-left: 20px;
+}
+
+.cahaya-table td:last-child,
+.cahaya-table th:last-child {
+  padding-right: 20px;
+}
+
+.table-center th,
+.table-center td {
+  text-align: center;
+}
+
+.table-action {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  flex-wrap: nowrap;
+}
+
+/* =========================================================
+   11. BADGES & STATUS
+   ========================================================= */
+
+.badge-cahaya {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+
+  padding: 6px 10px;
+  color: var(--primary-dark);
+  font-size: 0.68rem;
+  font-weight: 900;
+  line-height: 1.2;
+
+  background: var(--primary-light);
+  border: 1px solid #d5e5ff;
+  border-radius: var(--radius-pill);
+}
+
+.badge-success {
+  color: var(--green-dark);
+  background: var(--green-soft);
+  border-color: #c8f0df;
+}
+
+.badge-warning {
+  color: #b66d13;
+  background: var(--orange-soft);
+  border-color: #ffe1b9;
+}
+
+.badge-danger {
+  color: var(--red-dark);
+  background: var(--red-soft);
+  border-color: #ffd5da;
+}
+
+.badge-purple {
+  color: var(--purple-dark);
+  background: var(--purple-soft);
+  border-color: #ddd8ff;
+}
+
+.status-dot {
+  width: 7px;
+  height: 7px;
+  display: inline-block;
+  background: currentColor;
+  border-radius: 50%;
+}
+
+/* =========================================================
+   12. ALERTS
+   ========================================================= */
+
+.alert-cahaya {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+
+  margin-bottom: 18px;
+  padding: 15px 17px;
+
+  color: var(--primary-deep);
+  font-size: 0.85rem;
+  font-weight: 700;
+
+  background: var(--primary-light);
+  border: 1px solid #d6e6ff;
+  border-left: 5px solid var(--primary);
+  border-radius: 13px;
+}
+
+.alert-cahaya strong {
+  color: var(--text-heading);
+  font-weight: 900;
+}
+
+.alert-success {
+  color: var(--green-dark);
+  background: var(--green-soft);
+  border-color: #c9efdf;
+  border-left-color: var(--green);
+}
+
+.alert-warning {
+  color: #a86718;
+  background: var(--orange-soft);
+  border-color: #ffe1bc;
+  border-left-color: var(--orange);
+}
+
+.alert-danger {
+  color: var(--red-dark);
+  background: var(--red-soft);
+  border-color: #ffd1d7;
+  border-left-color: var(--red);
+}
+
+/* =========================================================
+   13. SCALE 1–5 / ASESMEN
+   ========================================================= */
+
+.scale-wrapper {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(50px, 1fr));
+  gap: 8px;
+  margin-top: 11px;
+}
+
+.scale-item {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 7px;
+  cursor: pointer;
+}
+
+.scale-item input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.scale-box {
+  width: 100%;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  color: var(--text-muted);
+  font-size: 1rem;
+  font-weight: 900;
+
+  background: #f5f8fd;
+  border: 1.5px solid var(--input-border);
+  border-radius: 13px;
+
+  transition:
+    color var(--transition-fast),
+    background var(--transition-fast),
+    border-color var(--transition-fast),
+    transform var(--transition-fast),
+    box-shadow var(--transition-fast);
+}
+
+.scale-item:hover .scale-box {
+  color: var(--primary);
+  background: var(--primary-light);
+  border-color: #b9d3fb;
+  transform: translateY(-2px);
+}
+
+.scale-item input:checked + .scale-box {
+  color: #ffffff;
+  background: linear-gradient(
+    135deg,
+    var(--primary),
+    var(--cyan-dark)
+  );
+  border-color: var(--primary);
+  transform: translateY(-2px) scale(1.025);
+  box-shadow: 0 9px 20px rgba(40, 120, 255, 0.23);
+}
+
+.scale-item input:focus-visible + .scale-box {
+  box-shadow: 0 0 0 4px rgba(40, 120, 255, 0.14);
+}
+
+.scale-label {
+  min-height: 30px;
+  color: var(--text-muted);
+  font-size: 0.6rem;
+  font-weight: 900;
+  line-height: 1.25;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 0.15px;
+}
+
+/* =========================================================
+   14. GRID SYSTEM
+   ========================================================= */
+
+.grid-2 {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 17px;
+}
+
+.grid-3 {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 17px;
+}
+
+.grid-4 {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 17px;
+}
+
+.grid-auto {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 17px;
+}
+
+/* =========================================================
+   15. LIST / MENU CARDS
+   ========================================================= */
+
+.cahaya-menu-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(235px, 1fr));
+  gap: 16px;
+}
+
+.cahaya-menu-card {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+
+  min-height: 102px;
+  padding: 18px;
+  color: var(--text-main);
+
+  background: #ffffff;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+
+  transition: var(--transition);
+}
+
+.cahaya-menu-card:hover {
+  color: var(--text-main);
+  transform: translateY(-4px);
+  border-color: #cbdcf6;
+  box-shadow: var(--shadow-card);
+}
+
+.cahaya-menu-icon {
+  width: 54px;
+  height: 54px;
+  flex: 0 0 54px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  color: var(--primary);
+  font-size: 1.35rem;
+
+  background: var(--primary-light);
+  border-radius: 17px;
+}
+
+.cahaya-menu-card:nth-child(4n + 2) .cahaya-menu-icon {
+  color: var(--cyan-dark);
+  background: var(--cyan-soft);
+}
+
+.cahaya-menu-card:nth-child(4n + 3) .cahaya-menu-icon {
+  color: var(--purple);
+  background: var(--purple-soft);
+}
+
+.cahaya-menu-card:nth-child(4n + 4) .cahaya-menu-icon {
+  color: var(--orange-dark);
+  background: var(--orange-soft);
+}
+
+.cahaya-menu-title {
+  color: var(--text-heading);
+  font-size: 0.95rem;
+  font-weight: 900;
+  line-height: 1.25;
+}
+
+.cahaya-menu-description {
+  margin-top: 4px;
+  color: var(--text-muted);
+  font-size: 0.73rem;
+  font-weight: 650;
+  line-height: 1.4;
+}
+
+/* =========================================================
+   16. SECTION HEADER
+   ========================================================= */
+
+.section-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+
+  margin-bottom: 20px;
+}
+
+.section-header h2 {
+  color: var(--text-heading);
+  font-size: 1.25rem;
+  font-weight: 900;
+  line-height: 1.25;
+}
+
+.section-header p {
+  margin-top: 4px;
+  color: var(--text-muted);
+  font-size: 0.83rem;
+  font-weight: 650;
+}
+
+.section-header-action {
+  flex: 0 0 auto;
+}
+
+/* =========================================================
+   17. PROGRESS BAR
+   ========================================================= */
+
+.progress-cahaya {
+  width: 100%;
+  height: 10px;
+  overflow: hidden;
+  background: #e9eff8;
+  border-radius: var(--radius-pill);
+}
+
+.progress-bar-cahaya {
+  height: 100%;
+  min-width: 4px;
+  border-radius: inherit;
+  background: linear-gradient(
+    90deg,
+    var(--primary),
+    var(--cyan)
+  );
+  box-shadow: 0 3px 8px rgba(40, 120, 255, 0.25);
+  transition: width 0.5s ease;
+}
+
+/* =========================================================
+   18. EMPTY STATE
+   ========================================================= */
+
+.empty-state {
+  padding: 46px 20px;
+  color: var(--text-muted);
+  text-align: center;
+}
+
+.empty-state-icon {
+  width: 78px;
+  height: 78px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  margin: 0 auto 15px;
+  color: var(--primary);
+  font-size: 2rem;
+
+  background: var(--primary-light);
+  border-radius: 26px;
+}
+
+.empty-state h3 {
+  margin-bottom: 5px;
+  color: var(--text-heading);
+  font-size: 1.05rem;
+  font-weight: 900;
+}
+
+.empty-state p {
+  max-width: 450px;
+  margin: 0 auto;
+  font-size: 0.82rem;
+  font-weight: 650;
+}
+
+/* =========================================================
+   19. LOADING
+   ========================================================= */
+
+.cahaya-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+
+  padding: 25px;
+  color: var(--primary);
+  font-size: 0.85rem;
+  font-weight: 900;
+}
+
+.cahaya-spinner {
+  width: 23px;
+  height: 23px;
+  border: 3px solid #dce9ff;
+  border-top-color: var(--primary);
+  border-radius: 50%;
+  animation: cahayaSpin 0.75s linear infinite;
+}
+
+@keyframes cahayaSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Skeleton loader */
+.skeleton {
+  overflow: hidden;
+  position: relative;
+  background: #eaf0f8;
+  border-radius: 9px;
+}
+
+.skeleton::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.7),
+    transparent
+  );
+  animation: skeletonMove 1.25s infinite;
+}
+
+@keyframes skeletonMove {
+  to {
+    transform: translateX(100%);
+  }
+}
+
+/* =========================================================
+   20. MODAL
+   ========================================================= */
+
+.cahaya-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 9998;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 20px;
+  background: rgba(18, 34, 68, 0.55);
+  backdrop-filter: blur(7px);
+
+  animation: cahayaFadeIn 0.2s ease;
+}
+
+.cahaya-modal {
+  width: 100%;
+  max-width: 620px;
+  max-height: calc(100vh - 40px);
+  overflow-y: auto;
+
+  padding: 26px;
+  background: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  border-radius: 24px;
+  box-shadow: 0 25px 65px rgba(15, 36, 79, 0.26);
+
+  animation: cahayaFadeUp 0.28s ease;
+}
+
+.cahaya-modal-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 15px;
+
+  margin-bottom: 20px;
+}
+
+.cahaya-modal-title {
+  color: var(--text-heading);
+  font-size: 1.2rem;
+  font-weight: 900;
+}
+
+.cahaya-modal-close {
+  width: 38px;
+  height: 38px;
+  flex: 0 0 38px;
+
+  color: var(--text-muted);
+  font-size: 1.1rem;
+  cursor: pointer;
+
+  background: #f1f5fb;
+  border: none;
+  border-radius: 12px;
+
+  transition: var(--transition-fast);
+}
+
+.cahaya-modal-close:hover {
+  color: var(--red);
+  background: var(--red-soft);
+}
+
+/* =========================================================
+   21. UTILITIES
+   ========================================================= */
+
+.text-primary {
+  color: var(--primary) !important;
+}
+
+.text-success {
+  color: var(--green-dark) !important;
+}
+
+.text-warning {
+  color: var(--orange-dark) !important;
+}
+
+.text-danger {
+  color: var(--red-dark) !important;
+}
+
+.text-muted {
+  color: var(--text-muted) !important;
+}
+
+.text-center {
+  text-align: center !important;
+}
+
+.text-right {
+  text-align: right !important;
+}
+
+.fw-600 {
+  font-weight: 600 !important;
+}
+
+.fw-700 {
+  font-weight: 700 !important;
+}
+
+.fw-800 {
+  font-weight: 800 !important;
+}
+
+.fw-900 {
+  font-weight: 900 !important;
+}
+
+.mt-0 {
+  margin-top: 0 !important;
+}
+
+.mt-1 {
+  margin-top: 8px !important;
+}
+
+.mt-2 {
+  margin-top: 16px !important;
+}
+
+.mt-3 {
+  margin-top: 24px !important;
+}
+
+.mb-0 {
+  margin-bottom: 0 !important;
+}
+
+.mb-1 {
+  margin-bottom: 8px !important;
+}
+
+.mb-2 {
+  margin-bottom: 16px !important;
+}
+
+.mb-3 {
+  margin-bottom: 24px !important;
+}
+
+.d-none {
+  display: none !important;
+}
+
+.w-100 {
+  width: 100% !important;
+}
+
+/* =========================================================
+   22. RESPONSIVE — TABLET
+   ========================================================= */
+
+@media (max-width: 992px) {
+  body {
+    padding: 18px;
+  }
+
+  .stats-grid,
+  .grid-4 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .grid-3 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .cahaya-hero {
+    padding: 29px;
+  }
+}
+
+/* =========================================================
+   23. RESPONSIVE — MOBILE
+   ========================================================= */
+
+@media (max-width: 768px) {
+  body {
+    padding: 10px;
+    font-size: 14px;
+  }
+
+  .cahaya-container {
+    max-width: 100%;
+  }
+
+  .cahaya-hero {
+    margin-bottom: 15px;
+    padding: 25px 19px;
+    border-radius: 21px;
+  }
+
+  .cahaya-hero h1 {
+    font-size: 1.55rem;
+  }
+
+  .cahaya-hero p {
+    font-size: 0.83rem;
+  }
+
+  .cahaya-hero::before {
+    width: 170px;
+    height: 170px;
+    right: -80px;
+    top: -75px;
+  }
+
+  .cahaya-card {
+    margin-bottom: 15px;
+    padding: 20px 15px;
+    border-radius: 18px;
+  }
+
+  .cahaya-title {
+    margin-bottom: 18px;
+    padding-left: 15px;
+    font-size: 1.1rem;
+  }
+
+  .cahaya-title::before {
+    width: 5px;
+    height: 27px;
+    flex-basis: 5px;
+  }
+
+  .grid-2,
+  .grid-3,
+  .grid-4 {
+    grid-template-columns: 1fr;
+    gap: 13px;
+  }
+
+  .stats-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+  }
+
+  .stat-card {
+    min-height: 115px;
+    padding: 16px;
+    border-radius: 17px;
+  }
+
+  .stat-icon {
+    width: 41px;
+    height: 41px;
+    margin-bottom: 10px;
+    border-radius: 13px;
+  }
+
+  .stat-value {
+    font-size: 1.35rem;
+  }
+
+  .stat-label {
+    font-size: 0.68rem;
+  }
+
+  .form-group {
+    margin-bottom: 16px;
+  }
+
+  .form-control {
+    min-height: 47px;
+    padding: 12px 14px;
+    font-size: 0.88rem;
+    border-radius: 13px;
+  }
+
+  .btn-cahaya {
+    min-height: 47px;
+    padding: 12px 18px;
+    font-size: 0.87rem;
+    border-radius: 13px;
+  }
+
+  .btn-group-cahaya {
+    flex-direction: column;
+  }
+
+  .btn-group-cahaya .btn-cahaya {
+    width: 100%;
+    flex: none;
+  }
+
+  .tab-nav {
+    margin-right: -4px;
+    margin-left: -4px;
+    padding: 6px;
+    border-radius: 15px;
+  }
+
+  .tab-btn {
+    min-height: 40px;
+    padding: 9px 15px;
+    font-size: 0.76rem;
+  }
+
+  .scale-wrapper {
+    gap: 5px;
+  }
+
+  .scale-box {
+    height: 43px;
+    border-radius: 11px;
+  }
+
+  .scale-label {
+    font-size: 0.52rem;
+  }
+
+  .section-header {
+    flex-direction: column;
+    gap: 11px;
+  }
+
+  .section-header-action,
+  .section-header-action .btn-cahaya {
+    width: 100%;
+  }
+
+  .cahaya-menu-grid {
+    grid-template-columns: 1fr;
+    gap: 11px;
+  }
+
+  .cahaya-menu-card {
+    min-height: 92px;
+    padding: 15px;
+    border-radius: 17px;
+  }
+
+  .cahaya-menu-icon {
+    width: 49px;
+    height: 49px;
+    flex-basis: 49px;
+    border-radius: 15px;
+  }
+
+  .cahaya-modal-backdrop {
+    align-items: flex-end;
+    padding: 0;
+  }
+
+  .cahaya-modal {
+    max-height: 90vh;
+    padding: 21px 16px;
+    border-radius: 24px 24px 0 0;
+  }
+}
+
+/* =========================================================
+   24. RESPONSIVE — SMALL MOBILE
+   ========================================================= */
+
+@media (max-width: 430px) {
+  body {
+    padding: 8px;
+  }
+
+  .cahaya-hero {
+    padding: 23px 17px;
+  }
+
+  .cahaya-card {
+    padding: 18px 13px;
+  }
+
+  .stats-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .stat-card {
+    min-width: 0;
+  }
+
+  .scale-wrapper {
+    grid-template-columns: repeat(5, minmax(42px, 1fr));
+    overflow-x: auto;
+    padding-bottom: 4px;
+  }
+
+  .scale-box {
+    min-width: 42px;
+  }
+
+  .cahaya-table {
+    min-width: 620px;
+  }
+
+  .alert-cahaya {
+    padding: 13px;
+    font-size: 0.78rem;
+  }
+}
+
+/* =========================================================
+   25. PRINT MODE
+   ========================================================= */
+
+@media print {
+  body {
+    padding: 0;
+    color: #17213a;
+    background: #ffffff !important;
+  }
+
+  body::before,
+  body::after {
+    display: none;
+  }
+
+  .cahaya-container {
+    max-width: none;
+  }
+
+  .cahaya-card,
+  .stat-card,
+  .table-responsive {
+    box-shadow: none !important;
+    break-inside: avoid;
+  }
+
+  .cahaya-card {
+    border-color: #dce2ec;
+  }
+
+  .btn-cahaya,
+  .tab-nav,
+  .no-print {
+    display: none !important;
+  }
+
+  .table-responsive {
+    overflow: visible;
+  }
+
+  .cahaya-table {
+    min-width: 0;
+  }
+
+  .cahaya-table th {
+    position: static;
+  }
+}
+
+/* =========================================================
+   26. ACCESSIBILITY
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

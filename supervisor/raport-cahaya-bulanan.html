@@ -1,0 +1,2153 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <!-- CAHAYA WHITE-LABEL CONFIG -->
+  <script src="../config/tenant-config.js"></script>
+  <script src="../config/master-data.js"></script>
+  <script src="../js/cahaya-config-runtime.js" defer></script>
+
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>CAHAYA APP - Evaluasi Bulanan Mentor</title>
+
+  <link rel="stylesheet" href="../css/cahaya-theme.css" />
+
+  <style>
+    :root {
+      --navy: #0f172a;
+      --navy-2: #1e293b;
+      --gold: #d4af37;
+      --gold-dark: #b45309;
+      --gold-soft: #fffbeb;
+      --green: #047857;
+      --green-soft: #ecfdf5;
+      --blue: #1d4ed8;
+      --blue-soft: #eff6ff;
+      --purple: #6d28d9;
+      --purple-soft: #f5f3ff;
+      --red: #b91c1c;
+      --red-soft: #fef2f2;
+      --orange: #c2410c;
+      --orange-soft: #fff7ed;
+      --teal: #0f766e;
+      --teal-soft: #f0fdfa;
+      --muted: #64748b;
+      --line: #e2e8f0;
+      --white: #ffffff;
+      --shadow: 0 18px 42px rgba(15, 23, 42, 0.08);
+      --radius: 22px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background:
+        radial-gradient(circle at top left, rgba(212,175,55,0.10), transparent 34%),
+        radial-gradient(circle at top right, rgba(14,165,233,0.08), transparent 32%),
+        linear-gradient(180deg, #f8fafc, #f1f5f9);
+      color: var(--navy);
+      font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    .page-shell {
+      max-width: 1240px;
+      margin: 0 auto;
+      padding: 24px;
+    }
+
+    .header-evaluasi {
+      background:
+        radial-gradient(circle at top right, rgba(212,175,55,0.22), transparent 32%),
+        linear-gradient(135deg, var(--navy), #111827 62%, #1e293b);
+      padding: 34px 40px;
+      border-radius: 30px;
+      color: white;
+      margin-bottom: 22px;
+      box-shadow: 0 22px 48px rgba(15, 23, 42, 0.20);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .header-evaluasi::after {
+      content: '📊';
+      position: absolute;
+      right: 24px;
+      top: -16px;
+      font-size: 8.5rem;
+      opacity: 0.10;
+      pointer-events: none;
+    }
+
+    .header-kicker {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 12px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.18);
+      color: #f8e7a1;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      font-weight: 900;
+      margin-bottom: 12px;
+    }
+
+    .header-evaluasi h1 {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: clamp(1.8rem, 4vw, 2.55rem);
+      color: #f8e7a1;
+      margin: 0 0 10px;
+      line-height: 1.08;
+      letter-spacing: -0.03em;
+    }
+
+    .header-evaluasi p {
+      margin: 0;
+      font-size: 0.94rem;
+      opacity: 0.88;
+      line-height: 1.7;
+      max-width: 940px;
+    }
+
+    .tab-shell {
+      background: rgba(255,255,255,0.86);
+      border: 1px solid rgba(226,232,240,0.95);
+      border-radius: 24px;
+      padding: 12px;
+      box-shadow: var(--shadow);
+      margin-bottom: 20px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      backdrop-filter: blur(10px);
+    }
+
+    .tab-btn {
+      border: 1px solid transparent;
+      background: transparent;
+      color: #334155;
+      border-radius: 18px;
+      padding: 15px 16px;
+      font-weight: 950;
+      cursor: pointer;
+      transition: 0.2s ease;
+      font-size: 0.95rem;
+      font-family: inherit;
+    }
+
+    .tab-btn:hover {
+      background: #f8fafc;
+      transform: translateY(-1px);
+    }
+
+    .tab-btn.active {
+      background: linear-gradient(135deg, var(--navy), #111827);
+      color: #f8e7a1;
+      box-shadow: 0 12px 28px rgba(15,23,42,0.16);
+      border-color: rgba(212,175,55,0.28);
+    }
+
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    .card,
+    .mentor-card {
+      background: rgba(255,255,255,0.94);
+      border: 1px solid rgba(226,232,240,0.95);
+      border-radius: var(--radius);
+      padding: 22px;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(10px);
+      margin-bottom: 20px;
+    }
+
+    .section-title {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 1.28rem;
+      font-weight: 900;
+      color: var(--navy);
+      margin: 0 0 15px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .section-badge {
+      width: 34px;
+      height: 34px;
+      border-radius: 999px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 0.9rem;
+      font-weight: 900;
+      background: var(--gold-dark);
+      flex-shrink: 0;
+    }
+
+    .guidance-box {
+      padding: 14px 16px;
+      border-radius: 14px;
+      margin-bottom: 18px;
+      font-size: 0.84rem;
+      line-height: 1.58;
+      display: flex;
+      gap: 11px;
+      align-items: flex-start;
+      background: #fef3c7;
+      border: 1px solid #fcd34d;
+      color: #92400e;
+      box-shadow: 0 6px 14px rgba(15, 23, 42, 0.04);
+    }
+
+    .guidance-icon {
+      width: 27px;
+      height: 27px;
+      border-radius: 999px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      background: rgba(255,255,255,0.78);
+      border: 1px solid rgba(255,255,255,0.9);
+    }
+
+    .input-panel {
+      background: #ffffff;
+      border: 1px solid #dbe3ee;
+      border-radius: 16px;
+      padding: 17px;
+      box-shadow: 0 8px 18px rgba(15, 23, 42, 0.045);
+    }
+
+    .identity-grid,
+    .review-filter-grid {
+      display: grid;
+      grid-template-columns: 1.4fr 0.7fr 0.7fr auto;
+      gap: 15px;
+      align-items: end;
+    }
+
+    .review-filter-grid {
+      grid-template-columns: 1fr 0.7fr 0.7fr 0.8fr auto;
+    }
+
+    .form-group {
+      margin-bottom: 18px;
+    }
+
+    .identity-grid .form-group,
+    .review-filter-grid .form-group {
+      margin-bottom: 0;
+    }
+
+    .form-group label {
+      font-weight: 900;
+      color: var(--navy);
+      font-size: 0.78rem;
+      margin-bottom: 8px;
+      display: block;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+
+    .form-helper {
+      font-size: 0.78rem;
+      color: var(--muted);
+      margin-top: 7px;
+      line-height: 1.45;
+    }
+
+    .form-control {
+      background: #fff;
+      border: 1px solid #cbd5e1;
+      border-radius: 12px;
+      transition: 0.2s;
+      width: 100%;
+      box-sizing: border-box;
+      min-height: 44px;
+      padding: 10px 12px;
+      font-family: inherit;
+      color: var(--navy);
+      outline: none;
+    }
+
+    .form-control:focus {
+      border-color: var(--gold);
+      box-shadow: 0 0 0 4px rgba(212,175,55,0.13);
+    }
+
+    textarea.form-control {
+      min-height: 130px;
+      resize: vertical;
+      line-height: 1.62;
+      padding: 13px 14px;
+    }
+
+    .btn-action {
+      padding: 13px 18px;
+      font-weight: 950;
+      border-radius: 12px;
+      border: none;
+      cursor: pointer;
+      min-height: 44px;
+      white-space: nowrap;
+      transition: 0.2s ease;
+      font-family: inherit;
+    }
+
+    .btn-action:hover {
+      transform: translateY(-1px);
+    }
+
+    .btn-gold {
+      background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+      color: #111827;
+      box-shadow: 0 10px 20px rgba(212,175,55,0.18);
+    }
+
+    .btn-navy {
+      background: linear-gradient(135deg, var(--navy), #111827);
+      color: #fff;
+      box-shadow: 0 10px 22px rgba(15,23,42,0.16);
+    }
+
+    .btn-soft {
+      background: #f8fafc;
+      color: var(--navy);
+      border: 1px solid #cbd5e1;
+    }
+
+    .akses-info {
+      margin-top: 12px;
+      background: #eff6ff;
+      border: 1px solid #bfdbfe;
+      color: #1e40af;
+      border-radius: 12px;
+      padding: 12px 14px;
+      font-size: 0.82rem;
+      line-height: 1.45;
+      display: none;
+    }
+
+    .summary-grid,
+    .review-stat-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+      margin-top: 8px;
+    }
+
+    .review-stat-grid {
+      grid-template-columns: repeat(6, 1fr);
+    }
+
+    .summary-card,
+    .review-stat-card {
+      background:
+        radial-gradient(circle at top right, rgba(212,175,55,0.10), transparent 34%),
+        linear-gradient(180deg, #ffffff, #f8fafc);
+      border: 1px solid #e2e8f0;
+      border-radius: 18px;
+      padding: 17px;
+      box-shadow: 0 8px 18px rgba(15,23,42,0.045);
+    }
+
+    .summary-card .num,
+    .review-stat-card .num {
+      font-size: 1.85rem;
+      line-height: 1;
+      font-weight: 950;
+      color: var(--navy);
+      letter-spacing: -0.04em;
+    }
+
+    .summary-card .label,
+    .review-stat-card .label {
+      margin-top: 7px;
+      color: var(--muted);
+      font-size: 0.76rem;
+      line-height: 1.35;
+      font-weight: 850;
+    }
+
+    .main-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      align-items: start;
+    }
+
+    .dimensi-list {
+      display: flex;
+      flex-direction: column;
+      gap: 13px;
+    }
+
+    .dimensi-row {
+      border: 1px solid #e2e8f0;
+      background: #fff;
+      border-radius: 17px;
+      padding: 15px;
+    }
+
+    .dimensi-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 10px;
+      align-items: center;
+    }
+
+    .dimensi-name {
+      font-weight: 950;
+      color: var(--navy);
+      display: flex;
+      align-items: center;
+      gap: 9px;
+    }
+
+    .dimensi-icon {
+      width: 33px;
+      height: 33px;
+      border-radius: 12px;
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .dimensi-score {
+      font-weight: 950;
+      color: var(--gold-dark);
+      font-size: 1.05rem;
+    }
+
+    .bar {
+      height: 11px;
+      border-radius: 999px;
+      background: #e2e8f0;
+      overflow: hidden;
+    }
+
+    .bar-fill {
+      height: 100%;
+      border-radius: 999px;
+      width: 0%;
+      background: linear-gradient(90deg, var(--teal), var(--gold));
+      transition: width 0.45s ease;
+    }
+
+    .dimensi-meta {
+      margin-top: 8px;
+      font-size: 0.76rem;
+      color: var(--muted);
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      font-weight: 700;
+    }
+
+    .timeline {
+      display: flex;
+      flex-direction: column;
+      gap: 13px;
+      max-height: 540px;
+      overflow: auto;
+      padding-right: 4px;
+    }
+
+    .week-card {
+      position: relative;
+      border: 1px solid #e2e8f0;
+      border-radius: 20px;
+      background: #ffffff;
+      padding: 16px 16px 16px 20px;
+      box-shadow: 0 8px 18px rgba(15,23,42,0.04);
+      overflow: hidden;
+    }
+
+    .week-card::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 6px;
+      background: linear-gradient(180deg, var(--gold), var(--navy));
+    }
+
+    .week-top {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 10px;
+    }
+
+    .week-title {
+      font-weight: 950;
+      color: var(--navy);
+    }
+
+    .week-date {
+      font-size: 0.76rem;
+      color: var(--muted);
+      font-weight: 800;
+      margin-top: 3px;
+    }
+
+    .tag,
+    .status-pill {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 999px;
+      padding: 7px 11px;
+      font-size: 0.74rem;
+      font-weight: 950;
+      background: #f8fafc;
+      color: #334155;
+      border: 1px solid #e2e8f0;
+      white-space: nowrap;
+    }
+
+    .mini-label {
+      color: var(--gold-dark);
+      font-weight: 950;
+      font-size: 0.76rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      margin-top: 10px;
+      margin-bottom: 4px;
+    }
+
+    .mini-text {
+      color: #334155;
+      font-size: 0.86rem;
+      line-height: 1.56;
+      white-space: pre-wrap;
+    }
+
+    .empty-box {
+      border: 1px dashed #cbd5e1;
+      border-radius: 18px;
+      padding: 24px;
+      color: var(--muted);
+      background: #f8fafc;
+      text-align: center;
+      line-height: 1.6;
+      font-size: 0.9rem;
+    }
+
+    .monthly-note-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 15px;
+    }
+
+    .note-box {
+      border-radius: 18px;
+      border: 1px solid #e2e8f0;
+      background:
+        radial-gradient(circle at top right, rgba(212,175,55,0.09), transparent 28%),
+        #ffffff;
+      padding: 17px;
+      box-shadow: 0 8px 18px rgba(15,23,42,0.045);
+    }
+
+    .note-title {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-weight: 900;
+      font-size: 1.05rem;
+      color: var(--navy);
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+
+    .supervisor-feedback {
+      display: none;
+      position: relative;
+      border-radius: 22px;
+      padding: 20px;
+      margin-bottom: 16px;
+      overflow: hidden;
+      border: 1px solid #e2e8f0;
+      box-shadow: 0 14px 30px rgba(15,23,42,0.08);
+    }
+
+    .feedback-approved {
+      background: linear-gradient(180deg, #ffffff, var(--green-soft));
+      border-color: #86efac;
+    }
+
+    .feedback-revision {
+      background: linear-gradient(180deg, #ffffff, var(--red-soft));
+      border-color: #fca5a5;
+    }
+
+    .feedback-special {
+      background: linear-gradient(180deg, #ffffff, var(--gold-soft));
+      border-color: #fcd34d;
+    }
+
+    .feedback-submitted {
+      background: linear-gradient(180deg, #ffffff, var(--blue-soft));
+      border-color: #93c5fd;
+    }
+
+    .feedback-header {
+      display: flex;
+      justify-content: space-between;
+      gap: 15px;
+      align-items: flex-start;
+      margin-bottom: 14px;
+    }
+
+    .feedback-title {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 1.22rem;
+      font-weight: 950;
+      color: var(--navy);
+      margin: 0;
+    }
+
+    .feedback-desc {
+      margin: 6px 0 0;
+      color: #475569;
+      font-size: 0.86rem;
+      line-height: 1.55;
+    }
+
+    .feedback-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    .feedback-card {
+      border-radius: 17px;
+      border: 1px solid rgba(148,163,184,0.35);
+      background: rgba(255,255,255,0.82);
+      padding: 15px;
+    }
+
+    .feedback-card strong {
+      display: block;
+      color: var(--navy);
+      font-size: 0.82rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 7px;
+    }
+
+    .feedback-card div {
+      line-height: 1.72;
+      color: #334155;
+      white-space: pre-wrap;
+      font-size: 0.9rem;
+    }
+
+    .status-ok { background: #dcfce7; border-color: #86efac; color: #166534; }
+    .status-warn { background: #fef3c7; border-color: #fcd34d; color: #92400e; }
+    .status-danger { background: #fee2e2; border-color: #fca5a5; color: #991b1b; }
+    .status-info { background: #dbeafe; border-color: #93c5fd; color: #1d4ed8; }
+    .status-purple { background: #ede9fe; border-color: #c4b5fd; color: #6d28d9; }
+
+    .actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      padding-top: 17px;
+      margin-top: 18px;
+      border-top: 1px solid #e2e8f0;
+    }
+
+    .review-toolbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 14px;
+    }
+
+    .review-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 14px;
+    }
+
+    .review-card {
+      position: relative;
+      background: #fff;
+      border: 1px solid #e2e8f0;
+      border-radius: 22px;
+      padding: 18px;
+      overflow: hidden;
+      box-shadow: 0 8px 20px rgba(15,23,42,0.045);
+    }
+
+    .review-card::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 6px;
+      background: #cbd5e1;
+    }
+
+    .review-card.belum_input::before { background: #64748b; }
+    .review-card.draft::before { background: #d97706; }
+    .review-card.submitted::before { background: #1d4ed8; }
+    .review-card.approved::before { background: #047857; }
+    .review-card.revision::before { background: #b91c1c; }
+    .review-card.special_attention::before { background: #f59e0b; }
+
+    .review-card-top {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: flex-start;
+      margin-bottom: 12px;
+    }
+
+    .review-name {
+      font-weight: 950;
+      color: var(--navy);
+      font-size: 1rem;
+      line-height: 1.25;
+    }
+
+    .review-meta {
+      margin-top: 4px;
+      color: var(--muted);
+      font-size: 0.78rem;
+      font-weight: 800;
+      line-height: 1.4;
+    }
+
+    .review-mini-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .review-mini {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 14px;
+      padding: 10px;
+    }
+
+    .review-mini strong {
+      display: block;
+      color: var(--navy);
+      font-size: 1rem;
+      line-height: 1;
+    }
+
+    .review-mini span {
+      display: block;
+      margin-top: 4px;
+      color: var(--muted);
+      font-size: 0.72rem;
+      font-weight: 800;
+    }
+
+    .review-feedback {
+      margin-top: 12px;
+      padding: 12px;
+      border-radius: 15px;
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      color: #334155;
+      font-size: 0.82rem;
+      line-height: 1.55;
+      white-space: pre-wrap;
+    }
+
+    .review-card-actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 14px;
+      padding-top: 13px;
+      border-top: 1px solid #e2e8f0;
+    }
+
+    .small-btn {
+      min-height: 38px;
+      padding: 9px 12px;
+      border-radius: 11px;
+      border: none;
+      font-weight: 900;
+      font-size: 0.78rem;
+      cursor: pointer;
+      font-family: inherit;
+    }
+
+    #loadingOverlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(255,255,255,0.92);
+      backdrop-filter: blur(5px);
+      z-index: 3000;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      color: var(--navy);
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 1.2rem;
+      transition: 0.5s;
+    }
+
+    @media(max-width: 1100px) {
+      .identity-grid,
+      .review-filter-grid,
+      .main-grid,
+      .summary-grid,
+      .review-stat-grid,
+      .feedback-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media(max-width: 720px) {
+      .page-shell { padding: 14px; }
+      .header-evaluasi { padding: 26px 22px; }
+      .card, .mentor-card { padding: 18px; }
+      .tab-shell { grid-template-columns: 1fr; }
+      .feedback-header { flex-direction: column; }
+    }
+  </style>
+</head>
+
+<body>
+
+<div id="loadingOverlay">
+  <div style="font-size: 2.5rem; margin-bottom: 15px;">📊</div>
+  <div style="font-weight: 700;">Menyiapkan Evaluasi Bulanan...</div>
+</div>
+
+<main class="page-shell">
+
+  <section class="header-evaluasi">
+    <div class="header-kicker">📊 CAHAYA Monthly Evaluation</div>
+    <h1>Evaluasi Bulanan Mentor</h1>
+    <p>
+      Halaman ini mengolah catatan mentoring pekanan menjadi evaluasi bulanan. Mentor dapat menginput evaluasi,
+      meninjau status raport seluruh ananda binaan, melihat revisi Supervisor, dan mengetahui siapa saja yang belum dibuatkan evaluasi.
+    </p>
+  </section>
+
+  <section class="tab-shell">
+    <button class="tab-btn active" id="tabBtnInput" onclick="bukaTab('input')">
+      ✍️ Input Evaluasi Bulanan
+    </button>
+    <button class="tab-btn" id="tabBtnTinjau" onclick="bukaTab('tinjau')">
+      📋 Tinjau Evaluasi Bulanan
+    </button>
+  </section>
+
+  <!-- =====================================================
+       TAB 1: INPUT EVALUASI BULANAN
+  ====================================================== -->
+  <section class="tab-content active" id="tabInput">
+
+    <div class="mentor-card">
+      <h3 class="section-title">📌 Identitas Evaluasi</h3>
+
+      <div class="guidance-box">
+        <span class="guidance-icon">💡</span>
+        <div>
+          <strong>Panduan:</strong> Pilih nama ananda, bulan, dan tahun. Sistem akan mengambil data dari catatan mentoring pekanan pada periode tersebut.
+        </div>
+      </div>
+
+      <div class="input-panel">
+        <div class="identity-grid">
+          <div class="form-group">
+            <label>Nama Ananda</label>
+            <select class="form-control" id="selectSantri" style="font-weight:bold;">
+              <option value="">-- Pilih Ananda --</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Bulan</label>
+            <select class="form-control sync-bulan" id="selectBulan"></select>
+          </div>
+
+          <div class="form-group">
+            <label>Tahun</label>
+            <input type="number" class="form-control sync-tahun" id="inputTahun" min="2024" max="2100">
+          </div>
+
+          <button class="btn-action btn-gold" onclick="muatEvaluasiBulanan()">
+            🔍 MUAT DATA
+          </button>
+        </div>
+
+        <div class="akses-info" id="aksesInfo"></div>
+      </div>
+    </div>
+
+    <div class="mentor-card">
+      <h3 class="section-title">
+        <span class="section-badge">1</span>
+        Ringkasan Otomatis Bulanan
+        <span class="status-pill" id="statusData">Belum dimuat</span>
+      </h3>
+
+      <div class="summary-grid">
+        <div class="summary-card">
+          <div class="num" id="totalMentoring">0</div>
+          <div class="label">Catatan mentoring bulan ini</div>
+        </div>
+
+        <div class="summary-card">
+          <div class="num" id="rataUmum">0</div>
+          <div class="label">Rata-rata umum 5 dimensi</div>
+        </div>
+
+        <div class="summary-card">
+          <div class="num" id="dimensiTerkuat">-</div>
+          <div class="label">Dimensi terkuat bulan ini</div>
+        </div>
+
+        <div class="summary-card">
+          <div class="num" id="dimensiPerhatian">-</div>
+          <div class="label">Dimensi yang perlu perhatian</div>
+        </div>
+      </div>
+    </div>
+
+    <section class="main-grid">
+
+      <div class="mentor-card">
+        <h3 class="section-title">
+          <span class="section-badge">2</span>
+          Grafik 5 Dimensi CAHAYA
+        </h3>
+
+        <div class="guidance-box">
+          <span class="guidance-icon">📈</span>
+          <div>
+            Nilai ini diolah dari kategori penilaian umum pada catatan mentoring pekanan.
+          </div>
+        </div>
+
+        <div class="dimensi-list" id="dimensiList"></div>
+      </div>
+
+      <div class="mentor-card">
+        <h3 class="section-title">
+          <span class="section-badge">3</span>
+          Jejak Target & Evaluasi Pekanan
+        </h3>
+
+        <div class="timeline" id="timelineMentoring">
+          <div class="empty-box">Pilih ananda dan bulan terlebih dahulu.</div>
+        </div>
+      </div>
+
+    </section>
+
+    <div class="mentor-card">
+      <h3 class="section-title">
+        <span class="section-badge">4</span>
+        Catatan Inti Bulanan Mentor
+        <span class="status-pill status-warn" id="statusDraft">Draft baru</span>
+      </h3>
+
+      <div class="guidance-box">
+        <span class="guidance-icon">✨</span>
+        <div>
+          <strong>Catatan:</strong> Bagian ini menjadi ruh laporan bulanan. Tuliskan dengan bahasa apresiatif, objektif, hangat, dan menguatkan.
+        </div>
+      </div>
+
+      <div class="supervisor-feedback" id="supervisorFeedbackBox">
+        <div class="feedback-header">
+          <div>
+            <h3 class="feedback-title" id="feedbackTitle">🛡️ Tindak Lanjut Supervisor</h3>
+            <p class="feedback-desc" id="feedbackDesc">Catatan supervisor akan tampil di sini setelah raport diperiksa.</p>
+          </div>
+          <span class="status-pill" id="feedbackPill">Status</span>
+        </div>
+
+        <div class="feedback-grid">
+          <div class="feedback-card">
+            <strong>Catatan Supervisor</strong>
+            <div id="catatanSupervisorText">-</div>
+          </div>
+
+          <div class="feedback-card">
+            <strong>Arahan Tindak Lanjut</strong>
+            <div id="arahanSupervisorText">-</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="monthly-note-grid">
+
+        <div class="note-box">
+          <div class="note-title">🌟 Hal Baik yang Paling Menonjol Bulan Ini</div>
+          <textarea class="form-control" id="halBaikMenonjol" placeholder="Tuliskan perkembangan positif paling menonjol bulan ini..."></textarea>
+          <div class="form-helper">Fokus pada perkembangan positif, perubahan sikap, usaha baik, atau kekuatan karakter.</div>
+        </div>
+
+        <div class="note-box">
+          <div class="note-title">🤲 Doa dan Harapan Mentor</div>
+          <textarea class="form-control" id="doaHarapan" placeholder="Tuliskan doa dan harapan terbaik untuk ananda..."></textarea>
+          <div class="form-helper">Bagian ini dibuat terpisah agar laporan terasa lebih ruhani dan menyentuh hati.</div>
+        </div>
+
+        <div class="note-box">
+          <div class="note-title">🎯 Rekomendasi Perbaikan/Peningkatan Bulan Depan</div>
+          <textarea class="form-control" id="rekomendasiBulanDepan" placeholder="Tuliskan 1–3 fokus pembinaan bulan depan..."></textarea>
+          <div class="form-helper">Tuliskan fokus pembinaan yang singkat, jelas, realistis, dan bisa ditindaklanjuti.</div>
+        </div>
+
+      </div>
+
+      <div class="actions">
+        <button class="btn-action btn-soft" onclick="bersihkanInputManual()">↺ Bersihkan Input</button>
+        <button class="btn-action btn-navy" onclick="simpanEvaluasiBulanan('draft')">💾 Simpan Draft</button>
+        <button class="btn-action btn-gold" onclick="simpanEvaluasiBulanan('submitted')">🚀 Ajukan ke Supervisor</button>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- =====================================================
+       TAB 2: TINJAU EVALUASI BULANAN
+  ====================================================== -->
+  <section class="tab-content" id="tabTinjau">
+
+    <div class="card">
+      <h3 class="section-title">📋 Tinjau Evaluasi Bulanan Ananda Binaan</h3>
+
+      <div class="guidance-box">
+        <span class="guidance-icon">🧭</span>
+        <div>
+          <strong>Fungsi tab ini:</strong> Mentor dapat melihat siapa saja yang belum diinput, masih draft,
+          sedang menunggu Supervisor, sudah disetujui, perlu revisi, atau perlu perhatian khusus pada bulan yang dipilih.
+        </div>
+      </div>
+
+      <div class="input-panel">
+        <div class="review-filter-grid">
+          <div class="form-group">
+            <label>Cari Ananda</label>
+            <input type="text" class="form-control" id="reviewSearch" placeholder="Ketik nama ananda...">
+          </div>
+
+          <div class="form-group">
+            <label>Bulan</label>
+            <select class="form-control sync-bulan" id="reviewBulan"></select>
+          </div>
+
+          <div class="form-group">
+            <label>Tahun</label>
+            <input type="number" class="form-control sync-tahun" id="reviewTahun" min="2024" max="2100">
+          </div>
+
+          <div class="form-group">
+            <label>Status</label>
+            <select class="form-control" id="reviewStatus">
+              <option value="all">Semua Status</option>
+              <option value="belum_input">Belum Diinput</option>
+              <option value="draft">Draft</option>
+              <option value="submitted">Menunggu Review</option>
+              <option value="approved">Disetujui</option>
+              <option value="revision">Perlu Revisi</option>
+              <option value="special_attention">Perhatian Khusus</option>
+            </select>
+          </div>
+
+          <button class="btn-action btn-gold" onclick="renderTinjauanBulanan()">🔍 Tinjau</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="review-stat-grid">
+        <div class="review-stat-card">
+          <div class="num" id="statBelumInput">0</div>
+          <div class="label">Belum Diinput</div>
+        </div>
+
+        <div class="review-stat-card">
+          <div class="num" id="statDraft">0</div>
+          <div class="label">Draft</div>
+        </div>
+
+        <div class="review-stat-card">
+          <div class="num" id="statSubmitted">0</div>
+          <div class="label">Menunggu Review</div>
+        </div>
+
+        <div class="review-stat-card">
+          <div class="num" id="statApproved">0</div>
+          <div class="label">Disetujui</div>
+        </div>
+
+        <div class="review-stat-card">
+          <div class="num" id="statRevision">0</div>
+          <div class="label">Perlu Revisi</div>
+        </div>
+
+        <div class="review-stat-card">
+          <div class="num" id="statSpecial">0</div>
+          <div class="label">Perhatian Khusus</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="review-toolbar">
+        <h3 class="section-title" style="margin:0;">📑 Daftar Evaluasi Bulanan</h3>
+        <span class="status-pill status-info" id="jumlahReview">0 data</span>
+      </div>
+
+      <div class="review-list" id="reviewList">
+        <div class="empty-box">Memuat data tinjauan...</div>
+      </div>
+    </div>
+
+  </section>
+
+</main>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+  import { getDatabase, ref, get, set, query, limitToLast } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+
+  const firebaseConfig = window.CAHAYA_CONFIG.firebase;
+
+  const app = initializeApp(firebaseConfig);
+  const db = getDatabase(app);
+
+  const PATH_MASTER_USRAH = "cahaya_app/master_usrah";
+  const PATH_LOG_MENTORING = "cahaya_app/log_mentoring_naqib";
+  const PATH_EVALUASI_BULANAN = "cahaya_app/evaluasi_bulanan_naqib";
+
+  const user = JSON.parse(localStorage.getItem('cahayaCurrentUser') || '{}');
+
+  let namaLogin =
+    localStorage.getItem('namaNaqib') ||
+    localStorage.getItem('namaMentor') ||
+    user.username ||
+    user.label ||
+    user.nama ||
+    user.name ||
+    "Mentor";
+
+  namaLogin = namaLogin
+    .replace(/^Mu'?allim(ah)?\s+|^Naqib(ah)?\s+|^Mentor\s+|^Mrs\s+|^Ustadz\s+|^Ustadzah\s+/i, "")
+    .trim();
+
+  namaLogin = namaLogin.charAt(0).toUpperCase() + namaLogin.slice(1).toLowerCase();
+
+  const NAMA_BULAN = [
+    "Januari", "Februari", "Maret", "April", "Mei", "Juni",
+    "Juli", "Agustus", "September", "Oktober", "November", "Desember"
+  ];
+
+  const DIMENSI = [
+    { key: "cintaAllah", label: "Cinta Allah", icon: "🌙", field: "nilaiCintaAllah" },
+    { key: "akhlakMulia", label: "Akhlak Mulia", icon: "🤝", field: "nilaiAkhlakMulia" },
+    { key: "hatiBersih", label: "Hati Bersih", icon: "💛", field: "nilaiHatiBersih" },
+    { key: "akalCerdas", label: "Akal Cerdas", icon: "🧠", field: "nilaiAkalCerdas" },
+    { key: "fisikBerdaya", label: "Fisik Berdaya", icon: "💪", field: "nilaiFisikBerdaya" }
+  ];
+
+  let semuaLogMentoring = [];
+  let semuaEvaluasiBulanan = [];
+  let daftarSantriAkses = [];
+
+  let hasilOlahanSaatIni = null;
+  let evaluasiKeySaatIni = "";
+  let dataEvaluasiTersimpanSaatIni = null;
+
+  function getRoleLogin() {
+    return (
+      user.role ||
+      user.level ||
+      user.jabatan ||
+      user.posisi ||
+      user.tipeAkun ||
+      user.akses ||
+      localStorage.getItem('role') ||
+      localStorage.getItem('level') ||
+      localStorage.getItem('jabatan') ||
+      localStorage.getItem('posisi') ||
+      localStorage.getItem('tipeAkun') ||
+      localStorage.getItem('akses') ||
+      ""
+    ).toString().toLowerCase();
+  }
+
+  function cekAksesDirektur() {
+    const roleLogin = getRoleLogin();
+    const namaLower = namaLogin.toLowerCase();
+    const usernameLower = (user.username || "").toString().toLowerCase();
+    const labelLower = (user.label || "").toString().toLowerCase();
+    const emailLower = (user.email || "").toString().toLowerCase();
+
+    return (
+      roleLogin.includes("direktur") ||
+      roleLogin.includes("superadmin") ||
+      roleLogin.includes("super admin") ||
+      roleLogin.includes("admin") ||
+      roleLogin.includes("pimpinan") ||
+      roleLogin.includes("pengasuh") ||
+
+      namaLower.includes("direktur") ||
+      namaLower.includes("multazam") ||
+      namaLower.includes("abah") ||
+
+      usernameLower.includes("direktur") ||
+      usernameLower.includes("multazam") ||
+      usernameLower.includes("abah") ||
+
+      labelLower.includes("direktur") ||
+      labelLower.includes("multazam") ||
+      labelLower.includes("abah") ||
+
+      emailLower.includes("multazam")
+    );
+  }
+
+  function normalisasiNama(nama) {
+    return (nama || "")
+      .toString()
+      .trim()
+      .replace(/\s+/g, " ");
+  }
+
+  function ambilSemuaSantriDariUsrah(dataUsrah) {
+    let daftarSantri = [];
+
+    Object.values(dataUsrah || {}).forEach(kelompok => {
+      if (Array.isArray(kelompok)) {
+        daftarSantri.push(...kelompok);
+      } else if (kelompok && typeof kelompok === "object") {
+        daftarSantri.push(...Object.values(kelompok));
+      }
+    });
+
+    daftarSantri = daftarSantri.filter(Boolean).map(normalisasiNama);
+    daftarSantri = [...new Set(daftarSantri)];
+    daftarSantri.sort((a, b) => a.localeCompare(b, "id"));
+
+    return daftarSantri;
+  }
+
+  function ambilSantriBinaanNaqib(dataUsrah, namaNaqib) {
+    let daftarSantri = [];
+
+    const kemungkinanKey = [
+      namaNaqib,
+      namaNaqib.toUpperCase(),
+      namaNaqib.toLowerCase(),
+      namaNaqib.charAt(0).toUpperCase() + namaNaqib.slice(1).toLowerCase()
+    ];
+
+    let kelompokSaya = null;
+
+    for (const key of kemungkinanKey) {
+      if (dataUsrah && dataUsrah[key]) {
+        kelompokSaya = dataUsrah[key];
+        break;
+      }
+    }
+
+    if (Array.isArray(kelompokSaya)) {
+      daftarSantri = kelompokSaya;
+    } else if (kelompokSaya && typeof kelompokSaya === "object") {
+      daftarSantri = Object.values(kelompokSaya);
+    }
+
+    daftarSantri = daftarSantri.filter(Boolean).map(normalisasiNama);
+    daftarSantri = [...new Set(daftarSantri)];
+    daftarSantri.sort((a, b) => a.localeCompare(b, "id"));
+
+    return daftarSantri;
+  }
+
+  function tampilkanDaftarSantri(select, daftarSantri) {
+    select.innerHTML = '<option value="">-- Pilih Ananda --</option>';
+
+    daftarSantri.forEach(nama => {
+      select.appendChild(new Option(nama, nama));
+    });
+  }
+
+  function setupBulanTahun() {
+    const now = new Date();
+
+    const optionsBulan = NAMA_BULAN.map((nama, index) => {
+      return `<option value="${index + 1}">${nama}</option>`;
+    }).join("");
+
+    document.getElementById("selectBulan").innerHTML = optionsBulan;
+    document.getElementById("reviewBulan").innerHTML = optionsBulan;
+
+    document.getElementById("selectBulan").value = String(now.getMonth() + 1);
+    document.getElementById("reviewBulan").value = String(now.getMonth() + 1);
+
+    document.getElementById("inputTahun").value = now.getFullYear();
+    document.getElementById("reviewTahun").value = now.getFullYear();
+
+    document.getElementById("selectBulan").addEventListener("change", () => {
+      document.getElementById("reviewBulan").value = document.getElementById("selectBulan").value;
+    });
+
+    document.getElementById("reviewBulan").addEventListener("change", () => {
+      document.getElementById("selectBulan").value = document.getElementById("reviewBulan").value;
+      renderTinjauanBulanan();
+    });
+
+    document.getElementById("inputTahun").addEventListener("input", () => {
+      document.getElementById("reviewTahun").value = document.getElementById("inputTahun").value;
+    });
+
+    document.getElementById("reviewTahun").addEventListener("input", () => {
+      document.getElementById("inputTahun").value = document.getElementById("reviewTahun").value;
+      renderTinjauanBulanan();
+    });
+
+    document.getElementById("reviewStatus").addEventListener("change", renderTinjauanBulanan);
+    document.getElementById("reviewSearch").addEventListener("input", renderTinjauanBulanan);
+  }
+
+  async function loadDataAwal() {
+    const select = document.getElementById("selectSantri");
+    const aksesInfo = document.getElementById("aksesInfo");
+
+    try {
+      const [snapUsrah, snapLog, snapEvaluasi] = await Promise.all([
+        get(ref(db, PATH_MASTER_USRAH)),
+        get(query(ref(db, PATH_LOG_MENTORING), limitToLast(2500))),
+        get(query(ref(db, PATH_EVALUASI_BULANAN), limitToLast(1800)))
+      ]);
+
+      semuaLogMentoring = snapLog.exists()
+        ? Object.entries(snapLog.val()).map(([id, data]) => ({ id, ...data }))
+        : [];
+
+      semuaEvaluasiBulanan = snapEvaluasi.exists()
+        ? Object.entries(snapEvaluasi.val()).map(([id, data]) => ({ id, ...data }))
+        : [];
+
+      if (snapUsrah.exists()) {
+        const dataUsrah = snapUsrah.val();
+        const isDirektur = cekAksesDirektur();
+
+        if (isDirektur) {
+          daftarSantriAkses = ambilSemuaSantriDariUsrah(dataUsrah);
+          aksesInfo.style.display = "block";
+          aksesInfo.innerHTML = `🔓 Akses Direktur/Admin aktif. Menampilkan seluruh ananda dari semua usrah. Total: <strong>${daftarSantriAkses.length}</strong> ananda.`;
+        } else {
+          daftarSantriAkses = ambilSantriBinaanNaqib(dataUsrah, namaLogin);
+          aksesInfo.style.display = "block";
+          aksesInfo.innerHTML = `🔐 Akses Mentor aktif. Menampilkan ananda binaan atas nama: <strong>${namaLogin}</strong>. Total: <strong>${daftarSantriAkses.length}</strong> ananda.`;
+        }
+
+        if (daftarSantriAkses.length > 0) {
+          tampilkanDaftarSantri(select, daftarSantriAkses);
+        } else {
+          select.innerHTML = isDirektur
+            ? '<option value="">⚠️ Belum ada data ananda di master usrah</option>'
+            : '<option value="">⚠️ Anda belum memiliki ananda binaan</option>';
+        }
+
+      } else {
+        select.innerHTML = '<option value="">⚠️ Data usrah belum tersedia</option>';
+        daftarSantriAkses = [];
+      }
+
+      renderTinjauanBulanan();
+
+    } catch (error) {
+      console.error("Gagal memuat data", error);
+      select.innerHTML = '<option value="">⚠️ Gagal memuat data ananda</option>';
+      alert("❌ Gagal memuat data: " + error.message);
+    }
+  }
+
+  function tanggalDariLog(log) {
+    const raw = log.tanggalMentoring || log.tanggal || log.date || log.timestamp || "";
+    if (!raw) return null;
+    const d = new Date(raw);
+    return Number.isNaN(d.getTime()) ? null : d;
+  }
+
+  function getPekanKe(date) {
+    return Math.ceil(date.getDate() / 7);
+  }
+
+  function formatTanggalIndonesia(date) {
+    return `${date.getDate()} ${NAMA_BULAN[date.getMonth()]} ${date.getFullYear()}`;
+  }
+
+  function skorDariLabel(label) {
+    const value = (label || "").toString().toLowerCase();
+
+    if (value.includes("istimewa")) return 96;
+    if (value.includes("sangat baik")) return 88;
+    if (value === "baik" || value.includes("baik")) return 78;
+    if (value.includes("cukup")) return 66;
+    if (value.includes("perlu ditingkatkan")) return 52;
+    if (value.includes("perlu pemulihan")) return 45;
+    if (value.includes("perlu penguatan")) return 56;
+
+    const numberValue = Number(label);
+    if (!Number.isNaN(numberValue)) {
+      if (numberValue > 0 && numberValue <= 5) return Math.round(numberValue * 20);
+      if (numberValue > 5 && numberValue <= 10) return Math.round(numberValue * 10);
+      return Math.round(Math.max(0, Math.min(100, numberValue)));
+    }
+
+    return null;
+  }
+
+  function labelDariSkor(skor) {
+    if (!skor) return "Belum ada data";
+    if (skor >= 90) return "Istimewa";
+    if (skor >= 84) return "Sangat Baik";
+    if (skor >= 74) return "Baik";
+    if (skor >= 60) return "Cukup";
+    return "Perlu Ditingkatkan";
+  }
+
+  function ambilNilaiDimensi(log, dimensi) {
+    const penilaianUmum = log.penilaianUmum || {};
+    return penilaianUmum[dimensi.key] || log[dimensi.field] || log[dimensi.key] || "";
+  }
+
+  function filterLogBulanan(namaSantri, bulan, tahun) {
+    const isDirektur = cekAksesDirektur();
+
+    return semuaLogMentoring
+      .filter(log => normalisasiNama(log.namaSantri || "") === normalisasiNama(namaSantri))
+      .filter(log => {
+        if (isDirektur) return true;
+        const mentorLog = normalisasiNama(log.namaMentor || log.namaNaqib || "");
+        return mentorLog.toLowerCase() === namaLogin.toLowerCase();
+      })
+      .filter(log => {
+        const tgl = tanggalDariLog(log);
+        if (!tgl) return false;
+        return tgl.getMonth() + 1 === bulan && tgl.getFullYear() === tahun;
+      })
+      .sort((a, b) => {
+        const da = tanggalDariLog(a)?.getTime() || 0;
+        const dbb = tanggalDariLog(b)?.getTime() || 0;
+        return da - dbb;
+      });
+  }
+
+  function olahEvaluasiBulanan(namaSantri, bulan, tahun, logs) {
+    const ringkasanDimensi = {};
+
+    DIMENSI.forEach(dimensi => {
+      const dataNilai = logs
+        .map(log => ambilNilaiDimensi(log, dimensi))
+        .map(skorDariLabel)
+        .filter(v => typeof v === "number" && !Number.isNaN(v));
+
+      const rataRata = dataNilai.length
+        ? Math.round(dataNilai.reduce((sum, n) => sum + n, 0) / dataNilai.length)
+        : 0;
+
+      ringkasanDimensi[dimensi.key] = {
+        nama: dimensi.label,
+        icon: dimensi.icon,
+        rataRata,
+        label: labelDariSkor(rataRata),
+        totalData: dataNilai.length
+      };
+    });
+
+    const nilaiRata = Object.values(ringkasanDimensi)
+      .map(item => item.rataRata)
+      .filter(v => v > 0);
+
+    const rataRataUmum = nilaiRata.length
+      ? Math.round(nilaiRata.reduce((sum, n) => sum + n, 0) / nilaiRata.length)
+      : 0;
+
+    const urutanDimensi = Object.values(ringkasanDimensi)
+      .filter(item => item.rataRata > 0)
+      .sort((a, b) => b.rataRata - a.rataRata);
+
+    const dimensiTerkuat = urutanDimensi[0]?.nama || "-";
+    const dimensiPerluPerhatian = urutanDimensi[urutanDimensi.length - 1]?.nama || "-";
+
+    const ringkasanPekanan = logs.map(log => {
+      const tanggal = tanggalDariLog(log);
+
+      return {
+        logId: log.id,
+        tanggalMentoring: log.tanggalMentoring || log.tanggal || log.timestamp || "",
+        tanggalLabel: tanggal ? formatTanggalIndonesia(tanggal) : "-",
+        pekanKe: tanggal ? getPekanKe(tanggal) : "-",
+
+        hasilPekanSebelumnya: log.hasilPekanSebelumnya || "",
+        catatanHasilSebelumnya: log.catatanHasilSebelumnya || "",
+
+        dimensiUtama: log.dimensiUtama || log.dimensiFokus || "",
+        ringkasanKeadaan: log.ringkasanKeadaan || log.catatanAkarMasalah || "",
+        halApresiasi: log.halApresiasi || log.catatanApresiasi || "",
+
+        tindakLanjutUtama: log.tindakLanjutUtama || log.tindakLanjut || "",
+        targetPekanDepan: log.targetPekanDepan || log.fokusPekanDepan || "",
+        langkahRealistis: log.langkahRealistis || log.targetKecil || "",
+        halDipantau: log.halDipantau || "",
+        narasiOtomatis: log.narasiOtomatis || ""
+      };
+    });
+
+    return {
+      jenisEvaluasi: "Evaluasi Bulanan Mentor",
+      namaSantri,
+      namaMentor: namaLogin,
+      namaNaqib: namaLogin,
+      bulan,
+      namaBulan: NAMA_BULAN[bulan - 1],
+      tahun,
+      periodeKey: `${tahun}-${String(bulan).padStart(2, "0")}`,
+
+      sumberData: {
+        path: PATH_LOG_MENTORING,
+        totalMentoring: logs.length,
+        logIds: logs.map(log => log.id)
+      },
+
+      ringkasanDimensi,
+      rataRataUmum,
+      dimensiTerkuat,
+      dimensiPerluPerhatian,
+      ringkasanPekanan
+    };
+  }
+
+  function renderDimensiKosong() {
+    const wrapper = document.getElementById("dimensiList");
+
+    wrapper.innerHTML = DIMENSI.map(dimensi => `
+      <div class="dimensi-row">
+        <div class="dimensi-head">
+          <div class="dimensi-name">
+            <span class="dimensi-icon">${dimensi.icon}</span>
+            ${dimensi.label}
+          </div>
+          <div class="dimensi-score">0</div>
+        </div>
+        <div class="bar"><div class="bar-fill" style="width:0%"></div></div>
+        <div class="dimensi-meta">
+          <span>Belum dimuat</span>
+          <span>0 data</span>
+        </div>
+      </div>
+    `).join("");
+  }
+
+  function renderHasilOlahan(data) {
+    document.getElementById("totalMentoring").textContent = data.sumberData.totalMentoring;
+    document.getElementById("rataUmum").textContent = data.rataRataUmum;
+    document.getElementById("dimensiTerkuat").textContent = data.dimensiTerkuat;
+    document.getElementById("dimensiPerhatian").textContent = data.dimensiPerluPerhatian;
+
+    const statusData = document.getElementById("statusData");
+
+    if (data.sumberData.totalMentoring > 0) {
+      statusData.className = "status-pill status-ok";
+      statusData.textContent = "Data mentoring ditemukan";
+    } else {
+      statusData.className = "status-pill status-danger";
+      statusData.textContent = "Belum ada data mentoring";
+    }
+
+    document.getElementById("dimensiList").innerHTML = DIMENSI.map(dimensi => {
+      const item = data.ringkasanDimensi[dimensi.key];
+      const persen = Math.max(0, Math.min(100, item.rataRata));
+
+      return `
+        <div class="dimensi-row">
+          <div class="dimensi-head">
+            <div class="dimensi-name">
+              <span class="dimensi-icon">${item.icon}</span>
+              ${item.nama}
+            </div>
+            <div class="dimensi-score">${item.rataRata}</div>
+          </div>
+          <div class="bar"><div class="bar-fill" style="width:${persen}%"></div></div>
+          <div class="dimensi-meta">
+            <span>${item.label}</span>
+            <span>${item.totalData} data pekanan</span>
+          </div>
+        </div>
+      `;
+    }).join("");
+
+    renderTimeline(data.ringkasanPekanan);
+  }
+
+  function renderTimeline(items) {
+    const wrapper = document.getElementById("timelineMentoring");
+
+    if (!items.length) {
+      wrapper.innerHTML = `<div class="empty-box">Belum ada catatan mentoring pekanan untuk ananda ini pada bulan yang dipilih.</div>`;
+      return;
+    }
+
+    wrapper.innerHTML = items.map(item => `
+      <div class="week-card">
+        <div class="week-top">
+          <div>
+            <div class="week-title">Pekan ke-${item.pekanKe}</div>
+            <div class="week-date">${item.tanggalLabel}</div>
+          </div>
+          <span class="tag">${escapeHtml(item.dimensiUtama || "Mentoring")}</span>
+        </div>
+
+        <div class="mini-label">Hasil Target Pekan Sebelumnya</div>
+        <div class="mini-text">${escapeHtml(item.hasilPekanSebelumnya || "Belum tercatat.")}</div>
+
+        <div class="mini-label">Catatan Hasil Sebelumnya</div>
+        <div class="mini-text">${escapeHtml(item.catatanHasilSebelumnya || "Belum tercatat.")}</div>
+
+        <div class="mini-label">Hal yang Diapresiasi</div>
+        <div class="mini-text">${escapeHtml(item.halApresiasi || "Belum tercatat.")}</div>
+
+        <div class="mini-label">Target Pekan Depan</div>
+        <div class="mini-text">${escapeHtml(item.targetPekanDepan || "Belum tercatat.")}</div>
+      </div>
+    `).join("");
+  }
+
+  function renderTindakLanjutSupervisor(data) {
+    const box = document.getElementById("supervisorFeedbackBox");
+    const title = document.getElementById("feedbackTitle");
+    const desc = document.getElementById("feedbackDesc");
+    const pill = document.getElementById("feedbackPill");
+    const catatanEl = document.getElementById("catatanSupervisorText");
+    const arahanEl = document.getElementById("arahanSupervisorText");
+
+    const status = data?.status || "draft";
+    const tindakLanjut = data?.tindakLanjutSupervisor || {};
+
+    const adaFeedback =
+      status === "revision" ||
+      status === "approved" ||
+      status === "special_attention" ||
+      status === "submitted" ||
+      tindakLanjut.catatanSupervisor ||
+      tindakLanjut.arahanTindakLanjut ||
+      data?.catatanSupervisor ||
+      data?.arahanTindakLanjut;
+
+    if (!adaFeedback) {
+      box.style.display = "none";
+      box.className = "supervisor-feedback";
+      return;
+    }
+
+    box.style.display = "block";
+    box.className = "supervisor-feedback";
+    pill.className = "status-pill";
+
+    if (status === "approved") {
+      box.classList.add("feedback-approved");
+      pill.classList.add("status-ok");
+      title.textContent = "✅ Raport Sudah Disetujui Supervisor";
+      desc.textContent = "Raport bulanan ini sudah disetujui.";
+      pill.textContent = "Disetujui";
+    } else if (status === "revision") {
+      box.classList.add("feedback-revision");
+      pill.classList.add("status-danger");
+      title.textContent = "↩️ Raport Dikembalikan untuk Revisi";
+      desc.textContent = "Silakan baca catatan, revisi bagian yang diperlukan, lalu ajukan kembali ke Supervisor.";
+      pill.textContent = "Perlu Revisi";
+    } else if (status === "special_attention") {
+      box.classList.add("feedback-special");
+      pill.classList.add("status-warn");
+      title.textContent = "⚠️ Perlu Perhatian Khusus";
+      desc.textContent = "Supervisor menandai raport ini sebagai perhatian khusus.";
+      pill.textContent = "Perhatian Khusus";
+    } else if (status === "submitted") {
+      box.classList.add("feedback-submitted");
+      pill.classList.add("status-info");
+      title.textContent = "🚀 Menunggu Review Supervisor";
+      desc.textContent = "Evaluasi bulanan sudah diajukan dan sedang menunggu pemeriksaan dari Supervisor.";
+      pill.textContent = "Menunggu Review";
+    } else {
+      box.style.display = "none";
+      return;
+    }
+
+    catatanEl.textContent =
+      tindakLanjut.catatanSupervisor ||
+      data?.catatanSupervisor ||
+      "Belum ada catatan supervisor.";
+
+    arahanEl.textContent =
+      tindakLanjut.arahanTindakLanjut ||
+      data?.arahanTindakLanjut ||
+      "Belum ada arahan tindak lanjut.";
+  }
+
+  async function loadEvaluasiTersimpan(key) {
+    const snap = await get(ref(db, `${PATH_EVALUASI_BULANAN}/${key}`));
+    const statusDraft = document.getElementById("statusDraft");
+
+    if (!snap.exists()) {
+      dataEvaluasiTersimpanSaatIni = null;
+
+      document.getElementById("halBaikMenonjol").value = "";
+      document.getElementById("doaHarapan").value = "";
+      document.getElementById("rekomendasiBulanDepan").value = "";
+
+      statusDraft.className = "status-pill status-warn";
+      statusDraft.textContent = "Draft baru";
+
+      renderTindakLanjutSupervisor(null);
+      return;
+    }
+
+    const data = snap.val();
+    dataEvaluasiTersimpanSaatIni = data;
+
+    document.getElementById("halBaikMenonjol").value = data.catatanBulanan?.halBaikMenonjol || "";
+    document.getElementById("doaHarapan").value = data.catatanBulanan?.doaHarapan || "";
+    document.getElementById("rekomendasiBulanDepan").value = data.catatanBulanan?.rekomendasiBulanDepan || "";
+
+    renderTindakLanjutSupervisor(data);
+    setStatusDraft(data.status);
+  }
+
+  function setStatusDraft(status) {
+    const el = document.getElementById("statusDraft");
+
+    if (status === "submitted") {
+      el.className = "status-pill status-info";
+      el.textContent = "Menunggu Review Supervisor";
+    } else if (status === "approved") {
+      el.className = "status-pill status-ok";
+      el.textContent = "Disetujui Supervisor";
+    } else if (status === "revision") {
+      el.className = "status-pill status-danger";
+      el.textContent = "Perlu Revisi";
+    } else if (status === "special_attention") {
+      el.className = "status-pill status-warn";
+      el.textContent = "Perhatian Khusus";
+    } else if (status === "draft") {
+      el.className = "status-pill status-warn";
+      el.textContent = "Draft tersimpan";
+    } else {
+      el.className = "status-pill status-warn";
+      el.textContent = "Draft baru";
+    }
+  }
+
+  function sanitizeKey(value) {
+    return value
+      .toString()
+      .trim()
+      .toLowerCase()
+      .replace(/[.#$/\[\]]/g, "_")
+      .replace(/\s+/g, "_");
+  }
+
+  function buatEvaluasiKey(namaSantri, bulan, tahun) {
+    return `${tahun}-${String(bulan).padStart(2, "0")}_${sanitizeKey(namaSantri)}_${sanitizeKey(namaLogin)}`;
+  }
+
+  function cariEvaluasiSantri(namaSantri, bulan, tahun) {
+    return semuaEvaluasiBulanan
+      .filter(item => normalisasiNama(item.namaSantri).toLowerCase() === normalisasiNama(namaSantri).toLowerCase())
+      .filter(item => Number(item.bulan) === Number(bulan) && Number(item.tahun) === Number(tahun))
+      .filter(item => {
+        if (cekAksesDirektur()) return true;
+        const mentor = normalisasiNama(item.namaMentor || item.namaNaqib || "").toLowerCase();
+        return mentor === normalisasiNama(namaLogin).toLowerCase();
+      })
+      .sort((a, b) => {
+        const ta = new Date(a.updatedAt || a.createdAt || 0).getTime();
+        const tb = new Date(b.updatedAt || b.createdAt || 0).getTime();
+        return tb - ta;
+      })[0] || null;
+  }
+
+  window.muatEvaluasiBulanan = async function() {
+    const namaSantri = document.getElementById("selectSantri").value;
+    const bulan = Number(document.getElementById("selectBulan").value);
+    const tahun = Number(document.getElementById("inputTahun").value);
+
+    if (!namaSantri) return alert("⚠️ Mohon pilih nama ananda terlebih dahulu.");
+    if (!bulan || !tahun) return alert("⚠️ Mohon pilih bulan dan tahun dengan benar.");
+
+    const logs = filterLogBulanan(namaSantri, bulan, tahun);
+
+    hasilOlahanSaatIni = olahEvaluasiBulanan(namaSantri, bulan, tahun, logs);
+    evaluasiKeySaatIni = buatEvaluasiKey(namaSantri, bulan, tahun);
+
+    renderHasilOlahan(hasilOlahanSaatIni);
+    await loadEvaluasiTersimpan(evaluasiKeySaatIni);
+
+    if (!logs.length) {
+      alert("⚠️ Belum ada data mentoring pekanan untuk ananda ini pada bulan tersebut.");
+    }
+  };
+
+  window.simpanEvaluasiBulanan = async function(status) {
+    if (!hasilOlahanSaatIni || !evaluasiKeySaatIni) {
+      return alert("⚠️ Mohon muat data evaluasi terlebih dahulu.");
+    }
+
+    const halBaikMenonjol = document.getElementById("halBaikMenonjol").value.trim();
+    const doaHarapan = document.getElementById("doaHarapan").value.trim();
+    const rekomendasiBulanDepan = document.getElementById("rekomendasiBulanDepan").value.trim();
+
+    if (status === "submitted") {
+      if (!halBaikMenonjol) return alert("⚠️ Mohon isi Hal Baik yang Paling Menonjol.");
+      if (!doaHarapan) return alert("⚠️ Mohon isi Doa dan Harapan Mentor.");
+      if (!rekomendasiBulanDepan) return alert("⚠️ Mohon isi Rekomendasi Bulan Depan.");
+    }
+
+    const now = new Date().toISOString();
+    const dataLama = dataEvaluasiTersimpanSaatIni || {};
+
+    const payload = {
+      ...hasilOlahanSaatIni,
+
+      aksesInput: cekAksesDirektur() ? "Direktur/Admin" : "Mentor",
+      roleLogin: getRoleLogin(),
+
+      catatanBulanan: {
+        halBaikMenonjol,
+        doaHarapan,
+        rekomendasiBulanDepan
+      },
+
+      status,
+      updatedAt: now,
+      createdAt: dataLama.createdAt || now,
+      submittedAt: status === "submitted" ? now : (dataLama.submittedAt || null),
+
+      riwayatStatus: {
+        ...(dataLama.riwayatStatus || {}),
+        [now.replace(/[.#$/\[\]:]/g, "_")]: {
+          status,
+          oleh: namaLogin,
+          role: getRoleLogin(),
+          waktu: now,
+          catatan: status === "submitted"
+            ? "Mentor mengajukan atau mengajukan ulang evaluasi bulanan kepada Supervisor."
+            : "Mentor menyimpan draft evaluasi bulanan."
+        }
+      }
+    };
+
+    if (status === "submitted") {
+      payload.resubmittedAt = now;
+      payload.resubmittedBy = namaLogin;
+
+      if (dataLama.status === "revision") {
+        payload.revisiDitindaklanjuti = true;
+        payload.revisiDitindaklanjutiAt = now;
+      }
+    }
+
+    if (dataLama.tindakLanjutSupervisor) payload.tindakLanjutSupervisor = dataLama.tindakLanjutSupervisor;
+    if (dataLama.catatanSupervisor) payload.catatanSupervisor = dataLama.catatanSupervisor;
+    if (dataLama.arahanTindakLanjut) payload.arahanTindakLanjut = dataLama.arahanTindakLanjut;
+    if (dataLama.namaSupervisor) payload.namaSupervisor = dataLama.namaSupervisor;
+    if (dataLama.supervisorUpdatedAt) payload.supervisorUpdatedAt = dataLama.supervisorUpdatedAt;
+
+    try {
+      await set(ref(db, `${PATH_EVALUASI_BULANAN}/${evaluasiKeySaatIni}`), payload);
+
+      dataEvaluasiTersimpanSaatIni = payload;
+
+      await refreshEvaluasiBulanan();
+      renderTindakLanjutSupervisor(payload);
+      setStatusDraft(status);
+      renderTinjauanBulanan();
+
+      alert(status === "submitted"
+        ? "✅ Evaluasi bulanan berhasil diajukan ke Supervisor."
+        : "✅ Draft evaluasi bulanan berhasil disimpan."
+      );
+
+    } catch (error) {
+      console.error(error);
+      alert("❌ Gagal menyimpan evaluasi bulanan: " + error.message);
+    }
+  };
+
+  window.bersihkanInputManual = function() {
+    document.getElementById("halBaikMenonjol").value = "";
+    document.getElementById("doaHarapan").value = "";
+    document.getElementById("rekomendasiBulanDepan").value = "";
+  };
+
+  async function refreshEvaluasiBulanan() {
+    const snap = await get(query(ref(db, PATH_EVALUASI_BULANAN), limitToLast(1800)));
+    semuaEvaluasiBulanan = snap.exists()
+      ? Object.entries(snap.val()).map(([id, data]) => ({ id, ...data }))
+      : [];
+  }
+
+  window.bukaTab = function(tab) {
+    const tabInput = document.getElementById("tabInput");
+    const tabTinjau = document.getElementById("tabTinjau");
+    const btnInput = document.getElementById("tabBtnInput");
+    const btnTinjau = document.getElementById("tabBtnTinjau");
+
+    if (tab === "input") {
+      tabInput.classList.add("active");
+      tabTinjau.classList.remove("active");
+      btnInput.classList.add("active");
+      btnTinjau.classList.remove("active");
+    } else {
+      tabTinjau.classList.add("active");
+      tabInput.classList.remove("active");
+      btnTinjau.classList.add("active");
+      btnInput.classList.remove("active");
+      renderTinjauanBulanan();
+    }
+  };
+
+  function getStatusLabel(status) {
+    const map = {
+      belum_input: "Belum Diinput",
+      draft: "Draft",
+      submitted: "Menunggu Review",
+      approved: "Disetujui",
+      revision: "Perlu Revisi",
+      special_attention: "Perhatian Khusus"
+    };
+
+    return map[status] || status || "-";
+  }
+
+  function getStatusClass(status) {
+    if (status === "approved") return "status-ok";
+    if (status === "submitted") return "status-info";
+    if (status === "revision") return "status-danger";
+    if (status === "special_attention") return "status-warn";
+    if (status === "draft") return "status-purple";
+    return "";
+  }
+
+  function buildDataTinjauan() {
+    const bulan = Number(document.getElementById("reviewBulan").value);
+    const tahun = Number(document.getElementById("reviewTahun").value);
+
+    return daftarSantriAkses.map(namaSantri => {
+      const evaluasi = cariEvaluasiSantri(namaSantri, bulan, tahun);
+
+      if (!evaluasi) {
+        return {
+          namaSantri,
+          status: "belum_input",
+          bulan,
+          tahun,
+          namaBulan: NAMA_BULAN[bulan - 1],
+          evaluasi: null
+        };
+      }
+
+      return {
+        namaSantri,
+        status: evaluasi.status || "draft",
+        bulan,
+        tahun,
+        namaBulan: NAMA_BULAN[bulan - 1],
+        evaluasi
+      };
+    });
+  }
+
+  window.renderTinjauanBulanan = function() {
+    const wrapper = document.getElementById("reviewList");
+    const q = document.getElementById("reviewSearch").value.toLowerCase().trim();
+    const statusFilter = document.getElementById("reviewStatus").value;
+
+    let data = buildDataTinjauan();
+
+    if (q) {
+      data = data.filter(item => item.namaSantri.toLowerCase().includes(q));
+    }
+
+    if (statusFilter !== "all") {
+      data = data.filter(item => item.status === statusFilter);
+    }
+
+    const allData = buildDataTinjauan();
+
+    document.getElementById("statBelumInput").textContent = allData.filter(x => x.status === "belum_input").length;
+    document.getElementById("statDraft").textContent = allData.filter(x => x.status === "draft").length;
+    document.getElementById("statSubmitted").textContent = allData.filter(x => x.status === "submitted").length;
+    document.getElementById("statApproved").textContent = allData.filter(x => x.status === "approved").length;
+    document.getElementById("statRevision").textContent = allData.filter(x => x.status === "revision").length;
+    document.getElementById("statSpecial").textContent = allData.filter(x => x.status === "special_attention").length;
+
+    document.getElementById("jumlahReview").textContent = `${data.length} data`;
+
+    if (!data.length) {
+      wrapper.innerHTML = `<div class="empty-box">Tidak ada data sesuai filter.</div>`;
+      return;
+    }
+
+    wrapper.innerHTML = data.map(item => {
+      const evaluasi = item.evaluasi;
+      const totalMentoring =
+        evaluasi?.sumberData?.totalMentoring ||
+        evaluasi?.sumberMentoring?.totalMentoring ||
+        evaluasi?.ringkasanPekanan?.length ||
+        0;
+
+      const rata = evaluasi?.rataRataUmum || 0;
+      const mentor = evaluasi?.namaMentor || evaluasi?.namaNaqib || namaLogin;
+      const statusClass = getStatusClass(item.status);
+
+      const catatanSupervisor =
+        evaluasi?.tindakLanjutSupervisor?.catatanSupervisor ||
+        evaluasi?.catatanSupervisor ||
+        "";
+
+      const arahanSupervisor =
+        evaluasi?.tindakLanjutSupervisor?.arahanTindakLanjut ||
+        evaluasi?.arahanTindakLanjut ||
+        "";
+
+      const feedback = item.status === "revision" || item.status === "special_attention" || item.status === "approved"
+        ? `
+          <div class="review-feedback">
+            <strong>Catatan Supervisor:</strong><br>
+            ${escapeHtml(catatanSupervisor || "Belum ada catatan supervisor.")}
+            ${arahanSupervisor ? `<br><br><strong>Arahan:</strong><br>${escapeHtml(arahanSupervisor)}` : ""}
+          </div>
+        `
+        : "";
+
+      const tombol =
+        item.status === "belum_input"
+          ? `<button class="small-btn btn-gold" onclick="mulaiInputDariTinjauan('${escapeAttr(item.namaSantri)}')">✍️ Input Sekarang</button>`
+          : `<button class="small-btn btn-navy" onclick="bukaEvaluasiDariTinjauan('${escapeAttr(item.namaSantri)}')">📖 Buka / Edit</button>`;
+
+      return `
+        <div class="review-card ${item.status}">
+          <div class="review-card-top">
+            <div>
+              <div class="review-name">${escapeHtml(item.namaSantri)}</div>
+              <div class="review-meta">
+                ${escapeHtml(item.namaBulan)} ${item.tahun} · Mentor: ${escapeHtml(mentor)}
+              </div>
+            </div>
+            <span class="status-pill ${statusClass}">${getStatusLabel(item.status)}</span>
+          </div>
+
+          <div class="review-mini-grid">
+            <div class="review-mini">
+              <strong>${totalMentoring}</strong>
+              <span>Mentoring</span>
+            </div>
+            <div class="review-mini">
+              <strong>${rata}</strong>
+              <span>Rata-rata</span>
+            </div>
+          </div>
+
+          ${feedback}
+
+          <div class="review-card-actions">
+            ${tombol}
+          </div>
+        </div>
+      `;
+    }).join("");
+  };
+
+  window.mulaiInputDariTinjauan = function(namaSantri) {
+    document.getElementById("selectSantri").value = namaSantri;
+    document.getElementById("selectBulan").value = document.getElementById("reviewBulan").value;
+    document.getElementById("inputTahun").value = document.getElementById("reviewTahun").value;
+
+    bukaTab("input");
+
+    setTimeout(() => {
+      muatEvaluasiBulanan();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }, 150);
+  };
+
+  window.bukaEvaluasiDariTinjauan = function(namaSantri) {
+    document.getElementById("selectSantri").value = namaSantri;
+    document.getElementById("selectBulan").value = document.getElementById("reviewBulan").value;
+    document.getElementById("inputTahun").value = document.getElementById("reviewTahun").value;
+
+    bukaTab("input");
+
+    setTimeout(() => {
+      muatEvaluasiBulanan();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }, 150);
+  };
+
+  function escapeHtml(value) {
+    return String(value ?? "")
+      .replaceAll("&", "&amp;")
+      .replaceAll("<", "&lt;")
+      .replaceAll(">", "&gt;")
+      .replaceAll('"', "&quot;")
+      .replaceAll("'", "&#039;");
+  }
+
+  function escapeAttr(value) {
+    return String(value ?? "")
+      .replaceAll("\\", "\\\\")
+      .replaceAll("'", "\\'")
+      .replaceAll('"', "&quot;");
+  }
+
+  document.addEventListener("DOMContentLoaded", async () => {
+    setupBulanTahun();
+    renderDimensiKosong();
+
+    await loadDataAwal();
+
+    document.getElementById('loadingOverlay').style.opacity = '0';
+    setTimeout(() => {
+      document.getElementById('loadingOverlay').style.display = 'none';
+    }, 500);
+  });
+</script>
+
+</body>
+</html>

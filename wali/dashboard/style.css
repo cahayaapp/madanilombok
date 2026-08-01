@@ -1,0 +1,398 @@
+/*
+ * CAHAYA APP — Portal Wali Premium Theme 2026/2027
+ * Fresh EdTech / Ruangguru-inspired visual system.
+ */
+
+:root {
+  --portal-blue: #2878ff;
+  --portal-blue-dark: #1559d6;
+  --portal-cyan: #19c6e6;
+  --portal-purple: #7768f6;
+  --portal-green: #29c58d;
+  --portal-orange: #ff9f43;
+  --portal-red: #ff5f70;
+  --portal-ink: #152347;
+  --portal-text: #33425f;
+  --portal-muted: #74829c;
+  --portal-line: #e2eaf6;
+  --portal-soft: #f3f7ff;
+  --portal-card: #ffffff;
+  --portal-shadow:
+    0 18px 45px rgba(35, 78, 160, .10);
+  --portal-shadow-soft:
+    0 8px 25px rgba(35, 78, 160, .07);
+}
+
+body.portal-page {
+  min-height: 100vh;
+  color: var(--portal-text);
+  font-family:
+    "Nunito",
+    "Plus Jakarta Sans",
+    sans-serif !important;
+  background:
+    radial-gradient(
+      circle at 4% 0%,
+      rgba(25, 198, 230, .13),
+      transparent 25%
+    ),
+    radial-gradient(
+      circle at 100% 8%,
+      rgba(119, 104, 246, .10),
+      transparent 28%
+    ),
+    linear-gradient(
+      180deg,
+      #f2f7ff 0%,
+      #f9fbff 55%,
+      #f3f8ff 100%
+    ) !important;
+  background-attachment: fixed !important;
+}
+
+.portal-page button,
+.portal-page input,
+.portal-page select,
+.portal-page textarea {
+  font-family:
+    "Nunito",
+    "Plus Jakarta Sans",
+    sans-serif !important;
+}
+
+.portal-page .app-container,
+.portal-page .cahaya-container {
+  width: 100%;
+  max-width: 930px !important;
+  margin: 0 auto;
+  padding:
+    24px 17px 58px !important;
+}
+
+.portal-page .rg-header-card,
+.portal-page .header-card,
+.portal-page .greeting-section {
+  position: relative;
+  overflow: hidden;
+  color: #ffffff;
+  border: 1px solid rgba(255,255,255,.20) !important;
+  border-radius: 28px !important;
+  background:
+    radial-gradient(
+      circle at 91% 8%,
+      rgba(255,255,255,.23),
+      transparent 27%
+    ),
+    linear-gradient(
+      135deg,
+      #176cf1 0%,
+      var(--portal-blue) 52%,
+      var(--portal-cyan) 132%
+    ) !important;
+  box-shadow:
+    0 22px 50px rgba(40,120,255,.22) !important;
+}
+
+.portal-page .rg-header-card::before,
+.portal-page .header-card::before,
+.portal-page .greeting-section::before {
+  content: "";
+  width: 190px;
+  height: 190px;
+  position: absolute;
+  top: -112px;
+  right: -48px;
+  pointer-events: none;
+  border: 34px solid rgba(255,255,255,.075);
+  border-radius: 50%;
+}
+
+.portal-page .rg-student-name,
+.portal-page .student-name,
+.portal-page .greeting-section h2 {
+  color: #ffffff !important;
+  font-family:
+    "Nunito",
+    "Plus Jakarta Sans",
+    sans-serif !important;
+  font-weight: 1000 !important;
+  letter-spacing: -.45px !important;
+}
+
+.portal-page .rg-avatar-wrapper,
+.portal-page .avatar-wrapper {
+  border-radius: 20px !important;
+  border: 3px solid rgba(255,255,255,.96) !important;
+  background: #ffffff !important;
+  box-shadow:
+    0 11px 25px rgba(17,71,160,.19) !important;
+}
+
+.portal-page .rg-avatar-wrapper img,
+.portal-page .avatar-wrapper img {
+  border-radius: 16px !important;
+}
+
+.portal-page .rg-level-badge,
+.portal-page .level-badge {
+  color: #9a6510 !important;
+  background: #fff2bd !important;
+  border-color: #ffffff !important;
+  box-shadow:
+    0 6px 14px rgba(151,102,19,.15);
+}
+
+.portal-page .rg-student-term,
+.portal-page .student-term {
+  color: #ffffff !important;
+  border: 1px solid rgba(255,255,255,.18);
+  border-radius: 999px !important;
+  background: rgba(17,65,150,.23) !important;
+}
+
+.portal-page .filter-container {
+  border: 1px solid var(--portal-line) !important;
+  border-radius: 18px !important;
+  background:
+    linear-gradient(
+      135deg,
+      #ffffff,
+      #f9fbff
+    ) !important;
+  box-shadow:
+    var(--portal-shadow-soft) !important;
+}
+
+.portal-page .header-filter-box,
+.portal-page .filter-box {
+  border: 1px solid #d8e5f7 !important;
+  border-radius: 999px !important;
+  background: #f2f7ff !important;
+}
+
+.portal-page .header-filter-box select,
+.portal-page .filter-box select {
+  color: var(--portal-blue) !important;
+  font-weight: 900 !important;
+}
+
+.portal-page .kategori-blok,
+.portal-page .notice-card,
+.portal-page .raport-frame,
+.portal-page .cahaya-card {
+  border: 1px solid rgba(222,232,246,.96) !important;
+  border-radius: 24px !important;
+  box-shadow:
+    var(--portal-shadow) !important;
+}
+
+.portal-page .kb-title,
+.portal-page .section-header h3,
+.portal-page .brand-report,
+.portal-page .header-profil h1 {
+  font-family:
+    "Nunito",
+    "Plus Jakarta Sans",
+    sans-serif !important;
+  font-weight: 1000 !important;
+}
+
+.portal-page .kb-icon {
+  border-radius: 14px !important;
+}
+
+.portal-page .empty-state,
+.portal-page .loading-box,
+.portal-page #loadingData,
+.portal-page #emptyData {
+  border-color: #d8e3f3 !important;
+  border-radius: 18px !important;
+  color: var(--portal-muted) !important;
+  background: rgba(255,255,255,.88) !important;
+  box-shadow:
+    var(--portal-shadow-soft) !important;
+}
+
+.portal-page .positive-footer {
+  color: #36506e !important;
+  border-color: #dce9fb !important;
+  border-radius: 20px !important;
+  background:
+    linear-gradient(
+      135deg,
+      #f2f7ff,
+      #f1fbff
+    ) !important;
+}
+
+/* Beranda */
+.page-beranda .greeting-section {
+  min-height: 176px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 29px 31px !important;
+}
+
+.page-beranda .greeting-section p {
+  color: rgba(255,255,255,.86) !important;
+  font-weight: 750;
+}
+
+.page-beranda .kabar-card,
+.page-beranda .notif-item {
+  border: 1px solid rgba(224,232,244,.96) !important;
+  border-radius: 21px !important;
+  box-shadow:
+    var(--portal-shadow) !important;
+}
+
+.page-beranda .section-header .icon {
+  color: #ffffff !important;
+  border-radius: 14px !important;
+  background:
+    linear-gradient(
+      135deg,
+      var(--portal-blue),
+      var(--portal-cyan)
+    ) !important;
+}
+
+.page-beranda .kabar-avatar {
+  border: 3px solid #ffffff !important;
+  border-radius: 15px !important;
+  background:
+    linear-gradient(
+      135deg,
+      var(--portal-blue),
+      var(--portal-purple)
+    ) !important;
+}
+
+/* Profile */
+.page-profil .header-profil {
+  color: #ffffff !important;
+  border-radius: 25px !important;
+  background:
+    radial-gradient(
+      circle at 92% 2%,
+      rgba(255,255,255,.20),
+      transparent 25%
+    ),
+    linear-gradient(
+      135deg,
+      #176cf1,
+      var(--portal-blue),
+      var(--portal-cyan)
+    ) !important;
+  box-shadow:
+    0 22px 50px rgba(40,120,255,.21) !important;
+}
+
+.page-profil .header-profil h1 {
+  color: #ffffff !important;
+}
+
+.page-profil .header-profil p {
+  color: rgba(255,255,255,.85) !important;
+}
+
+.page-profil .foto-preview {
+  border: 4px solid #ffffff !important;
+  border-radius: 25px !important;
+  background: #eef5ff !important;
+  box-shadow:
+    0 15px 30px rgba(45,82,145,.16) !important;
+}
+
+.page-profil .form-control {
+  border-color: #dbe6f5 !important;
+  border-radius: 13px !important;
+}
+
+.page-profil .form-control:focus {
+  border-color: var(--portal-blue) !important;
+  box-shadow:
+    0 0 0 4px rgba(40,120,255,.10);
+}
+
+.page-profil .btn-cahaya,
+.page-profil .btn-primary {
+  border: 0;
+  border-radius: 13px !important;
+  color: #ffffff !important;
+  background:
+    linear-gradient(
+      135deg,
+      var(--portal-blue),
+      var(--portal-cyan)
+    ) !important;
+  box-shadow:
+    0 10px 22px rgba(40,120,255,.19) !important;
+}
+
+.page-profil .account-chip {
+  border: 1px solid #dbe7f7;
+  border-radius: 14px;
+  background: #f4f8ff;
+}
+
+@media (max-width: 768px) {
+  .portal-page .app-container,
+  .portal-page .cahaya-container {
+    padding:
+      12px 9px 45px !important;
+  }
+
+  .portal-page .rg-header-card,
+  .portal-page .header-card,
+  .portal-page .greeting-section {
+    border-radius: 21px !important;
+  }
+
+  .portal-page .kategori-blok,
+  .portal-page .notice-card,
+  .portal-page .raport-frame,
+  .portal-page .cahaya-card {
+    border-radius: 19px !important;
+  }
+}
+
+@media print {
+  body.portal-page {
+    background: #ffffff !important;
+  }
+}
+
+
+/* =========================================================
+   IDENTITAS SANTRI SERAGAM
+   Seluruh header hanya menampilkan: nama, kelas, dan usrah.
+   ========================================================= */
+
+.portal-page .rg-header-info,
+.portal-page .header-left > div:last-child {
+  min-width: 0;
+}
+
+.portal-page .rg-student-name,
+.portal-page .student-name {
+  margin-bottom: 3px !important;
+}
+
+.portal-page .rg-student-class,
+.portal-page .rg-student-usrah,
+.portal-page .student-meta {
+  display: block;
+  margin-top: 4px;
+  color: rgba(255,255,255,.96) !important;
+  font-size: .82rem !important;
+  font-weight: 750 !important;
+  line-height: 1.35 !important;
+}
+
+.portal-page .rg-student-usrah,
+.portal-page .student-usrah {
+  color: #e9fbff !important;
+}
+

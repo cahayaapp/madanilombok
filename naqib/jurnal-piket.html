@@ -1,0 +1,2449 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <!-- CAHAYA WHITE-LABEL CONFIG -->
+  <script src="../config/tenant-config.js"></script>
+  <script src="../config/master-data.js"></script>
+  <script src="../js/cahaya-config-runtime.js" defer></script>
+
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>CAHAYA APP - Jurnal Pengawasan Naqib</title>
+
+  <link rel="stylesheet" href="../../css/cahaya-theme.css" />
+
+  <style>
+    :root {
+      --jp-primary: var(--primary, #2878ff);
+      --jp-primary-dark: var(--primary-dark, #1557d5);
+      --jp-cyan: var(--cyan, #19c6e6);
+      --jp-green: var(--green, #25b983);
+      --jp-orange: var(--orange, #f59e42);
+      --jp-red: var(--red, #ef5968);
+      --jp-purple: var(--purple, #7667f5);
+      --jp-heading: var(--text-heading, #16264a);
+      --jp-text: var(--text-main, #2d3c5d);
+      --jp-muted: var(--text-muted, #7483a0);
+      --jp-border: var(--border, #e1e9f5);
+      --jp-bg: var(--bg-main, #f5f8ff);
+      --jp-shadow: 0 15px 38px rgba(35, 78, 160, 0.10);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      width: 100%;
+      min-height: 100%;
+      margin: 0;
+      overflow-x: hidden;
+    }
+
+    body {
+      padding: 18px;
+      color: var(--jp-text);
+      font-family: "Nunito", "Poppins", sans-serif;
+      background:
+        radial-gradient(circle at 0% 0%, rgba(25, 198, 230, 0.12), transparent 27%),
+        radial-gradient(circle at 100% 4%, rgba(118, 103, 245, 0.09), transparent 24%),
+        linear-gradient(180deg, #f4f8ff 0%, #fbfcff 100%);
+    }
+
+    button,
+    input,
+    select,
+    textarea {
+      font: inherit;
+    }
+
+    .journal-page {
+      width: 100%;
+      max-width: 1080px;
+      margin: 0 auto;
+      animation: pageIn 0.38s ease both;
+    }
+
+    @keyframes pageIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* =========================================================
+       HERO
+       ========================================================= */
+    .journal-hero {
+      position: relative;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 22px;
+      align-items: center;
+      min-height: 178px;
+      margin-bottom: 16px;
+      padding: 29px 31px;
+      overflow: hidden;
+      color: #ffffff;
+      border-radius: 25px;
+      background:
+        radial-gradient(circle at 88% 10%, rgba(255,255,255,0.24), transparent 25%),
+        linear-gradient(135deg, #1d77ef 0%, #2d84ff 48%, #18bddf 100%);
+      box-shadow: 0 19px 44px rgba(40,120,255,0.23);
+    }
+
+    .journal-hero::before {
+      content: "";
+      position: absolute;
+      width: 190px;
+      height: 190px;
+      top: -102px;
+      right: -58px;
+      border: 36px solid rgba(255,255,255,0.08);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+
+    .journal-hero::after {
+      content: "";
+      position: absolute;
+      width: 92px;
+      height: 92px;
+      right: 225px;
+      bottom: -61px;
+      border-radius: 27px;
+      background: rgba(255,255,255,0.08);
+      transform: rotate(35deg);
+      pointer-events: none;
+    }
+
+    .hero-copy,
+    .hero-user {
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 10px;
+      padding: 6px 11px;
+      font-size: 0.66rem;
+      font-weight: 900;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+      border: 1px solid rgba(255,255,255,0.25);
+      border-radius: 999px;
+      background: rgba(255,255,255,0.15);
+    }
+
+    .journal-hero h1 {
+      margin: 0;
+      color: #ffffff;
+      font-size: clamp(1.62rem, 4vw, 2.25rem);
+      font-weight: 900;
+      line-height: 1.12;
+    }
+
+    .journal-hero p {
+      max-width: 670px;
+      margin: 8px 0 0;
+      color: rgba(255,255,255,0.86);
+      font-size: 0.82rem;
+      font-weight: 650;
+      line-height: 1.6;
+    }
+
+    .hero-user {
+      min-width: 215px;
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      padding: 13px;
+      border: 1px solid rgba(255,255,255,0.22);
+      border-radius: 16px;
+      background: rgba(255,255,255,0.14);
+      backdrop-filter: blur(8px);
+    }
+
+    .user-avatar {
+      width: 45px;
+      height: 45px;
+      flex: 0 0 45px;
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+      color: var(--jp-primary-dark);
+      font-size: 1rem;
+      font-weight: 900;
+      border: 3px solid rgba(255,255,255,0.76);
+      border-radius: 14px;
+      background: #ffffff;
+    }
+
+    .user-avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .user-copy {
+      min-width: 0;
+    }
+
+    .user-copy strong,
+    .user-copy span {
+      display: block;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .user-copy strong {
+      color: #ffffff;
+      font-size: 0.8rem;
+      font-weight: 900;
+    }
+
+    .user-copy span {
+      margin-top: 3px;
+      color: rgba(255,255,255,0.74);
+      font-size: 0.64rem;
+      font-weight: 700;
+    }
+
+    /* =========================================================
+       SUMMARY
+       ========================================================= */
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    .summary-card {
+      position: relative;
+      overflow: hidden;
+      padding: 15px 16px;
+      border: 1px solid var(--jp-border);
+      border-radius: 16px;
+      background: #ffffff;
+      box-shadow: 0 8px 22px rgba(35,78,160,0.07);
+    }
+
+    .summary-card::after {
+      content: "";
+      position: absolute;
+      width: 58px;
+      height: 58px;
+      top: -24px;
+      right: -22px;
+      border-radius: 50%;
+      background: var(--summary-soft, #eaf3ff);
+    }
+
+    .summary-label,
+    .summary-value {
+      position: relative;
+      z-index: 1;
+      display: block;
+    }
+
+    .summary-label {
+      margin-bottom: 6px;
+      color: var(--jp-muted);
+      font-size: 0.59rem;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+    }
+
+    .summary-value {
+      overflow: hidden;
+      color: var(--summary-color, var(--jp-primary));
+      font-size: 1.08rem;
+      font-weight: 900;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .summary-card.indicator {
+      --summary-color: var(--jp-purple);
+      --summary-soft: #f0eeff;
+    }
+
+    .summary-card.done {
+      --summary-color: #16865f;
+      --summary-soft: #e8faf3;
+    }
+
+    .summary-card.partial {
+      --summary-color: #bd741c;
+      --summary-soft: #fff4e7;
+    }
+
+    .summary-card.missed {
+      --summary-color: #d64555;
+      --summary-soft: #fff0f2;
+    }
+
+    .summary-card.score {
+      --summary-color: var(--jp-primary-dark);
+      --summary-soft: #eaf3ff;
+    }
+
+    /* =========================================================
+       PANELS
+       ========================================================= */
+    .journal-panel {
+      margin-bottom: 16px;
+      padding: 23px;
+      border: 1px solid rgba(224,232,245,0.95);
+      border-radius: 22px;
+      background: rgba(255,255,255,0.98);
+      box-shadow: var(--jp-shadow);
+    }
+
+    .panel-heading {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 18px;
+    }
+
+    .panel-heading h2,
+    .panel-heading h3 {
+      margin: 0;
+      color: var(--jp-heading);
+      font-size: 1.08rem;
+      font-weight: 900;
+      line-height: 1.25;
+    }
+
+    .panel-heading p {
+      margin: 5px 0 0;
+      color: var(--jp-muted);
+      font-size: 0.71rem;
+      font-weight: 650;
+      line-height: 1.5;
+    }
+
+    .notice {
+      display: flex;
+      align-items: flex-start;
+      gap: 9px;
+      margin-bottom: 17px;
+      padding: 12px 14px;
+      color: #2a6296;
+      font-size: 0.7rem;
+      font-weight: 700;
+      line-height: 1.52;
+      border: 1px solid #d5e8ff;
+      border-left: 5px solid var(--jp-primary);
+      border-radius: 12px;
+      background: #f2f8ff;
+    }
+
+    .notice strong {
+      color: var(--jp-heading);
+      font-weight: 900;
+    }
+
+    /* =========================================================
+       FORM
+       ========================================================= */
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 13px;
+    }
+
+    .form-group {
+      min-width: 0;
+    }
+
+    .form-group.full {
+      grid-column: 1 / -1;
+    }
+
+    .form-label {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      margin-bottom: 8px;
+      color: var(--jp-heading);
+      font-size: 0.72rem;
+      font-weight: 900;
+    }
+
+    .form-control {
+      width: 100%;
+      min-height: 48px;
+      padding: 11px 14px;
+      color: var(--jp-text);
+      font-size: 0.82rem;
+      font-weight: 750;
+      outline: none;
+      border: 1.5px solid #dfe7f3;
+      border-radius: 13px;
+      background: #f8faff;
+      transition: 0.2s ease;
+    }
+
+    textarea.form-control {
+      min-height: 108px;
+      resize: vertical;
+      line-height: 1.6;
+    }
+
+    .form-control:hover {
+      border-color: #c9d8ec;
+      background: #ffffff;
+    }
+
+    .form-control:focus {
+      border-color: var(--jp-primary);
+      background: #ffffff;
+      box-shadow: 0 0 0 4px rgba(40,120,255,0.10);
+    }
+
+    .form-control[readonly] {
+      color: #53627d;
+      background: #f1f5fb;
+      cursor: not-allowed;
+    }
+
+    .block-select {
+      color: var(--jp-primary-dark);
+      border-color: #bcd5fb;
+      background: #f2f7ff;
+    }
+
+    /* =========================================================
+       PROGRESS
+       ========================================================= */
+    .progress-wrap {
+      margin-bottom: 17px;
+      padding: 13px 15px;
+      border: 1px solid #dfe8f5;
+      border-radius: 14px;
+      background: #f8faff;
+    }
+
+    .progress-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 8px;
+    }
+
+    .progress-head strong {
+      color: var(--jp-heading);
+      font-size: 0.72rem;
+      font-weight: 900;
+    }
+
+    .progress-head span {
+      color: var(--jp-primary-dark);
+      font-size: 0.72rem;
+      font-weight: 900;
+    }
+
+    .progress-track {
+      height: 9px;
+      overflow: hidden;
+      border-radius: 999px;
+      background: #e3eaf4;
+    }
+
+    .progress-bar {
+      width: 0%;
+      height: 100%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, var(--jp-primary), var(--jp-cyan));
+      transition: width 0.3s ease;
+    }
+
+    /* =========================================================
+       TASK LIST
+       ========================================================= */
+    .task-list {
+      display: grid;
+      gap: 11px;
+    }
+
+    .task-card {
+      overflow: hidden;
+      border: 1px solid var(--jp-border);
+      border-radius: 17px;
+      background: #ffffff;
+      box-shadow: 0 6px 18px rgba(35,78,160,0.055);
+      transition: 0.18s ease;
+    }
+
+    .task-card:hover {
+      border-color: #c8d8ee;
+      box-shadow: 0 9px 24px rgba(35,78,160,0.08);
+      transform: translateY(-1px);
+    }
+
+    .task-main {
+      display: grid;
+      grid-template-columns: 48px minmax(0, 1fr);
+      gap: 12px;
+      padding: 15px;
+    }
+
+    .task-number {
+      width: 42px;
+      height: 42px;
+      display: grid;
+      place-items: center;
+      color: #ffffff;
+      font-size: 0.78rem;
+      font-weight: 950;
+      border-radius: 13px;
+      background: linear-gradient(135deg, var(--jp-primary), #4b8cff);
+      box-shadow: 0 7px 15px rgba(40,120,255,0.18);
+    }
+
+    .task-content {
+      min-width: 0;
+    }
+
+    .task-topline {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 5px;
+    }
+
+    .task-title {
+      margin: 0;
+      color: var(--jp-heading);
+      font-size: 0.82rem;
+      font-weight: 900;
+      line-height: 1.35;
+    }
+
+    .task-time {
+      flex: 0 0 auto;
+      padding: 5px 8px;
+      color: #33649f;
+      font-size: 0.58rem;
+      font-weight: 900;
+      border: 1px solid #d3e2f7;
+      border-radius: 999px;
+      background: #f1f6fd;
+      white-space: nowrap;
+    }
+
+    .task-standard {
+      margin: 0;
+      color: var(--jp-muted);
+      font-size: 0.68rem;
+      font-weight: 650;
+      line-height: 1.52;
+    }
+
+    .task-meta {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      margin-top: 9px;
+    }
+
+    .meta-badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 4px 7px;
+      color: #4d6890;
+      font-size: 0.54rem;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+      border: 1px solid #dce6f3;
+      border-radius: 999px;
+      background: #f4f7fb;
+    }
+
+    .meta-badge.main {
+      color: #176f52;
+      border-color: #caebdf;
+      background: #ecfaf5;
+    }
+
+    .meta-badge.shared {
+      color: #7b5b1d;
+      border-color: #f4dfb5;
+      background: #fff8ec;
+    }
+
+    .meta-badge.coordination {
+      color: #4d4ba5;
+      border-color: #dcd8fb;
+      background: #f4f2ff;
+    }
+
+    .status-area {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 7px;
+      padding: 12px 15px;
+      border-top: 1px solid #edf2f8;
+      background: #f9fbfe;
+    }
+
+    .status-option {
+      position: relative;
+      cursor: pointer;
+    }
+
+    .status-option input {
+      position: absolute;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .status-box {
+      min-height: 43px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      padding: 8px 6px;
+      color: #76849d;
+      font-size: 0.62rem;
+      font-weight: 900;
+      text-align: center;
+      border: 1.5px solid #dfe7f2;
+      border-radius: 11px;
+      background: #ffffff;
+      transition: 0.16s ease;
+    }
+
+    .status-box b {
+      font-size: 0.76rem;
+    }
+
+    .status-option:hover .status-box {
+      color: var(--status-color);
+      border-color: var(--status-color);
+      background: var(--status-soft);
+    }
+
+    .status-option input:checked + .status-box {
+      color: #ffffff;
+      border-color: var(--status-color);
+      background: var(--status-color);
+      box-shadow: 0 7px 16px var(--status-shadow);
+      transform: translateY(-1px);
+    }
+
+    .status-option.done {
+      --status-color: #25b983;
+      --status-soft: #eafaf4;
+      --status-shadow: rgba(37,185,131,0.20);
+    }
+
+    .status-option.partial {
+      --status-color: #ef9a35;
+      --status-soft: #fff4e7;
+      --status-shadow: rgba(239,154,53,0.20);
+    }
+
+    .status-option.missed {
+      --status-color: #e75565;
+      --status-soft: #fff0f2;
+      --status-shadow: rgba(231,85,101,0.20);
+    }
+
+    .status-option.na {
+      --status-color: #7c89a2;
+      --status-soft: #f0f3f8;
+      --status-shadow: rgba(124,137,162,0.18);
+    }
+
+    .task-note-wrap {
+      display: none;
+      padding: 0 15px 14px;
+      background: #f9fbfe;
+    }
+
+    .task-note-wrap.show {
+      display: block;
+    }
+
+    .task-note {
+      width: 100%;
+      min-height: 42px;
+      padding: 10px 12px;
+      color: var(--jp-text);
+      font-size: 0.7rem;
+      font-weight: 650;
+      outline: none;
+      border: 1.5px solid #e0e7f2;
+      border-radius: 11px;
+      background: #ffffff;
+      resize: vertical;
+    }
+
+    .task-note:focus {
+      border-color: var(--jp-primary);
+      box-shadow: 0 0 0 3px rgba(40,120,255,0.08);
+    }
+
+    .task-card.state-done {
+      border-left: 5px solid var(--jp-green);
+    }
+
+    .task-card.state-partial {
+      border-left: 5px solid var(--jp-orange);
+    }
+
+    .task-card.state-missed {
+      border-left: 5px solid var(--jp-red);
+    }
+
+    .task-card.state-na {
+      border-left: 5px solid #8b98ae;
+      opacity: 0.88;
+    }
+
+    /* =========================================================
+       SCORE INTERPRETATION
+       ========================================================= */
+    .score-box {
+      display: grid;
+      grid-template-columns: auto minmax(0, 1fr);
+      gap: 14px;
+      align-items: center;
+      margin-top: 18px;
+      padding: 16px;
+      border: 1px solid #dce8f8;
+      border-radius: 16px;
+      background: linear-gradient(135deg, #f7faff, #f1f8ff);
+    }
+
+    .score-circle {
+      width: 76px;
+      height: 76px;
+      display: grid;
+      place-items: center;
+      color: var(--jp-primary-dark);
+      font-size: 1.13rem;
+      font-weight: 950;
+      border: 7px solid #dfeaff;
+      border-radius: 50%;
+      background: #ffffff;
+    }
+
+    .score-copy strong,
+    .score-copy span {
+      display: block;
+    }
+
+    .score-copy strong {
+      color: var(--jp-heading);
+      font-size: 0.88rem;
+      font-weight: 900;
+    }
+
+    .score-copy span {
+      margin-top: 4px;
+      color: var(--jp-muted);
+      font-size: 0.68rem;
+      font-weight: 650;
+      line-height: 1.5;
+    }
+
+    /* =========================================================
+       SUBMIT
+       ========================================================= */
+    .submit-row {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(250px, 0.42fr);
+      gap: 14px;
+      align-items: center;
+      margin-top: 17px;
+      padding: 16px;
+      border: 1px solid #dce8f8;
+      border-radius: 16px;
+      background: #f7faff;
+    }
+
+    .submit-copy strong,
+    .submit-copy span {
+      display: block;
+    }
+
+    .submit-copy strong {
+      color: var(--jp-heading);
+      font-size: 0.84rem;
+      font-weight: 900;
+    }
+
+    .submit-copy span {
+      margin-top: 4px;
+      color: var(--jp-muted);
+      font-size: 0.66rem;
+      font-weight: 650;
+      line-height: 1.45;
+    }
+
+    .submit-button {
+      width: 100%;
+      min-height: 50px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 12px 18px;
+      color: #ffffff;
+      font-size: 0.8rem;
+      font-weight: 900;
+      cursor: pointer;
+      border: none;
+      border-radius: 13px;
+      background: linear-gradient(135deg, var(--jp-primary), var(--jp-cyan));
+      box-shadow: 0 11px 24px rgba(40,120,255,0.23);
+      transition: 0.2s ease;
+    }
+
+    .submit-button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 14px 28px rgba(40,120,255,0.28);
+    }
+
+    .submit-button:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+    }
+
+    /* =========================================================
+       EMPTY / LOADING / TOAST
+       ========================================================= */
+    .empty-state {
+      padding: 44px 18px;
+      color: var(--jp-muted);
+      text-align: center;
+      font-size: 0.72rem;
+      font-weight: 700;
+      line-height: 1.5;
+      border: 1px dashed #dce6f2;
+      border-radius: 16px;
+      background: #fbfcff;
+    }
+
+    .empty-icon {
+      width: 64px;
+      height: 64px;
+      display: grid;
+      place-items: center;
+      margin: 0 auto 12px;
+      color: var(--jp-primary);
+      font-size: 1.55rem;
+      border-radius: 21px;
+      background: #edf5ff;
+    }
+
+    #loadingOverlay {
+      position: fixed;
+      inset: 0;
+      z-index: 3000;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      color: var(--jp-heading);
+      text-align: center;
+      background: rgba(246,249,255,0.95);
+      backdrop-filter: blur(10px);
+      transition: 0.35s ease;
+    }
+
+    .loader-mark {
+      width: 72px;
+      height: 72px;
+      display: grid;
+      place-items: center;
+      margin-bottom: 14px;
+      color: #ffffff;
+      font-size: 1.7rem;
+      border-radius: 23px;
+      background: linear-gradient(135deg, var(--jp-primary), var(--jp-cyan));
+      box-shadow: 0 14px 30px rgba(40,120,255,0.22);
+      animation: pulse 1.15s ease-in-out infinite alternate;
+    }
+
+    #loadingText {
+      font-size: 0.9rem;
+      font-weight: 900;
+    }
+
+    @keyframes pulse {
+      from { transform: scale(0.95); }
+      to { transform: scale(1.04); }
+    }
+
+    .toast {
+      position: fixed;
+      left: 50%;
+      bottom: 22px;
+      z-index: 5000;
+      width: min(440px, calc(100vw - 26px));
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 13px 15px;
+      color: var(--jp-heading);
+      border: 1px solid #dce7f5;
+      border-radius: 14px;
+      background: #ffffff;
+      box-shadow: 0 17px 42px rgba(22,44,89,0.20);
+      opacity: 0;
+      pointer-events: none;
+      transform: translate(-50%, 24px);
+      transition: 0.27s ease;
+    }
+
+    .toast.show {
+      opacity: 1;
+      pointer-events: auto;
+      transform: translate(-50%, 0);
+    }
+
+    .toast-icon {
+      width: 34px;
+      height: 34px;
+      flex: 0 0 34px;
+      display: grid;
+      place-items: center;
+      border-radius: 11px;
+      background: #edf5ff;
+    }
+
+    .toast.success .toast-icon {
+      background: #e8fbf4;
+    }
+
+    .toast.error .toast-icon {
+      background: #fff0f2;
+    }
+
+    .toast strong,
+    .toast span {
+      display: block;
+    }
+
+    .toast strong {
+      font-size: 0.76rem;
+      font-weight: 900;
+    }
+
+    .toast span {
+      margin-top: 2px;
+      color: var(--jp-muted);
+      font-size: 0.68rem;
+      font-weight: 650;
+      line-height: 1.42;
+    }
+
+    /* =========================================================
+       RESPONSIVE
+       ========================================================= */
+    @media (max-width: 900px) {
+      .summary-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+
+      .summary-card.score {
+        grid-column: span 2;
+      }
+
+      .form-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 760px) {
+      body {
+        padding: 10px;
+      }
+
+      .journal-hero {
+        grid-template-columns: 1fr;
+        min-height: 0;
+        padding: 23px 18px;
+        border-radius: 20px;
+      }
+
+      .hero-user {
+        width: 100%;
+        min-width: 0;
+      }
+
+      .journal-panel {
+        padding: 18px 13px;
+        border-radius: 18px;
+      }
+
+      .form-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .form-group.full {
+        grid-column: auto;
+      }
+
+      .task-main {
+        grid-template-columns: 40px minmax(0, 1fr);
+        padding: 13px 11px;
+      }
+
+      .task-number {
+        width: 37px;
+        height: 37px;
+      }
+
+      .task-topline {
+        display: block;
+      }
+
+      .task-time {
+        display: inline-flex;
+        margin-bottom: 6px;
+      }
+
+      .status-area {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        padding: 10px 11px;
+      }
+
+      .submit-row {
+        grid-template-columns: 1fr;
+        padding: 14px;
+      }
+    }
+
+    @media (max-width: 520px) {
+      .summary-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .summary-card.score {
+        grid-column: 1 / -1;
+      }
+
+      .summary-label {
+        font-size: 0.54rem;
+      }
+
+      .summary-value {
+        font-size: 0.95rem;
+      }
+
+      .status-box {
+        min-height: 40px;
+        font-size: 0.58rem;
+      }
+
+      .score-box {
+        grid-template-columns: 1fr;
+        text-align: center;
+      }
+
+      .score-circle {
+        margin: 0 auto;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+  </style>
+
+  <!-- Tampilan minimal: header internal dan ringkasan disembunyikan tanpa mengubah sistem -->
+  <style id="cahaya-minimal-cleanup">
+    .journal-hero,
+.summary-grid {
+      display: none !important;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="loadingOverlay">
+    <div class="loader-mark">📝</div>
+    <div id="loadingText">Menyiapkan jurnal pengawasan...</div>
+  </div>
+
+  <div id="appToast" class="toast" role="status" aria-live="polite">
+    <div class="toast-icon" id="toastIcon">✓</div>
+    <div>
+      <strong id="toastTitle">Berhasil</strong>
+      <span id="toastMessage">Jurnal berhasil disimpan.</span>
+    </div>
+  </div>
+
+  <main class="journal-page">
+    <section class="journal-hero">
+      <div class="hero-copy">
+        <span class="hero-label">Jadwal Harian 24 Jam</span>
+        <h1>Jurnal Pengawasan Naqib</h1>
+        <p>
+          Isi dengan jujur dan apa apa adanya.
+        </p>
+      </div>
+
+      <div class="hero-user">
+        <div class="user-avatar" id="userAvatar">N</div>
+        <div class="user-copy">
+          <strong id="userName">Naqib</strong>
+          <span id="userRole">Pengawas Santri</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="summary-grid">
+      <article class="summary-card indicator">
+        <span class="summary-label">Indikator Aktif</span>
+        <strong class="summary-value" id="summaryIndicator">0</strong>
+      </article>
+
+      <article class="summary-card done">
+        <span class="summary-label">Terlaksana</span>
+        <strong class="summary-value" id="summaryDone">0</strong>
+      </article>
+
+      <article class="summary-card partial">
+        <span class="summary-label">Sebagian</span>
+        <strong class="summary-value" id="summaryPartial">0</strong>
+      </article>
+
+      <article class="summary-card missed">
+        <span class="summary-label">Tidak Terlaksana</span>
+        <strong class="summary-value" id="summaryMissed">0</strong>
+      </article>
+
+      <article class="summary-card score">
+        <span class="summary-label">Skor Pengawasan</span>
+        <strong class="summary-value" id="summaryScore">0%</strong>
+      </article>
+    </section>
+
+    <section class="journal-panel">
+      <div class="panel-heading">
+        <div>
+          <h2>Informasi Piket</h2>
+          <p>Pilih blok pengawasan sesuai jadwal harian santri.</p>
+        </div>
+      </div>
+
+      
+
+      <div class="form-grid">
+        <div class="form-group">
+          <label class="form-label" for="jpTanggal">📅 Tanggal</label>
+          <input type="date" class="form-control" id="jpTanggal" onchange="renderChecklist()">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="jpNama">👤 Nama Naqib</label>
+          <input type="text" class="form-control" id="jpNama" readonly>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="jpUnit">🏫 Unit Pengawasan</label>
+          <select class="form-control" id="jpUnit" onchange="handleUnitChange()">
+            <option value="Putra">Putra • Sistem Blok</option>
+            <option value="Putri">Putri • Per Program</option>
+          </select>
+        </div>
+
+        <div class="form-group" id="blockGroup">
+          <label class="form-label" for="jpBlok">⏱️ Blok Pengawasan</label>
+          <select
+            class="form-control block-select"
+            id="jpBlok"
+            onchange="renderChecklist()"
+          >
+            <option value="">-- Pilih Blok --</option>
+            <option value="Blok 1">🌅 Blok 1 — 03.30–11.20</option>
+            <option value="Blok 2">☀️ Blok 2 — 11.20–17.50</option>
+            <option value="Blok 3">🌙 Blok 3 — 17.50–03.30</option>
+          </select>
+        </div>
+      </div>
+    </section>
+
+    <section class="journal-panel">
+      <div class="panel-heading">
+        <div>
+          <h3 id="checklistTitle">Checklist Pengawasan</h3>
+          <p id="checklistSubtitle">Pilih blok untuk menampilkan indikator.</p>
+        </div>
+      </div>
+
+      <div class="progress-wrap">
+        <div class="progress-head">
+          <strong>Progres Pengisian</strong>
+          <span id="progressLabel">0 dari 0 dinilai</span>
+        </div>
+        <div class="progress-track">
+          <div class="progress-bar" id="progressBar"></div>
+        </div>
+      </div>
+
+      <div class="task-list" id="taskList">
+        <div class="empty-state">
+          <div class="empty-icon">🕒</div>
+          Pilih blok pengawasan untuk menampilkan jadwal dan indikator.
+        </div>
+      </div>
+
+      <div id="journalFooter" style="display:none;">
+        <div class="score-box">
+          <div class="score-circle" id="scoreCircle">0%</div>
+          <div class="score-copy">
+            <strong id="scorePredicate">Belum Dinilai</strong>
+            <span id="scoreDescription">
+              Nilai akan dihitung otomatis setelah indikator diisi.
+            </span>
+          </div>
+        </div>
+
+        <div class="form-group full" style="margin-top:17px;">
+          <label class="form-label" for="jpCatatan">
+            📌 Catatan Umum, Kendala, atau Kejadian Penting
+          </label>
+          <textarea
+            class="form-control"
+            id="jpCatatan"
+            rows="4"
+            placeholder="Tuliskan kejadian penting, kendala SDM/fasilitas, tindak lanjut yang diperlukan, atau keterangan lain..."
+          ></textarea>
+        </div>
+
+        <div class="submit-row">
+          <div class="submit-copy">
+            <strong>Simpan jurnal pengawasan</strong>
+            <span>
+              Jurnal akan masuk sebagai data kinerja harian dan bahan rekap
+              bulanan Supervisor.
+            </span>
+          </div>
+
+          <button
+            class="submit-button"
+            id="btnSimpanJurnal"
+            onclick="simpanJurnal()"
+          >
+            💾 Simpan Jurnal
+          </button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+    import {
+      getDatabase,
+      ref,
+      get,
+      push,
+      set,
+      query,
+      orderByChild,
+      equalTo,
+      limitToLast
+    } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+
+    const firebaseConfig = window.CAHAYA_CONFIG.firebase;
+
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+
+    const JADWAL_VERSION = "Jadwal Harian 24 Jam 2026/2027";
+    const DB_PATH = "cahaya_app/jurnal_piket_naqib";
+    const SCHEDULE_PATH = "cahaya_app/jadwal_piket_naqib";
+    let scheduleData = {};
+
+    const STATUS_CONFIG = {
+      terlaksana: {
+        label: "Terlaksana",
+        score: 100,
+        className: "done"
+      },
+      sebagian: {
+        label: "Sebagian",
+        score: 50,
+        className: "partial"
+      },
+      tidak: {
+        label: "Tidak Terlaksana",
+        score: 0,
+        className: "missed"
+      },
+      tidak_berlaku: {
+        label: "Tidak Berlaku",
+        score: null,
+        className: "na"
+      }
+    };
+
+    /*
+      Indikator disusun dari Jadwal Harian 24 Jam.
+      "peran" menjelaskan posisi Naqib pada kegiatan tersebut:
+      - Utama: Naqib/pengawas bertanggung jawab langsung.
+      - Bersama: dilaksanakan bersama pendamping/pembina.
+      - Koordinasi: guru, tutor, atau konselor menjadi pelaksana utama,
+        sedangkan Naqib memastikan transisi dan ketertiban santri.
+    */
+    let BLOCKS = {
+      "Blok 1": {
+        label: "Blok 1 — Pagi",
+        range: "03.30–11.20",
+        tasks: [
+          {
+            id: "B1-01",
+            no: 1,
+            waktu: "03.30",
+            program: "Proses Bangun Qiyamullail",
+            standar: "Membangunkan santri dengan tiga tahap: pengeras suara, mengetuk pintu, lalu sentuhan yang wajar bila masih belum bangun.",
+            kategori: "Kedisiplinan & Transisi",
+            peran: "Bersama",
+            penanggungJawab: "Pengawas dan Pendamping"
+          },
+          {
+            id: "B1-02",
+            no: 2,
+            waktu: "04.00",
+            program: "Qiyamullail",
+            standar: "Memastikan santri melaksanakan Qiyamullail dan membawa Buku Durūs al-Lughah dan alat tulis serta mengenakan seragam sekolah sesuai jadwal.",
+            kategori: "Spiritual",
+            peran: "Utama",
+            penanggungJawab: "Pengawas"
+          },
+          {
+            id: "B1-03",
+            no: 3,
+            waktu: "04.35",
+            program: "Shalat Subuh",
+            standar: "Memastikan shalat berjamaah berlangsung tertib dan penuh adab.",
+            kategori: "Spiritual",
+            peran: "Utama",
+            penanggungJawab: "Pengawas"
+          },
+          {
+            id: "B1-04",
+            no: 4,
+            waktu: "04.50–05.00",
+            program: "Zikir Pagi",
+            standar: "Mendampingi zikir pagi bersama usrah di masjid atau musala.",
+            kategori: "Spiritual",
+            peran: "Bersama",
+            penanggungJawab: "Pengawas dan Pendamping"
+          },
+          {
+            id: "B1-05",
+            no: 5,
+            waktu: "05.10–06.00",
+            program: "Bahasa Arab",
+            standar: "Memastikan perpindahan ke kelas tertib, kehadiran santri terkondisi, dan pembelajaran dapat dimulai sesuai waktu.",
+            kategori: "Pembelajaran",
+            peran: "Koordinasi",
+            penanggungJawab: "Pengawas dan Guru Mapel"
+          },
+          {
+            id: "B1-06",
+            no: 6,
+            waktu: "06.00–06.15",
+            program: "Piket Pagi",
+            standar: "Memastikan piket terlaksana sesuai lokasi masing-masing dan hasil kebersihan diperiksa.",
+            kategori: "Kebersihan & Kerapian",
+            peran: "Bersama",
+            penanggungJawab: "Pengawas dan Pendamping"
+          },
+          {
+            id: "B1-07",
+            no: 7,
+            waktu: "06.15–06.40",
+            program: "Sarapan",
+            standar: "Mengondisikan makan bersama usrah, memastikan adab makan, dan melarang memulai sebelum anggota usrah lengkap.",
+            kategori: "Kedisiplinan & Transisi",
+            peran: "Bersama",
+            penanggungJawab: "Pengawas dan Pendamping"
+          },
+          {
+            id: "B1-08",
+            no: 8,
+            waktu: "06.40–07.00",
+            program: "Persiapan Belajar, Piket Kamar, dan Kelas",
+            standar: "Memastikan santri menyiapkan buku, mandi, merapikan kamar, dan masuk kelas sesuai jadwal.",
+            kategori: "Kedisiplinan & Transisi",
+            peran: "Utama",
+            penanggungJawab: "Pengawas"
+          },
+          {
+            id: "B1-09",
+            no: 9,
+            waktu: "07.00–09.00",
+            program: "Belajar Pagi I: Tahsin dan Tahfiz Al-Qur’an",
+            standar: "Memastikan kehadiran, ketertiban, dan transisi santri ke kelas atau halaqah; berkoordinasi dengan guru bila ada kendala.",
+            kategori: "Pembelajaran",
+            peran: "Koordinasi",
+            penanggungJawab: "Pengawas dan Guru Mapel"
+          },
+          {
+            id: "B1-10",
+            no: 10,
+            waktu: "09.00–09.20",
+            program: "Istirahat",
+            standar: "Mengawasi penggunaan waktu istirahat untuk bersantai, ke toilet, minum, atau relaksasi secara tertib.",
+            kategori: "Kesejahteraan & Keamanan",
+            peran: "Utama",
+            penanggungJawab: "Pengawas"
+          },
+          {
+            id: "B1-11",
+            no: 11,
+            waktu: "09.20–11.20",
+            program: "Belajar Pagi II",
+            standar: "Memastikan santri kembali ke kelas tepat waktu dan pembelajaran berlangsung tertib; berkoordinasi dengan guru.",
+            kategori: "Pembelajaran",
+            peran: "Koordinasi",
+            penanggungJawab: "Pengawas dan Guru Mapel"
+          }
+        ]
+      },
+
+      "Blok 2": {
+        label: "Blok 2 — Siang dan Sore",
+        range: "11.20–17.50",
+        tasks: [
+          {
+            id: "B2-12",
+            no: 12,
+            waktu: "11.20–11.50",
+            program: "Makan Siang",
+            standar: "Mengondisikan makan bersama usrah, memastikan adab makan, dan melarang memulai sebelum anggota usrah lengkap.",
+            kategori: "Kedisiplinan & Transisi",
+            peran: "Bersama",
+            penanggungJawab: "Pengawas dan Pendamping"
+          },
+          {
+            id: "B2-13",
+            no: 13,
+            waktu: "11.50–12.30",
+            program: "Shalat Zuhur",
+            standar: "Memastikan shalat berjamaah berlangsung tertib dan penuh kekhusyukan.",
+            kategori: "Spiritual",
+            peran: "Utama",
+            penanggungJawab: "Pengawas"
+          },
+          {
+            id: "B2-14",
+            no: 14,
+            waktu: "12.30–13.30",
+            program: "Tilawah Tahsin dan Murojaah Berpasangan",
+            standar: "Memastikan santri tahsin mengisi waktu dengan tilawah dan santri tahfiz melakukan murojaah berpasangan di masjid atau musala.",
+            kategori: "Pembelajaran",
+            peran: "Koordinasi",
+            penanggungJawab: "Pengawas dan Guru"
+          },
+          {
+            id: "B2-15",
+            no: 15,
+            waktu: "13.30–14.45",
+            program: "Qailulah dan Tindak Lanjut Pelanggaran",
+            standar: "Memastikan santri tanpa kasus beristirahat tanpa gangguan; dan menindak santri yang memiliki pelanggaran di hari sebelumnya.",
+            kategori: "Kesejahteraan & Keamanan",
+            peran: "Koordinasi",
+            penanggungJawab: "Pengawas dan Konselor"
+          },
+          {
+            id: "B2-16",
+            no: 16,
+            waktu: "14.45–15.15",
+            program: "Bangun dan Persiapan Ashar",
+            standar: "Membangunkan santri secara bertahap, memastikan kerapian diri, dan mengondisikan keberangkatan ke tempat shalat.",
+            kategori: "Kedisiplinan & Transisi",
+            peran: "Bersama",
+            penanggungJawab: "Pengawas dan Pendamping"
+          },
+          {
+            id: "B2-17",
+            no: 17,
+            waktu: "15.15–15.45",
+            program: "Shalat Ashar",
+            standar: "Memastikan shalat berjamaah berlangsung tertib dan penuh adab.",
+            kategori: "Spiritual",
+            peran: "Utama",
+            penanggungJawab: "Pengawas"
+          },
+          {
+            id: "B2-18",
+            no: 18,
+            waktu: "15.45–16.00",
+            program: "Piket Sore",
+            standar: "Memastikan piket sore terlaksana sesuai lokasi masing-masing dan hasil kebersihan diperiksa.",
+            kategori: "Kebersihan & Kerapian",
+            peran: "Bersama",
+            penanggungJawab: "Pengawas dan Pendamping"
+          },
+          {
+            id: "B2-19",
+            no: 19,
+            waktu: "16.00–17.00",
+            program: "Ekstrakurikuler",
+            standar: "Memastikan santri mengikuti kegiatan sesuai jadwal hari tersebut, berpindah dengan tertib, dan berada dalam pengawasan tutor.",
+            kategori: "Pembelajaran",
+            peran: "Koordinasi",
+            penanggungJawab: "Pengawas dan Tutor"
+          },
+          {
+            id: "B2-20",
+            no: 20,
+            waktu: "17.00–17.30",
+            program: "Bersih-bersih Pribadi",
+            standar: "Mengawasi mandi, mengangkat jemuran, merapikan barang pribadi, dan persiapan kegiatan malam.",
+            kategori: "Kebersihan & Kerapian",
+            peran: "Utama",
+            penanggungJawab: "Pengawas"
+          },
+          {
+            id: "B2-21",
+            no: 21,
+            waktu: "17.30–17.50",
+            program: "Makan Sore",
+            standar: "Mengondisikan makan sore bersama usrah dan memastikan adab makan. Khusus Kamis, mengikuti perpindahan waktu setelah Maghrib.",
+            kategori: "Kedisiplinan & Transisi",
+            peran: "Bersama",
+            penanggungJawab: "Pengawas dan Pendamping"
+          }
+        ]
+      },
+
+      "Blok 3": {
+        label: "Blok 3 — Malam",
+        range: "17.50–03.30",
+        tasks: [
+          {
+            id: "B3-22",
+            no: 22,
+            waktu: "17.50–18.20",
+            program: "Shalat Maghrib",
+            standar: "Memastikan santri membawa Cahaya Self Growth Journal dan shalat berjamaah berlangsung tertib.",
+            kategori: "Spiritual",
+            peran: "Utama",
+            penanggungJawab: "Pengawas"
+          },
+          {
+            id: "B3-23",
+            no: 23,
+            waktu: "18.20–18.40",
+            program: "Wirid Petang dan Surah Al-Mulk",
+            standar: "Mendampingi wirid petang dan Surah Al-Mulk bersama usrah di masjid atau musala. Khusus Kamis, mengikuti perpindahan waktu setelah Isya.",
+            kategori: "Spiritual",
+            peran: "Bersama",
+            penanggungJawab: "Pengawas dan Pendamping"
+          },
+          {
+            id: "B3-24",
+            no: 24,
+            waktu: "18.40–19.10",
+            program: "Mentoring Harian",
+            standar: "Memastikan santri mengecek Cahaya Self Growth Journal dan mendapatkan pendampingan sesuai kebutuhan. Khusus Kamis, mengikuti perpindahan waktu setelah Isya.",
+            kategori: "Mentoring",
+            peran: "Bersama",
+            penanggungJawab: "Pengawas dan Pembina"
+          },
+          {
+            id: "B3-25",
+            no: 25,
+            waktu: "19.10–19.20",
+            program: "Shalat Isya",
+            standar: "Memastikan shalat berjamaah berlangsung tertib dan penuh kekhusyukan.",
+            kategori: "Spiritual",
+            peran: "Utama",
+            penanggungJawab: "Pengawas"
+          },
+          {
+            id: "B3-26",
+            no: 26,
+            waktu: "19.20–19.50",
+            program: "Persiapan Tidur",
+            standar: "Memastikan santri menyikat gigi, berwudhu, merapikan ranjang, dan memastikan kamar tertib.",
+            kategori: "Kebersihan & Kerapian",
+            peran: "Utama",
+            penanggungJawab: "Pengawas"
+          },
+          {
+            id: "B3-27",
+            no: 27,
+            waktu: "19.50–20.00",
+            program: "Wirid Sebelum Tidur",
+            standar: "Memastikan ketua usrah memimpin wirid sebelum tidur bersama usrah di kamar masing-masing.",
+            kategori: "Spiritual",
+            peran: "Bersama",
+            penanggungJawab: "Pengawas dan Pendamping"
+          },
+          {
+            id: "B3-28",
+            no: 28,
+            waktu: "20.00–03.30",
+            program: "Istirahat Malam",
+            standar: "Memastikan larangan keras tidur seranjang atau satu selimut, tidak ada tidur berdesakan, suasana asrama aman, serta melakukan kontrol malam sesuai kebutuhan.",
+            kategori: "Kesejahteraan & Keamanan",
+            peran: "Utama",
+            penanggungJawab: "Pengawas"
+          }
+        ]
+      }
+    };
+
+    let currentUser = {};
+    let activeBlock = "";
+    let taskStates = {};
+    let toastTimer = null;
+
+    try {
+      currentUser = JSON.parse(
+        localStorage.getItem("cahayaCurrentUser") || "{}"
+      );
+    } catch (error) {
+      console.warn("Data pengguna tidak terbaca:", error);
+    }
+
+    function escapeHtml(value = "") {
+      return String(value)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#39;");
+    }
+
+    function localDateValue() {
+      const now = new Date();
+
+      return [
+        now.getFullYear(),
+        String(now.getMonth() + 1).padStart(2, "0"),
+        String(now.getDate()).padStart(2, "0")
+      ].join("-");
+    }
+
+    function userName() {
+      return (
+        localStorage.getItem("namaNaqib") ||
+        currentUser.label ||
+        currentUser.nama ||
+        currentUser.username ||
+        "Naqib"
+      );
+    }
+
+    function userRole() {
+      if (Array.isArray(currentUser.akses)) {
+        return currentUser.akses.join(" • ");
+      }
+
+      return currentUser.akses || "Pengawas Santri";
+    }
+
+    function normalizedName(value = "") {
+      return String(value)
+        .trim()
+        .toUpperCase();
+    }
+
+    function normalizedKey(value = "") {
+      return String(value)
+        .toLowerCase()
+        .replace(/[^a-z0-9]/g, "");
+    }
+
+    function roleClass(peran) {
+      if (peran === "Utama") return "main";
+      if (peran === "Bersama") return "shared";
+      return "coordination";
+    }
+
+    function roleLabel(peran) {
+      if (peran === "Utama") return "Pengawasan Utama";
+      if (peran === "Bersama") return "Pengawasan Bersama";
+      return "Koordinasi";
+    }
+
+    function showToast(type, title, message) {
+      const toast = document.getElementById("appToast");
+
+      toast.className = `toast ${type}`;
+
+      document.getElementById("toastTitle").textContent = title;
+      document.getElementById("toastMessage").textContent = message;
+      document.getElementById("toastIcon").textContent =
+        type === "success" ? "✓" : "!";
+
+      requestAnimationFrame(() => {
+        toast.classList.add("show");
+      });
+
+      clearTimeout(toastTimer);
+
+      toastTimer = setTimeout(() => {
+        toast.classList.remove("show");
+      }, 4100);
+    }
+
+    function hideLoading() {
+      const overlay = document.getElementById("loadingOverlay");
+      overlay.style.opacity = "0";
+
+      setTimeout(() => {
+        overlay.style.display = "none";
+      }, 330);
+    }
+
+    function fillProfile() {
+      const name = userName();
+
+      document.getElementById("userName").textContent = name;
+      document.getElementById("userRole").textContent = userRole();
+      document.getElementById("jpNama").value =
+        normalizedName(name);
+
+      const avatar = document.getElementById("userAvatar");
+
+      if (currentUser.fotoProfil) {
+        avatar.innerHTML = `
+          <img
+            src="${escapeHtml(currentUser.fotoProfil)}"
+            alt="Foto profil"
+          >
+        `;
+      } else {
+        avatar.textContent =
+          String(name).trim().charAt(0).toUpperCase() || "N";
+      }
+    }
+
+    function detectCurrentBlock() {
+      const now = new Date();
+      const minutes = now.getHours() * 60 + now.getMinutes();
+
+      if (minutes >= 210 && minutes < 680) {
+        return "Blok 1";
+      }
+
+      if (minutes >= 680 && minutes < 1070) {
+        return "Blok 2";
+      }
+
+      return "Blok 3";
+    }
+
+    function taskStatus(taskId) {
+      return taskStates[taskId]?.status || "";
+    }
+
+    function taskNote(taskId) {
+      return taskStates[taskId]?.catatan || "";
+    }
+
+    function buildStatusOption(taskId, status, shortLabel, label) {
+      const config = STATUS_CONFIG[status];
+
+      return `
+        <label class="status-option ${config.className}">
+          <input
+            type="radio"
+            name="status_${escapeHtml(taskId)}"
+            value="${escapeHtml(status)}"
+            onchange="setTaskStatus('${escapeHtml(taskId)}', '${escapeHtml(status)}')"
+            ${taskStatus(taskId) === status ? "checked" : ""}
+          >
+
+          <span class="status-box">
+            <b>${escapeHtml(shortLabel)}</b>
+            <span>${escapeHtml(label)}</span>
+          </span>
+        </label>
+      `;
+    }
+
+    function dayKeyFromDate(value) {
+      const days = ["ahad","senin","selasa","rabu","kamis","jumat","sabtu"];
+      const d = new Date(`${value}T12:00:00`);
+      return days[d.getDay()] || "senin";
+    }
+
+    function personMatches(a,b) {
+      const x=normalizedKey(a), y=normalizedKey(b);
+      return x && y && (x===y || x.includes(y) || y.includes(x));
+    }
+
+    function putriNoDuty(day, programId, programs) {
+      const off=scheduleData?.putri?.tanpaPiket;
+      if(!off?.aktif) return false;
+      const order=programs.map(p=>p.id), idx=order.indexOf(programId), start=order.indexOf(off.mulaiProgramId), end=order.indexOf(off.selesaiProgramId);
+      if(day===off.mulaiHari && idx>=start) return true;
+      if(day===off.selesaiHari && idx<=end) return true;
+      return false;
+    }
+
+    function buildPutriBlock() {
+      const date=document.getElementById("jpTanggal").value || localDateValue();
+      const day=dayKeyFromDate(date), person=document.getElementById("jpNama").value;
+      const all=[...(scheduleData?.putri?.program||[])].sort((a,b)=>(a.urutan||0)-(b.urutan||0)).filter(p=>{
+        if(!(p.hariAktif||[]).includes(day) || putriNoDuty(day,p.id,scheduleData?.putri?.program||[])) return false;
+        if(String(p.aturanKhusus||'').toLowerCase().includes('senin pertama')) return new Date(`${date}T12:00:00`).getDate()<=7;
+        return true;
+      });
+      const mine=all.filter(p=>personMatches(person,p.pengawas));
+      const selected=mine.length?mine:all;
+      BLOCKS["Jadwal Putri"]={label:`Jadwal Putri • ${day.charAt(0).toUpperCase()+day.slice(1)}`,range:"Per Program",tasks:selected.map((p,i)=>({id:`PUTRI-${p.id}`,no:i+1,waktu:(p.mulai&&p.selesai?`${p.mulai}–${p.selesai}`:(p.waktu||p.mulai||'-')),program:p.nama||'-',standar:`Memastikan ${p.nama||'program'} terlaksana tertib sesuai standar program dan mencatat kendala apa adanya.`,kategori:p.frekuensi||'Program Putri',peran:"Utama",penanggungJawab:p.pengawas||'-',pengawasTerjadwal:p.pengawas||'-',programId:p.id}))};
+      return {all,selected,day};
+    }
+
+    async function loadScheduleConfig(){
+      try{const snap=await get(ref(db,SCHEDULE_PATH));scheduleData=snap.exists()?snap.val():{};}catch(e){console.warn('Jadwal piket Firebase gagal dimuat',e);scheduleData={};}
+    }
+
+    function handleUnitChange(){
+      const unit=document.getElementById("jpUnit").value;
+      const blockGroup=document.getElementById("blockGroup");
+      if(unit==="Putri"){
+        blockGroup.style.display="none";
+        document.getElementById("jpBlok").value="";
+      }else{
+        blockGroup.style.display="grid";
+        document.getElementById("jpBlok").value=detectCurrentBlock();
+      }
+      renderChecklist();
+    }
+
+    function renderChecklist() {
+      const unit=document.getElementById("jpUnit")?.value || "Putra";
+      if(unit==="Putri"){
+        const built=buildPutriBlock();
+        activeBlock="Jadwal Putri";
+        if(!scheduleData?.putri?.program?.length){
+          document.getElementById("taskList").innerHTML=`<div class="empty-state"><div class="empty-icon">☁️</div>Jadwal pengawas Putri belum tersedia di Firebase. Buka menu Jadwal Piket Naqib, muat template, lalu simpan ke Firebase.</div>`;
+          document.getElementById("journalFooter").style.display="none";
+          return;
+        }
+        if(!built.selected.length){
+          document.getElementById("taskList").innerHTML=`<div class="empty-state"><div class="empty-icon">🌙</div>Tidak ada piket program Putri pada tanggal ini sesuai jadwal Firebase.</div>`;
+          document.getElementById("journalFooter").style.display="none";
+          return;
+        }
+      }else activeBlock = document.getElementById("jpBlok").value;
+
+      const list = document.getElementById("taskList");
+      const footer = document.getElementById("journalFooter");
+
+      if (!activeBlock || !BLOCKS[activeBlock]) {
+        taskStates = {};
+        footer.style.display = "none";
+
+        document.getElementById("checklistTitle").textContent =
+          "Checklist Pengawasan";
+
+        document.getElementById("checklistSubtitle").textContent =
+          "Pilih blok untuk menampilkan indikator.";
+
+        list.innerHTML = `
+          <div class="empty-state">
+            <div class="empty-icon">🕒</div>
+            Pilih blok pengawasan untuk menampilkan jadwal dan indikator.
+          </div>
+        `;
+
+        updateSummary();
+        return;
+      }
+
+      const block = BLOCKS[activeBlock];
+
+      /*
+        Status dikosongkan ketika ganti blok agar pengguna
+        tidak membawa penilaian dari blok sebelumnya.
+      */
+      taskStates = {};
+
+      block.tasks.forEach(task => {
+        taskStates[task.id] = {
+          status: "",
+          catatan: ""
+        };
+      });
+
+      document.getElementById("checklistTitle").textContent =
+        block.label;
+
+      document.getElementById("checklistSubtitle").textContent =
+        `${block.range} • ${block.tasks.length} indikator pengawasan`;
+
+      list.innerHTML = block.tasks.map(task => `
+        <article
+          class="task-card"
+          id="card_${escapeHtml(task.id)}"
+          data-task-id="${escapeHtml(task.id)}"
+        >
+          <div class="task-main">
+            <div class="task-number">${task.no}</div>
+
+            <div class="task-content">
+              <div class="task-topline">
+                <div>
+                  <span class="task-time">${escapeHtml(task.waktu)}</span>
+                  <h4 class="task-title">${escapeHtml(task.program)}</h4>
+                </div>
+              </div>
+
+              <p class="task-standard">
+                ${escapeHtml(task.standar)}
+              </p>
+
+              <div class="task-meta">
+                <span class="meta-badge">
+                  ${escapeHtml(task.kategori)}
+                </span>
+
+                <span class="meta-badge ${roleClass(task.peran)}">
+                  ${escapeHtml(roleLabel(task.peran))}
+                </span>
+
+                <span class="meta-badge">
+                  PJ: ${escapeHtml(task.penanggungJawab)}
+                </span>
+                ${task.pengawasTerjadwal ? `<span class="meta-badge role-utama">Terjadwal: ${escapeHtml(task.pengawasTerjadwal)}</span>` : ''}
+              </div>
+            </div>
+          </div>
+
+          <div class="status-area">
+            ${buildStatusOption(task.id, "terlaksana", "✓", "Terlaksana")}
+            ${buildStatusOption(task.id, "sebagian", "½", "Sebagian")}
+            ${buildStatusOption(task.id, "tidak", "×", "Tidak")}
+            ${buildStatusOption(task.id, "tidak_berlaku", "—", "Tidak Berlaku")}
+          </div>
+
+          <div
+            class="task-note-wrap"
+            id="noteWrap_${escapeHtml(task.id)}"
+          >
+            <textarea
+              class="task-note"
+              id="note_${escapeHtml(task.id)}"
+              placeholder="Jelaskan kendala, penyebab, atau alasan status ini..."
+              oninput="setTaskNote('${escapeHtml(task.id)}', this.value)"
+            ></textarea>
+          </div>
+        </article>
+      `).join("");
+
+      footer.style.display = "block";
+      updateSummary();
+    }
+
+    function setTaskStatus(taskId, status) {
+      if (!taskStates[taskId]) return;
+
+      taskStates[taskId].status = status;
+
+      const config = STATUS_CONFIG[status];
+      const card = document.getElementById(`card_${taskId}`);
+      const noteWrap = document.getElementById(`noteWrap_${taskId}`);
+
+      card.className = `task-card state-${config.className}`;
+
+      const needNote =
+        status === "sebagian" ||
+        status === "tidak" ||
+        status === "tidak_berlaku";
+
+      noteWrap.classList.toggle("show", needNote);
+
+      if (!needNote) {
+        taskStates[taskId].catatan = "";
+        document.getElementById(`note_${taskId}`).value = "";
+      }
+
+      updateSummary();
+    }
+
+    function setTaskNote(taskId, value) {
+      if (!taskStates[taskId]) return;
+      taskStates[taskId].catatan = String(value || "").trim();
+    }
+
+    function calculateResult() {
+      if (!activeBlock || !BLOCKS[activeBlock]) {
+        return {
+          total: 0,
+          assessed: 0,
+          active: 0,
+          done: 0,
+          partial: 0,
+          missed: 0,
+          notApplicable: 0,
+          score: 0,
+          predicate: "Belum Dinilai"
+        };
+      }
+
+      const tasks = BLOCKS[activeBlock].tasks;
+
+      let assessed = 0;
+      let active = 0;
+      let done = 0;
+      let partial = 0;
+      let missed = 0;
+      let notApplicable = 0;
+      let scoreSum = 0;
+
+      tasks.forEach(task => {
+        const status = taskStatus(task.id);
+
+        if (!status) return;
+
+        assessed++;
+
+        if (status === "tidak_berlaku") {
+          notApplicable++;
+          return;
+        }
+
+        active++;
+
+        if (status === "terlaksana") done++;
+        if (status === "sebagian") partial++;
+        if (status === "tidak") missed++;
+
+        scoreSum += STATUS_CONFIG[status].score;
+      });
+
+      const score = active
+        ? Math.round(scoreSum / active)
+        : 0;
+
+      let predicate = "Belum Dinilai";
+
+      if (active) {
+        if (score >= 90) predicate = "Sangat Baik";
+        else if (score >= 80) predicate = "Baik";
+        else if (score >= 70) predicate = "Cukup";
+        else predicate = "Perlu Pembinaan";
+      }
+
+      return {
+        total: tasks.length,
+        assessed,
+        active,
+        done,
+        partial,
+        missed,
+        notApplicable,
+        score,
+        predicate
+      };
+    }
+
+    function updateSummary() {
+      const result = calculateResult();
+
+      document.getElementById("summaryIndicator").textContent =
+        result.active;
+
+      document.getElementById("summaryDone").textContent =
+        result.done;
+
+      document.getElementById("summaryPartial").textContent =
+        result.partial;
+
+      document.getElementById("summaryMissed").textContent =
+        result.missed;
+
+      document.getElementById("summaryScore").textContent =
+        `${result.score}%`;
+
+      document.getElementById("progressLabel").textContent =
+        `${result.assessed} dari ${result.total} dinilai`;
+
+      const progress = result.total
+        ? Math.round((result.assessed / result.total) * 100)
+        : 0;
+
+      document.getElementById("progressBar").style.width =
+        `${progress}%`;
+
+      document.getElementById("scoreCircle").textContent =
+        `${result.score}%`;
+
+      document.getElementById("scorePredicate").textContent =
+        result.predicate;
+
+      let description =
+        "Nilai akan dihitung otomatis setelah indikator diisi.";
+
+      if (result.active) {
+        description =
+          result.predicate === "Sangat Baik"
+            ? "Pengawasan terlaksana sangat konsisten sesuai jadwal."
+            : result.predicate === "Baik"
+              ? "Pengawasan terlaksana baik dengan beberapa bagian yang perlu diperkuat."
+              : result.predicate === "Cukup"
+                ? "Pengawasan cukup, tetapi masih membutuhkan perbaikan pada sejumlah kegiatan."
+                : "Diperlukan coaching dan tindak lanjut Supervisor.";
+      }
+
+      document.getElementById("scoreDescription").textContent =
+        description;
+    }
+
+    function validateAssessment() {
+      if (!activeBlock || !BLOCKS[activeBlock]) {
+        return {
+          valid: false,
+          message: "Pilih blok pengawasan terlebih dahulu."
+        };
+      }
+
+      const tasks = BLOCKS[activeBlock].tasks;
+      const unassessed = tasks.filter(task => !taskStatus(task.id));
+
+      if (unassessed.length) {
+        return {
+          valid: false,
+          message:
+            `${unassessed.length} indikator belum dinilai. Lengkapi seluruh status sebelum menyimpan.`
+        };
+      }
+
+      const missingNotes = tasks.filter(task => {
+        const status = taskStatus(task.id);
+
+        const needNote =
+          status === "sebagian" ||
+          status === "tidak" ||
+          status === "tidak_berlaku";
+
+        return needNote && !taskNote(task.id);
+      });
+
+      if (missingNotes.length) {
+        return {
+          valid: false,
+          message:
+            `Lengkapi alasan pada ${missingNotes.length} indikator yang tidak terlaksana penuh atau tidak berlaku.`
+        };
+      }
+
+      const result = calculateResult();
+
+      if (!result.active) {
+        return {
+          valid: false,
+          message:
+            "Semua indikator ditandai Tidak Berlaku. Periksa kembali pengisian."
+        };
+      }
+
+      return {
+        valid: true,
+        result
+      };
+    }
+
+    function buildCategoryRecap(details) {
+      const categories = {};
+
+      details.forEach(item => {
+        if (!categories[item.kategori]) {
+          categories[item.kategori] = {
+            totalIndikator: 0,
+            indikatorAktif: 0,
+            terlaksana: 0,
+            sebagian: 0,
+            tidakTerlaksana: 0,
+            tidakBerlaku: 0,
+            skorTotal: 0,
+            persentase: 0
+          };
+        }
+
+        const row = categories[item.kategori];
+        row.totalIndikator++;
+
+        if (item.statusKode === "tidak_berlaku") {
+          row.tidakBerlaku++;
+          return;
+        }
+
+        row.indikatorAktif++;
+        row.skorTotal += item.skor;
+
+        if (item.statusKode === "terlaksana") {
+          row.terlaksana++;
+        } else if (item.statusKode === "sebagian") {
+          row.sebagian++;
+        } else if (item.statusKode === "tidak") {
+          row.tidakTerlaksana++;
+        }
+      });
+
+      Object.values(categories).forEach(row => {
+        row.persentase = row.indikatorAktif
+          ? Math.round(row.skorTotal / row.indikatorAktif)
+          : 0;
+
+        delete row.skorTotal;
+      });
+
+      return categories;
+    }
+
+    async function findExistingJournal(tanggal, nama, blok) {
+      const snapshot = await get(
+        query(
+          ref(db, DB_PATH),
+          orderByChild("tanggal"),
+          equalTo(tanggal),
+          limitToLast(200)
+        )
+      );
+
+      if (!snapshot.exists()) return null;
+
+      const data = snapshot.val() || {};
+      const nameKey = normalizedKey(nama);
+
+      for (const [key, value] of Object.entries(data)) {
+        const sameDate = value.tanggal === tanggal;
+        const sameBlock = value.blokPiket === blok;
+        const sameName =
+          normalizedKey(value.naqib || "") === nameKey;
+
+        if (sameDate && sameBlock && sameName) {
+          return {
+            key,
+            value
+          };
+        }
+      }
+
+      return null;
+    }
+
+    async function simpanJurnal() {
+      const validation = validateAssessment();
+
+      if (!validation.valid) {
+        showToast(
+          "error",
+          "Jurnal belum lengkap",
+          validation.message
+        );
+        return;
+      }
+
+      const tanggal =
+        document.getElementById("jpTanggal").value;
+
+      const nama =
+        normalizedName(
+          document.getElementById("jpNama").value
+        );
+
+      const catatan =
+        document.getElementById("jpCatatan")
+          .value
+          .trim();
+
+      if (!tanggal || !nama) {
+        showToast(
+          "error",
+          "Informasi belum lengkap",
+          "Tanggal dan nama Naqib wajib tersedia."
+        );
+        return;
+      }
+
+      const block = BLOCKS[activeBlock];
+      const result = validation.result;
+
+      const details = block.tasks.map(task => {
+        const statusCode = taskStatus(task.id);
+        const status = STATUS_CONFIG[statusCode];
+
+        return {
+          id: task.id,
+          nomorJadwal: task.no,
+          waktu: task.waktu,
+          program: task.program,
+          indikator: task.standar,
+          kategori: task.kategori,
+          peranPengawasan: task.peran,
+          penanggungJawab: task.penanggungJawab,
+          pengawasTerjadwal: task.pengawasTerjadwal || task.penanggungJawab,
+          programId: task.programId || task.id,
+          statusKode: statusCode,
+          status: status.label,
+          skor: status.score,
+          catatan: taskNote(task.id)
+        };
+      });
+
+      const now = new Date();
+      const monthKey = tanggal.slice(0, 7);
+
+      const payload = {
+        tanggal,
+        periodeBulan: monthKey,
+        tahun: Number(tanggal.slice(0, 4)),
+        bulan: Number(tanggal.slice(5, 7)),
+
+        naqib: nama,
+        naqibKey: normalizedKey(nama),
+        penginput:
+          currentUser.label ||
+          currentUser.nama ||
+          currentUser.username ||
+          nama,
+
+        unitPengawasan: document.getElementById("jpUnit")?.value || "Putra",
+        jenisJadwal: (document.getElementById("jpUnit")?.value || "Putra") === "Putri" ? "program" : "blok",
+        petugasTerjadwal: [...new Set(block.tasks.map(t=>t.pengawasTerjadwal||t.penanggungJawab).filter(Boolean))].join(", "),
+        blokPiket: activeBlock,
+        labelBlok: block.label,
+        rentangWaktu: block.range,
+        jadwalVersi: scheduleData?.versi || JADWAL_VERSION,
+
+        waktuSubmit: now.toISOString(),
+        waktuUpdate: now.toISOString(),
+
+        totalTugas: result.total,
+        indikatorAktif: result.active,
+        tugasSelesai: result.done,
+        tugasSebagian: result.partial,
+        tugasTidakTerlaksana: result.missed,
+        tugasTidakBerlaku: result.notApplicable,
+
+        persentase: result.score,
+        persentasePengawasan: result.score,
+        predikatKinerja: result.predicate,
+
+        detailPelaksanaan: details,
+        rekapKategori: buildCategoryRecap(details),
+
+        catatanKejadian: catatan || "Nihil",
+
+        statusVerifikasiSupervisor: "Menunggu Verifikasi",
+        sumberPenilaian: "Jurnal Mandiri Naqib",
+        siapRekapHarian: true,
+        siapRekapBulanan: true
+      };
+
+      const button =
+        document.getElementById("btnSimpanJurnal");
+
+      button.disabled = true;
+      button.innerHTML = "⏳ Menyimpan...";
+
+      try {
+        const existing = await findExistingJournal(
+          tanggal,
+          nama,
+          activeBlock
+        );
+
+        if (existing) {
+          payload.waktuSimpan =
+            existing.value.waktuSimpan ||
+            now.toISOString();
+
+          payload.diperbarui = true;
+
+          await set(
+            ref(db, `${DB_PATH}/${existing.key}`),
+            payload
+          );
+        } else {
+          payload.waktuSimpan = now.toISOString();
+          payload.diperbarui = false;
+
+          await push(ref(db, DB_PATH), payload);
+        }
+
+        showToast(
+          "success",
+          existing
+            ? "Jurnal berhasil diperbarui"
+            : "Jurnal berhasil disimpan",
+          `Skor pengawasan ${result.score}% — ${result.predicate}.`
+        );
+
+        button.innerHTML = "✓ Jurnal Tersimpan";
+
+        setTimeout(() => {
+          button.innerHTML = "💾 Simpan Jurnal";
+        }, 1100);
+      } catch (error) {
+        console.error("Gagal menyimpan jurnal:", error);
+
+        showToast(
+          "error",
+          "Jurnal gagal disimpan",
+          error?.message || "Terjadi kesalahan saat mengirim data."
+        );
+
+        button.innerHTML = "💾 Simpan Jurnal";
+      } finally {
+        button.disabled = false;
+      }
+    }
+
+    document.addEventListener("DOMContentLoaded", async () => {
+      document.getElementById("jpTanggal").value = localDateValue();
+      fillProfile();
+      await loadScheduleConfig();
+      const person=document.getElementById("jpNama").value;
+      const isPutri=["fatimah","meilisa","melisa","alamanda"].some(n=>normalizedKey(person).includes(n));
+      document.getElementById("jpUnit").value=isPutri?"Putri":"Putra";
+      document.getElementById("jpBlok").value=detectCurrentBlock();
+      handleUnitChange();
+      hideLoading();
+    });
+
+    window.renderChecklist = renderChecklist;
+    window.handleUnitChange = handleUnitChange;
+    window.setTaskStatus = setTaskStatus;
+    window.setTaskNote = setTaskNote;
+    window.simpanJurnal = simpanJurnal;
+  </script>
+</body>
+</html>

@@ -1,0 +1,1515 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <!-- CAHAYA WHITE-LABEL CONFIG -->
+  <script src="../config/tenant-config.js"></script>
+  <script src="../config/master-data.js"></script>
+  <script src="../js/cahaya-config-runtime.js" defer></script>
+
+  <meta charset="UTF-8">
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>Master QR Kelas | CAHAYA APP</title>
+
+  <link rel="stylesheet" href="../css/cahaya-theme.css">
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+  <style>
+    :root {
+      --primary: #2878ff;
+      --cyan: #19c6e6;
+      --green: #29c58d;
+      --orange: #ff9f43;
+      --purple: #7667f5;
+      --red: #ff5d6c;
+      --ink: #152347;
+      --text: #33415e;
+      --muted: #71809e;
+      --border: #e2eaf6;
+      --shadow: 0 17px 42px rgba(35,78,160,.11);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      min-height: 100vh;
+      margin: 0;
+      padding: 18px;
+      color: var(--text);
+      font-family: "Nunito", "Poppins", Arial, sans-serif;
+      background:
+        radial-gradient(circle at 0% 0%, rgba(25,198,230,.12), transparent 25%),
+        radial-gradient(circle at 100% 0%, rgba(118,103,245,.10), transparent 25%),
+        linear-gradient(180deg, #f4f8ff, #fbfdff);
+    }
+
+    button,
+    input,
+    select {
+      font: inherit;
+    }
+
+    .page {
+      width: min(1200px, 100%);
+      margin: 0 auto;
+    }
+
+    .hero {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 18px;
+      padding: 27px 30px;
+      color: #fff;
+      border-radius: 26px;
+      background:
+        radial-gradient(circle at 90% 10%, rgba(255,255,255,.20), transparent 27%),
+        linear-gradient(135deg, #176cf1, #2878ff 54%, #14bddc);
+      box-shadow: 0 21px 48px rgba(40,120,255,.24);
+    }
+
+    .hero h1 {
+      margin: 0;
+      font-size: clamp(1.65rem, 4vw, 2.5rem);
+      font-weight: 950;
+    }
+
+    .hero p {
+      margin: 8px 0 0;
+      color: rgba(255,255,255,.83);
+      font-size: .76rem;
+      font-weight: 650;
+      line-height: 1.6;
+    }
+
+    .hero::before,
+    .hero::after {
+      pointer-events: none;
+    }
+
+    .hero > div {
+      position: relative;
+      z-index: 2;
+    }
+
+    .hero-actions {
+      position: relative;
+      z-index: 20;
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      pointer-events: auto;
+    }
+
+    .hero-actions .button {
+      position: relative;
+      z-index: 21;
+      pointer-events: auto;
+      touch-action: manipulation;
+    }
+
+    .button {
+      min-height: 43px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      padding: 9px 13px;
+      font-size: .7rem;
+      font-weight: 900;
+      cursor: pointer;
+      border-radius: 12px;
+    }
+
+    .button-white {
+      color: #1764d1;
+      border: 1px solid rgba(255,255,255,.35);
+      background: #fff;
+    }
+
+    .button-primary {
+      color: #fff;
+      border: none;
+      background: linear-gradient(135deg, var(--primary), var(--cyan));
+      box-shadow: 0 9px 20px rgba(40,120,255,.20);
+    }
+
+    .button-light {
+      color: #175cb9;
+      border: 1px solid #cfe1ff;
+      background: #edf5ff;
+    }
+
+    .button-green {
+      color: #137757;
+      border: 1px solid #c9eddf;
+      background: #eafaf4;
+    }
+
+    .button:disabled {
+      opacity: .55;
+      cursor: not-allowed;
+    }
+
+    .panel {
+      margin-top: 16px;
+      padding: 22px;
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      background: rgba(255,255,255,.98);
+      box-shadow: var(--shadow);
+    }
+
+    .panel-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 14px;
+      margin-bottom: 16px;
+    }
+
+    .panel-head h2 {
+      margin: 0;
+      color: var(--ink);
+      font-size: 1.08rem;
+      font-weight: 950;
+    }
+
+    .panel-head p {
+      margin: 5px 0 0;
+      color: var(--muted);
+      font-size: .7rem;
+      font-weight: 650;
+      line-height: 1.5;
+    }
+
+    .location-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0,1fr));
+      gap: 12px;
+    }
+
+    .location-card {
+      padding: 15px;
+      border: 1px solid #e0e8f4;
+      border-radius: 16px;
+      background: #f9fbff;
+    }
+
+    .location-card h3 {
+      margin: 0 0 11px;
+      color: var(--ink);
+      font-size: .86rem;
+      font-weight: 950;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0,1fr));
+      gap: 9px;
+    }
+
+    .field label {
+      display: block;
+      margin-bottom: 5px;
+      color: #5b6a86;
+      font-size: .58rem;
+      font-weight: 900;
+      letter-spacing: .45px;
+      text-transform: uppercase;
+    }
+
+    .field input {
+      width: 100%;
+      min-height: 43px;
+      padding: 9px 10px;
+      color: var(--ink);
+      font-size: .73rem;
+      font-weight: 800;
+      outline: none;
+      border: 1.4px solid #dce5f2;
+      border-radius: 11px;
+      background: #fff;
+    }
+
+    .field input:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 4px rgba(40,120,255,.09);
+    }
+
+    .rooms-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0,1fr));
+      gap: 13px;
+    }
+
+    .room-card {
+      overflow: hidden;
+      border: 1px solid #e1e9f5;
+      border-radius: 18px;
+      background: #fff;
+      box-shadow: 0 7px 20px rgba(35,78,160,.06);
+    }
+
+    .room-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 9px;
+      padding: 13px 14px;
+      border-bottom: 1px solid #e9eef6;
+      background: linear-gradient(135deg, #f8fbff, #f4f7ff);
+    }
+
+    .room-head strong {
+      color: var(--ink);
+      font-size: .79rem;
+      font-weight: 950;
+    }
+
+    .unit {
+      padding: 5px 8px;
+      font-size: .53rem;
+      font-weight: 900;
+      border-radius: 999px;
+    }
+
+    .unit.putra {
+      color: #1762c7;
+      border: 1px solid #d4e5ff;
+      background: #eaf3ff;
+    }
+
+    .unit.putri {
+      color: #b33a78;
+      border: 1px solid #ffd6e9;
+      background: #fff0f7;
+    }
+
+    .room-body {
+      display: grid;
+      grid-template-columns: 132px minmax(0,1fr);
+      gap: 12px;
+      align-items: center;
+      padding: 14px;
+    }
+
+    .qr-box {
+      width: 132px;
+      height: 132px;
+      display: grid;
+      place-items: center;
+      padding: 7px;
+      border: 1px solid #e1e7f0;
+      border-radius: 13px;
+      background: #fff;
+    }
+
+    .qr-box img,
+    .qr-box canvas {
+      width: 116px !important;
+      height: 116px !important;
+    }
+
+    .room-code small {
+      display: block;
+      color: var(--muted);
+      font-size: .53rem;
+      font-weight: 900;
+      letter-spacing: .5px;
+      text-transform: uppercase;
+    }
+
+    .room-code strong {
+      display: block;
+      margin-top: 5px;
+      color: var(--primary);
+      font-size: 1.06rem;
+      font-weight: 950;
+      letter-spacing: .5px;
+    }
+
+    .room-code p {
+      margin: 7px 0 0;
+      color: var(--muted);
+      font-size: .6rem;
+      font-weight: 650;
+      line-height: 1.45;
+    }
+
+    .room-actions {
+      display: flex;
+      gap: 7px;
+      flex-wrap: wrap;
+      padding: 0 14px 14px;
+    }
+
+    .status {
+      display: none;
+      margin-top: 13px;
+      padding: 11px 12px;
+      color: #17644b;
+      font-size: .68rem;
+      font-weight: 800;
+      line-height: 1.45;
+      border: 1px solid #caeadf;
+      border-radius: 12px;
+      background: #effbf6;
+    }
+
+    .status.show {
+      display: block;
+    }
+
+    #printArea {
+      display: none;
+    }
+
+    @media (max-width: 950px) {
+      .rooms-grid {
+        grid-template-columns: repeat(2, minmax(0,1fr));
+      }
+    }
+
+    @media (max-width: 720px) {
+      body {
+        padding: 10px;
+      }
+
+      .hero {
+        display: block;
+        padding: 22px 18px;
+        border-radius: 21px;
+      }
+
+      .hero-actions {
+        margin-top: 14px;
+      }
+
+      .panel {
+        padding: 16px 13px;
+        border-radius: 19px;
+      }
+
+      .location-grid,
+      .rooms-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .room-body {
+        grid-template-columns: 122px minmax(0,1fr);
+      }
+
+      .qr-box {
+        width: 122px;
+        height: 122px;
+      }
+
+      .qr-box img,
+      .qr-box canvas {
+        width: 106px !important;
+        height: 106px !important;
+      }
+    }
+
+    @media print {
+      body {
+        padding: 0;
+        background: #fff;
+      }
+
+      .page {
+        display: none !important;
+      }
+
+      #printArea {
+        display: grid !important;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10mm;
+        padding: 8mm;
+      }
+
+      .print-poster {
+        min-height: 130mm;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        page-break-inside: avoid;
+        text-align: center;
+        border: 1.5px solid #1f2937;
+        border-radius: 5mm;
+        padding: 8mm;
+      }
+
+      .print-poster h2 {
+        margin: 0;
+        font-size: 21pt;
+      }
+
+      .print-poster p {
+        margin: 3mm 0;
+        font-size: 10pt;
+      }
+
+      .print-qr {
+        width: 55mm;
+        height: 55mm;
+        display: grid;
+        place-items: center;
+        margin: 5mm 0;
+      }
+
+      .print-qr img,
+      .print-qr canvas {
+        width: 55mm !important;
+        height: 55mm !important;
+      }
+
+      .print-code {
+        font-size: 23pt;
+        font-weight: 900;
+        letter-spacing: 1px;
+      }
+
+      @page {
+        size: A4 portrait;
+        margin: 7mm;
+      }
+    }
+  
+
+    /* =========================================================
+       TAMPILAN MINIMAL
+       Judul/header biru dihilangkan, sedangkan tombol operasional
+       tetap tersedia agar fungsi simpan dan cetak tidak berubah.
+       ========================================================= */
+    .hero {
+      min-height: 0 !important;
+      margin: 0 0 12px !important;
+      padding: 0 !important;
+      display: flex !important;
+      justify-content: flex-end !important;
+      color: inherit !important;
+      border-radius: 0 !important;
+      background: transparent !important;
+      box-shadow: none !important;
+    }
+
+    .hero::before,
+    .hero::after,
+    .hero > div:first-child {
+      display: none !important;
+    }
+
+    .hero-actions {
+      margin: 0 0 0 auto !important;
+    }
+
+    @media (max-width: 720px) {
+      .hero {
+        display: flex !important;
+        padding: 0 !important;
+      }
+
+      .hero-actions {
+        width: 100%;
+        margin: 0 !important;
+      }
+
+      .hero-actions .button {
+        flex: 1;
+      }
+    }
+</style>
+</head>
+
+<body>
+  <main class="page">
+    <header class="hero">
+      <div>
+        <h1>Master QR & Zona Absensi Guru</h1>
+        <p>
+          Kelola koordinat Pondok Putra–Putri, radius absensi,
+          dan cetak poster QR untuk setiap ruang kelas.
+        </p>
+      </div>
+
+      <div class="hero-actions">
+        <button
+          type="button"
+          class="button button-white"
+          id="saveButton"
+        >
+          💾 Simpan Pengaturan
+        </button>
+
+        <button
+          type="button"
+          class="button button-white"
+          id="printAllButton"
+        >
+          🖨️ Cetak Semua QR
+        </button>
+      </div>
+    </header>
+
+    <section class="panel">
+      <div class="panel-head">
+        <div>
+          <h2>Zona Lokasi Absensi</h2>
+          <p>
+            Radius awal dibuat 700 meter untuk uji coba HP dan laptop.
+            Perubahan langsung tersimpan ke Firebase.
+          </p>
+        </div>
+      </div>
+
+      <div class="location-grid" id="locationGrid"></div>
+
+      <div class="status" id="saveStatus">
+        Pengaturan berhasil disimpan.
+      </div>
+    </section>
+
+    <section class="panel">
+      <div class="panel-head">
+        <div>
+          <h2>QR dan Kode Setiap Kelas</h2>
+          <p>
+            Guru dengan HP dapat scan QR. Guru dengan laptop dapat
+            memasukkan kode kelas yang tercetak pada poster.
+          </p>
+        </div>
+      </div>
+
+      <div class="rooms-grid" id="roomsGrid"></div>
+    </section>
+  </main>
+
+  <section id="printArea"></section>
+
+  <script>
+    const firebaseConfig = window.CAHAYA_CONFIG.firebase;
+
+    const PATHS = {
+      settings:
+        "cahaya_app/pengaturan_absensi_guru",
+
+      locations:
+        "cahaya_app/pengaturan_absensi_guru/lokasi",
+
+      rooms:
+        "cahaya_app/master_ruang_kelas"
+    };
+
+    const DEFAULT_LOCATIONS = {
+      pondok_putra: {
+        id: "pondok_putra",
+        nama: "Pondok Putra",
+        unit: "PUTRA",
+        latitude: -2.7583058,
+        longitude: 107.7125462,
+        radiusMeter: 700,
+        aktif: true,
+        sumberKoordinat:
+          "Google Maps pengguna"
+      },
+
+      pondok_putri: {
+        id: "pondok_putri",
+        nama: "Pondok Putri",
+        unit: "PUTRI",
+        latitude: -2.7458405,
+        longitude: 107.6472273,
+        radiusMeter: 700,
+        aktif: true,
+        sumberKoordinat:
+          "Google Maps pengguna"
+      }
+    };
+
+    const DEFAULT_ROOMS = {
+      kelas_1_putra: {
+        id: "kelas_1_putra",
+        namaRuang: "Kelas 1 Putra",
+        kelas: "Kelas 1 Putra",
+        nomorKelas: "1",
+        unit: "PUTRA",
+        lokasiId: "pondok_putra",
+        kodeKelas: "K1P-3742",
+        qrToken: "CAHAYA-QR-K1P-3742",
+        aktif: true
+      },
+
+      kelas_2_putra: {
+        id: "kelas_2_putra",
+        namaRuang: "Kelas 2 Putra",
+        kelas: "Kelas 2 Putra",
+        nomorKelas: "2",
+        unit: "PUTRA",
+        lokasiId: "pondok_putra",
+        kodeKelas: "K2P-6185",
+        qrToken: "CAHAYA-QR-K2P-6185",
+        aktif: true
+      },
+
+      kelas_3_putra: {
+        id: "kelas_3_putra",
+        namaRuang: "Kelas 3 Putra",
+        kelas: "Kelas 3 Putra",
+        nomorKelas: "3",
+        unit: "PUTRA",
+        lokasiId: "pondok_putra",
+        kodeKelas: "K3P-9407",
+        qrToken: "CAHAYA-QR-K3P-9407",
+        aktif: true
+      },
+
+      kelas_4_putra: {
+        id: "kelas_4_putra",
+        namaRuang: "Kelas 4 Putra",
+        kelas: "Kelas 4 Putra",
+        nomorKelas: "4",
+        unit: "PUTRA",
+        lokasiId: "pondok_putra",
+        kodeKelas: "K4P-8261",
+        qrToken: "CAHAYA-QR-K4P-8261",
+        aktif: true
+      },
+
+      kelas_5_putra: {
+        id: "kelas_5_putra",
+        namaRuang: "Kelas 5 Putra",
+        kelas: "Kelas 5 Putra",
+        nomorKelas: "5",
+        unit: "PUTRA",
+        lokasiId: "pondok_putra",
+        kodeKelas: "K5P-1538",
+        qrToken: "CAHAYA-QR-K5P-1538",
+        aktif: true
+      },
+
+      kelas_1_putri: {
+        id: "kelas_1_putri",
+        namaRuang: "Kelas 1 Putri",
+        kelas: "Kelas 1 Putri",
+        nomorKelas: "1",
+        unit: "PUTRI",
+        lokasiId: "pondok_putri",
+        kodeKelas: "K1W-4729",
+        qrToken: "CAHAYA-QR-K1W-4729",
+        aktif: true
+      },
+
+      kelas_2_putri: {
+        id: "kelas_2_putri",
+        namaRuang: "Kelas 2 Putri",
+        kelas: "Kelas 2 Putri",
+        nomorKelas: "2",
+        unit: "PUTRI",
+        lokasiId: "pondok_putri",
+        kodeKelas: "K2W-8054",
+        qrToken: "CAHAYA-QR-K2W-8054",
+        aktif: true
+      },
+
+      kelas_3_putri: {
+        id: "kelas_3_putri",
+        namaRuang: "Kelas 3 Putri",
+        kelas: "Kelas 3 Putri",
+        nomorKelas: "3",
+        unit: "PUTRI",
+        lokasiId: "pondok_putri",
+        kodeKelas: "K3W-2617",
+        qrToken: "CAHAYA-QR-K3W-2617",
+        aktif: true
+      },
+
+      kelas_4_putri: {
+        id: "kelas_4_putri",
+        namaRuang: "Kelas 4 Putri",
+        kelas: "Kelas 4 Putri",
+        nomorKelas: "4",
+        unit: "PUTRI",
+        lokasiId: "pondok_putri",
+        kodeKelas: "K4W-7391",
+        qrToken: "CAHAYA-QR-K4W-7391",
+
+        bebasRadius: true,
+        jenisPembelajaran: "ONLINE",
+        alasanBebasRadius:
+          "Kelas online dengan guru dari luar lokasi pesantren.",
+
+        aktif: true
+      }
+    };
+
+    function cloneData(value) {
+      return JSON.parse(
+        JSON.stringify(value)
+      );
+    }
+
+    function escapeHtml(value = "") {
+      return String(value)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#39;");
+    }
+
+    if (!firebase.apps.length) {
+      firebase.initializeApp(
+        firebaseConfig
+      );
+    }
+
+    const database =
+      firebase.database();
+
+    let locations =
+      cloneData(
+        DEFAULT_LOCATIONS
+      );
+
+    let rooms =
+      cloneData(
+        DEFAULT_ROOMS
+      );
+
+    let pageReady = false;
+
+    function setStatus(
+      message,
+      type = "success",
+      autoHide = true
+    ) {
+      const status =
+        document.getElementById(
+          "saveStatus"
+        );
+
+      status.classList.add("show");
+      status.textContent = message;
+
+      status.style.color =
+        type === "error"
+          ? "#b42318"
+          : "#17644b";
+
+      status.style.borderColor =
+        type === "error"
+          ? "#ffc9d0"
+          : "#caeadf";
+
+      status.style.background =
+        type === "error"
+          ? "#fff2f4"
+          : "#effbf6";
+
+      if (autoHide) {
+        clearTimeout(
+          setStatus.timer
+        );
+
+        setStatus.timer =
+          setTimeout(() => {
+            status.classList.remove(
+              "show"
+            );
+          }, 4200);
+      }
+    }
+
+    function renderLocations() {
+      const grid =
+        document.getElementById(
+          "locationGrid"
+        );
+
+      grid.innerHTML =
+        Object.values(locations)
+          .map(location => `
+            <article
+              class="location-card"
+              data-location-id="${
+                escapeHtml(location.id)
+              }"
+            >
+              <h3>${
+                escapeHtml(location.nama)
+              }</h3>
+
+              <div class="form-grid">
+                <div class="field">
+                  <label>Latitude</label>
+                  <input
+                    type="number"
+                    step="0.0000001"
+                    data-field="latitude"
+                    value="${
+                      Number(location.latitude)
+                    }"
+                  >
+                </div>
+
+                <div class="field">
+                  <label>Longitude</label>
+                  <input
+                    type="number"
+                    step="0.0000001"
+                    data-field="longitude"
+                    value="${
+                      Number(location.longitude)
+                    }"
+                  >
+                </div>
+
+                <div class="field">
+                  <label>Radius Meter</label>
+                  <input
+                    type="number"
+                    min="50"
+                    max="5000"
+                    step="10"
+                    data-field="radiusMeter"
+                    value="${
+                      Number(
+                        location.radiusMeter
+                      ) || 700
+                    }"
+                  >
+                </div>
+
+                <div class="field">
+                  <label>Unit</label>
+                  <input
+                    type="text"
+                    value="${
+                      escapeHtml(location.unit)
+                    }"
+                    disabled
+                  >
+                </div>
+              </div>
+            </article>
+          `)
+          .join("");
+    }
+
+    function createQr(
+      target,
+      value,
+      size = 116
+    ) {
+      target.innerHTML = "";
+
+      if (
+        typeof QRCode ===
+        "undefined"
+      ) {
+        target.innerHTML = `
+          <div style="
+            padding:10px;
+            color:#b42318;
+            font-size:11px;
+            font-weight:800;
+            text-align:center;
+          ">
+            QR belum dapat dimuat
+          </div>
+        `;
+
+        return false;
+      }
+
+      new QRCode(
+        target,
+        {
+          text: value,
+          width: size,
+          height: size,
+          correctLevel:
+            QRCode.CorrectLevel.H
+        }
+      );
+
+      return true;
+    }
+
+    function sortedRooms() {
+      return Object.values(rooms)
+        .sort((a, b) => {
+          if (a.unit !== b.unit) {
+            return a.unit.localeCompare(
+              b.unit
+            );
+          }
+
+          return (
+            Number(a.nomorKelas) -
+            Number(b.nomorKelas)
+          );
+        });
+    }
+
+    function renderRooms() {
+      const list =
+        sortedRooms();
+
+      const grid =
+        document.getElementById(
+          "roomsGrid"
+        );
+
+      grid.innerHTML =
+        list
+          .map(room => `
+            <article class="room-card">
+              <header class="room-head">
+                <strong>${
+                  escapeHtml(room.namaRuang)
+                }</strong>
+
+                <span class="unit ${
+                  room.unit.toLowerCase()
+                }">
+                  ${escapeHtml(room.unit)}
+                </span>
+              </header>
+
+              <div class="room-body">
+                <div
+                  class="qr-box"
+                  id="qr-${
+                    escapeHtml(room.id)
+                  }"
+                ></div>
+
+                <div class="room-code">
+                  <small>Kode Kelas</small>
+
+                  <strong>
+                    ${escapeHtml(room.kodeKelas)}
+                  </strong>
+
+                  <p>
+                    ${
+                      room.bebasRadius === true
+                        ? '<b style="color:#b33a78;">Kelas Online • Tanpa Radius Lokasi</b>'
+                        : `Zona: ${
+                            escapeHtml(
+                              locations[
+                                room.lokasiId
+                              ]?.nama ||
+                              room.lokasiId
+                            )
+                          }`
+                    }
+                  </p>
+                </div>
+              </div>
+
+              <div class="room-actions">
+                <button
+                  type="button"
+                  class="button button-light"
+                  data-print-room="${
+                    escapeHtml(room.id)
+                  }"
+                >
+                  🖨️ Cetak Poster
+                </button>
+
+                <button
+                  type="button"
+                  class="button button-green"
+                  data-copy-code="${
+                    escapeHtml(
+                      room.kodeKelas
+                    )
+                  }"
+                >
+                  ⧉ Salin Kode
+                </button>
+              </div>
+            </article>
+          `)
+          .join("");
+
+      list.forEach(room => {
+        createQr(
+          document.getElementById(
+            `qr-${room.id}`
+          ),
+          room.qrToken
+        );
+      });
+
+      grid
+        .querySelectorAll(
+          "[data-copy-code]"
+        )
+        .forEach(button => {
+          button.addEventListener(
+            "click",
+            async event => {
+              event.preventDefault();
+
+              try {
+                await navigator.clipboard
+                  .writeText(
+                    button.dataset.copyCode
+                  );
+
+                button.textContent =
+                  "✓ Tersalin";
+
+                setTimeout(() => {
+                  button.textContent =
+                    "⧉ Salin Kode";
+                }, 1200);
+              } catch (error) {
+                setStatus(
+                  "Kode belum dapat disalin otomatis. Salin langsung dari kartu kelas.",
+                  "error"
+                );
+              }
+            }
+          );
+        });
+
+      grid
+        .querySelectorAll(
+          "[data-print-room]"
+        )
+        .forEach(button => {
+          button.addEventListener(
+            "click",
+            event => {
+              event.preventDefault();
+
+              printRooms([
+                button.dataset.printRoom
+              ]);
+            }
+          );
+        });
+    }
+
+    function buildPrintPoster(room) {
+      const article =
+        document.createElement(
+          "article"
+        );
+
+      article.className =
+        "print-poster";
+
+      article.innerHTML = `
+        <div style="
+          font-size:9pt;
+          font-weight:900;
+          letter-spacing:1px;
+        ">
+          PESANTREN CAHAYA FAJRUL ISLAM
+        </div>
+
+        <h2>ABSENSI GURU</h2>
+
+        <p>
+          Scan QR ketika tiba di ruang kelas
+        </p>
+
+        <div class="print-qr"></div>
+
+        <div style="
+          font-size:13pt;
+          font-weight:900;
+        ">
+          ${escapeHtml(room.namaRuang)}
+        </div>
+
+        <p>
+          Tidak dapat menggunakan kamera?<br>
+          Masukkan kode kelas:
+        </p>
+
+        <div class="print-code">
+          ${escapeHtml(room.kodeKelas)}
+        </div>
+
+        ${
+          room.bebasRadius === true
+            ? `
+              <p style="
+                margin-top:4mm;
+                font-weight:900;
+                color:#b33a78;
+              ">
+                KELAS ONLINE • TANPA VALIDASI RADIUS
+              </p>
+            `
+            : ""
+        }
+
+        <p style="margin-top:5mm;">
+          Buka CAHAYA APP → Absen Guru
+        </p>
+      `;
+
+      const qrCreated =
+        createQr(
+          article.querySelector(
+            ".print-qr"
+          ),
+          room.qrToken,
+          260
+        );
+
+      if (!qrCreated) {
+        throw new Error(
+          "Perpustakaan QR belum selesai dimuat."
+        );
+      }
+
+      return article;
+    }
+
+    function printRooms(
+      roomIds = null
+    ) {
+      try {
+        const selected =
+          sortedRooms()
+            .filter(room =>
+              !roomIds ||
+              roomIds.includes(room.id)
+            );
+
+        if (!selected.length) {
+          throw new Error(
+            "Tidak ada ruang yang dipilih."
+          );
+        }
+
+        const printArea =
+          document.getElementById(
+            "printArea"
+          );
+
+        printArea.innerHTML = "";
+
+        selected.forEach(room => {
+          printArea.appendChild(
+            buildPrintPoster(room)
+          );
+        });
+
+        setStatus(
+          `${selected.length} poster QR disiapkan untuk dicetak.`
+        );
+
+        setTimeout(() => {
+          window.print();
+        }, 350);
+      } catch (error) {
+        console.error(
+          "Cetak QR gagal:",
+          error
+        );
+
+        setStatus(
+          error?.message ||
+          "Poster QR belum dapat dicetak.",
+          "error",
+          false
+        );
+      }
+    }
+
+    function collectLocationValues() {
+      document
+        .querySelectorAll(
+          ".location-card"
+        )
+        .forEach(card => {
+          const id =
+            card.dataset.locationId;
+
+          const value = {
+            ...locations[id]
+          };
+
+          card
+            .querySelectorAll(
+              "[data-field]"
+            )
+            .forEach(input => {
+              value[
+                input.dataset.field
+              ] = Number(input.value);
+            });
+
+          locations[id] = value;
+        });
+    }
+
+    function validateSettings() {
+      for (
+        const location
+        of Object.values(locations)
+      ) {
+        if (
+          !Number.isFinite(
+            Number(location.latitude)
+          ) ||
+          !Number.isFinite(
+            Number(location.longitude)
+          )
+        ) {
+          throw new Error(
+            `Koordinat ${location.nama} belum benar.`
+          );
+        }
+
+        if (
+          Number(location.radiusMeter) <
+          50
+        ) {
+          throw new Error(
+            `Radius ${location.nama} minimal 50 meter.`
+          );
+        }
+      }
+    }
+
+    async function saveSettings() {
+      if (!pageReady) {
+        setStatus(
+          "Halaman masih menyiapkan data. Coba beberapa saat lagi.",
+          "error"
+        );
+        return;
+      }
+
+      collectLocationValues();
+
+      try {
+        validateSettings();
+      } catch (error) {
+        setStatus(
+          error.message,
+          "error",
+          false
+        );
+        return;
+      }
+
+      const button =
+        document.getElementById(
+          "saveButton"
+        );
+
+      button.disabled = true;
+      button.textContent =
+        "⏳ Menyimpan...";
+
+      const updates = {};
+
+      Object.entries(locations)
+        .forEach(([id, value]) => {
+          updates[
+            `${PATHS.locations}/${id}`
+          ] = {
+            ...value,
+            diperbaruiPada:
+              firebase.database
+                .ServerValue.TIMESTAMP
+          };
+        });
+
+      Object.entries(rooms)
+        .forEach(([id, value]) => {
+          updates[
+            `${PATHS.rooms}/${id}`
+          ] = {
+            ...value,
+            diperbaruiPada:
+              firebase.database
+                .ServerValue.TIMESTAMP
+          };
+        });
+
+      updates[
+        `${PATHS.settings}/versi`
+      ] = "Uji Coba 2026/2027";
+
+      updates[
+        `${PATHS.settings}/diperbaruiPada`
+      ] =
+        firebase.database
+          .ServerValue.TIMESTAMP;
+
+      try {
+        await database
+          .ref()
+          .update(updates);
+
+        setStatus(
+          "Koordinat, radius, QR, kode kelas, dan pengecualian Kelas 4 Putri berhasil disimpan ke Firebase.",
+          "success",
+          false
+        );
+
+        renderRooms();
+      } catch (error) {
+        console.error(
+          "Simpan pengaturan gagal:",
+          error
+        );
+
+        setStatus(
+          `Gagal menyimpan ke Firebase: ${
+            error?.message ||
+            "Periksa koneksi dan izin database."
+          }`,
+          "error",
+          false
+        );
+      } finally {
+        button.disabled = false;
+        button.textContent =
+          "💾 Simpan Pengaturan";
+      }
+    }
+
+    async function loadData() {
+      const saveButton =
+        document.getElementById(
+          "saveButton"
+        );
+
+      const printButton =
+        document.getElementById(
+          "printAllButton"
+        );
+
+      saveButton.disabled = true;
+      printButton.disabled = true;
+
+      renderLocations();
+      renderRooms();
+
+      try {
+        const [
+          locationSnapshot,
+          roomSnapshot
+        ] = await Promise.all([
+          database
+            .ref(PATHS.locations)
+            .once("value"),
+
+          database
+            .ref(PATHS.rooms)
+            .once("value")
+        ]);
+
+        if (
+          locationSnapshot.exists()
+        ) {
+          locations = {
+            ...locations,
+            ...locationSnapshot.val()
+          };
+        }
+
+        if (
+          roomSnapshot.exists()
+        ) {
+          rooms = {
+            ...rooms,
+            ...roomSnapshot.val()
+          };
+        }
+
+        /*
+          Pengecualian Kelas 4 Putri selalu dipertahankan,
+          termasuk bila data Firebase lama belum memiliki field ini.
+        */
+        rooms.kelas_4_putri = {
+          ...DEFAULT_ROOMS
+            .kelas_4_putri,
+          ...(
+            rooms.kelas_4_putri ||
+            {}
+          ),
+          bebasRadius: true,
+          jenisPembelajaran:
+            "ONLINE",
+          alasanBebasRadius:
+            "Kelas online dengan guru dari luar lokasi pesantren."
+        };
+
+        renderLocations();
+        renderRooms();
+
+        setStatus(
+          "Pengaturan Firebase berhasil dimuat."
+        );
+      } catch (error) {
+        console.warn(
+          "Firebase belum dapat dimuat:",
+          error
+        );
+
+        setStatus(
+          "Firebase belum dapat dibaca. Data bawaan tetap dapat dicetak dan dapat dicoba disimpan kembali.",
+          "error",
+          false
+        );
+      } finally {
+        pageReady = true;
+        saveButton.disabled = false;
+        printButton.disabled = false;
+      }
+    }
+
+    document.addEventListener(
+      "DOMContentLoaded",
+      () => {
+        document.getElementById(
+          "saveButton"
+        ).addEventListener(
+          "click",
+          event => {
+            event.preventDefault();
+            saveSettings();
+          }
+        );
+
+        document.getElementById(
+          "printAllButton"
+        ).addEventListener(
+          "click",
+          event => {
+            event.preventDefault();
+            printRooms();
+          }
+        );
+
+        loadData();
+      }
+    );
+  </script>
+</body>
+</html>

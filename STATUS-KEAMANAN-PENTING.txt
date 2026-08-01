@@ -1,0 +1,8 @@
+STATUS KEAMANAN CAHAYA APP
+
+1. Konfigurasi Firebase pada aplikasi web bukan rahasia; perlindungan utama harus berada pada Firebase Authentication dan Security Rules.
+2. Jika Rules saat ini masih berisi .read=true dan .write=true, siapa pun yang mengetahui URL database dapat membaca/menulis data.
+3. Paket ini belum menutup Rules karena masih diperlukan audit Auth Gate seluruh halaman agar fitur lama tidak mengalami Permission Denied.
+4. Sebelum modul keuangan dipakai untuk nilai uang besar, verifikasi PIN dan perubahan saldo idealnya dipindahkan ke server/Cloud Functions.
+5. Tahap berikutnya yang wajib: Auth Gate konsisten, mapping UID-peran, Rules per jalur/peran, pengujian Emulator, dan audit transaksi keuangan.
+6. Jangan menganggap menu yang disembunyikan di browser sebagai pengamanan server.

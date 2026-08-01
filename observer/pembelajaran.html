@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <!-- CAHAYA WHITE-LABEL CONFIG -->
+  <script src="../config/tenant-config.js"></script>
+  <script src="../config/master-data.js"></script>
+  <script src="../js/cahaya-config-runtime.js" defer></script>
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <meta name="theme-color" content="#2878ff">
+  <title>Observasi Pembelajaran | CAHAYA APP</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@500;600;700;800;900;1000&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="observer.css">
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+</head>
+<body>
+  <div id="observerApp"></div>
+  <script>window.OBSERVER_PAGE_CONFIG={"type":"pembelajaran","title":"Observasi Pembelajaran","shortTitle":"Pembelajaran","icon":"📚","subtitle":"Pengamatan terstruktur terhadap kesiapan kelas, proses belajar, penerapan LIGHT Learning, ketertiban, keaktifan santri, kebersihan, dan pengelolaan kelas.","formDescription":"Isi berdasarkan kondisi yang benar-benar terlihat saat observer berada di kelas.","fields":[{"name":"tanggal","label":"Tanggal","type":"date","required":true},{"name":"waktu","label":"Waktu","type":"time","required":true},{"name":"kelas","label":"Kelas","placeholder":"Contoh: Kelas 3 Putra","required":true},{"name":"mataPelajaran","label":"Mata Pelajaran","placeholder":"Contoh: Bahasa Arab","required":true},{"name":"guru","label":"Guru/Pengajar","placeholder":"Nama guru yang diamati","required":true},{"name":"jumlahHadir","label":"Jumlah Santri Hadir","type":"number","min":0,"placeholder":"0"},{"name":"durasi","label":"Durasi Pengamatan","placeholder":"Contoh: 10 menit"},{"name":"lokasi","label":"Ruang/Lokasi","placeholder":"Contoh: Ruang Kelas 3"}],"indicators":[["Ketepatan waktu guru","Guru hadir dan memulai pembelajaran sesuai jadwal."],["Kesiapan kelas","Santri, ruang, bahan ajar, dan perlengkapan siap digunakan."],["Tujuan dan koneksi belajar","Guru menjelaskan tujuan serta menghubungkan materi dengan pengetahuan sebelumnya."],["Kejelasan penyampaian","Materi disampaikan secara runtut dan mudah dipahami."],["Keaktifan santri","Santri bertanya, menjawab, berdiskusi, atau melakukan latihan."],["Pengelolaan kelas","Guru menjaga fokus, suasana, dan transisi kegiatan belajar."],["Adab dan ketertiban","Santri memperhatikan, tidak tidur, serta menjaga adab kepada guru."],["Pengecekan pemahaman","Guru memastikan santri memahami materi melalui pertanyaan atau latihan."],["Penutupan pembelajaran","Ada kesimpulan, refleksi, evaluasi, atau penugasan yang jelas."],["Kebersihan dan kerapian","Kelas bersih, rapi, dan nyaman digunakan."]],"problemCategories":["Program/Kurikulum","Metode Pembelajaran","SDM Guru","Kedisiplinan Santri","Sarana Pembelajaran","Jadwal","Lainnya"]};</script>
+  <script src="observer-common.js"></script>
+</body>
+</html>

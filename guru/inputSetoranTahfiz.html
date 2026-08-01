@@ -1,0 +1,2792 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <!-- CAHAYA WHITE-LABEL CONFIG -->
+  <script src="../config/tenant-config.js"></script>
+  <script src="../config/master-data.js"></script>
+  <script src="../js/cahaya-config-runtime.js" defer></script>
+
+  <meta charset="UTF-8" />
+  <title>CAHAYA APP - Tahsin, Tahfiz & Muroja'ah</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
+  <link rel="stylesheet" href="../css/cahaya-theme.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="../js/data-pusat.js"></script>
+
+  <style>
+    :root {
+      --tfz-primary: var(--primary, #2878ff);
+      --tfz-primary-dark: var(--primary-dark, #1557d5);
+      --tfz-cyan: var(--cyan, #19c6e6);
+      --tfz-purple: var(--purple, #7667f5);
+      --tfz-orange: var(--orange, #ff9f43);
+      --tfz-green: var(--green, #29c58d);
+      --tfz-red: var(--red, #ff5d6c);
+      --tfz-navy: var(--navy-dark, #152347);
+      --tfz-text: var(--text-main, #1f2d4d);
+      --tfz-muted: var(--text-muted, #71809e);
+      --tfz-border: var(--border, #e5ebf5);
+      --tfz-bg: var(--bg-main, #f5f8ff);
+      --tfz-shadow: 0 12px 35px rgba(35, 78, 160, 0.09);
+      --tfz-shadow-hover: 0 18px 46px rgba(35, 78, 160, 0.14);
+      --tfz-radius: 22px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      width: 100%;
+      scroll-behavior: smooth;
+      overflow-x: hidden;
+    }
+
+    body {
+      width: 100%;
+      min-height: 100vh;
+      margin: 0;
+      padding: 18px;
+      overflow-x: hidden;
+      color: var(--tfz-text);
+      font-family: 'Nunito', 'Poppins', sans-serif;
+      background:
+        radial-gradient(circle at 4% 2%, rgba(25, 198, 230, 0.10), transparent 24%),
+        radial-gradient(circle at 96% 7%, rgba(118, 103, 245, 0.09), transparent 23%),
+        linear-gradient(180deg, #f4f8ff 0%, #f9fbff 48%, #f5f8ff 100%);
+    }
+
+    button,
+    input,
+    select,
+    textarea {
+      font: inherit;
+    }
+
+    button {
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .page-shell {
+      width: 100%;
+      max-width: 1180px;
+      margin: 0 auto;
+      animation: pageEnter 0.45s ease both;
+    }
+
+    @keyframes pageEnter {
+      from {
+        opacity: 0;
+        transform: translateY(12px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* HERO */
+    .tfz-hero {
+      position: relative;
+      isolation: isolate;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 24px;
+      align-items: center;
+      overflow: hidden;
+      margin-bottom: 18px;
+      padding: 28px 30px;
+      color: #ffffff;
+      border-radius: 28px;
+      background:
+        radial-gradient(circle at 86% 18%, rgba(255,255,255,0.20), transparent 22%),
+        linear-gradient(135deg, #1668e8 0%, #2878ff 48%, #16b9dc 100%);
+      box-shadow: 0 18px 45px rgba(40, 120, 255, 0.23);
+    }
+
+    .tfz-hero::before {
+      content: "";
+      position: absolute;
+      z-index: -1;
+      width: 230px;
+      height: 230px;
+      top: -135px;
+      right: 45px;
+      border: 38px solid rgba(255,255,255,0.09);
+      border-radius: 50%;
+    }
+
+    .tfz-hero::after {
+      content: "ق";
+      position: absolute;
+      z-index: -1;
+      right: -12px;
+      bottom: -80px;
+      color: rgba(255,255,255,0.09);
+      font-family: serif;
+      font-size: 13rem;
+      font-weight: 700;
+      line-height: 1;
+      transform: rotate(-8deg);
+    }
+
+    .hero-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      margin-bottom: 11px;
+      padding: 7px 12px;
+      color: rgba(255,255,255,0.96);
+      font-size: 0.72rem;
+      font-weight: 900;
+      letter-spacing: 0.7px;
+      text-transform: uppercase;
+      border: 1px solid rgba(255,255,255,0.23);
+      border-radius: 999px;
+      background: rgba(255,255,255,0.15);
+      backdrop-filter: blur(8px);
+    }
+
+    .tfz-hero h1 {
+      margin: 0 0 7px;
+      color: #ffffff;
+      font-size: clamp(1.65rem, 4vw, 2.45rem);
+      font-weight: 900;
+      line-height: 1.12;
+      letter-spacing: -0.7px;
+    }
+
+    .tfz-hero p {
+      max-width: 700px;
+      margin: 0;
+      color: rgba(255,255,255,0.86);
+      font-size: 0.92rem;
+      font-weight: 650;
+      line-height: 1.6;
+    }
+
+    .hero-user {
+      min-width: 225px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 13px 15px;
+      border: 1px solid rgba(255,255,255,0.22);
+      border-radius: 18px;
+      background: rgba(255,255,255,0.14);
+      backdrop-filter: blur(12px);
+    }
+
+    .hero-avatar {
+      width: 48px;
+      height: 48px;
+      flex: 0 0 48px;
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+      color: var(--tfz-primary-dark);
+      font-size: 1.08rem;
+      font-weight: 900;
+      border: 3px solid rgba(255,255,255,0.35);
+      border-radius: 15px;
+      background: #ffffff;
+      box-shadow: 0 8px 20px rgba(15, 50, 115, 0.16);
+    }
+
+    .hero-avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .hero-user small {
+      display: block;
+      margin-bottom: 2px;
+      color: rgba(255,255,255,0.72);
+      font-size: 0.64rem;
+      font-weight: 800;
+      letter-spacing: 0.7px;
+      text-transform: uppercase;
+    }
+
+    .hero-user strong {
+      display: block;
+      max-width: 165px;
+      overflow: hidden;
+      color: #ffffff;
+      font-size: 0.88rem;
+      font-weight: 900;
+      line-height: 1.3;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .hero-user span {
+      display: block;
+      margin-top: 2px;
+      color: rgba(255,255,255,0.72);
+      font-size: 0.67rem;
+      font-weight: 700;
+    }
+
+    /* PANEL UMUM */
+    .panel-card {
+      position: relative;
+      overflow: hidden;
+      margin-bottom: 18px;
+      padding: 24px;
+      border: 1px solid rgba(225, 233, 246, 0.95);
+      border-radius: var(--tfz-radius);
+      background: rgba(255,255,255,0.97);
+      box-shadow: var(--tfz-shadow);
+    }
+
+    .panel-card::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 24px;
+      right: 24px;
+      height: 4px;
+      border-radius: 0 0 10px 10px;
+      background: linear-gradient(90deg, var(--tfz-primary), var(--tfz-cyan));
+    }
+
+    .panel-head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 15px;
+      margin-bottom: 20px;
+    }
+
+    .panel-title-wrap {
+      min-width: 0;
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+    }
+
+    .panel-icon {
+      width: 44px;
+      height: 44px;
+      flex: 0 0 44px;
+      display: grid;
+      place-items: center;
+      color: var(--tfz-primary);
+      font-size: 1.15rem;
+      border-radius: 14px;
+      background: #eaf3ff;
+    }
+
+    .panel-head h2,
+    .panel-head h3 {
+      margin: 0;
+      color: var(--tfz-navy);
+      font-size: 1.14rem;
+      font-weight: 900;
+      line-height: 1.25;
+    }
+
+    .panel-head p {
+      margin: 4px 0 0;
+      color: var(--tfz-muted);
+      font-size: 0.78rem;
+      font-weight: 650;
+      line-height: 1.45;
+    }
+
+    .context-chip {
+      flex: 0 0 auto;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 11px;
+      color: var(--tfz-primary-dark);
+      font-size: 0.68rem;
+      font-weight: 900;
+      border: 1px solid #d4e5ff;
+      border-radius: 999px;
+      background: #edf5ff;
+    }
+
+    /* FILTER */
+    .selector-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .form-group {
+      min-width: 0;
+      margin: 0;
+    }
+
+    .form-group label,
+    .surat-row label {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      margin-bottom: 8px;
+      color: var(--tfz-navy);
+      font-size: 0.77rem;
+      font-weight: 900;
+      text-transform: none;
+      letter-spacing: 0;
+    }
+
+    .label-icon {
+      width: 24px;
+      height: 24px;
+      display: inline-grid;
+      place-items: center;
+      color: var(--tfz-primary);
+      font-size: 0.73rem;
+      border-radius: 8px;
+      background: #eaf3ff;
+    }
+
+    .form-control {
+      width: 100%;
+      min-height: 50px;
+      padding: 12px 15px;
+      color: var(--tfz-text);
+      font-family: inherit;
+      font-size: 0.9rem;
+      font-weight: 750;
+      outline: none;
+      border: 1.5px solid #dfe7f3;
+      border-radius: 14px;
+      background: #f8faff;
+      transition: 0.2s ease;
+    }
+
+    .form-control:hover {
+      border-color: #c6d6ec;
+      background: #ffffff;
+    }
+
+    .form-control:focus {
+      border-color: var(--tfz-primary);
+      background: #ffffff;
+      box-shadow: 0 0 0 4px rgba(40,120,255,0.10);
+    }
+
+    .form-control:disabled,
+    .form-control[readonly] {
+      color: #8492aa;
+      cursor: not-allowed;
+      background: #f0f3f8;
+    }
+
+    textarea.form-control {
+      min-height: 96px;
+      resize: vertical;
+      line-height: 1.6;
+    }
+
+    /* RINGKASAN */
+    .overview-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 18px;
+    }
+
+    .overview-item {
+      position: relative;
+      overflow: hidden;
+      min-height: 92px;
+      padding: 15px;
+      border: 1px solid var(--tfz-border);
+      border-radius: 17px;
+      background: #ffffff;
+    }
+
+    .overview-item::after {
+      content: "";
+      position: absolute;
+      width: 58px;
+      height: 58px;
+      right: -18px;
+      top: -18px;
+      border-radius: 50%;
+      background: var(--soft, #eaf3ff);
+    }
+
+    .overview-label {
+      position: relative;
+      z-index: 1;
+      color: var(--tfz-muted);
+      font-size: 0.66rem;
+      font-weight: 900;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+
+    .overview-value {
+      position: relative;
+      z-index: 1;
+      display: block;
+      margin-top: 7px;
+      overflow: hidden;
+      color: var(--tone, var(--tfz-primary));
+      font-size: 1.03rem;
+      font-weight: 900;
+      line-height: 1.25;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .overview-item:nth-child(2) {
+      --tone: var(--tfz-purple);
+      --soft: #f0eeff;
+    }
+
+    .overview-item:nth-child(3) {
+      --tone: var(--tfz-green);
+      --soft: #e8fbf4;
+    }
+
+    .overview-item:nth-child(4) {
+      --tone: var(--tfz-orange);
+      --soft: #fff4e7;
+    }
+
+    /* WORKSPACE TOOLBAR */
+    .workspace-card {
+      overflow: visible;
+    }
+
+    .workspace-card::before {
+      background: linear-gradient(90deg, var(--tfz-purple), var(--tfz-primary));
+    }
+
+    .workspace-actions {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      flex-wrap: wrap;
+    }
+
+    .search-wrap {
+      position: relative;
+      min-width: 230px;
+      flex: 1 1 250px;
+    }
+
+    .search-wrap::before {
+      content: "⌕";
+      position: absolute;
+      top: 50%;
+      left: 15px;
+      z-index: 2;
+      color: var(--tfz-muted);
+      font-size: 1.15rem;
+      font-weight: 900;
+      transform: translateY(-52%);
+      pointer-events: none;
+    }
+
+    .search-wrap input {
+      padding-left: 43px;
+    }
+
+    .btn-workspace {
+      min-height: 48px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      padding: 11px 15px;
+      color: var(--tfz-primary-dark);
+      font-size: 0.78rem;
+      font-weight: 900;
+      cursor: pointer;
+      border: 1px solid #d4e5ff;
+      border-radius: 13px;
+      background: #edf5ff;
+      transition: 0.2s ease;
+    }
+
+    .btn-workspace:hover:not(:disabled) {
+      color: #ffffff;
+      border-color: var(--tfz-primary);
+      background: var(--tfz-primary);
+      box-shadow: 0 8px 18px rgba(40,120,255,0.20);
+      transform: translateY(-1px);
+    }
+
+    .btn-workspace:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .workspace-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin: -6px 0 15px;
+      color: var(--tfz-muted);
+      font-size: 0.72rem;
+      font-weight: 750;
+    }
+
+    /* EMPTY STATE */
+    .initial-state {
+      display: grid;
+      place-items: center;
+      min-height: 240px;
+      padding: 30px 20px;
+      text-align: center;
+      border: 1px dashed #cddaf0;
+      border-radius: 20px;
+      background:
+        radial-gradient(circle at 50% 0%, rgba(40,120,255,0.06), transparent 45%),
+        #f9fbff;
+    }
+
+    .initial-state-icon {
+      width: 72px;
+      height: 72px;
+      display: grid;
+      place-items: center;
+      margin: 0 auto 13px;
+      color: var(--tfz-primary);
+      font-size: 1.9rem;
+      border-radius: 23px;
+      background: #eaf3ff;
+    }
+
+    .initial-state strong {
+      display: block;
+      color: var(--tfz-navy);
+      font-size: 1rem;
+      font-weight: 900;
+    }
+
+    .initial-state span {
+      display: block;
+      max-width: 420px;
+      margin-top: 5px;
+      color: var(--tfz-muted);
+      font-size: 0.78rem;
+      font-weight: 650;
+      line-height: 1.55;
+    }
+
+    /* KARTU SANTRI */
+    #santriCardsContainer {
+      display: grid;
+      gap: 14px;
+    }
+
+    .santri-card {
+      position: relative;
+      overflow: hidden;
+      margin: 0 !important;
+      padding: 0 !important;
+      border: 1px solid #e2eaf6 !important;
+      border-left-width: 5px !important;
+      border-radius: 19px !important;
+      background: #ffffff !important;
+      box-shadow: 0 7px 22px rgba(34, 76, 151, 0.06) !important;
+      transition: 0.25s ease !important;
+    }
+
+    .santri-card:hover {
+      border-color: #cedcf1 !important;
+      box-shadow: var(--tfz-shadow-hover) !important;
+      transform: translateY(-1px);
+    }
+
+    .santri-card.card-open {
+      border-color: #bed3f5 !important;
+      box-shadow: 0 16px 38px rgba(35,78,160,0.12) !important;
+    }
+
+    .santri-card-header {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 15px;
+      min-height: 70px;
+      padding: 15px 18px;
+      cursor: pointer;
+      user-select: none;
+      background: linear-gradient(90deg, rgba(246,249,255,0.94), #ffffff);
+    }
+
+    .santri-card-header::before {
+      content: "ق";
+      width: 40px;
+      height: 40px;
+      flex: 0 0 40px;
+      display: grid;
+      place-items: center;
+      color: var(--tfz-primary);
+      font-family: serif;
+      font-size: 1.15rem;
+      font-weight: 800;
+      border-radius: 13px;
+      background: #eaf3ff;
+    }
+
+    .santri-card-header h3 {
+      min-width: 0;
+      flex: 1;
+      margin: 0;
+      overflow: hidden;
+      color: var(--tfz-navy) !important;
+      font-family: 'Nunito', sans-serif !important;
+      font-size: 1rem !important;
+      font-weight: 900 !important;
+      line-height: 1.3;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .santri-card-header > div {
+      flex: 0 0 auto;
+    }
+
+    .santri-card-header [id^="badge_info_"] {
+      display: inline-flex;
+      align-items: center;
+      padding: 6px 10px;
+      color: var(--tfz-primary-dark) !important;
+      font-size: 0.66rem !important;
+      font-weight: 900 !important;
+      border: 1px solid #d4e5ff;
+      border-radius: 999px;
+      background: #edf5ff;
+    }
+
+    .icon-toggle {
+      width: 31px;
+      height: 31px;
+      display: grid;
+      place-items: center;
+      color: var(--tfz-primary) !important;
+      font-size: 0.8rem !important;
+      border-radius: 10px;
+      background: #eaf3ff;
+      transition: transform 0.25s ease !important;
+    }
+
+    .card-open .icon-toggle {
+      transform: rotate(180deg);
+    }
+
+    .santri-card-body {
+      display: none;
+      margin: 0 !important;
+      padding: 20px !important;
+      border-top: 1px solid #e9eff8 !important;
+      background: #ffffff;
+      animation: bodyReveal 0.25s ease;
+    }
+
+    .card-open .santri-card-body {
+      display: block;
+    }
+
+    @keyframes bodyReveal {
+      from {
+        opacity: 0;
+        transform: translateY(-5px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* RESUME */
+    [id^="resume_container_"] > h5 {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin: 0 0 12px !important;
+      padding: 0 !important;
+      color: var(--tfz-navy) !important;
+      font-family: 'Nunito', sans-serif;
+      font-size: 0.91rem !important;
+      font-weight: 900;
+      border: none !important;
+    }
+
+    .resume-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+
+    .resume-box {
+      position: relative;
+      overflow: hidden;
+      min-height: 92px;
+      padding: 14px 12px !important;
+      color: #ffffff !important;
+      text-align: left !important;
+      border: none !important;
+      border-radius: 16px !important;
+      background: linear-gradient(135deg, #176be8, #2878ff) !important;
+      box-shadow: 0 9px 22px rgba(40,120,255,0.18) !important;
+    }
+
+    .resume-box:nth-child(2) {
+      background: linear-gradient(135deg, #6556e4, #8b7eff) !important;
+      box-shadow: 0 9px 22px rgba(118,103,245,0.18) !important;
+    }
+
+    .resume-box:nth-child(3) {
+      background: linear-gradient(135deg, #13a878, #29c58d) !important;
+      box-shadow: 0 9px 22px rgba(41,197,141,0.18) !important;
+    }
+
+    .resume-box:nth-child(4) {
+      background: linear-gradient(135deg, #ed8425, #ffad55) !important;
+      box-shadow: 0 9px 22px rgba(255,159,67,0.18) !important;
+    }
+
+    .resume-box::after {
+      content: "۞" !important;
+      position: absolute;
+      right: -6px !important;
+      bottom: -18px !important;
+      color: rgba(255,255,255,0.15);
+      font-family: serif;
+      font-size: 4rem !important;
+      opacity: 1 !important;
+    }
+
+    .resume-box h4 {
+      margin: 0 !important;
+      color: rgba(255,255,255,0.76) !important;
+      font-size: 0.62rem !important;
+      font-weight: 900;
+      letter-spacing: 0.7px !important;
+      text-transform: uppercase;
+    }
+
+    .resume-box p {
+      margin: 7px 0 0 !important;
+      color: #ffffff !important;
+      font-family: 'Nunito', sans-serif !important;
+      font-size: 1.32rem !important;
+      font-weight: 900 !important;
+      line-height: 1.05;
+    }
+
+    .resume-box span {
+      color: rgba(255,255,255,0.76);
+      font-size: 0.62rem !important;
+      font-weight: 800 !important;
+    }
+
+    /* RIWAYAT */
+    .riwayat-section {
+      margin-bottom: 18px !important;
+      padding: 16px !important;
+      border: 1px solid #e6edf8 !important;
+      border-radius: 17px !important;
+      background: #f8faff !important;
+    }
+
+    .riwayat-section h5,
+    .input-section > h5 {
+      display: flex !important;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin: 0 0 13px !important;
+      padding: 0 0 11px !important;
+      color: var(--tfz-navy) !important;
+      font-family: 'Nunito', sans-serif;
+      font-size: 0.9rem !important;
+      font-weight: 900;
+      border-bottom: 1px solid #e2eaf6 !important;
+    }
+
+    .riwayat-list {
+      display: grid !important;
+      gap: 9px !important;
+      width: 100%;
+    }
+
+    .riwayat-item {
+      display: flex !important;
+      align-items: center !important;
+      justify-content: space-between !important;
+      gap: 13px;
+      padding: 12px !important;
+      border: 1px solid #e1e9f5 !important;
+      border-radius: 13px !important;
+      background: #ffffff !important;
+      transition: 0.2s ease;
+    }
+
+    .riwayat-item:hover {
+      border-color: #cbdcf5 !important;
+      box-shadow: 0 7px 18px rgba(35,78,160,0.07);
+    }
+
+    .riwayat-info {
+      min-width: 0;
+      flex: 1;
+      padding: 0 !important;
+    }
+
+    .riwayat-top {
+      display: flex !important;
+      align-items: center !important;
+      gap: 7px !important;
+      margin-bottom: 6px !important;
+      flex-wrap: wrap;
+    }
+
+    .riwayat-tgl {
+      display: inline-flex;
+      align-items: center;
+      min-height: 23px;
+      padding: 3px 7px !important;
+      color: var(--tfz-muted) !important;
+      font-size: 0.63rem !important;
+      font-weight: 900 !important;
+      border-radius: 7px !important;
+      background: #edf1f8 !important;
+    }
+
+    .badge-riwayat {
+      min-height: 23px;
+      display: inline-flex !important;
+      align-items: center;
+      padding: 3px 8px !important;
+      font-size: 0.62rem !important;
+      font-weight: 900 !important;
+      border-radius: 7px !important;
+    }
+
+    .riwayat-surat {
+      margin-bottom: 4px !important;
+      color: var(--tfz-navy) !important;
+      font-size: 0.82rem !important;
+      font-weight: 900 !important;
+      line-height: 1.4 !important;
+      overflow-wrap: anywhere;
+    }
+
+    .riwayat-ayat {
+      color: var(--tfz-primary) !important;
+      font-size: 0.7rem !important;
+      font-weight: 900 !important;
+    }
+
+    .riwayat-actions {
+      display: flex !important;
+      gap: 6px !important;
+      flex: 0 0 auto;
+    }
+
+    .btn-icon {
+      width: 38px !important;
+      height: 38px !important;
+      display: grid !important;
+      place-items: center;
+      padding: 0 !important;
+      cursor: pointer;
+      border-radius: 11px !important;
+      transition: 0.2s ease !important;
+    }
+
+    .btn-edit-icon {
+      color: var(--tfz-primary) !important;
+      border: 1px solid #cfe1ff !important;
+      background: #edf5ff !important;
+    }
+
+    .btn-edit-icon:hover {
+      color: #ffffff !important;
+      border-color: var(--tfz-primary) !important;
+      background: var(--tfz-primary) !important;
+    }
+
+    .btn-hapus-icon {
+      color: var(--tfz-red) !important;
+      border: 1px solid #ffd2d7 !important;
+      background: #fff1f3 !important;
+    }
+
+    .btn-hapus-icon:hover {
+      color: #ffffff !important;
+      border-color: var(--tfz-red) !important;
+      background: var(--tfz-red) !important;
+    }
+
+    /* FORM SETORAN */
+    .input-section {
+      padding: 17px;
+      border: 1px solid #e2eaf6;
+      border-radius: 17px;
+      background: #ffffff;
+      box-shadow: 0 6px 18px rgba(35,78,160,0.05);
+    }
+
+    .input-section > h5 {
+      color: var(--tfz-primary-dark) !important;
+    }
+
+    .input-section .form-group {
+      margin-bottom: 14px;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .mode-switch {
+      display: grid !important;
+      grid-template-columns: 1fr 1fr;
+      gap: 6px !important;
+      margin-bottom: 14px !important;
+      padding: 6px !important;
+      border: 1px solid #e1e9f5 !important;
+      border-radius: 14px !important;
+      background: #f1f5fb !important;
+    }
+
+    .mode-btn {
+      min-height: 42px;
+      padding: 9px 12px !important;
+      color: var(--tfz-muted) !important;
+      font-size: 0.69rem !important;
+      font-weight: 900 !important;
+      cursor: pointer;
+      border: none !important;
+      border-radius: 10px !important;
+      background: transparent !important;
+      transition: 0.2s ease !important;
+    }
+
+    .mode-btn.active {
+      color: #ffffff !important;
+      background: linear-gradient(135deg, var(--tfz-primary), var(--tfz-cyan)) !important;
+      box-shadow: 0 7px 16px rgba(40,120,255,0.20) !important;
+    }
+
+    .surat-row {
+      display: grid !important;
+      grid-template-columns: minmax(200px, 2fr) minmax(92px, .65fr) minmax(92px, .65fr) auto;
+      gap: 10px !important;
+      align-items: end !important;
+      margin-bottom: 10px !important;
+      padding: 13px !important;
+      border: 1px solid #e1e9f5 !important;
+      border-left: 4px solid var(--tfz-primary) !important;
+      border-radius: 14px !important;
+      background: #f8faff !important;
+    }
+
+    .surat-row .form-control {
+      min-height: 46px;
+      padding: 10px 12px;
+      font-size: 0.82rem;
+      border-radius: 12px;
+      background: #ffffff;
+    }
+
+    .col-surat,
+    .col-ayat {
+      min-width: 0 !important;
+      width: auto !important;
+      flex: none !important;
+    }
+
+    .btn-hapus {
+      min-width: 96px;
+      min-height: 46px !important;
+      padding: 10px 13px !important;
+      color: var(--tfz-red) !important;
+      font-size: 0.72rem;
+      font-weight: 900 !important;
+      cursor: pointer;
+      border: 1px solid #ffd2d7 !important;
+      border-radius: 12px !important;
+      background: #fff1f3 !important;
+      transition: 0.2s ease !important;
+    }
+
+    .btn-hapus:hover {
+      color: #ffffff !important;
+      border-color: var(--tfz-red) !important;
+      background: var(--tfz-red) !important;
+    }
+
+    .btn-tambah-surat {
+      width: 100%;
+      min-height: 45px;
+      margin: 1px 0 14px !important;
+      padding: 10px 14px !important;
+      color: var(--tfz-primary) !important;
+      font-size: 0.76rem;
+      font-weight: 900 !important;
+      cursor: pointer;
+      border: 1.5px dashed #a9c9fb !important;
+      border-radius: 13px !important;
+      background: #f1f7ff !important;
+      transition: 0.2s ease !important;
+    }
+
+    .btn-tambah-surat:hover {
+      color: #ffffff !important;
+      border-color: var(--tfz-primary) !important;
+      background: var(--tfz-primary) !important;
+    }
+
+    .input-predikat {
+      min-height: 52px;
+      font-size: 0.96rem !important;
+      font-weight: 900 !important;
+      text-align: center;
+      letter-spacing: 0.3px;
+    }
+
+    .pred-mumtaz {
+      color: #16855f !important;
+      border-color: #98ddc3 !important;
+      background: #eafbf4 !important;
+    }
+
+    .pred-jayyid {
+      color: #1673cf !important;
+      border-color: #a9cff7 !important;
+      background: #eef6ff !important;
+    }
+
+    .pred-maqbul {
+      color: #b66d13 !important;
+      border-color: #ffd499 !important;
+      background: #fff5e8 !important;
+    }
+
+    .pred-bimbingan {
+      color: #d34151 !important;
+      border-color: #ffc1c8 !important;
+      background: #fff0f2 !important;
+    }
+
+    .checkbox-container {
+      display: flex !important;
+      align-items: flex-start !important;
+      gap: 10px !important;
+      margin: 0 0 9px !important;
+      padding: 12px;
+      cursor: pointer;
+      border: 1px solid #e2eaf6;
+      border-radius: 13px;
+      background: #f8faff;
+    }
+
+    .checkbox-container > span:last-child {
+      padding-top: 1px;
+      color: var(--tfz-navy);
+      font-size: 0.78rem !important;
+      font-weight: 900 !important;
+      line-height: 1.4;
+    }
+
+    .checkmark {
+      width: 22px !important;
+      min-width: 22px !important;
+      height: 22px !important;
+      display: grid !important;
+      place-items: center;
+      border: 2px solid #c9d6e8 !important;
+      border-radius: 7px !important;
+      background: #ffffff !important;
+    }
+
+    .checkbox-container input:checked + .checkmark {
+      border-color: var(--tfz-primary) !important;
+      background: var(--tfz-primary) !important;
+    }
+
+    .checkbox-container input:checked + .checkmark::after {
+      content: "✓";
+      color: #ffffff;
+      font-size: 0.75rem;
+      font-weight: 900;
+    }
+
+    .btn-simpan-card,
+    .btn-batal-card {
+      width: 100%;
+      min-height: 50px;
+      display: inline-flex !important;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 10px !important;
+      padding: 12px 18px !important;
+      font-size: 0.8rem;
+      font-weight: 900 !important;
+      cursor: pointer;
+      border-radius: 14px !important;
+      transition: 0.2s ease !important;
+    }
+
+    .btn-simpan-card {
+      color: #ffffff !important;
+      border: none !important;
+      background: linear-gradient(135deg, var(--tfz-primary), var(--tfz-cyan)) !important;
+      box-shadow: 0 10px 24px rgba(40,120,255,0.23) !important;
+    }
+
+    .btn-simpan-card:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 14px 30px rgba(40,120,255,0.30) !important;
+    }
+
+    .btn-simpan-card:disabled {
+      opacity: 0.58;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .btn-batal-card {
+      color: #66758f !important;
+      border: 1px solid #dce5f2 !important;
+      background: #f1f4f9 !important;
+      box-shadow: none !important;
+    }
+
+    .btn-batal-card:hover {
+      color: var(--tfz-red) !important;
+      border-color: #ffcbd1 !important;
+      background: #fff0f2 !important;
+    }
+
+    /* LOADING */
+    #loadingOverlay {
+      position: fixed;
+      inset: 0;
+      z-index: 2000;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      color: var(--tfz-navy);
+      text-align: center;
+      background: rgba(246,249,255,0.96);
+      backdrop-filter: blur(10px);
+      transition: 0.35s ease;
+    }
+
+    .loader-mark {
+      position: relative;
+      width: 78px;
+      height: 78px;
+      display: grid;
+      place-items: center;
+      margin-bottom: 16px;
+      color: #ffffff;
+      font-size: 1.8rem;
+      border-radius: 25px;
+      background: linear-gradient(135deg, var(--tfz-primary), var(--tfz-cyan));
+      box-shadow: 0 14px 32px rgba(40,120,255,0.25);
+      animation: loaderFloat 1.4s ease-in-out infinite alternate;
+    }
+
+    .loader-mark::after {
+      content: "";
+      position: absolute;
+      inset: -9px;
+      border: 2px solid rgba(40,120,255,0.16);
+      border-radius: 31px;
+      animation: loaderPulse 1.4s ease-out infinite;
+    }
+
+    #loadingOverlay strong {
+      color: var(--tfz-navy);
+      font-size: 1rem;
+      font-weight: 900;
+    }
+
+    #loadingOverlay span {
+      margin-top: 5px;
+      color: var(--tfz-muted);
+      font-size: 0.76rem;
+      font-weight: 700;
+    }
+
+    @keyframes loaderFloat {
+      to {
+        transform: translateY(-6px) rotate(2deg);
+      }
+    }
+
+    @keyframes loaderPulse {
+      0% {
+        opacity: 0.7;
+        transform: scale(0.88);
+      }
+      100% {
+        opacity: 0;
+        transform: scale(1.12);
+      }
+    }
+
+    /* TOAST */
+    .page-toast {
+      position: fixed;
+      z-index: 3000;
+      top: 18px;
+      left: 50%;
+      width: min(390px, calc(100vw - 24px));
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      padding: 13px 15px;
+      color: var(--tfz-navy);
+      pointer-events: none;
+      opacity: 0;
+      border: 1px solid #dce6f4;
+      border-radius: 15px;
+      background: #ffffff;
+      box-shadow: 0 16px 38px rgba(27,61,121,0.18);
+      transform: translate(-50%, -20px);
+      transition: 0.28s ease;
+    }
+
+    .page-toast.show {
+      opacity: 1;
+      transform: translate(-50%, 0);
+    }
+
+    .toast-icon {
+      width: 38px;
+      height: 38px;
+      flex: 0 0 38px;
+      display: grid;
+      place-items: center;
+      color: var(--tfz-primary);
+      border-radius: 12px;
+      background: #eaf3ff;
+    }
+
+    .page-toast strong {
+      display: block;
+      font-size: 0.79rem;
+      font-weight: 900;
+    }
+
+    .page-toast span {
+      display: block;
+      margin-top: 2px;
+      color: var(--tfz-muted);
+      font-size: 0.69rem;
+      font-weight: 700;
+    }
+
+    /* TABLET */
+    @media (max-width: 900px) {
+      body {
+        padding: 14px;
+      }
+
+      .tfz-hero {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-user {
+        width: fit-content;
+        min-width: 0;
+      }
+
+      .overview-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .surat-row {
+        grid-template-columns: minmax(180px, 1.5fr) minmax(90px, .6fr) minmax(90px, .6fr);
+      }
+
+      .surat-row .btn-hapus {
+        grid-column: 1 / -1;
+        width: 100%;
+      }
+    }
+
+    /* MOBILE */
+    @media (max-width: 680px) {
+      body {
+        padding: 8px;
+      }
+
+      .tfz-hero {
+        gap: 17px;
+        margin-bottom: 12px;
+        padding: 23px 18px;
+        border-radius: 21px;
+      }
+
+      .tfz-hero h1 {
+        font-size: 1.55rem;
+      }
+
+      .tfz-hero p {
+        font-size: 0.8rem;
+        line-height: 1.55;
+      }
+
+      .hero-label {
+        font-size: 0.63rem;
+      }
+
+      .hero-user {
+        width: 100%;
+        padding: 11px 12px;
+        border-radius: 15px;
+      }
+
+      .hero-avatar {
+        width: 43px;
+        height: 43px;
+        flex-basis: 43px;
+        border-radius: 13px;
+      }
+
+      .panel-card {
+        margin-bottom: 12px;
+        padding: 17px 13px;
+        border-radius: 18px;
+      }
+
+      .panel-card::before {
+        left: 14px;
+        right: 14px;
+      }
+
+      .panel-head {
+        flex-direction: column;
+        margin-bottom: 16px;
+      }
+
+      .panel-icon {
+        width: 40px;
+        height: 40px;
+        flex-basis: 40px;
+        border-radius: 13px;
+      }
+
+      .panel-head h2,
+      .panel-head h3 {
+        font-size: 1rem;
+      }
+
+      .context-chip {
+        align-self: flex-start;
+      }
+
+      .selector-grid,
+      .grid-2 {
+        grid-template-columns: 1fr;
+        gap: 12px;
+      }
+
+      .overview-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 8px;
+        margin-top: 14px;
+      }
+
+      .overview-item {
+        min-height: 80px;
+        padding: 12px;
+        border-radius: 14px;
+      }
+
+      .overview-label {
+        font-size: 0.57rem;
+      }
+
+      .overview-value {
+        font-size: 0.84rem;
+      }
+
+      .workspace-actions {
+        width: 100%;
+      }
+
+      .search-wrap {
+        width: 100%;
+        min-width: 0;
+        flex-basis: 100%;
+      }
+
+      .btn-workspace {
+        width: 100%;
+      }
+
+      .workspace-meta {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 3px;
+        margin-bottom: 12px;
+      }
+
+      #santriCardsContainer {
+        gap: 10px;
+      }
+
+      .santri-card {
+        border-radius: 16px !important;
+      }
+
+      .santri-card-header {
+        min-height: 65px;
+        gap: 9px;
+        padding: 12px 11px;
+      }
+
+      .santri-card-header::before {
+        width: 36px;
+        height: 36px;
+        flex-basis: 36px;
+        border-radius: 12px;
+      }
+
+      .santri-card-header h3 {
+        font-size: 0.84rem !important;
+        white-space: normal;
+      }
+
+      .santri-card-header > div {
+        gap: 5px !important;
+      }
+
+      .santri-card-header [id^="badge_info_"] {
+        max-width: 92px;
+        overflow: hidden;
+        padding: 5px 7px;
+        font-size: 0.55rem !important;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      .icon-toggle {
+        width: 27px;
+        height: 27px;
+        font-size: 0.68rem !important;
+      }
+
+      .santri-card-body {
+        padding: 13px 10px !important;
+      }
+
+      .resume-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 7px;
+        margin-bottom: 14px;
+      }
+
+      .resume-box {
+        min-height: 80px;
+        padding: 12px 10px !important;
+        border-radius: 14px !important;
+      }
+
+      .resume-box h4 {
+        font-size: 0.54rem !important;
+      }
+
+      .resume-box p {
+        font-size: 1.08rem !important;
+      }
+
+      .riwayat-section,
+      .input-section {
+        padding: 12px 9px !important;
+        border-radius: 14px !important;
+      }
+
+      .riwayat-item {
+        align-items: flex-start !important;
+        padding: 10px !important;
+      }
+
+      .riwayat-surat {
+        font-size: 0.74rem !important;
+      }
+
+      .riwayat-actions {
+        flex-direction: column;
+      }
+
+      .btn-icon {
+        width: 34px !important;
+        height: 34px !important;
+        border-radius: 10px !important;
+      }
+
+      .mode-switch {
+        grid-template-columns: 1fr;
+      }
+
+      .mode-btn {
+        min-height: 39px;
+        font-size: 0.62rem !important;
+      }
+
+      .surat-row {
+        grid-template-columns: 1fr !important;
+        gap: 8px !important;
+        padding: 10px !important;
+      }
+
+      .surat-row .btn-hapus {
+        grid-column: auto;
+      }
+
+      .btn-hapus {
+        width: 100%;
+      }
+
+      .form-control {
+        min-height: 47px;
+        padding: 11px 13px;
+        font-size: 0.84rem;
+        border-radius: 13px;
+      }
+
+      input[type="date"] {
+        width: 100%;
+        max-width: 100%;
+      }
+
+      .btn-simpan-card,
+      .btn-batal-card {
+        min-height: 48px;
+        font-size: 0.74rem;
+      }
+    }
+
+    @media (max-width: 390px) {
+      .overview-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .santri-card-header [id^="badge_info_"] {
+        display: none;
+      }
+
+      .tfz-hero::after {
+        font-size: 10rem;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        scroll-behavior: auto !important;
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+  </style>
+
+  <!-- Tampilan minimal: header internal dan ringkasan disembunyikan tanpa mengubah sistem -->
+  <style id="cahaya-minimal-cleanup">
+    .tfz-hero,
+.overview-grid {
+      display: none !important;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="loadingOverlay">
+    <div class="loader-mark">📖</div>
+    <strong>Menyiapkan Lembar Setoran</strong>
+    <span>Memuat kelas dan data Al-Qur’an...</span>
+  </div>
+
+  <div class="page-toast" id="pageToast">
+    <div class="toast-icon" id="toastIcon">✓</div>
+    <div>
+      <strong id="toastTitle">Informasi</strong>
+      <span id="toastMessage">Data berhasil diperbarui.</span>
+    </div>
+  </div>
+
+  <main class="page-shell">
+    <section class="tfz-hero">
+      <div>
+        <div class="hero-label">📖 Modul Guru Al-Qur’an</div>
+        <h1>Tahsin, Tahfiz & Muroja’ah</h1>
+        <p>Catat talaqqi, setoran hafalan baru, dan pengulangan hafalan santri dalam satu halaman.</p>
+      </div>
+
+      <div class="hero-user">
+        <div class="hero-avatar" id="heroGuruAvatar">G</div>
+        <div>
+          <small>Guru Aktif</small>
+          <strong id="heroGuruName">Guru Tahfiz</strong>
+          <span id="heroDateText">Tahun Ajaran 2026/2027</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel-card">
+      <div class="panel-head">
+        <div class="panel-title-wrap">
+          <div class="panel-icon">⚙️</div>
+          <div>
+            <h2>Pilih Kelompok Setoran</h2>
+            <p>Tentukan program dan kelas sebelum membuka lembar santri.</p>
+          </div>
+        </div>
+        <div class="context-chip">TA 2026/2027</div>
+      </div>
+
+      <div class="selector-grid">
+        <div class="form-group">
+          <label for="tfzProgram"><span class="label-icon">📚</span>Program</label>
+          <select class="form-control" id="tfzProgram" onchange="updateKelas()">
+            <option value="">-- Pilih Program --</option>
+            <option value="Tahsin">Tahsin</option>
+            <option value="Tahfiz">Tahfiz</option>
+            <option value="Murojaah">Muroja’ah</option>
+          </select>
+        </div>
+
+        <div class="form-group" id="murojaahTypeGroup" style="display:none;">
+          <label for="tfzJenisMurojaah"><span class="label-icon">🔁</span>Jenis Muroja’ah</label>
+          <select class="form-control" id="tfzJenisMurojaah">
+            <option value="">-- Pilih Jenis --</option>
+            <option value="Harian">Muroja’ah Harian</option>
+            <option value="Pekanan">Muroja’ah Pekanan</option>
+            <option value="Bulanan">Muroja’ah Bulanan</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="tfzKelas"><span class="label-icon">🏫</span>Kelas</label>
+          <select class="form-control" id="tfzKelas" onchange="renderSantriCards()" disabled>
+            <option value="">-- Menunggu Program --</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="overview-grid">
+        <div class="overview-item">
+          <span class="overview-label">Program</span>
+          <strong class="overview-value" id="statProgram">Belum dipilih</strong>
+        </div>
+        <div class="overview-item">
+          <span class="overview-label">Kelas</span>
+          <strong class="overview-value" id="statClass">Belum dipilih</strong>
+        </div>
+        <div class="overview-item">
+          <span class="overview-label">Jumlah Santri</span>
+          <strong class="overview-value" id="statStudentTotal">0 Santri</strong>
+        </div>
+        <div class="overview-item">
+          <span class="overview-label">Setoran Bulan Ini</span>
+          <strong class="overview-value" id="statMonthlyTotal">0 Setoran</strong>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel-card workspace-card">
+      <div class="panel-head">
+        <div class="panel-title-wrap">
+          <div class="panel-icon">👥</div>
+          <div>
+            <h3>Lembar Setoran Santri</h3>
+            <p>Buka kartu santri untuk melihat capaian, riwayat, dan mengisi setoran.</p>
+          </div>
+        </div>
+
+        <div class="workspace-actions">
+          <div class="search-wrap">
+            <input
+              type="search"
+              class="form-control"
+              id="searchSantri"
+              placeholder="Cari nama santri..."
+              oninput="filterSantriCards()"
+              disabled
+            />
+          </div>
+          <button type="button" class="btn-workspace" id="toggleAllBtn" onclick="toggleAllCards()" disabled>
+            Buka Semua
+          </button>
+        </div>
+      </div>
+
+      <div class="workspace-meta">
+        <span id="filterResultText">Pilih program dan kelas untuk menampilkan santri.</span>
+        <span id="openedCardText">0 kartu terbuka</span>
+      </div>
+
+      <div id="santriCardsContainer">
+        <div class="initial-state">
+          <div>
+            <div class="initial-state-icon">📖</div>
+            <strong>Lembar setoran belum dibuka</strong>
+            <span>Pilih program dan kelas terlebih dahulu untuk menampilkan daftar santri.</span>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+  import { getDatabase, ref, push, get, remove, update, query, orderByChild, startAt, endAt, limitToLast } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+
+  const firebaseConfig = window.CAHAYA_CONFIG.firebase;
+
+  const app = initializeApp(firebaseConfig);
+  const db = getDatabase(app);
+  function localDateKey(d=new Date()){const x=new Date(d.getTime()-d.getTimezoneOffset()*60000);return x.toISOString().slice(0,10)}
+  function shiftDate(date,days){const d=new Date(date+'T12:00:00');d.setDate(d.getDate()+days);return localDateKey(d)}
+  function recentTahfizQuery(days=150){const end=localDateKey(),start=shiftDate(end,-Math.max(1,days-1));return query(ref(db,'cahaya_app/setoran_tahfiz'),orderByChild('tanggal'),startAt(start),endAt(end),limitToLast(1200));}
+
+
+  // Aman bila halaman dibuka tanpa data login yang tersimpan.
+  // Sebelumnya user=null dapat membuat proses tampak terus "MENYIMPAN..."
+  // karena user.label dibaca di luar blok penanganan error.
+  let user = null;
+  try {
+    user = JSON.parse(localStorage.getItem('cahayaCurrentUser') || 'null');
+  } catch (error) {
+    console.warn('Data login lokal tidak terbaca. Menggunakan nama guru default.', error);
+  }
+
+  let dataKelasCloud = {};
+
+  const URUTAN_KELAS = [
+    "Kelas 1 Putra",
+    "Kelas 2 Putra",
+    "Kelas 3 Putra",
+    "Kelas 4 Putra",
+    "Kelas 5 Putra",
+    "Kelas 1 Putri",
+    "Kelas 2 Putri",
+    "Kelas 3 Putri",
+    "Kelas 4 Putri"
+  ];
+  let cacheSetoranTahfiz = {};
+  let cacheSetoranSiap = false;
+  let indexSetoranPerSantri = {};
+
+  const cardColors = [
+    { bg: '#E3F2FD', border: '#64B5F6' }, { bg: '#E8F5E9', border: '#81C784' },
+    { bg: '#FFF3E0', border: '#FFB74D' }, { bg: '#FCE4EC', border: '#F06292' },
+    { bg: '#F3E5F5', border: '#BA68C8' }, { bg: '#E0F7FA', border: '#4DD0E1' }
+  ];
+
+  // Mengamankan nama santri saat ditampilkan di HTML/data-attribute.
+  // Penting untuk nama yang memiliki tanda petik satu, seperti A'ISYAH.
+  const escapeHtml = (value = '') => String(value)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+
+  // Indeks lokal agar halaman tidak membaca dan memindai seluruh database
+  // setiap kali satu setoran disimpan/diperbarui.
+  const bangunIndexSetoran = (dataObj = {}) => {
+    const index = {};
+    Object.entries(dataObj || {}).forEach(([id, record]) => {
+      const namaSantri = record?.data?.[0]?.nama;
+      if (!namaSantri) return;
+      if (!index[namaSantri]) index[namaSantri] = [];
+      index[namaSantri].push({ id, ...record });
+    });
+    indexSetoranPerSantri = index;
+  };
+
+  const simpanCacheSetoran = (dataObj = {}) => {
+    cacheSetoranTahfiz = dataObj || {};
+    cacheSetoranSiap = true;
+    bangunIndexSetoran(cacheSetoranTahfiz);
+  };
+
+  window.opsiSuratHTML = '<option value="">-- Pilih Surat --</option>';
+
+  // DATABASE QURAN BARU (Validasi Bobot Halaman)
+  const quranDb = [
+    { nama: "Al-Fatihah", ayat: 7, pages: 1 }, { nama: "Al-Baqarah", ayat: 286, pages: 48 }, { nama: "Ali 'Imran", ayat: 200, pages: 27 },
+    { nama: "An-Nisa'", ayat: 176, pages: 29 }, { nama: "Al-Ma'idah", ayat: 120, pages: 21 }, { nama: "Al-An'am", ayat: 165, pages: 23 },
+    { nama: "Al-A'raf", ayat: 206, pages: 26 }, { nama: "Al-Anfal", ayat: 75, pages: 10 }, { nama: "At-Taubah", ayat: 129, pages: 21 },
+    { nama: "Yunus", ayat: 109, pages: 13 }, { nama: "Hud", ayat: 123, pages: 13 }, { nama: "Yusuf", ayat: 111, pages: 13 },
+    { nama: "Ar-Ra'd", ayat: 43, pages: 6 }, { nama: "Ibrahim", ayat: 52, pages: 7 }, { nama: "Al-Hijr", ayat: 99, pages: 5 },
+    { nama: "An-Nahl", ayat: 128, pages: 14 }, { nama: "Al-Isra'", ayat: 111, pages: 11 }, { nama: "Al-Kahf", ayat: 110, pages: 11 },
+    { nama: "Maryam", ayat: 98, pages: 7 }, { nama: "Ta Ha", ayat: 135, pages: 10 }, { nama: "Al-Anbiya'", ayat: 112, pages: 10 },
+    { nama: "Al-Hajj", ayat: 78, pages: 10 }, { nama: "Al-Mu'minun", ayat: 118, pages: 8 }, { nama: "An-Nur", ayat: 64, pages: 9 },
+    { nama: "Al-Furqan", ayat: 77, pages: 7 }, { nama: "Asy-Syu'ara'", ayat: 227, pages: 10 }, { nama: "An-Naml", ayat: 93, pages: 9 },
+    { nama: "Al-Qasas", ayat: 88, pages: 11 }, { nama: "Al-'Ankabut", ayat: 69, pages: 8 }, { nama: "Ar-Rum", ayat: 60, pages: 6 },
+    { nama: "Luqman", ayat: 34, pages: 4 }, { nama: "As-Sajdah", ayat: 30, pages: 3 }, { nama: "Al-Ahzab", ayat: 73, pages: 10 },
+    { nama: "Saba'", ayat: 54, pages: 6 }, { nama: "Fatir", ayat: 45, pages: 6 }, { nama: "Ya Sin", ayat: 83, pages: 6 },
+    { nama: "As-Saffat", ayat: 182, pages: 7 }, { nama: "Sad", ayat: 88, pages: 5 }, { nama: "Az-Zumar", ayat: 75, pages: 9 },
+    { nama: "Ghafir", ayat: 85, pages: 9 }, { nama: "Fussilat", ayat: 54, pages: 6 }, { nama: "Asy-Syura", ayat: 53, pages: 6 },
+    { nama: "Az-Zukhruf", ayat: 89, pages: 7 }, { nama: "Ad-Dukhan", ayat: 59, pages: 3 }, { nama: "Al-Jasiyah", ayat: 37, pages: 4 },
+    { nama: "Al-Ahqaf", ayat: 35, pages: 5 }, { nama: "Muhammad", ayat: 38, pages: 4 }, { nama: "Al-Fath", ayat: 29, pages: 5 },
+    { nama: "Al-Hujurat", ayat: 18, pages: 3 }, { nama: "Qaf", ayat: 45, pages: 3 }, { nama: "Az-Zariyat", ayat: 60, pages: 3 },
+    { nama: "At-Tur", ayat: 49, pages: 3 }, { nama: "An-Najm", ayat: 62, pages: 3 }, { nama: "Al-Qamar", ayat: 55, pages: 3 },
+    { nama: "Ar-Rahman", ayat: 78, pages: 3 }, { nama: "Al-Waqi'ah", ayat: 96, pages: 3 }, { nama: "Al-Hadid", ayat: 29, pages: 4 },
+    { nama: "Al-Mujadilah", ayat: 22, pages: 3 }, { nama: "Al-Hasyr", ayat: 24, pages: 3 }, { nama: "Al-Mumtahanah", ayat: 13, pages: 3 },
+    { nama: "As-Saff", ayat: 14, pages: 2 }, { nama: "Al-Jumu'ah", ayat: 11, pages: 2 }, { nama: "Al-Munafiqun", ayat: 11, pages: 2 },
+    { nama: "At-Tagabun", ayat: 18, pages: 2 }, { nama: "At-Talaq", ayat: 12, pages: 2 }, { nama: "At-Tahrim", ayat: 12, pages: 2 },
+    // Juz 29 
+    { nama: "Al-Mulk", ayat: 30, pages: 2.5 }, { nama: "Al-Qalam", ayat: 52, pages: 2 }, { nama: "Al-Haqqah", ayat: 52, pages: 2 },
+    { nama: "Al-Ma'arij", ayat: 44, pages: 2 }, { nama: "Nuh", ayat: 28, pages: 1.5 }, { nama: "Al-Jinn", ayat: 28, pages: 2 },
+    { nama: "Al-Muzzammil", ayat: 20, pages: 1.5 }, { nama: "Al-Muddassir", ayat: 56, pages: 2 }, { nama: "Al-Qiyamah", ayat: 40, pages: 1 },
+    { nama: "Al-Insan", ayat: 31, pages: 2 }, { nama: "Al-Mursalat", ayat: 50, pages: 1.5 },
+    // Juz 30
+    { nama: "An-Naba'", ayat: 40, pages: 1.5 }, { nama: "An-Nazi'at", ayat: 46, pages: 1.5 }, { nama: "'Abasa", ayat: 42, pages: 1 },
+    { nama: "At-Takwir", ayat: 29, pages: 1 }, { nama: "Al-Infitar", ayat: 19, pages: 0.8 }, { nama: "Al-Mutaffifin", ayat: 36, pages: 1.2 },
+    { nama: "Al-Insyiqaq", ayat: 25, pages: 1 }, { nama: "Al-Buruj", ayat: 22, pages: 1 }, { nama: "At-Tariq", ayat: 17, pages: 0.5 },
+    { nama: "Al-A'la", ayat: 19, pages: 0.5 }, { nama: "Al-Gasyiyah", ayat: 26, pages: 1 }, { nama: "Al-Fajr", ayat: 30, pages: 1 },
+    { nama: "Al-Balad", ayat: 20, pages: 0.5 }, { nama: "Asy-Syams", ayat: 15, pages: 0.5 }, { nama: "Al-Lail", ayat: 21, pages: 1 },
+    { nama: "Ad-Duha", ayat: 11, pages: 0.5 }, { nama: "Asy-Syarh", ayat: 8, pages: 0.2 }, { nama: "At-Tin", ayat: 8, pages: 0.3 },
+    { nama: "Al-'Alaq", ayat: 19, pages: 0.5 }, { nama: "Al-Qadr", ayat: 5, pages: 0.2 }, { nama: "Al-Bayyinah", ayat: 8, pages: 0.5 },
+    { nama: "Az-Zalzalah", ayat: 8, pages: 0.3 }, { nama: "Al-'Adiyat", ayat: 11, pages: 0.5 }, { nama: "Al-Qari'ah", ayat: 11, pages: 0.5 },
+    { nama: "At-Takasur", ayat: 8, pages: 0.3 }, { nama: "Al-'Asr", ayat: 3, pages: 0.2 }, { nama: "Al-Humazah", ayat: 9, pages: 0.3 },
+    { nama: "Al-Fil", ayat: 5, pages: 0.2 }, { nama: "Quraisy", ayat: 4, pages: 0.2 }, { nama: "Al-Ma'un", ayat: 7, pages: 0.3 },
+    { nama: "Al-Kausar", ayat: 3, pages: 0.2 }, { nama: "Al-Kafirun", ayat: 6, pages: 0.3 }, { nama: "An-Nasr", ayat: 3, pages: 0.2 },
+    { nama: "Al-Lahab", ayat: 5, pages: 0.2 }, { nama: "Al-Ikhlas", ayat: 4, pages: 0.2 }, { nama: "Al-Falaq", ayat: 5, pages: 0.2 },
+    { nama: "An-Nas", ayat: 6, pages: 0.3 }
+  ];
+
+  const cariIndexSurat = (nama) => {
+      let bersih = n => n.toLowerCase().replace(/[^a-z0-9]/g, '');
+      let target = bersih(nama);
+      return quranDb.findIndex(s => bersih(s.nama) === target);
+  };
+
+  const kalkulasiArrayPencapaian = (arrAyat) => {
+      let totAyat = 0, totSurat = 0, totBobot = 0;
+      for (let i = 0; i < 114; i++) {
+          if (arrAyat[i] > 0) { 
+              totSurat++; totAyat += arrAyat[i]; 
+              totBobot += ((arrAyat[i] / quranDb[i].ayat) * quranDb[i].pages);
+          }
+      }
+      return { ayat: totAyat, surat: totSurat, baris: Math.round(totBobot * 15), juz: (totBobot / 20).toFixed(2) };
+  };
+
+  const jalankanParser = (teksSetoran, arrayTarget) => {
+      let parts = teksSetoran.split(',');
+      parts.forEach(part => {
+         part = part.trim();
+         let matchBanyak = part.match(/(.*?)\s*s\/d\s*(.*?)\s*\(Ayat\s*(\d+)\)/i);
+         if (matchBanyak) {
+             let idxStart = cariIndexSurat(matchBanyak[1]); let idxEnd = cariIndexSurat(matchBanyak[2]);
+             let endAyat = parseInt(matchBanyak[3]);
+             if (idxStart !== -1 && idxEnd !== -1) {
+                 let minIdx = Math.min(idxStart, idxEnd); let maxIdx = Math.max(idxStart, idxEnd);
+                 for(let i = minIdx; i < maxIdx; i++) arrayTarget[i] = quranDb[i].ayat; 
+                 arrayTarget[maxIdx] = Math.max(arrayTarget[maxIdx], endAyat);
+             }
+             return;
+         }
+         let matchTunggal = part.match(/(.*?)\s*\(\s*\d+\s*-\s*(\d+)\s*\)/i);
+         if (matchTunggal) {
+             let idx = cariIndexSurat(matchTunggal[1]); let endAyat = parseInt(matchTunggal[2]);
+             if (idx !== -1) arrayTarget[idx] = Math.max(arrayTarget[idx], endAyat);
+         }
+      });
+  };
+
+  document.addEventListener('DOMContentLoaded', async () => {
+    // MENAMBAHKAN INFORMASI TOTAL AYAT DI DROPDOWN
+    if(window.daftarSurat) {
+        window.daftarSurat.forEach((s, i) => { 
+            window.opsiSuratHTML += `<option value="${i}">${i+1}. ${s.nama} (${s.ayat} Ayat)</option>`; 
+        });
+    }
+    try {
+      const snapshot = await get(ref(db, 'cahaya_app/master_akademik'));
+      const masterAkademik = snapshot.exists() ? snapshot.val() : {};
+
+      // Struktur utama 2026/2027: master_akademik/kelas
+      dataKelasCloud = masterAkademik.kelas || {};
+
+      // Fallback sementara bila migrasi Firebase belum selesai.
+      // Rumpun tidak ditampilkan pada halaman.
+      if (
+        Object.keys(dataKelasCloud).length === 0 &&
+        masterAkademik.halqah?.["Halqah Ilmiyah"]
+      ) {
+        dataKelasCloud = masterAkademik.halqah["Halqah Ilmiyah"];
+        console.warn(
+          "Master akademik masih memakai struktur lama. " +
+          "Sistem sementara memakai daftar kelas dari Halqah Ilmiyah."
+        );
+      }
+    } catch (e) {
+      console.error("Gagal memuat master kelas:", e);
+    }
+
+    document.getElementById('loadingOverlay').style.display = 'none';
+  });
+
+  window.updateKelas = () => {
+    const program = document.getElementById('tfzProgram').value;
+    const kelasSelect = document.getElementById('tfzKelas');
+    const murojaahTypeGroup = document.getElementById('murojaahTypeGroup');
+    const jenisMurojaahSelect = document.getElementById('tfzJenisMurojaah');
+    const isMurojaah = String(program).toLowerCase() === 'murojaah';
+    if (murojaahTypeGroup) murojaahTypeGroup.style.display = isMurojaah ? 'block' : 'none';
+    if (!isMurojaah && jenisMurojaahSelect) jenisMurojaahSelect.value = '';
+
+    kelasSelect.innerHTML = '<option value="">-- Pilih Kelas --</option>';
+    kelasSelect.disabled = true;
+
+    document.getElementById('santriCardsContainer').innerHTML =
+      '<div class="initial-state"><div><div class="initial-state-icon">📖</div><strong>Lembar setoran belum dibuka</strong><span>Pilih program dan kelas terlebih dahulu untuk menampilkan daftar santri.</span></div></div>';
+
+    if (!program) return;
+
+    const daftarKelas = Object.keys(dataKelasCloud || {}).sort((a, b) => {
+      const posisiA = URUTAN_KELAS.indexOf(a);
+      const posisiB = URUTAN_KELAS.indexOf(b);
+
+      if (posisiA !== -1 && posisiB !== -1) return posisiA - posisiB;
+      if (posisiA !== -1) return -1;
+      if (posisiB !== -1) return 1;
+
+      return a.localeCompare(b, 'id');
+    });
+
+    daftarKelas.forEach((kelas) => {
+      kelasSelect.add(new Option(kelas, kelas));
+    });
+
+    kelasSelect.disabled = daftarKelas.length === 0;
+
+    if (daftarKelas.length === 0) {
+      kelasSelect.innerHTML =
+        '<option value="">Data kelas belum tersedia</option>';
+    }
+  };
+
+  window.renderSantriCards = async () => {
+    const prog = document.getElementById('tfzProgram').value;
+    const kelas = document.getElementById('tfzKelas').value;
+    const container = document.getElementById('santriCardsContainer');
+
+    if (!prog || !kelas) {
+      container.innerHTML =
+        '<div class="initial-state"><div><div class="initial-state-icon">📖</div><strong>Lembar setoran belum dibuka</strong><span>Pilih program dan kelas terlebih dahulu untuk menampilkan daftar santri.</span></div></div>';
+      return;
+    }
+
+    const listSantri = Array.isArray(dataKelasCloud?.[kelas])
+      ? [...dataKelasCloud[kelas]].sort((a, b) => a.localeCompare(b, 'id'))
+      : [];
+
+    if (listSantri.length === 0) {
+      container.innerHTML =
+        '<div class="initial-state"><div><div class="initial-state-icon">👤</div><strong>Data santri belum tersedia</strong><span>Belum ada santri yang tercatat pada kelas ini.</span></div></div>';
+      return;
+    }
+
+    container.innerHTML =
+      '<div class="initial-state"><div><div class="initial-state-icon">⏳</div><strong>Memuat lembar setoran</strong><span>Mengambil capaian dan riwayat setoran seluruh santri.</span></div></div>';
+
+    let preloadedDb = {};
+    try {
+      const snap = await get(recentTahfizQuery());
+      preloadedDb = snap.exists() ? snap.val() : {};
+      simpanCacheSetoran(preloadedDb);
+    } catch(e) {
+      console.error("DB Fetch Error:", e);
+      cacheSetoranSiap = false;
+    }
+
+    container.innerHTML = '';
+    const todayStr = new Date().toISOString().split('T')[0];
+
+    listSantri.forEach((nama, i) => {
+      const theme = cardColors[i % cardColors.length];
+      const safeId = nama.replace(/[^a-zA-Z0-9]/g, '') + "_" + i;
+      const namaHtml = escapeHtml(nama);
+
+      const cardHtml = `
+        <div class="santri-card" id="card_${safeId}" style="background-color: ${theme.bg}; border-left: 6px solid ${theme.border};" data-mode="tunggal">
+          
+          <div class="santri-card-header" onclick="toggleCard('${safeId}')">
+            <h3>${i+1}. ${namaHtml}</h3>
+            <div style="display:flex; align-items:center; gap:10px;">
+              <span id="badge_info_${safeId}" style="font-size:0.75rem; font-weight:bold; color:var(--text-muted);">Buka Card</span>
+              <span class="icon-toggle">▼</span>
+            </div>
+          </div>
+          
+          <div class="santri-card-body" id="body_${safeId}">
+            
+            <div id="resume_container_${safeId}"></div>
+
+            <div class="riwayat-section">
+              <h5>Riwayat Setoran Bulan Ini</h5>
+              <div class="riwayat-list" id="riwayat_body_${safeId}">
+                <div style="text-align:center; padding:15px; color:#999; font-size:0.85rem;">Memuat riwayat...</div>
+              </div>
+            </div>
+
+            <div class="input-section">
+              <h5>✎ Form Input Setoran</h5>
+              <input type="hidden" id="edit_id_${safeId}">
+              
+              <div class="form-group">
+                <label>Tanggal Input</label>
+                <input type="date" class="form-control" id="tgl_${safeId}" value="${todayStr}">
+              </div>
+
+              <div id="area_input_${safeId}" class="tahfiz-only">
+                <div class="mode-switch" id="mode_switch_${safeId}">
+                  <button class="mode-btn active" id="btn_mode_tunggal_${safeId}" onclick="setModeCard('tunggal', '${safeId}')">SATU SURAT / MANUAL</button>
+                  <button class="mode-btn" id="btn_mode_banyak_${safeId}" onclick="setModeCard('banyak', '${safeId}')">BANYAK SURAT</button>
+                </div>
+
+                <div id="wadah_surat_${safeId}"></div>
+                <button class="btn-tambah-surat" id="btn_tambah_${safeId}" onclick="tambahBarisSuratCard('${safeId}')">➕ Tambah Baris Surat</button>
+              </div>
+
+              <div class="grid-3 tahfiz-only">
+                <div class="form-group">
+                  <label>∑ Total Ayat</label>
+                  <input type="number" class="form-control" id="ayat_${safeId}" readonly style="font-size:1.2rem; text-align:center; font-weight:bold; background:white;">
+                </div>
+                <div class="form-group">
+                  <label>▤ Jumlah Baris Mushaf</label>
+                  <input type="number" min="1" step="1" inputmode="numeric" required class="form-control" id="baris_${safeId}" placeholder="Diisi guru" style="font-size:1.2rem;text-align:center;font-weight:bold;background:#fffdf4;border-color:#e8c66a;">
+                  <small style="display:block;margin-top:5px;color:#8a6a18;font-weight:650;line-height:1.4;">Hitung manual sesuai baris yang benar-benar disetorkan.</small>
+                </div>
+                <div class="form-group">
+                  <label>❌ Lahn Jali</label>
+                  <input type="number" class="form-control" id="salah_${safeId}" placeholder="Kosong = 0" oninput="hitungPredikatCard('${safeId}')">
+                </div>
+              </div>
+
+              <div class="form-group tahfiz-only">
+                <label>🏆 Predikat</label>
+                <input type="text" id="predikat_${safeId}" class="form-control input-predikat pred-mumtaz" value="MUMTAZ" readonly>
+              </div>
+
+              <div class="form-group tahfiz-only">
+                <label class="checkbox-container">
+                  <input type="checkbox" id="chk_cahaya_${safeId}" onchange="toggleTahfizCahayaCard('${safeId}')" style="display:none;">
+                  <span class="checkmark"></span>
+                  <span style="font-weight:600; font-size:0.85rem;">Status Tahfiz CAHAYA</span>
+                </label>
+                <textarea class="form-control" id="catatan_${safeId}" rows="2" placeholder="Catatan tajwid / kelancaran (opsional)..."></textarea>
+              </div>
+
+
+              <div class="tahsin-only" id="tahsin_area_${safeId}">
+                <div class="program-note">Tahsin dicatat sebagai talaqqi bacaan. Nilai menunjukkan kualitas bacaan, bukan jumlah hafalan.</div>
+                <div class="tahsin-form-grid">
+                  <div class="form-group"><label>Jenis Talaqqi</label><select class="form-control" id="jenis_talaqqi_${safeId}"><option>Talaqqi Baru</option><option>Pengulangan</option><option>Perbaikan Bacaan</option><option>Ujian Kenaikan Level</option></select></div>
+                  <div class="form-group"><label>Surat</label><select class="form-control" id="tahsin_surat_${safeId}">${window.opsiSuratHTML}</select></div>
+                  <div class="form-group"><label>Ayat Mulai</label><input type="number" min="1" class="form-control" id="tahsin_mulai_${safeId}" placeholder="1"></div>
+                  <div class="form-group"><label>Ayat Selesai</label><input type="number" min="1" class="form-control" id="tahsin_selesai_${safeId}" placeholder="7"></div>
+                </div>
+                <div class="form-group"><label>Halaman Mushaf <span style="font-weight:600;color:var(--tfz-muted)">(opsional)</span></label><input type="number" min="1" max="604" class="form-control" id="tahsin_halaman_${safeId}" placeholder="Contoh: 12"></div>
+                <div class="tahsin-score-grid">
+                  ${[['makhraj','Makharijul Huruf'],['sifat','Sifatul Huruf'],['tajwid','Penerapan Tajwid'],['lancar','Kelancaran & Fashahah']].map(([k,l])=>`<div class="score-box"><label>${l}</label><select class="form-control tahsin-score" id="${k}_${safeId}" onchange="hitungNilaiTahsin('${safeId}')"><option value="4">4 — Sangat Baik</option><option value="3" selected>3 — Baik</option><option value="2">2 — Perlu Perbaikan</option><option value="1">1 — Bimbingan Intensif</option></select></div>`).join('')}
+                </div>
+                <div class="tahsin-result-grid">
+                  <div class="form-group"><label>Nilai Akhir</label><input type="number" class="form-control input-predikat" id="nilai_tahsin_${safeId}" readonly></div>
+                  <div class="form-group"><label>Predikat</label><input type="text" class="form-control input-predikat pred-jayyid" id="predikat_tahsin_${safeId}" readonly></div>
+                </div>
+                <div class="form-group"><label>Hasil Talaqqi</label><select class="form-control" id="hasil_tahsin_${safeId}"><option>Lulus</option><option selected>Lulus dengan Perbaikan</option><option>Mengulang Talaqqi</option><option>Perlu Bimbingan Khusus</option></select></div>
+                <div class="form-group"><label>Kesalahan Dominan</label><input type="text" class="form-control" id="kesalahan_tahsin_${safeId}" placeholder="Contoh: Mad belum konsisten; huruf ض perlu diperbaiki"></div>
+                <div class="form-group"><label>Catatan Guru</label><textarea class="form-control" id="catatan_tahsin_${safeId}" rows="3" placeholder="Arahan latihan untuk pertemuan berikutnya..."></textarea></div>
+              </div>
+
+              <button class="btn-simpan-card" id="btn_simpan_${safeId}" data-nama="${namaHtml}" onclick="simpanSetoranDariTombol(this, '${safeId}')">💾 SIMPAN DATA SETORAN</button>
+              <button class="btn-batal-card" id="btn_batal_${safeId}" onclick="batalEditCard('${safeId}')">Batal Edit</button>
+            </div>
+
+          </div>
+        </div>
+      `;
+      container.innerHTML += cardHtml;
+    });
+
+    listSantri.forEach((nama, i) => {
+      const safeId = nama.replace(/[^a-zA-Z0-9]/g, '') + "_" + i;
+      setModeCard('tunggal', safeId);
+      terapkanModeProgramCard(safeId, prog);
+      fetchRiwayatSantri(nama, safeId, preloadedDb);
+    });
+  };
+
+  window.terapkanModeProgramCard = (safeId, program) => {
+    const programLow = String(program).toLowerCase();
+    const isTahsin = programLow === 'tahsin';
+    const isMurojaah = programLow === 'murojaah';
+    const card = document.getElementById(`card_${safeId}`);
+    if (!card) return;
+    card.querySelectorAll('.tahsin-only').forEach(el => el.style.display = isTahsin ? 'block' : 'none');
+    card.querySelectorAll('.tahfiz-only').forEach(el => el.style.display = isTahsin ? 'none' : 'block');
+    const title = document.getElementById(`form_title_${safeId}`);
+    const historyTitle = card.querySelector('.riwayat-section h5');
+    if (title) title.textContent = isTahsin ? '✎ Form Talaqqi Bacaan' : isMurojaah ? '✎ Form Input Muroja’ah' : '✎ Form Input Setoran Hafalan';
+    if (historyTitle) historyTitle.textContent = isTahsin ? 'Riwayat Talaqqi Bulan Ini' : isMurojaah ? 'Riwayat Muroja’ah Bulan Ini' : 'Riwayat Setoran Bulan Ini';
+    const btn = document.getElementById(`btn_simpan_${safeId}`);
+    if (btn) btn.innerHTML = isTahsin ? '💾 SIMPAN DATA TALAQQI' : isMurojaah ? '💾 SIMPAN DATA MUROJA’AH' : '💾 SIMPAN DATA SETORAN';
+    if (isTahsin) hitungNilaiTahsin(safeId);
+  };
+
+  window.hitungNilaiTahsin = (safeId) => {
+    const ids = ['makhraj','sifat','tajwid','lancar'];
+    const skor = ids.map(id => Number(document.getElementById(`${id}_${safeId}`)?.value || 0));
+    const nilai = Math.round((skor.reduce((a,b)=>a+b,0) / 16) * 100);
+    let predikat = 'BIMBINGAN';
+    if (nilai >= 90) predikat = 'MUMTAZ';
+    else if (nilai >= 80) predikat = 'JAYYID JIDDAN';
+    else if (nilai >= 70) predikat = 'JAYYID';
+    else if (nilai >= 60) predikat = 'MAQBUL';
+    const nilaiEl = document.getElementById(`nilai_tahsin_${safeId}`);
+    const predEl = document.getElementById(`predikat_tahsin_${safeId}`);
+    if (nilaiEl) nilaiEl.value = nilai;
+    if (predEl) predEl.value = predikat;
+  };
+
+  window.toggleCard = (safeId) => {
+    document.getElementById(`card_${safeId}`).classList.toggle('card-open');
+  };
+
+  window.setModeCard = (mode, safeId) => {
+    document.getElementById(`btn_mode_tunggal_${safeId}`).classList.toggle('active', mode === 'tunggal');
+    document.getElementById(`btn_mode_banyak_${safeId}`).classList.toggle('active', mode === 'banyak');
+    document.getElementById(`card_${safeId}`).setAttribute('data-mode', mode);
+    
+    const btnTambah = document.getElementById(`btn_tambah_${safeId}`);
+    const wadah = document.getElementById(`wadah_surat_${safeId}`);
+    
+    if(mode === 'tunggal') {
+      btnTambah.style.display = 'block';
+      wadah.innerHTML = '';
+      tambahBarisSuratCard(safeId);
+    } else {
+      btnTambah.style.display = 'none';
+      wadah.innerHTML = `
+        <div class="surat-row" style="border-left: 4px solid var(--gold-main);">
+          <div class="col-surat"><label>Dari Surat</label><select class="form-control sel-awal-${safeId}" onchange="hitungTotalAyatCard('${safeId}')">${window.opsiSuratHTML}</select></div>
+          <div class="col-surat"><label>Sampai Surat</label><select class="form-control sel-akhir-${safeId}" onchange="hitungTotalAyatCard('${safeId}')">${window.opsiSuratHTML}</select></div>
+          <div class="col-ayat"><label>Ayat Terakhir</label><input type="number" class="form-control inp-ayat-akhir-${safeId}" value="1" oninput="hitungTotalAyatCard('${safeId}')"></div>
+        </div>
+      `;
+    }
+    hitungTotalAyatCard(safeId);
+  };
+
+  window.tambahBarisSuratCard = (safeId, valMulai = "", valSampai = "", valSurat = "") => {
+    const rowId = `row_${Date.now()}_${Math.random().toString(36).substr(2,9)}`;
+    const html = `
+      <div class="surat-row class-row-${safeId}" id="${rowId}">
+        <div class="col-surat"><label>Surat</label><select class="form-control sel-surat" onchange="hitungTotalAyatCard('${safeId}')">${window.opsiSuratHTML}</select></div>
+        <div class="col-ayat"><label>Dari</label><input type="number" class="form-control inp-mulai" oninput="hitungTotalAyatCard('${safeId}')" value="${valMulai}" placeholder="Ayat"></div>
+        <div class="col-ayat"><label>Sampai</label><input type="number" class="form-control inp-sampai" oninput="hitungTotalAyatCard('${safeId}')" value="${valSampai}" placeholder="Ayat"></div>
+        <button class="btn-hapus" onclick="document.getElementById('${rowId}').remove(); hitungTotalAyatCard('${safeId}');">Hapus Baris</button>
+      </div>`;
+    
+    const wadah = document.getElementById(`wadah_surat_${safeId}`);
+    wadah.insertAdjacentHTML('beforeend', html);
+    
+    if (valSurat !== "") wadah.querySelector(`#${rowId} .sel-surat`).value = valSurat;
+  };
+
+  window.hitungTotalAyatCard = (safeId) => {
+    const mode = document.getElementById(`card_${safeId}`).getAttribute('data-mode');
+    let tot = 0;
+
+    if(mode === 'tunggal') {
+      document.querySelectorAll(`.class-row-${safeId}`).forEach(r => {
+        const m = parseInt(r.querySelector('.inp-mulai').value);
+        const s = parseInt(r.querySelector('.inp-sampai').value);
+        if(m && s && s >= m) tot += (s - m) + 1;
+      });
+    } else {
+      const sIdx = parseInt(document.querySelector(`.sel-awal-${safeId}`).value);
+      const eIdx = parseInt(document.querySelector(`.sel-akhir-${safeId}`).value);
+      const lAyat = parseInt(document.querySelector(`.inp-ayat-akhir-${safeId}`).value) || 0;
+
+      if(!isNaN(sIdx) && !isNaN(eIdx) && eIdx >= sIdx && window.daftarSurat) {
+        for(let i = sIdx; i <= eIdx; i++) {
+          if(i === eIdx) tot += lAyat; else tot += window.daftarSurat[i].ayat; 
+        }
+      }
+    }
+    document.getElementById(`ayat_${safeId}`).value = tot || "";
+  };
+
+  window.hitungPredikatCard = (safeId) => {
+    const s = parseInt(document.getElementById(`salah_${safeId}`).value) || 0;
+    const p = document.getElementById(`predikat_${safeId}`);
+    p.className = 'form-control input-predikat';
+    if(s === 0) { p.value = 'MUMTAZ'; p.classList.add('pred-mumtaz'); }
+    else if(s <= 2) { p.value = 'JAYYID JIDDAN'; p.classList.add('pred-jayyid'); }
+    else if(s <= 4) { p.value = 'JAYYID'; p.classList.add('pred-jayyid'); }
+    else if(s <= 6) { p.value = 'MAQBUL'; p.classList.add('pred-maqbul'); }
+    else { p.value = 'BIMBINGAN'; p.classList.add('pred-bimbingan'); }
+  };
+
+  window.toggleTahfizCahayaCard = (safeId) => {
+    const cb = document.getElementById(`chk_cahaya_${safeId}`);
+    const cat = document.getElementById(`catatan_${safeId}`);
+    const txt = "Disetorkan beserta terjemah, tadabbur, tafsir, letak dan nomor ayat, serta rencana aksi pengamalan.";
+    if(cb.checked) cat.value = (cat.value ? cat.value + "\n" : "") + txt;
+    else cat.value = cat.value.replace(txt, "").trim();
+  };
+
+  // --- FIREBASE & PARSER EDIT ---
+  // Nama dibaca dari data-attribute, bukan disisipkan langsung ke onclick.
+  // Dengan demikian tanda petik satu/dobel pada nama santri tetap aman.
+  window.simpanSetoranDariTombol = (button, safeId) => {
+    window.simpanSetoranCard(button.dataset.nama || '', safeId);
+  };
+
+  window.simpanSetoranCard = async (nama, safeId) => {
+    const btn = document.getElementById(`btn_simpan_${safeId}`);
+    if (!btn || btn.disabled) return;
+    const program = document.getElementById('tfzProgram').value;
+    const isTahsin = program === 'Tahsin';
+    const isMurojaah = program === 'Murojaah';
+    const jenisMurojaah = isMurojaah ? document.getElementById('tfzJenisMurojaah')?.value : '';
+    if (isMurojaah && !jenisMurojaah) {
+      alert('Pilih jenis Muroja’ah: Harian, Pekanan, atau Bulanan.');
+      document.getElementById('tfzJenisMurojaah')?.focus();
+      return;
+    }
+    try {
+      let strSetoran = '';
+      let detailData = {};
+      let barisMeta = {};
+      if (isTahsin) {
+        const idx = document.getElementById(`tahsin_surat_${safeId}`).value;
+        const mulai = Number(document.getElementById(`tahsin_mulai_${safeId}`).value);
+        const selesai = Number(document.getElementById(`tahsin_selesai_${safeId}`).value);
+        if (idx === '' || !mulai || !selesai || selesai < mulai) {
+          alert(`Lengkapi surat dan rentang ayat talaqqi untuk ${nama}.`); return;
+        }
+        const surat = window.daftarSurat[idx];
+        if (selesai > surat.ayat) { alert(`Ayat terakhir melebihi jumlah ayat Surat ${surat.nama}.`); return; }
+        strSetoran = `${surat.nama} (${mulai}-${selesai})`;
+        hitungNilaiTahsin(safeId);
+        const penilaian = {
+          makhraj: Number(document.getElementById(`makhraj_${safeId}`).value),
+          sifatHuruf: Number(document.getElementById(`sifat_${safeId}`).value),
+          tajwid: Number(document.getElementById(`tajwid_${safeId}`).value),
+          kelancaran: Number(document.getElementById(`lancar_${safeId}`).value)
+        };
+        detailData = {
+          jenisInput: 'talaqqi_bacaan',
+          jenisTalaqqi: document.getElementById(`jenis_talaqqi_${safeId}`).value,
+          materi: { surat: surat.nama, ayatMulai: mulai, ayatSelesai: selesai, halaman: Number(document.getElementById(`tahsin_halaman_${safeId}`).value) || null },
+          penilaian,
+          nilaiAkhir: Number(document.getElementById(`nilai_tahsin_${safeId}`).value),
+          predikat: document.getElementById(`predikat_tahsin_${safeId}`).value,
+          hasil: document.getElementById(`hasil_tahsin_${safeId}`).value,
+          kesalahanDominan: document.getElementById(`kesalahan_tahsin_${safeId}`).value.split(';').map(x=>x.trim()).filter(Boolean)
+        };
+      } else {
+        const mode = document.getElementById(`card_${safeId}`).getAttribute('data-mode');
+        if(mode === 'tunggal') {
+          const parts = [];
+          document.querySelectorAll(`.class-row-${safeId}`).forEach(r => {
+            const idx = r.querySelector('.sel-surat').value, m = r.querySelector('.inp-mulai').value, e = r.querySelector('.inp-sampai').value;
+            if(idx !== '' && m && e) parts.push(`${window.daftarSurat[idx].nama} (${m}-${e})`);
+          });
+          strSetoran = parts.join(', ');
+        } else {
+          const sIdx = document.querySelector(`.sel-awal-${safeId}`).value, eIdx = document.querySelector(`.sel-akhir-${safeId}`).value, lAyt = document.querySelector(`.inp-ayat-akhir-${safeId}`).value;
+          if(sIdx !== '' && eIdx !== '' && lAyt) strSetoran = sIdx === eIdx ? `${window.daftarSurat[sIdx].nama} (1-${lAyt})` : `${window.daftarSurat[sIdx].nama} s/d ${window.daftarSurat[eIdx].nama} (Ayat ${lAyt})`;
+        }
+        if(!strSetoran) { alert(`Lengkapi data surat/ayat untuk ${nama}!`); return; }
+
+        const jumlahBaris = Number(document.getElementById(`baris_${safeId}`)?.value || 0);
+        if (!Number.isInteger(jumlahBaris) || jumlahBaris < 1) {
+          alert(`Isi jumlah baris Mushaf secara manual untuk ${nama}.`);
+          document.getElementById(`baris_${safeId}`)?.focus();
+          return;
+        }
+        barisMeta = {
+          baris: jumlahBaris,
+          barisManual: true,
+          barisPresisi: true,
+          metodeBaris: 'INPUT_MANUAL_GURU',
+          sumberBaris: 'Dihitung manual oleh guru saat setoran',
+          diinputBarisOleh: user?.label || user?.nama || user?.username || 'Guru Tahfiz',
+          waktuInputBaris: new Date().toISOString()
+        };
+      }
+      btn.innerHTML = '⏳ MENYIMPAN...'; btn.disabled = true;
+      const editId = document.getElementById(`edit_id_${safeId}`).value;
+      const nilai = isTahsin ? document.getElementById(`predikat_tahsin_${safeId}`).value : document.getElementById(`predikat_${safeId}`).value;
+      const keterangan = isTahsin ? document.getElementById(`catatan_tahsin_${safeId}`).value : document.getElementById(`catatan_${safeId}`).value;
+      const ayat = isTahsin ? (Number(document.getElementById(`tahsin_selesai_${safeId}`).value) - Number(document.getElementById(`tahsin_mulai_${safeId}`).value) + 1) : document.getElementById(`ayat_${safeId}`).value;
+      const payload = {
+        tanggal: document.getElementById(`tgl_${safeId}`).value, program,
+        jenisMurojaah: isMurojaah ? jenisMurojaah : null,
+        jenisInput: isTahsin ? 'talaqqi_bacaan' : (isMurojaah ? 'setoran_murojaah' : 'setoran_hafalan'),
+        kelas: document.getElementById('tfzKelas').value, kelompok: document.getElementById('tfzKelas').value,
+        tahunAjaran:'2026/2027', guru:user?.label || user?.nama || user?.username || (isTahsin ? 'Guru Tahsin' : (isMurojaah ? 'Guru Muroja’ah' : 'Guru Tahfiz')),
+        data:[{ nama, setoran:strSetoran, ayat, jenisMurojaah: isMurojaah ? jenisMurojaah : null, kesalahan:isTahsin ? '0' : (document.getElementById(`salah_${safeId}`).value || '0'), nilai, keterangan, ...(isTahsin ? {} : barisMeta), ...detailData }],
+        waktuSimpan:new Date().toISOString()
+      };
+      let recordId = editId;
+      if(editId){ await update(ref(db,`cahaya_app/setoran_tahfiz/${editId}`),payload); cacheSetoranTahfiz[editId]=payload; }
+      else { const hasilPush=await push(ref(db,'cahaya_app/setoran_tahfiz'),payload); recordId=hasilPush.key; cacheSetoranTahfiz[hasilPush.key]=payload; }
+      const waliKey = String(nama||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]/g,'');
+      if(waliKey && recordId) await update(ref(db,`cahaya_app/wali_index/${waliKey}/tahfiz/${recordId}`),payload);
+      simpanCacheSetoran(cacheSetoranTahfiz); window.batalEditCard(safeId); await window.fetchRiwayatSantri(nama,safeId,cacheSetoranTahfiz);
+      if(window.showPageToast) window.showPageToast(
+        editId ? (isTahsin?'Talaqqi diperbarui':isMurojaah?'Muroja’ah diperbarui':'Setoran diperbarui') : (isTahsin?'Talaqqi tersimpan':isMurojaah?'Muroja’ah tersimpan':'Setoran tersimpan'),
+        `Data ${nama} berhasil disimpan${isTahsin ? '.' : ` dengan ${barisMeta.baris || 0} baris yang diisi manual oleh guru.`}`
+      );
+      btn.innerHTML='✓ DATA TERSIMPAN';
+      setTimeout(()=>{ if(btn && !document.getElementById(`edit_id_${safeId}`).value) btn.innerHTML=isTahsin?'💾 SIMPAN DATA TALAQQI':isMurojaah?'💾 SIMPAN DATA MUROJA’AH':'💾 SIMPAN DATA SETORAN'; },900);
+    } catch(err){ console.error(err); alert('Gagal menyimpan data: '+(err?.message || 'Terjadi kesalahan.')); }
+    finally { btn.disabled=false; if(btn.innerHTML.includes('MENYIMPAN')) btn.innerHTML=isTahsin?'💾 SIMPAN DATA TALAQQI':isMurojaah?'💾 SIMPAN DATA MUROJA’AH':'💾 SIMPAN DATA SETORAN'; }
+  };
+
+  window.fetchRiwayatSantri = async (nama, safeId, preloadedData = null) => {
+    const listBody = document.getElementById(`riwayat_body_${safeId}`);
+    const resumeContainer = document.getElementById(`resume_container_${safeId}`);
+    const badgeInfo = document.getElementById(`badge_info_${safeId}`);
+    const bulanIni = new Date().toISOString().slice(0, 7); 
+
+    try {
+      let dataObj = preloadedData;
+      if (dataObj === null) {
+        if (cacheSetoranSiap) {
+          dataObj = cacheSetoranTahfiz;
+        } else {
+          const snapshot = await get(recentTahfizQuery());
+          dataObj = snapshot.exists() ? snapshot.val() : {};
+          simpanCacheSetoran(dataObj);
+        }
+      }
+
+      // Pakai indeks nama agar tidak memindai seluruh database pada setiap card.
+      if (dataObj !== cacheSetoranTahfiz) bangunIndexSetoran(dataObj);
+      const programAktif = document.getElementById('tfzProgram').value;
+      const semuaRiwayatSantri = (indexSetoranPerSantri[nama] || []).filter(r => !r.program || r.program === programAktif);
+      const riwayatBulanIni = [];
+      const pencapaianSemua = new Array(114).fill(0);
+
+      semuaRiwayatSantri.forEach((record) => {
+        const teksSetoran = record.data?.[0]?.setoran || "";
+        jalankanParser(teksSetoran, pencapaianSemua);
+        if (record.tanggal && record.tanggal.startsWith(bulanIni)) {
+          riwayatBulanIni.push(record);
+        }
+      });
+
+      if (programAktif === 'Tahsin') {
+        const nilaiList = semuaRiwayatSantri.map(r => Number(r.data?.[0]?.nilaiAkhir)).filter(Number.isFinite);
+        const rata = nilaiList.length ? Math.round(nilaiList.reduce((a,b)=>a+b,0)/nilaiList.length) : 0;
+        const terakhir = [...semuaRiwayatSantri].sort((a,b)=>new Date(b.tanggal)-new Date(a.tanggal))[0];
+        const materiTerakhir = terakhir?.data?.[0]?.setoran || 'Belum ada';
+        const perkembangan = rata >= 85 ? 'Sangat Baik' : rata >= 75 ? 'Baik' : rata >= 60 ? 'Perlu Diperkuat' : 'Perlu Bimbingan';
+        resumeContainer.innerHTML = `<h5 style="margin:0 0 10px;color:var(--navy-dark);font-size:1.1rem;border-bottom:1px solid #eee;padding-bottom:10px;">📊 Perkembangan Tahsin</h5><div class="resume-grid"><div class="resume-box tahsin-resume"><h4>Total Talaqqi</h4><p>${semuaRiwayatSantri.length} <span>Pertemuan</span></p></div><div class="resume-box tahsin-resume"><h4>Materi Terakhir</h4><p>${escapeHtml(materiTerakhir)}</p></div><div class="resume-box tahsin-resume"><h4>Rata-rata</h4><p>${rata || '-'} <span>Nilai</span></p></div><div class="resume-box tahsin-resume"><h4>Perkembangan</h4><p>${perkembangan}</p></div></div>`;
+      } else if (programAktif === 'Murojaah') {
+        const totalBaris = semuaRiwayatSantri.reduce((sum, r) => sum + (Number(r.data?.[0]?.baris) || 0), 0);
+        const jumlahJenis = jenis => semuaRiwayatSantri.filter(r => String(r.jenisMurojaah || r.data?.[0]?.jenisMurojaah || '').toLowerCase() === jenis.toLowerCase()).length;
+        resumeContainer.innerHTML = `<h5 style="margin:0 0 10px;color:var(--navy-dark);font-size:1.1rem;border-bottom:1px solid #eee;padding-bottom:10px;">🔁 Rekap Muroja’ah</h5><div class="resume-grid"><div class="resume-box"><h4>Harian</h4><p>${jumlahJenis('Harian')} <span>Kali</span></p></div><div class="resume-box"><h4>Pekanan</h4><p>${jumlahJenis('Pekanan')} <span>Kali</span></p></div><div class="resume-box"><h4>Bulanan</h4><p>${jumlahJenis('Bulanan')} <span>Kali</span></p></div><div class="resume-box"><h4>Total Baris</h4><p>${totalBaris} <span>Baris</span></p></div></div>`;
+      } else {
+        let resResume = kalkulasiArrayPencapaian(pencapaianSemua);
+        const totalBarisManual = semuaRiwayatSantri.reduce((sum, r) => sum + (Number(r.data?.[0]?.baris) || 0), 0);
+        resumeContainer.innerHTML = `<h5 style="margin:0 0 10px;color:var(--navy-dark);font-size:1.1rem;border-bottom:1px solid #eee;padding-bottom:10px;">📊 Total Capaian Hafalan</h5><div class="resume-grid"><div class="resume-box"><h4>Total Juz</h4><p>${resResume.juz} <span>Juz</span></p></div><div class="resume-box"><h4>Total Surat</h4><p>${resResume.surat} <span>Surat</span></p></div><div class="resume-box"><h4>Total Ayat</h4><p>${resResume.ayat} <span>Ayat</span></p></div><div class="resume-box"><h4>Total Baris Tercatat</h4><p>${totalBarisManual} <span>Baris</span></p></div></div>`;
+      }
+
+      riwayatBulanIni.sort((a, b) => new Date(b.tanggal) - new Date(a.tanggal));
+      
+      if(riwayatBulanIni.length > 0) badgeInfo.innerText = `${riwayatBulanIni.length} ${programAktif === 'Tahsin' ? 'Talaqqi' : programAktif === 'Murojaah' ? 'Muroja’ah' : 'Setoran'} Bulan Ini`;
+      else badgeInfo.innerText = "Belum Ada Setoran";
+
+      if (riwayatBulanIni.length === 0) {
+        listBody.innerHTML = '<div style="text-align:center; padding:15px; color:#999; font-size:0.85rem;">Belum ada riwayat di bulan ini.</div>';
+        return;
+      }
+
+      listBody.innerHTML = riwayatBulanIni.map((r) => {
+        const dat = r.data[0];
+        const tglArr = r.tanggal.split('-');
+        const tglIndo = `${tglArr[2]}/${tglArr[1]}`;
+
+        let bColor = '#059669', bBg = '#ecfdf5'; 
+        if(dat.nilai.includes("JAYYID")) { bColor = '#0284c7'; bBg = '#f0f9ff'; }
+        if(dat.nilai.includes("MAQBUL")) { bColor = '#d97706'; bBg = '#fffbeb'; }
+        if(dat.nilai.includes("BIMBINGAN")) { bColor = '#dc2626'; bBg = '#fef2f2'; }
+        
+        const dataString = encodeURIComponent(JSON.stringify(r));
+        const namaHtml = escapeHtml(nama);
+
+        return `
+          <div class="riwayat-item">
+            <div class="riwayat-info">
+              <div class="riwayat-top">
+                <span class="riwayat-tgl">${tglIndo}</span>
+                <span class="badge-riwayat" style="color:${bColor}; background:${bBg}; border-color:${bColor};">${dat.nilai}</span>
+              </div>
+              <div class="riwayat-surat">${programAktif === 'Murojaah' ? `<span style="display:inline-block;margin-right:7px;padding:3px 8px;border-radius:999px;background:#ede9fe;color:#6d28d9;font-size:.7rem;font-weight:800;">${escapeHtml(r.jenisMurojaah || dat.jenisMurojaah || 'Muroja’ah')}</span>` : ''}${dat.setoran}</div>
+              <div class="riwayat-ayat">${programAktif === 'Tahsin'
+                ? `${dat.nilaiAkhir ?? '-'} Nilai • ${escapeHtml(dat.hasil || 'Evaluasi Bacaan')}`
+                : `${dat.ayat} Ayat • ${Number(dat.baris) || 0} Baris${dat.barisManual === true ? ' (Manual Guru)' : dat.baris ? ' (Data Lama)' : ' (Belum Diisi)'}`}</div>
+            </div>
+            <div class="riwayat-actions">
+              <button class="btn-icon btn-edit-icon" onclick="siapkanEditCard('${safeId}', '${dataString}')" title="Edit">✎</button>
+              <button class="btn-icon btn-hapus-icon" data-nama="${namaHtml}" onclick="hapusSetoranDariTombol(this, '${r.id}', '${safeId}')" title="Hapus">✕</button>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+    } catch (e) {
+      listBody.innerHTML = `<div style="text-align:center; color:red; padding:15px; font-size:0.85rem;">Gagal memuat: ${e.message}</div>`;
+    }
+  };
+
+  window.siapkanEditCard = (safeId, dataEncoded) => {
+    const dataRow = JSON.parse(decodeURIComponent(dataEncoded));
+    const dat = dataRow.data[0];
+    const str = dat.setoran;
+
+    document.getElementById(`edit_id_${safeId}`).value = dataRow.id;
+    if ((dataRow.program === 'Tahsin' || dataRow.jenisInput === 'talaqqi_bacaan') && dat.materi) {
+      terapkanModeProgramCard(safeId, 'Tahsin');
+      document.getElementById(`tgl_${safeId}`).value = dataRow.tanggal;
+      const idx = window.daftarSurat.findIndex(s => s.nama === dat.materi.surat);
+      document.getElementById(`tahsin_surat_${safeId}`).value = idx;
+      document.getElementById(`tahsin_mulai_${safeId}`).value = dat.materi.ayatMulai || '';
+      document.getElementById(`tahsin_selesai_${safeId}`).value = dat.materi.ayatSelesai || '';
+      document.getElementById(`tahsin_halaman_${safeId}`).value = dat.materi.halaman || '';
+      document.getElementById(`jenis_talaqqi_${safeId}`).value = dat.jenisTalaqqi || 'Talaqqi Baru';
+      document.getElementById(`makhraj_${safeId}`).value = dat.penilaian?.makhraj || 3;
+      document.getElementById(`sifat_${safeId}`).value = dat.penilaian?.sifatHuruf || 3;
+      document.getElementById(`tajwid_${safeId}`).value = dat.penilaian?.tajwid || 3;
+      document.getElementById(`lancar_${safeId}`).value = dat.penilaian?.kelancaran || 3;
+      document.getElementById(`hasil_tahsin_${safeId}`).value = dat.hasil || 'Lulus dengan Perbaikan';
+      document.getElementById(`kesalahan_tahsin_${safeId}`).value = (dat.kesalahanDominan || []).join('; ');
+      document.getElementById(`catatan_tahsin_${safeId}`).value = dat.keterangan || '';
+      hitungNilaiTahsin(safeId);
+      document.getElementById(`btn_simpan_${safeId}`).innerText='💾 UPDATE DATA TALAQQI';
+      document.getElementById(`btn_batal_${safeId}`).style.display='inline-block';
+      document.getElementById(`card_${safeId}`).classList.add('card-open');
+      return;
+    }
+    document.getElementById(`tgl_${safeId}`).value = dataRow.tanggal;
+    if (dataRow.program === 'Murojaah') {
+      const jenisSelect = document.getElementById('tfzJenisMurojaah');
+      if (jenisSelect) jenisSelect.value = dataRow.jenisMurojaah || dat.jenisMurojaah || 'Harian';
+    }
+    
+    const findSuratIdx = (name) => {
+      if(!window.daftarSurat) return "";
+      return window.daftarSurat.findIndex(s => s.nama.trim() === name.trim());
+    };
+
+    let isBanyak = str.includes(" s/d ");
+
+    if (isBanyak) {
+      setModeCard('banyak', safeId);
+      let parts = str.split(" s/d ");
+      let sAwal = parts[0].trim();
+      let matchAkhir = parts[1].match(/(.+?)\s*\(Ayat\s*(\d+)\)/);
+      if(matchAkhir) {
+        document.querySelector(`.sel-awal-${safeId}`).value = findSuratIdx(sAwal);
+        document.querySelector(`.sel-akhir-${safeId}`).value = findSuratIdx(matchAkhir[1].trim());
+        document.querySelector(`.inp-ayat-akhir-${safeId}`).value = matchAkhir[2];
+      }
+    } else {
+      setModeCard('tunggal', safeId);
+      let wadah = document.getElementById(`wadah_surat_${safeId}`);
+      wadah.innerHTML = ''; 
+
+      let suratItems = str.split(", ");
+      suratItems.forEach(item => {
+        let match = item.match(/(.+?)\s*\((\d+)-(\d+)\)/);
+        if(match) {
+          let sNama = match[1].trim();
+          let idxSurat = findSuratIdx(sNama);
+          tambahBarisSuratCard(safeId, match[2], match[3], idxSurat);
+        } else {
+          tambahBarisSuratCard(safeId);
+        }
+      });
+    }
+
+    document.getElementById(`ayat_${safeId}`).value = dat.ayat;
+    document.getElementById(`baris_${safeId}`).value = Number(dat.baris) || "";
+    document.getElementById(`salah_${safeId}`).value = dat.kesalahan === "0" ? "" : dat.kesalahan;
+    
+    let ketAsli = dat.keterangan || "";
+    let isCahaya = ketAsli.includes("Disetorkan beserta terjemah");
+    document.getElementById(`chk_cahaya_${safeId}`).checked = isCahaya;
+    document.getElementById(`catatan_${safeId}`).value = isCahaya ? ketAsli : ketAsli.replace("Disetorkan beserta terjemah, tadabbur, tafsir, letak dan nomor ayat, serta rencana aksi pengamalan.", "").trim();
+    
+    hitungPredikatCard(safeId);
+
+    document.getElementById(`btn_simpan_${safeId}`).innerText = "💾 UPDATE DATA SETORAN";
+    document.getElementById(`btn_batal_${safeId}`).style.display = "inline-block";
+    
+    document.getElementById(`card_${safeId}`).classList.add('card-open');
+    document.getElementById(`btn_simpan_${safeId}`).scrollIntoView({ behavior: 'smooth', block: 'center' });
+  };
+
+  window.batalEditCard = (safeId) => {
+    document.getElementById(`edit_id_${safeId}`).value = "";
+    document.getElementById(`tgl_${safeId}`).value = new Date().toISOString().split('T')[0];
+    
+    document.getElementById(`salah_${safeId}`).value = "";
+    const barisInput = document.getElementById(`baris_${safeId}`); if (barisInput) barisInput.value = "";
+    document.getElementById(`catatan_${safeId}`).value = "";
+    document.getElementById(`chk_cahaya_${safeId}`).checked = false;
+    ['tahsin_mulai','tahsin_selesai','tahsin_halaman','kesalahan_tahsin','catatan_tahsin'].forEach(id=>{ const el=document.getElementById(`${id}_${safeId}`); if(el) el.value=''; });
+    ['makhraj','sifat','tajwid','lancar'].forEach(id=>{ const el=document.getElementById(`${id}_${safeId}`); if(el) el.value='3'; });
+    const hasil=document.getElementById(`hasil_tahsin_${safeId}`); if(hasil) hasil.value='Lulus dengan Perbaikan';
+    const jenis=document.getElementById(`jenis_talaqqi_${safeId}`); if(jenis) jenis.value='Talaqqi Baru';
+    const surat=document.getElementById(`tahsin_surat_${safeId}`); if(surat) surat.value='';
+    setModeCard('tunggal', safeId);
+    terapkanModeProgramCard(safeId, document.getElementById('tfzProgram').value);
+    hitungPredikatCard(safeId);
+
+    document.getElementById(`btn_simpan_${safeId}`).innerText = "💾 SIMPAN DATA SETORAN";
+    document.getElementById(`btn_batal_${safeId}`).style.display = "none";
+  };
+
+  window.hapusSetoranDariTombol = (button, idNode, safeId) => {
+    hapusSetoranCard(idNode, button.dataset.nama, safeId);
+  };
+
+  window.hapusSetoranCard = async (idNode, nama, safeId) => {
+    if(confirm(`Hapus data setoran ini dari riwayat ${nama}?`)) {
+      try {
+        await remove(ref(db, `cahaya_app/setoran_tahfiz/${idNode}`));
+        const waliKey = String(nama||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]/g,'');
+        if(waliKey) await remove(ref(db,`cahaya_app/wali_index/${waliKey}/tahfiz/${idNode}`));
+        delete cacheSetoranTahfiz[idNode];
+        simpanCacheSetoran(cacheSetoranTahfiz);
+        window.fetchRiwayatSantri(nama, safeId, cacheSetoranTahfiz);
+        if (window.showPageToast) {
+          window.showPageToast("Setoran dihapus", `Riwayat setoran ${nama} berhasil dihapus.`, "warning");
+        }
+      } catch(e) { alert("Gagal menghapus: " + e.message); }
+    }
+  };
+</script>
+
+<script>
+  (() => {
+    const $ = (id) => document.getElementById(id);
+
+    function bacaUserAktif() {
+      try {
+        return JSON.parse(localStorage.getItem('cahayaCurrentUser') || '{}');
+      } catch (_) {
+        return {};
+      }
+    }
+
+    function formatTanggalIndonesia(date = new Date()) {
+      return date.toLocaleDateString('id-ID', {
+        weekday: 'long',
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric'
+      });
+    }
+
+    function setIdentity() {
+      const user = bacaUserAktif();
+      const nama =
+        user.label ||
+        user.nama ||
+        user.namaTampilan ||
+        user.username ||
+        'Guru Tahfiz';
+
+      const avatar = $('heroGuruAvatar');
+      $('heroGuruName').textContent = nama;
+      $('heroDateText').textContent = formatTanggalIndonesia();
+
+      if (user.fotoProfil) {
+        avatar.innerHTML = `<img src="${String(user.fotoProfil).replace(/"/g, '&quot;')}" alt="Foto guru">`;
+      } else {
+        avatar.textContent = String(nama).trim().charAt(0).toUpperCase() || 'G';
+      }
+    }
+
+    function getCards() {
+      return [...document.querySelectorAll('#santriCardsContainer .santri-card')];
+    }
+
+    function getVisibleCards() {
+      return getCards().filter(card => card.style.display !== 'none');
+    }
+
+    function updateContextStats() {
+      const program = $('tfzProgram')?.value || '';
+      const kelas = $('tfzKelas')?.value || '';
+      const cards = getCards();
+
+      $('statProgram').textContent = program || 'Belum dipilih';
+      $('statClass').textContent = kelas || 'Belum dipilih';
+      $('statStudentTotal').textContent = `${cards.length} Santri`;
+
+      const monthlyTotal = cards.reduce((total, card) => {
+        const badge = card.querySelector('[id^="badge_info_"]');
+        const match = badge?.textContent?.match(/(\d+)\s+Setoran/i);
+        return total + (match ? Number(match[1]) : 0);
+      }, 0);
+
+      $('statMonthlyTotal').textContent = `${monthlyTotal} Setoran`;
+
+      const opened = cards.filter(card => card.classList.contains('card-open')).length;
+      $('openedCardText').textContent = `${opened} kartu terbuka`;
+
+      const search = $('searchSantri');
+      const toggle = $('toggleAllBtn');
+      const hasCards = cards.length > 0;
+
+      search.disabled = !hasCards;
+      toggle.disabled = !hasCards;
+
+      if (!hasCards) {
+        search.value = '';
+        toggle.textContent = 'Buka Semua';
+      } else {
+        const visible = getVisibleCards();
+        const allVisibleOpen =
+          visible.length > 0 &&
+          visible.every(card => card.classList.contains('card-open'));
+
+        toggle.textContent = allVisibleOpen ? 'Tutup Semua' : 'Buka Semua';
+      }
+    }
+
+    window.filterSantriCards = function() {
+      const query = ($('searchSantri')?.value || '').trim().toLowerCase();
+      const cards = getCards();
+      let shown = 0;
+
+      cards.forEach(card => {
+        const name = card.querySelector('.santri-card-header h3')?.textContent?.toLowerCase() || '';
+        const match = !query || name.includes(query);
+        card.style.display = match ? '' : 'none';
+        if (match) shown++;
+      });
+
+      $('filterResultText').textContent = query
+        ? `${shown} dari ${cards.length} santri ditemukan.`
+        : cards.length
+          ? `${cards.length} santri siap diisi.`
+          : 'Pilih program dan kelas untuk menampilkan santri.';
+
+      updateContextStats();
+    };
+
+    window.toggleAllCards = function() {
+      const visible = getVisibleCards();
+      if (!visible.length) return;
+
+      const shouldOpen = !visible.every(card => card.classList.contains('card-open'));
+      visible.forEach(card => card.classList.toggle('card-open', shouldOpen));
+
+      updateContextStats();
+    };
+
+    let toastTimer = null;
+    window.showPageToast = function(title, message, type = 'success') {
+      const toast = $('pageToast');
+      const icon = $('toastIcon');
+
+      $('toastTitle').textContent = title;
+      $('toastMessage').textContent = message;
+      icon.textContent = type === 'error' ? '!' : type === 'warning' ? '⚠' : '✓';
+      icon.style.color = type === 'error' ? '#ff5d6c' : type === 'warning' ? '#ff9f43' : '#2878ff';
+      icon.style.background = type === 'error' ? '#fff0f2' : type === 'warning' ? '#fff4e7' : '#eaf3ff';
+
+      toast.classList.add('show');
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => toast.classList.remove('show'), 2800);
+    };
+
+    document.addEventListener('DOMContentLoaded', () => {
+      setIdentity();
+      updateContextStats();
+
+      $('tfzProgram')?.addEventListener('change', () => {
+        $('statProgram').textContent = $('tfzProgram').value || 'Belum dipilih';
+        $('statClass').textContent = 'Belum dipilih';
+        $('statStudentTotal').textContent = '0 Santri';
+        $('statMonthlyTotal').textContent = '0 Setoran';
+        $('filterResultText').textContent = 'Pilih kelas untuk menampilkan santri.';
+        setTimeout(updateContextStats, 0);
+      });
+
+      $('tfzKelas')?.addEventListener('change', () => {
+        $('statClass').textContent = $('tfzKelas').value || 'Belum dipilih';
+        $('filterResultText').textContent = $('tfzKelas').value
+          ? 'Memuat lembar setoran santri...'
+          : 'Pilih kelas untuk menampilkan santri.';
+        $('searchSantri').value = '';
+        setTimeout(updateContextStats, 0);
+      });
+
+      $('santriCardsContainer')?.addEventListener('click', (event) => {
+        if (event.target.closest('.santri-card-header')) {
+          setTimeout(updateContextStats, 0);
+        }
+      });
+
+      const observer = new MutationObserver(() => {
+        const cards = getCards();
+
+        if (cards.length) {
+          $('filterResultText').textContent =
+            $('searchSantri').value.trim()
+              ? $('filterResultText').textContent
+              : `${cards.length} santri siap diisi.`;
+        }
+
+        updateContextStats();
+      });
+
+      observer.observe($('santriCardsContainer'), {
+        childList: true,
+        subtree: true,
+        characterData: true
+      });
+    });
+  })();
+</script>
+
+</body>
+</html>

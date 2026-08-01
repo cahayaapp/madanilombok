@@ -1,0 +1,1362 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <!-- CAHAYA WHITE-LABEL CONFIG -->
+  <script src="../config/tenant-config.js"></script>
+  <script src="../config/master-data.js"></script>
+  <script src="../js/cahaya-config-runtime.js" defer></script>
+
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>CAHAYA APP - Lapor Pelanggaran</title>
+
+  <link rel="stylesheet" href="../css/cahaya-theme.css" />
+
+  <style>
+    :root {
+      --lp-primary: var(--primary, #2878ff);
+      --lp-primary-dark: var(--primary-dark, #1557d5);
+      --lp-cyan: var(--cyan, #18c5e8);
+      --lp-purple: var(--purple, #7667f5);
+      --lp-green: var(--green, #25b983);
+      --lp-red: var(--red, #ef4f5f);
+      --lp-heading: var(--text-heading, #17264a);
+      --lp-text: var(--text-main, #2b3959);
+      --lp-muted: var(--text-muted, #7786a3);
+      --lp-border: var(--border, #e3eaf5);
+      --lp-bg: var(--bg-main, #f5f8ff);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      width: 100%;
+      min-height: 100%;
+      margin: 0;
+      overflow-x: hidden;
+    }
+
+    body {
+      padding: 18px;
+      color: var(--lp-text);
+      font-family: "Nunito", "Poppins", sans-serif;
+      background:
+        radial-gradient(circle at 0% 0%, rgba(24, 197, 232, 0.11), transparent 26%),
+        radial-gradient(circle at 100% 5%, rgba(118, 103, 245, 0.09), transparent 24%),
+        linear-gradient(180deg, #f5f8ff 0%, #fbfcff 100%);
+    }
+
+    button,
+    input,
+    select,
+    textarea {
+      font: inherit;
+    }
+
+    .report-page {
+      width: 100%;
+      max-width: 980px;
+      margin: 0 auto;
+      animation: pageIn 0.35s ease both;
+    }
+
+    @keyframes pageIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* HEADER */
+    .report-header {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      min-height: 150px;
+      margin-bottom: 16px;
+      padding: 26px 28px;
+      overflow: hidden;
+      color: #ffffff;
+      border-radius: 24px;
+      background:
+        radial-gradient(circle at 88% 10%, rgba(255,255,255,0.24), transparent 25%),
+        linear-gradient(135deg, #1f75ef 0%, #2e83ff 48%, #17bddf 100%);
+      box-shadow: 0 18px 42px rgba(40,120,255,0.23);
+    }
+
+    .report-header::before {
+      content: "";
+      position: absolute;
+      width: 180px;
+      height: 180px;
+      top: -93px;
+      right: -52px;
+      border: 34px solid rgba(255,255,255,0.08);
+      border-radius: 50%;
+    }
+
+    .header-copy,
+    .header-user {
+      position: relative;
+      z-index: 1;
+    }
+
+    .header-label {
+      display: inline-flex;
+      align-items: center;
+      margin-bottom: 9px;
+      padding: 6px 11px;
+      font-size: 0.66rem;
+      font-weight: 900;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+      border: 1px solid rgba(255,255,255,0.25);
+      border-radius: 999px;
+      background: rgba(255,255,255,0.15);
+    }
+
+    .report-header h1 {
+      margin: 0;
+      color: #ffffff;
+      font-size: clamp(1.55rem, 4vw, 2.2rem);
+      font-weight: 900;
+      line-height: 1.12;
+    }
+
+    .report-header p {
+      max-width: 620px;
+      margin: 8px 0 0;
+      color: rgba(255,255,255,0.86);
+      font-size: 0.82rem;
+      font-weight: 650;
+      line-height: 1.6;
+    }
+
+    .header-user {
+      min-width: 210px;
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      padding: 13px;
+      border: 1px solid rgba(255,255,255,0.22);
+      border-radius: 16px;
+      background: rgba(255,255,255,0.14);
+      backdrop-filter: blur(8px);
+    }
+
+    .user-avatar {
+      width: 44px;
+      height: 44px;
+      flex: 0 0 44px;
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+      color: var(--lp-primary-dark);
+      font-size: 1rem;
+      font-weight: 900;
+      border: 3px solid rgba(255,255,255,0.75);
+      border-radius: 14px;
+      background: #ffffff;
+    }
+
+    .user-avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .user-copy {
+      min-width: 0;
+    }
+
+    .user-copy strong,
+    .user-copy span {
+      display: block;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .user-copy strong {
+      color: #ffffff;
+      font-size: 0.8rem;
+      font-weight: 900;
+    }
+
+    .user-copy span {
+      margin-top: 3px;
+      color: rgba(255,255,255,0.74);
+      font-size: 0.64rem;
+      font-weight: 700;
+    }
+
+    /* FORM CARD */
+    .report-card {
+      padding: 24px;
+      border: 1px solid rgba(224,232,245,0.95);
+      border-radius: 22px;
+      background: rgba(255,255,255,0.98);
+      box-shadow: 0 14px 36px rgba(42,76,145,0.09);
+    }
+
+    .card-title {
+      margin-bottom: 18px;
+    }
+
+    .card-title h2 {
+      margin: 0;
+      color: var(--lp-heading);
+      font-size: 1.12rem;
+      font-weight: 900;
+    }
+
+    .card-title p {
+      margin: 5px 0 0;
+      color: var(--lp-muted);
+      font-size: 0.73rem;
+      font-weight: 650;
+      line-height: 1.5;
+    }
+
+    .notice {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      margin-bottom: 19px;
+      padding: 13px 15px;
+      color: #2b5e97;
+      font-size: 0.73rem;
+      font-weight: 700;
+      line-height: 1.55;
+      border: 1px solid #d4e7ff;
+      border-left: 5px solid var(--lp-primary);
+      border-radius: 13px;
+      background: #f2f7ff;
+    }
+
+    .notice strong {
+      color: var(--lp-heading);
+      font-weight: 900;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .form-group {
+      min-width: 0;
+    }
+
+    .form-group.full {
+      grid-column: 1 / -1;
+    }
+
+    .form-label {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      margin-bottom: 8px;
+      color: var(--lp-heading);
+      font-size: 0.74rem;
+      font-weight: 900;
+    }
+
+    .form-control {
+      width: 100%;
+      min-height: 48px;
+      padding: 11px 14px;
+      color: var(--lp-text);
+      font-size: 0.84rem;
+      font-weight: 750;
+      outline: none;
+      border: 1.5px solid #dfe7f3;
+      border-radius: 13px;
+      background: #f8faff;
+      transition: 0.2s ease;
+    }
+
+    textarea.form-control {
+      min-height: 125px;
+      resize: vertical;
+      line-height: 1.6;
+    }
+
+    .form-control:hover {
+      border-color: #c9d8ec;
+      background: #ffffff;
+    }
+
+    .form-control:focus {
+      border-color: var(--lp-primary);
+      background: #ffffff;
+      box-shadow: 0 0 0 4px rgba(40,120,255,0.10);
+    }
+
+    .helper {
+      display: block;
+      margin-top: 6px;
+      color: var(--lp-muted);
+      font-size: 0.64rem;
+      font-weight: 650;
+      line-height: 1.45;
+    }
+
+    /* BIDANG */
+    .field-options {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 9px;
+    }
+
+    .field-option {
+      position: relative;
+      cursor: pointer;
+    }
+
+    .field-option input {
+      position: absolute;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .field-box {
+      min-height: 92px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 7px;
+      padding: 14px;
+      color: var(--field-color);
+      border: 1.5px solid var(--field-border);
+      border-radius: 15px;
+      background: var(--field-soft);
+      transition: 0.2s ease;
+    }
+
+    .field-icon {
+      width: 36px;
+      height: 36px;
+      display: grid;
+      place-items: center;
+      font-size: 1rem;
+      border-radius: 11px;
+      background: rgba(255,255,255,0.82);
+    }
+
+    .field-box strong {
+      color: var(--lp-heading);
+      font-size: 0.74rem;
+      font-weight: 900;
+      line-height: 1.35;
+    }
+
+    .field-option:hover .field-box {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 18px rgba(42,76,145,0.08);
+    }
+
+    .field-option input:checked + .field-box {
+      color: #ffffff;
+      border-color: var(--field-color);
+      background: var(--field-color);
+      box-shadow: 0 9px 21px color-mix(in srgb, var(--field-color) 22%, transparent);
+      transform: translateY(-2px);
+    }
+
+    .field-option input:checked + .field-box strong {
+      color: #ffffff;
+    }
+
+    .field-option.discipline {
+      --field-color: #2878ff;
+      --field-border: #cfe0fb;
+      --field-soft: #f1f7ff;
+    }
+
+    .field-option.cleanliness {
+      --field-color: #25b983;
+      --field-border: #ccefe1;
+      --field-soft: #eefbf6;
+    }
+
+    .field-option.ethics {
+      --field-color: #7667f5;
+      --field-border: #ddd8ff;
+      --field-soft: #f3f1ff;
+    }
+
+    /* CRITICAL */
+    .critical-option {
+      position: relative;
+      display: block;
+      cursor: pointer;
+    }
+
+    .critical-option input {
+      position: absolute;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .critical-box {
+      display: grid;
+      grid-template-columns: auto minmax(0, 1fr) auto;
+      gap: 12px;
+      align-items: center;
+      padding: 14px;
+      color: #9e3944;
+      border: 1.5px solid #ffd1d6;
+      border-radius: 15px;
+      background: #fff3f5;
+      transition: 0.2s ease;
+    }
+
+    .critical-icon {
+      width: 42px;
+      height: 42px;
+      display: grid;
+      place-items: center;
+      font-size: 1.15rem;
+      border-radius: 13px;
+      background: #ffffff;
+    }
+
+    .critical-copy strong,
+    .critical-copy span {
+      display: block;
+    }
+
+    .critical-copy strong {
+      color: #b42f3f;
+      font-size: 0.82rem;
+      font-weight: 950;
+      letter-spacing: 0.8px;
+    }
+
+    .critical-copy span {
+      margin-top: 3px;
+      color: #a45f67;
+      font-size: 0.64rem;
+      font-weight: 700;
+      line-height: 1.4;
+    }
+
+    .critical-check {
+      width: 27px;
+      height: 27px;
+      display: grid;
+      place-items: center;
+      color: transparent;
+      font-weight: 950;
+      border: 2px solid #efa1aa;
+      border-radius: 8px;
+      background: #ffffff;
+    }
+
+    .critical-option input:checked + .critical-box {
+      color: #ffffff;
+      border-color: #e64354;
+      background: linear-gradient(135deg, #ef5b69, #d83849);
+      box-shadow: 0 10px 23px rgba(226,63,81,0.22);
+    }
+
+    .critical-option input:checked + .critical-box .critical-copy strong,
+    .critical-option input:checked + .critical-box .critical-copy span {
+      color: #ffffff;
+    }
+
+    .critical-option input:checked + .critical-box .critical-check {
+      color: #ffffff;
+      border-color: rgba(255,255,255,0.9);
+      background: rgba(255,255,255,0.18);
+    }
+
+    /* SUBMIT */
+    .submit-row {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(250px, 0.42fr);
+      gap: 14px;
+      align-items: center;
+      margin-top: 18px;
+      padding: 16px;
+      border: 1px solid #dce8f8;
+      border-radius: 16px;
+      background: linear-gradient(135deg, #f7faff, #f1f8ff);
+    }
+
+    .submit-copy strong,
+    .submit-copy span {
+      display: block;
+    }
+
+    .submit-copy strong {
+      color: var(--lp-heading);
+      font-size: 0.84rem;
+      font-weight: 900;
+    }
+
+    .submit-copy span {
+      margin-top: 4px;
+      color: var(--lp-muted);
+      font-size: 0.66rem;
+      font-weight: 650;
+      line-height: 1.45;
+    }
+
+    .submit-button {
+      width: 100%;
+      min-height: 50px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 12px 18px;
+      color: #ffffff;
+      font-size: 0.82rem;
+      font-weight: 900;
+      cursor: pointer;
+      border: none;
+      border-radius: 13px;
+      background: linear-gradient(135deg, var(--lp-primary), var(--lp-cyan));
+      box-shadow: 0 11px 24px rgba(40,120,255,0.23);
+      transition: 0.2s ease;
+    }
+
+    .submit-button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 14px 28px rgba(40,120,255,0.28);
+    }
+
+    .submit-button.critical-active {
+      background: linear-gradient(135deg, #ef5b69, #d83849);
+      box-shadow: 0 11px 24px rgba(226,63,81,0.24);
+    }
+
+    .submit-button:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+    }
+
+    /* LOADING */
+    #loadingOverlay {
+      position: fixed;
+      inset: 0;
+      z-index: 3000;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      color: var(--lp-heading);
+      text-align: center;
+      background: rgba(246,249,255,0.95);
+      backdrop-filter: blur(10px);
+      transition: 0.35s ease;
+    }
+
+    .loader-mark {
+      width: 72px;
+      height: 72px;
+      display: grid;
+      place-items: center;
+      margin-bottom: 14px;
+      color: #ffffff;
+      font-size: 1.7rem;
+      border-radius: 23px;
+      background: linear-gradient(135deg, var(--lp-primary), var(--lp-cyan));
+      box-shadow: 0 14px 30px rgba(40,120,255,0.22);
+      animation: pulse 1.15s ease-in-out infinite alternate;
+    }
+
+    #loadingText {
+      font-size: 0.9rem;
+      font-weight: 900;
+    }
+
+    @keyframes pulse {
+      from { transform: scale(0.95); }
+      to { transform: scale(1.04); }
+    }
+
+    /* TOAST */
+    .toast {
+      position: fixed;
+      left: 50%;
+      bottom: 22px;
+      z-index: 5000;
+      width: min(420px, calc(100vw - 26px));
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 13px 15px;
+      color: var(--lp-heading);
+      border: 1px solid #dce7f5;
+      border-radius: 14px;
+      background: #ffffff;
+      box-shadow: 0 17px 42px rgba(22,44,89,0.20);
+      opacity: 0;
+      pointer-events: none;
+      transform: translate(-50%, 24px);
+      transition: 0.27s ease;
+    }
+
+    .toast.show {
+      opacity: 1;
+      pointer-events: auto;
+      transform: translate(-50%, 0);
+    }
+
+    .toast-icon {
+      width: 34px;
+      height: 34px;
+      flex: 0 0 34px;
+      display: grid;
+      place-items: center;
+      border-radius: 11px;
+      background: #edf5ff;
+    }
+
+    .toast.success .toast-icon {
+      background: #e8fbf4;
+    }
+
+    .toast.error .toast-icon {
+      background: #fff0f2;
+    }
+
+    .toast strong,
+    .toast span {
+      display: block;
+    }
+
+    .toast strong {
+      font-size: 0.76rem;
+      font-weight: 900;
+    }
+
+    .toast span {
+      margin-top: 2px;
+      color: var(--lp-muted);
+      font-size: 0.68rem;
+      font-weight: 650;
+      line-height: 1.42;
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 780px) {
+      body {
+        padding: 10px;
+      }
+
+      .report-header {
+        display: block;
+        min-height: 0;
+        padding: 23px 18px;
+        border-radius: 20px;
+      }
+
+      .header-user {
+        width: 100%;
+        min-width: 0;
+        margin-top: 17px;
+      }
+
+      .report-card {
+        padding: 18px 13px;
+        border-radius: 18px;
+      }
+
+      .form-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .form-group.full {
+        grid-column: auto;
+      }
+
+      .field-options {
+        grid-template-columns: 1fr;
+      }
+
+      .field-box {
+        min-height: 72px;
+        display: grid;
+        grid-template-columns: 40px minmax(0, 1fr);
+        align-items: center;
+      }
+
+      .submit-row {
+        grid-template-columns: 1fr;
+        padding: 14px;
+      }
+    }
+
+    @media (max-width: 430px) {
+      .report-header h1 {
+        font-size: 1.5rem;
+      }
+
+      .report-header p {
+        font-size: 0.76rem;
+      }
+
+      .critical-box {
+        grid-template-columns: auto minmax(0, 1fr) auto;
+        padding: 12px 10px;
+      }
+
+      .critical-copy span {
+        font-size: 0.6rem;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+  </style>
+
+  <!-- Tampilan minimal: header internal dan ringkasan disembunyikan tanpa mengubah sistem -->
+  <style id="cahaya-minimal-cleanup">
+    .report-header {
+      display: none !important;
+    }
+  
+    .evidence-zone{display:block;border:1.5px dashed #bfd0e8;border-radius:18px;padding:14px;background:#f8fbff;cursor:pointer;transition:.2s}.evidence-zone:hover{border-color:#5d94dd;background:#f1f7ff}.evidence-zone input{display:none}.evidence-placeholder{display:flex;align-items:center;gap:10px;color:#6b7f9b;font-size:.74rem;font-weight:800}.evidence-placeholder span{font-size:1.45rem}.evidence-preview{display:none;width:100%;max-height:280px;object-fit:contain;border-radius:14px;border:1px solid #dce5f0;background:#fff}.evidence-actions{display:flex;gap:8px;margin-top:8px}.small-button{border:0;border-radius:10px;padding:8px 10px;background:#edf3fa;color:#526b89;font-size:.65rem;font-weight:900;cursor:pointer}
+</style>
+</head>
+
+<body>
+  <div id="loadingOverlay">
+    <div class="loader-mark">📢</div>
+    <div id="loadingText">Menyiapkan data pelaporan...</div>
+  </div>
+
+  <div id="appToast" class="toast" role="status" aria-live="polite">
+    <div class="toast-icon" id="toastIcon">✓</div>
+    <div>
+      <strong id="toastTitle">Berhasil</strong>
+      <span id="toastMessage">Laporan berhasil dikirim.</span>
+    </div>
+  </div>
+
+  <main class="report-page">
+    <section class="report-header">
+      <div class="header-copy">
+        <span class="header-label">Sistem Pembinaan Santri</span>
+        <h1>Lapor Pelanggaran</h1>
+        <p>
+          Catat kejadian secara objektif. Laporan akan masuk ke antrean Konselor.
+        </p>
+      </div>
+
+      <div class="header-user">
+        <div class="user-avatar" id="userAvatar">P</div>
+        <div class="user-copy">
+          <strong id="userName">Pengguna</strong>
+          <span id="userRole">Pelapor</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="report-card">
+      <div class="card-title">
+        <h2>Form Laporan</h2>
+        <p>Lengkapi data kejadian yang diketahui.</p>
+      </div>
+
+      <div class="notice">
+        <span>ℹ️</span>
+        <div>
+          <strong>Pelapor hanya mencatat.</strong>
+          Tabayyun dan penanganan dilakukan oleh Konselor.
+        </div>
+      </div>
+
+      <div class="form-grid">
+        <div class="form-group">
+          <label class="form-label" for="lp_namaPelanggar">
+            👤 Santri Terlapor
+          </label>
+          <select class="form-control" id="lp_namaPelanggar">
+            <option value="">-- Pilih Santri --</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="lp_namaPelapor">
+            🗣️ Sumber Laporan
+          </label>
+          <select class="form-control" id="lp_namaPelapor">
+            <option value="">-- Pilih Sumber Laporan --</option>
+            <option value="Laporan Langsung (Asatidz / Pengurus / CCTV)">
+              Laporan Langsung — Asatidz / Pengurus / CCTV
+            </option>
+          </select>
+          <span class="helper">
+            Pilih nama santri apabila laporan berasal dari santri.
+          </span>
+        </div>
+
+        <div class="form-group full">
+          <label class="form-label">🧭 Bidang Pelanggaran</label>
+
+          <div class="field-options">
+            <label class="field-option discipline">
+              <input
+                type="radio"
+                name="bidangPelanggaran"
+                value="Kedisiplinan"
+              >
+              <span class="field-box">
+                <span class="field-icon">⏱️</span>
+                <strong>Kedisiplinan</strong>
+              </span>
+            </label>
+
+            <label class="field-option cleanliness">
+              <input
+                type="radio"
+                name="bidangPelanggaran"
+                value="Kebersihan dan Kerapian"
+              >
+              <span class="field-box">
+                <span class="field-icon">✨</span>
+                <strong>Kebersihan dan Kerapian</strong>
+              </span>
+            </label>
+
+            <label class="field-option ethics">
+              <input
+                type="radio"
+                name="bidangPelanggaran"
+                value="Moral/Etika"
+              >
+              <span class="field-box">
+                <span class="field-icon">🤝</span>
+                <strong>Moral/Etika</strong>
+              </span>
+            </label>
+          </div>
+        </div>
+
+        <div class="form-group full">
+          <label class="form-label" for="lp_keterangan">
+            📝 Kronologi
+          </label>
+          <textarea
+            class="form-control"
+            id="lp_keterangan"
+            rows="5"
+            placeholder="Tuliskan waktu, lokasi, kejadian, dan pihak yang mengetahui..."
+          ></textarea>
+        </div>
+
+        <div class="form-group full">
+          <label class="form-label">📷 Bukti Foto <span style="font-weight:700;color:#8291a5;">(Opsional)</span></label>
+          <label class="evidence-zone">
+            <input id="lp_buktiFoto" type="file" accept="image/*" capture="environment" onchange="prosesBuktiFoto(event)">
+            <div class="evidence-placeholder" id="lp_buktiPlaceholder"><span>📸</span><div>Pilih atau ambil foto bukti. Gambar dikompres otomatis sebelum disimpan.</div></div>
+            <img class="evidence-preview" id="lp_buktiPreview" alt="Pratinjau bukti foto">
+          </label>
+          <div class="evidence-actions" id="lp_buktiActions" style="display:none;">
+            <button class="small-button" type="button" onclick="hapusBuktiFoto()">Hapus Foto</button>
+          </div>
+        </div>
+
+        <div class="form-group full">
+          <label class="critical-option">
+            <input
+              type="checkbox"
+              id="lp_kritis"
+              onchange="updateCriticalState()"
+            >
+            <span class="critical-box">
+              <span class="critical-icon">⚠️</span>
+              <span class="critical-copy">
+                <strong>KRITIS</strong>
+                <span>
+                  Centang bila kejadian berbahaya dan perlu segera diperhatikan.
+                </span>
+              </span>
+              <span class="critical-check">✓</span>
+            </span>
+          </label>
+        </div>
+      </div>
+
+      <div class="submit-row">
+        <div class="submit-copy">
+          <strong>Kirim ke Konselor</strong>
+          <span>Pastikan laporan sudah sesuai fakta.</span>
+        </div>
+
+        <button
+          id="btnLapor"
+          class="submit-button"
+          onclick="kirimLaporan()"
+        >
+          📢 Kirim Laporan
+        </button>
+      </div>
+    </section>
+  </main>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+    import {
+      getDatabase,
+      ref,
+      get,
+      push,
+      set,
+      update
+    } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+
+    const firebaseConfig = window.CAHAYA_CONFIG.firebase;
+
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+
+    let currentUser = {};
+    let namaPenginput = "Pengguna";
+    let toastTimer = null;
+    let buktiFotoData = "";
+    let buktiFotoMeta = null;
+
+    try {
+      currentUser = JSON.parse(
+        localStorage.getItem("cahayaCurrentUser") || "{}"
+      );
+    } catch (error) {
+      console.warn("Data pengguna tidak terbaca:", error);
+    }
+
+    namaPenginput =
+      currentUser.label ||
+      currentUser.nama ||
+      currentUser.username ||
+      localStorage.getItem("namaNaqib") ||
+      "Pengguna";
+
+    function escapeHtml(value = "") {
+      return String(value)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#39;");
+    }
+
+    function normalisasiDaftar(data) {
+      if (Array.isArray(data)) {
+        return data
+          .map(item => {
+            if (typeof item === "string") {
+              return item.trim();
+            }
+
+            return String(
+              item?.nama ||
+              item?.namaSantri ||
+              item?.label ||
+              ""
+            ).trim();
+          })
+          .filter(Boolean);
+      }
+
+      if (data && typeof data === "object") {
+        return normalisasiDaftar(Object.values(data));
+      }
+
+      return [];
+    }
+
+    function isiProfil() {
+      const role = Array.isArray(currentUser.akses)
+        ? currentUser.akses.join(" • ")
+        : currentUser.akses || "Pelapor";
+
+      document.getElementById("userName").textContent =
+        namaPenginput;
+
+      document.getElementById("userRole").textContent =
+        role;
+
+      const avatar = document.getElementById("userAvatar");
+
+      if (currentUser.fotoProfil) {
+        avatar.innerHTML = `
+          <img
+            src="${escapeHtml(currentUser.fotoProfil)}"
+            alt="Foto profil"
+          >
+        `;
+      } else {
+        avatar.textContent =
+          String(namaPenginput).trim().charAt(0).toUpperCase() || "P";
+      }
+    }
+
+    function tampilkanToast(type, title, message) {
+      const toast = document.getElementById("appToast");
+
+      toast.className = `toast ${type}`;
+
+      document.getElementById("toastTitle").textContent =
+        title;
+
+      document.getElementById("toastMessage").textContent =
+        message;
+
+      document.getElementById("toastIcon").textContent =
+        type === "success" ? "✓" : "!";
+
+      requestAnimationFrame(() => {
+        toast.classList.add("show");
+      });
+
+      clearTimeout(toastTimer);
+
+      toastTimer = setTimeout(() => {
+        toast.classList.remove("show");
+      }, 3800);
+    }
+
+    function sembunyikanLoading() {
+      const overlay = document.getElementById("loadingOverlay");
+
+      overlay.style.opacity = "0";
+
+      setTimeout(() => {
+        overlay.style.display = "none";
+      }, 330);
+    }
+
+    function tampilkanErrorLoading(message) {
+      const overlay = document.getElementById("loadingOverlay");
+
+      overlay.innerHTML = `
+        <div
+          class="loader-mark"
+          style="background:linear-gradient(135deg,#ef5b69,#d83849);"
+        >!</div>
+        <div id="loadingText">Data gagal dimuat</div>
+        <div
+          style="
+            max-width:460px;
+            margin-top:7px;
+            color:#7786a3;
+            font-size:.74rem;
+            font-weight:650;
+            line-height:1.5;
+          "
+        >
+          ${escapeHtml(message)}
+        </div>
+      `;
+    }
+
+    function bidangTerpilih() {
+      return (
+        document.querySelector(
+          'input[name="bidangPelanggaran"]:checked'
+        )?.value || ""
+      );
+    }
+
+    document.addEventListener("DOMContentLoaded", async () => {
+      isiProfil();
+
+      try {
+        const snapshot = await get(
+          ref(db, "cahaya_app/master_usrah")
+        );
+
+        const dataUsrah = snapshot.exists()
+          ? snapshot.val()
+          : {};
+
+        const namaSet = new Set();
+
+        Object.values(dataUsrah || {}).forEach(list => {
+          normalisasiDaftar(list).forEach(nama => {
+            namaSet.add(nama);
+          });
+        });
+
+        const daftarSantri = [...namaSet].sort((a, b) =>
+          a.localeCompare(b, "id")
+        );
+
+        const terlapor =
+          document.getElementById("lp_namaPelanggar");
+
+        const pelapor =
+          document.getElementById("lp_namaPelapor");
+
+        daftarSantri.forEach(nama => {
+          terlapor.add(new Option(nama, nama));
+          pelapor.add(new Option(nama, nama));
+        });
+
+        sembunyikanLoading();
+      } catch (error) {
+        console.error("Gagal memuat daftar santri:", error);
+
+        tampilkanErrorLoading(
+          error?.message || "Terjadi kesalahan ketika membaca Firebase."
+        );
+      }
+    });
+
+    function kompresFoto(file) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onerror = reject;
+        reader.onload = () => {
+          const image = new Image();
+          image.onerror = reject;
+          image.onload = () => {
+            let width = image.width;
+            let height = image.height;
+            const maxSize = 1000;
+            if (Math.max(width, height) > maxSize) {
+              const ratio = maxSize / Math.max(width, height);
+              width = Math.round(width * ratio);
+              height = Math.round(height * ratio);
+            }
+            const canvas = document.createElement("canvas");
+            canvas.width = width;
+            canvas.height = height;
+            canvas.getContext("2d").drawImage(image, 0, 0, width, height);
+            resolve(canvas.toDataURL("image/jpeg", 0.62));
+          };
+          image.src = reader.result;
+        };
+        reader.readAsDataURL(file);
+      });
+    }
+
+    window.prosesBuktiFoto = async function(event) {
+      const file = event.target.files?.[0];
+      if (!file) return;
+      if (!file.type.startsWith("image/")) {
+        tampilkanToast("error", "File tidak sesuai", "Pilih file gambar.");
+        event.target.value = "";
+        return;
+      }
+      try {
+        buktiFotoData = await kompresFoto(file);
+        buktiFotoMeta = {
+          namaFile: file.name,
+          tipeAsli: file.type,
+          ukuranAsli: file.size,
+          diprosesPada: new Date().toISOString()
+        };
+        const preview = document.getElementById("lp_buktiPreview");
+        preview.src = buktiFotoData;
+        preview.style.display = "block";
+        document.getElementById("lp_buktiPlaceholder").style.display = "none";
+        document.getElementById("lp_buktiActions").style.display = "flex";
+      } catch (error) {
+        console.error(error);
+        tampilkanToast("error", "Foto gagal diproses", "Coba pilih gambar lain.");
+      }
+    };
+
+    window.hapusBuktiFoto = function() {
+      buktiFotoData = "";
+      buktiFotoMeta = null;
+      const input = document.getElementById("lp_buktiFoto");
+      const preview = document.getElementById("lp_buktiPreview");
+      input.value = "";
+      preview.removeAttribute("src");
+      preview.style.display = "none";
+      document.getElementById("lp_buktiPlaceholder").style.display = "flex";
+      document.getElementById("lp_buktiActions").style.display = "none";
+    };
+
+    window.updateCriticalState = function() {
+      const kritis =
+        document.getElementById("lp_kritis").checked;
+
+      const button =
+        document.getElementById("btnLapor");
+
+      button.classList.toggle(
+        "critical-active",
+        kritis
+      );
+
+      button.innerHTML = kritis
+        ? "⚠️ Kirim Laporan KRITIS"
+        : "📢 Kirim Laporan";
+    };
+
+    window.kirimLaporan = async function() {
+      const terlapor =
+        document.getElementById("lp_namaPelanggar").value;
+
+      const pelapor =
+        document.getElementById("lp_namaPelapor").value;
+
+      const bidang =
+        bidangTerpilih();
+
+      const keterangan =
+        document.getElementById("lp_keterangan")
+          .value
+          .trim();
+
+      const kritis =
+        document.getElementById("lp_kritis").checked;
+
+      if (!terlapor || !pelapor || !bidang || !keterangan) {
+        tampilkanToast(
+          "error",
+          "Laporan belum lengkap",
+          "Lengkapi santri, sumber laporan, bidang, dan kronologi."
+        );
+        return;
+      }
+
+      if (
+        terlapor === pelapor &&
+        !pelapor.startsWith("Laporan Langsung")
+      ) {
+        tampilkanToast(
+          "error",
+          "Identitas perlu diperiksa",
+          "Santri terlapor dan pelapor tidak boleh sama."
+        );
+        return;
+      }
+
+      const button =
+        document.getElementById("btnLapor");
+
+      button.disabled = true;
+      button.innerHTML = "⏳ Mengirim...";
+
+      const now = new Date();
+
+      const payload = {
+        waktu: now.toISOString(),
+        tanggal: now.toISOString().slice(0, 10),
+
+        dilaporkan: terlapor,
+        santri: terlapor,
+        pelapor,
+
+        bidangPelanggaran: bidang,
+        kategori: bidang,
+
+        keterangan,
+        tipe: "Lapor Pelanggaran",
+
+        kritis,
+        kategoriKhusus: kritis ? "KRITIS" : "",
+        prioritas: kritis ? "KRITIS" : "NORMAL",
+
+        statusPenanganan: "Menunggu Konselor",
+        naqibPendata: namaPenginput,
+        namaPenginput,
+
+        buktiFoto: null
+      };
+
+      try {
+        const savedRef = push(
+          ref(db, "cahaya_app/log_lapor_inisiatif")
+        );
+        const photoPath = buktiFotoData
+          ? `cahaya_app/bukti_pelanggaran/${savedRef.key}`
+          : "";
+        const evidenceMeta = buktiFotoData
+          ? {
+              ada: true,
+              path: photoPath,
+              nama: buktiFotoMeta?.nama || buktiFotoMeta?.name || "bukti-pelanggaran.jpg",
+              tipe: buktiFotoMeta?.tipe || buktiFotoMeta?.type || "image/jpeg",
+              ukuran: buktiFotoMeta?.ukuran || buktiFotoMeta?.size || 0
+            }
+          : null;
+        const finalPayload = {
+          ...payload,
+          buktiFoto: evidenceMeta
+        };
+        const waliKey = String(terlapor || '').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]/g,'');
+        const updates = {
+          [`cahaya_app/log_lapor_inisiatif/${savedRef.key}`]: finalPayload
+        };
+        if (buktiFotoData) {
+          updates[photoPath] = {
+            dataUrl: buktiFotoData,
+            ...buktiFotoMeta,
+            dibuatPada: now.toISOString()
+          };
+        }
+        if (waliKey) {
+          updates[`cahaya_app/wali_index/${waliKey}/laporan/${savedRef.key}`] = finalPayload;
+        }
+        await update(ref(db), updates);
+
+        tampilkanToast(
+          "success",
+          kritis
+            ? "Laporan KRITIS terkirim"
+            : "Laporan terkirim",
+          "Data telah masuk ke antrean Konselor."
+        );
+
+        document.getElementById("lp_namaPelanggar").value = "";
+        document.getElementById("lp_namaPelapor").value = "";
+        document.getElementById("lp_keterangan").value = "";
+        document.getElementById("lp_kritis").checked = false;
+        hapusBuktiFoto();
+
+        document.querySelectorAll(
+          'input[name="bidangPelanggaran"]'
+        ).forEach(input => {
+          input.checked = false;
+        });
+
+        updateCriticalState();
+      } catch (error) {
+        console.error("Gagal mengirim laporan:", error);
+
+        tampilkanToast(
+          "error",
+          "Gagal mengirim laporan",
+          error?.message || "Terjadi kesalahan saat menyimpan."
+        );
+      } finally {
+        button.disabled = false;
+
+        if (button.innerHTML.includes("Mengirim")) {
+          updateCriticalState();
+        }
+      }
+    };
+  </script>
+</body>
+</html>

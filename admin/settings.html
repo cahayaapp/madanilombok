@@ -1,0 +1,1124 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <!-- CAHAYA WHITE-LABEL CONFIG -->
+  <script src="../config/tenant-config.js"></script>
+  <script src="../config/master-data.js"></script>
+  <script src="../js/cahaya-config-runtime.js" defer></script>
+
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>CAHAYA APP - Pusat Koreksi Database</title>
+  
+  <link rel="stylesheet" href="../css/cahaya-theme.css" />
+  
+  <style>
+    .header-admin {
+      background: linear-gradient(135deg, var(--navy-dark), #1e293b, #0f172a);
+      padding: 30px 40px; border-radius: var(--radius-lg); color: white;
+      margin-bottom: 25px; box-shadow: 0 15px 30px rgba(15, 23, 42, 0.15);
+      position: relative; overflow: hidden;
+    }
+    .header-admin::after {
+      content: '🛠️'; position: absolute; right: 20px; top: -10px;
+      font-size: 8rem; opacity: 0.1; pointer-events: none;
+    }
+    .header-admin h1 { font-family: 'Playfair Display', serif; font-size: 2rem; color: var(--gold-light); margin-bottom: 5px; }
+
+    /* M-Banking Tabs */
+    .m-banking-nav { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; margin-bottom: 25px; }
+    .tab-btn { display: flex; flex-direction: column; align-items: center; justify-content: center; background: white; border: 1px solid #e2e8f0; border-radius: 12px; padding: 15px 10px; color: var(--navy-light); font-weight: 700; font-size: 0.85rem; text-align: center; gap: 8px; transition: all 0.3s ease; cursor: pointer; }
+    .tab-btn .icon { font-size: 1.8rem; margin-bottom: 2px; transition: transform 0.3s; }
+    .tab-btn:hover { border-color: var(--gold-main); transform: translateY(-2px); }
+    .tab-btn.active { background: var(--navy-dark); color: white; border-color: var(--navy-dark); box-shadow: 0 10px 20px rgba(15,23,42,0.2); transform: translateY(-4px); }
+    .tab-btn.active .icon { transform: scale(1.1); }
+
+    .filter-box { background: white; border: 1px solid #e2e8f0; padding: 20px; border-radius: 12px; margin-bottom: 25px; display: flex; gap: 15px; align-items: flex-end; flex-wrap: wrap; box-shadow: 0 4px 6px rgba(0,0,0,0.02); border-left: 4px solid var(--gold-main); }
+    .filter-group { flex: 1; min-width: 200px; }
+    .filter-group label { font-size: 0.75rem; font-weight: 800; color: var(--navy-dark); margin-bottom: 5px; display: block; text-transform: uppercase; }
+    
+    .filter-group input[type="date"] { 
+      padding: 10px 15px; border-radius: 8px; border: 1px solid #cbd5e1; font-family: inherit; font-size: 0.9rem; font-weight: 600; color: var(--primary-dark); outline: none; background: #f8fafc; transition: 0.3s; width: 100%;
+    }
+    .filter-group input[type="date"]:focus { border-color: var(--gold-main); box-shadow: 0 0 0 3px rgba(184, 134, 11, 0.1); }
+
+    /* =========================================
+       CUSTOM MULTI-SELECT DROPDOWN
+       ========================================= */
+    .custom-select-wrapper { position: relative; width: 100%; user-select: none; }
+    .custom-select-display {
+      padding: 10px 15px; border-radius: 8px; border: 1px solid #cbd5e1;
+      background: #f8fafc; font-weight: 700; color: var(--navy-dark); font-size: 0.9rem;
+      cursor: pointer; display: flex; justify-content: space-between; align-items: center; transition: 0.3s;
+    }
+    .custom-select-display:hover { border-color: var(--gold-main); }
+    .custom-select-dropdown {
+      position: absolute; top: 100%; left: 0; right: 0; background: white;
+      border: 1px solid #cbd5e1; border-radius: 8px; margin-top: 5px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.15); z-index: 100; max-height: 350px;
+      overflow-y: auto; display: none;
+    }
+    .custom-select-dropdown.open { display: block; animation: fadeIn 0.2s ease; }
+    
+    .optgroup-label { font-size: 0.7rem; color: var(--gold-dark); padding: 10px 15px 5px 15px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; border-top: 1px solid #e2e8f0; margin-top: 5px;}
+    .optgroup-label:first-child { border-top: none; margin-top: 0; }
+    
+    .custom-option { display: flex; align-items: center; padding: 8px 15px; cursor: pointer; transition: 0.2s; gap: 10px; font-size: 0.85rem; font-weight: 600; color: var(--navy-dark); }
+    .custom-option:hover { background: #f8fafc; color: var(--gold-main); }
+    .custom-option input[type="checkbox"] { transform: scale(1.2); accent-color: var(--navy-dark); cursor: pointer; }
+    
+    .select-all-wrap { padding: 12px 15px; border-bottom: 2px dashed #cbd5e1; display: flex; align-items: center; gap: 10px; font-weight: 800; color: #b91c1c; background: #fef2f2; cursor: pointer; position: sticky; top: 0; z-index: 10; }
+    .select-all-wrap input[type="checkbox"] { transform: scale(1.4); accent-color: #dc2626; cursor: pointer; }
+
+    /* Modal Edit Dinamis */
+    .modal { display: none; position: fixed; inset: 0; background: rgba(15,23,42,0.7); backdrop-filter: blur(5px); z-index: 2000; justify-content: center; align-items: center; padding: 20px; animation: fadeIn 0.3s ease; }
+    .modal-content { background: white; width: 100%; max-width: 600px; border-radius: var(--radius-lg); overflow: hidden; box-shadow: 0 25px 50px rgba(0,0,0,0.3); }
+    .modal-header { padding: 20px 25px; border-bottom: 1px solid var(--input-border); background: #f8fafc; display: flex; justify-content: space-between; align-items: center; }
+    .modal-header h3 { font-family: 'Playfair Display', serif; color: var(--navy-dark); font-size: 1.3rem; margin: 0; }
+    .modal-body { padding: 25px; max-height: 70vh; overflow-y: auto; }
+    
+    .dynamic-form-row { margin-bottom: 15px; }
+    .dynamic-form-row label { font-size: 0.8rem; font-weight: 700; color: var(--text-muted); display: block; margin-bottom: 4px; }
+    .dynamic-form-row input, .dynamic-form-row textarea, .dynamic-form-row select { width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 8px; font-family: inherit; font-size: 0.9rem; outline: none; }
+    .dynamic-form-row input:focus, .dynamic-form-row textarea:focus, .dynamic-form-row select:focus { border-color: var(--gold-main); }
+    .dynamic-form-row textarea { resize: vertical; min-height: 80px; font-family: monospace; font-size: 0.8rem; background: #f8fafc;}
+
+    /* Styling Table */
+    .data-summary { font-size: 0.85rem; color: var(--navy-light); line-height: 1.4; margin-top: 5px;}
+    .data-summary span { display: inline-block; background: #f1f5f9; padding: 2px 6px; border-radius: 4px; margin: 2px; border: 1px solid #e2e8f0;}
+    .data-id { font-family: monospace; font-size: 0.7rem; color: #94a3b8; margin-top: 5px; }
+    .badge-node { display: inline-block; background: var(--navy-dark); color: white; padding: 3px 8px; border-radius: 6px; font-size: 0.75rem; font-weight: 800; letter-spacing: 0.5px; margin-bottom: 2px;}
+
+    .btn-act { padding: 6px 12px; border-radius: 6px; border: none; font-weight: 700; cursor: pointer; transition: 0.2s; font-size: 0.8rem; display: inline-flex; align-items: center; gap: 5px; }
+    .btn-edit { background: #eff6ff; color: #2563eb; border: 1px solid #bfdbfe; }
+    .btn-edit:hover { background: #2563eb; color: white; }
+    .btn-del { background: #fef2f2; color: #dc2626; border: 1px solid #fecaca; }
+    .btn-del:hover { background: #dc2626; color: white; }
+
+    /* Custom Checkbox Design */
+    .check-bulk { transform: scale(1.4); accent-color: #dc2626; cursor: pointer; margin-top: 5px; }
+    .row-checked { background-color: #fef2f2 !important; }
+
+    #loadingOverlay { position: fixed; inset: 0; background: rgba(255,255,255,0.9); backdrop-filter: blur(5px); z-index: 3000; display: flex; flex-direction: column; justify-content: center; align-items: center; color: var(--navy-dark); font-family: 'Playfair Display', serif; font-size: 1.2rem; transition: 0.5s; display: none;}
+  </style>
+
+<style id="ruangguru-fresh-override">
+  :root {
+    --primary: #2878ff;
+    --primary-dark: #1557d5;
+    --primary-light: #eaf3ff;
+    --cyan: #19c6e6;
+    --green: #25b983;
+    --orange: #ff9f43;
+    --red: #ef5968;
+    --purple: #7667f5;
+    --navy-dark: #152347;
+    --navy-light: #31415f;
+    --text-heading: #152347;
+    --text-main: #31415f;
+    --text-muted: #71809e;
+    --input-border: #dfe7f3;
+    --border: #e2eaf6;
+    --bg-main: #f5f8ff;
+    --gold-main: #2878ff;
+    --gold-dark: #1557d5;
+    --gold-light: #eaf3ff;
+    --radius-lg: 22px;
+    --radius-md: 14px;
+    --shadow-card: 0 12px 35px rgba(35, 78, 160, .09);
+  }
+
+  * { box-sizing: border-box; }
+  html, body { width: 100%; min-height: 100%; overflow-x: hidden; }
+  body {
+    margin: 0 !important;
+    padding: 14px !important;
+    color: var(--text-main) !important;
+    font-family: "Nunito", "Poppins", Arial, sans-serif !important;
+    background:
+      radial-gradient(circle at 4% 2%, rgba(25,198,230,.10), transparent 24%),
+      radial-gradient(circle at 96% 6%, rgba(118,103,245,.09), transparent 23%),
+      linear-gradient(180deg, #f4f8ff 0%, #fbfdff 100%) !important;
+  }
+
+  button, input, select, textarea { font: inherit; }
+
+  .cahaya-container {
+    width: 100% !important;
+    max-width: 1180px !important;
+    margin: 0 auto !important;
+    padding: 0 !important;
+  }
+
+  .cahaya-card {
+    border: 1px solid rgba(226,234,246,.98) !important;
+    border-radius: 22px !important;
+    background: rgba(255,255,255,.98) !important;
+    box-shadow: var(--shadow-card) !important;
+  }
+
+  .tab-nav {
+    display: flex !important;
+    gap: 7px !important;
+    margin: 0 0 16px !important;
+    padding: 6px !important;
+    overflow-x: auto !important;
+    white-space: nowrap !important;
+    border: 1px solid #dfe8f5 !important;
+    border-radius: 16px !important;
+    background: rgba(237,243,253,.88) !important;
+    scrollbar-width: none;
+  }
+  .tab-nav::-webkit-scrollbar { display: none; }
+  .tab-nav .tab-btn {
+    min-height: 42px !important;
+    flex: 1 0 auto !important;
+    padding: 10px 16px !important;
+    color: #6f7f9b !important;
+    font-size: .76rem !important;
+    font-weight: 900 !important;
+    border: 1px solid transparent !important;
+    border-radius: 11px !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    transform: none !important;
+  }
+  .tab-nav .tab-btn:hover {
+    color: var(--primary) !important;
+    background: rgba(255,255,255,.78) !important;
+  }
+  .tab-nav .tab-btn.active {
+    color: #fff !important;
+    border-color: var(--primary) !important;
+    background: linear-gradient(135deg, var(--primary), var(--cyan)) !important;
+    box-shadow: 0 8px 18px rgba(40,120,255,.20) !important;
+  }
+
+  .form-control,
+  .filter-group input[type="date"],
+  .dynamic-form-row input,
+  .dynamic-form-row textarea,
+  .dynamic-form-row select,
+  .custom-select-display {
+    min-height: 46px !important;
+    color: var(--text-main) !important;
+    font-size: .8rem !important;
+    font-weight: 750 !important;
+    outline: none !important;
+    border: 1.5px solid var(--input-border) !important;
+    border-radius: 12px !important;
+    background: #f8faff !important;
+    transition: .18s ease !important;
+  }
+  .form-control { padding: 10px 13px !important; }
+  .form-control:hover,
+  .filter-group input[type="date"]:hover,
+  .dynamic-form-row input:hover,
+  .dynamic-form-row textarea:hover,
+  .dynamic-form-row select:hover,
+  .custom-select-display:hover {
+    border-color: #c8d8ec !important;
+    background: #fff !important;
+  }
+  .form-control:focus,
+  .filter-group input[type="date"]:focus,
+  .dynamic-form-row input:focus,
+  .dynamic-form-row textarea:focus,
+  .dynamic-form-row select:focus {
+    border-color: var(--primary) !important;
+    background: #fff !important;
+    box-shadow: 0 0 0 4px rgba(40,120,255,.09) !important;
+  }
+
+  .btn-cahaya,
+  .btn-cahaya.btn-gold {
+    min-height: 44px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 7px !important;
+    padding: 10px 16px !important;
+    color: #fff !important;
+    font-size: .74rem !important;
+    font-weight: 900 !important;
+    cursor: pointer !important;
+    border: 1px solid transparent !important;
+    border-radius: 12px !important;
+    background: linear-gradient(135deg, var(--primary), var(--cyan)) !important;
+    box-shadow: 0 8px 18px rgba(40,120,255,.18) !important;
+    transition: .18s ease !important;
+  }
+  .btn-cahaya:hover,
+  .btn-cahaya.btn-gold:hover {
+    transform: translateY(-1px) !important;
+    box-shadow: 0 11px 22px rgba(40,120,255,.24) !important;
+  }
+  .btn-cahaya[onclick*="tutupModal"] {
+    color: #53627c !important;
+    border: 1px solid #dbe4f0 !important;
+    background: #f1f5fa !important;
+    box-shadow: none !important;
+  }
+  .btn-cahaya[onclick*="tutupModal"]:hover {
+    color: #25344f !important;
+    background: #e8eef6 !important;
+    transform: none !important;
+  }
+
+  .cahaya-title,
+  .panel-title,
+  .modal-header h3 {
+    color: var(--text-heading) !important;
+    font-family: inherit !important;
+    font-weight: 900 !important;
+  }
+
+  .table-responsive {
+    overflow: auto !important;
+    border: 1px solid #e1e9f5 !important;
+    border-radius: 16px !important;
+    background: #fff !important;
+  }
+  .cahaya-table {
+    width: 100% !important;
+    border-collapse: separate !important;
+    border-spacing: 0 !important;
+  }
+  .cahaya-table thead th {
+    padding: 12px 13px !important;
+    color: #586a89 !important;
+    font-size: .66rem !important;
+    font-weight: 900 !important;
+    letter-spacing: .25px !important;
+    text-transform: uppercase !important;
+    border-bottom: 1px solid #e2eaf5 !important;
+    background: linear-gradient(180deg, #f8fbff, #f3f7fd) !important;
+  }
+  .cahaya-table tbody td {
+    padding: 12px 13px !important;
+    color: #42516d !important;
+    font-size: .76rem !important;
+    font-weight: 650 !important;
+    border-bottom: 1px solid #edf1f7 !important;
+    background: #fff !important;
+  }
+  .cahaya-table tbody tr:last-child td { border-bottom: none !important; }
+  .cahaya-table tbody tr:hover td { background: #f8fbff !important; }
+
+  .action-bar {
+    gap: 12px !important;
+    margin-bottom: 16px !important;
+  }
+  .search-box input {
+    min-height: 46px !important;
+    padding: 10px 14px 10px 40px !important;
+    border-radius: 12px !important;
+  }
+  .search-box::before { top: 14px !important; color: #8290a8 !important; }
+
+  .list-item-manage {
+    padding: 12px 14px !important;
+    color: #42516d !important;
+    border: 1px solid #e1e9f5 !important;
+    border-radius: 13px !important;
+    background: #f9fbff !important;
+  }
+  .list-item-manage:hover {
+    border-color: #bfd4f5 !important;
+    background: #fff !important;
+    box-shadow: 0 7px 18px rgba(40,120,255,.07) !important;
+  }
+
+  .tag, .badge-node {
+    border-radius: 999px !important;
+    font-weight: 900 !important;
+  }
+  .badge-node {
+    color: #1765ce !important;
+    border: 1px solid #d4e4ff !important;
+    background: #edf5ff !important;
+  }
+
+  .modal {
+    background: rgba(15,35,71,.58) !important;
+    backdrop-filter: blur(8px) !important;
+  }
+  .modal-content {
+    border: 1px solid rgba(255,255,255,.7) !important;
+    border-radius: 22px !important;
+    background: #fff !important;
+    box-shadow: 0 28px 70px rgba(15,35,71,.28) !important;
+  }
+  .modal-header,
+  .modal-footer {
+    border-color: #e5ecf6 !important;
+    background: #f8fbff !important;
+  }
+
+  #loadingOverlay {
+    color: var(--text-heading) !important;
+    font-family: inherit !important;
+    background: rgba(246,249,255,.94) !important;
+    backdrop-filter: blur(10px) !important;
+  }
+  #loadingOverlay > div:first-child {
+    width: 68px;
+    height: 68px;
+    display: grid;
+    place-items: center;
+    margin-bottom: 13px !important;
+    color: #fff;
+    font-size: 1.55rem !important;
+    border-radius: 22px;
+    background: linear-gradient(135deg, var(--primary), var(--cyan));
+    box-shadow: 0 14px 30px rgba(40,120,255,.22);
+  }
+
+  @media (max-width: 760px) {
+    body { padding: 9px !important; }
+    .cahaya-card { padding: 17px 13px !important; border-radius: 18px !important; }
+    .tab-nav { border-radius: 14px !important; }
+    .tab-nav .tab-btn { min-height: 40px !important; padding: 9px 13px !important; }
+    .action-bar { align-items: stretch !important; }
+    .action-bar .btn-cahaya { width: 100% !important; }
+    .table-responsive { border-radius: 13px !important; }
+  }
+</style>
+
+<style id="ruangguru-settings-override">
+  .m-banking-nav {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0,1fr)) !important;
+    gap: 9px !important;
+    margin: 0 0 16px !important;
+    padding: 6px !important;
+    border: 1px solid #dfe8f5 !important;
+    border-radius: 17px !important;
+    background: rgba(237,243,253,.88) !important;
+  }
+  .m-banking-nav .tab-btn {
+    min-height: 70px !important;
+    padding: 12px !important;
+    color: #687a99 !important;
+    font-size: .75rem !important;
+    font-weight: 900 !important;
+    border: 1px solid transparent !important;
+    border-radius: 12px !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    transform: none !important;
+  }
+  .m-banking-nav .tab-btn .icon { font-size: 1.35rem !important; }
+  .m-banking-nav .tab-btn:hover { color: var(--primary) !important; background: rgba(255,255,255,.78) !important; }
+  .m-banking-nav .tab-btn.active {
+    color: #fff !important;
+    border-color: var(--primary) !important;
+    background: linear-gradient(135deg, var(--primary), var(--cyan)) !important;
+    box-shadow: 0 9px 20px rgba(40,120,255,.20) !important;
+  }
+  .m-banking-nav .tab-btn[onclick*="tab-massal"] {
+    color: #c43d4d !important;
+    border-color: #f3cbd0 !important;
+    background: #fff2f4 !important;
+  }
+  .m-banking-nav .tab-btn[onclick*="tab-massal"].active {
+    color: #fff !important;
+    border-color: #ef5968 !important;
+    background: linear-gradient(135deg, #ef5968, #ff7b86) !important;
+    box-shadow: 0 9px 20px rgba(239,89,104,.20) !important;
+  }
+  .filter-box {
+    gap: 13px !important;
+    margin-bottom: 17px !important;
+    padding: 20px !important;
+    border: 1px solid #e1e9f5 !important;
+    border-left: 1px solid #e1e9f5 !important;
+    border-radius: 20px !important;
+    background: rgba(255,255,255,.98) !important;
+    box-shadow: var(--shadow-card) !important;
+  }
+  .filter-group label { color: var(--text-heading) !important; font-size: .68rem !important; }
+  .custom-select-dropdown {
+    overflow: hidden auto !important;
+    border: 1px solid #d9e4f2 !important;
+    border-radius: 13px !important;
+    box-shadow: 0 16px 34px rgba(35,78,160,.16) !important;
+  }
+  .custom-option:hover { color: var(--primary) !important; background: #f4f8ff !important; }
+  .custom-option input[type="checkbox"], .check-bulk { accent-color: var(--primary) !important; }
+  .data-summary span { border-color: #dce7f5 !important; border-radius: 999px !important; background: #f3f7fd !important; }
+  @media(max-width:700px){.m-banking-nav{grid-template-columns:1fr!important}.filter-box{padding:16px 13px!important}}
+</style>
+
+</head>
+<body>
+
+<div id="loadingOverlay">
+  <div style="font-size: 2.5rem; margin-bottom: 15px; animation: float 1.5s infinite alternate ease-in-out;">⏳</div>
+  <div style="font-weight: 700;" id="loadingText">Memproses Database...</div>
+</div>
+
+<main class="cahaya-container"><div class="m-banking-nav">
+    <div class="tab-btn active" onclick="switchTab('tab-koreksi', this)">
+      <div class="icon">✏️</div><span>Cari & Koreksi Data</span>
+    </div>
+    <div class="tab-btn" onclick="switchTab('tab-massal', this)" style="border-color: #fca5a5; background: #fef2f2; color: #b91c1c;">
+      <div class="icon">🗑️</div><span>Hapus Data Massal</span>
+    </div>
+  </div>
+
+  <!-- FILTER BOX -->
+  <div class="filter-box">
+    <div class="filter-group" style="flex: 2; min-width: 250px;">
+      <label>📂 Pilih Jenis Data (Bisa > 1 Tabel)</label>
+      
+      <!-- CUSTOM MULTI-SELECT DROPDOWN -->
+      <div class="custom-select-wrapper" id="nodeSelectWrapper">
+        <div class="custom-select-display" onclick="toggleDropdown()">
+          <span id="dropdownLabel">-- Centang Tabel Data --</span>
+          <span style="font-size: 0.8rem;">▼</span>
+        </div>
+        
+        <div class="custom-select-dropdown" id="dropdownOptions">
+          <label class="select-all-wrap">
+            <input type="checkbox" id="checkAllNodes" onchange="toggleAllNodes(this)">
+            CONTRENG SEMUA TABEL (HATI-HATI)
+          </label>
+
+          <div class="optgroup-label">Database Master & Struktur</div>
+          <label class="custom-option"><input type="checkbox" class="node-cb" value="master_akademik" onchange="updateDropdownLabel()"> 🎓 Master Akademik, Kelas, Guru & Mapel</label>
+          <label class="custom-option"><input type="checkbox" class="node-cb" value="master_usrah" onchange="updateDropdownLabel()"> 👥 Master Usrah & Anggota Santri</label>
+          <label class="custom-option"><input type="checkbox" class="node-cb" value="master_program_harian" onchange="updateDropdownLabel()"> 🗓️ Master Program Harian Asrama</label>
+          <label class="custom-option"><input type="checkbox" class="node-cb" value="master_ruang_kelas" onchange="updateDropdownLabel()"> 🚪 Master Ruang & Kode QR Kelas</label>
+          <label class="custom-option"><input type="checkbox" class="node-cb" value="jadwal_piket_naqib" onchange="updateDropdownLabel()"> 🕒 Jadwal Piket Naqib</label>
+          <label class="custom-option"><input type="checkbox" class="node-cb" value="piket_naqib_saat_ini" onchange="updateDropdownLabel()"> 📍 Snapshot Petugas Piket Aktif</label>
+
+          <div class="optgroup-label">Akademik, Pengajaran & Tahfiz</div>
+          <label class="custom-option"><input type="checkbox" class="node-cb" value="absensi_guru" onchange="updateDropdownLabel()"> 📍 Absensi Kehadiran Guru</label>
+          <label class="custom-option"><input type="checkbox" class="node-cb" value="log_absensi_guru" onchange="updateDropdownLabel()"> 🧾 Log Absensi Guru</label>
+          <label class="custom-option"><input type="checkbox" class="node-cb" value="absensi_pembelajaran" onchange="updateDropdownLabel()"> 👨‍🏫 Absensi Pembelajaran/KBM Santri</label>
+          <label class="custom-option"><input type="checkbox" class="node-cb" value="absensi_halqah" onchange="updateDropdownLabel()"> 🕌 Absensi Halqah</label>
+          <label class="custom-option"><input type="checkbox" class="node-cb" value="setoran_tahfiz" onchange="updateDropdownLabel()"> 📖 Setoran Tahfiz Al-Qur'an</label>
+          <label class="custom-option"><input type="checkbox" class="node-cb" value="nilai_ujian" onchange="updateDropdownLabel()"> 🧮 Nilai Ujian Umum</label>
+          <label class="custom-option"><input type="checkbox" class="node-cb" value="nilai_ujian_bulanan" onchange="updateDropdownLabel()"> 📝 Nilai Ujian Bulanan</label>
+
+          <div class="optgroup-label">Kalender Pendidikan & Materi</div>
+          <label class="custom-option"><input type="checkbox" class="node-cb" value="kalender_pendidikan/ta_2026_2027/events" onchange="updateDropdownLabel()"> 📆 Kalender Pendidikan 2026/2027</label>
+          <label class="custom-option"><input type="checkbox" class="node-cb" value="kalender_materi_pembelajaran/ta_2026_2027" onchange="updateDropdownLabel()"> 📚 Kalender Materi Pembelajaran</label>
+          <label class="custom-option"><input type="checkbox" class="node-cb" value="guru_kits_materi/ta_2026_2027" onchange="updateDropdownLabel()"> 🗂️ Materi Guru Kits (Legacy)</label>
+          <label class="custom-option"><input type="checkbox" class="node-cb" value="guru_kits_hasil_ai/ta_2026_2027" onchange="updateDropdownLabel()"> 🤖 Hasil RPP/AI Guru Kits (Legacy)</label>
+
+          <div class="optgroup-label">Pembinaan Asrama & Mentoring</div>
+          <label class="custom-option"><input type="checkbox" class="node-cb" value="absensi_program_harian" onchange="updateDropdownLabel()"> 📋 Absensi Program Harian Asrama</label>
+          <label class="custom-option"><input type="checkbox" class="node-cb" value="log_mentoring_naqib" onchange="updateDropdownLabel()"> 🤝 Log Mentoring Individu</label>
+          <label class="custom-option"><input type="checkbox" class="node-cb" value="jurnal_piket_naqib" onchange="updateDropdownLabel()"> 📝 Jurnal Piket Naqib</label>
+          <label class="custom-option"><input type="checkbox" class="node-cb" value="log_lapor_inisiatif" onchange="updateDropdownLabel()"> 🌟 Laporan Inisiatif & Pelanggaran</label>
+          <label class="custom-option"><input type="checkbox" class="node-cb" value="poin_manual" onchange="updateDropdownLabel()"> ⭐ Input Poin Manual</label>
+
+          <div class="optgroup-label">Konseling & Penanganan Kasus</div>
+          <label class="custom-option"><input type="checkbox" class="node-cb" value="laporan_penindakan" onchange="updateDropdownLabel()"> ✅ Laporan Penanganan/Penindakan Kasus</label>
+          <label class="custom-option"><input type="checkbox" class="node-cb" value="buku_kasus_konselor" onchange="updateDropdownLabel()"> 📚 Buku Rekam Jejak Konselor</label>
+          <label class="custom-option"><input type="checkbox" class="node-cb" value="pelanggaran_santri" onchange="updateDropdownLabel()"> ⚖️ Pelanggaran Santri (Legacy)</label>
+
+          <div class="optgroup-label">Asesmen & Evaluasi</div>
+          <label class="custom-option"><input type="checkbox" class="node-cb" value="asesmen_mandiri_naqib" onchange="updateDropdownLabel()"> 🧘 Asesmen Mandiri Naqib</label>
+          <label class="custom-option"><input type="checkbox" class="node-cb" value="asesmen_mandiri_guru" onchange="updateDropdownLabel()"> 🧘 Asesmen Mandiri Guru</label>
+          <label class="custom-option"><input type="checkbox" class="node-cb" value="asesmen_cahaya_santri" onchange="updateDropdownLabel()"> 📊 Asesmen CAHAYA Santri (Terbaru)</label>
+          <label class="custom-option"><input type="checkbox" class="node-cb" value="assesment_cahaya_santri" onchange="updateDropdownLabel()"> 📊 Asesmen CAHAYA Santri (Legacy)</label>
+          <label class="custom-option"><input type="checkbox" class="node-cb" value="assesment_cahaya_naqib" onchange="updateDropdownLabel()"> 🏠 Asesmen CAHAYA Naqib (Legacy)</label>
+          <label class="custom-option"><input type="checkbox" class="node-cb" value="asesmen_kinerja_sdm" onchange="updateDropdownLabel()"> 👁️ Asesmen Kinerja SDM</label>
+          <label class="custom-option"><input type="checkbox" class="node-cb" value="assesment_triwulan_naqib" onchange="updateDropdownLabel()"> 📚 Asesmen Triwulan/Bulanan Lama</label>
+
+          <div class="optgroup-label">Kesehatan & UKS</div>
+          <label class="custom-option"><input type="checkbox" class="node-cb" value="jurnal_kesehatan" onchange="updateDropdownLabel()"> 🩺 Jurnal Kesehatan Harian</label>
+          <label class="custom-option"><input type="checkbox" class="node-cb" value="pemeriksaan_kesehatan" onchange="updateDropdownLabel()"> 🧑‍⚕️ Pemeriksaan Kesehatan Santri</label>
+          <label class="custom-option"><input type="checkbox" class="node-cb" value="izin_sakit_harian" onchange="updateDropdownLabel()"> 🛌 Izin Sakit Harian</label>
+          <label class="custom-option"><input type="checkbox" class="node-cb" value="stok_obat_uks" onchange="updateDropdownLabel()"> 💊 Stok Obat UKS</label>
+          <label class="custom-option"><input type="checkbox" class="node-cb" value="transaksi_stok_obat_uks" onchange="updateDropdownLabel()"> 🔄 Transaksi Stok Obat UKS</label>
+
+          <div class="optgroup-label">Sarpras, Keamanan & Kebersihan</div>
+          <label class="custom-option"><input type="checkbox" class="node-cb" value="jurnal_sarpras" onchange="updateDropdownLabel()"> 🛠️ Jurnal Sarana Prasarana</label>
+          <label class="custom-option"><input type="checkbox" class="node-cb" value="checklist_harian_sarpras" onchange="updateDropdownLabel()"> ☑️ Checklist Harian Sarpras</label>
+          <label class="custom-option"><input type="checkbox" class="node-cb" value="jurnal_keamanan_kebersihan" onchange="updateDropdownLabel()"> 🧹 Jurnal Keamanan & Kebersihan</label>
+
+          <div class="optgroup-label">Media, Chat & Informasi Wali</div>
+          <label class="custom-option"><input type="checkbox" class="node-cb" value="pengaturan_media" onchange="updateDropdownLabel()"> 📱 Media Sosial Beranda Wali</label>
+          <label class="custom-option"><input type="checkbox" class="node-cb" value="pesan_global" onchange="updateDropdownLabel()"> 💬 Pesan & Percakapan Global</label>
+          <label class="custom-option"><input type="checkbox" class="node-cb" value="pesan_meta" onchange="updateDropdownLabel()"> 🧩 Metadata Ruang Percakapan</label>
+          <label class="custom-option"><input type="checkbox" class="node-cb" value="pesan_dibaca" onchange="updateDropdownLabel()"> 👁️ Status Pesan Dibaca</label>
+          <label class="custom-option"><input type="checkbox" class="node-cb" value="notifikasi_wali" onchange="updateDropdownLabel()"> 🔔 Notifikasi Wali Santri</label>
+
+          <div class="optgroup-label">Pengaturan Sistem</div>
+          <label class="custom-option"><input type="checkbox" class="node-cb" value="pengaturan_absensi_guru" onchange="updateDropdownLabel()"> ⚙️ Pengaturan Absensi Guru</label>
+          <label class="custom-option"><input type="checkbox" class="node-cb" value="pengaturan_notifikasi_web" onchange="updateDropdownLabel()"> 🔔 Pengaturan Notifikasi Web</label>
+        </div>
+      </div>
+    </div>
+
+    <div class="filter-group" style="min-width: 130px;">
+      <label>🗓️ Tanggal Awal</label>
+      <input type="date" id="dateStart">
+    </div>
+    <div class="filter-group" style="min-width: 130px;">
+      <label>🗓️ Tanggal Akhir</label>
+      <input type="date" id="dateEnd">
+    </div>
+    <button class="btn-cahaya btn-gold" style="padding: 12px 25px; height: 43px;" onclick="tarikData()">🔍 TARIK DATA</button>
+  </div>
+
+  <!-- AREA KONTEN -->
+  <div class="cahaya-card table-responsive">
+    
+    <!-- Header Aksi Hapus Massal -->
+    <div id="bulkActionArea" style="display: none; justify-content: space-between; align-items: center; background: #fef2f2; border: 1px dashed #fca5a5; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
+      <div style="font-size: 0.85rem; color: #b91c1c; font-weight: 700;">
+        ⚠️ Mode Hapus Massal Aktif. Centang data di tabel bawah untuk menghapus.
+      </div>
+      <button class="btn-act btn-del" onclick="hapusMassalTerpilih()" style="padding: 10px 20px; font-size: 0.9rem;">🗑️ Hapus Tercentang</button>
+    </div>
+
+    <table class="cahaya-table">
+      <thead>
+        <tr>
+          <th width="5%" id="thCheck" style="display: none; text-align:center; padding-top: 15px;">
+            <input type="checkbox" id="masterCheckbox" class="check-bulk" onchange="toggleSelectAllData(this)">
+          </th>
+          <th width="15%">Waktu Input</th>
+          <th width="55%">Ringkasan Data & Sumber Tabel</th>
+          <th width="25%" style="text-align:center;">Aksi Koreksi</th>
+        </tr>
+      </thead>
+      <tbody id="tabelData">
+        <tr><td colspan="4" style="text-align:center; padding:30px; color:var(--text-muted); font-style:italic;">Silakan contreng jenis tabel, tentukan tanggal, lalu klik 'Tarik Data'.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+</main>
+
+<!-- MODAL EDIT DINAMIS -->
+<div id="modalEdit" class="modal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3 id="modalEditTitle">Koreksi Data</h3>
+      <button style="background:none; border:none; font-size:1.5rem; cursor:pointer; color:var(--text-muted);" onclick="tutupModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div style="background:#fffbeb; padding:10px 15px; border-radius:8px; border:1px solid #fde68a; font-size:0.8rem; color:#b45309; margin-bottom:20px;">
+        💡 <b>Peringatan:</b> Ubah isian di bawah ini dengan hati-hati. Jika yang diedit adalah format JSON/Array (kotak hitam), pastikan tanda kurung kurawal atau siku tidak terhapus agar aplikasi tidak error.
+      </div>
+      
+      <form id="dynamicFormArea"></form>
+
+      <div style="display:flex; gap:10px; margin-top:25px;">
+        <button class="btn-cahaya" style="flex:1; background:#f1f5f9; color:var(--navy-dark); border:1px solid #cbd5e1;" type="button" onclick="tutupModal()">Batal</button>
+        <button class="btn-cahaya btn-gold" style="flex:1;" type="button" onclick="simpanKoreksi()">💾 SIMPAN PERUBAHAN</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+  import { getDatabase, ref, get, remove, update } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+
+  const firebaseConfig = window.CAHAYA_CONFIG.firebase;
+
+  const app = initializeApp(firebaseConfig);
+  const db = getDatabase(app);
+
+  let currentMode = 'tab-koreksi';
+  let fetchedData = {}; 
+  let idSedangDiedit = "";
+
+  const nodeLabels = {
+    "master_akademik": "🎓 Master Akademik",
+    "master_usrah": "👥 Master Usrah",
+    "master_program_harian": "🗓️ Master Program Harian",
+    "master_ruang_kelas": "🚪 Master Ruang Kelas",
+    "jadwal_piket_naqib": "🕒 Jadwal Piket Naqib",
+    "piket_naqib_saat_ini": "📍 Piket Naqib Aktif",
+    "absensi_guru": "📍 Absensi Guru",
+    "log_absensi_guru": "🧾 Log Absensi Guru",
+    "absensi_pembelajaran": "👨‍🏫 Absensi KBM",
+    "absensi_halqah": "🕌 Absensi Halqah",
+    "setoran_tahfiz": "📖 Setoran Tahfiz",
+    "nilai_ujian": "🧮 Nilai Ujian",
+    "nilai_ujian_bulanan": "📝 Nilai Ujian Bulanan",
+    "kalender_pendidikan/ta_2026_2027/events": "📆 Kalender Pendidikan",
+    "kalender_materi_pembelajaran/ta_2026_2027": "📚 Kalender Materi",
+    "guru_kits_materi/ta_2026_2027": "🗂️ Materi Guru Kits",
+    "guru_kits_hasil_ai/ta_2026_2027": "🤖 Hasil AI Guru Kits",
+    "absensi_program_harian": "📋 Absensi Asrama",
+    "log_mentoring_naqib": "🤝 Mentoring",
+    "jurnal_piket_naqib": "📝 Jurnal Piket Naqib",
+    "log_lapor_inisiatif": "🌟 Inisiatif/Pelanggaran",
+    "poin_manual": "⭐ Poin Manual",
+    "laporan_penindakan": "✅ Laporan Penanganan",
+    "buku_kasus_konselor": "📚 Buku Konselor",
+    "pelanggaran_santri": "⚖️ Pelanggaran Legacy",
+    "asesmen_mandiri_naqib": "🧘 Asesmen Naqib",
+    "asesmen_mandiri_guru": "🧘 Asesmen Guru",
+    "asesmen_cahaya_santri": "📊 Asesmen Santri Terbaru",
+    "assesment_cahaya_santri": "📊 Asesmen Santri Legacy",
+    "assesment_cahaya_naqib": "🏠 Asesmen Naqib Legacy",
+    "asesmen_kinerja_sdm": "👁️ Asesmen SDM",
+    "assesment_triwulan_naqib": "📚 Asesmen Lama",
+    "jurnal_kesehatan": "🩺 Jurnal Kesehatan",
+    "pemeriksaan_kesehatan": "🧑‍⚕️ Pemeriksaan Kesehatan",
+    "izin_sakit_harian": "🛌 Izin Sakit",
+    "stok_obat_uks": "💊 Stok Obat UKS",
+    "transaksi_stok_obat_uks": "🔄 Transaksi Obat UKS",
+    "jurnal_sarpras": "🛠️ Jurnal Sarpras",
+    "checklist_harian_sarpras": "☑️ Checklist Sarpras",
+    "jurnal_keamanan_kebersihan": "🧹 Keamanan/Kebersihan",
+    "pengaturan_media": "📱 Media Wali",
+    "pesan_global": "💬 Pesan Global",
+    "pesan_meta": "🧩 Metadata Pesan",
+    "pesan_dibaca": "👁️ Status Baca Pesan",
+    "notifikasi_wali": "🔔 Notifikasi Wali",
+    "pengaturan_absensi_guru": "⚙️ Pengaturan Absensi Guru",
+    "pengaturan_notifikasi_web": "🔔 Pengaturan Notifikasi Web"
+  };
+
+  function resolveNodePath(node) {
+    return node.includes('/') ? node : `cahaya_app/${node}`;
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const end = new Date();
+    const start = new Date();
+    start.setDate(end.getDate() - 30); 
+    
+    document.getElementById('dateEnd').value = end.toISOString().split('T')[0];
+    document.getElementById('dateStart').value = start.toISOString().split('T')[0];
+    
+    document.addEventListener('click', function(e) {
+      if (!document.getElementById('nodeSelectWrapper').contains(e.target)) {
+        document.getElementById('dropdownOptions').classList.remove('open');
+      }
+    });
+  });
+
+  window.toggleDropdown = function() {
+    document.getElementById('dropdownOptions').classList.toggle('open');
+  }
+
+  window.toggleAllNodes = function(el) {
+    document.querySelectorAll('.node-cb').forEach(cb => cb.checked = el.checked);
+    updateDropdownLabel();
+  }
+
+  window.updateDropdownLabel = function() {
+    const checked = document.querySelectorAll('.node-cb:checked');
+    const total = document.querySelectorAll('.node-cb');
+    const label = document.getElementById('dropdownLabel');
+    const master = document.getElementById('checkAllNodes');
+
+    if(checked.length === 0) {
+      label.textContent = "-- Centang Tabel Data --";
+      master.checked = false;
+    } else if (checked.length === 1) {
+      label.textContent = checked[0].parentElement.textContent.trim();
+      master.checked = false;
+    } else if (checked.length === total.length) {
+      label.textContent = `Pencarian Global (${checked.length} Tabel)`;
+      master.checked = true;
+    } else {
+      label.textContent = `${checked.length} Tabel Dipilih`;
+      master.checked = false;
+    }
+  }
+
+  window.switchTab = (tabId, btn) => {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    currentMode = tabId;
+
+    if(currentMode === 'tab-massal') {
+      document.getElementById('bulkActionArea').style.display = 'flex';
+      document.getElementById('thCheck').style.display = 'table-cell';
+    } else {
+      document.getElementById('bulkActionArea').style.display = 'none';
+      document.getElementById('thCheck').style.display = 'none';
+    }
+    renderTabel();
+  };
+
+  function normalizeDateValue(value) {
+    if(value === null || value === undefined || value === '') return '';
+
+    if(typeof value === 'number') {
+      const millis = value > 100000000000 ? value : value * 1000;
+      const date = new Date(millis);
+      return Number.isNaN(date.getTime()) ? '' : date.toISOString().slice(0, 10);
+    }
+
+    const raw = String(value).trim();
+    const isoMatch = raw.match(/^(\d{4}-\d{2}-\d{2})/);
+    if(isoMatch) return isoMatch[1];
+
+    const idMatch = raw.match(/^(\d{1,2})[\/-](\d{1,2})[\/-](\d{4})$/);
+    if(idMatch) {
+      return `${idMatch[3]}-${idMatch[2].padStart(2, '0')}-${idMatch[1].padStart(2, '0')}`;
+    }
+
+    const parsed = new Date(raw);
+    return Number.isNaN(parsed.getTime()) ? '' : parsed.toISOString().slice(0, 10);
+  }
+
+  function extractDateString(item) {
+    if(!item || typeof item !== 'object') return "1970-01-01";
+
+    const priorityKeys = [
+      'tanggal', 'date', 'tanggalInput', 'tanggal_input', 'tanggalSimpan',
+      'tanggalMentoring', 'tanggalKejadian', 'tanggalPemeriksaan',
+      'tanggalTransaksi', 'tanggalAbsensi', 'tglKonseling', 'waktuKonseling',
+      'waktuSimpan', 'waktu_input', 'waktuInput', 'waktuUpdate', 'waktu',
+      'timestamp', 'createdAt', 'updatedAt', 'created_at', 'updated_at'
+    ];
+
+    for(const key of priorityKeys) {
+      if(Object.prototype.hasOwnProperty.call(item, key)) {
+        const normalized = normalizeDateValue(item[key]);
+        if(normalized) return normalized;
+      }
+    }
+
+    for(const key in item) {
+      if(typeof item[key] === 'string' || typeof item[key] === 'number') {
+        const normalized = normalizeDateValue(item[key]);
+        if(normalized) return normalized;
+      }
+    }
+
+    return "1970-01-01";
+  }
+
+  function escapeHtml(value = '') {
+    return String(value)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#039;');
+  }
+
+  function shortText(value, max = 48) {
+    const text = String(value ?? '').trim();
+    if(!text) return '';
+    return escapeHtml(text.length > max ? `${text.slice(0, max)}...` : text);
+  }
+
+  function generateSummary(item) {
+    if(Array.isArray(item)) {
+      return `<span>Daftar berisi <b>${item.length}</b> item</span>`;
+    }
+
+    if(!item || typeof item !== 'object') {
+      return `<span>Nilai: <b>${shortText(item, 75) || '-'}</b></span>`;
+    }
+
+    const parts = [];
+    const used = new Set();
+    const addPart = (label, value, bold = false, max = 48) => {
+      if(value === undefined || value === null || value === '') return;
+      const cleanValue = String(value).trim();
+      if(!cleanValue || used.has(`${label}:${cleanValue}`)) return;
+      used.add(`${label}:${cleanValue}`);
+      const preview = shortText(cleanValue, max);
+      parts.push(`${label}: ${bold ? `<b>${preview}</b>` : preview}`);
+    };
+
+    addPart('Santri', item.namaSantri || item.nama_santri || item.santri || item.namaAnak, true);
+    addPart('Nama', item.nama || item.name || item.namaLengkap || item.displayName, true);
+    addPart('Guru', item.guru || item.namaGuru || item.teacher);
+    addPart('Petugas', item.petugas || item.namaPetugas || item.penanggungJawab);
+    addPart('Usrah', item.usrah || item.namaUsrah);
+    addPart('Kelas', item.kelas || item.namaKelas);
+    addPart('Naqib', item.naqib || item.namaNaqib);
+    addPart('Pelapor', item.pelapor, true);
+    addPart('Konselor', item.konselorPenindak || item.konselor, true);
+    addPart('Program', item.program || item.namaProgram);
+    addPart('Mapel', item.mapel || item.mataPelajaran);
+    addPart('Kasus', item.namaPelanggaran || item.jenisPelanggaran || item.kasus);
+    addPart('Status', item.kategoriAkhir || item.status || item.kehadiran, true);
+    addPart('Perkembangan', item.perkembangan, true);
+    addPart('Jenis', item.jenis || item.tipe || item.jenisTransaksi);
+    addPart('Poin', item.poinDiberikan ?? item.poin);
+    addPart('Nilai', item.nilai ?? item.skor ?? item.persentase);
+    addPart('Fokus', item.dimensiFokus || item.fokusPerbaikan);
+    addPart('Keterangan', item.keterangan || item.catatan || item.deskripsi, false, 60);
+    addPart('Tindak Lanjut', item.tindakLanjut || item.uraianLanjutan, false, 60);
+
+    if(parts.length === 0) {
+      const total = Object.keys(item).length;
+      const preview = shortText(JSON.stringify(item), 100);
+      return `<span>Struktur data: <b>${total}</b> field</span>${preview ? `<span>${preview}</span>` : ''}`;
+    }
+
+    return parts.slice(0, 8).map(part => `<span>${part}</span>`).join('');
+  }
+
+  window.tarikData = async function() {
+    const selectedNodes = Array.from(document.querySelectorAll('.node-cb:checked')).map(cb => cb.value);
+    const start = document.getElementById('dateStart').value;
+    const end = document.getElementById('dateEnd').value;
+
+    if(selectedNodes.length === 0) return alert("Centang minimal 1 tabel data yang ingin ditarik!");
+    if(!start || !end) return alert("Pilih rentang tanggal pencarian!");
+
+    document.getElementById('loadingText').textContent = `Menarik Data dari ${selectedNodes.length} Tabel...`;
+    document.getElementById('loadingOverlay').style.display = 'flex';
+    document.getElementById('dropdownOptions').classList.remove('open'); 
+
+    try {
+      fetchedData = {}; 
+      let tabelKosongAtauSalah = [];
+
+      const fetchPromises = selectedNodes.map(node => get(ref(db, resolveNodePath(node))));
+      const snapshots = await Promise.all(fetchPromises);
+
+      snapshots.forEach((snap, index) => {
+        const nodeName = selectedNodes[index];
+        if(snap.exists()) {
+          const raw = snap.val();
+          for(let id in raw) {
+            const item = raw[id];
+            const tglItem = extractDateString(item);
+            
+            if((tglItem >= start && tglItem <= end) || tglItem === "1970-01-01") {
+              fetchedData[`${nodeName}|||${id}`] = { node: nodeName, id: id, data: item };
+            }
+          }
+        } else {
+          tabelKosongAtauSalah.push(nodeLabels[nodeName] || nodeName);
+        }
+      });
+      
+      document.getElementById('masterCheckbox').checked = false;
+      renderTabel();
+
+      if(tabelKosongAtauSalah.length === selectedNodes.length) {
+        alert("⚠️ PERHATIAN:\nSemua tabel yang Anda centang ternyata KOSONG atau NAMA TABELNYA BERBEDA di Firebase Anda.");
+      }
+
+    } catch (e) {
+      alert("Error menarik database: " + e.message);
+    } finally {
+      document.getElementById('loadingOverlay').style.display = 'none';
+    }
+  }
+
+  window.renderTabel = function() {
+    const tbody = document.getElementById('tabelData');
+    let compoundIds = Object.keys(fetchedData);
+    
+    if(compoundIds.length === 0) {
+      tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; padding:30px; color:var(--text-muted); font-style:italic;">Tidak ada data ditemukan pada rentang tanggal & tabel tersebut.</td></tr>`;
+      return;
+    }
+
+    compoundIds.sort((a,b) => extractDateString(fetchedData[b].data).localeCompare(extractDateString(fetchedData[a].data)));
+
+    let html = '';
+    compoundIds.forEach(cId => {
+      const fData = fetchedData[cId];
+      const summary = generateSummary(fData.data);
+      const tgl = extractDateString(fData.data);
+      const namaTabelVisual = nodeLabels[fData.node] || fData.node;
+
+      let checkboxHtml = currentMode === 'tab-massal' ? `<td style="text-align:center; vertical-align: middle;"><input type="checkbox" class="check-bulk cb-item-data" value="${cId}" onchange="checkIndividualData(this)"></td>` : '';
+      let aksiHtml = `
+        <button class="btn-act btn-edit" onclick="bukaModalEdit('${cId}')">✏️ Edit</button>
+        <button class="btn-act btn-del" onclick="hapusSatu('${cId}')">🗑️ Hapus</button>
+      `;
+
+      if(currentMode === 'tab-massal') {
+        aksiHtml = `<span style="font-size:0.7rem; color:var(--text-muted); font-style:italic;">Pilih via Checkbox</span>`;
+      }
+
+      html += `
+        <tr id="row_${cId}">
+          ${checkboxHtml}
+          <td><b style="color:var(--navy-dark);">${tgl === "1970-01-01" ? "Data Tetap" : tgl}</b></td>
+          <td>
+            <div class="badge-node">${namaTabelVisual}</div>
+            <div class="data-summary">${summary}</div>
+            <div class="data-id">ID: ${fData.id}</div>
+          </td>
+          <td style="text-align:center; vertical-align: middle;">${aksiHtml}</td>
+        </tr>
+      `;
+    });
+
+    tbody.innerHTML = html;
+    checkIndividualData(); 
+  }
+
+  window.toggleSelectAllData = function(el) {
+    const checkboxes = document.querySelectorAll('.cb-item-data');
+    checkboxes.forEach(cb => {
+      cb.checked = el.checked;
+      if(el.checked) document.getElementById('row_' + cb.value).classList.add('row-checked');
+      else document.getElementById('row_' + cb.value).classList.remove('row-checked');
+    });
+  }
+
+  window.checkIndividualData = function(el = null) {
+    if(el) {
+      if(el.checked) document.getElementById('row_' + el.value).classList.add('row-checked');
+      else document.getElementById('row_' + el.value).classList.remove('row-checked');
+    }
+
+    const totalCheckboxes = document.querySelectorAll('.cb-item-data').length;
+    const checkedCheckboxes = document.querySelectorAll('.cb-item-data:checked').length;
+    const masterCheckbox = document.getElementById('masterCheckbox');
+    
+    if(totalCheckboxes > 0 && totalCheckboxes === checkedCheckboxes) {
+      masterCheckbox.checked = true;
+    } else {
+      masterCheckbox.checked = false;
+    }
+  }
+
+  window.hapusSatu = async function(cId) {
+    if(!confirm("Yakin ingin menghapus data ini secara permanen?")) return;
+    
+    document.getElementById('loadingText').textContent = "Menghapus Data...";
+    document.getElementById('loadingOverlay').style.display = 'flex';
+
+    try {
+      const fData = fetchedData[cId];
+      await remove(ref(db, `${resolveNodePath(fData.node)}/${fData.id}`));
+      delete fetchedData[cId];
+      renderTabel();
+    } catch(e) {
+      alert("Gagal menghapus: " + e.message);
+    } finally {
+      document.getElementById('loadingOverlay').style.display = 'none';
+    }
+  }
+
+  window.hapusMassalTerpilih = async function() {
+    let selectedCompoundIds = [];
+    document.querySelectorAll('.cb-item-data:checked').forEach(cb => selectedCompoundIds.push(cb.value));
+
+    if(selectedCompoundIds.length === 0) return alert("Pilih minimal 1 data untuk dihapus!");
+    if(!confirm(`⚠️ PERINGATAN! Anda akan menghapus ${selectedCompoundIds.length} data lintas tabel secara permanen. Lanjutkan?`)) return;
+
+    document.getElementById('loadingText').textContent = "Menghapus Data Massal...";
+    document.getElementById('loadingOverlay').style.display = 'flex';
+
+    try {
+      const deletePromises = selectedCompoundIds.map(cId => {
+        const fData = fetchedData[cId];
+        return remove(ref(db, `${resolveNodePath(fData.node)}/${fData.id}`));
+      });
+      await Promise.all(deletePromises);
+
+      selectedCompoundIds.forEach(cId => delete fetchedData[cId]);
+      
+      alert(`✅ Berhasil menghapus ${selectedCompoundIds.length} data!`);
+      document.getElementById('masterCheckbox').checked = false;
+      renderTabel();
+
+    } catch(e) {
+      alert("Terjadi kesalahan saat penghapusan massal: " + e.message);
+    } finally {
+      document.getElementById('loadingOverlay').style.display = 'none';
+    }
+  }
+
+  window.bukaModalEdit = function(cId) {
+    idSedangDiedit = cId;
+    const fData = fetchedData[cId];
+    const item = fData.data; 
+    const formArea = document.getElementById('dynamicFormArea');
+    formArea.innerHTML = '';
+
+    for(let key in item) {
+      const val = item[key];
+      const fieldId = `edit_${key}`;
+      let inputHtml = '';
+
+      if(typeof val === 'object' && val !== null) {
+        const strVal = escapeHtml(JSON.stringify(val, null, 2));
+        inputHtml = `<textarea id="${fieldId}" class="edit-input" data-type="object">${strVal}</textarea>`;
+      } else if(typeof val === 'boolean') {
+        inputHtml = `
+          <select id="${fieldId}" class="edit-input" data-type="boolean">
+            <option value="true" ${val ? 'selected' : ''}>true</option>
+            <option value="false" ${!val ? 'selected' : ''}>false</option>
+          </select>`;
+      } else if(typeof val === 'number') {
+        inputHtml = `<input type="number" step="any" id="${fieldId}" class="edit-input" data-type="number" value="${val}">`;
+      } else {
+        inputHtml = `<input type="text" id="${fieldId}" class="edit-input" data-type="string" value="${escapeHtml(val ?? '')}">`;
+      }
+
+      formArea.innerHTML += `
+        <div class="dynamic-form-row">
+          <label>Field: <b>${escapeHtml(key)}</b></label>
+          ${inputHtml}
+        </div>
+      `;
+    }
+
+    document.getElementById('modalEditTitle').textContent = `Koreksi Tabel [${nodeLabels[fData.node] || fData.node}]`;
+    document.getElementById('modalEdit').style.display = 'flex';
+  }
+
+  window.tutupModal = function() {
+    document.getElementById('modalEdit').style.display = 'none';
+  }
+
+  window.simpanKoreksi = async function() {
+    const fData = fetchedData[idSedangDiedit];
+    const itemOriginal = fData.data;
+    let newData = Array.isArray(itemOriginal) ? [] : {};
+    let isError = false;
+
+    for(let key in itemOriginal) {
+      const inputEl = document.getElementById(`edit_${key}`);
+      const type = inputEl.getAttribute('data-type');
+      let val = inputEl.value;
+
+      if(type === 'object') {
+        try {
+          val = JSON.parse(val);
+        } catch (e) {
+          isError = true;
+          alert(`❌ Format JSON pada field [${key}] tidak valid!\nPastikan tanda kutip, kurung siku [], atau kurung kurawal {} sudah benar.\n\nError: ` + e.message);
+          break; 
+        }
+      } else if(type === 'number') {
+        val = Number(val);
+      } else if(type === 'boolean') {
+        val = val === 'true';
+      }
+      newData[key] = val;
+    }
+
+    if(isError) return; 
+
+    document.getElementById('loadingText').textContent = "Menyimpan Perubahan...";
+    document.getElementById('loadingOverlay').style.display = 'flex';
+
+    try {
+      await update(ref(db, `${resolveNodePath(fData.node)}/${fData.id}`), newData);
+      fetchedData[idSedangDiedit].data = newData;
+      
+      alert("✅ Data berhasil dikoreksi!");
+      tutupModal();
+      renderTabel();
+
+    } catch (e) {
+      alert("Gagal mengupdate data: " + e.message);
+    } finally {
+      document.getElementById('loadingOverlay').style.display = 'none';
+    }
+  }
+</script>
+</body>
+</html>

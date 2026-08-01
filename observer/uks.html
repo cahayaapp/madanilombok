@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <!-- CAHAYA WHITE-LABEL CONFIG -->
+  <script src="../config/tenant-config.js"></script>
+  <script src="../config/master-data.js"></script>
+  <script src="../js/cahaya-config-runtime.js" defer></script>
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <meta name="theme-color" content="#2878ff">
+  <title>Observasi UKS | CAHAYA APP</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@500;600;700;800;900;1000&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="observer.css">
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+</head>
+<body>
+  <div id="observerApp"></div>
+  <script>window.OBSERVER_PAGE_CONFIG={"type":"uks","title":"Observasi UKS","shortTitle":"UKS","icon":"🩺","subtitle":"Pengamatan kesiapan layanan kesehatan, kebersihan ruang, pencatatan, penyimpanan obat, kelengkapan alat, penanganan santri sakit, privasi, dan prosedur rujukan.","formDescription":"Observasi berfokus pada mutu layanan operasional UKS, bukan menetapkan diagnosis medis.","fields":[{"name":"tanggal","label":"Tanggal","type":"date","required":true},{"name":"waktu","label":"Waktu","type":"time","required":true},{"name":"jenisLayanan","label":"Jenis Observasi","type":"select","required":true,"placeholder":"Pilih jenis","options":["Kesiapan Layanan Harian","Penanganan Santri Sakit","Administrasi dan Rekam Layanan","Stok dan Penyimpanan Obat","Kebersihan dan Sarana UKS","Proses Rujukan"]},{"name":"lokasi","label":"Unit/Lokasi","type":"select","required":true,"placeholder":"Pilih unit","options":["UKS Putra","UKS Putri","Kamar Istirahat Santri Sakit","Lainnya"]},{"name":"petugas","label":"Petugas yang Bertugas","placeholder":"Nama petugas kesehatan","required":true},{"name":"jumlahDilayani","label":"Santri Dilayani","type":"number","min":0,"placeholder":"0"},{"name":"kasusUmum","label":"Gambaran Umum Layanan","placeholder":"Tanpa menulis diagnosis sensitif atau detail pribadi"}],"indicators":[["Kehadiran dan kesiapan petugas","Petugas tersedia atau dapat dihubungi sesuai jadwal layanan."],["Kebersihan dan kerapian UKS","Ruang, tempat tidur, meja, dan peralatan bersih serta rapi."],["Kelengkapan alat dasar","Peralatan dasar tersedia, berfungsi, dan mudah ditemukan."],["Penyimpanan obat","Obat tertata, berlabel, tidak kedaluwarsa, dan tersimpan dengan aman."],["Pencatatan layanan","Kunjungan, keluhan umum, tindakan, dan tindak lanjut tercatat."],["Prosedur penanganan","Santri ditangani dengan tenang, aman, dan sesuai kewenangan petugas."],["Privasi dan adab layanan","Kerahasiaan, kenyamanan, dan adab terhadap santri terjaga."],["Komunikasi dengan pihak terkait","Informasi penting diteruskan kepada pimpinan atau wali sesuai prosedur."],["Kesiapan rujukan","Alur rujukan, transportasi, dan kontak darurat tersedia."],["Kebersihan setelah pelayanan","Alat serta area layanan dibersihkan kembali setelah digunakan."]],"problemCategories":["Ketersediaan Petugas","Administrasi Layanan","Stok Obat","Sarana UKS","Kebersihan","Prosedur Rujukan","Koordinasi","Lainnya"]};</script>
+  <script src="observer-common.js"></script>
+</body>
+</html>

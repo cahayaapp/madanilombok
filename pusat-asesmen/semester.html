@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <!-- CAHAYA WHITE-LABEL CONFIG -->
+  <script src="../config/tenant-config.js"></script>
+  <script src="../config/master-data.js"></script>
+  <script src="../js/cahaya-config-runtime.js" defer></script>
+
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>CAHAYA APP - Asesmen Akhir Semester CAHAYA</title>
+
+  <!-- PANGGIL MASTER THEME CAHAYA -->
+  <link rel="stylesheet" href="../css/cahaya-theme.css" />
+
+  <style>
+    /* CSS Khusus Layout Asesmen Santri */
+    .dimensi-header {
+      display: flex; align-items: center; gap: 15px; 
+      border-bottom: 2px dashed #cbd5e1; padding-bottom: 15px; margin-bottom: 25px;
+    }
+    .dimensi-icon {
+      width: 45px; height: 45px; border-radius: 12px; background: rgba(212,175,55,0.1);
+      color: var(--gold-dark); display: flex; justify-content: center; align-items: center; font-size: 1.5rem;
+    }
+    .dimensi-title { font-family: 'Playfair Display', serif; font-size: 1.4rem; color: var(--navy-dark); font-weight: 800; margin: 0; }
+
+    .question-block { margin-bottom: 30px; }
+    .question-title { font-weight: 800; color: var(--navy-dark); font-size: 0.95rem; margin-bottom: 12px; display: block; line-height: 1.4; }
+
+    /* Radio Cards Anti-Bias */
+    .radio-card-group { display: flex; flex-direction: column; gap: 8px; }
+    .radio-card {
+      display: flex; align-items: flex-start; padding: 12px 15px;
+      border-radius: 10px; background: #f8fafc; border: 1px solid #e2e8f0;
+      cursor: pointer; transition: all 0.2s ease;
+    }
+    .radio-card:hover { background: #f1f5f9; border-color: var(--gold-main); }
+    .radio-card input[type="radio"] { margin-top: 3px; margin-right: 12px; transform: scale(1.2); accent-color: var(--gold-main); cursor: pointer; }
+    .radio-card .rc-text { font-size: 0.85rem; color: #475569; font-weight: 600; line-height: 1.4; }
+    
+    /* State Checked */
+    .radio-card:has(input:checked) {
+      background: #fffbeb; border-color: var(--gold-main);
+      box-shadow: 0 4px 10px rgba(212,175,55,0.1);
+    }
+    .radio-card:has(input:checked) .rc-text { color: var(--gold-dark); font-weight: 700; }
+
+    .btn-generate {
+      background: #ecfdf5; color: #059669; border: 1px solid #6ee7b7; padding: 10px 20px;
+      border-radius: 50px; font-weight: 700; font-size: 0.85rem; cursor: pointer; transition: 0.3s;
+      display: inline-flex; align-items: center; gap: 8px; margin-bottom: 15px;
+    }
+    .btn-generate:hover { background: #10b981; color: white; }
+
+    .narasi-box { background: #f8fafc; border: 1px solid #cbd5e1; border-left: 4px solid var(--gold-main); padding: 15px; border-radius: 8px; }
+    .narasi-box textarea { border: none; background: transparent; width: 100%; min-height: 100px; font-size: 0.9rem; color: var(--navy-dark); line-height: 1.6; resize: vertical; outline: none; }
+
+    /* Custom Checkbox untuk Fokus Perbaikan */
+    .chk-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; }
+    .chk-card { display: flex; align-items: center; padding: 12px; border-radius: 8px; background: white; border: 1px solid #cbd5e1; cursor: pointer; font-size: 0.85rem; font-weight: 700; color: var(--navy-dark); transition: 0.2s; }
+    .chk-card input { margin-right: 10px; transform: scale(1.2); accent-color: var(--navy-dark); }
+    .chk-card:hover { border-color: var(--navy-light); }
+
+    #loadingOverlay { position: fixed; inset: 0; background: rgba(255,255,255,0.9); backdrop-filter: blur(5px); z-index: 3000; display: flex; flex-direction: column; justify-content: center; align-items: center; color: var(--navy-dark); font-family: 'Playfair Display', serif; font-size: 1.2rem; transition: 0.5s; }
+  </style>
+</head>
+
+<body>
+
+<div id="loadingOverlay">
+  <div style="font-size: 2.5rem; margin-bottom: 15px; animation: float 1.5s infinite alternate ease-in-out;">📋</div>
+  <div style="font-weight: 700;">Menyiapkan Instrumen Asesmen...</div>
+</div>
+
+<main class="cahaya-container">
+  <div style="text-align: center; margin-bottom: 30px;">
+    <h2 style="font-family:'Playfair Display',serif; font-size:2rem; font-weight:800; color:var(--navy-dark); line-height:1.2; margin-bottom:5px;">Asesmen Akhir Semester CAHAYA</h2>
+    <p style="color:var(--text-muted); font-size:0.9rem; margin-bottom: 8px;">Evaluasi Komprehensif Perkembangan 5 Dimensi Santri Selama Satu Semester</p>
+    <p style="color:var(--gold-dark); font-size:0.78rem; font-weight:700; margin:0;">Gunakan catatan pendampingan dan kecenderungan perilaku sepanjang semester, bukan satu kejadian sesaat.</p>
+  </div>
+
+  <div class="cahaya-card">
+    <h3 style="font-family:'Playfair Display',serif; font-size:1.2rem; margin-bottom: 15px; color: var(--navy-dark);">📋 Identitas Asesmen Akhir Semester</h3>
+    <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(180px, 1fr)); gap:16px;">
+      <div class="form-group">
+        <label>Semester</label>
+        <select class="form-control" id="semesterAsesmen">
+          <option value="Ganjil">Semester Ganjil</option>
+          <option value="Genap">Semester Genap</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Tahun Pelajaran</label>
+        <input type="text" class="form-control" id="tahunPelajaran" placeholder="Contoh: 2025/2026" maxlength="9">
+      </div>
+      <div class="form-group">
+        <label>Tanggal Penetapan Asesmen</label>
+        <input type="date" class="form-control" id="tanggalAsesmen">
+      </div>
+      <div class="form-group">
+        <label>Usrah / Naqib Pengasuh</label>
+        <select class="form-control" id="pilihanUsrah" style="font-weight: bold; color: var(--navy-dark);">
+          <option value="">-- Memuat Pilihan Usrah --</option>
+        </select>
+        <small style="display:block; margin-top:6px; color:var(--text-muted); font-size:0.75rem;">
+          Setiap akun dapat memilih seluruh usrah yang tersedia.
+        </small>
+      </div>
+      <div class="form-group">
+        <label>Nama Santri</label>
+        <select class="form-control" id="namaSantri" style="font-weight: bold; color: var(--navy-dark);" disabled>
+          <option value="">-- Pilih Usrah Terlebih Dahulu --</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <!-- DIMENSI 1: SPIRITUAL -->
+  <div class="cahaya-card">
+    <div class="dimensi-header">
+      <div class="dimensi-icon">🌙</div>
+      <h3 class="dimensi-title">1. Cinta Allah (Spiritual)</h3>
+    </div>
+
+    <div class="question-block">
+      <span class="question-title">1. Rekap Kesiapan Menuju Ibadah (Shalat Fardhu):</span>
+      <div class="radio-card-group">
+        <label class="radio-card"><input type="radio" name="sp1" value="1"><span class="rc-text">Membutuhkan >3 kali instruksi lisan atau tindakan tegas dari naqib untuk beranjak ke masjid.</span></label>
+        <label class="radio-card"><input type="radio" name="sp1" value="2"><span class="rc-text">Beranjak ke masjid setelah diingatkan 1-2 kali oleh naqib/pengurus.</span></label>
+        <label class="radio-card"><input type="radio" name="sp1" value="3"><span class="rc-text">Umumnya merespons panggilan azan secara mandiri tanpa perlu ditegur secara khusus.</span></label>
+        <label class="radio-card"><input type="radio" name="sp1" value="4"><span class="rc-text">Sangat mandiri; telah bersiap dengan pakaian rapi sebelum azan berkumandang.</span></label>
+        <label class="radio-card"><input type="radio" name="sp1" value="5"><span class="rc-text">Sangat teladan; berada di shaf terdepan sebelum azan dan aktif mengajak temannya.</span></label>
+      </div>
+    </div>
+
+    <div class="question-block">
+      <span class="question-title">2. Rekap Ketertiban Jamaah:</span>
+      <div class="radio-card-group">
+        <label class="radio-card"><input type="radio" name="sp2" value="1"><span class="rc-text">Tercatat sering masbuk lebih dari 1 rakaat atau tidak shalat berjamaah.</span></label>
+        <label class="radio-card"><input type="radio" name="sp2" value="2"><span class="rc-text">Kadang tertinggal takbiratul ihram pertama bersama imam.</span></label>
+        <label class="radio-card"><input type="radio" name="sp2" value="3"><span class="rc-text">Tertib mengikuti shalat dari awal hingga salam dengan baik.</span></label>
+        <label class="radio-card"><input type="radio" name="sp2" value="4"><span class="rc-text">Selalu mendapati takbiratul ihram bersama imam tanpa absen.</span></label>
+        <label class="radio-card"><input type="radio" name="sp2" value="5"><span class="rc-text">Selalu tepat waktu dan terlihat aktif melaksanakan shalat rawatib (qabliyah/ba'diyah).</span></label>
+      </div>
+    </div>
+
+    <div class="question-block">
+      <span class="question-title">3. Rekap Adab dalam Halaqah/Majelis:</span>
+      <div class="radio-card-group">
+        <label class="radio-card"><input type="radio" name="sp3" value="1"><span class="rc-text">Pasif, sering tertidur, atau mengobrol sendiri saat materi disampaikan.</span></label>
+        <label class="radio-card"><input type="radio" name="sp3" value="2"><span class="rc-text">Hadir secara fisik namun pandangan kosong atau kurang memperhatikan ustadz.</span></label>
+        <label class="radio-card"><input type="radio" name="sp3" value="3"><span class="rc-text">Duduk tertib mendengarkan penyampaian materi hingga selesai.</span></label>
+        <label class="radio-card"><input type="radio" name="sp3" value="4"><span class="rc-text">Menyimak dengan postur tubuh yang baik dan mencatat poin penting materi.</span></label>
+        <label class="radio-card"><input type="radio" name="sp3" value="5"><span class="rc-text">Mencatat dengan detail, antusias menyimak, dan aktif merespons/bertanya dalam majelis.</span></label>
+      </div>
+    </div>
+
+    <button class="btn-generate" onclick="generateNarasiSpiritual()">✨ Susun Narasi Akhir Semester – Spiritual</button>
+    <div class="narasi-box"><textarea id="narasiSpiritual" placeholder="Narasi asesmen akhir semester akan tersusun otomatis di sini..."></textarea></div>
+  </div>
+
+  <!-- DIMENSI 2: RELASIONAL -->
+  <div class="cahaya-card">
+    <div class="dimensi-header">
+      <div class="dimensi-icon">🤝</div>
+      <h3 class="dimensi-title">2. Akhlak Mulia (Relasional)</h3>
+    </div>
+
+    <div class="question-block">
+      <span class="question-title">4. Rekap Adab kepada Asatidz/Pengurus:</span>
+      <div class="radio-card-group">
+        <label class="radio-card"><input type="radio" name="re1" value="1"><span class="rc-text">Pernah merespons dengan nada tinggi, membantah instruksi, atau menatap dengan tajam.</span></label>
+        <label class="radio-card"><input type="radio" name="re1" value="2"><span class="rc-text">Melaksanakan instruksi namun menunjukkan gestur enggan (cemberut/menggerutu lambat).</span></label>
+        <label class="radio-card"><input type="radio" name="re1" value="3"><span class="rc-text">Merespons panggilan dan instruksi dengan wajar dan kooperatif.</span></label>
+        <label class="radio-card"><input type="radio" name="re1" value="4"><span class="rc-text">Terbiasa mendahului salam, menundukkan pandangan, dan berbahasa sopan/krama.</span></label>
+        <label class="radio-card"><input type="radio" name="re1" value="5"><span class="rc-text">Sangat beradab; proaktif menawarkan bantuan kepada guru tanpa diminta.</span></label>
+      </div>
+    </div>
+
+    <div class="question-block">
+      <span class="question-title">5. Rekap Interaksi dengan Teman Sebaya:</span>
+      <div class="radio-card-group">
+        <label class="radio-card"><input type="radio" name="re2" value="1"><span class="rc-text">Tercatat terlibat >2 insiden perselisihan, mengejek, atau pertengkaran fisik/verbal.</span></label>
+        <label class="radio-card"><input type="radio" name="re2" value="2"><span class="rc-text">Lebih sering menyendiri secara ekstrem atau menunjukkan kesulitan bergaul.</span></label>
+        <label class="radio-card"><input type="radio" name="re2" value="3"><span class="rc-text">Mampu bermain dan berkomunikasi dengan teman kamarnya secara normal tanpa konflik.</span></label>
+        <label class="radio-card"><input type="radio" name="re2" value="4"><span class="rc-text">Memiliki interaksi sosial yang luas, ramah, dan disukai teman-temannya.</span></label>
+        <label class="radio-card"><input type="radio" name="re2" value="5"><span class="rc-text">Mampu menjadi penengah saat temannya berkonflik dan memiliki jiwa kepemimpinan positif.</span></label>
+      </div>
+    </div>
+
+    <div class="question-block">
+      <span class="question-title">6. Rekap Tanggung Jawab & Kepedulian (Amanah Piket):</span>
+      <div class="radio-card-group">
+        <label class="radio-card"><input type="radio" name="re3" value="1"><span class="rc-text">Sering meninggalkan tugas piket atau bersikap acuh pada fasilitas bersama.</span></label>
+        <label class="radio-card"><input type="radio" name="re3" value="2"><span class="rc-text">Melaksanakan tugas piket hanya jika diawasi atau ditegur langsung.</span></label>
+        <label class="radio-card"><input type="radio" name="re3" value="3"><span class="rc-text">Menyelesaikan porsi tugasnya sendiri dengan standar kebersihan cukup.</span></label>
+        <label class="radio-card"><input type="radio" name="re3" value="4"><span class="rc-text">Proaktif menjenguk teman sakit, meminjamkan barang, atau merapikan ruang bersama mandiri.</span></label>
+        <label class="radio-card"><input type="radio" name="re3" value="5"><span class="rc-text">Sangat teladan; mengambil inisiatif membersihkan asrama / membantu piket temannya secara sukarela.</span></label>
+      </div>
+    </div>
+
+    <button class="btn-generate" onclick="generateNarasiRelasional()">✨ Susun Narasi Akhir Semester – Relasional</button>
+    <div class="narasi-box"><textarea id="narasiRelasional" placeholder="Narasi asesmen akhir semester akan tersusun otomatis di sini..."></textarea></div>
+  </div>
+
+  <!-- DIMENSI 3: EMOSIONAL -->
+  <div class="cahaya-card">
+    <div class="dimensi-header">
+      <div class="dimensi-icon">💛</div>
+      <h3 class="dimensi-title">3. Hati Bersih (Emosional)</h3>
+    </div>
+
+    <div class="question-block">
+      <span class="question-title">7. Rekap Respons Saat Kecewa/Marah:</span>
+      <div class="radio-card-group">
+        <label class="radio-card"><input type="radio" name="em1" value="1"><span class="rc-text">Melampiaskan marah dengan berteriak, membanting barang, atau merusak properti.</span></label>
+        <label class="radio-card"><input type="radio" name="em1" value="2"><span class="rc-text">Menunjukkan aksi ngambek berkepanjangan (mogok makan/kegiatan) saat keinginannya tidak dipenuhi.</span></label>
+        <label class="radio-card"><input type="radio" name="em1" value="3"><span class="rc-text">Tampak murung sesaat, namun mampu menenangkan diri kembali dalam waktu relatif wajar.</span></label>
+        <label class="radio-card"><input type="radio" name="em1" value="4"><span class="rc-text">Mampu mengomunikasikan kekecewaan secara lisan dengan runtut tanpa melukai orang lain.</span></label>
+        <label class="radio-card"><input type="radio" name="em1" value="5"><span class="rc-text">Sangat tangguh; merespons kondisi tidak menyenangkan dengan senyum, sabar, dan mencari solusi.</span></label>
+      </div>
+    </div>
+
+    <div class="question-block">
+      <span class="question-title">8. Rekap Respons Terhadap Nasihat/Kritik:</span>
+      <div class="radio-card-group">
+        <label class="radio-card"><input type="radio" name="em2" value="1"><span class="rc-text">Bersikap defensif ekstrim: membantah, mencari-cari alasan (excuse), atau menyalahkan orang lain.</span></label>
+        <label class="radio-card"><input type="radio" name="em2" value="2"><span class="rc-text">Diam tertunduk namun menunjukkan gestur penolakan internal atau mengulang kesalahan yang sama segera.</span></label>
+        <label class="radio-card"><input type="radio" name="em2" value="3"><span class="rc-text">Mendengarkan teguran dengan tenang dan mau mengakui kesalahan.</span></label>
+        <label class="radio-card"><input type="radio" name="em2" value="4"><span class="rc-text">Menerima masukan dengan lapang dada dan terlihat upaya perbaikan perilaku di hari berikutnya.</span></label>
+        <label class="radio-card"><input type="radio" name="em2" value="5"><span class="rc-text">Proaktif meminta umpan balik kepada Naqib/Guru untuk mengevaluasi kekurangan dirinya.</span></label>
+      </div>
+    </div>
+
+    <button class="btn-generate" onclick="generateNarasiEmosional()">✨ Susun Narasi Akhir Semester – Emosional</button>
+    <div class="narasi-box"><textarea id="narasiEmosional" placeholder="Narasi asesmen akhir semester akan tersusun otomatis di sini..."></textarea></div>
+  </div>
+
+  <!-- DIMENSI 4: INTELEKTUAL -->
+  <div class="cahaya-card">
+    <div class="dimensi-header">
+      <div class="dimensi-icon">🧠</div>
+      <h3 class="dimensi-title">4. Akal Cerdas (Intelektual)</h3>
+    </div>
+
+    <div class="question-block">
+      <span class="question-title">9. Rekap Motivasi Belajar Harian:</span>
+      <div class="radio-card-group">
+        <label class="radio-card"><input type="radio" name="in1" value="1"><span class="rc-text">Sering menunda masuk kelas, absen membolos tanpa alasan syar'i, atau tertidur di kelas.</span></label>
+        <label class="radio-card"><input type="radio" name="in1" value="2"><span class="rc-text">Hadir ke kelas, namun terlihat malas-malasan dan tidak melengkapi alat tulis/buku.</span></label>
+        <label class="radio-card"><input type="radio" name="in1" value="3"><span class="rc-text">Disiplin menghadiri kegiatan akademik dan menyelesaikan porsi tugas wajarnya.</span></label>
+        <label class="radio-card"><input type="radio" name="in1" value="4"><span class="rc-text">Menunjukkan partisipasi aktif, mencatat dengan rapi, dan antusias dalam diskusi kelompok.</span></label>
+        <label class="radio-card"><input type="radio" name="in1" value="5"><span class="rc-text">Terlihat membaca literatur tambahan di luar jam kelas atau mampu menjadi tutor sebaya bagi temannya.</span></label>
+      </div>
+    </div>
+
+    <div class="question-block">
+      <span class="question-title">10. Rekap Daya Nalar (Berdasarkan Laporan Sekolah/Tahfiz):</span>
+      <div class="radio-card-group">
+        <label class="radio-card"><input type="radio" name="in2" value="1"><span class="rc-text">Sering mendapatkan nilai di bawah standar ketuntasan pada mayoritas evaluasi.</span></label>
+        <label class="radio-card"><input type="radio" name="in2" value="2"><span class="rc-text">Memerlukan bimbingan/remedial berulang untuk dapat memahami satu instruksi/materi pelajaran.</span></label>
+        <label class="radio-card"><input type="radio" name="in2" value="3"><span class="rc-text">Mampu menangkap instruksi dan materi dasar pelajaran dengan baik.</span></label>
+        <label class="radio-card"><input type="radio" name="in2" value="4"><span class="rc-text">Memiliki daya tangkap cepat, mudah menghafal, dan nilai akademik/tahfiz di atas rata-rata.</span></label>
+        <label class="radio-card"><input type="radio" name="in2" value="5"><span class="rc-text">Mampu berpikir analitis, merangkai argumen logis saat berdiskusi, dan berprestasi akademik tinggi.</span></label>
+      </div>
+    </div>
+
+    <button class="btn-generate" onclick="generateNarasiIntelektual()">✨ Susun Narasi Akhir Semester – Intelektual</button>
+    <div class="narasi-box"><textarea id="narasiIntelektual" placeholder="Narasi asesmen akhir semester akan tersusun otomatis di sini..."></textarea></div>
+  </div>
+
+  <!-- DIMENSI 5: FISIK -->
+  <div class="cahaya-card">
+    <div class="dimensi-header">
+      <div class="dimensi-icon">💪</div>
+      <h3 class="dimensi-title">5. Fisik Berdaya (Physical)</h3>
+    </div>
+
+    <div class="question-block">
+      <span class="question-title">11. Rekap Kebersihan & Kerapian Pribadi:</span>
+      <div class="radio-card-group">
+        <label class="radio-card"><input type="radio" name="fi1" value="1"><span class="rc-text">Aroma tubuh tidak sedap, pakaian sering lusuh/kotor, dan area lemari sangat berantakan.</span></label>
+        <label class="radio-card"><input type="radio" name="fi1" value="2"><span class="rc-text">Kerapian diri kurang konsisten; rambut kadang panjang/tidak rapi atau memakai baju yang belum disetrika.</span></label>
+        <label class="radio-card"><input type="radio" name="fi1" value="3"><span class="rc-text">Menjaga standar mandi teratur, pakaian sesuai seragam, dan area lemari cukup wajar.</span></label>
+        <label class="radio-card"><input type="radio" name="fi1" value="4"><span class="rc-text">Selalu berpenampilan bersih, pakaian rapi/harum, dan penataan loker/kasurnya sangat terorganisir.</span></label>
+        <label class="radio-card"><input type="radio" name="fi1" value="5"><span class="rc-text">Sangat peduli kebersihan; menjadi contoh bagi teman kamarnya dalam merawat kerapian diri dan asrama.</span></label>
+      </div>
+    </div>
+
+    <div class="question-block">
+      <span class="question-title">12. Rekap Ketahanan Fisik & Jam Istirahat:</span>
+      <div class="radio-card-group">
+        <label class="radio-card"><input type="radio" name="fi2" value="1"><span class="rc-text">Tercatat sering jatuh sakit berulang kali dalam sebulan atau melanggar jam malam (begadang ekstrem).</span></label>
+        <label class="radio-card"><input type="radio" name="fi2" value="2"><span class="rc-text">Sering terlihat lesu, mengantuk berat di siang hari karena manajemen tidur yang kurang baik.</span></label>
+        <label class="radio-card"><input type="radio" name="fi2" value="3"><span class="rc-text">Mampu mengikuti ritme kegiatan harian dari subuh hingga malam tanpa kendala fisik berarti.</span></label>
+        <label class="radio-card"><input type="radio" name="fi2" value="4"><span class="rc-text">Sangat disiplin mematuhi jam tidur asrama dan selalu bangun dengan energi yang bugar.</span></label>
+        <label class="radio-card"><input type="radio" name="fi2" value="5"><span class="rc-text">Memiliki vitalitas fisik prima dan aktif/rutin melakukan kegiatan olahraga mandiri/ekstrakurikuler.</span></label>
+      </div>
+    </div>
+
+    <button class="btn-generate" onclick="generateNarasiFisik()">✨ Susun Narasi Akhir Semester – Fisik</button>
+    <div class="narasi-box"><textarea id="narasiFisik" placeholder="Narasi asesmen akhir semester akan tersusun otomatis di sini..."></textarea></div>
+  </div>
+
+  <!-- RENCANA TINDAK LANJUT SEMESTER -->
+  <div class="cahaya-card">
+    <div class="dimensi-header">
+      <div class="dimensi-icon">📈</div>
+      <h3 class="dimensi-title">Rangkuman dan Tindak Lanjut Semester</h3>
+    </div>
+
+    <div class="form-group">
+      <label>1. Rangkuman Perkembangan Santri Selama Semester Ini</label>
+      <textarea class="form-control" id="rangkumanSemesterIni" rows="4" placeholder="Tuliskan capaian utama, perkembangan positif, serta hambatan yang masih perlu diperbaiki sepanjang semester ini..."></textarea>
+    </div>
+
+    <div class="form-group" style="margin-top: 25px;">
+      <label>2. Fokus Pembinaan Prioritas Semester Berikutnya (Bisa Pilih Lebih dari Satu)</label>
+      <div class="chk-grid">
+        <label class="chk-card"><input type="checkbox" name="fokusSemesterBerikutnya" value="Cinta Allah (Spiritual)"> 🌙 Cinta Allah</label>
+        <label class="chk-card"><input type="checkbox" name="fokusSemesterBerikutnya" value="Akhlak Mulia (Relasional)"> 🤝 Akhlak Mulia</label>
+        <label class="chk-card"><input type="checkbox" name="fokusSemesterBerikutnya" value="Hati Bersih (Emosional)"> 💛 Hati Bersih</label>
+        <label class="chk-card"><input type="checkbox" name="fokusSemesterBerikutnya" value="Akal Cerdas (Intelektual)"> 🧠 Akal Cerdas</label>
+        <label class="chk-card"><input type="checkbox" name="fokusSemesterBerikutnya" value="Fisik Berdaya (Kesehatan)"> 💪 Fisik Berdaya</label>
+      </div>
+    </div>
+
+    <div class="form-group" style="margin-top: 25px;">
+      <label>3. Catatan Khusus untuk Wali Santri dan Kemitraan Pembinaan di Rumah</label>
+      <textarea class="form-control" id="catatanWaliSantri" rows="4" placeholder="Tuliskan apresiasi, rekomendasi pendampingan di rumah, atau hal yang perlu disinergikan bersama wali santri pada semester berikutnya..."></textarea>
+    </div>
+
+    <button class="btn-cahaya btn-gold" id="btnSubmit" style="width: 100%; margin-top: 20px; padding: 15px; font-size: 1.1rem;" onclick="simpanAsesmen()">💾 SIMPAN ASESMEN AKHIR SEMESTER</button>
+  </div>
+</main>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+  import { getDatabase, ref, push, get } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+
+  const firebaseConfig = window.CAHAYA_CONFIG.firebase;
+
+  const app = initializeApp(firebaseConfig);
+  const db = getDatabase(app);
+
+  // --- KECERDASAN PEMBERSIH NAMA ---
+  // Fungsi ini otomatis membuang awalan "Kak ", "Ustadz ", "Mu'allim", dll
+  // dan menjadikan namanya format kapital standar (Title Case)
+  function bersihkanNama(nama) {
+    if (!nama) return "";
+    // 1. Hapus sapaan/gelar di awal kata (case insensitive)
+    let bersih = nama.replace(/^(kak|mu'?allim(ah)?|naqib(ah)?|ustadz(ah)?|ust\.?|mrs|mr|dr\.?)\s+/i, "");
+    // 2. Hapus spasi berlebih
+    bersih = bersih.trim();
+    // 3. Ubah jadi Title Case (Contoh: "EVITA" -> "Evita") agar selalu cocok di database
+    return bersih.replace(/\w\S*/g, function(txt) {
+        return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+    });
+  }
+
+  // Identitas akun yang sedang login hanya digunakan sebagai jejak penginput.
+  // Daftar usrah tidak lagi dibatasi oleh akun ini.
+  const user = JSON.parse(localStorage.getItem("cahayaCurrentUser") || "{}");
+  const rawNamaPenginput = user.label || user.username || "Pengguna";
+  const namaPenginput = bersihkanNama(rawNamaPenginput);
+
+  // Menyimpan seluruh data master usrah agar setiap akun dapat memilih usrah mana pun.
+  let dataMasterUsrah = {};
+
+  function normalisasiDaftarSantri(dataUsrah) {
+    if (Array.isArray(dataUsrah)) {
+      return dataUsrah
+        .filter(Boolean)
+        .map(nama => String(nama).trim())
+        .filter(Boolean);
+    }
+
+    // Antisipasi bila data Firebase tersimpan dalam bentuk object.
+    if (dataUsrah && typeof dataUsrah === "object") {
+      if (Array.isArray(dataUsrah.santri)) {
+        return dataUsrah.santri
+          .filter(Boolean)
+          .map(nama => String(nama).trim())
+          .filter(Boolean);
+      }
+
+      return Object.values(dataUsrah)
+        .filter(item => typeof item === "string")
+        .map(nama => nama.trim())
+        .filter(Boolean);
+    }
+
+    return [];
+  }
+
+  function isiDaftarSantri(namaUsrah) {
+    const selectSantri = document.getElementById("namaSantri");
+    selectSantri.innerHTML = '<option value="">-- Pilih Nama Santri --</option>';
+
+    if (!namaUsrah || !dataMasterUsrah[namaUsrah]) {
+      selectSantri.disabled = true;
+      selectSantri.innerHTML = '<option value="">-- Pilih Usrah Terlebih Dahulu --</option>';
+      return;
+    }
+
+    const daftarSantri = normalisasiDaftarSantri(dataMasterUsrah[namaUsrah])
+      .sort((a, b) => a.localeCompare(b, "id"));
+
+    if (daftarSantri.length === 0) {
+      selectSantri.disabled = true;
+      selectSantri.innerHTML = '<option value="">⚠️ Belum ada santri pada usrah ini</option>';
+      return;
+    }
+
+    daftarSantri.forEach(nama => selectSantri.appendChild(new Option(nama, nama)));
+    selectSantri.disabled = false;
+  }
+
+  document.addEventListener("DOMContentLoaded", async function(){
+    const sekarang = new Date();
+    const bulanSekarang = sekarang.getMonth() + 1;
+    const tahunSekarang = sekarang.getFullYear();
+    const awalTahunPelajaran = bulanSekarang >= 7 ? tahunSekarang : tahunSekarang - 1;
+
+    document.getElementById("tanggalAsesmen").value = sekarang.toISOString().split("T")[0];
+    document.getElementById("semesterAsesmen").value = bulanSekarang >= 7 ? "Ganjil" : "Genap";
+    document.getElementById("tahunPelajaran").value = `${awalTahunPelajaran}/${awalTahunPelajaran + 1}`;
+
+    try {
+      const snapUsrah = await get(ref(db, 'cahaya_app/master_usrah'));
+      const selectUsrah = document.getElementById("pilihanUsrah");
+      selectUsrah.innerHTML = '<option value="">-- Pilih Usrah / Naqib Pengasuh --</option>';
+
+      if (!snapUsrah.exists()) {
+        selectUsrah.innerHTML = '<option value="">⚠️ Master usrah belum tersedia</option>';
+        selectUsrah.disabled = true;
+        return;
+      }
+
+      dataMasterUsrah = snapUsrah.val() || {};
+
+      const daftarUsrah = Object.keys(dataMasterUsrah)
+        .filter(nama => normalisasiDaftarSantri(dataMasterUsrah[nama]).length > 0)
+        .sort((a, b) => a.localeCompare(b, "id"));
+
+      if (daftarUsrah.length === 0) {
+        selectUsrah.innerHTML = '<option value="">⚠️ Belum ada usrah dengan data santri</option>';
+        selectUsrah.disabled = true;
+        return;
+      }
+
+      daftarUsrah.forEach(namaUsrah => {
+        const jumlahSantri = normalisasiDaftarSantri(dataMasterUsrah[namaUsrah]).length;
+        selectUsrah.appendChild(new Option(`${namaUsrah} (${jumlahSantri} Santri)`, namaUsrah));
+      });
+
+      // Bila nama akun sama dengan nama usrah, jadikan sebagai pilihan awal,
+      // tetapi pengguna tetap bebas mengganti ke usrah lainnya.
+      if (Object.prototype.hasOwnProperty.call(dataMasterUsrah, namaPenginput)) {
+        selectUsrah.value = namaPenginput;
+        isiDaftarSantri(namaPenginput);
+      }
+
+      selectUsrah.addEventListener("change", function() {
+        isiDaftarSantri(this.value);
+      });
+    } catch (error) {
+      console.error("Gagal memuat data Usrah", error);
+      document.getElementById("pilihanUsrah").innerHTML = '<option value="">❌ Gagal memuat pilihan usrah</option>';
+    } finally {
+      document.getElementById('loadingOverlay').style.opacity = '0';
+      setTimeout(() => document.getElementById('loadingOverlay').style.display = 'none', 500);
+    }
+  });
+
+  // FUNGSI GENERATE NARASI AKHIR SEMESTER
+  function getVal(name) {
+    const el = document.querySelector(`input[name="${name}"]:checked`);
+    return el ? el.value : null;
+  }
+
+  window.generateNarasiSpiritual = function() {
+    const v1 = getVal("sp1"), v2 = getVal("sp2"), v3 = getVal("sp3");
+    if(!v1 || !v2 || !v3) return alert("Pilih semua observasi Spiritual terlebih dahulu.");
+    
+    let narasi = "Berdasarkan catatan pendampingan selama semester ini pada Dimensi Spiritual, ";
+    
+    if(v1 === "1") narasi += "ananda terpantau masih memerlukan dorongan lisan berulang dari pendamping agar bersiap menunaikan shalat fardhu. ";
+    else if(v1 === "2") narasi += "ananda sudah bersedia beranjak ke masjid meskipun sesekali masih perlu diingatkan oleh pendamping. ";
+    else if(v1 === "3" || v1 === "4") narasi += "ananda telah menunjukkan kemandirian dan kesadaran rutinitas ibadah, merespons panggilan azan tanpa perlu instruksi khusus. ";
+    else narasi += "ananda menunjukkan keteladanan yang sangat luar biasa, selalu bersiap lebih awal dan konsisten mengisi shaf terdepan sebelum azan berkumandang. ";
+
+    if(v2 === "1" || v2 === "2") narasi += "Pada pelaksanaan jamaah, ananda tercatat beberapa kali tertinggal takbiratul ihram (masbuk) yang memerlukan penertiban lebih lanjut. ";
+    else narasi += "Dalam ketertiban jamaah, ananda konsisten mengikuti jalannya shalat secara disiplin bersama imam dari awal hingga akhir. ";
+
+    if(v3 === "1" || v3 === "2") narasi += "Sementara itu dalam kegiatan majelis halaqah, fokus ananda masih sering teralihkan sehingga penyerapan materinya belum optimal.";
+    else if(v3 === "3") narasi += "Sementara itu dalam kegiatan majelis halaqah, ananda duduk dengan tertib dan menyimak materi dengan cukup baik.";
+    else narasi += "Hal ini disempurnakan dengan antusiasmenya dalam forum majelis halaqah, terlihat dari fokusnya menyimak dan mencatat poin-poin ilmu secara mandiri.";
+
+    document.getElementById("narasiSpiritual").value = narasi;
+  }
+
+  window.generateNarasiRelasional = function() {
+    const v1 = getVal("re1"), v2 = getVal("re2"), v3 = getVal("re3");
+    if(!v1 || !v2 || !v3) return alert("Pilih semua observasi Relasional terlebih dahulu.");
+    
+    let narasi = "Berdasarkan rekam pendampingan selama semester ini pada Dimensi Relasional (Sosial & Adab), ";
+
+    if(v1 === "1" || v1 === "2") narasi += "kami mengidentifikasi ananda perlu lebih banyak bimbingan terkait tata krama dan cara merespons instruksi asatidz dengan sikap yang lebih kooperatif. ";
+    else narasi += "ananda konsisten memperlihatkan sikap hormat, santun berbahasa, dan kooperatif saat berinteraksi dengan asatidz. ";
+
+    if(v2 === "1" || v2 === "2") narasi += "Dalam pergaulan asrama, dinamika interaksi ananda masih diwarnai riwayat perselisihan atau kesulitan membangun hubungan yang seimbang dengan teman sebaya. ";
+    else if(v2 === "3") narasi += "Dalam pergaulan asrama, ananda memiliki interaksi yang wajar dan kondusif bersama rekan kamarnya. ";
+    else narasi += "Dalam pergaulan asrama, ananda tampil sebagai figur yang ramah, memiliki ikatan sosial yang luas, bahkan mampu memediasi teman yang berselisih. ";
+
+    if(v3 === "1" || v3 === "2") narasi += "Terkait tanggung responsibility komunal, ananda masih belum sepenuhnya menuntaskan kewajiban piket harian tanpa pengawasan. ";
+    else if(v3 === "3") narasi += "Terkait tanggung jawab komunal, ananda menjalankan tugas piketnya secara teratur dan wajar. ";
+    else narasi += "Rasa tanggung jawab ini terlihat kuat pada inisiatifnya menjaga kebersihan ruang publik serta kepedulian tingginya terhadap rekan asrama yang sakit atau membutuhkan bantuan.";
+
+    document.getElementById("narasiRelasional").value = narasi;
+  }
+
+  window.generateNarasiEmosional = function() {
+    const v1 = getVal("em1"), v2 = getVal("em2");
+    if(!v1 || !v2) return alert("Pilih semua observasi Emosional terlebih dahulu.");
+    
+    let narasi = "Berdasarkan perkembangan sepanjang semester ini pada Dimensi Emosional, ";
+
+    if(v1 === "1" || v1 === "2") narasi += "ananda terlihat belum menemukan metode yang tepat untuk menyalurkan kekecewaannya, yang kadang bermanifestasi pada pelampiasan kemarahan yang tidak terkontrol atau sikap mogok aktivitas. ";
+    else if(v1 === "3") narasi += "ananda memiliki kemampuan menenangkan diri yang cukup wajar ketika dihadapkan pada situasi yang kurang menyenangkan. ";
+    else narasi += "ananda membuktikan kematangan kontrol diri yang sangat baik, mampu mengomunikasikan kekecewaan secara asertif, tenang, dan mencari jalan keluar yang solutif tanpa memicu keributan. ";
+
+    if(v2 === "1" || v2 === "2") narasi += "Hal ini sejalan dengan respons defensif yang sering muncul ketika ananda menerima evaluasi atau teguran atas perilakunya, yang masih membutuhkan pendampingan persuasif dari konselor.";
+    else if(v2 === "3") narasi += "Ketika menerima teguran/nasihat, ananda bersedia mendengarkan dan mencoba merefleksikan kesalahannya.";
+    else narasi += "Keterbukaan hatinya sangat menonjol saat menerima teguran/nasihat; ia meresponsnya dengan lapang dada dan segera melakukan perbaikan perilaku secara nyata di hari berikutnya.";
+
+    document.getElementById("narasiEmosional").value = narasi;
+  }
+
+  window.generateNarasiIntelektual = function() {
+    const v1 = getVal("in1"), v2 = getVal("in2");
+    if(!v1 || !v2) return alert("Pilih semua observasi Intelektual terlebih dahulu.");
+    
+    let narasi = "Berdasarkan perkembangan akademik sepanjang semester ini pada Dimensi Intelektual, ";
+
+    if(v1 === "1" || v1 === "2") narasi += "tingkat partisipasi ananda di kelas masih fluktuatif, seringkali diwarnai demotivasi yang berdampak pada keterlambatan masuk kelas atau kelalaian penyelesaian tugas. ";
+    else if(v1 === "3") narasi += "ananda memiliki kedisiplinan yang stabil untuk mengikuti agenda belajar serta menyelesaikan standar tugas wajibnya. ";
+    else narasi += "ananda memperlihatkan gairah belajar yang mengesankan, aktif berkontribusi positif di kelas, dan menginisiasi eksplorasi wawasan di luar jam wajib. ";
+
+    if(v2 === "1" || v2 === "2") narasi += "Daya tangkap analitisnya masih memerlukan sesi remedial terarah, mengingat hasil evaluasi belajarnya masih sering berada di bawah garis ketuntasan.";
+    else if(v2 === "3") narasi += "Daya tangkap kognitifnya berada pada tingkat rata-rata yang mampu menyerap substansi materi dasar dengan wajar.";
+    else narasi += "Tajamnya nalar analitis ananda dibuktikan dengan pencapaian nilai akademis/tahfiz yang superior, bahkan ia mampu menjadi sumber referensi (tutor sebaya) bagi rekan sekelasnya.";
+
+    document.getElementById("narasiIntelektual").value = narasi;
+  }
+
+  window.generateNarasiFisik = function() {
+    const v1 = getVal("fi1"), v2 = getVal("fi2");
+    if(!v1 || !v2) return alert("Pilih semua observasi Fisik terlebih dahulu.");
+    
+    let narasi = "Berdasarkan catatan manajemen diri sepanjang semester ini pada Dimensi Fisik, ";
+
+    if(v1 === "1" || v1 === "2") narasi += "aspek sanitasi personal serta tata letak lokernya masih jauh di bawah standar kerapian asrama, menandakan kurangnya kesadaran akan kebersihan ruang hidupnya. ";
+    else narasi += "ananda berhasil merawat kerapian personal secara konsisten; hal ini tampak dari pakaiannya yang terawat serta manajemen loker/area tidur yang selalu bersih. ";
+
+    if(v2 === "1" || v2 === "2") narasi += "Pola ini berimbas pada ketahanan fisiknya yang rentan menurun, sering kali disebabkan oleh kebiasaan mengabaikan jam tidur malam yang sehat.";
+    else if(v2 === "3") narasi += "Vitalitasnya cukup terjaga untuk mengikuti mobilitas kegiatan asrama tanpa keluhan fisik yang berarti.";
+    else narasi += "Kedisiplinannya dalam mengelola gizi dan kepatuhan jam istirahat malam memberikan dampak langsung pada stamina tubuhnya yang selalu bugar dalam menuntaskan agenda padat harian pesantren.";
+
+    document.getElementById("narasiFisik").value = narasi;
+  }
+
+  window.simpanAsesmen = async function() {
+    const tanggal = document.getElementById("tanggalAsesmen").value;
+    const semester = document.getElementById("semesterAsesmen").value;
+    const tahunPelajaran = document.getElementById("tahunPelajaran").value.trim();
+    const namaUsrah = document.getElementById("pilihanUsrah").value;
+    const santri = document.getElementById("namaSantri").value;
+
+    if(!tanggal || !semester || !tahunPelajaran || !namaUsrah || !santri) {
+      alert("⚠️ Lengkapi Semester, Tahun Pelajaran, Tanggal Penetapan, Usrah/Naqib Pengasuh, dan Nama Santri terlebih dahulu.");
+      return;
+    }
+
+    const btn = document.getElementById("btnSubmit");
+    btn.innerHTML = "⏳ MENYIMPAN ASESMEN AKHIR SEMESTER..."; 
+    btn.disabled = true;
+
+    const fokusSemesterBerikutnya = [];
+    document.querySelectorAll('input[name="fokusSemesterBerikutnya"]:checked').forEach(cb => {
+      fokusSemesterBerikutnya.push(cb.value);
+    });
+
+    const payload = {
+      jenisAsesmen: "Akhir Semester",
+      periode: {
+        semester: semester,
+        tahunPelajaran: tahunPelajaran
+      },
+      tanggalAsesmen: tanggal,
+      usrah: namaUsrah,
+      namaNaqib: namaUsrah,
+      namaSantri: santri,
+      namaPenginput: namaPenginput,
+
+      observasiPilihan: {
+        spiritual: { sp1: getVal("sp1"), sp2: getVal("sp2"), sp3: getVal("sp3") },
+        relasional: { re1: getVal("re1"), re2: getVal("re2"), re3: getVal("re3") },
+        emosional: { em1: getVal("em1"), em2: getVal("em2") },
+        intelektual: { in1: getVal("in1"), in2: getVal("in2") },
+        fisik: { fi1: getVal("fi1"), fi2: getVal("fi2") }
+      },
+
+      narasi: {
+        spiritual: document.getElementById("narasiSpiritual").value.trim(),
+        relasional: document.getElementById("narasiRelasional").value.trim(),
+        emosional: document.getElementById("narasiEmosional").value.trim(),
+        intelektual: document.getElementById("narasiIntelektual").value.trim(),
+        fisik: document.getElementById("narasiFisik").value.trim()
+      },
+
+      tindakLanjut: {
+        rangkumanSemesterIni: document.getElementById("rangkumanSemesterIni").value.trim(),
+        fokusSemesterBerikutnya: fokusSemesterBerikutnya,
+        catatanWaliSantri: document.getElementById("catatanWaliSantri").value.trim()
+      },
+
+      timestamp: new Date().toISOString()
+    };
+
+    try {
+      await push(ref(db, "cahaya_app/asesmen_akhir_semester"), payload);
+      alert(`✅ BERHASIL!\nAsesmen Akhir Semester ${semester} Tahun Pelajaran ${tahunPelajaran} atas nama ${santri} telah tersimpan.`);
+      window.scrollTo(0, 0);
+      setTimeout(() => location.reload(), 1000);
+    } catch(err) {
+      alert("❌ Gagal menyimpan data: " + err.message);
+      btn.innerHTML = "💾 SIMPAN ASESMEN AKHIR SEMESTER";
+      btn.disabled = false;
+    }
+  };
+</script>
+</body>
+</html>

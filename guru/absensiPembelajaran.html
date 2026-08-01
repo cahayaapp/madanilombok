@@ -1,0 +1,3029 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <!-- CAHAYA WHITE-LABEL CONFIG -->
+  <script src="../config/tenant-config.js"></script>
+  <script src="../config/master-data.js"></script>
+  <script src="../js/cahaya-config-runtime.js" defer></script>
+
+  <meta charset="UTF-8" />
+  <title>CAHAYA APP - Absensi KBM Guru</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
+  <link rel="stylesheet" href="../css/cahaya-theme.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --kbm-primary: var(--primary, #2878ff);
+      --kbm-primary-dark: var(--primary-dark, #1557d5);
+      --kbm-cyan: var(--cyan, #19c6e6);
+      --kbm-purple: var(--purple, #7667f5);
+      --kbm-orange: var(--orange, #ff9f43);
+      --kbm-green: var(--green, #29c58d);
+      --kbm-red: var(--red, #ff5d6c);
+      --kbm-navy: var(--navy-dark, #152347);
+      --kbm-text: var(--text-main, #1f2d4d);
+      --kbm-muted: var(--text-muted, #71809e);
+      --kbm-border: var(--border, #e5ebf5);
+      --kbm-bg: var(--bg-main, #f5f8ff);
+      --kbm-card: #ffffff;
+      --kbm-radius: 22px;
+      --kbm-shadow: 0 12px 35px rgba(35, 78, 160, 0.09);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      min-height: 100vh;
+      margin: 0;
+      padding: 18px;
+      overflow-x: hidden;
+      color: var(--kbm-text);
+      font-family: 'Nunito', 'Poppins', sans-serif;
+      background:
+        radial-gradient(circle at 4% 2%, rgba(25, 198, 230, 0.10), transparent 24%),
+        radial-gradient(circle at 96% 8%, rgba(118, 103, 245, 0.09), transparent 23%),
+        linear-gradient(180deg, #f4f8ff 0%, #f9fbff 48%, #f5f8ff 100%);
+    }
+
+    button,
+    input,
+    select,
+    textarea {
+      font: inherit;
+    }
+
+    .page-shell {
+      width: 100%;
+      max-width: 1180px;
+      margin: 0 auto;
+      animation: pageEnter 0.45s ease both;
+    }
+
+    @keyframes pageEnter {
+      from {
+        opacity: 0;
+        transform: translateY(12px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* HERO */
+    .kbm-hero {
+      position: relative;
+      isolation: isolate;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 24px;
+      align-items: center;
+      overflow: hidden;
+      margin-bottom: 18px;
+      padding: 28px 30px;
+      color: #ffffff;
+      border-radius: 28px;
+      background:
+        radial-gradient(circle at 86% 18%, rgba(255,255,255,0.20), transparent 22%),
+        linear-gradient(135deg, #1668e8 0%, #2878ff 48%, #16b9dc 100%);
+      box-shadow: 0 18px 45px rgba(40, 120, 255, 0.23);
+    }
+
+    .kbm-hero::before {
+      content: "";
+      position: absolute;
+      z-index: -1;
+      width: 230px;
+      height: 230px;
+      top: -135px;
+      right: 45px;
+      border: 38px solid rgba(255,255,255,0.09);
+      border-radius: 50%;
+    }
+
+    .kbm-hero::after {
+      content: "";
+      position: absolute;
+      z-index: -1;
+      width: 120px;
+      height: 120px;
+      right: -35px;
+      bottom: -55px;
+      border-radius: 32px;
+      background: rgba(255,255,255,0.10);
+      transform: rotate(28deg);
+    }
+
+    .hero-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      margin-bottom: 11px;
+      padding: 7px 12px;
+      color: rgba(255,255,255,0.96);
+      font-size: 0.72rem;
+      font-weight: 900;
+      letter-spacing: 0.7px;
+      text-transform: uppercase;
+      border: 1px solid rgba(255,255,255,0.23);
+      border-radius: 999px;
+      background: rgba(255,255,255,0.15);
+      backdrop-filter: blur(8px);
+    }
+
+    .kbm-hero h1 {
+      margin: 0 0 7px;
+      color: #ffffff;
+      font-size: clamp(1.65rem, 4vw, 2.45rem);
+      font-weight: 900;
+      line-height: 1.12;
+      letter-spacing: -0.7px;
+    }
+
+    .kbm-hero p {
+      max-width: 690px;
+      margin: 0;
+      color: rgba(255,255,255,0.86);
+      font-size: 0.92rem;
+      font-weight: 650;
+      line-height: 1.6;
+    }
+
+    .hero-user {
+      min-width: 220px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 13px 15px;
+      border: 1px solid rgba(255,255,255,0.22);
+      border-radius: 18px;
+      background: rgba(255,255,255,0.14);
+      backdrop-filter: blur(12px);
+    }
+
+    .hero-avatar {
+      width: 46px;
+      height: 46px;
+      flex: 0 0 46px;
+      display: grid;
+      place-items: center;
+      color: var(--kbm-primary-dark);
+      font-size: 1.05rem;
+      font-weight: 900;
+      border: 3px solid rgba(255,255,255,0.35);
+      border-radius: 15px;
+      background: #ffffff;
+      box-shadow: 0 8px 20px rgba(15, 50, 115, 0.16);
+    }
+
+    .hero-user small {
+      display: block;
+      margin-bottom: 2px;
+      color: rgba(255,255,255,0.72);
+      font-size: 0.65rem;
+      font-weight: 800;
+      letter-spacing: 0.7px;
+      text-transform: uppercase;
+    }
+
+    .hero-user strong {
+      display: block;
+      max-width: 160px;
+      overflow: hidden;
+      color: #ffffff;
+      font-size: 0.87rem;
+      font-weight: 900;
+      line-height: 1.3;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    /* CARDS */
+    .panel-card {
+      position: relative;
+      overflow: hidden;
+      margin-bottom: 18px;
+      padding: 24px;
+      border: 1px solid rgba(225, 233, 246, 0.95);
+      border-radius: var(--kbm-radius);
+      background: rgba(255,255,255,0.97);
+      box-shadow: var(--kbm-shadow);
+    }
+
+    .panel-card.setup-card::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 24px;
+      right: 24px;
+      height: 4px;
+      border-radius: 0 0 10px 10px;
+      background: linear-gradient(90deg, var(--kbm-primary), var(--kbm-cyan));
+    }
+
+    .panel-head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 15px;
+      margin-bottom: 20px;
+    }
+
+    .panel-title-wrap {
+      min-width: 0;
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+    }
+
+    .panel-icon {
+      width: 44px;
+      height: 44px;
+      flex: 0 0 44px;
+      display: grid;
+      place-items: center;
+      color: var(--kbm-primary);
+      font-size: 1.15rem;
+      border-radius: 14px;
+      background: #eaf3ff;
+    }
+
+    .panel-head h2,
+    .panel-head h3 {
+      margin: 0;
+      color: var(--kbm-navy);
+      font-size: 1.14rem;
+      font-weight: 900;
+      line-height: 1.25;
+    }
+
+    .panel-head p {
+      margin: 4px 0 0;
+      color: var(--kbm-muted);
+      font-size: 0.78rem;
+      font-weight: 650;
+      line-height: 1.45;
+    }
+
+    .context-chip {
+      flex: 0 0 auto;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 11px;
+      color: var(--kbm-primary-dark);
+      font-size: 0.68rem;
+      font-weight: 900;
+      border: 1px solid #d4e5ff;
+      border-radius: 999px;
+      background: #edf5ff;
+    }
+
+    /* FORM */
+    .grid-form {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .form-group {
+      min-width: 0;
+    }
+
+    .form-group label {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      margin-bottom: 8px;
+      color: var(--kbm-navy);
+      font-size: 0.77rem;
+      font-weight: 900;
+    }
+
+    .label-icon {
+      width: 24px;
+      height: 24px;
+      display: inline-grid;
+      place-items: center;
+      color: var(--kbm-primary);
+      font-size: 0.73rem;
+      border-radius: 8px;
+      background: #eaf3ff;
+    }
+
+    .form-control {
+      width: 100%;
+      min-height: 50px;
+      padding: 12px 15px;
+      color: var(--kbm-text);
+      font-family: inherit;
+      font-size: 0.9rem;
+      font-weight: 750;
+      outline: none;
+      border: 1.5px solid #dfe7f3;
+      border-radius: 14px;
+      background: #f8faff;
+      transition: 0.2s ease;
+    }
+
+    .form-control:hover {
+      border-color: #c6d6ec;
+      background: #ffffff;
+    }
+
+    .form-control:focus {
+      border-color: var(--kbm-primary);
+      background: #ffffff;
+      box-shadow: 0 0 0 4px rgba(40,120,255,0.10);
+    }
+
+    .form-control:disabled {
+      color: #94a0b5;
+      cursor: not-allowed;
+      background: #f0f3f8;
+    }
+
+    textarea.form-control {
+      min-height: 118px;
+      resize: vertical;
+      line-height: 1.6;
+    }
+
+    .helper-text {
+      margin-top: 7px;
+      color: var(--kbm-muted);
+      font-size: 0.68rem;
+      font-weight: 650;
+      line-height: 1.45;
+    }
+
+    .helper-text.schedule-ready {
+      color: #16865f;
+      font-weight: 800;
+    }
+
+    .helper-text.schedule-warning {
+      color: #b76c18;
+      font-weight: 800;
+    }
+
+    .helper-text.schedule-error {
+      color: #d74758;
+      font-weight: 800;
+    }
+
+    .form-control.auto-field {
+      color: var(--kbm-primary-dark);
+      border-color: #cfe1ff;
+      background: #edf5ff;
+      opacity: 1;
+      cursor: default;
+    }
+
+    /* SUMMARY */
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(6, minmax(0, 1fr));
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    .summary-card {
+      min-width: 0;
+      padding: 13px;
+      border: 1px solid var(--kbm-border);
+      border-radius: 16px;
+      background: #ffffff;
+      box-shadow: 0 4px 12px rgba(31, 72, 145, 0.04);
+    }
+
+    .summary-card .summary-label {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 5px;
+      color: var(--kbm-muted);
+      font-size: 0.65rem;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 0.25px;
+    }
+
+    .summary-dot {
+      width: 7px;
+      height: 7px;
+      flex: 0 0 7px;
+      border-radius: 50%;
+      background: currentColor;
+    }
+
+    .summary-card strong {
+      display: block;
+      color: var(--kbm-navy);
+      font-size: 1.25rem;
+      font-weight: 900;
+      line-height: 1;
+    }
+
+    .summary-total { color: var(--kbm-primary); background: #f2f7ff; }
+    .summary-hadir { color: #15956a; background: #effcf7; }
+    .summary-terlambat { color: #ce7b17; background: #fff8ed; }
+    .summary-izin { color: #2d72da; background: #f1f6ff; }
+    .summary-sakit { color: #6c55d9; background: #f5f2ff; }
+    .summary-alfa { color: #d74758; background: #fff2f4; }
+
+    /* ATTENDANCE HEADER */
+    .attendance-toolbar {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto auto;
+      gap: 10px;
+      align-items: center;
+      margin-bottom: 14px;
+    }
+
+    .search-box {
+      position: relative;
+      min-width: 0;
+    }
+
+    .search-box span {
+      position: absolute;
+      top: 50%;
+      left: 14px;
+      color: var(--kbm-muted);
+      transform: translateY(-50%);
+      pointer-events: none;
+    }
+
+    .search-box input {
+      width: 100%;
+      min-height: 44px;
+      padding: 10px 14px 10px 42px;
+      color: var(--kbm-text);
+      font-size: 0.82rem;
+      font-weight: 750;
+      outline: none;
+      border: 1.5px solid #dfe7f3;
+      border-radius: 13px;
+      background: #f8faff;
+      transition: 0.2s ease;
+    }
+
+    .search-box input:focus {
+      border-color: var(--kbm-primary);
+      background: #ffffff;
+      box-shadow: 0 0 0 4px rgba(40,120,255,0.09);
+    }
+
+    .btn-secondary,
+    .btn-mark-all {
+      min-height: 44px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      padding: 10px 15px;
+      cursor: pointer;
+      white-space: nowrap;
+      font-size: 0.76rem;
+      font-weight: 900;
+      border-radius: 13px;
+      transition: 0.2s ease;
+    }
+
+    .btn-secondary {
+      color: var(--kbm-primary-dark);
+      border: 1px solid #cfe1ff;
+      background: #edf5ff;
+    }
+
+    .btn-secondary:hover {
+      background: #dfeeff;
+      transform: translateY(-1px);
+    }
+
+    .btn-mark-all {
+      color: #147a59;
+      border: 1px solid #c9efdf;
+      background: #eafaf4;
+    }
+
+    .btn-mark-all:hover:not(:disabled) {
+      color: #ffffff;
+      border-color: var(--kbm-green);
+      background: var(--kbm-green);
+      box-shadow: 0 8px 18px rgba(41,197,141,0.20);
+      transform: translateY(-1px);
+    }
+
+    .btn-mark-all:disabled,
+    .btn-secondary:disabled {
+      opacity: 0.48;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+    }
+
+    /* LIST */
+    .list-container {
+      overflow: hidden;
+      width: 100%;
+      border: 1px solid var(--kbm-border);
+      border-radius: 18px;
+      background: #ffffff;
+    }
+
+    .list-header {
+      display: grid;
+      grid-template-columns: minmax(210px, 0.78fr) minmax(480px, 1.15fr) minmax(145px, 0.34fr);
+      align-items: center;
+      gap: 14px;
+      padding: 12px 16px;
+      color: #60708e;
+      font-size: 0.68rem;
+      font-weight: 900;
+      letter-spacing: 0.45px;
+      text-transform: uppercase;
+      border-bottom: 1px solid var(--kbm-border);
+      background: #f4f7fc;
+    }
+
+    .status-head-grid {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(72px, 1fr));
+      gap: 7px;
+      text-align: center;
+    }
+
+    .santri-row {
+      display: grid;
+      grid-template-columns: minmax(210px, 0.78fr) minmax(480px, 1.15fr) minmax(145px, 0.34fr);
+      align-items: center;
+      gap: 14px;
+      min-height: 70px;
+      padding: 11px 16px;
+      border-bottom: 1px solid #edf2fa;
+      background: #ffffff;
+      transition: 0.2s ease;
+    }
+
+    .santri-row:last-child {
+      border-bottom: none;
+    }
+
+    .santri-row:hover {
+      background: #fbfdff;
+    }
+
+    .santri-row[hidden] {
+      display: none !important;
+    }
+
+    .santri-name {
+      min-width: 0;
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      color: var(--kbm-navy);
+      font-size: 0.84rem;
+      font-weight: 850;
+      line-height: 1.35;
+      text-transform: capitalize;
+      overflow-wrap: anywhere;
+    }
+
+    .student-number {
+      width: 34px;
+      height: 34px;
+      flex: 0 0 34px;
+      display: grid;
+      place-items: center;
+      color: var(--kbm-primary-dark);
+      font-size: 0.72rem;
+      font-weight: 900;
+      border-radius: 11px;
+      background: #edf5ff;
+    }
+
+    .student-name-text {
+      min-width: 0;
+    }
+
+    .action-group {
+      min-width: 0;
+      display: grid;
+      grid-template-columns: repeat(5, minmax(72px, 1fr));
+      gap: 7px;
+    }
+
+    .score-head {
+      text-align: center;
+      line-height: 1.35;
+    }
+
+    .score-field {
+      min-width: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .score-label-mobile {
+      display: none;
+      color: var(--kbm-muted);
+      font-size: 0.68rem;
+      font-weight: 900;
+      letter-spacing: 0.3px;
+      text-transform: uppercase;
+    }
+
+    .score-input-wrap {
+      position: relative;
+      width: 100%;
+      max-width: 126px;
+    }
+
+    .daily-score-input {
+      width: 100%;
+      min-height: 42px;
+      padding: 9px 34px 9px 12px;
+      color: var(--kbm-navy);
+      font-size: 0.82rem;
+      font-weight: 900;
+      text-align: center;
+      outline: none;
+      border: 1.5px solid #dfe7f3;
+      border-radius: 11px;
+      background: #f8faff;
+      transition: 0.18s ease;
+      appearance: textfield;
+      -moz-appearance: textfield;
+    }
+
+    .daily-score-input::-webkit-outer-spin-button,
+    .daily-score-input::-webkit-inner-spin-button {
+      margin: 0;
+      -webkit-appearance: none;
+    }
+
+    .daily-score-input:hover {
+      border-color: #bcd0ed;
+      background: #ffffff;
+    }
+
+    .daily-score-input:focus {
+      border-color: var(--kbm-primary);
+      background: #ffffff;
+      box-shadow: 0 0 0 4px rgba(40,120,255,0.10);
+    }
+
+    .daily-score-input.is-invalid {
+      color: #c93649;
+      border-color: var(--kbm-red);
+      background: #fff3f5;
+      box-shadow: 0 0 0 4px rgba(255,93,108,0.10);
+    }
+
+    .score-suffix {
+      position: absolute;
+      top: 50%;
+      right: 11px;
+      color: #9aa7bb;
+      font-size: 0.62rem;
+      font-weight: 900;
+      transform: translateY(-50%);
+      pointer-events: none;
+    }
+
+    .radio-item {
+      position: relative;
+      display: block;
+      min-width: 0;
+      cursor: pointer;
+    }
+
+    .radio-item input {
+      position: absolute;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .checkmark {
+      min-height: 39px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      padding: 7px 8px;
+      color: #77859e;
+      font-size: 0.68rem;
+      font-weight: 900;
+      line-height: 1;
+      text-align: center;
+      white-space: nowrap;
+      border: 1.5px solid #dfe7f3;
+      border-radius: 11px;
+      background: #f8faff;
+      transition: 0.18s ease;
+    }
+
+    .status-symbol {
+      width: 8px;
+      height: 8px;
+      flex: 0 0 8px;
+      border-radius: 50%;
+      background: #a9b4c6;
+    }
+
+    .radio-item:hover .checkmark {
+      border-color: #bcd0ed;
+      background: #ffffff;
+      transform: translateY(-1px);
+    }
+
+    .radio-item input:focus-visible + .checkmark {
+      box-shadow: 0 0 0 4px rgba(40,120,255,0.12);
+    }
+
+    .radio-item input:checked + .checkmark {
+      color: #ffffff;
+      border-color: transparent;
+      box-shadow: 0 7px 16px rgba(27, 61, 121, 0.13);
+      transform: translateY(-1px);
+    }
+
+    .radio-item input:checked + .checkmark .status-symbol {
+      background: #ffffff;
+    }
+
+    .radio-item input[value="Hadir"]:checked + .checkmark {
+      background: linear-gradient(135deg, #29c58d, #20aa78);
+    }
+
+    .radio-item input[value="Terlambat"]:checked + .checkmark {
+      background: linear-gradient(135deg, #ffad55, #eb871f);
+    }
+
+    .radio-item input[value="Izin"]:checked + .checkmark {
+      background: linear-gradient(135deg, #4288f7, #286bd7);
+    }
+
+    .radio-item input[value="Sakit"]:checked + .checkmark {
+      background: linear-gradient(135deg, #8877f7, #6653d7);
+    }
+
+    .radio-item input[value="Alfa"]:checked + .checkmark {
+      background: linear-gradient(135deg, #ff6675, #df3f51);
+    }
+
+    .row-hadir { box-shadow: inset 4px 0 0 #29c58d; }
+    .row-terlambat { box-shadow: inset 4px 0 0 #ff9f43; }
+    .row-izin { box-shadow: inset 4px 0 0 #3b82f6; }
+    .row-sakit { box-shadow: inset 4px 0 0 #7667f5; }
+    .row-alfa { box-shadow: inset 4px 0 0 #ff5d6c; }
+
+    .empty-state {
+      padding: 52px 18px;
+      color: var(--kbm-muted);
+      text-align: center;
+    }
+
+    .empty-icon {
+      width: 68px;
+      height: 68px;
+      display: grid;
+      place-items: center;
+      margin: 0 auto 13px;
+      color: var(--kbm-primary);
+      font-size: 1.75rem;
+      border-radius: 22px;
+      background: #edf5ff;
+    }
+
+    .empty-state strong {
+      display: block;
+      margin-bottom: 4px;
+      color: var(--kbm-navy);
+      font-size: 0.91rem;
+      font-weight: 900;
+    }
+
+    .empty-state span {
+      display: block;
+      font-size: 0.76rem;
+      font-weight: 650;
+      line-height: 1.5;
+    }
+
+    /* JOURNAL + ACTION */
+    .journal-card {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 310px;
+      gap: 18px;
+      align-items: stretch;
+    }
+
+    .save-panel {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 15px;
+      padding: 18px;
+      border: 1px solid #d8e7ff;
+      border-radius: 18px;
+      background:
+        radial-gradient(circle at 92% 8%, rgba(25,198,230,0.13), transparent 30%),
+        linear-gradient(145deg, #f3f8ff, #eef6ff);
+    }
+
+    .save-panel-title {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      margin-bottom: 7px;
+      color: var(--kbm-navy);
+      font-size: 0.9rem;
+      font-weight: 900;
+    }
+
+    .save-panel p {
+      margin: 0;
+      color: var(--kbm-muted);
+      font-size: 0.72rem;
+      font-weight: 650;
+      line-height: 1.55;
+    }
+
+    .btn-simpan {
+      width: 100%;
+      min-height: 52px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      padding: 13px 18px;
+      color: #ffffff;
+      font-size: 0.88rem;
+      font-weight: 900;
+      cursor: pointer;
+      border: none;
+      border-radius: 15px;
+      background: linear-gradient(135deg, var(--kbm-primary), #367fff 52%, #12afd1);
+      box-shadow: 0 12px 25px rgba(40,120,255,0.24);
+      transition: 0.2s ease;
+    }
+
+    .btn-simpan:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 16px 30px rgba(40,120,255,0.30);
+    }
+
+    .btn-simpan:active:not(:disabled) {
+      transform: translateY(0) scale(0.99);
+    }
+
+    .btn-simpan:disabled {
+      opacity: 0.60;
+      cursor: not-allowed;
+      box-shadow: none;
+      transform: none;
+    }
+
+    /* LOADING */
+    #loadingOverlay {
+      position: fixed;
+      inset: 0;
+      z-index: 10000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      background: rgba(245,248,255,0.94);
+      backdrop-filter: blur(10px);
+      transition: opacity 0.3s ease;
+    }
+
+    .loading-card {
+      width: min(340px, 92vw);
+      padding: 28px;
+      text-align: center;
+      border: 1px solid rgba(225,233,246,0.95);
+      border-radius: 24px;
+      background: #ffffff;
+      box-shadow: 0 22px 55px rgba(24,61,128,0.16);
+    }
+
+    .loading-logo {
+      width: 66px;
+      height: 66px;
+      display: grid;
+      place-items: center;
+      margin: 0 auto 15px;
+      color: #ffffff;
+      font-size: 1.65rem;
+      border-radius: 21px;
+      background: linear-gradient(135deg, var(--kbm-primary), var(--kbm-cyan));
+      box-shadow: 0 12px 26px rgba(40,120,255,0.24);
+      animation: loadingPulse 1.4s infinite ease-in-out;
+    }
+
+    .loading-card strong {
+      display: block;
+      margin-bottom: 5px;
+      color: var(--kbm-navy);
+      font-size: 1rem;
+      font-weight: 900;
+    }
+
+    .loading-card span {
+      display: block;
+      color: var(--kbm-muted);
+      font-size: 0.76rem;
+      font-weight: 650;
+    }
+
+    .loading-bar {
+      height: 7px;
+      overflow: hidden;
+      margin-top: 18px;
+      border-radius: 999px;
+      background: #e9eff9;
+    }
+
+    .loading-bar::after {
+      content: "";
+      display: block;
+      width: 44%;
+      height: 100%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, var(--kbm-primary), var(--kbm-cyan));
+      animation: loadingSlide 1.1s infinite ease-in-out;
+    }
+
+    @keyframes loadingPulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.06); }
+    }
+
+    @keyframes loadingSlide {
+      from { transform: translateX(-120%); }
+      to { transform: translateX(330%); }
+    }
+
+    /* TOAST */
+    .toast-container {
+      position: fixed;
+      z-index: 12000;
+      top: 18px;
+      right: 18px;
+      width: min(360px, calc(100vw - 36px));
+      pointer-events: none;
+    }
+
+    .app-toast {
+      display: grid;
+      grid-template-columns: 38px minmax(0, 1fr);
+      gap: 11px;
+      align-items: center;
+      padding: 13px 14px;
+      color: var(--kbm-text);
+      border: 1px solid var(--kbm-border);
+      border-radius: 16px;
+      background: rgba(255,255,255,0.98);
+      box-shadow: 0 15px 38px rgba(25,58,120,0.18);
+      opacity: 0;
+      transform: translateY(-12px);
+      transition: 0.25s ease;
+    }
+
+    .app-toast.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .toast-icon {
+      width: 38px;
+      height: 38px;
+      display: grid;
+      place-items: center;
+      color: var(--kbm-primary);
+      font-size: 1rem;
+      border-radius: 12px;
+      background: #edf5ff;
+    }
+
+    .app-toast.success .toast-icon {
+      color: #168b64;
+      background: #eafaf4;
+    }
+
+    .app-toast.error .toast-icon {
+      color: #d74051;
+      background: #fff0f2;
+    }
+
+    .toast-title {
+      display: block;
+      color: var(--kbm-navy);
+      font-size: 0.8rem;
+      font-weight: 900;
+    }
+
+    .toast-message {
+      display: block;
+      margin-top: 2px;
+      color: var(--kbm-muted);
+      font-size: 0.72rem;
+      font-weight: 650;
+      line-height: 1.35;
+    }
+
+    @media (max-width: 980px) {
+      .kbm-hero {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-user {
+        width: fit-content;
+        min-width: 210px;
+      }
+
+      .summary-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+
+      .journal-card {
+        grid-template-columns: 1fr;
+      }
+
+      .list-container {
+        overflow-x: auto;
+      }
+
+      .list-header,
+      .santri-row {
+        min-width: 990px;
+      }
+    }
+
+    @media (max-width: 760px) {
+      body {
+        padding: 10px;
+      }
+
+      .kbm-hero {
+        gap: 17px;
+        margin-bottom: 13px;
+        padding: 23px 18px;
+        border-radius: 22px;
+      }
+
+      .kbm-hero p {
+        font-size: 0.8rem;
+      }
+
+      .hero-user {
+        width: 100%;
+        min-width: 0;
+      }
+
+      .hero-user strong {
+        max-width: calc(100vw - 135px);
+      }
+
+      .panel-card {
+        margin-bottom: 13px;
+        padding: 18px 14px;
+        border-radius: 19px;
+      }
+
+      .panel-card.setup-card::before {
+        left: 16px;
+        right: 16px;
+      }
+
+      .panel-head {
+        margin-bottom: 16px;
+      }
+
+      .panel-icon {
+        width: 40px;
+        height: 40px;
+        flex-basis: 40px;
+      }
+
+      .context-chip {
+        display: none;
+      }
+
+      .grid-form {
+        grid-template-columns: 1fr;
+        gap: 12px;
+      }
+
+      .summary-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 7px;
+      }
+
+      .summary-card {
+        padding: 11px;
+        border-radius: 14px;
+      }
+
+      .summary-card .summary-label {
+        font-size: 0.56rem;
+      }
+
+      .summary-card strong {
+        font-size: 1.08rem;
+      }
+
+      .attendance-toolbar {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .search-box {
+        grid-column: 1 / -1;
+      }
+
+      .btn-secondary,
+      .btn-mark-all {
+        width: 100%;
+        padding: 10px;
+      }
+
+      .list-container {
+        overflow: visible;
+        border: none;
+        border-radius: 0;
+        background: transparent;
+      }
+
+      .list-header {
+        display: none;
+      }
+
+      #santriList {
+        display: grid;
+        gap: 9px;
+      }
+
+      .santri-row {
+        min-width: 0;
+        display: block;
+        min-height: 0;
+        padding: 13px;
+        border: 1px solid var(--kbm-border);
+        border-radius: 16px;
+        background: #ffffff;
+        box-shadow: 0 5px 14px rgba(30,70,140,0.05);
+      }
+
+      .santri-name {
+        margin-bottom: 11px;
+        padding-bottom: 10px;
+        border-bottom: 1px solid #edf2fa;
+        font-size: 0.8rem;
+      }
+
+      .student-number {
+        width: 31px;
+        height: 31px;
+        flex-basis: 31px;
+        border-radius: 10px;
+      }
+
+      .action-group {
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+        gap: 5px;
+      }
+
+      .score-field {
+        display: flex;
+        justify-content: space-between;
+        gap: 14px;
+        margin-top: 11px;
+        padding-top: 11px;
+        border-top: 1px solid #edf2fa;
+      }
+
+      .score-label-mobile {
+        display: block;
+      }
+
+      .score-input-wrap {
+        flex: 0 0 118px;
+        max-width: 118px;
+      }
+
+      .daily-score-input {
+        min-height: 43px;
+      }
+
+      .checkmark {
+        min-height: 42px;
+        flex-direction: column;
+        gap: 4px;
+        padding: 6px 2px;
+        font-size: 0.58rem;
+        border-radius: 10px;
+      }
+
+      .status-symbol {
+        width: 7px;
+        height: 7px;
+        flex-basis: 7px;
+      }
+
+      .journal-card {
+        gap: 13px;
+      }
+
+      .save-panel {
+        padding: 15px;
+      }
+
+      .toast-container {
+        top: 10px;
+        right: 10px;
+        width: calc(100vw - 20px);
+      }
+    }
+
+    @media (max-width: 390px) {
+      .summary-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .attendance-toolbar {
+        grid-template-columns: 1fr;
+      }
+
+      .search-box {
+        grid-column: auto;
+      }
+
+      .action-group {
+        gap: 4px;
+      }
+
+      .checkmark {
+        font-size: 0.52rem;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+  </style>
+
+  <!-- Tampilan minimal: header internal dan ringkasan disembunyikan tanpa mengubah sistem -->
+  <style id="cahaya-minimal-cleanup">
+    .kbm-hero,
+.summary-grid {
+      display: none !important;
+    }
+  </style>
+</head>
+<body>
+  <div id="loadingOverlay">
+    <div class="loading-card">
+      <div class="loading-logo">📚</div>
+      <strong id="loadingText">Menyiapkan data kelas</strong>
+      <span>Mohon pastikan koneksi internet aktif.</span>
+      <div class="loading-bar"></div>
+    </div>
+  </div>
+
+  <div class="toast-container" aria-live="polite">
+    <div class="app-toast" id="appToast">
+      <div class="toast-icon" id="toastIcon">ℹ️</div>
+      <div>
+        <span class="toast-title" id="toastTitle">Informasi</span>
+        <span class="toast-message" id="toastMessage"></span>
+      </div>
+    </div>
+  </div>
+
+  <main class="page-shell">
+    <section class="kbm-hero">
+      <div>
+        <div class="hero-label">📘 Akademik Guru</div>
+        <h1>Absensi KBM</h1>
+        <p>Catat kehadiran, nilai ulangan harian, dan jurnal pembelajaran dalam satu halaman.</p>
+      </div>
+
+      <div class="hero-user">
+        <div class="hero-avatar" id="guruInitial">G</div>
+        <div>
+          <small>Guru Aktif</small>
+          <strong id="guruDisplay">Guru CAHAYA</strong>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel-card setup-card">
+      <div class="panel-head">
+        <div class="panel-title-wrap">
+          <div class="panel-icon">⚙️</div>
+          <div>
+            <h2>Informasi Pembelajaran</h2>
+            <p>Pilih tanggal. Jadwal mapel dan kelas akan disesuaikan otomatis dengan guru yang login.</p>
+          </div>
+        </div>
+        <span class="context-chip" id="contextChip">Belum dipilih</span>
+      </div>
+
+      <div class="grid-form">
+        <div class="form-group">
+          <label for="kbmTanggal"><span class="label-icon">📅</span>Tanggal KBM</label>
+          <input type="date" class="form-control" id="kbmTanggal" />
+        </div>
+
+        <div class="form-group">
+          <label for="kbmKelas"><span class="label-icon">🏫</span>Kelas Otomatis</label>
+          <select class="form-control" id="kbmKelas" disabled>
+            <option value="">Menunggu pilihan jadwal</option>
+          </select>
+          <div class="helper-text">
+            Kelas mengikuti jadwal mengajar yang dipilih.
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="kbmMapel"><span class="label-icon">📖</span>Jadwal Mengajar Hari Ini</label>
+          <select class="form-control" id="kbmMapel">
+            <option value="">Memeriksa jadwal guru...</option>
+          </select>
+          <div class="helper-text" id="scheduleHelper">
+            Sistem mencocokkan nama akun guru dengan jadwal pelajaran.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel-card">
+      <div class="panel-head">
+        <div class="panel-title-wrap">
+          <div class="panel-icon">👥</div>
+          <div>
+            <h2>Kehadiran & Nilai Harian</h2>
+            <p>Pilih status kehadiran dan isi nilai ulangan harian bila tersedia.</p>
+          </div>
+        </div>
+        <span class="context-chip"><span id="jumlahSantri">0</span>&nbsp;santri</span>
+      </div>
+
+      <div class="summary-grid" aria-label="Ringkasan kehadiran">
+        <div class="summary-card summary-total">
+          <div class="summary-label"><span class="summary-dot"></span>Total</div>
+          <strong id="sumTotal">0</strong>
+        </div>
+        <div class="summary-card summary-hadir">
+          <div class="summary-label"><span class="summary-dot"></span>Hadir</div>
+          <strong id="sumHadir">0</strong>
+        </div>
+        <div class="summary-card summary-terlambat">
+          <div class="summary-label"><span class="summary-dot"></span>Telat</div>
+          <strong id="sumTerlambat">0</strong>
+        </div>
+        <div class="summary-card summary-izin">
+          <div class="summary-label"><span class="summary-dot"></span>Izin</div>
+          <strong id="sumIzin">0</strong>
+        </div>
+        <div class="summary-card summary-sakit">
+          <div class="summary-label"><span class="summary-dot"></span>Sakit</div>
+          <strong id="sumSakit">0</strong>
+        </div>
+        <div class="summary-card summary-alfa">
+          <div class="summary-label"><span class="summary-dot"></span>Alfa</div>
+          <strong id="sumAlfa">0</strong>
+        </div>
+      </div>
+
+      <div class="attendance-toolbar">
+        <div class="search-box">
+          <span>🔎</span>
+          <input id="searchSantri" type="search" placeholder="Cari nama santri..." oninput="filterSantri()" disabled />
+        </div>
+        <button type="button" class="btn-secondary" id="btnClearSearch" onclick="clearSearch()" disabled>
+          ↺ Reset Cari
+        </button>
+        <button type="button" class="btn-mark-all" id="btnMarkAll" onclick="markAll()" disabled>
+          ✓ Semua Hadir
+        </button>
+      </div>
+
+      <div class="list-container">
+        <div class="list-header">
+          <div>Nama Santri</div>
+          <div class="status-head-grid">
+            <span>Hadir</span>
+            <span>Terlambat</span>
+            <span>Izin</span>
+            <span>Sakit</span>
+            <span>Alfa</span>
+          </div>
+          <div class="score-head">Nilai Ulangan Harian</div>
+        </div>
+
+        <div id="santriList">
+          <div class="empty-state">
+            <div class="empty-icon">🏫</div>
+            <strong>Pilih kelas terlebih dahulu</strong>
+            <span>Daftar santri akan tampil otomatis.</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel-card journal-card">
+      <div class="form-group">
+        <div class="panel-title-wrap" style="margin-bottom:14px;">
+          <div class="panel-icon">📝</div>
+          <div>
+            <h3 style="margin:0;color:var(--kbm-navy);font-size:1.05rem;font-weight:900;">Jurnal Mengajar</h3>
+            <p style="margin:4px 0 0;color:var(--kbm-muted);font-size:.76rem;font-weight:650;">Tuliskan pokok materi yang disampaikan hari ini.</p>
+          </div>
+        </div>
+
+        <textarea
+          class="form-control"
+          id="kbmCatatan"
+          rows="4"
+          maxlength="1000"
+          placeholder="Contoh: Bab thaharah — pengertian najis dan cara menyucikannya."
+        ></textarea>
+        <div class="helper-text">Maksimal 1.000 karakter.</div>
+      </div>
+
+      <div class="save-panel">
+        <div>
+          <div class="save-panel-title">☁️ Simpan ke CAHAYA APP</div>
+          <p>Pastikan kelas, mata pelajaran, kehadiran, dan nilai ulangan harian telah sesuai sebelum disimpan.</p>
+        </div>
+
+        <button class="btn-simpan" id="btnSimpan" onclick="simpanKehadiran()">
+          <span>💾</span>
+          <span>Simpan Absensi & Nilai</span>
+        </button>
+      </div>
+    </section>
+  </main>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+  import {
+    getDatabase,
+    ref,
+    get,
+    push,
+    update
+  } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+
+  const firebaseConfig = window.CAHAYA_CONFIG.firebase;
+
+  const app = initializeApp(firebaseConfig);
+  const db = getDatabase(app);
+
+  function bacaJsonAman(value, fallback = {}) {
+    try {
+      return JSON.parse(value || "{}");
+    } catch (error) {
+      console.warn("Data profil login tidak dapat dibaca:", error);
+      return fallback;
+    }
+  }
+
+  function bacaProfilAktif() {
+    const lokal = bacaJsonAman(
+      localStorage.getItem("cahayaCurrentUser"),
+      {}
+    );
+
+    let parentStorage = {};
+    let parentGlobal = {};
+
+    try {
+      if (window.parent && window.parent !== window) {
+        parentStorage = bacaJsonAman(
+          window.parent.localStorage.getItem(
+            "cahayaCurrentUser"
+          ),
+          {}
+        );
+
+        parentGlobal =
+          window.parent.cahayaCurrentUser &&
+          typeof window.parent.cahayaCurrentUser === "object"
+            ? window.parent.cahayaCurrentUser
+            : {};
+      }
+    } catch (error) {
+      console.warn(
+        "Profil dari dashboard utama belum dapat dibaca:",
+        error
+      );
+    }
+
+    return {
+      ...lokal,
+      ...parentStorage,
+      ...parentGlobal
+    };
+  }
+
+  let user = bacaProfilAktif();
+
+  const URUTAN_KELAS = [
+    "Kelas 1 Putra",
+    "Kelas 2 Putra",
+    "Kelas 3 Putra",
+    "Kelas 4 Putra",
+    "Kelas 5 Putra",
+    "Kelas 1 Putri",
+    "Kelas 2 Putri",
+    "Kelas 3 Putri",
+    "Kelas 4 Putri"
+  ];
+
+  const MAPEL_FALLBACK = [
+    "AQIDAH",
+    "FIQIH",
+    "ADAB",
+    "SHIRAH",
+    "METODE PENGAJARAN",
+    "KEWIRAUSAHAAN",
+    "NAHWU",
+    "SHARAF",
+    "BALAGHAH",
+    "TAHSIN",
+    "TAHFIZ"
+  ];
+
+  const MAPEL_QURAN = new Set([
+    "TAHSIN",
+    "TAHFIZ",
+    "MUROJAAH",
+    "MURAJAAH"
+  ]);
+
+  const STATUS_LIST = [
+    { value: "Hadir", label: "Hadir" },
+    { value: "Terlambat", label: "Telat" },
+    { value: "Izin", label: "Izin" },
+    { value: "Sakit", label: "Sakit" },
+    { value: "Alfa", label: "Alfa" }
+  ];
+
+  /* ==========================================================
+     JADWAL PELAJARAN 2026/2027
+     Disamakan dengan Kalender Materi/Jadwal Pelajaran.
+     Nomor hari JavaScript:
+     0 Ahad | 1 Senin | 2 Selasa | 3 Rabu |
+     4 Kamis | 5 Jumat | 6 Sabtu
+     ========================================================== */
+
+  const DAYS_ID = {
+    0: "Ahad",
+    1: "Senin",
+    2: "Selasa",
+    3: "Rabu",
+    4: "Kamis",
+    5: "Jumat",
+    6: "Sabtu"
+  };
+
+  const CLASS_SCHEDULE = {
+    1: { 1: "Aqidah", 2: "Fiqih", 3: "Shirah", 4: "Adab" },
+    2: { 1: "Fiqih", 2: "Adab", 3: "Shirah", 4: "Hadits" },
+    3: { 1: "Adab", 2: "Shirah", 3: "Hadits", 4: "Fiqih" },
+    4: {
+      1: "Aqidah Tasawuf",
+      2: "Hadits Ahkam",
+      3: "Nahwu Sharaf",
+      4: "Shirah"
+    },
+    5: {
+      1: "Aqidah Tasawuf",
+      2: "Hadits Ahkam",
+      3: "Balaghah",
+      4: "Manajemen dan Bisnis"
+    }
+  };
+
+  const CLASS_TEACHERS = {
+    1: { 1: "FAIQ", 2: "RASYIDIN", 3: "NAQIEB", 4: "NAQIEB" },
+    2: { 1: "RASYIDIN", 2: "NAQIEB", 3: "RAHIEL", 4: "FAIQ" },
+    3: { 1: "NAQIEB", 2: "RAHIEL", 3: "FAIQ", 4: "RASYIDIN" },
+    4: { 1: "MULTAZAM", 2: "MULTAZAM", 3: "RASYIDIN", 4: "RAHIEL" },
+    5: { 1: "MULTAZAM", 2: "MULTAZAM", 3: "MULTAZAM", 4: "MULTAZAM" }
+  };
+
+  const PUTRI_CLASS_SCHEDULE = {
+    1: { 1: "Aqidah", 2: "Fiqih", 3: "Shirah", 4: "Adab" },
+    2: { 1: "Fiqih", 2: "Adab", 3: "Hadits", 4: "Shirah" },
+    3: { 1: "Adab", 2: "Shirah", 3: "Fiqih", 4: "Hadits" },
+    4: {
+      1: "Aqidah Tasawuf",
+      2: "Hadits Ahkam",
+      5: ["Nahwu Sharaf", "Shirah"]
+    }
+  };
+
+  const PUTRI_CLASS_TEACHERS = {
+    1: { 1: "FATIMAH", 2: "ALAMANDA", 3: "MEILISA", 4: "MEILISA" },
+    2: { 1: "ALAMANDA", 2: "FATIMAH", 3: "FATIMAH", 4: "ALAMANDA" },
+    3: { 1: "MEILISA", 2: "MEILISA", 3: "ALAMANDA", 4: "FATIMAH" },
+    4: {
+      1: "MULTAZAM",
+      2: "MULTAZAM",
+      5: ["MULTAZAM", "MULTAZAM"]
+    }
+  };
+
+  const EXTRA_DAILY_SUBJECTS = {
+    putra: {
+      1: [
+        { subject: "Bahasa Arab", teacher: "HANIF" },
+        { subject: "Al-Qur’an", teacher: "HANIF" }
+      ],
+      2: [
+        { subject: "Bahasa Arab", teacher: "RAHIEL" },
+        { subject: "Bahasa Arab", teacher: "FAIQ" },
+        { subject: "Al-Qur’an", teacher: "FALAH" }
+      ],
+      3: [
+        { subject: "Bahasa Arab", teacher: "ZAKY" },
+        { subject: "Al-Qur’an", teacher: "RAHIEL" }
+      ],
+      4: [
+        { subject: "Bahasa Arab", teacher: "MULTAZAM" },
+        { subject: "Al-Qur’an", teacher: "ZAKY" }
+      ],
+      5: [
+        { subject: "Bahasa Arab", teacher: "MULTAZAM" },
+        { subject: "Al-Qur’an", teacher: "MULTAZAM" }
+      ]
+    },
+    putri: {
+      1: [
+        { subject: "Bahasa Arab", teacher: "FATIMAH" },
+        { subject: "Al-Qur’an", teacher: "FATIMAH" }
+      ],
+      2: [
+        { subject: "Bahasa Arab", teacher: "MEILISA" },
+        { subject: "Al-Qur’an", teacher: "MEILISA" }
+      ],
+      3: [
+        { subject: "Bahasa Arab", teacher: "ALAMANDA" },
+        { subject: "Al-Qur’an", teacher: "ALAMANDA" }
+      ],
+      4: [
+        { subject: "Bahasa Arab", teacher: "ALAMANDA" },
+        { subject: "Al-Qur’an", teacher: "ALAMANDA" }
+      ]
+    }
+  };
+
+  const SCHEDULE_SECTIONS = [
+    {
+      id: "putra",
+      label: "Putra",
+      schedule: CLASS_SCHEDULE,
+      teachers: CLASS_TEACHERS,
+      extraDaily: EXTRA_DAILY_SUBJECTS.putra
+    },
+    {
+      id: "putri",
+      label: "Putri",
+      schedule: PUTRI_CLASS_SCHEDULE,
+      teachers: PUTRI_CLASS_TEACHERS,
+      extraDaily: EXTRA_DAILY_SUBJECTS.putri
+    }
+  ];
+
+  const TEACHER_ALIASES = {
+    MULTAZAM: [
+      "multazam",
+      "multazam zakaria",
+      "abah multazam",
+      "dr multazam zakaria"
+    ],
+    RASYIDIN: [
+      "rasyidin",
+      "rosyidin",
+      "rosyidin",
+      "abi rasyidin",
+      "abi rosyidin"
+    ],
+    NAQIEB: [
+      "naqieb",
+      "muhammad naqieb"
+    ],
+    ZAKY: [
+      "zaky",
+      "zaki",
+      "muhammad zaky",
+      "muhammad zaki"
+    ],
+    RAHIEL: [
+      "rahiel",
+      "mika rahiel",
+      "mika rahiel yusuf"
+    ],
+    FAIQ: [
+      "faiq",
+      "muhammad faiq"
+    ],
+    FALAH: [
+      "falah",
+      "al falah",
+      "muhammad al falah",
+      "m al falah"
+    ],
+    FATIMAH: [
+      "fatimah"
+    ],
+    MEILISA: [
+      "meilisa",
+      "melisa"
+    ],
+    ALAMANDA: [
+      "alamanda"
+    ],
+    HANIF: [
+      "hanif"
+    ]
+  };
+
+  let onlineScheduleRows = [];
+  let masterDataAkademik = {
+    kelas: {},
+    guru: [],
+    mapel: []
+  };
+
+  let teacherCodeAktif = "";
+  let dailyAssignments = [];
+  let selectedAssignment = null;
+  let toastTimer = null;
+
+  function tanggalLokalHariIni() {
+    const sekarang = new Date();
+    const tahun = sekarang.getFullYear();
+    const bulan = String(sekarang.getMonth() + 1).padStart(2, "0");
+    const tanggal = String(sekarang.getDate()).padStart(2, "0");
+    return `${tahun}-${bulan}-${tanggal}`;
+  }
+
+  function namaGuruAktif() {
+    return (
+      user?.label ||
+      user?.nama ||
+      user?.namaTampilan ||
+      user?.displayName ||
+      user?.username ||
+      "Guru CAHAYA"
+    );
+  }
+
+  function tampilkanIdentitasGuru() {
+    const nama = namaGuruAktif();
+
+    document.getElementById("guruDisplay").textContent =
+      nama;
+
+    document.getElementById("guruDisplay").title =
+      "Nama akun yang digunakan untuk mencocokkan jadwal guru";
+
+    document.getElementById("guruInitial").textContent =
+      String(nama).trim().charAt(0).toUpperCase() || "G";
+  }
+
+  function normalizeIdentity(value = "") {
+    return String(value)
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .toLowerCase()
+      .replace(
+        /\b(abah|abi|ummi|ustadzah|ustadz|ust|muallimah|muallim|mualimah|mualim|naqibah|naqib|guru|bapak|ibu|pak|bu|dr|s pd|m pd|mpd|se)\b/g,
+        " "
+      )
+      .replace(/[^a-z0-9]+/g, " ")
+      .replace(/\s+/g, " ")
+      .trim();
+  }
+
+  function compactIdentity(value = "") {
+    return normalizeIdentity(value).replace(/\s+/g, "");
+  }
+
+  function kandidatIdentitasGuru() {
+    const emailPrefix = String(user?.email || "")
+      .split("@")[0];
+
+    return [
+      user?.label,
+      user?.nama,
+      user?.namaTampilan,
+      user?.displayName,
+      user?.username,
+      emailPrefix
+    ]
+      .filter(Boolean)
+      .map(normalizeIdentity)
+      .filter(Boolean);
+  }
+
+  function detectTeacherCode() {
+    const candidates = kandidatIdentitasGuru();
+
+    let bestMatch = {
+      code: "",
+      score: 0
+    };
+
+    Object.entries(TEACHER_ALIASES).forEach(
+      ([code, aliases]) => {
+        aliases.forEach(alias => {
+          const normalizedAlias =
+            normalizeIdentity(alias);
+
+          const compactAlias =
+            compactIdentity(alias);
+
+          candidates.forEach(candidate => {
+            const compactCandidate =
+              compactIdentity(candidate);
+
+            let score = 0;
+
+            if (
+              candidate === normalizedAlias ||
+              compactCandidate === compactAlias
+            ) {
+              score = 100;
+            } else if (
+              normalizedAlias.length >= 4 &&
+              (
+                candidate.includes(normalizedAlias) ||
+                normalizedAlias.includes(candidate)
+              )
+            ) {
+              score = 80;
+            } else if (
+              compactAlias.length >= 4 &&
+              compactCandidate.includes(compactAlias)
+            ) {
+              score = 70;
+            }
+
+            if (score > bestMatch.score) {
+              bestMatch = {
+                code,
+                score
+              };
+            }
+          });
+        });
+      }
+    );
+
+    return bestMatch.code;
+  }
+
+  function parseLocalDate(dateValue) {
+    if (!dateValue) return new Date();
+
+    const [year, month, day] =
+      String(dateValue).split("-").map(Number);
+
+    return new Date(
+      year,
+      (month || 1) - 1,
+      day || 1,
+      12,
+      0,
+      0
+    );
+  }
+
+  function normalizeLessonEntries(
+    subjectValue,
+    teacherValue
+  ) {
+    if (!subjectValue) return [];
+
+    if (Array.isArray(subjectValue)) {
+      return subjectValue
+        .map((item, index) => {
+          if (typeof item === "string") {
+            const teacher =
+              Array.isArray(teacherValue)
+                ? teacherValue[index]
+                : teacherValue;
+
+            return {
+              subject: item,
+              teacher: teacher || "—"
+            };
+          }
+
+          return {
+            subject: item.subject,
+            teacher: item.teacher || "—"
+          };
+        })
+        .filter(item => item.subject);
+    }
+
+    return [
+      {
+        subject: subjectValue,
+        teacher: teacherValue || "—"
+      }
+    ];
+  }
+
+  function getScheduledEntries(
+    section,
+    classNumber,
+    dayNumber
+  ) {
+    const classKey =
+      String(classNumber);
+
+    const core = normalizeLessonEntries(
+      section.schedule?.[classKey]?.[dayNumber],
+      section.teachers?.[classKey]?.[dayNumber]
+    );
+
+    const daily =
+      dayNumber >= 1 && dayNumber <= 4
+        ? section.extraDaily?.[classKey] || []
+        : [];
+
+    return [...core, ...daily];
+  }
+
+  function scheduledClassName(
+    section,
+    classNumber
+  ) {
+    return `Kelas ${classNumber} ${section.label}`;
+  }
+
+  function findMasterClassName(expectedName) {
+    const classKeys =
+      Object.keys(masterDataAkademik.kelas || {});
+
+    const normalizedExpected =
+      normalizeIdentity(expectedName);
+
+    return (
+      classKeys.find(
+        key =>
+          normalizeIdentity(key) === normalizedExpected
+      ) ||
+      classKeys.find(
+        key =>
+          compactIdentity(key) ===
+          compactIdentity(expectedName)
+      ) ||
+      expectedName
+    );
+  }
+
+  function buildAssignmentsForDay(dayNumber) {
+    if (onlineScheduleRows.length) {
+      return onlineScheduleRows
+        .filter(row => row && row.aktif !== false && Number(row.hari) === Number(dayNumber))
+        .map((row,index) => {
+          const expectedClass = row.kelas || `Kelas ${row.nomorKelas || ""} ${String(row.unit || "").toUpperCase() === "PUTRI" ? "Putri" : "Putra"}`;
+          return {
+            id: String(row.id || [row.unit,row.kelas,row.hari,row.mapel,row.guruKode,row.sesi,index].join("|"))
+              .toLowerCase().replace(/[^a-z0-9|]+/g,"_"),
+            sectionId: String(row.unit || "").toLowerCase(),
+            section: String(row.unit || "").toUpperCase() === "PUTRI" ? "Putri" : "Putra",
+            classNumber: String(row.nomorKelas || String(row.kelas || "").match(/\d+/)?.[0] || ""),
+            className: findMasterClassName(expectedClass),
+            subject: row.mapel || "Pelajaran",
+            teacher: String(row.guruKode || "").trim().toUpperCase(),
+            dayNumber: Number(dayNumber),
+            dayLabel: row.hariLabel || DAYS_ID[dayNumber] || "Hari",
+            scheduleStart: row.jamMulai || "",
+            scheduleEnd: row.jamSelesai || "",
+            sessionLabel: row.sesi || "KBM",
+            source: "firebase"
+          };
+        })
+        .sort((a,b) => String(a.scheduleStart).localeCompare(String(b.scheduleStart)) || a.className.localeCompare(b.className));
+    }
+
+    const assignments = [];
+
+    SCHEDULE_SECTIONS.forEach(section => {
+      Object.keys(section.schedule).forEach(
+        classNumber => {
+          getScheduledEntries(
+            section,
+            classNumber,
+            dayNumber
+          ).forEach((entry, index) => {
+            const expectedClass =
+              scheduledClassName(
+                section,
+                classNumber
+              );
+
+            const className =
+              findMasterClassName(expectedClass);
+
+            assignments.push({
+              id: [
+                section.id,
+                classNumber,
+                dayNumber,
+                entry.teacher,
+                entry.subject,
+                index
+              ]
+                .join("|")
+                .toLowerCase()
+                .replace(/[^a-z0-9|]+/g, "_"),
+
+              sectionId: section.id,
+              section: section.label,
+              classNumber: String(classNumber),
+              className,
+              subject: entry.subject,
+              teacher: String(entry.teacher || "")
+                .trim()
+                .toUpperCase(),
+              dayNumber,
+              dayLabel:
+                DAYS_ID[dayNumber] || "Hari"
+            });
+          });
+        }
+      );
+    });
+
+    return assignments;
+  }
+
+  function getSelectedAssignment() {
+    const id =
+      document.getElementById("kbmMapel").value;
+
+    return (
+      dailyAssignments.find(
+        item => item.id === id
+      ) ||
+      null
+    );
+  }
+
+  function setScheduleHelper(
+    message,
+    status = ""
+  ) {
+    const helper =
+      document.getElementById("scheduleHelper");
+
+    helper.textContent = message;
+    helper.className =
+      `helper-text ${
+        status ? `schedule-${status}` : ""
+      }`.trim();
+  }
+
+  function clearAttendanceForSchedule(message) {
+    selectedAssignment = null;
+
+    const classSelect =
+      document.getElementById("kbmKelas");
+
+    classSelect.value = "";
+
+    document.getElementById("santriList").innerHTML =
+      emptyState(
+        "📅",
+        "Pilih jadwal mengajar",
+        message ||
+        "Daftar santri akan tampil setelah jadwal dipilih."
+      );
+
+    document.getElementById("jumlahSantri").textContent =
+      "0";
+
+    document.getElementById("btnMarkAll").disabled =
+      true;
+
+    document.getElementById("searchSantri").disabled =
+      true;
+
+    document.getElementById("btnClearSearch").disabled =
+      true;
+
+    resetSummary();
+    updateContextChip();
+  }
+
+  function applySelectedSchedule() {
+    selectedAssignment =
+      getSelectedAssignment();
+
+    const classSelect =
+      document.getElementById("kbmKelas");
+
+    if (!selectedAssignment) {
+      classSelect.value = "";
+
+      clearAttendanceForSchedule(
+        dailyAssignments.length > 1
+          ? "Pilih salah satu jadwal mengajar yang tersedia."
+          : "Belum ada jadwal yang dipilih."
+      );
+
+      return;
+    }
+
+    classSelect.value =
+      selectedAssignment.className;
+
+    setScheduleHelper(
+      `${selectedAssignment.dayLabel}: ` +
+      `${selectedAssignment.subject} • ` +
+      `${selectedAssignment.className}`,
+      "ready"
+    );
+
+    updateContextChip();
+    window.tampilkanSantri();
+  }
+
+  function loadTeacherScheduleForDate(
+    options = {}
+  ) {
+    const {
+      notify = false
+    } = options;
+
+    const dateValue =
+      document.getElementById("kbmTanggal").value;
+
+    const dayNumber =
+      parseLocalDate(dateValue).getDay();
+
+    const dayLabel =
+      DAYS_ID[dayNumber] || "Hari";
+
+    const scheduleSelect =
+      document.getElementById("kbmMapel");
+
+    teacherCodeAktif =
+      detectTeacherCode();
+
+    dailyAssignments = [];
+    selectedAssignment = null;
+
+    scheduleSelect.innerHTML = "";
+    scheduleSelect.disabled = true;
+
+    if (!teacherCodeAktif) {
+      scheduleSelect.innerHTML =
+        '<option value="">Nama akun belum cocok dengan jadwal guru</option>';
+
+      setScheduleHelper(
+        `Nama akun “${namaGuruAktif()}” belum ditemukan pada jadwal pelajaran.`,
+        "error"
+      );
+
+      clearAttendanceForSchedule(
+        "Hubungi admin untuk menyamakan nama pengguna dengan nama guru pada jadwal."
+      );
+
+      if (notify) {
+        showToast(
+          "Nama akun guru belum cocok dengan nama pada jadwal pelajaran.",
+          "error",
+          "Guru belum terdeteksi"
+        );
+      }
+
+      return;
+    }
+
+    if (dayNumber === 0 || dayNumber === 6) {
+      scheduleSelect.innerHTML =
+        `<option value="">Tidak ada jadwal KBM pada ${dayLabel}</option>`;
+
+      setScheduleHelper(
+        `${dayLabel} tidak termasuk hari KBM pada jadwal pelajaran.`,
+        "warning"
+      );
+
+      clearAttendanceForSchedule(
+        `Tidak ada jadwal pembelajaran reguler pada ${dayLabel}.`
+      );
+
+      return;
+    }
+
+    dailyAssignments =
+      buildAssignmentsForDay(dayNumber)
+        .filter(
+          item =>
+            item.teacher === teacherCodeAktif
+        )
+        .sort((a, b) => {
+          const classA =
+            URUTAN_KELAS.indexOf(a.className);
+
+          const classB =
+            URUTAN_KELAS.indexOf(b.className);
+
+          if (classA !== classB) {
+            if (classA === -1) return 1;
+            if (classB === -1) return -1;
+            return classA - classB;
+          }
+
+          return a.subject.localeCompare(
+            b.subject,
+            "id"
+          );
+        });
+
+    if (!dailyAssignments.length) {
+      scheduleSelect.innerHTML =
+        `<option value="">Tidak ada jadwal ${teacherCodeAktif} pada ${dayLabel}</option>`;
+
+      setScheduleHelper(
+        `${namaGuruAktif()} tidak memiliki jadwal mengajar pada ${dayLabel}.`,
+        "warning"
+      );
+
+      clearAttendanceForSchedule(
+        `Tidak ditemukan mapel untuk guru ini pada ${dayLabel}.`
+      );
+
+      return;
+    }
+
+    const placeholder =
+      dailyAssignments.length === 1
+        ? "Jadwal ditemukan"
+        : `Pilih 1 dari ${dailyAssignments.length} jadwal`;
+
+    scheduleSelect.innerHTML =
+      `<option value="">${placeholder}</option>` +
+      dailyAssignments
+        .map(item => {
+          const label =
+            `${item.subject} • ${item.className}`;
+
+          return (
+            `<option value="${item.id}">` +
+            `${label}` +
+            `</option>`
+          );
+        })
+        .join("");
+
+    scheduleSelect.disabled = false;
+
+    if (dailyAssignments.length === 1) {
+      scheduleSelect.value =
+        dailyAssignments[0].id;
+
+      setScheduleHelper(
+        `${dayLabel}: jadwal otomatis ditemukan untuk ${teacherCodeAktif}.`,
+        "ready"
+      );
+
+      applySelectedSchedule();
+    } else {
+      setScheduleHelper(
+        `${dayLabel}: ditemukan ${dailyAssignments.length} jadwal. Pilih mapel/kelas yang sedang diajarkan.`,
+        "ready"
+      );
+
+      clearAttendanceForSchedule(
+        `Terdapat ${dailyAssignments.length} jadwal pada ${dayLabel}. Pilih salah satunya.`
+      );
+    }
+  }
+
+  function showToast(message, type = "info", title = "Informasi") {
+    const toast = document.getElementById("appToast");
+    const icon = document.getElementById("toastIcon");
+
+    clearTimeout(toastTimer);
+    toast.className = `app-toast ${type}`;
+    document.getElementById("toastTitle").textContent = title;
+    document.getElementById("toastMessage").textContent = message;
+    icon.textContent = type === "success" ? "✓" : type === "error" ? "!" : "i";
+
+    requestAnimationFrame(() => toast.classList.add("show"));
+    toastTimer = setTimeout(() => toast.classList.remove("show"), 3600);
+  }
+
+  function sembunyikanLoading() {
+    const overlay = document.getElementById("loadingOverlay");
+    overlay.style.opacity = "0";
+    setTimeout(() => {
+      overlay.style.display = "none";
+    }, 300);
+  }
+
+  function tampilkanErrorLoading(pesan) {
+    const overlay = document.getElementById("loadingOverlay");
+    overlay.innerHTML = `
+      <div class="loading-card">
+        <div class="loading-logo" style="background:linear-gradient(135deg,#ff6675,#df3f51);">⚠️</div>
+        <strong>Data kelas gagal dimuat</strong>
+        <span>${String(pesan || "Terjadi kesalahan saat membaca database.")}</span>
+      </div>
+    `;
+  }
+
+  function emptyState(icon, title, text) {
+    return `
+      <div class="empty-state">
+        <div class="empty-icon">${icon}</div>
+        <strong>${title}</strong>
+        <span>${text}</span>
+      </div>
+    `;
+  }
+
+  function ambilStrukturKelas(dataAkademik) {
+    if (
+      dataAkademik?.kelas &&
+      typeof dataAkademik.kelas === "object"
+    ) {
+      return dataAkademik.kelas;
+    }
+
+    if (
+      dataAkademik?.halqah?.["Halqah Ilmiyah"] &&
+      typeof dataAkademik.halqah["Halqah Ilmiyah"] === "object"
+    ) {
+      console.warn(
+        "Database masih memakai struktur halqah lama. " +
+        "Halaman memakai kelas Halqah Ilmiyah sebagai fallback."
+      );
+
+      return dataAkademik.halqah["Halqah Ilmiyah"];
+    }
+
+    return {};
+  }
+
+  function urutkanNamaKelas(daftarKelas) {
+    return [...daftarKelas].sort((a, b) => {
+      const posisiA = URUTAN_KELAS.indexOf(a);
+      const posisiB = URUTAN_KELAS.indexOf(b);
+
+      if (posisiA !== -1 && posisiB !== -1) {
+        return posisiA - posisiB;
+      }
+
+      if (posisiA !== -1) return -1;
+      if (posisiB !== -1) return 1;
+
+      return a.localeCompare(b, "id");
+    });
+  }
+
+  function isiPilihanKelas() {
+    const select = document.getElementById("kbmKelas");
+    select.innerHTML = '<option value="">Pilih kelas</option>';
+
+    const daftarKelas = urutkanNamaKelas(
+      Object.keys(masterDataAkademik.kelas || {})
+    );
+
+    daftarKelas.forEach((kelas) => {
+      select.add(new Option(kelas, kelas));
+    });
+
+    if (!daftarKelas.length) {
+      select.disabled = true;
+      select.innerHTML =
+        '<option value="">Data kelas belum tersedia</option>';
+    }
+  }
+
+  function isiPilihanMapel() {
+    loadTeacherScheduleForDate();
+  }
+
+  function updateContextChip() {
+    const chip =
+      document.getElementById("contextChip");
+
+    const assignment =
+      selectedAssignment ||
+      getSelectedAssignment();
+
+    if (assignment) {
+      chip.textContent =
+        `${assignment.className} • ${assignment.subject}`;
+      return;
+    }
+
+    const dateValue =
+      document.getElementById("kbmTanggal").value;
+
+    if (dateValue) {
+      const dayLabel =
+        DAYS_ID[
+          parseLocalDate(dateValue).getDay()
+        ] || "Hari";
+
+      chip.textContent =
+        `${dayLabel} • Belum dipilih`;
+    } else {
+      chip.textContent =
+        "Belum dipilih";
+    }
+  }
+
+  function resetSummary() {
+    ["sumTotal", "sumHadir", "sumTerlambat", "sumIzin", "sumSakit", "sumAlfa"]
+      .forEach((id) => {
+        document.getElementById(id).textContent = "0";
+      });
+  }
+
+  function updateSummary() {
+    const rows = [...document.querySelectorAll(".santri-row")];
+    const counts = {
+      Hadir: 0,
+      Terlambat: 0,
+      Izin: 0,
+      Sakit: 0,
+      Alfa: 0
+    };
+
+    rows.forEach((row) => {
+      const selected = row.querySelector('input[type="radio"]:checked');
+      if (selected && Object.prototype.hasOwnProperty.call(counts, selected.value)) {
+        counts[selected.value] += 1;
+      }
+    });
+
+    document.getElementById("sumTotal").textContent = String(rows.length);
+    document.getElementById("sumHadir").textContent = String(counts.Hadir);
+    document.getElementById("sumTerlambat").textContent = String(counts.Terlambat);
+    document.getElementById("sumIzin").textContent = String(counts.Izin);
+    document.getElementById("sumSakit").textContent = String(counts.Sakit);
+    document.getElementById("sumAlfa").textContent = String(counts.Alfa);
+  }
+
+  document.addEventListener("DOMContentLoaded", async () => {
+    document.getElementById("kbmTanggal").value =
+      tanggalLokalHariIni();
+
+    tampilkanIdentitasGuru();
+
+    document
+      .getElementById("kbmKelas")
+      .classList.add("auto-field");
+
+    document
+      .getElementById("kbmTanggal")
+      .addEventListener("change", () => {
+        loadTeacherScheduleForDate({
+          notify: false
+        });
+      });
+
+    document
+      .getElementById("kbmMapel")
+      .addEventListener(
+        "change",
+        applySelectedSchedule
+      );
+
+    try {
+      const [snapshot, scheduleSnapshot] = await Promise.all([
+        get(ref(db, "cahaya_app/master_akademik")),
+        get(ref(db, "cahaya_app/jadwal_pelajaran"))
+      ]);
+
+      const dataFirebase = snapshot.exists()
+        ? snapshot.val()
+        : {};
+
+      if (scheduleSnapshot.exists()) {
+        const value = scheduleSnapshot.val();
+        onlineScheduleRows = Array.isArray(value)
+          ? value.filter(Boolean)
+          : Object.entries(value || {}).map(([id,row]) => ({ id, ...(row || {}) }));
+      }
+
+      masterDataAkademik = {
+        ...dataFirebase,
+        kelas: ambilStrukturKelas(dataFirebase),
+        guru: Array.isArray(dataFirebase.guru)
+          ? dataFirebase.guru
+          : [],
+        mapel: Array.isArray(dataFirebase.mapel)
+          ? dataFirebase.mapel
+          : []
+      };
+
+      isiPilihanKelas();
+
+      document.getElementById("kbmKelas").disabled =
+        true;
+
+      loadTeacherScheduleForDate({
+        notify: true
+      });
+
+      sembunyikanLoading();
+    } catch (error) {
+      console.error(
+        "Gagal mengambil master akademik:",
+        error
+      );
+
+      tampilkanErrorLoading(error.message);
+    }
+  });
+
+  window.addEventListener(
+    "message",
+    event => {
+      if (
+        event.data?.type !==
+        "CAHAYA_PROFILE_SYNC"
+      ) {
+        return;
+      }
+
+      const profile =
+        event.data.profile || {};
+
+      if (
+        profile &&
+        typeof profile === "object"
+      ) {
+        user = {
+          ...user,
+          ...profile
+        };
+
+        tampilkanIdentitasGuru();
+
+        if (
+          Object.keys(
+            masterDataAkademik.kelas || {}
+          ).length
+        ) {
+          loadTeacherScheduleForDate();
+        }
+      }
+    }
+  );
+
+  try {
+    if (
+      window.parent &&
+      window.parent !== window
+    ) {
+      window.parent.postMessage(
+        {
+          type: "CAHAYA_PROFILE_REQUEST"
+        },
+        "*"
+      );
+    }
+  } catch (error) {
+    console.warn(
+      "Permintaan profil ke dashboard gagal:",
+      error
+    );
+  }
+
+  window.tampilkanSantri = function() {
+    const assignment =
+      selectedAssignment ||
+      getSelectedAssignment();
+
+    const kelas =
+      assignment?.className ||
+      document.getElementById("kbmKelas").value;
+    const listArea = document.getElementById("santriList");
+    const jumlahSantri = document.getElementById("jumlahSantri");
+    const btnMarkAll = document.getElementById("btnMarkAll");
+    const searchInput = document.getElementById("searchSantri");
+    const btnClearSearch = document.getElementById("btnClearSearch");
+
+    listArea.innerHTML = "";
+    jumlahSantri.textContent = "0";
+    btnMarkAll.disabled = true;
+    searchInput.disabled = true;
+    btnClearSearch.disabled = true;
+    searchInput.value = "";
+    resetSummary();
+    updateContextChip();
+
+    if (!kelas) {
+      listArea.innerHTML = emptyState(
+        "🏫",
+        "Pilih kelas terlebih dahulu",
+        "Daftar santri akan tampil otomatis."
+      );
+      return;
+    }
+
+    const daftarSantri = Array.isArray(
+      masterDataAkademik.kelas?.[kelas]
+    )
+      ? [...masterDataAkademik.kelas[kelas]]
+      : [];
+
+    daftarSantri.sort((a, b) => a.localeCompare(b, "id"));
+
+    if (!daftarSantri.length) {
+      listArea.innerHTML = emptyState(
+        "📭",
+        "Kelas masih kosong",
+        "Belum ada santri yang tersimpan di kelas ini."
+      );
+      return;
+    }
+
+    jumlahSantri.textContent = String(daftarSantri.length);
+    btnMarkAll.disabled = false;
+    searchInput.disabled = false;
+    btnClearSearch.disabled = false;
+
+    daftarSantri.forEach((nama, index) => {
+      const row = document.createElement("div");
+      row.className = "santri-row row-hadir";
+      row.dataset.nama = nama;
+      row.dataset.search = String(nama).toLowerCase();
+
+      const namaElement = document.createElement("div");
+      namaElement.className = "santri-name";
+
+      const numberElement = document.createElement("span");
+      numberElement.className = "student-number";
+      numberElement.textContent = String(index + 1).padStart(2, "0");
+
+      const nameText = document.createElement("span");
+      nameText.className = "student-name-text";
+      nameText.textContent = nama.toLowerCase();
+
+      namaElement.appendChild(numberElement);
+      namaElement.appendChild(nameText);
+
+      const actionGroup = document.createElement("div");
+      actionGroup.className = "action-group";
+
+      STATUS_LIST.forEach((status) => {
+        const label = document.createElement("label");
+        label.className = "radio-item";
+        label.title = status.value;
+
+        const input = document.createElement("input");
+        input.type = "radio";
+        input.name = `s_${index}`;
+        input.value = status.value;
+        input.checked = status.value === "Hadir";
+        input.setAttribute("aria-label", `${nama}: ${status.value}`);
+
+        input.addEventListener("change", () => {
+          row.className = `santri-row row-${status.value.toLowerCase()}`;
+          updateSummary();
+        });
+
+        const checkmark = document.createElement("span");
+        checkmark.className = "checkmark";
+
+        const symbol = document.createElement("span");
+        symbol.className = "status-symbol";
+
+        const labelText = document.createElement("span");
+        labelText.textContent = status.label;
+
+        checkmark.appendChild(symbol);
+        checkmark.appendChild(labelText);
+        label.appendChild(input);
+        label.appendChild(checkmark);
+        actionGroup.appendChild(label);
+      });
+
+      const scoreField = document.createElement("div");
+      scoreField.className = "score-field";
+
+      const scoreLabelMobile = document.createElement("span");
+      scoreLabelMobile.className = "score-label-mobile";
+      scoreLabelMobile.textContent = "Nilai Ulangan Harian";
+
+      const scoreInputWrap = document.createElement("div");
+      scoreInputWrap.className = "score-input-wrap";
+
+      const scoreInput = document.createElement("input");
+      scoreInput.type = "number";
+      scoreInput.className = "daily-score-input";
+      scoreInput.min = "0";
+      scoreInput.max = "100";
+      scoreInput.step = "0.01";
+      scoreInput.inputMode = "decimal";
+      scoreInput.placeholder = "—";
+      scoreInput.autocomplete = "off";
+      scoreInput.setAttribute("aria-label", `Nilai Ulangan Harian ${nama}`);
+
+      scoreInput.addEventListener("input", () => {
+        const raw = scoreInput.value.trim();
+        const nilai = Number(raw);
+        const valid = raw === "" || (Number.isFinite(nilai) && nilai >= 0 && nilai <= 100);
+        scoreInput.classList.toggle("is-invalid", !valid);
+      });
+
+      const scoreSuffix = document.createElement("span");
+      scoreSuffix.className = "score-suffix";
+      scoreSuffix.textContent = "/100";
+
+      scoreInputWrap.appendChild(scoreInput);
+      scoreInputWrap.appendChild(scoreSuffix);
+      scoreField.appendChild(scoreLabelMobile);
+      scoreField.appendChild(scoreInputWrap);
+
+      row.appendChild(namaElement);
+      row.appendChild(actionGroup);
+      row.appendChild(scoreField);
+      listArea.appendChild(row);
+    });
+
+    updateSummary();
+  };
+
+  window.filterSantri = function() {
+    const query = document.getElementById("searchSantri").value
+      .trim()
+      .toLowerCase();
+
+    document.querySelectorAll(".santri-row").forEach((row) => {
+      row.hidden = Boolean(query) && !row.dataset.search.includes(query);
+    });
+  };
+
+  window.clearSearch = function() {
+    const input = document.getElementById("searchSantri");
+    input.value = "";
+    window.filterSantri();
+    input.focus();
+  };
+
+  window.markAll = function() {
+    document.querySelectorAll(".santri-row").forEach((row) => {
+      const radioHadir = row.querySelector('input[value="Hadir"]');
+
+      if (radioHadir) {
+        radioHadir.checked = true;
+        row.className = "santri-row row-hadir";
+      }
+    });
+
+    updateSummary();
+    showToast("Seluruh santri ditandai hadir.", "success", "Status diperbarui");
+  };
+
+  function hitungPoin(status, mapel) {
+    if (status === "Hadir") {
+      return MAPEL_QURAN.has(mapel.toUpperCase()) ? 40 : 30;
+    }
+
+    if (status === "Terlambat") return -20;
+    if (status === "Alfa") return -40;
+
+    return 0;
+  }
+
+  function setSaveButtonLoading(isLoading) {
+    const btn = document.getElementById("btnSimpan");
+    btn.disabled = isLoading;
+    btn.innerHTML = isLoading
+      ? '<span>⏳</span><span>Menyimpan...</span>'
+      : '<span>💾</span><span>Simpan Absensi & Nilai</span>';
+  }
+
+  window.simpanKehadiran = async function() {
+    const tanggal =
+      document.getElementById("kbmTanggal").value;
+
+    const assignment =
+      selectedAssignment ||
+      getSelectedAssignment();
+
+    const kelas =
+      assignment?.className || "";
+
+    const mapel =
+      assignment?.subject || "";
+
+    const catatan =
+      document.getElementById("kbmCatatan").value.trim();
+
+    const barisSantri = [
+      ...document.querySelectorAll(".santri-row")
+    ];
+
+    if (!tanggal || !assignment || !kelas || !mapel) {
+      showToast(
+        "Pilih jadwal mengajar yang tersedia untuk tanggal tersebut.",
+        "error",
+        "Jadwal belum dipilih"
+      );
+      return;
+    }
+
+    if (!barisSantri.length) {
+      showToast(
+        "Tidak ada data santri yang dapat disimpan.",
+        "error",
+        "Daftar santri kosong"
+      );
+      return;
+    }
+
+    const barisNilaiTidakValid = barisSantri.filter((row) => {
+      const inputNilai = row.querySelector(".daily-score-input");
+      const raw = inputNilai?.value.trim() || "";
+
+      if (raw === "") {
+        inputNilai?.classList.remove("is-invalid");
+        return false;
+      }
+
+      const nilai = Number(raw);
+      const tidakValid = !Number.isFinite(nilai) || nilai < 0 || nilai > 100;
+      inputNilai?.classList.toggle("is-invalid", tidakValid);
+      return tidakValid;
+    });
+
+    if (barisNilaiTidakValid.length) {
+      const barisPertama = barisNilaiTidakValid[0];
+      const namaSantri = barisPertama.dataset.nama || "santri";
+      const inputPertama = barisPertama.querySelector(".daily-score-input");
+
+      showToast(
+        `Nilai ${namaSantri} harus berada antara 0 sampai 100.`,
+        "error",
+        "Nilai belum valid"
+      );
+
+      barisPertama.scrollIntoView({ behavior: "smooth", block: "center" });
+      setTimeout(() => inputPertama?.focus(), 350);
+      return;
+    }
+
+    setSaveButtonLoading(true);
+
+    try {
+      const izinSnapshot = await get(
+        ref(db, `cahaya_app/izin_sakit_harian/${tanggal}`)
+      );
+      const izinHariIni = izinSnapshot.exists() ? izinSnapshot.val() : {};
+      const izinByNama = new Map(
+        Object.values(izinHariIni || {})
+          .filter(item =>
+            item &&
+            item.statusAktif !== false &&
+            item.bolehTidakMengikutiPembelajaranHariIni === true
+          )
+          .map(item => [compactIdentity(item.namaSantri || item.namaSantriKey || ""), item])
+      );
+      let jumlahKoreksiUKS = 0;
+
+      const hasil = barisSantri.map((row) => {
+        const nama = row.dataset.nama;
+        const statusDipilih = row.querySelector('input[type="radio"]:checked');
+        const statusAwal = statusDipilih ? statusDipilih.value : "Hadir";
+        const izinUKS = izinByNama.get(compactIdentity(nama));
+        const status = statusAwal === "Alfa" && izinUKS ? "Sakit" : statusAwal;
+        const nilaiRaw = row.querySelector(".daily-score-input")?.value.trim() || "";
+        const nilaiUlanganHarian = nilaiRaw === "" ? null : Number(nilaiRaw);
+
+        if (status !== statusAwal) jumlahKoreksiUKS += 1;
+
+        return {
+          nama,
+          status,
+          poin: hitungPoin(status, mapel),
+          nilaiUlanganHarian,
+          nilaiUlanganHarianDiisi: nilaiRaw !== "",
+          ...(status !== statusAwal ? {
+            statusAsal: statusAwal,
+            dikoreksiOtomatisUKS: true,
+            idPemeriksaanUKS: izinUKS?.idPemeriksaan || "",
+            keteranganKoreksiUKS: izinUKS?.keteranganGuru || "Alfa diubah menjadi Sakit berdasarkan izin UKS.",
+            waktuKoreksiUKS: new Date().toISOString()
+          } : {})
+        };
+      });
+
+      const nilaiTerisi = hasil
+        .map((item) => item.nilaiUlanganHarian)
+        .filter((nilai) => Number.isFinite(nilai));
+
+      const rataRataNilaiUlanganHarian = nilaiTerisi.length
+        ? Number(
+            (
+              nilaiTerisi.reduce((total, nilai) => total + nilai, 0) /
+              nilaiTerisi.length
+            ).toFixed(2)
+          )
+        : null;
+
+      const payload = {
+        tanggal,
+        kelas,
+
+        /*
+          Field "sub" dipertahankan agar laporan lama
+          yang masih membaca data.sub tetap dapat bekerja.
+        */
+        sub: kelas,
+
+        mapel,
+        catatan,
+
+        guru: namaGuruAktif(),
+        guruKodeKalender: teacherCodeAktif,
+        guruUid: user?.uid || "",
+
+        jadwalId: assignment.id,
+        hariJadwal: assignment.dayLabel,
+        nomorHariJadwal: assignment.dayNumber,
+        unitPembelajaran: assignment.section,
+        nomorKelasJadwal: assignment.classNumber,
+        sumberJadwal:
+          onlineScheduleRows.length ? "Firebase • cahaya_app/jadwal_pelajaran" : "Jadwal bawaan 2026/2027",
+
+        tahunAjaran: "2026/2027",
+        jumlahSantri: hasil.length,
+        adaNilaiUlanganHarian: nilaiTerisi.length > 0,
+        jumlahNilaiUlanganHarian: nilaiTerisi.length,
+        rataRataNilaiUlanganHarian,
+        data: hasil,
+        waktuSimpan: new Date().toISOString()
+      };
+
+      const savedRef = await push(
+        ref(db, "cahaya_app/absensi_pembelajaran"),
+        payload
+      );
+      const indexUpdates = {};
+      hasil.forEach(item => {
+        const waliKey = String(item.nama||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]/g,'');
+        if(!waliKey || !savedRef.key) return;
+        indexUpdates[`cahaya_app/wali_index/${waliKey}/pembelajaran/${savedRef.key}`] = {...payload,data:[item]};
+      });
+      if(Object.keys(indexUpdates).length) await update(ref(db),indexUpdates);
+
+      showToast(
+        jumlahKoreksiUKS
+          ? `Absensi berhasil disimpan. ${jumlahKoreksiUKS} status Alfa otomatis diubah menjadi Sakit berdasarkan izin UKS.`
+          : "Absensi dan nilai ulangan harian berhasil disimpan.",
+        "success",
+        "Penyimpanan berhasil"
+      );
+
+      setTimeout(() => location.reload(), 900);
+    } catch (error) {
+      console.error("Gagal menyimpan absensi:", error);
+      showToast(
+        `Gagal menyimpan: ${error.message}`,
+        "error",
+        "Penyimpanan gagal"
+      );
+      setSaveButtonLoading(false);
+    }
+  };
+</script>
+</body>
+</html>
