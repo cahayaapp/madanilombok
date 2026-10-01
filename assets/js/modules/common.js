@@ -64,7 +64,7 @@ export function serializeForm(form) {
 export function attachAsync(form, handler, successMessage = "Data tersimpan.") {
   form?.addEventListener("submit", async event => {
     event.preventDefault();
-    const submit = form.querySelector("[type=submit]");
+    const submit = form.querySelector("button[type=submit],button:not([type]),input[type=submit]");
     if (submit) submit.disabled = true;
     try {
       await handler(serializeForm(form), form);

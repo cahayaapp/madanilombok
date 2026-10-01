@@ -30,3 +30,9 @@ Sebelum go-live production, minimal:
 ## Bootstrap master data
 
 Halaman `/bootstrap/` hanya untuk proses awal. Setelah master data berhasil diimpor, sebaiknya hapus/nonaktifkan halaman bootstrap pada deployment production atau batasi hanya untuk Super Admin.
+
+## Penambahan workspace v26
+
+Rules tambahan memvalidasi aktor, role, scope manajemen, kepemilikan jurnal, serta transisi temuan/penitipan. Rules ini belum diuji pada Firebase Emulator.
+
+Root `madani_app/.read` masih memberi akses semua pengguna terautentikasi. Karena izin RTDB diwariskan, filter pada UI dan rule child tidak membuat data pesan/kasus/jurnal privat. Cabut izin root luas dan desain query sesuai scope sebelum production, lalu uji seluruh role. Node operasional lama (termasuk finance) tetap pada aturan pilot sebelumnya; tidak diperketat diam-diam dalam perubahan fitur ini.

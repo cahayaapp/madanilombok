@@ -1,3 +1,4 @@
+import { WORKSPACE_GROUPS, workspaceFeatures } from "./role-workspace-catalog.js";
 export const ROLE_LABELS = {
   super_admin: "Super Admin",
   admin: "Admin",
@@ -112,7 +113,8 @@ export const MENU_GROUPS = [
       { id: "finance-history", label: "Riwayat Transaksi", icon: "↺", feature: "finance.history" },
       { id: "finance-reports", label: "Laporan Keuangan", icon: "▥", feature: "finance.reports" }
     ]
-  }
+  },
+  ...WORKSPACE_GROUPS
 ];
 
 const academicAll = [
@@ -145,23 +147,24 @@ export const ROLE_FEATURES = {
   konselor: counselorAll,
   kasir: ["finance.dashboard","finance.cashier","finance.products","finance.history"],
   wali_santri: parentAll,
-  head_formal_school: academicAll,
-  head_boys_dorm: [...naqibAll,...mentorAll,...counselorAll,"academic.quran"],
-  head_girls_dorm: [...naqibAll,...mentorAll,...counselorAll,"academic.quran"],
-  deputy_director: [...academicAll,...naqibAll,...mentorAll,...counselorAll,...financeAll],
-  director: [...academicAll,...naqibAll,...mentorAll,...counselorAll,...financeAll],
+  head_formal_school: ["academic.schedule"],
+  head_boys_dorm: [],
+  head_girls_dorm: [],
+  deputy_director: [...financeAll],
+  director: [...financeAll],
   admin: [...academicAll,...naqibAll,...mentorAll,...counselorAll,...financeAll],
   super_admin: [...academicAll,...naqibAll,...mentorAll,...counselorAll,...financeAll]
 };
 
 export function featuresForRoles(roles = []) {
   const out = new Set(["dashboard"]);
-  roles.forEach(role => (ROLE_FEATURES[role] || []).forEach(feature => out.add(feature)));
+  roles.forEach(role => [...(ROLE_FEATURES[role] || []), ...workspaceFeatures(role)].forEach(feature => out.add(feature)));
   return out;
 }
 
 export function canAccess(feature, roles = []) {
-  if (!feature || feature === "dashboard") return true;
+  if (!feature) return false;
+  if (feature === "dashboard") return roles.some(role => Object.hasOwn(ROLE_LABELS,role));
   return featuresForRoles(roles).has(feature);
 }
 

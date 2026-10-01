@@ -1,6 +1,6 @@
 # MadaniApp V2 Pilot — Scope Fitur Aktif
 
-Versi ini mengaktifkan hanya domain yang diminta untuk pilot awal. Fitur lain di luar scope tidak ditambahkan.
+Brief 2 Oktober 2026 memperluas pilot berdasarkan Cahaya App (`fajrulislam`). Bagian inti di bawah dipertahankan; penambahan dan celah kesetaraan dirinci di `CAHAYA-PARITY.md`.
 
 ## 1. Akademik
 
@@ -97,10 +97,10 @@ Fitur aktif:
 - Informasi Penting/Pengumuman
 - Keuangan
 
-**Tidak diaktifkan:**
+**Tambahan yang kini tersedia:**
 
-- Jurnal Liburan
-- Penitipan Barang
+- Jurnal Liburan **dinonaktifkan**, termasuk monitoring staf
+- Pantau Penitipan Barang (pencatatan/serah terima oleh Admin)
 
 Satu akun wali dapat ditautkan ke beberapa anak melalui `studentIds`; seluruh halaman mengikuti anak aktif yang dipilih.
 
@@ -151,3 +151,10 @@ Role sistem/struktur yang tetap disediakan agar bagan organisasi dapat diterapka
 - `wali_santri`
 
 Satu orang boleh memiliki lebih dari satu role.
+
+
+## 5. Ruang kerja tambahan
+
+Guru/mentor memperoleh tindak lanjut akademik, lapor kasus, tulisan, refleksi guru, kalender dan evidence. Pimpinan memperoleh ruang kontrol, temuan, observasi, pembinaan dan evaluasi; fitur standar/target/eskalasi/masalah sistemik khusus pimpinan. Menu manajerial dipisahkan dari pencatatan rutin personel; pegawai dengan dua fungsi dapat beralih ke role yang ditugaskan.
+
+Semua staf memiliki profil, pesan internal, panduan, jadwal pribadi dan evidence. KPI tambahan belum merupakan perhitungan delapan indikator atau skor berbobot Cahaya. Gunakan matriks `permissions.js` dan `role-workspace-catalog.js` sebagai daftar akses aktual.

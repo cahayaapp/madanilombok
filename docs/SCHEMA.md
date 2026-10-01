@@ -93,3 +93,24 @@ madani_app/
 ## Catatan production
 
 Struktur ini adalah baseline pilot. Transaksi keuangan dan pembatasan akses sensitif harus di-hardening dengan Firebase Rules yang lebih granular dan idealnya Cloud Functions sebelum production.
+
+## Workspace tambahan per tahun ajaran (v26)
+
+`workspaces/{academicYearId}/` menampung penambahan tanpa memigrasikan keuangan maupun data Cahaya:
+
+- `schedules/{id}`: agenda pribadi, role, judul, tanggal, jam mulai/selesai.
+- `messages/{id}`: senderUid, recipientUid, subjek dan pesan (create-only).
+- `writings/{id}`: tulisan guru berstatus draft dan evidence URL opsional.
+- `teacher_assessments/{id}`: pekan, 5 dimensi, 8 indikator refleksi 1–5, keberhasilan/fokus.
+- `academic_followups/{id}`: studentId, target, strategi, evidence, dueDate, result, status. Pembaruan pada ID yang sama.
+- `findings/{id}`: scope `education|boarding-L|boarding-P|all`, evidence, standard, assigneeUid, dueDate, status, history.
+- `observations|coaching|standards|targets|systemic/{id}`: catatan manajemen sesuai scope. Belum memiliki relasi workflow penuh Cahaya.
+- `holiday_daily/{studentId}/{YYYY-MM-DD}`: aktivitas wali, guardianUid.
+- `holiday_reports/{studentId}/{periodKey}`: 7 jawaban refleksi, DRAF/TERKIRIM, guardianUid.
+- `deposits/{studentId}/{id}`: nama/kondisi/jumlah barang, status, receiver dan history serah terima; tidak berhubungan dengan saldo uang.
+
+Record baru memuat academicYearId, createdBy/updatedBy dan timestamp server. Temuan serta penitipan menyimpan riwayat transisi di dalam record dan memakai transaksi; create/upsert workspace menyimpan audit secara atomic multipath. ID akademik/santri tetap ID Madani.
+
+`users/{uid}/roleScopes/{role}` dapat menyimpan scope per role; tetap dibatasi role yang benar-benar ditugaskan. Provisioning akun menambahkan `studentAccess/{studentId}: true` sebagai peta kepemilikan, di samping studentIds yang sudah digunakan UI. Akun lama tetap didukung rules melalui studentId/10 indeks awal studentIds; akun dengan lebih banyak anak perlu dibangun ulang peta studentAccess oleh admin.
+
+Tidak ada migrasi otomatis. Untuk membatalkan rilis UI gunakan kode versi sebelumnya sambil mempertahankan data workspace (jangan menghapus rekam operasional). Deployment rules dan uji emulator adalah pekerjaan terpisah sebelum go-live.

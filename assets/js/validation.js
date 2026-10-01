@@ -6,7 +6,7 @@ let session;let section='students';let rows=[];let masters={};let currentEdit=nu
 const cfg={
  students:{label:'Santri',path:'students',prefix:'STD',cols:[['studentNo','NIS/NISN'],['name','Nama'],['gender','JK'],['unitId','Unit'],['boardingStatus','Asrama'],['status','Status']]},
  staff:{label:'SDM',path:'staff',prefix:'SDM',cols:[['name','Nama'],['gender','JK'],['phone','HP'],['email','Email'],['employmentStatus','Status Pegawai'],['status','Aktif']]},
- classes:{label:'Kelas/Rombel',path:'classes',prefix:'CLS',cols:[['name','Rombel'],['unitId','Unit'],['grade','Tingkat'],['major','Jurusan'],['homeroomStaffId','Guru Wali'],['status','Status']]},
+ classes:{label:'Kelas/Rombel',path:'classes',prefix:'CLS',cols:[['name','Rombel'],['unitId','Unit'],['grade','Tingkat'],['major','Jurusan'],['homeroomStaffId','Wali Kelas'],['status','Status']]},
  rooms:{label:'Kamar',path:'rooms',prefix:'ROOM',cols:[['name','Kamar'],['dormitoryId','Asrama'],['gender','JK'],['supervisor','Pembina'],['capacity','Kapasitas'],['status','Status']]},
  groups:{label:'Halaqah',path:'groups',prefix:'GRP',cols:[['name','Kelompok'],['type','Jenis'],['gender','JK'],['mentorStaffId','Mentor'],['capacity','Kapasitas'],['status','Status']]},
  programs:{label:'Program 24 Jam',path:'programs',prefix:'PRG',cols:[['name','Program'],['category','Kategori'],['genderScope','JK'],['defaultPic','PIC'],['attendanceRequired','Presensi'],['status','Status']]},

@@ -171,3 +171,41 @@ export async function writeAudit(action, entity, entityId, actorUid, detail = {}
     console.warn("Audit log gagal:", err);
   }
 }
+
+/** Additive workspace records: server clock and audit in one atomic update. */
+export async function createWorkspaceRecord(path, data, actorUid) {
+  const target=push(ref(db,pathFor(path)));
+  const audit=push(ref(db,pathFor('audit_logs')));
+  const record={...data,createdBy:actorUid,updatedBy:actorUid,createdAt:serverTimestamp(),updatedAt:serverTimestamp()};
+  await update(ref(db,pathFor('')),{
+    [`${path}/${target.key}`]:record,
+    [`audit_logs/${audit.key}`]:{action:'workspace_create',path,recordId:target.key,actorUid,createdAt:serverTimestamp()}
+  });
+  return {id:target.key,...record};
+}
+
+/** Compare-and-transition prevents stale screens from overwriting newer workflow state. */
+export async function transitionWorkspaceRecord(path, id, transition, actorUid) {
+  await get(ref(db,pathFor(`${path}/${id}`)));
+  let rejection='Rekam tidak ditemukan.';
+  const result=await runTransaction(ref(db,pathFor(`${path}/${id}`)),current=>{
+    if(!current)return;
+    try {
+      const next=transition(current);
+      return {...next,updatedAt:serverTimestamp(),updatedBy:actorUid};
+    } catch(error){rejection=error.message;return;}
+  },{applyLocally:false});
+  if(!result.committed)throw new Error(rejection);
+  return result.snapshot.val();
+}
+
+export async function saveWorkspaceRecord(path,id,data,actorUid) {
+  const previous=await getNode(`${path}/${id}`);
+  const audit=push(ref(db,pathFor('audit_logs')));
+  const record={...data,createdBy:previous?.createdBy||actorUid,createdAt:previous?.createdAt||serverTimestamp(),updatedBy:actorUid,updatedAt:serverTimestamp()};
+  await update(ref(db,pathFor('')),{
+    [`${path}/${id}`]:record,
+    [`audit_logs/${audit.key}`]:{action:previous?'workspace_update':'workspace_create',path,recordId:id,actorUid,createdAt:serverTimestamp()}
+  });
+  return record;
+}

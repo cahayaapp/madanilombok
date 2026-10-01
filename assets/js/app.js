@@ -1,9 +1,11 @@
+import { PARENT_EXTRA_ROUTES } from "./modules/parent-extras.js";
+import { sessionForRole, bottomRoutes } from "./role-experience.js";
+import { renderRoleHome } from "./modules/role-home.js";
+import { WORKSPACE_ROUTES } from "./modules/workspaces.js";
 import { requireSession, logout } from "./auth.js";
 import { loadMaster, currentAcademicYearId, currentAcademicYear } from "./app-store.js";
 import { MENU_GROUPS, canAccess, roleLabel } from "./permissions.js";
-import { getNode, listNode } from "./repository.js";
 import { escapeHtml, toast } from "./utils.js";
-import { metric, pageHeader, panel, badge, rupiah } from "./modules/common.js";
 import {
   renderTeacherAttendance, renderStudentAttendance, renderQuran, renderGrades, renderSchedule, renderLessonPlans
 } from "./modules/academic.js";
@@ -26,7 +28,9 @@ let currentRoute = "dashboard";
 let activeRole = "";
 const root = document.getElementById("content");
 
-const routes = {
+export const routes = {
+  ...WORKSPACE_ROUTES,
+  ...PARENT_EXTRA_ROUTES,
   "teacher-attendance": renderTeacherAttendance,
   "student-attendance": renderStudentAttendance,
   quran: renderQuran,
@@ -106,89 +110,61 @@ function renderNav() {
   nav.querySelectorAll("[data-route]").forEach(btn=>btn.addEventListener("click",()=>navigate(btn.dataset.route)));
 }
 
-function findFirstRoute() {
-  const first=visibleGroups().flatMap(g=>g.items).find(i=>i.id!=="dashboard");
-  return first?.id || "dashboard";
+async function renderDashboard(ctx) {
+  return renderRoleHome(ctx,visibleGroups().flatMap(group=>group.items));
 }
 
-async function renderDashboard() {
-  const [cases, payments, transactions] = await Promise.all([
-    listNode(`boarding/cases/${currentAcademicYearId()}`),
-    listNode(`finance/payments/${currentAcademicYearId()}`),
-    listNode(`finance/cashier_transactions/${currentAcademicYearId()}`)
-  ]);
-  const activeCases=cases.filter(c=>c.status!=="selesai").length;
-  const paymentTotal=payments.reduce((s,p)=>s+Number(p.amount||0),0);
-  const salesTotal=transactions.filter(t=>t.status==="paid").reduce((s,t)=>s+Number(t.total||0),0);
-  const name=session.profile.name||session.profile.displayName||session.user.email||"Pengguna";
-  root.innerHTML=`
-    <section class="portal-hero">
-      <div><p class="eyebrow light">Pondok Pesantren Al-Madani</p><h2>Assalāmu‘alaikum, ${escapeHtml(name)}</h2><p>Satu sistem untuk menghubungkan pendidikan, kehidupan asrama, pembinaan santri, layanan wali santri, dan keuangan Al-Madani.</p><div class="hero-role">${escapeHtml(roleLabel([activeRole]))}</div></div>
-      <div class="hero-orb"><span>${new Date().toLocaleDateString("id-ID",{day:"2-digit"})}</span><small>${new Date().toLocaleDateString("id-ID",{month:"short",year:"numeric"})}</small></div>
-    </section>
-    <div class="portal-metrics dashboard-metrics">
-      ${metric("Santri Master",String(master.students?.length||0),"TK–SMK","blue")}
-      ${metric("SDM Master",String(master.staff?.length||0),"baseline awal","cyan")}
-      ${metric("Kasus Aktif",String(activeCases),"perlu tindak lanjut","coral")}
-      ${metric("Pembayaran",rupiah(paymentTotal),"periode aktif","violet")}
-      ${metric("Penjualan Kasir",rupiah(salesTotal),"periode aktif","mint")}
-    </div>
-    <div class="portal-grid two" style="margin-top:18px">
-      ${panel("Akses Sesuai Peran", `<div class="quick-grid">${visibleGroups().flatMap(g=>g.items).filter(i=>i.id!=="dashboard").slice(0,8).map(i=>`<button class="quick-card" data-quick="${i.id}"><span>${i.icon}</span><strong>${escapeHtml(i.label)}</strong><small>${escapeHtml(gLabelFor(i.id))}</small></button>`).join("")}</div>`)}
-      ${panel("Struktur Al-Madani", `<div class="structure-summary"><div><span>Direktur</span><strong>AH</strong></div><div><span>Kepala Sekolah Formal</span><strong>Akademik TK–SMK</strong></div><div><span>Kepala Asrama Putra</span><strong>Mhs</strong></div><div><span>Kepala Asrama Putri</span><strong>Nrl</strong></div><p>Guru Wali digunakan sebagai pengganti Mentor untuk mentoring individu. Naqib mendampingi operasional asrama; penanganan kasus formal berada di Konselor.</p></div>`)}
-    </div>`;
-  root.querySelectorAll("[data-quick]").forEach(btn=>btn.addEventListener("click",()=>navigate(btn.dataset.quick)));
+let renderVersion=0;
+function canRoute(route) {
+  return !!route && Object.hasOwn(routeFeature,route) && canAccess(routeFeature[route],[activeRole]);
 }
-
-function gLabelFor(route){for(const g of MENU_GROUPS) if(g.items.some(i=>i.id===route)) return g.label;return "MadaniApp";}
-
+function syncBottomNav() {
+  const targets=bottomRoutes(activeRole,canRoute);
+  document.querySelectorAll('[data-shell-nav]').forEach(button=>{
+    const key=button.dataset.shellNav;
+    button.disabled=key!=='more'&&!targets[key];
+    const active=key!=='more'&&targets[key]===currentRoute;
+    button.classList.toggle('active',active);
+    if(active)button.setAttribute('aria-current','page');else button.removeAttribute('aria-current');
+  });
+}
 async function renderRoute() {
-  renderNav();
-  document.getElementById("pageTitle").textContent=routeLabel[currentRoute]||"Beranda";
-  if(currentRoute==="dashboard") return renderDashboard();
-  const feature=routeFeature[currentRoute];
-  if(!canAccess(feature,[activeRole])){
-    currentRoute=findFirstRoute();
-    history.replaceState(null,"",`#${currentRoute}`);
-    return renderRoute();
-  }
-  const handler=routes[currentRoute];
-  if(!handler){root.innerHTML=pageHeader("Fitur belum tersedia","Route belum terhubung.");return;}
-  root.innerHTML=`<div class="loading-card">Memuat ${escapeHtml(routeLabel[currentRoute]||"fitur")}…</div>`;
+  const version=++renderVersion;
+  if(!canRoute(currentRoute)){currentRoute='dashboard';history.replaceState(null,'',`${location.pathname}${location.search}#dashboard`);}
+  renderNav();syncBottomNav();
+  document.getElementById('pageTitle').textContent=routeLabel[currentRoute]||'Beranda';
+  const mount=document.createElement('div');
+  mount.innerHTML='<div class="loading-card">Memuat ruang kerja…</div>';
+  root.replaceChildren(mount);
+  const scopedSession=sessionForRole(session,activeRole);
+  const ctx={session:scopedSession,master,yearId:currentAcademicYearId(),year:currentAcademicYear(),root:mount,navigate,rerender:renderRoute,roleName:roleLabel([activeRole])};
   try {
-    session.activeRole=activeRole;
-    await handler({session,master,yearId:currentAcademicYearId(),year:currentAcademicYear(),root,navigate,rerender:renderRoute});
-  } catch(err) {
-    console.error(err); root.innerHTML=`<div class="empty-state error-state"><strong>Gagal memuat halaman</strong><p>${escapeHtml(err.message||String(err))}</p></div>`;
+    if(currentRoute==='dashboard')await renderDashboard(ctx);
+    else await routes[currentRoute](ctx);
+  } catch(error) {
+    if(version===renderVersion)mount.innerHTML=`<div class="empty-state error-state"><strong>Gagal memuat halaman</strong><p>${escapeHtml(error.message||String(error))}</p><button type="button" class="btn btn-secondary" id="retryRoute">Coba Lagi</button></div>`;
+    mount.querySelector('#retryRoute')?.addEventListener('click',renderRoute);
+    console.error(error);
   }
 }
-
 function navigate(route) {
+  if(!canRoute(route))return toast('Menu tidak tersedia untuk role aktif.','warning');
   currentRoute=route;
-  location.hash=route;
+  history.pushState(null,'',`${location.pathname}${location.search}#${route}`);
   renderRoute();
-  document.getElementById("sidebar")?.classList.remove("open");
+  document.getElementById('sidebar')?.classList.remove('open');
+  document.getElementById('sidebarOverlay')?.classList.add('hidden');
 }
-
-
-function preferredScheduleRoute(){
-  const candidates=["schedule","naqib-programs","parent-schedule","parent-programs"];
-  return candidates.find(id=>{const f=routeFeature[id];return f&&canAccess(f,[activeRole])})||"dashboard";
-}
-function preferredKpiRoute(){
-  const byRole={naqib:"naqib-kpi",guru_wali:"mentoring-kpi",konselor:"counselor-kpi"};
-  const r=byRole[activeRole];return r&&canAccess(routeFeature[r],[activeRole])?r:"dashboard";
-}
-function preferredMessageRoute(){
-  return canAccess(routeFeature["parent-messages"],[activeRole])?"parent-messages":"dashboard";
-}
-function bindMobileBottomNav(){
-  document.querySelectorAll('[data-shell-nav]').forEach(btn=>btn.addEventListener('click',()=>{
-    const key=btn.dataset.shellNav;
-    if(key==='more'){document.getElementById('sidebar')?.classList.add('open');return;}
-    const target=key==='home'?"dashboard":key==='schedule'?preferredScheduleRoute():key==='kpi'?preferredKpiRoute():preferredMessageRoute();
-    navigate(target);
-    document.querySelectorAll('[data-shell-nav]').forEach(x=>x.classList.toggle('active',x===btn));
+function bindMobileBottomNav() {
+  document.querySelectorAll('[data-shell-nav]').forEach(button=>button.addEventListener('click',()=>{
+    const key=button.dataset.shellNav;
+    if(key==='more'){
+      document.getElementById('sidebar')?.classList.add('open');
+      document.getElementById('sidebarOverlay')?.classList.remove('hidden');
+      return;
+    }
+    const target=bottomRoutes(activeRole,canRoute)[key];
+    if(target)navigate(target);
   }));
 }
 
@@ -209,11 +185,18 @@ async function init() {
   if(session.roles.some(r=>["admin","super_admin"].includes(r))) adminLink.classList.remove("hidden");
   currentRoute=(location.hash||"#dashboard").slice(1);
   if(currentRoute!=="dashboard" && !canAccess(routeFeature[currentRoute],[activeRole])) currentRoute="dashboard";
-  renderRoute();
+  await renderRoute();
 }
 
 document.getElementById("logoutButton")?.addEventListener("click",async()=>{await logout();location.href="../index.html";});
-document.getElementById("menuButton")?.addEventListener("click",()=>document.getElementById("sidebar")?.classList.toggle("open"));
+document.getElementById("menuButton")?.addEventListener("click",()=>{
+ const open=document.getElementById("sidebar")?.classList.toggle("open");
+ document.getElementById("sidebarOverlay")?.classList.toggle("hidden",!open);
+});
+document.getElementById('sidebarOverlay')?.addEventListener('click',()=>{
+ document.getElementById('sidebar').classList.remove('open');document.getElementById('sidebarOverlay').classList.add('hidden');
+});
+document.addEventListener('keydown',event=>{if(event.key==='Escape'){document.getElementById('sidebar').classList.remove('open');document.getElementById('sidebarOverlay').classList.add('hidden');}});
   bindMobileBottomNav();
 window.addEventListener("hashchange",()=>{const next=(location.hash||"#dashboard").slice(1);if(next!==currentRoute){currentRoute=next;renderRoute();}});
 init().catch(err=>{console.error(err);toast(err.message||"Gagal membuka MadaniApp","error");});

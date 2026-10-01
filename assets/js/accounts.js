@@ -59,6 +59,7 @@ async function provision({ name, email, password, role, profile = {} }) {
     role,
     roles,
     roleFlags,
+    studentAccess: Object.fromEntries((profile.studentIds || (profile.studentId ? [profile.studentId] : [])).map(id => [id, true])),
     active: profile.active !== false,
     uid,
     updatedAt: Date.now(),

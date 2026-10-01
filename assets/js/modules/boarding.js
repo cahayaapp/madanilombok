@@ -1,4 +1,4 @@
-import { getNode, listNode, pushRecord, saveRecord, setNode } from "../repository.js";
+import { getNode, listNode, pushRecord, saveRecord, setNode, transitionWorkspaceRecord } from "../repository.js";
 import { byId, studentsForClass } from "../app-store.js";
 import {
   pageHeader, panel, metric, table, formRow, input, textarea, select, selectOptions, studentOptions,
@@ -22,7 +22,7 @@ function scopedCases(ctx, cases = []) {
   const gender = profileGender(ctx);
   if (!gender) return cases;
   const studentMap = byId(ctx.master.students || []);
-  return cases.filter(c => !studentMap[c.studentId] || studentMap[c.studentId]?.gender === gender);
+  return cases.filter(c => studentMap[c.studentId]?.gender === gender);
 }
 
 function mentees(ctx) {
@@ -184,10 +184,18 @@ export async function renderCaseInbox(ctx) {
   incoming.sort((a,b)=>(b.createdAt||0)-(a.createdAt||0));
   ctx.root.innerHTML=pageHeader("Kasus Masuk","Konselor memeriksa laporan dan mengambil/claim kasus sesuai scope sebelum penanganan.")+table(["Tanggal","Santri","Kategori","Tingkat","Status","Aksi"],incoming.map(r=>`<tr><td>${escapeHtml(r.date||"—")}</td><td><strong>${escapeHtml(students[r.studentId]?.name||r.studentId||"—")}</strong></td><td>${escapeHtml(r.category||"—")}</td><td>${badge(r.severity||"—",r.severity==="berat"||r.severity==="kritis"?"red":"")}</td><td>${badge(r.status||"menunggu_konselor")}</td><td><button class="mini-btn case-claim" data-id="${r.id}">Claim Kasus</button></td></tr>`).join(""));
   document.querySelectorAll(".case-claim").forEach(btn=>btn.addEventListener("click",async()=>{
-    const id=btn.dataset.id;const current=await getNode(`boarding/cases/${ctx.yearId}/${id}`)||{};
-    if(current.assignedCounselorUid && current.assignedCounselorUid!==uid) return toast("Kasus sudah diambil Konselor lain.","warning");
-    await saveRecord(`boarding/cases/${ctx.yearId}`,id,{...current,status:"ditangani",assignedCounselorUid:uid,claimedAt:Date.now()},uid);
-    sessionStorage.setItem("madaniSelectedCase",id);toast("Kasus berhasil di-claim.");ctx.navigate("case-active");
+    btn.disabled=true;
+    try {
+      const id=btn.dataset.id;
+      await transitionWorkspaceRecord(`boarding/cases/${ctx.yearId}`,id,current=>{
+        if(!scopedCases(ctx,[current]).length)throw new Error("Kasus di luar scope aktif.");
+        if(current.assignedCounselorUid && current.assignedCounselorUid!==uid)throw new Error("Kasus sudah diambil Konselor lain.");
+        if(["selesai","tidak_terbukti"].includes(current.status))throw new Error("Kasus sudah ditutup.");
+        return {...current,status:"ditangani",assignedCounselorUid:uid,claimedAt:{".sv":"timestamp"}};
+      },uid);
+      sessionStorage.setItem("madaniSelectedCase",id);toast("Kasus berhasil di-claim.");ctx.navigate("case-active");
+    } catch(error){toast(error.message,"error");}finally{btn.disabled=false;}
+
   }));
 }
 
