@@ -2,7 +2,7 @@
 
 Paket kode awal MadaniApp untuk Pondok Pesantren Al-Madani. Cara berpikirnya mengikuti pola CAHAYA APP—role-aware, data-driven, operasional 24 jam, pemisahan fungsi pembinaan, dan histori transaksi—tetapi memakai **data, struktur organisasi, Firebase, serta identitas visual Al-Madani sendiri**.
 
-Tema V2 menggunakan navy–indigo–cyan/coral agar jelas berbeda dari identitas visual CAHAYA APP.
+Tema menggunakan hijau tosca sebagai warna utama dan oranye emas sebagai aksen pada identitas visual Al-Madani.
 
 ## Firebase
 

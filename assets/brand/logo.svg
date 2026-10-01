@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 192 192" role="img" aria-label="MadaniApp">
+<defs><linearGradient id="teal" x1="0" y1="0" x2=".8" y2="1"><stop stop-color="#08bda6"/><stop offset=".5" stop-color="#008b80"/><stop offset="1" stop-color="#00545c"/></linearGradient><linearGradient id="gold" x2="1" y2="1"><stop stop-color="#ffe5a0"/><stop offset=".6" stop-color="#f4b442"/><stop offset="1" stop-color="#e9951c"/></linearGradient></defs>
+<rect width="192" height="192" rx="51" fill="url(#teal)"/>
+<path d="M54 69C54 46 85 45 96 25c11 20 42 21 42 44h-7c0-17-24-21-35-33-11 12-35 16-35 33Z" fill="url(#gold)"/>
+<path d="M51 149V78h22l23 37 23-37h22v71h-22v-39l-23 35-23-35v39Z" fill="#fff"/>
+</svg>
