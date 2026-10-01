@@ -1,0 +1,84 @@
+{
+  "notes": [
+    "Contoh ini bukan akun produksi. Buat user di Firebase Authentication lalu simpan profilnya pada madani_app/users/{uid}.",
+    "Gunakan role utama pada field role dan ulangi role aktif pada roleFlags agar rules pilot konsisten.",
+    "Satu orang boleh memiliki beberapa role melalui roles/roleFlags.",
+    "Scope seperti classIds, groupIds, genderScope dan financeUnit harus disesuaikan dengan penugasan resmi Al-Madani."
+  ],
+  "profiles": {
+    "super_admin": {
+      "name": "Administrator Al-Madani",
+      "role": "super_admin",
+      "roles": ["super_admin"],
+      "roleFlags": {"super_admin": true},
+      "active": true
+    },
+    "guru_mapel": {
+      "name": "Contoh Guru Mapel",
+      "staffId": "AMD-SDM-0002",
+      "role": "guru_mapel",
+      "roles": ["guru_mapel"],
+      "roleFlags": {"guru_mapel": true},
+      "classIds": ["CLS-SD-1"],
+      "subjectIds": ["MPL-SD-01"],
+      "active": true
+    },
+    "mentor_tahsin_tahfiz": {
+      "name": "Contoh Mentor Tahsin Tahfiz",
+      "role": "mentor_tahsin_tahfiz",
+      "roles": ["mentor_tahsin_tahfiz"],
+      "roleFlags": {"mentor_tahsin_tahfiz": true},
+      "groupIds": ["HLQ-PTI-01"],
+      "active": true
+    },
+    "naqib_putra": {
+      "name": "Contoh Naqib Putra",
+      "role": "naqib",
+      "roles": ["naqib"],
+      "roleFlags": {"naqib": true},
+      "genderScope": "L",
+      "dormitoryIds": ["DORM-PUTRA"],
+      "active": true
+    },
+    "konselor": {
+      "name": "Contoh Konselor",
+      "role": "konselor",
+      "roles": ["konselor"],
+      "roleFlags": {"konselor": true},
+      "genderScope": "L",
+      "active": true
+    },
+    "guru_wali": {
+      "name": "Contoh Guru Wali",
+      "role": "guru_wali",
+      "roles": ["guru_wali"],
+      "roleFlags": {"guru_wali": true},
+      "classIds": ["CLS-SD-1"],
+      "active": true
+    },
+    "kasir_putra": {
+      "name": "Kasir Putra",
+      "role": "kasir",
+      "roles": ["kasir"],
+      "roleFlags": {"kasir": true},
+      "financeUnit": "PUTRA",
+      "active": true
+    },
+    "wali_santri": {
+      "name": "Contoh Wali Santri",
+      "role": "wali_santri",
+      "roles": ["wali_santri"],
+      "roleFlags": {"wali_santri": true},
+      "studentIds": ["AMD-SD-0001"],
+      "active": true
+    },
+    "multi_role_example": {
+      "name": "Contoh Guru Wali + Guru Mapel",
+      "role": "guru_mapel",
+      "roles": ["guru_mapel", "guru_wali"],
+      "roleFlags": {"guru_mapel": true, "guru_wali": true},
+      "classIds": ["CLS-SD-1"],
+      "active": true
+    }
+  }
+}

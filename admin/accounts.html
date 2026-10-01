@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Manajemen Akun · MadaniApp</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/css/app.css">
+  <link rel="stylesheet" href="../assets/css/cahaya-clone.css">
+</head>
+<body class="app-body">
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="sidebar-brand"><div class="brand-mark small">M</div><div><strong>Madani App</strong><small>Akun & Akses · V2.1</small></div></div>
+      <nav class="nav-menu">
+        <a class="nav-item" href="./index.html">⌂ <span>Dashboard Admin</span></a>
+        <div class="nav-caption">Akun & Akses</div>
+        <a class="nav-item active" href="./accounts.html">⚿ <span>Manajemen Akun</span></a>
+        <a class="nav-item" href="../bootstrap/index.html">⇧ <span>Bootstrap Master Data</span></a>
+        <div class="nav-caption">Portal</div>
+        <a class="nav-item" href="../app/index.html">◈ <span>Buka Portal</span></a>
+      </nav>
+      <div class="sidebar-footer"><span id="adminName">Administrator</span><button id="logoutButton" class="link-button">Keluar</button></div>
+    </aside>
+    <main class="main-area">
+      <header class="topbar"><div><p class="eyebrow">Pondok Pesantren Al-Madani</p><h1>Manajemen Akun</h1></div><div class="top-actions"><a class="btn btn-secondary" href="./index.html">Master Data</a><a class="btn btn-secondary" href="../app/index.html">Portal</a></div></header>
+      <section id="accountContent" class="content-area">
+        <div class="hero-card"><div><p class="eyebrow" style="color:#d8f7ff">Pilot Access</p><h2>Akun siap untuk mengecek setiap role</h2><p>Admin dapat membuat akun Firebase Authentication tanpa keluar dari sesi admin. Profil dan scope role disimpan ke <code>madani_app/users/{uid}</code>.</p></div><div class="hero-badge"><small>Password pilot default</small><strong id="pilotPassword">Memuat…</strong></div></div>
+        <div class="notice" style="margin:18px 0"><strong>Untuk pilot internal saja.</strong> Password default harus diganti sebelum production. Pastikan Email/Password aktif pada Firebase Authentication.</div>
+        <div class="section-head"><div><h2>Akun Pilot</h2><p>Satu akun untuk menguji masing-masing role utama MadaniApp.</p></div><div class="section-actions"><button id="createAllButton" class="btn btn-primary">Buat / Sinkronkan Semua Akun Pilot</button></div></div>
+        <div class="table-card"><div class="table-scroll"><table class="data-table"><thead><tr><th>Akun</th><th>Role</th><th>Terhubung ke</th><th>Status Profil</th><th>Aksi</th></tr></thead><tbody id="pilotBody"><tr><td colspan="5">Memuat…</td></tr></tbody></table></div></div>
+
+        <div class="grid-2" style="margin-top:20px">
+          <div class="panel"><div class="panel-head"><h3>Buat Akun Lain</h3><span class="badge">Admin</span></div>
+            <form id="customAccountForm" class="stack-form" style="margin-bottom:0">
+              <label>Nama<input id="customName" required></label>
+              <label>Email<input id="customEmail" type="email" required></label>
+              <label>Password Sementara<input id="customPassword" type="password" minlength="6" required></label>
+              <label>Role<select id="customRole" required>
+                <option value="guru_mapel">Guru Mapel</option><option value="mentor_tahsin_tahfiz">Mentor Tahsin Tahfiz</option><option value="naqib">Naqib</option><option value="konselor">Konselor</option><option value="guru_wali">Guru Wali</option><option value="kasir">Kasir</option><option value="wali_santri">Wali Santri</option><option value="admin">Admin</option><option value="super_admin">Super Admin</option>
+              </select></label>
+              <label>Hubungkan SDM<select id="customStaff"></select></label>
+              <label>Hubungkan Santri (Wali)<select id="customStudent"></select></label>
+              <label>Scope Kelas<select id="customClass"></select></label>
+              <label>Scope Halaqah<select id="customGroup"></select></label>
+              <label>Scope Gender<select id="customGender"><option value="">—</option><option value="L">Putra</option><option value="P">Putri</option></select></label>
+              <label>Unit Kasir<select id="customFinanceUnit"><option value="">—</option><option value="PUTRA">Putra</option><option value="PUTRI">Putri</option></select></label>
+              <button id="customButton" class="btn btn-primary" type="submit">Buat Akun</button>
+            </form>
+          </div>
+          <div class="panel"><div class="panel-head"><h3>Catatan Penggunaan</h3></div>
+            <div class="setup-list">
+              <div class="setup-item"><span class="setup-index">1</span><span><strong>Buat Super Admin pertama</strong><small>Gunakan /setup/ hanya sekali bila database users masih kosong.</small></span></div>
+              <div class="setup-item"><span class="setup-index">2</span><span><strong>Bootstrap master data</strong><small>Import master santri, SDM, kelas, kamar, halaqah dan jadwal.</small></span></div>
+              <div class="setup-item"><span class="setup-index">3</span><span><strong>Buat akun pilot</strong><small>Klik tombol di atas untuk role utama.</small></span></div>
+              <div class="setup-item"><span class="setup-index">4</span><span><strong>Uji portal per role</strong><small>Login dengan email masing-masing dan password sementara.</small></span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="section-head" style="margin-top:22px"><div><h2>Profil User di Database</h2><p>Daftar mapping akun yang sudah tersimpan pada MadaniApp.</p></div></div>
+        <div class="table-card"><div class="table-scroll"><table class="data-table"><thead><tr><th>Pengguna</th><th>Role Utama</th><th>Terhubung ke</th><th>Status</th><th>Password</th></tr></thead><tbody id="profileBody"><tr><td colspan="5">Memuat…</td></tr></tbody></table></div></div>
+      </section>
+    </main>
+  </div>
+  <div id="toastHost" class="toast-host"></div>
+  <script type="module" src="../assets/js/accounts.js"></script>
+</body>
+</html>

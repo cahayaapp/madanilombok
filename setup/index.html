@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#172554">
+  <title>Setup Akun Pilot · MadaniApp</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/css/app.css">
+  <link rel="stylesheet" href="../assets/css/cahaya-clone.css">
+</head>
+<body class="login-page">
+  <main class="login-shell">
+    <section class="login-brand">
+      <div class="brand-mark">M</div>
+      <div><p class="eyebrow">MadaniApp · First Setup</p><h1>Akun Pilot</h1><p class="login-copy">Halaman ini hanya untuk membuat Super Admin pertama. Setelah admin pertama terbentuk, pembuatan akun lain dilakukan dari menu Admin → Manajemen Akun.</p></div>
+      <div class="brand-points"><span>One-time bootstrap</span><span>Firebase Auth</span><span>Role based</span></div>
+    </section>
+    <section class="login-card">
+      <div class="login-card-head"><span class="status-dot"></span><span>Setup Aman · Hanya bila users masih kosong</span></div>
+      <h2>Buat Super Admin Pertama</h2>
+      <p>Pastikan provider <b>Email/Password</b> telah aktif di Firebase Authentication.</p>
+      <form id="setupForm" class="stack-form">
+        <label>Nama<input id="name" value="Administrator Al-Madani" required></label>
+        <label>Email<input id="email" type="email" value="admin@almadani.app" required></label>
+        <label>Password Sementara<input id="password" type="password" value="Madani123!" minlength="6" required></label>
+        <button id="setupButton" class="btn btn-primary btn-block" type="submit">Buat Super Admin Pertama</button>
+      </form>
+      <div id="setupStatus" class="notice info hidden"></div>
+      <div style="display:grid;gap:8px;margin-top:14px">
+        <a id="continueLink" class="btn btn-secondary btn-block hidden" href="../admin/accounts.html">Lanjut ke Manajemen Akun</a>
+        <a id="loginLink" class="btn btn-secondary btn-block hidden" href="../index.html">Ke Halaman Login</a>
+      </div>
+      <small>Setelah pilot selesai, ganti password sementara dan nonaktifkan/hapus halaman setup dari deployment production.</small>
+    </section>
+  </main>
+  <script type="module" src="../assets/js/setup-admin.js"></script>
+</body>
+</html>

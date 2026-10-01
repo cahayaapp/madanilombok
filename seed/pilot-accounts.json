@@ -1,0 +1,108 @@
+{
+  "temporaryPassword": "Madani123!",
+  "warning": "Kredensial ini hanya untuk pilot internal. Ganti password sebelum production dan hapus kredensial contoh dari repository production.",
+  "accounts": [
+    {
+      "key": "super_admin",
+      "name": "Administrator Al-Madani",
+      "email": "admin@almadani.app",
+      "role": "super_admin",
+      "profile": {
+        "roles": ["super_admin"],
+        "roleFlags": {"super_admin": true},
+        "active": true
+      }
+    },
+    {
+      "key": "guru_mapel",
+      "name": "Abdul Hamid · Pilot Guru",
+      "email": "guru@almadani.app",
+      "role": "guru_mapel",
+      "profile": {
+        "staffId": "AMD-SDM-0002",
+        "roles": ["guru_mapel"],
+        "roleFlags": {"guru_mapel": true},
+        "classIds": ["CLS-SD-1"],
+        "active": true
+      }
+    },
+    {
+      "key": "mentor_tahsin_tahfiz",
+      "name": "Muammar · Pilot Tahfiz",
+      "email": "tahfiz@almadani.app",
+      "role": "mentor_tahsin_tahfiz",
+      "profile": {
+        "staffId": "AMD-SDM-0052",
+        "roles": ["mentor_tahsin_tahfiz"],
+        "roleFlags": {"mentor_tahsin_tahfiz": true},
+        "groupIds": ["HLQ-PTR-01"],
+        "genderScope": "L",
+        "active": true
+      }
+    },
+    {
+      "key": "naqib",
+      "name": "Nopan · Pilot Naqib Putra",
+      "email": "naqib@almadani.app",
+      "role": "naqib",
+      "profile": {
+        "staffId": "AMD-SDM-0059",
+        "roles": ["naqib"],
+        "roleFlags": {"naqib": true},
+        "genderScope": "L",
+        "dormitoryIds": ["DORM-PUTRA"],
+        "active": true
+      }
+    },
+    {
+      "key": "konselor",
+      "name": "Muhasim · Pilot Konselor",
+      "email": "konselor@almadani.app",
+      "role": "konselor",
+      "profile": {
+        "staffId": "AMD-SDM-0055",
+        "roles": ["konselor"],
+        "roleFlags": {"konselor": true},
+        "genderScope": "L",
+        "active": true
+      }
+    },
+    {
+      "key": "guru_wali",
+      "name": "Guru Wali · Pilot",
+      "email": "wali.kelas@almadani.app",
+      "role": "guru_wali",
+      "profile": {
+        "staffId": "AMD-SDM-0040",
+        "roles": ["guru_wali"],
+        "roleFlags": {"guru_wali": true},
+        "classIds": ["CLS-SMP-7-PUTRA"],
+        "active": true
+      }
+    },
+    {
+      "key": "kasir",
+      "name": "Kasir Putra · Pilot",
+      "email": "kasir@almadani.app",
+      "role": "kasir",
+      "profile": {
+        "roles": ["kasir"],
+        "roleFlags": {"kasir": true},
+        "financeUnit": "PUTRA",
+        "active": true
+      }
+    },
+    {
+      "key": "wali_santri",
+      "name": "Wali Santri · Pilot",
+      "email": "walisantri@almadani.app",
+      "role": "wali_santri",
+      "profile": {
+        "roles": ["wali_santri"],
+        "roleFlags": {"wali_santri": true},
+        "studentIds": ["AMD-SD-0001"],
+        "active": true
+      }
+    }
+  ]
+}

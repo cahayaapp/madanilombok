@@ -1,0 +1,2 @@
+studentId,studentNo,name,nickname,gender,birthPlace,birthDate,guardianName,guardianPhone,address,unitId,boardingStatus,status
+,NIS001,Contoh Santri,Contoh,L,Mataram,2012-01-01,Nama Wali,081234567890,"Alamat contoh",UNIT-ID,boarding,active

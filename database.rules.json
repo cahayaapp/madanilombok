@@ -1,0 +1,92 @@
+{
+  "rules": {
+    "madani_app": {
+      ".read": "auth != null",
+      "users": {
+        "$uid": {
+          ".write": "auth != null && ((auth.uid === $uid && !root.child('madani_app/users').exists()) || root.child('madani_app/users').child(auth.uid).child('role').val() === 'admin' || root.child('madani_app/users').child(auth.uid).child('role').val() === 'super_admin' || root.child('madani_app/users').child(auth.uid).child('roleFlags/admin').val() === true || root.child('madani_app/users').child(auth.uid).child('roleFlags/super_admin').val() === true)"
+        }
+      },
+      "academic_years": {
+        ".write": "auth != null && (root.child('madani_app/users').child(auth.uid).child('role').val() === 'admin' || root.child('madani_app/users').child(auth.uid).child('role').val() === 'super_admin' || root.child('madani_app/users').child(auth.uid).child('roleFlags/admin').val() === true || root.child('madani_app/users').child(auth.uid).child('roleFlags/super_admin').val() === true)"
+      },
+      "units": {
+        ".write": "auth != null && (root.child('madani_app/users').child(auth.uid).child('role').val() === 'admin' || root.child('madani_app/users').child(auth.uid).child('role').val() === 'super_admin' || root.child('madani_app/users').child(auth.uid).child('roleFlags/admin').val() === true || root.child('madani_app/users').child(auth.uid).child('roleFlags/super_admin').val() === true)"
+      },
+      "students": {
+        ".write": "auth != null && (root.child('madani_app/users').child(auth.uid).child('role').val() === 'admin' || root.child('madani_app/users').child(auth.uid).child('role').val() === 'super_admin' || root.child('madani_app/users').child(auth.uid).child('roleFlags/admin').val() === true || root.child('madani_app/users').child(auth.uid).child('roleFlags/super_admin').val() === true)",
+        ".indexOn": [
+          "studentNo",
+          "name",
+          "unitId",
+          "status",
+          "gender"
+        ]
+      },
+      "staff": {
+        ".write": "auth != null && (root.child('madani_app/users').child(auth.uid).child('role').val() === 'admin' || root.child('madani_app/users').child(auth.uid).child('role').val() === 'super_admin' || root.child('madani_app/users').child(auth.uid).child('roleFlags/admin').val() === true || root.child('madani_app/users').child(auth.uid).child('roleFlags/super_admin').val() === true)",
+        ".indexOn": [
+          "name",
+          "status"
+        ]
+      },
+      "classes": {
+        ".write": "auth != null && (root.child('madani_app/users').child(auth.uid).child('role').val() === 'admin' || root.child('madani_app/users').child(auth.uid).child('role').val() === 'super_admin' || root.child('madani_app/users').child(auth.uid).child('roleFlags/admin').val() === true || root.child('madani_app/users').child(auth.uid).child('roleFlags/super_admin').val() === true)"
+      },
+      "dormitories": {
+        ".write": "auth != null && (root.child('madani_app/users').child(auth.uid).child('role').val() === 'admin' || root.child('madani_app/users').child(auth.uid).child('role').val() === 'super_admin' || root.child('madani_app/users').child(auth.uid).child('roleFlags/admin').val() === true || root.child('madani_app/users').child(auth.uid).child('roleFlags/super_admin').val() === true)"
+      },
+      "rooms": {
+        ".write": "auth != null && (root.child('madani_app/users').child(auth.uid).child('role').val() === 'admin' || root.child('madani_app/users').child(auth.uid).child('role').val() === 'super_admin' || root.child('madani_app/users').child(auth.uid).child('roleFlags/admin').val() === true || root.child('madani_app/users').child(auth.uid).child('roleFlags/super_admin').val() === true)"
+      },
+      "groups": {
+        ".write": "auth != null && (root.child('madani_app/users').child(auth.uid).child('role').val() === 'admin' || root.child('madani_app/users').child(auth.uid).child('role').val() === 'super_admin' || root.child('madani_app/users').child(auth.uid).child('roleFlags/admin').val() === true || root.child('madani_app/users').child(auth.uid).child('roleFlags/super_admin').val() === true)"
+      },
+      "subjects": {
+        ".write": "auth != null && (root.child('madani_app/users').child(auth.uid).child('role').val() === 'admin' || root.child('madani_app/users').child(auth.uid).child('role').val() === 'super_admin' || root.child('madani_app/users').child(auth.uid).child('roleFlags/admin').val() === true || root.child('madani_app/users').child(auth.uid).child('roleFlags/super_admin').val() === true)"
+      },
+      "programs": {
+        ".write": "auth != null && (root.child('madani_app/users').child(auth.uid).child('role').val() === 'admin' || root.child('madani_app/users').child(auth.uid).child('role').val() === 'super_admin' || root.child('madani_app/users').child(auth.uid).child('roleFlags/admin').val() === true || root.child('madani_app/users').child(auth.uid).child('roleFlags/super_admin').val() === true)"
+      },
+      "assignments": {
+        ".write": "auth != null && (root.child('madani_app/users').child(auth.uid).child('role').val() === 'admin' || root.child('madani_app/users').child(auth.uid).child('role').val() === 'super_admin' || root.child('madani_app/users').child(auth.uid).child('roleFlags/admin').val() === true || root.child('madani_app/users').child(auth.uid).child('roleFlags/super_admin').val() === true)"
+      },
+      "schedules": {
+        ".write": "auth != null && (root.child('madani_app/users').child(auth.uid).child('role').val() === 'admin' || root.child('madani_app/users').child(auth.uid).child('role').val() === 'super_admin' || root.child('madani_app/users').child(auth.uid).child('roleFlags/admin').val() === true || root.child('madani_app/users').child(auth.uid).child('roleFlags/super_admin').val() === true)"
+      },
+      "settings": {
+        ".write": "auth != null && (root.child('madani_app/users').child(auth.uid).child('role').val() === 'admin' || root.child('madani_app/users').child(auth.uid).child('role').val() === 'super_admin' || root.child('madani_app/users').child(auth.uid).child('roleFlags/admin').val() === true || root.child('madani_app/users').child(auth.uid).child('roleFlags/super_admin').val() === true)"
+      },
+      "academic": {
+        ".write": "auth != null && root.child('madani_app/users').child(auth.uid).child('role').val() !== 'wali_santri'"
+      },
+      "boarding": {
+        ".write": "auth != null && root.child('madani_app/users').child(auth.uid).child('role').val() !== 'wali_santri'"
+      },
+      "discipline": {
+        ".write": "auth != null && root.child('madani_app/users').child(auth.uid).child('role').val() !== 'wali_santri'"
+      },
+      "parent": {
+        ".write": "auth != null"
+      },
+      "messages": {
+        ".write": "auth != null"
+      },
+      "announcements": {
+        ".write": "auth != null && (root.child('madani_app/users').child(auth.uid).child('role').val() === 'admin' || root.child('madani_app/users').child(auth.uid).child('role').val() === 'super_admin' || root.child('madani_app/users').child(auth.uid).child('role').val() === 'director')"
+      },
+      "finance": {
+        ".write": "auth != null && root.child('madani_app/users').child(auth.uid).child('role').val() !== 'wali_santri'"
+      },
+      "seed_validation": {
+        ".write": "auth != null && (root.child('madani_app/users').child(auth.uid).child('role').val() === 'admin' || root.child('madani_app/users').child(auth.uid).child('role').val() === 'super_admin')"
+      },
+      "reference": {
+        ".write": "auth != null && (root.child('madani_app/users').child(auth.uid).child('role').val() === 'admin' || root.child('madani_app/users').child(auth.uid).child('role').val() === 'super_admin')"
+      },
+      "audit_logs": {
+        ".write": "auth != null"
+      }
+    }
+  }
+}

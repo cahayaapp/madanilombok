@@ -1,0 +1,315 @@
+{
+  "roleRules": {
+    "guru_mapel": "Guru mata pelajaran formal",
+    "guru_wali": "Wali kelas sekaligus pengganti Mentor untuk mentoring individu",
+    "mentor_tahsin_tahfiz": "Pembina Tahsin/Tahfiz/Al-Qur'an",
+    "naqib": "Pendamping operasional kehidupan asrama",
+    "konselor": "Penanganan kasus dan konseling formal",
+    "kasir": "Transaksi kasir kantin/koperasi"
+  },
+  "people": [
+    {
+      "displayName": "Nopan",
+      "suggestedRole": "naqib",
+      "staffCandidates": [
+        {
+          "staffId": "AMD-SDM-0059",
+          "name": "Nopan"
+        }
+      ]
+    },
+    {
+      "displayName": "Da'i",
+      "suggestedRole": "naqib",
+      "staffCandidates": [
+        {
+          "staffId": "AMD-SDM-0080",
+          "name": "WARDANI"
+        },
+        {
+          "staffId": "AMD-SDM-0074",
+          "name": "SITI MAZIDATUL AINI"
+        },
+        {
+          "staffId": "AMD-SDM-0044",
+          "name": "LINDA LISTIANI"
+        },
+        {
+          "staffId": "AMD-SDM-0040",
+          "name": "Ismi Dahlia Handayani"
+        }
+      ]
+    },
+    {
+      "displayName": "Heikal",
+      "suggestedRole": "naqib",
+      "staffCandidates": []
+    },
+    {
+      "displayName": "Anggi",
+      "suggestedRole": "naqib",
+      "staffCandidates": [
+        {
+          "staffId": "AMD-SDM-0008",
+          "name": "Anggi"
+        }
+      ]
+    },
+    {
+      "displayName": "Alfi",
+      "suggestedRole": "naqib",
+      "staffCandidates": [
+        {
+          "staffId": "AMD-SDM-0006",
+          "name": "Alfi"
+        }
+      ]
+    },
+    {
+      "displayName": "Melia",
+      "suggestedRole": "naqib",
+      "staffCandidates": [
+        {
+          "staffId": "AMD-SDM-0049",
+          "name": "Melia"
+        }
+      ]
+    },
+    {
+      "displayName": "Fitriani",
+      "suggestedRole": "naqib",
+      "staffCandidates": []
+    },
+    {
+      "displayName": "Nurul",
+      "suggestedRole": "naqib",
+      "staffCandidates": [
+        {
+          "staffId": "AMD-SDM-0065",
+          "name": "NURUL JANNAH"
+        },
+        {
+          "staffId": "AMD-SDM-0064",
+          "name": "Nurul"
+        }
+      ]
+    },
+    {
+      "displayName": "Rokyal",
+      "suggestedRole": "naqib",
+      "staffCandidates": [
+        {
+          "staffId": "AMD-SDM-0068",
+          "name": "Rokyal"
+        }
+      ]
+    },
+    {
+      "displayName": "Muhasim",
+      "suggestedRole": "konselor",
+      "staffCandidates": [
+        {
+          "staffId": "AMD-SDM-0055",
+          "name": "Muhasim"
+        }
+      ]
+    },
+    {
+      "displayName": "Fahri H",
+      "suggestedRole": "konselor",
+      "staffCandidates": [
+        {
+          "staffId": "AMD-SDM-0023",
+          "name": "Fahri Effendi"
+        },
+        {
+          "staffId": "AMD-SDM-0022",
+          "name": "Fahri"
+        },
+        {
+          "staffId": "AMD-SDM-0085",
+          "name": "ZANI ISTI HARIANI"
+        },
+        {
+          "staffId": "AMD-SDM-0079",
+          "name": "TGH. Mustafa Syar'an"
+        }
+      ]
+    },
+    {
+      "displayName": "Ida F",
+      "suggestedRole": "konselor",
+      "staffCandidates": [
+        {
+          "staffId": "AMD-SDM-0037",
+          "name": "Ida Fitriana"
+        },
+        {
+          "staffId": "AMD-SDM-0036",
+          "name": "IDA FITRIANA"
+        },
+        {
+          "staffId": "AMD-SDM-0084",
+          "name": "YUSUF"
+        },
+        {
+          "staffId": "AMD-SDM-0079",
+          "name": "TGH. Mustafa Syar'an"
+        }
+      ]
+    },
+    {
+      "displayName": "Yanti",
+      "suggestedRole": "konselor",
+      "staffCandidates": [
+        {
+          "staffId": "AMD-SDM-0082",
+          "name": "Yanti"
+        },
+        {
+          "staffId": "AMD-SDM-0072",
+          "name": "Samsu Ariyanti"
+        },
+        {
+          "staffId": "AMD-SDM-0029",
+          "name": "HAUFIANA HARIYANTI"
+        }
+      ]
+    },
+    {
+      "displayName": "Nuril",
+      "suggestedRole": "konselor",
+      "staffCandidates": [
+        {
+          "staffId": "AMD-SDM-0062",
+          "name": "NURIL AZMI"
+        }
+      ]
+    },
+    {
+      "displayName": "Us Tuzri",
+      "suggestedRole": "mentor_tahsin_tahfiz",
+      "staffCandidates": [
+        {
+          "staffId": "AMD-SDM-0054",
+          "name": "Muhammad Tuzri"
+        }
+      ]
+    },
+    {
+      "displayName": "Mummar",
+      "suggestedRole": "mentor_tahsin_tahfiz",
+      "staffCandidates": []
+    },
+    {
+      "displayName": "Bapak",
+      "suggestedRole": "mentor_tahsin_tahfiz",
+      "staffCandidates": []
+    },
+    {
+      "displayName": "Fahri H",
+      "suggestedRole": "mentor_tahsin_tahfiz",
+      "staffCandidates": [
+        {
+          "staffId": "AMD-SDM-0023",
+          "name": "Fahri Effendi"
+        },
+        {
+          "staffId": "AMD-SDM-0022",
+          "name": "Fahri"
+        },
+        {
+          "staffId": "AMD-SDM-0085",
+          "name": "ZANI ISTI HARIANI"
+        },
+        {
+          "staffId": "AMD-SDM-0079",
+          "name": "TGH. Mustafa Syar'an"
+        }
+      ]
+    },
+    {
+      "displayName": "Yusuf",
+      "suggestedRole": "mentor_tahsin_tahfiz",
+      "staffCandidates": [
+        {
+          "staffId": "AMD-SDM-0084",
+          "name": "YUSUF"
+        }
+      ]
+    },
+    {
+      "displayName": "Muhasim (Gema)",
+      "suggestedRole": "mentor_tahsin_tahfiz",
+      "staffCandidates": [
+        {
+          "staffId": "AMD-SDM-0055",
+          "name": "Muhasim"
+        }
+      ]
+    },
+    {
+      "displayName": "Yanti",
+      "suggestedRole": "mentor_tahsin_tahfiz",
+      "staffCandidates": [
+        {
+          "staffId": "AMD-SDM-0082",
+          "name": "Yanti"
+        },
+        {
+          "staffId": "AMD-SDM-0072",
+          "name": "Samsu Ariyanti"
+        },
+        {
+          "staffId": "AMD-SDM-0029",
+          "name": "HAUFIANA HARIYANTI"
+        }
+      ]
+    },
+    {
+      "displayName": "Aliya",
+      "suggestedRole": "mentor_tahsin_tahfiz",
+      "staffCandidates": [
+        {
+          "staffId": "AMD-SDM-0007",
+          "name": "Aliya"
+        }
+      ]
+    },
+    {
+      "displayName": "Tiansa",
+      "suggestedRole": "mentor_tahsin_tahfiz",
+      "staffCandidates": [
+        {
+          "staffId": "AMD-SDM-0041",
+          "name": "Itiansa"
+        }
+      ]
+    },
+    {
+      "displayName": "Idifra",
+      "suggestedRole": "mentor_tahsin_tahfiz",
+      "staffCandidates": []
+    },
+    {
+      "displayName": "Hikmah",
+      "suggestedRole": "mentor_tahsin_tahfiz",
+      "staffCandidates": [
+        {
+          "staffId": "AMD-SDM-0030",
+          "name": "Hikmah"
+        }
+      ]
+    },
+    {
+      "displayName": "Uyun",
+      "suggestedRole": "mentor_tahsin_tahfiz",
+      "staffCandidates": [
+        {
+          "staffId": "AMD-SDM-0024",
+          "name": "Ustadzah Fathul Uyun"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,129 @@
+import { getNode, listNode, pushRecord } from "../repository.js";
+import { byId, childrenForParent } from "../app-store.js";
+import { pageHeader, panel, metric, table, formRow, input, textarea, select, attachAsync, escapeHtml, badge, rupiah, today } from "./common.js";
+
+function pickChild(ctx) {
+  const children=childrenForParent(ctx.session.profile,ctx.master);
+  const selected=sessionStorage.getItem("madaniParentChild") || children[0]?.id || "";
+  return {children, child:children.find(c=>c.id===selected)||children[0]||null};
+}
+function childSwitch(children, selected) {
+  if(children.length<=1) return "";
+  return `<select id="parentChildSwitch" class="wide-select">${children.map(c=>`<option value="${c.id}" ${c.id===selected?"selected":""}>${escapeHtml(c.name)}</option>`).join("")}</select>`;
+}
+function bindSwitch(ctx){document.getElementById("parentChildSwitch")?.addEventListener("change",e=>{sessionStorage.setItem("madaniParentChild",e.target.value);ctx.rerender();});}
+
+export async function renderParentHome(ctx) {
+  const {children,child}=pickChild(ctx); if(!child){ctx.root.innerHTML=pageHeader("Beranda Wali Santri","Akun wali belum dihubungkan ke data santri.")+`<div class="empty-state">Hubungkan <code>studentIds</code> pada profil user wali.</div>`;return;}
+  const ca=ctx.master.classAssignments?.[child.id];const cls=byId(ctx.master.classes||[])[ca?.classId];const ra=ctx.master.roomAssignments?.[child.id];const room=byId(ctx.master.rooms||[])[ra?.roomId];
+  const pointsNode=await getNode(`discipline/points/${ctx.yearId}/${child.id}`)||{};const points=Object.values(pointsNode).reduce((s,r)=>s+Number(r.points||0),0);
+  const wallet=await getNode(`finance/wallets/${child.id}`)||{};
+  ctx.root.innerHTML=pageHeader("Beranda Anak","Ringkasan perkembangan dan layanan wali santri.",childSwitch(children,child.id))+`<div class="child-hero"><div><span>${escapeHtml(cls?.name||"Kelas belum terhubung")}</span><h2>${escapeHtml(child.name)}</h2><p>${escapeHtml(room?.name?`Asrama · ${room.name}`:child.boardingStatus==="boarding"?"Santri asrama":"Nonasrama")}</p></div><div class="child-avatar">${escapeHtml((child.name||"S").charAt(0))}</div></div><div class="portal-metrics">${metric("Poin Pembinaan",String(points),"akumulasi histori","blue")}${metric("Saldo Belanja",rupiah(wallet.spending||0),"","cyan")}${metric("Tabungan",rupiah(wallet.savings||0),"","violet")}${metric("Status",child.status||"active","data santri","coral")}</div><div class="notice info" style="margin-top:16px">Portal wali mengaktifkan akademik, kehadiran, Tahsin-Tahfiz, asrama/pembinaan, izin, pesan, pengumuman, dan keuangan. Jurnal liburan dan penitipan barang tidak diaktifkan pada MadaniApp fase ini.</div>`;
+  bindSwitch(ctx);
+}
+
+export async function renderParentNews(ctx) {
+  const {children,child}=pickChild(ctx);if(!child)return renderParentHome(ctx);
+  const ca=ctx.master.classAssignments?.[child.id],classId=ca?.classId;let attendance=[];
+  if(classId){const node=await getNode(`academic/student_attendance/${ctx.yearId}/${classId}`)||{};Object.entries(node).forEach(([date,items])=>{if(items?.[child.id])attendance.push({date,type:"Kehadiran",title:items[child.id].status,note:items[child.id].note||""});});}
+  let quran=[];for(const [gid,members] of Object.entries(ctx.master.groupAssignments||{})){if(members?.[child.id]){const node=await getNode(`academic/quran_records/${ctx.yearId}/${gid}/${child.id}`)||{};quran.push(...Object.values(node).map(r=>({date:r.date,type:"Al-Qur'an",title:`${r.type||"Setoran"} · ${r.portion||""}`,note:r.note||r.quality||""})));}}
+  const mentoring=(await listNode(`boarding/mentoring/${ctx.yearId}/${child.id}`)).map(r=>({date:r.date,type:"Mentoring",title:r.focus||"Sesi mentoring",note:r.target||r.appreciation||""}));
+  const initiatives=(await listNode(`boarding/initiatives/${ctx.yearId}`)).filter(r=>r.studentId===child.id).map(r=>({date:r.date,type:"Apresiasi",title:r.category||"Inisiatif positif",note:r.description||""}));
+  const feed=[...attendance,...quran,...mentoring,...initiatives].filter(x=>x.date).sort((a,b)=>String(b.date).localeCompare(String(a.date))).slice(0,30);
+  ctx.root.innerHTML=pageHeader("Kabar Ananda",`Timeline ringkas perkembangan ${child.name}.`,childSwitch(children,child.id))+`<div class="timeline">${feed.length?feed.map(x=>`<article class="timeline-item"><div class="timeline-time">${escapeHtml(x.date)}</div><div class="timeline-dot"></div><div class="timeline-card"><span>${escapeHtml(x.type)}</span><strong>${escapeHtml(x.title||"—")}</strong><p>${escapeHtml(x.note||"")}</p></div></article>`).join(""):`<div class="empty-state">Belum ada kabar yang tercatat.</div>`}</div>`;bindSwitch(ctx);
+}
+
+export async function renderParentCalendar(ctx) {
+  const {children,child}=pickChild(ctx);if(!child)return renderParentHome(ctx);const rows=await listNode("parent/calendar");
+  const visible=rows.filter(r=>r.active!==false && (!r.unitId||r.unitId===child.unitId) && (!r.genderScope||r.genderScope==="mixed"||r.genderScope===child.gender));
+  ctx.root.innerHTML=pageHeader("Kalender Wali",`Agenda dan tanggal penting untuk ${child.name}.`,childSwitch(children,child.id))+`<div class="announcement-grid">${visible.length?visible.sort((a,b)=>String(a.startDate||"").localeCompare(String(b.startDate||""))).map(r=>`<article class="announcement-card"><span>${escapeHtml(r.startDate||"—")}${r.endDate&&r.endDate!==r.startDate?` s.d. ${escapeHtml(r.endDate)}`:""}</span><h3>${escapeHtml(r.title||"Agenda")}</h3><p>${escapeHtml(r.description||"")}</p></article>`).join(""):`<div class="empty-state">Kalender wali belum diinput.</div>`}</div>`;bindSwitch(ctx);
+}
+
+export async function renderParentPrograms(ctx) {
+  const {children,child}=pickChild(ctx);if(!child)return renderParentHome(ctx);const programMap=byId(ctx.master.programs||[]);let schedules=(ctx.master.dailySchedules||[]).filter(s=>!s.genderScope||s.genderScope===child.gender);
+  if(child.boardingStatus!=="boarding") schedules=schedules.filter(s=>s.participantScope!=="all_boarding");
+  schedules.sort((a,b)=>(a.order||999)-(b.order||999));
+  ctx.root.innerHTML=pageHeader("Program Harian",`Rangkaian program harian yang relevan untuk ${child.name}.`,childSwitch(children,child.id))+`<div class="timeline">${schedules.length?schedules.map(s=>{const p=programMap[s.programId]||{};return `<article class="timeline-item"><div class="timeline-time">${escapeHtml(`${s.startTime||"—"}${s.endTime?`–${s.endTime}`:""}`)}</div><div class="timeline-dot"></div><div class="timeline-card"><span>${escapeHtml(p.category||"Program")}</span><strong>${escapeHtml(p.name||"Program")}</strong><p>${escapeHtml(p.description||p.detail||"")}</p></div></article>`}).join(""):`<div class="empty-state">Program harian belum tersedia.</div>`}</div>`;bindSwitch(ctx);
+}
+
+export async function renderParentSchedule(ctx) {
+  const {children,child}=pickChild(ctx);if(!child)return renderParentHome(ctx);const ca=ctx.master.classAssignments?.[child.id],classId=ca?.classId;const subjectMap=byId(ctx.master.subjects||[]);const cls=byId(ctx.master.classes||[])[classId];const rows=(ctx.master.academicSchedules||[]).filter(s=>s.classId===classId).sort((a,b)=>String(a.day||"").localeCompare(String(b.day||""))||String(a.startTime||"").localeCompare(String(b.startTime||"")));
+  ctx.root.innerHTML=pageHeader("Jadwal Pembelajaran",`${child.name} · ${cls?.name||"kelas belum terhubung"}`,childSwitch(children,child.id))+table(["Hari","Waktu","Mata Pelajaran/Kegiatan","Jenis"],rows.map(r=>`<tr><td>${badge(r.day||"—")}</td><td><strong>${escapeHtml(`${r.startTime||""}${r.endTime?`–${r.endTime}`:""}`)}</strong></td><td>${escapeHtml(subjectMap[r.subjectId]?.name||r.activityName||"—")}</td><td>${escapeHtml(r.type||"—")}</td></tr>`).join(""));bindSwitch(ctx);
+}
+
+export async function renderParentMonthly(ctx) {
+  const {children,child}=pickChild(ctx);if(!child)return renderParentHome(ctx);const defaultMonth=today().slice(0,7);
+  ctx.root.innerHTML=pageHeader("Laporan Bulanan",`Ringkasan akademik, Al-Qur'an, pembinaan, dan mentoring ${child.name}.`,childSwitch(children,child.id))+`${panel("Pilih Periode",`<div class="filter-row"><input id="monthlyPeriod" type="month" value="${defaultMonth}"><button id="loadMonthly" class="btn btn-primary">Tampilkan</button></div>`)}<div id="monthlyWorkspace" style="margin-top:18px"></div>`;bindSwitch(ctx);
+  const load=async()=>{const month=document.getElementById("monthlyPeriod").value||defaultMonth;const ca=ctx.master.classAssignments?.[child.id],classId=ca?.classId;let att=[];if(classId){const node=await getNode(`academic/student_attendance/${ctx.yearId}/${classId}`)||{};Object.entries(node).forEach(([date,items])=>{if(date.startsWith(month)&&items?.[child.id])att.push(items[child.id]);});}let quran=[];for(const [gid,members] of Object.entries(ctx.master.groupAssignments||{})){if(members?.[child.id]){const node=await getNode(`academic/quran_records/${ctx.yearId}/${gid}/${child.id}`)||{};quran.push(...Object.values(node).filter(r=>String(r.date||"").startsWith(month)));}}const mentoring=(await listNode(`boarding/mentoring/${ctx.yearId}/${child.id}`)).filter(r=>String(r.date||"").startsWith(month));const points=(await listNode(`discipline/points/${ctx.yearId}/${child.id}`)).filter(r=>String(r.date||"").startsWith(month));const present=att.filter(r=>r.status==="Hadir").length;const absent=att.filter(r=>r.status==="Alfa").length;const score=points.reduce((sum,r)=>sum+Number(r.points||0),0);document.getElementById("monthlyWorkspace").innerHTML=`<div class="portal-metrics">${metric("Hadir",String(present),`${att.length} catatan kehadiran`,"blue")}${metric("Alfa",String(absent),"","coral")}${metric("Setoran Al-Qur'an",String(quran.length),"","cyan")}${metric("Sesi Mentoring",String(mentoring.length),"","violet")}${metric("Poin Pembinaan",String(score),"akumulasi bulan","mint")}</div><div class="notice info" style="margin-top:16px">Ringkasan ini membaca data transaksi periode terpilih. Nilai yang belum tersedia tetap ditampilkan sebagai tidak ada data, bukan otomatis 0.</div>`;};document.getElementById("loadMonthly")?.addEventListener("click",load);await load();
+}
+
+export async function renderParentCharacter(ctx) {
+  const {children,child}=pickChild(ctx);if(!child)return renderParentHome(ctx);const root=await getNode(`boarding/student_assessments/${ctx.yearId}`)||{};let assessments=[];Object.entries(root).forEach(([period,node])=>Object.values(node||{}).forEach(r=>{if(r.studentId===child.id)assessments.push({period,...r});}));assessments.sort((a,b)=>String(b.period).localeCompare(String(a.period)));const latest=assessments[0];const initiatives=(await listNode(`boarding/initiatives/${ctx.yearId}`)).filter(r=>r.studentId===child.id);
+  ctx.root.innerHTML=pageHeader("Laporan Karakter",`Perkembangan karakter ${child.name}.`,childSwitch(children,child.id))+`<div class="portal-grid two">${panel("Asesmen Terbaru",latest?`<div class="portal-metrics compact">${metric("Ibadah",latest.worship||"—","","blue")}${metric("Adab",latest.adab||"—","","cyan")}${metric("Disiplin",latest.discipline||"—","","violet")}${metric("Mandiri",latest.independence||"—","","mint")}${metric("Relasi",latest.social||"—","","coral")}</div><div class="notice info" style="margin-top:12px"><strong>Fokus:</strong> ${escapeHtml(latest.improvementFocus||"—")}<br><strong>Kekuatan:</strong> ${escapeHtml(latest.strengths||"—")}</div>`:`<div class="empty-state">Belum ada asesmen karakter.</div>`)}${panel("Apresiasi/Inisiatif",initiatives.length?`<div class="stack-list">${initiatives.slice(-12).reverse().map(r=>`<article class="list-card"><div><span>${escapeHtml(r.date||"—")}</span><strong>${escapeHtml(r.category||"Apresiasi")}</strong><small>${escapeHtml(r.description||"")}</small></div></article>`).join("")}</div>`:`<div class="empty-state">Belum ada catatan apresiasi.</div>`)}</div>`;bindSwitch(ctx);
+}
+
+export async function renderParentNurturing(ctx) {
+  const {children,child}=pickChild(ctx);if(!child)return renderParentHome(ctx);const points=await listNode(`discipline/points/${ctx.yearId}/${child.id}`);const cases=(await listNode(`boarding/cases/${ctx.yearId}`)).filter(c=>c.studentId===child.id&&c.parentVisible===true);const letters=(await listNode(`boarding/warning_letters/${ctx.yearId}`)).filter(r=>r.studentId===child.id&&r.parentVisible===true);
+  ctx.root.innerHTML=pageHeader("Laporan Pembinaan",`Riwayat pembinaan yang memang ditandai dapat dilihat wali.`,childSwitch(children,child.id))+`<div class="portal-grid two">${panel("Poin Pembinaan",points.length?table(["Tanggal","Jenis","Poin","Keterangan"],points.sort((a,b)=>String(b.date||"").localeCompare(String(a.date||""))).map(r=>`<tr><td>${escapeHtml(r.date||"—")}</td><td>${escapeHtml(r.type||"—")}</td><td>${escapeHtml(r.points||0)}</td><td>${escapeHtml(r.description||"—")}</td></tr>`).join(""),620):`<div class="empty-state">Belum ada catatan poin.</div>`)}${panel("Kasus/SP yang Dibagikan",(cases.length||letters.length)?`<div class="stack-list">${cases.map(r=>`<article class="list-card"><div><span>${escapeHtml(r.date||"—")}</span><strong>${escapeHtml(r.category||"Pembinaan")}</strong><small>${escapeHtml(r.parentSummary||"Informasi pembinaan tersedia dari pesantren.")}</small></div>${badge(r.status||"—")}</article>`).join("")}${letters.map(r=>`<article class="list-card"><div><span>${escapeHtml(r.date||"—")}</span><strong>${escapeHtml(r.level||"SP")}</strong><small>${escapeHtml(r.reason||"")}</small></div></article>`).join("")}</div>`:`<div class="empty-state">Tidak ada kasus/SP yang dibagikan ke wali.</div>`)}</div>`;bindSwitch(ctx);
+}
+
+export async function renderParentMentoring(ctx) {
+  const {children,child}=pickChild(ctx);if(!child)return renderParentHome(ctx);const rows=await listNode(`boarding/mentoring/${ctx.yearId}/${child.id}`);rows.sort((a,b)=>String(b.date||"").localeCompare(String(a.date||"")));
+  ctx.root.innerHTML=pageHeader("Laporan Mentoring",`Ringkasan mentoring individu Guru Wali untuk ${child.name}.`,childSwitch(children,child.id))+table(["Tanggal","Fokus","Target","Strong Why","Hasil"],rows.map(r=>`<tr><td>${escapeHtml(r.date||"—")}</td><td><span class="badge">${escapeHtml(r.focusType||"FOKUS")}</span><br>${escapeHtml(r.focus||"—")}</td><td>${escapeHtml(r.target||"—")}</td><td>${escapeHtml(r.strongWhy||"—")}</td><td>${badge(r.targetResultStatus||"BELUM_DINILAI",r.targetResultStatus==="TERCAPAI"?"":"gold")}<br><small>${escapeHtml(r.targetResult||"")}</small></td></tr>`).join(""));bindSwitch(ctx);
+}
+
+export async function renderParentHealth(ctx) {
+  const {children,child}=pickChild(ctx);if(!child)return renderParentHome(ctx);const rows=await listNode(`health/records/${ctx.yearId}/${child.id}`);
+  ctx.root.innerHTML=pageHeader("Riwayat Kesehatan",`Catatan kesehatan ${child.name}.`,childSwitch(children,child.id))+(rows.length?table(["Tanggal","Keluhan","Tindakan","Status"],rows.sort((a,b)=>String(b.date||"").localeCompare(String(a.date||""))).map(r=>`<tr><td>${escapeHtml(r.date||"—")}</td><td>${escapeHtml(r.complaint||r.condition||"—")}</td><td>${escapeHtml(r.action||r.treatment||"—")}</td><td>${badge(r.status||"—")}</td></tr>`).join("")):`<div class="empty-state">Belum ada riwayat kesehatan yang tercatat di MadaniApp.</div>`);bindSwitch(ctx);
+}
+
+export async function renderParentRules(ctx) {
+  const {children,child}=pickChild(ctx);if(!child)return renderParentHome(ctx);const rows=await listNode("reference/rules");const visible=rows.filter(r=>r.active!==false&&(!r.unitId||r.unitId===child.unitId));
+  ctx.root.innerHTML=pageHeader("Tata Tertib Pesantren",`Tata tertib yang berlaku untuk ${child.name}.`,childSwitch(children,child.id))+`<div class="announcement-grid">${visible.length?visible.map(r=>`<article class="announcement-card"><span>${escapeHtml(r.category||"Tata Tertib")}</span><h3>${escapeHtml(r.title||"Ketentuan")}</h3><p>${escapeHtml(r.body||r.description||"")}</p></article>`).join(""):`<div class="empty-state">Tata tertib belum diinput ke master referensi.</div>`}</div>`;bindSwitch(ctx);
+}
+
+export async function renderParentAttendance(ctx) {
+  const {children,child}=pickChild(ctx);if(!child)return renderParentHome(ctx);const ca=ctx.master.classAssignments?.[child.id];const classId=ca?.classId;let rows=[];
+  if(classId){const node=await getNode(`academic/student_attendance/${ctx.yearId}/${classId}`)||{};Object.entries(node).forEach(([date,items])=>{if(items?.[child.id])rows.push({date,...items[child.id]});});}
+  rows.sort((a,b)=>b.date.localeCompare(a.date));
+  ctx.root.innerHTML=pageHeader("Kehadiran",`Riwayat kehadiran ${child.name}.`,childSwitch(children,child.id))+table(["Tanggal","Status","Catatan"],rows.map(r=>`<tr><td>${escapeHtml(r.date)}</td><td>${badge(r.status||"—",r.status==="Alfa"?"red":"")}</td><td>${escapeHtml(r.note||"—")}</td></tr>`).join(""));bindSwitch(ctx);
+}
+
+export async function renderParentAcademic(ctx) {
+  const {children,child}=pickChild(ctx);if(!child)return renderParentHome(ctx);const ca=ctx.master.classAssignments?.[child.id],classId=ca?.classId;const cls=byId(ctx.master.classes||[])[classId];const subjects=byId(ctx.master.subjects||[]);const node=classId?await getNode(`academic/grades/${ctx.yearId}/${classId}`)||{}:{};let grades=[];
+  Object.entries(node).forEach(([subjectId,periods])=>Object.entries(periods||{}).forEach(([period,studentRecords])=>{const r=studentRecords?.[child.id];if(r)grades.push({subjectId,period,...r});}));
+  const schedule=(ctx.master.academicSchedules||[]).filter(s=>s.classId===classId);
+  ctx.root.innerHTML=pageHeader("Akademik & Rapor",`${child.name} · ${cls?.name||"kelas belum tersedia"}`,childSwitch(children,child.id))+`<div class="portal-grid two">${panel("Nilai",grades.length?table(["Mapel","Periode","Nilai","Remedial"],grades.map(g=>`<tr><td>${escapeHtml(subjects[g.subjectId]?.name||g.subjectId)}</td><td>${escapeHtml(g.period)}</td><td><strong>${escapeHtml(g.score)}</strong></td><td>${g.remedial?badge("Remedial","gold"):badge("Tuntas")}</td></tr>`).join(""),520):`<div class="empty-state">Belum ada nilai.</div>`)}${panel("Jadwal Kelas",schedule.length?`<div class="stack-list">${schedule.slice(0,25).map(s=>`<article class="list-card"><div><span>${escapeHtml(s.day||"—")} · ${escapeHtml(`${s.startTime||""}-${s.endTime||""}`)}</span><strong>${escapeHtml(subjects[s.subjectId]?.name||s.activityName||"Kegiatan")}</strong></div></article>`).join("")}</div>`:`<div class="empty-state">Jadwal belum tersedia.</div>`)}</div>`;bindSwitch(ctx);
+}
+
+export async function renderParentQuran(ctx) {
+  const {children,child}=pickChild(ctx);if(!child)return renderParentHome(ctx);let rows=[];const groups=ctx.master.groupAssignments||{};for(const [gid,members] of Object.entries(groups)){if(members?.[child.id]){const node=await getNode(`academic/quran_records/${ctx.yearId}/${gid}/${child.id}`)||{};rows.push(...Object.values(node));}}
+  rows.sort((a,b)=>String(b.date||"").localeCompare(String(a.date||"")));
+  ctx.root.innerHTML=pageHeader("Tahsin Tahfiz",`Perkembangan Al-Qur'an ${child.name}.`,childSwitch(children,child.id))+table(["Tanggal","Jenis","Porsi","Skor","Kualitas","Catatan Mentor"],rows.map(r=>`<tr><td>${escapeHtml(r.date||"—")}</td><td>${badge(r.type||"—")}</td><td>${escapeHtml(r.portion||"—")}</td><td>${escapeHtml(r.score||"—")}</td><td>${escapeHtml(r.quality||"—")}</td><td>${escapeHtml(r.note||"—")}</td></tr>`).join(""));bindSwitch(ctx);
+}
+
+export async function renderParentBoarding(ctx) {
+  const {children,child}=pickChild(ctx);if(!child)return renderParentHome(ctx);const mentoring=await listNode(`boarding/mentoring/${ctx.yearId}/${child.id}`);const points=await listNode(`discipline/points/${ctx.yearId}/${child.id}`);const cases=await listNode(`boarding/cases/${ctx.yearId}`);const childCases=cases.filter(c=>c.studentId===child.id&&c.parentVisible===true);
+  ctx.root.innerHTML=pageHeader("Asrama & Pembinaan",`Ringkasan pembinaan ${child.name}.`,childSwitch(children,child.id))+`<div class="portal-grid two">${panel("Mentoring Terbaru",mentoring.length?`<div class="stack-list">${mentoring.slice(-10).reverse().map(m=>`<article class="list-card"><div><span>${escapeHtml(m.date||"—")}</span><strong>${escapeHtml(m.focus||"Mentoring")}</strong><small>${escapeHtml(m.target||m.topic||"")}</small></div></article>`).join("")}</div>`:`<div class="empty-state">Belum ada ringkasan mentoring.</div>`)}${panel("Pembinaan & Poin",`<div class="portal-metrics compact">${metric("Transaksi Poin",String(points.length),"","blue")}${metric("Kasus Dibagikan",String(childCases.length),"hanya yang ditandai terlihat wali","coral")}</div>`)} </div>`;bindSwitch(ctx);
+}
+
+export async function renderParentPermission(ctx) {
+  const {children,child}=pickChild(ctx);if(!child)return renderParentHome(ctx);const rows=await listNode(`parent/permissions/${ctx.yearId}/${child.id}`);
+  ctx.root.innerHTML=pageHeader("Izin Santri",`Pengajuan izin untuk ${child.name}.`,childSwitch(children,child.id))+`<div class="portal-grid two">${panel("Ajukan Izin",`<form id="permissionForm" class="portal-form">${formRow("Mulai",input("startDate",today(),"date","required"))}${formRow("Sampai",input("endDate",today(),"date","required"))}${formRow("Jenis",select("type","<option>Pulang</option><option>Keluar Pesantren</option><option>Keluarga</option><option>Kesehatan</option><option>Lainnya</option>"))}${formRow("Alasan",textarea("reason","","required"),true)}<div class="form-actions"><button class="btn btn-primary">Kirim Pengajuan</button></div></form>`)}${panel("Riwayat",rows.length?`<div class="stack-list">${rows.slice(-15).reverse().map(r=>`<article class="list-card"><div><span>${escapeHtml(r.startDate||"—")} s.d. ${escapeHtml(r.endDate||"—")}</span><strong>${escapeHtml(r.type||"Izin")}</strong><small>${escapeHtml(r.reason||"")}</small></div>${badge(r.status||"diajukan")}</article>`).join("")}</div>`:`<div class="empty-state">Belum ada pengajuan.</div>`)}</div>`;
+  bindSwitch(ctx);attachAsync(document.getElementById("permissionForm"),async data=>{await pushRecord(`parent/permissions/${ctx.yearId}/${child.id}`,{...data,status:"diajukan",parentUid:ctx.session.user.uid},ctx.session.user.uid);ctx.rerender();},"Pengajuan izin dikirim.");
+}
+
+export async function renderParentMessages(ctx) {
+  const {children,child}=pickChild(ctx);if(!child)return renderParentHome(ctx);const threadId=`parent-${ctx.session.user.uid}-${child.id}`;const rows=await listNode(`messages/${threadId}`);
+  ctx.root.innerHTML=pageHeader("Pesan",`Komunikasi resmi terkait ${child.name}.`,childSwitch(children,child.id))+`<div class="message-layout"><div class="message-stream">${rows.length?rows.sort((a,b)=>(a.createdAt||0)-(b.createdAt||0)).map(m=>`<div class="message-bubble ${m.senderUid===ctx.session.user.uid?"mine":""}"><strong>${escapeHtml(m.senderName||"MadaniApp")}</strong><p>${escapeHtml(m.message||"")}</p><small>${m.createdAt?new Date(m.createdAt).toLocaleString("id-ID"):""}</small></div>`).join(""):`<div class="empty-state">Belum ada pesan.</div>`}</div><form id="messageForm" class="message-compose"><input name="message" placeholder="Tulis pesan..." required><button class="btn btn-primary">Kirim</button></form></div>`;
+  bindSwitch(ctx);attachAsync(document.getElementById("messageForm"),async data=>{await pushRecord(`messages/${threadId}`,{...data,senderUid:ctx.session.user.uid,senderName:ctx.session.profile.name||"Wali Santri",studentId:child.id},ctx.session.user.uid);ctx.rerender();},"Pesan terkirim.");
+}
+
+export async function renderParentAnnouncements(ctx) {
+  const rows=await listNode("announcements");ctx.root.innerHTML=pageHeader("Pengumuman","Informasi resmi Pondok Pesantren Al-Madani.")+`<div class="announcement-grid">${rows.length?rows.filter(r=>r.active!==false).sort((a,b)=>(b.publishedAt||b.createdAt||0)-(a.publishedAt||a.createdAt||0)).map(r=>`<article class="announcement-card"><span>${r.publishedAt?new Date(r.publishedAt).toLocaleDateString("id-ID"):""}</span><h3>${escapeHtml(r.title||"Pengumuman")}</h3><p>${escapeHtml(r.body||"")}</p></article>`).join(""):`<div class="empty-state">Belum ada pengumuman.</div>`}</div>`;
+}
+
+export async function renderParentFinance(ctx) {
+  const {children,child}=pickChild(ctx);if(!child)return renderParentHome(ctx);const [bills,wallet,pays,tx]=await Promise.all([listNode(`finance/bills/${ctx.yearId}/${child.id}`),getNode(`finance/wallets/${child.id}`),listNode(`finance/payments/${ctx.yearId}`),listNode(`finance/cashier_transactions/${ctx.yearId}`)]);const myPays=pays.filter(p=>p.studentId===child.id),myTx=tx.filter(t=>t.studentId===child.id&&t.status!=="void");
+  ctx.root.innerHTML=pageHeader("Keuangan",`Tagihan, pembayaran, saldo, dan belanja ${child.name}.`,childSwitch(children,child.id))+`<div class="portal-metrics">${metric("Saldo Belanja",rupiah(wallet?.spending||0),"","cyan")}${metric("Tabungan",rupiah(wallet?.savings||0),"","violet")}${metric("Tagihan Belum Lunas",String(bills.filter(b=>b.status!=="paid").length),"","coral")}</div><div class="portal-grid two" style="margin-top:18px">${panel("Tagihan",bills.length?table(["Periode","Nominal","Terbayar","Status"],bills.map(b=>`<tr><td>${escapeHtml(b.period||"—")}</td><td>${rupiah(b.amount)}</td><td>${rupiah(b.paidAmount||0)}</td><td>${badge(b.status||"unpaid")}</td></tr>`).join(""),500):`<div class="empty-state">Belum ada tagihan.</div>`)}${panel("Belanja Terbaru",myTx.length?`<div class="stack-list">${myTx.slice(-10).reverse().map(t=>`<article class="list-card"><div><span>${escapeHtml(t.date||"—")}</span><strong>${escapeHtml((t.items||[]).map(i=>i.name).join(", ")||"Belanja")}</strong><small>${escapeHtml(t.unitId||"")}</small></div><b>${rupiah(t.total)}</b></article>`).join("")}</div>`:`<div class="empty-state">Belum ada transaksi kasir.</div>`)}</div>`;bindSwitch(ctx);
+}

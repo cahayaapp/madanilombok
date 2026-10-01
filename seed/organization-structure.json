@@ -1,0 +1,131 @@
+{
+  "source": "Struktur organisasi yang dilampirkan pengguna pada 30 Sep 2026",
+  "notes": [
+    "Kode personel AH/MT/Mhs/Nrl dipertahankan sebagai kode/hint dan tidak dipetakan otomatis ke Staff_ID karena identitas belum ditegaskan.",
+    "Guru Wali menggantikan Mentor untuk mentoring individu pada MadaniApp.",
+    "Daftar Tahsin/Tahfiz putri pada gambar terpotong di bagian bawah; hanya nama yang terbaca jelas dimasukkan."
+  ],
+  "leadership": {
+    "director": {
+      "label": "Direktur",
+      "personCode": "AH",
+      "role": "director"
+    },
+    "deputyDirector": {
+      "label": "Wakil Direktur",
+      "personCode": "MT",
+      "role": "deputy_director"
+    },
+    "formalSchoolHead": {
+      "label": "Kepala Sekolah Formal",
+      "personCode": null,
+      "role": "head_formal_school",
+      "children": [
+        "WK Kur",
+        "WK Sis",
+        "WK Sar",
+        "WK Humas",
+        "WK Pres",
+        "Pendidikan dan Kependidikan"
+      ]
+    },
+    "boysDormHead": {
+      "label": "Kepala Asrama Putra",
+      "personCode": "Mhs",
+      "role": "head_boys_dorm"
+    },
+    "girlsDormHead": {
+      "label": "Kepala Asrama Putri",
+      "personCode": "Nrl",
+      "role": "head_girls_dorm"
+    }
+  },
+  "formalSchool": {
+    "viceFunctions": [
+      "WK Kur",
+      "WK Sis",
+      "WK Sar",
+      "WK Humas",
+      "WK Pres"
+    ],
+    "educationAndStaffing": [
+      "Guru Mapel",
+      "Guru Wali",
+      "Dll"
+    ]
+  },
+  "boysDorm": {
+    "naqib": [
+      "Nopan",
+      "Da'i",
+      "Heikal"
+    ],
+    "mentorIndividual": [
+      "Guru Wali"
+    ],
+    "counselor": [
+      "Muhasim",
+      "Fahri H"
+    ],
+    "roomLeaders": {
+      "rooms": 3,
+      "regularOsma": 9,
+      "gemaOsma": 5
+    },
+    "usrahMentors": [
+      "Ustadz Tuzri",
+      "Ustadz Muhasim",
+      "Muammar"
+    ],
+    "quranMentors": [
+      "Us Tuzri",
+      "Mummar",
+      "Bapak",
+      "Fahri H",
+      "Yusuf",
+      "Muhasim (Gema)"
+    ]
+  },
+  "girlsDorm": {
+    "naqib": [
+      "Anggi",
+      "Alfi",
+      "Melia",
+      "Fitriani",
+      "Nurul",
+      "Rokyal"
+    ],
+    "mentorIndividual": [
+      "Guru Wali"
+    ],
+    "counselor": [
+      "Ida F",
+      "Yanti",
+      "Nuril"
+    ],
+    "roomLeaders": {
+      "rooms": 4,
+      "gemaRooms": 1,
+      "leadership": "OSMA + Takhassus GEMA"
+    },
+    "usrahMentors": [
+      "Munawarah",
+      "Nuril",
+      "Hikmah",
+      "Uyun",
+      "Ida F"
+    ],
+    "quranMentorsVisible": [
+      "Yanti",
+      "Aliya",
+      "Tiansa",
+      "Idifra",
+      "Hikmah",
+      "Uyun"
+    ]
+  },
+  "student": {
+    "label": "Santri",
+    "scope": "lintas sekolah formal dan asrama"
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "madani_app": {
+    "users": {
+      "PASTE_FIREBASE_AUTH_UID_HERE": {
+        "name": "Administrator Al-Madani",
+        "email": "admin@example.com",
+        "role": "super_admin",
+        "active": true,
+        "roles": [
+          "super_admin"
+        ],
+        "roleFlags": {
+          "super_admin": true
+        },
+        "defaultRole": "super_admin"
+      }
+    }
+  }
+}
