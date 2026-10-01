@@ -82,5 +82,5 @@ loadAuth().then(async ([{ waitForAuth }, { getNode }]) => {
   if (profile && profile.active !== false) location.replace('./app/index.html');
 }).catch(() => { /* Keep the public install screen available without a connection. */ });
 if ('serviceWorker' in navigator) window.addEventListener('load', () => {
-  navigator.serviceWorker.register('./sw.js?v=24', { scope: './', updateViaCache: 'none' }).catch(console.warn);
+  navigator.serviceWorker.register('./sw.js?v=25', { scope: './', updateViaCache: 'none' }).catch(console.warn);
 });

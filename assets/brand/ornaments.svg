@@ -1,10 +1,10 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 430 900" preserveAspectRatio="none">
 <defs>
-<linearGradient id="teal" x2=".8" y2="1"><stop stop-color="#00a799"/><stop offset="1" stop-color="#00585d"/></linearGradient>
-<linearGradient id="mint"><stop stop-color="#70c6aa"/><stop offset="1" stop-color="#00877f"/></linearGradient>
+<linearGradient id="teal" x2=".8" y2="1"><stop stop-color="#00a39d"/><stop offset="1" stop-color="#006f6b"/></linearGradient>
+<linearGradient id="mint"><stop stop-color="#70c6c3"/><stop offset="1" stop-color="#00a39d"/></linearGradient>
 <linearGradient id="gold"><stop stop-color="#f5ac39"/><stop offset=".5" stop-color="#ffe0a0"/><stop offset="1" stop-color="#eaa129"/></linearGradient>
-<linearGradient id="leaf" x2="1" y2="1"><stop stop-color="#f3dc95"/><stop offset="1" stop-color="#17998a"/></linearGradient>
-<radialGradient id="glow"><stop stop-color="#e3f7ef"/><stop offset="1" stop-color="#fffdf7" stop-opacity="0"/></radialGradient>
+<linearGradient id="leaf" x2="1" y2="1"><stop stop-color="#f3dc95"/><stop offset="1" stop-color="#179994"/></linearGradient>
+<radialGradient id="glow"><stop stop-color="#e3f7f6"/><stop offset="1" stop-color="#fffdf7" stop-opacity="0"/></radialGradient>
 <pattern id="pattern" width="44" height="44" patternUnits="userSpaceOnUse"><path d="M22 0 28 10 39 5 34 17 44 22 34 28 39 39 28 34 22 44 16 34 5 39 10 28 0 22 10 17 5 5 16 10Z" fill="none" stroke="#ecd494" stroke-width=".8"/></pattern>
 <g id="mosque" fill="#89986b"><path d="M31 130v-44c0-20 33-22 33-43 0 21 33 23 33 43v44H83v-30c0-8-10-12-19-19-9 7-19 11-19 19v30Z"/><path d="M61 44v-17h5v17ZM14 130V65H8v-5h3V45c0-6 6-7 6-14 0 7 6 8 6 14v15h3v5h-6v65ZM112 130V65h-6v-5h3V45c0-6 6-7 6-14 0 7 6 8 6 14v15h3v5h-6v65Z"/><path d="M69 8a12 12 0 1 0 11 17A12 12 0 0 1 69 8Z"/></g>
 </defs>
@@ -22,7 +22,7 @@
 <path d="M0 813Q108 738 215 797T430 803V900H0Z" fill="url(#mint)"/>
 <path d="M0 726C96 724 132 824 230 847S367 807 430 869V900H0Z" fill="url(#gold)"/>
 <path d="M0 745C105 742 120 824 228 851S332 861 376 900H0Z" fill="url(#teal)"/>
-<path d="M0 758C105 755 118 840 223 866S320 879 340 900H0Z" fill="#007a70" opacity=".6"/>
+<path d="M0 758C105 755 118 840 223 866S320 879 340 900H0Z" fill="#007a76" opacity=".6"/>
 <path d="M0 745C105 742 120 824 228 851S332 861 376 900H0Z" fill="url(#pattern)" opacity=".12"/>
-<g transform="translate(26 895)"><path d="M0 0Q-16-46 4-126M-2-6Q14-52 47-71M-3-3Q30-22 63-15" fill="none" stroke="#248d70" stroke-width="3"/><path d="M4-88Q-21-108-5-137 12-116 4-88ZM3-64Q10-106 31-116 30-83 3-64Z" fill="url(#leaf)"/><path d="M-1-32Q-31-60-26-91 1-78-1-32ZM0-22Q11-63 48-72 39-40 0-22ZM0-4Q28-40 69-23 44-8 0-4Z" fill="#2c9d79"/><path d="M1-3Q42-13 69 11H1Z" fill="#047269"/></g>
+<g transform="translate(26 895)"><path d="M0 0Q-16-46 4-126M-2-6Q14-52 47-71M-3-3Q30-22 63-15" fill="none" stroke="#248d89" stroke-width="3"/><path d="M4-88Q-21-108-5-137 12-116 4-88ZM3-64Q10-106 31-116 30-83 3-64Z" fill="url(#leaf)"/><path d="M-1-32Q-31-60-26-91 1-78-1-32ZM0-22Q11-63 48-72 39-40 0-22ZM0-4Q28-40 69-23 44-8 0-4Z" fill="#2c9d99"/><path d="M1-3Q42-13 69 11H1Z" fill="#04726e"/></g>
 </svg>
