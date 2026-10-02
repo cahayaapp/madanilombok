@@ -63,3 +63,14 @@ Ini implementasi tambahan, **bukan klaim kesetaraan 100%**. Bagian berikut masih
 - Pemeriksaan visual ponsel 390 × 844 untuk beranda Guru dan ruang Kepala Asrama Putri. Ini tidak membuktikan seluruh halaman identik secara visual dengan Cahaya.
 
 Instruksi uji ada di `tests/README.md`. Belum ada deployment atau perubahan data produksi.
+
+
+## Manajemen User — pembaruan berikutnya
+
+Manajemen user lokal kini mengikuti alur `fajrulislam/admin/users.html`: pencarian nama/email/SDM, tambah dan edit, pilihan multi-role, role utama, penugasan per role, ringkasan assignment, dan pencabutan akses. Madani menambahkan filter role/status, nonaktifkan/pulihkan, histori perubahan akses, pemeriksaan konflik pembaruan, serta pencegahan admin mencabut aksesnya sendiri.
+
+Pencabutan bersifat dapat dipulihkan: profil, akun Firebase Auth, dan seluruh riwayat operasional tetap disimpan. `active=false` dan `accessRevoked=true` menolak sesi aplikasi; listener profil memuat ulang perubahan role atau mengeluarkan sesi yang dicabut. Aturan database lokal menolak baca/tulis akun nonaktif/dicabut. Aturan ini **belum dideploy** dan pengujian ekspresi rules bukan Firebase Emulator.
+
+Scope disesuaikan dengan struktur Madani: unit sekolah, rombel, mapel, halaqah, santri binaan, anak wali, gender dan unit kasir. Metadata level Konselor dapat disimpan; alur eskalasi bertingkat tetap termasuk pekerjaan domain Konselor, bukan diklaim selesai oleh editor akun ini.
+
+Editor mempertahankan email login, UID, tanggal pembuatan, data profil lain dan snapshot role lama. Mengubah email Auth atau menghapus akun Firebase Auth permanen tidak termasuk fungsi cabut akses. Uji UI dan model mencakup tambah/edit, role ganda, role utama, relasi anak, cabut/pulihkan, dan validasi referensi master. Tampilan desktop dan ponsel 390px diperiksa memakai data simulasi, tanpa perubahan akun produksi.

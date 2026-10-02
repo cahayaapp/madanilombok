@@ -6,7 +6,8 @@ import {
   remove,
   push,
   serverTimestamp,
-  runTransaction
+  runTransaction,
+  onValue
 } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 import { db } from "./firebase.js";
 import { appConfig } from "../../config/firebase-config.js";
@@ -208,4 +209,9 @@ export async function saveWorkspaceRecord(path,id,data,actorUid) {
     [`audit_logs/${audit.key}`]:{action:previous?'workspace_update':'workspace_create',path,recordId:id,actorUid,createdAt:serverTimestamp()}
   });
   return record;
+}
+
+/** Observe profile revocation/role changes without waiting for another login. */
+export function watchUserProfile(uid,callback,onError){
+  return onValue(ref(db,pathFor(`users/${uid}`)),snapshot=>callback(snapshot.val()),onError);
 }

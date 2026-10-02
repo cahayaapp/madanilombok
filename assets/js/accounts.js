@@ -2,16 +2,17 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebas
 import {
   getAuth,
   createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
   signOut,
   deleteUser,
   sendPasswordResetEmail
 } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 import { firebaseConfig } from "../../config/firebase-config.js";
 import { requireAdmin, logout } from "./auth.js";
-import { listNode, setNode } from "./repository.js";
+import { listNode, setNode, transitionWorkspaceRecord } from "./repository.js";
 import { escapeHtml, toast } from "./utils.js";
 import {buildStaffAccountPlan} from "./staff-account-plan.js";
+import {mountUserManagement} from "./user-management.js";
+import {applyUserDraft,revokeUserAccess} from "./user-access-model.js";
 import { ROLE_LABELS } from "./permissions.js";
 
 const provisioningApp = initializeApp(firebaseConfig, "madani-account-provisioning");
@@ -23,6 +24,7 @@ let staff = [];
 let students = [];
 let classes = [];
 let groups = [];
+let units=[],subjects=[],userManager;
 let staffPlan=[];
 let staffCredentials=[];
 let staffProvisioning=false;
@@ -42,50 +44,27 @@ function statusFor(account) {
   return profiles.find(p => (p.email || "").toLowerCase() === account.email.toLowerCase());
 }
 
-async function provision({ name, email, password, role, profile = {} }) {
-  let credential;
-  try {
-    credential = await createUserWithEmailAndPassword(provisioningAuth, email, password);
-  } catch (err) {
-    if (err?.code === "auth/email-already-in-use") {
-      try {
-        credential = await signInWithEmailAndPassword(provisioningAuth, email, password);
-      } catch (signInErr) {
-        throw new Error(`Email ${email} sudah ada di Firebase Auth, tetapi password sementara berbeda. Login/reset password akun tersebut, lalu petakan profilnya secara manual.`);
-      }
-    } else {
-      throw err;
-    }
-  }
-  const uid = credential.user.uid;
-  const roles = Array.isArray(profile.roles) && profile.roles.length ? profile.roles : [role];
-  const roleFlags = profile.roleFlags || Object.fromEntries(roles.map(r => [r, true]));
-  await setNode(`users/${uid}`, {
-    ...profile,
-    name,
-    email,
-    role,
-    roles,
-    roleFlags,
-    studentAccess: Object.fromEntries((profile.studentIds || (profile.studentId ? [profile.studentId] : [])).map(id => [id, true])),
-    active: profile.active !== false,
-    uid,
-    updatedAt: Date.now(),
-    updatedBy: session.user.uid,
-    createdAt: profile.createdAt || Date.now()
-  });
-  await signOut(provisioningAuth);
-  return uid;
+async function provision({name,email,password,role,profile={}}){
+  let credential=null,saved=false;
+  try{
+    credential=await createUserWithEmailAndPassword(provisioningAuth,email,password);
+    const uid=credential.user.uid,roles=Array.isArray(profile.roles)&&profile.roles.length?profile.roles:[role];
+    await setNode(`users/${uid}`,{...profile,name,email,role,roles,defaultRole:profile.defaultRole||role,roleFlags:Object.fromEntries(roles.map(r=>[r,true])),studentAccess:Object.fromEntries((profile.studentIds||(profile.studentId?[profile.studentId]:[])).map(id=>[id,true])),active:profile.active!==false,uid,updatedAt:Date.now(),updatedBy:session.user.uid,createdAt:Date.now()});
+    saved=true;return uid;
+  }catch(error){
+    if(credential&&!saved){try{await deleteUser(credential.user);}catch{throw new Error('Akun Auth terbentuk tetapi profil gagal disimpan. Periksa akun sebelum mencoba lagi.');}}
+    throw error;
+  }finally{await signOut(provisioningAuth);}
 }
 
 async function load() {
-  [pilotConfig, profiles, staff, students, classes, groups] = await Promise.all([
+  [pilotConfig, profiles, staff, students, classes, groups, units, subjects] = await Promise.all([
     fetch("../seed/pilot-accounts.json").then(r => r.json()),
     listNode("users"),
     listNode("staff"),
     listNode("students"),
     listNode("classes"),
-    listNode("groups")
+    listNode("groups"),listNode("units"),listNode("subjects")
   ]);
 }
 
@@ -97,7 +76,7 @@ function renderPilot() {
       <td><span class="badge">${escapeHtml(roleText(account.role))}</span></td>
       <td>${escapeHtml(linkedName(account.profile))}</td>
       <td>${current ? '<span class="badge">Profil aktif</span>' : '<span class="badge muted">Belum dibuat</span>'}</td>
-      <td><button class="mini-btn" data-create="${escapeHtml(account.key)}">${current ? "Sinkronkan" : "Buat Akun"}</button></td>
+      <td><button class="mini-btn" data-create="${escapeHtml(account.key)}" ${current?"disabled":""}>${current ? "Sudah ada" : "Buat Akun"}</button></td>
     </tr>`;
   }).join("");
   $("#pilotBody").innerHTML = rows;
@@ -105,20 +84,7 @@ function renderPilot() {
   document.querySelectorAll("[data-create]").forEach(btn => btn.addEventListener("click", () => createPilot(btn.dataset.create, btn)));
 }
 
-function renderProfiles() {
-  $("#profileBody").innerHTML = profiles.length ? profiles.map(p => `<tr>
-    <td><strong>${escapeHtml(p.name || "Tanpa nama")}</strong><br><small class="muted">${escapeHtml(p.email || p.id)}</small></td>
-    <td>${escapeHtml(roleText(p.role))}</td>
-    <td>${escapeHtml(linkedName(p))}</td>
-    <td>${p.active === false ? '<span class="badge red">Nonaktif</span>' : '<span class="badge">Aktif</span>'}</td>
-    <td><button class="mini-btn" data-reset="${escapeHtml(p.email || "")}" ${p.email ? "" : "disabled"}>Kirim Reset Password</button></td>
-  </tr>`).join("") : '<tr><td colspan="5" style="text-align:center;padding:28px" class="muted">Belum ada profil user.</td></tr>';
-  document.querySelectorAll("[data-reset]").forEach(btn => btn.addEventListener("click", async () => {
-    if (!btn.dataset.reset) return;
-    try { await sendPasswordResetEmail(provisioningAuth, btn.dataset.reset); toast("Email reset password dikirim."); }
-    catch (err) { toast(err.message || "Gagal mengirim reset password", "error"); }
-  }));
-}
+function renderProfiles(){userManager?.render();}
 
 async function refresh() {
   profiles = await listNode("users");
@@ -133,6 +99,7 @@ async function createPilot(key, btn) {
   const original = btn.textContent;
   btn.textContent = "Memproses…";
   try {
+    if(statusFor(account))throw new Error("Akun sudah ada. Gunakan Edit pada Manajemen User untuk mengubah akses.");
     await provision({ ...account, password: pilotConfig.temporaryPassword });
     toast(`${account.name} siap digunakan.`);
     await refresh();
@@ -150,7 +117,7 @@ async function createAll() {
   btn.disabled = true;
   const result = [];
   for (const account of pilotConfig.accounts) {
-    if (account.role === "super_admin" && statusFor(account)) { result.push(`${account.email}: sudah ada`); continue; }
+    if (statusFor(account)) { result.push(`${account.email}: sudah ada`); continue; }
     try {
       await provision({ ...account, password: pilotConfig.temporaryPassword });
       result.push(`${account.email}: OK`);
@@ -162,45 +129,6 @@ async function createAll() {
   console.table(result);
   await refresh();
   btn.disabled = false;
-}
-
-function fillSelect(select, rows, labelFn = x => x.name || x.id) {
-  select.innerHTML = '<option value="">— Tidak dipilih —</option>' + rows.map(x => `<option value="${escapeHtml(x.id)}">${escapeHtml(labelFn(x))}</option>`).join("");
-}
-
-async function createCustom(event) {
-  event.preventDefault();
-  const btn = $("#customButton");
-  btn.disabled = true;
-  try {
-    const role = $("#customRole").value;
-    const profile = {
-      staffId: $("#customStaff").value || undefined,
-      roles: [role],
-      roleFlags: { [role]: true },
-      classIds: $("#customClass").value ? [$("#customClass").value] : undefined,
-      groupIds: $("#customGroup").value ? [$("#customGroup").value] : undefined,
-      studentIds: $("#customStudent").value ? [$("#customStudent").value] : undefined,
-      genderScope: $("#customGender").value || undefined,
-      financeUnit: $("#customFinanceUnit").value || undefined,
-      active: true
-    };
-    Object.keys(profile).forEach(k => profile[k] === undefined && delete profile[k]);
-    await provision({
-      name: $("#customName").value.trim(),
-      email: $("#customEmail").value.trim(),
-      password: $("#customPassword").value,
-      role,
-      profile
-    });
-    toast("Akun berhasil dibuat.");
-    event.target.reset();
-    $("#customPassword").value = pilotConfig.temporaryPassword;
-    await refresh();
-  } catch (err) {
-    console.error(err);
-    toast(err.message || "Gagal membuat akun", "error");
-  } finally { btn.disabled = false; }
 }
 
 function renderStaffPlan(){
@@ -261,6 +189,33 @@ async function init() {
   session = await requireAdmin();
   $("#adminName").textContent = session.profile.name || session.user.email;
   await load();
+  const master={staff,students,classes,groups,units,subjects};
+  const updateAccess=async(p,change)=>{
+    const eventId=crypto.randomUUID();
+    await transitionWorkspaceRecord('users',p.id,current=>{
+      if((current.accessVersion||0)!==(p.accessVersion||0)||(current.updatedAt||0)!==(p.updatedAt||0))throw new Error('Profil sudah diperbarui oleh admin lain. Muat ulang sebelum menyimpan.');
+      return change(current,eventId);
+    },session.user.uid);
+    await refresh();
+  };
+  userManager=mountUserManagement({root:$('#userManagement'),getProfiles:()=>profiles,master,actorUid:session.user.uid,reload:refresh,
+    save:(p,d)=>updateAccess(p,(current,eventId)=>applyUserDraft(current,d,master,session.user.uid,p.id,eventId)),
+    revoke:p=>updateAccess(p,(current,eventId)=>revokeUserAccess(current,session.user.uid,p.id,eventId)),
+    reset:async p=>{await sendPasswordResetEmail(provisioningAuth,p.email);toast('Email reset password dikirim.');},
+    create:async(d,password)=>{
+      let credential=null,saved=false;
+      try{
+        const initial=applyUserDraft({},d,master,session.user.uid,'new-account',crypto.randomUUID());
+        credential=await createUserWithEmailAndPassword(provisioningAuth,d.email.trim(),password);
+        const uid=credential.user.uid;
+        await setNode(`users/${uid}`,{...initial,uid,email:credential.user.email,createdAt:Date.now(),updatedAt:Date.now(),updatedBy:session.user.uid});saved=true;
+        await refresh();
+      }catch(error){
+        if(credential&&!saved){try{await deleteUser(credential.user);}catch{throw new Error('Akun login terbentuk tetapi profil gagal disimpan. Periksa akun ini sebelum mencoba lagi.');}}
+        throw error;
+      }finally{await signOut(provisioningAuth);}
+    }
+  });
   renderPilot();
   renderProfiles();
   const [suggestions,leadership]=await Promise.all([fetch('../seed/role-assignment-suggestions.json').then(r=>r.json()),fetch('../seed/leadership-assignments.json').then(r=>r.json())]);
@@ -269,13 +224,7 @@ async function init() {
   $('#staffEmailDomain').addEventListener('input',renderStaffPlan);
   $('#createStaffButton').addEventListener('click',createAllStaff);
   $('#downloadStaffCredentials').addEventListener('click',downloadStaffCredentials);
-  fillSelect($("#customStaff"), staff);
-  fillSelect($("#customStudent"), students);
-  fillSelect($("#customClass"), classes);
-  fillSelect($("#customGroup"), groups);
-  $("#customPassword").value = pilotConfig.temporaryPassword;
   $("#createAllButton").addEventListener("click", createAll);
-  $("#customAccountForm").addEventListener("submit", createCustom);
   $("#logoutButton").addEventListener("click", async () => { await logout(); location.href = "../index.html"; });
 }
 

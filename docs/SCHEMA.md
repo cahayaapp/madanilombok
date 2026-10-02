@@ -114,3 +114,10 @@ Record baru memuat academicYearId, createdBy/updatedBy dan timestamp server. Tem
 `users/{uid}/roleScopes/{role}` dapat menyimpan scope per role; tetap dibatasi role yang benar-benar ditugaskan. Provisioning akun menambahkan `studentAccess/{studentId}: true` sebagai peta kepemilikan, di samping studentIds yang sudah digunakan UI. Akun lama tetap didukung rules melalui studentId/10 indeks awal studentIds; akun dengan lebih banyak anak perlu dibangun ulang peta studentAccess oleh admin.
 
 Tidak ada migrasi otomatis. Untuk membatalkan rilis UI gunakan kode versi sebelumnya sambil mempertahankan data workspace (jangan menghapus rekam operasional). Deployment rules dan uji emulator adalah pekerjaan terpisah sebelum go-live.
+
+
+## Pengelolaan akses pengguna v28
+
+`users/{uid}` memakai `roles[]`, `role`/`defaultRole`, `roleFlags`, `roleScopes/{role}`. Penugasan wali juga disinkronkan ke `studentIds`, `studentId`, `studentAccess`. Role yang dihapus hilang dari semua field otorisasi aktif, tetapi `legacyRoleData` menyimpan snapshot lama untuk penelusuran.
+
+`accessVersion` bertambah pada perubahan, `accessHistory/{eventId}` menyimpan aktor, tindakan dan waktu server. Penyimpanan memakai transaksi dan menolak versi profil usang. `active=false` menonaktifkan; `accessRevoked=true` mencabut akses dengan mempertahankan record. Pemulihan melalui Edit menulis role/scope yang divalidasi ulang. Akun sendiri tidak dapat dinonaktifkan atau kehilangan role admin melalui editor.

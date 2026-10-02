@@ -35,4 +35,11 @@ Halaman `/bootstrap/` hanya untuk proses awal. Setelah master data berhasil diim
 
 Rules tambahan memvalidasi aktor, role, scope manajemen, kepemilikan jurnal, serta transisi temuan/penitipan. Rules ini belum diuji pada Firebase Emulator.
 
-Root `madani_app/.read` masih memberi akses semua pengguna terautentikasi. Karena izin RTDB diwariskan, filter pada UI dan rule child tidak membuat data pesan/kasus/jurnal privat. Cabut izin root luas dan desain query sesuai scope sebelum production, lalu uji seluruh role. Node operasional lama (termasuk finance) tetap pada aturan pilot sebelumnya; tidak diperketat diam-diam dalam perubahan fitur ini.
+Pada rules lokal terbaru, root `madani_app/.read` hanya memberi akses akun dengan profil aktif dan belum dicabut. Namun akses baca seluruh root masih terlalu luas bagi seluruh akun aktif. Karena izin RTDB diwariskan, filter pada UI dan rule child tidak membuat data pesan/kasus/jurnal privat. Cabut izin root luas dan desain query sesuai scope sebelum production, lalu uji seluruh role. Node operasional lama (termasuk finance) tetap pada aturan pilot sebelumnya; tidak diperketat diam-diam dalam perubahan fitur ini.
+
+
+## Manajemen user v28 (belum dideploy)
+
+Semua ekspresi write operasional diberi syarat profil aktor aktif dan belum dicabut. Aturan users tetap mendukung bootstrap pertama, melarang penghapusan profil langsung, dan melarang admin mencabut akses admin dirinya sendiri. Akun hanya boleh membaca profil sendiri untuk menerima status pencabutan; izin ini tidak memberi akses node operasional lain.
+
+Logika transaksi/nominal/unit keuangan tidak diubah; tambahan guard otorisasi berlaku juga pada node finance agar akun yang dicabut tidak bisa tetap menulis memakai token lama. Firebase Auth account tetap ada. Harus menguji aturan pada emulator dan mendepoy rules bersama fitur sebelum menganggap pencabutan berlaku pada akses API langsung.

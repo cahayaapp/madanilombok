@@ -72,8 +72,3 @@ test('holiday journal and monitoring are disabled for every role without deletin
  const rules=JSON.parse(readFileSync(new URL('../database.rules.json',import.meta.url),'utf8'));
  for(const name of ['holiday_daily','holiday_reports'])assert.equal(rules.rules.madani_app.workspaces.$yearId[name].$studentId.$recordId['.write'],false);
 });
-test('all defined roles can be selected in account creation',()=>{
- const html=readFileSync(new URL('../admin/accounts.html',import.meta.url),'utf8');
- const options=html.split('id="customRole"')[1].split('</select>')[0];
- for(const role of Object.keys(ROLE_LABELS))assert.ok(options.includes(`value="${role}"`),role);
-});
