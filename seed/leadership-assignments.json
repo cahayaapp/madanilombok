@@ -1,0 +1,91 @@
+{
+  "source": "Konfirmasi pengguna 2026-10-02",
+  "assignments": [
+    {
+      "staffId": "AMD-SDM-0001",
+      "knownNames": [
+        "ABD. HAYYI",
+        "Abdul Hayyi"
+      ],
+      "displayName": "Abdul Hayyi",
+      "appRoles": [
+        "director",
+        "head_formal_school"
+      ],
+      "roleScopes": {
+        "director": {
+          "unitIds": [],
+          "classIds": [],
+          "groupIds": []
+        },
+        "head_formal_school": {
+          "unitIds": [
+            "UNIT-SMK"
+          ]
+        }
+      }
+    },
+    {
+      "staffId": "AMD-SDM-0054",
+      "knownNames": [
+        "Muhammad Tuzri",
+        "Muhammad Tuzri"
+      ],
+      "displayName": "Muhammad Tuzri",
+      "appRoles": [
+        "deputy_director",
+        "head_formal_school"
+      ],
+      "roleScopes": {
+        "deputy_director": {
+          "unitIds": [],
+          "classIds": [],
+          "groupIds": []
+        },
+        "head_formal_school": {
+          "unitIds": [
+            "UNIT-SMP"
+          ]
+        }
+      }
+    },
+    {
+      "staffId": "AMD-SDM-0055",
+      "knownNames": [
+        "Muhasim",
+        "Muhasim"
+      ],
+      "displayName": "Muhasim",
+      "appRoles": [
+        "head_boys_dorm"
+      ],
+      "roleScopes": {
+        "head_boys_dorm": {
+          "unitIds": [],
+          "classIds": [],
+          "groupIds": [],
+          "scopeGender": "L"
+        }
+      }
+    },
+    {
+      "staffId": "AMD-SDM-0062",
+      "knownNames": [
+        "NURIL AZMI",
+        "Nuril Azmi"
+      ],
+      "displayName": "Nuril Azmi",
+      "appRoles": [
+        "head_girls_dorm"
+      ],
+      "roleScopes": {
+        "head_girls_dorm": {
+          "unitIds": [],
+          "classIds": [],
+          "groupIds": [],
+          "scopeGender": "P"
+        }
+      }
+    }
+  ]
+}

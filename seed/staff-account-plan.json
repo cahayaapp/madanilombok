@@ -1,0 +1,2363 @@
+{
+  "source": "Master lokal; belum diverifikasi terhadap database aktif",
+  "accounts": [
+    {
+      "staffId": "AMD-SDM-0001",
+      "name": "Abdul Hayyi",
+      "email": "hayyi@madaniapp",
+      "roles": [
+        "director",
+        "head_formal_school",
+        "guru_mapel"
+      ],
+      "role": "director",
+      "roleScopes": {
+        "director": {
+          "unitIds": [],
+          "classIds": [],
+          "groupIds": []
+        },
+        "head_formal_school": {
+          "unitIds": [
+            "UNIT-SMK"
+          ],
+          "classIds": [
+            "CLS-SMK-X-BUSANA",
+            "CLS-SMK-X-DKV",
+            "CLS-SMK-XI-BUSANA",
+            "CLS-SMK-XI-DKV",
+            "CLS-SMK-XI-TJKT",
+            "CLS-SMK-XII-BUSANA",
+            "CLS-SMK-XII-DKV"
+          ]
+        },
+        "guru_mapel": {
+          "unitIds": [
+            "UNIT-SMK"
+          ],
+          "classIds": [
+            "CLS-SMK-X-BUSANA",
+            "CLS-SMK-X-DKV",
+            "CLS-SMK-XI-BUSANA",
+            "CLS-SMK-XI-DKV",
+            "CLS-SMK-XI-TJKT",
+            "CLS-SMK-XII-BUSANA",
+            "CLS-SMK-XII-DKV"
+          ]
+        }
+      },
+      "unitIds": [
+        "UNIT-SMK"
+      ],
+      "existingUid": null,
+      "status": "ready"
+    },
+    {
+      "staffId": "AMD-SDM-0002",
+      "name": "ABDUL HAMID",
+      "email": "hamid@madaniapp",
+      "roles": [
+        "guru_mapel"
+      ],
+      "role": "guru_mapel",
+      "roleScopes": {
+        "guru_mapel": {
+          "unitIds": [
+            "UNIT-SD"
+          ],
+          "classIds": [
+            "CLS-SD-1",
+            "CLS-SD-2",
+            "CLS-SD-3",
+            "CLS-SD-4",
+            "CLS-SD-5",
+            "CLS-SD-6"
+          ]
+        }
+      },
+      "unitIds": [
+        "UNIT-SD"
+      ],
+      "existingUid": null,
+      "status": "ready"
+    },
+    {
+      "staffId": "AMD-SDM-0003",
+      "name": "Abdul Majid",
+      "email": "majid@madaniapp",
+      "roles": [
+        "guru_mapel"
+      ],
+      "role": "guru_mapel",
+      "roleScopes": {
+        "guru_mapel": {
+          "unitIds": [
+            "UNIT-SMP",
+            "UNIT-SMK"
+          ],
+          "classIds": [
+            "CLS-SMP-7-PUTRA",
+            "CLS-SMP-7-PUTRI",
+            "CLS-SMP-8-PUTRA",
+            "CLS-SMP-8-PUTRI",
+            "CLS-SMP-9-PUTRA",
+            "CLS-SMP-9-PUTRI",
+            "CLS-SMK-X-BUSANA",
+            "CLS-SMK-X-DKV",
+            "CLS-SMK-XI-BUSANA",
+            "CLS-SMK-XI-DKV",
+            "CLS-SMK-XI-TJKT",
+            "CLS-SMK-XII-BUSANA",
+            "CLS-SMK-XII-DKV"
+          ]
+        }
+      },
+      "unitIds": [
+        "UNIT-SMP",
+        "UNIT-SMK"
+      ],
+      "existingUid": null,
+      "status": "ready"
+    },
+    {
+      "staffId": "AMD-SDM-0004",
+      "name": "AHMAD HANAFI HASBIBULLOH",
+      "email": "hasbibulloh@madaniapp",
+      "roles": [
+        "guru_mapel"
+      ],
+      "role": "guru_mapel",
+      "roleScopes": {
+        "guru_mapel": {
+          "unitIds": [
+            "UNIT-SMK"
+          ],
+          "classIds": [
+            "CLS-SMK-X-BUSANA",
+            "CLS-SMK-X-DKV",
+            "CLS-SMK-XI-BUSANA",
+            "CLS-SMK-XI-DKV",
+            "CLS-SMK-XI-TJKT",
+            "CLS-SMK-XII-BUSANA",
+            "CLS-SMK-XII-DKV"
+          ]
+        }
+      },
+      "unitIds": [
+        "UNIT-SMK"
+      ],
+      "existingUid": null,
+      "status": "ready"
+    },
+    {
+      "staffId": "AMD-SDM-0005",
+      "name": "Al Haddadduddin",
+      "email": "haddadduddin@madaniapp",
+      "roles": [
+        "guru_mapel"
+      ],
+      "role": "guru_mapel",
+      "roleScopes": {
+        "guru_mapel": {
+          "unitIds": [
+            "UNIT-SMK"
+          ],
+          "classIds": [
+            "CLS-SMK-X-BUSANA",
+            "CLS-SMK-X-DKV",
+            "CLS-SMK-XI-BUSANA",
+            "CLS-SMK-XI-DKV",
+            "CLS-SMK-XI-TJKT",
+            "CLS-SMK-XII-BUSANA",
+            "CLS-SMK-XII-DKV"
+          ]
+        }
+      },
+      "unitIds": [
+        "UNIT-SMK"
+      ],
+      "existingUid": null,
+      "status": "ready"
+    },
+    {
+      "staffId": "AMD-SDM-0006",
+      "name": "Alfi",
+      "email": "alfi@madaniapp",
+      "roles": [
+        "mentor_tahsin_tahfiz",
+        "naqib"
+      ],
+      "role": "mentor_tahsin_tahfiz",
+      "roleScopes": {},
+      "unitIds": [
+        "UNIT-PONDOK"
+      ],
+      "existingUid": null,
+      "status": "ready"
+    },
+    {
+      "staffId": "AMD-SDM-0007",
+      "name": "Aliya",
+      "email": "aliya@madaniapp",
+      "roles": [
+        "mentor_tahsin_tahfiz"
+      ],
+      "role": "mentor_tahsin_tahfiz",
+      "roleScopes": {},
+      "unitIds": [
+        "UNIT-PONDOK"
+      ],
+      "existingUid": null,
+      "status": "ready"
+    },
+    {
+      "staffId": "AMD-SDM-0008",
+      "name": "Anggi",
+      "email": "anggi@madaniapp",
+      "roles": [
+        "mentor_tahsin_tahfiz",
+        "naqib"
+      ],
+      "role": "mentor_tahsin_tahfiz",
+      "roleScopes": {},
+      "unitIds": [
+        "UNIT-PONDOK"
+      ],
+      "existingUid": null,
+      "status": "ready"
+    },
+    {
+      "staffId": "AMD-SDM-0009",
+      "name": "Ustadz Anwar",
+      "email": "anwar@madaniapp",
+      "roles": [
+        "guru_mapel"
+      ],
+      "role": "guru_mapel",
+      "roleScopes": {
+        "guru_mapel": {
+          "unitIds": [
+            "UNIT-SMK",
+            "UNIT-PONDOK"
+          ],
+          "classIds": [
+            "CLS-SMK-X-BUSANA",
+            "CLS-SMK-X-DKV",
+            "CLS-SMK-XI-BUSANA",
+            "CLS-SMK-XI-DKV",
+            "CLS-SMK-XI-TJKT",
+            "CLS-SMK-XII-BUSANA",
+            "CLS-SMK-XII-DKV"
+          ]
+        }
+      },
+      "unitIds": [
+        "UNIT-SMK",
+        "UNIT-PONDOK"
+      ],
+      "existingUid": null,
+      "status": "ready"
+    },
+    {
+      "staffId": "AMD-SDM-0010",
+      "name": "Arniati",
+      "email": "arniati@madaniapp",
+      "roles": [
+        "guru_mapel"
+      ],
+      "role": "guru_mapel",
+      "roleScopes": {
+        "guru_mapel": {
+          "unitIds": [
+            "UNIT-SMP",
+            "UNIT-SMK"
+          ],
+          "classIds": [
+            "CLS-SMP-7-PUTRA",
+            "CLS-SMP-7-PUTRI",
+            "CLS-SMP-8-PUTRA",
+            "CLS-SMP-8-PUTRI",
+            "CLS-SMP-9-PUTRA",
+            "CLS-SMP-9-PUTRI",
+            "CLS-SMK-X-BUSANA",
+            "CLS-SMK-X-DKV",
+            "CLS-SMK-XI-BUSANA",
+            "CLS-SMK-XI-DKV",
+            "CLS-SMK-XI-TJKT",
+            "CLS-SMK-XII-BUSANA",
+            "CLS-SMK-XII-DKV"
+          ]
+        }
+      },
+      "unitIds": [
+        "UNIT-SMP",
+        "UNIT-SMK"
+      ],
+      "existingUid": null,
+      "status": "ready"
+    },
+    {
+      "staffId": "AMD-SDM-0011",
+      "name": "AYU KHAFIFATUL JANNAH",
+      "email": "jannah@madaniapp",
+      "roles": [
+        "guru_mapel"
+      ],
+      "role": "guru_mapel",
+      "roleScopes": {
+        "guru_mapel": {
+          "unitIds": [
+            "UNIT-SMK"
+          ],
+          "classIds": [
+            "CLS-SMK-X-BUSANA",
+            "CLS-SMK-X-DKV",
+            "CLS-SMK-XI-BUSANA",
+            "CLS-SMK-XI-DKV",
+            "CLS-SMK-XI-TJKT",
+            "CLS-SMK-XII-BUSANA",
+            "CLS-SMK-XII-DKV"
+          ]
+        }
+      },
+      "unitIds": [
+        "UNIT-SMK"
+      ],
+      "existingUid": null,
+      "status": "ready"
+    },
+    {
+      "staffId": "AMD-SDM-0012",
+      "name": "Ustadz Bahtiar Ahadi",
+      "email": "ahadi@madaniapp",
+      "roles": [
+        "guru_mapel"
+      ],
+      "role": "guru_mapel",
+      "roleScopes": {
+        "guru_mapel": {
+          "unitIds": [
+            "UNIT-SMK",
+            "UNIT-PONDOK"
+          ],
+          "classIds": [
+            "CLS-SMK-X-BUSANA",
+            "CLS-SMK-X-DKV",
+            "CLS-SMK-XI-BUSANA",
+            "CLS-SMK-XI-DKV",
+            "CLS-SMK-XI-TJKT",
+            "CLS-SMK-XII-BUSANA",
+            "CLS-SMK-XII-DKV"
+          ]
+        }
+      },
+      "unitIds": [
+        "UNIT-SMK",
+        "UNIT-PONDOK"
+      ],
+      "existingUid": null,
+      "status": "ready"
+    },
+    {
+      "staffId": "AMD-SDM-0013",
+      "name": "Bintang",
+      "email": "bintang@madaniapp",
+      "roles": [
+        "naqib"
+      ],
+      "role": "naqib",
+      "roleScopes": {},
+      "unitIds": [
+        "UNIT-PONDOK"
+      ],
+      "existingUid": null,
+      "status": "ready"
+    },
+    {
+      "staffId": "AMD-SDM-0014",
+      "name": "Budiawan Khaer",
+      "email": "khaer@madaniapp",
+      "roles": [
+        "mentor_tahsin_tahfiz"
+      ],
+      "role": "mentor_tahsin_tahfiz",
+      "roleScopes": {},
+      "unitIds": [
+        "UNIT-PONDOK"
+      ],
+      "existingUid": null,
+      "status": "ready"
+    },
+    {
+      "staffId": "AMD-SDM-0015",
+      "name": "Budy Kurniawan",
+      "email": "kurniawan@madaniapp",
+      "roles": [
+        "guru_mapel"
+      ],
+      "role": "guru_mapel",
+      "roleScopes": {
+        "guru_mapel": {
+          "unitIds": [
+            "UNIT-SMP",
+            "UNIT-SMK"
+          ],
+          "classIds": [
+            "CLS-SMP-7-PUTRA",
+            "CLS-SMP-7-PUTRI",
+            "CLS-SMP-8-PUTRA",
+            "CLS-SMP-8-PUTRI",
+            "CLS-SMP-9-PUTRA",
+            "CLS-SMP-9-PUTRI",
+            "CLS-SMK-X-BUSANA",
+            "CLS-SMK-X-DKV",
+            "CLS-SMK-XI-BUSANA",
+            "CLS-SMK-XI-DKV",
+            "CLS-SMK-XI-TJKT",
+            "CLS-SMK-XII-BUSANA",
+            "CLS-SMK-XII-DKV"
+          ]
+        }
+      },
+      "unitIds": [
+        "UNIT-SMP",
+        "UNIT-SMK"
+      ],
+      "existingUid": null,
+      "status": "ready"
+    },
+    {
+      "staffId": "AMD-SDM-0016",
+      "name": "Dai Robbani",
+      "email": "robbani@madaniapp",
+      "roles": [
+        "naqib"
+      ],
+      "role": "naqib",
+      "roleScopes": {},
+      "unitIds": [
+        "UNIT-PONDOK"
+      ],
+      "existingUid": null,
+      "status": "ready"
+    },
+    {
+      "staffId": "AMD-SDM-0017",
+      "name": "DARUSMAN ZAKARIA",
+      "email": "zakaria@madaniapp",
+      "roles": [
+        "guru_mapel"
+      ],
+      "role": "guru_mapel",
+      "roleScopes": {
+        "guru_mapel": {
+          "unitIds": [
+            "UNIT-SD"
+          ],
+          "classIds": [
+            "CLS-SD-1",
+            "CLS-SD-2",
+            "CLS-SD-3",
+            "CLS-SD-4",
+            "CLS-SD-5",
+            "CLS-SD-6"
+          ]
+        }
+      },
+      "unitIds": [
+        "UNIT-SD"
+      ],
+      "existingUid": null,
+      "status": "ready"
+    },
+    {
+      "staffId": "AMD-SDM-0018",
+      "name": "DIAN WINARTI",
+      "email": "winarti@madaniapp",
+      "roles": [
+        "head_formal_school"
+      ],
+      "role": "head_formal_school",
+      "roleScopes": {
+        "head_formal_school": {
+          "unitIds": [
+            "UNIT-TK"
+          ],
+          "classIds": [
+            "CLS-TK-A1",
+            "CLS-TK-A2",
+            "CLS-TK-B1",
+            "CLS-TK-B2"
+          ]
+        }
+      },
+      "unitIds": [
+        "UNIT-TK"
+      ],
+      "existingUid": null,
+      "status": "ready"
+    },
+    {
+      "staffId": "AMD-SDM-0019",
+      "name": "Edwin Aldrin",
+      "email": "aldrin@madaniapp",
+      "roles": [
+        "guru_mapel"
+      ],
+      "role": "guru_mapel",
+      "roleScopes": {
+        "guru_mapel": {
+          "unitIds": [
+            "UNIT-SMP"
+          ],
+          "classIds": [
+            "CLS-SMP-7-PUTRA",
+            "CLS-SMP-7-PUTRI",
+            "CLS-SMP-8-PUTRA",
+            "CLS-SMP-8-PUTRI",
+            "CLS-SMP-9-PUTRA",
+            "CLS-SMP-9-PUTRI"
+          ]
+        }
+      },
+      "unitIds": [
+        "UNIT-SMP"
+      ],
+      "existingUid": null,
+      "status": "ready"
+    },
+    {
+      "staffId": "AMD-SDM-0020",
+      "name": "ELI HERLINA KUSUMAYANI",
+      "email": "kusumayani@madaniapp",
+      "roles": [
+        "head_formal_school"
+      ],
+      "role": "head_formal_school",
+      "roleScopes": {
+        "head_formal_school": {
+          "unitIds": [
+            "UNIT-SD"
+          ],
+          "classIds": [
+            "CLS-SD-1",
+            "CLS-SD-2",
+            "CLS-SD-3",
+            "CLS-SD-4",
+            "CLS-SD-5",
+            "CLS-SD-6"
+          ]
+        }
+      },
+      "unitIds": [
+        "UNIT-SD"
+      ],
+      "existingUid": null,
+      "status": "ready"
+    },
+    {
+      "staffId": "AMD-SDM-0021",
+      "name": "Ely Herlina",
+      "email": "herlina@madaniapp",
+      "roles": [
+        "guru_mapel",
+        "guru_wali"
+      ],
+      "role": "guru_mapel",
+      "roleScopes": {
+        "guru_mapel": {
+          "unitIds": [
+            "UNIT-SMP"
+          ],
+          "classIds": [
+            "CLS-SMP-7-PUTRA",
+            "CLS-SMP-7-PUTRI",
+            "CLS-SMP-8-PUTRA",
+            "CLS-SMP-8-PUTRI",
+            "CLS-SMP-9-PUTRA",
+            "CLS-SMP-9-PUTRI"
+          ]
+        },
+        "guru_wali": {
+          "unitIds": [
+            "UNIT-SMP"
+          ],
+          "classIds": [
+            "CLS-SMP-8-PUTRI"
+          ]
+        }
+      },
+      "unitIds": [
+        "UNIT-SMP"
+      ],
+      "existingUid": null,
+      "status": "ready"
+    },
+    {
+      "staffId": "AMD-SDM-0022",
+      "name": "Fahri",
+      "email": "fahri@madaniapp",
+      "roles": [
+        "mentor_tahsin_tahfiz"
+      ],
+      "role": "mentor_tahsin_tahfiz",
+      "roleScopes": {},
+      "unitIds": [
+        "UNIT-PONDOK"
+      ],
+      "existingUid": null,
+      "status": "ready"
+    },
+    {
+      "staffId": "AMD-SDM-0023",
+      "name": "Fahri Effendi",
+      "email": "effendi@madaniapp",
+      "roles": [
+        "naqib"
+      ],
+      "role": "naqib",
+      "roleScopes": {},
+      "unitIds": [
+        "UNIT-PONDOK"
+      ],
+      "existingUid": null,
+      "status": "ready"
+    },
+    {
+      "staffId": "AMD-SDM-0024",
+      "name": "Ustadzah Fathul Uyun",
+      "email": "uyun@madaniapp",
+      "roles": [
+        "guru_mapel"
+      ],
+      "role": "guru_mapel",
+      "roleScopes": {
+        "guru_mapel": {
+          "unitIds": [
+            "UNIT-SMK",
+            "UNIT-PONDOK"
+          ],
+          "classIds": [
+            "CLS-SMK-X-BUSANA",
+            "CLS-SMK-X-DKV",
+            "CLS-SMK-XI-BUSANA",
+            "CLS-SMK-XI-DKV",
+            "CLS-SMK-XI-TJKT",
+            "CLS-SMK-XII-BUSANA",
+            "CLS-SMK-XII-DKV"
+          ]
+        }
+      },
+      "unitIds": [
+        "UNIT-SMK",
+        "UNIT-PONDOK"
+      ],
+      "existingUid": null,
+      "status": "ready"
+    },
+    {
+      "staffId": "AMD-SDM-0025",
+      "name": "Fitri",
+      "email": "fitri@madaniapp",
+      "roles": [
+        "mentor_tahsin_tahfiz"
+      ],
+      "role": "mentor_tahsin_tahfiz",
+      "roleScopes": {},
+      "unitIds": [
+        "UNIT-PONDOK"
+      ],
+      "existingUid": null,
+      "status": "ready"
+    },
+    {
+      "staffId": "AMD-SDM-0026",
+      "name": "FITRIATUL WAHYUNI",
+      "email": "wahyuni@madaniapp",
+      "roles": [
+        "guru_mapel"
+      ],
+      "role": "guru_mapel",
+      "roleScopes": {
+        "guru_mapel": {
+          "unitIds": [
+            "UNIT-SD"
+          ],
+          "classIds": [
+            "CLS-SD-1",
+            "CLS-SD-2",
+            "CLS-SD-3",
+            "CLS-SD-4",
+            "CLS-SD-5",
+            "CLS-SD-6"
+          ]
+        }
+      },
+      "unitIds": [
+        "UNIT-SD"
+      ],
+      "existingUid": null,
+      "status": "ready"
+    },
+    {
+      "staffId": "AMD-SDM-0027",
+      "name": "H. Habiburrahman",
+      "email": "habiburrahman@madaniapp",
+      "roles": [
+        "guru_mapel"
+      ],
+      "role": "guru_mapel",
+      "roleScopes": {
+        "guru_mapel": {
+          "unitIds": [
+            "UNIT-SMK"
+          ],
+          "classIds": [
+            "CLS-SMK-X-BUSANA",
+            "CLS-SMK-X-DKV",
+            "CLS-SMK-XI-BUSANA",
+            "CLS-SMK-XI-DKV",
+            "CLS-SMK-XI-TJKT",
+            "CLS-SMK-XII-BUSANA",
+            "CLS-SMK-XII-DKV"
+          ]
+        }
+      },
+      "unitIds": [
+        "UNIT-SMK"
+      ],
+      "existingUid": null,
+      "status": "ready"
+    },
+    {
+      "staffId": "AMD-SDM-0028",
+      "name": "Hamzah Fansyuri",
+      "email": "fansyuri@madaniapp",
+      "roles": [
+        "guru_mapel"
+      ],
+      "role": "guru_mapel",
+      "roleScopes": {
+        "guru_mapel": {
+          "unitIds": [
+            "UNIT-SMK"
+          ],
+          "classIds": [
+            "CLS-SMK-X-BUSANA",
+            "CLS-SMK-X-DKV",
+            "CLS-SMK-XI-BUSANA",
+            "CLS-SMK-XI-DKV",
+            "CLS-SMK-XI-TJKT",
+            "CLS-SMK-XII-BUSANA",
+            "CLS-SMK-XII-DKV"
+          ]
+        }
+      },
+      "unitIds": [
+        "UNIT-SMK"
+      ],
+      "existingUid": null,
+      "status": "ready"
+    },
+    {
+      "staffId": "AMD-SDM-0029",
+      "name": "HAUFIANA HARIYANTI",
+      "email": "hariyanti@madaniapp",
+      "roles": [
+        "guru_mapel"
+      ],
+      "role": "guru_mapel",
+      "roleScopes": {
+        "guru_mapel": {
+          "unitIds": [
+            "UNIT-SMP"
+          ],
+          "classIds": [
+            "CLS-SMP-7-PUTRA",
+            "CLS-SMP-7-PUTRI",
+            "CLS-SMP-8-PUTRA",
+            "CLS-SMP-8-PUTRI",
+            "CLS-SMP-9-PUTRA",
+            "CLS-SMP-9-PUTRI"
+          ]
+        }
+      },
+      "unitIds": [
+        "UNIT-SMP"
+      ],
+      "existingUid": null,
+      "status": "ready"
+    },
+    {
+      "staffId": "AMD-SDM-0030",
+      "name": "Hikmah",
+      "email": "hikmah@madaniapp",
+      "roles": [
+        "mentor_tahsin_tahfiz"
+      ],
+      "role": "mentor_tahsin_tahfiz",
+      "roleScopes": {},
+      "unitIds": [
+        "UNIT-PONDOK"
+      ],
+      "existingUid": null,
+      "status": "ready"
+    },
+    {
+      "staffId": "AMD-SDM-0031",
+      "name": "Ustadzah Hikmatussu'ada",
+      "email": "ada@madaniapp",
+      "roles": [
+        "guru_mapel"
+      ],
+      "role": "guru_mapel",
+      "roleScopes": {
+        "guru_mapel": {
+          "unitIds": [
+            "UNIT-SMK",
+            "UNIT-PONDOK"
+          ],
+          "classIds": [
+            "CLS-SMK-X-BUSANA",
+            "CLS-SMK-X-DKV",
+            "CLS-SMK-XI-BUSANA",
+            "CLS-SMK-XI-DKV",
+            "CLS-SMK-XI-TJKT",
+            "CLS-SMK-XII-BUSANA",
+            "CLS-SMK-XII-DKV"
+          ]
+        }
+      },
+      "unitIds": [
+        "UNIT-SMK",
+        "UNIT-PONDOK"
+      ],
+      "existingUid": null,
+      "status": "ready"
+    },
+    {
+      "staffId": "AMD-SDM-0032",
+      "name": "HINDUN",
+      "email": "hindun@madaniapp",
+      "roles": [
+        "guru_mapel"
+      ],
+      "role": "guru_mapel",
+      "roleScopes": {
+        "guru_mapel": {
+          "unitIds": [
+            "UNIT-SMK"
+          ],
+          "classIds": [
+            "CLS-SMK-X-BUSANA",
+            "CLS-SMK-X-DKV",
+            "CLS-SMK-XI-BUSANA",
+            "CLS-SMK-XI-DKV",
+            "CLS-SMK-XI-TJKT",
+            "CLS-SMK-XII-BUSANA",
+            "CLS-SMK-XII-DKV"
+          ]
+        }
+      },
+      "unitIds": [
+        "UNIT-SMK"
+      ],
+      "existingUid": null,
+      "status": "ready"
+    },
+    {
+      "staffId": "AMD-SDM-0033",
+      "name": "HURIL IPTIHANI",
+      "email": "iptihani@madaniapp",
+      "roles": [
+        "guru_mapel",
+        "guru_wali"
+      ],
+      "role": "guru_mapel",
+      "roleScopes": {
+        "guru_mapel": {
+          "unitIds": [
+            "UNIT-SMK"
+          ],
+          "classIds": [
+            "CLS-SMK-X-BUSANA",
+            "CLS-SMK-X-DKV",
+            "CLS-SMK-XI-BUSANA",
+            "CLS-SMK-XI-DKV",
+            "CLS-SMK-XI-TJKT",
+            "CLS-SMK-XII-BUSANA",
+            "CLS-SMK-XII-DKV"
+          ]
+        },
+        "guru_wali": {
+          "unitIds": [
+            "UNIT-SMK"
+          ],
+          "classIds": [
+            "CLS-SMK-XI-TJKT"
+          ]
+        }
+      },
+      "unitIds": [
+        "UNIT-SMK"
+      ],
+      "existingUid": null,
+      "status": "ready"
+    },
+    {
+      "staffId": "AMD-SDM-0034",
+      "name": "HURRIATUL JANNAH",
+      "email": "jannah2@madaniapp",
+      "roles": [
+        "guru_mapel"
+      ],
+      "role": "guru_mapel",
+      "roleScopes": {
+        "guru_mapel": {
+          "unitIds": [
+            "UNIT-SMK"
+          ],
+          "classIds": [
+            "CLS-SMK-X-BUSANA",
+            "CLS-SMK-X-DKV",
+            "CLS-SMK-XI-BUSANA",
+            "CLS-SMK-XI-DKV",
+            "CLS-SMK-XI-TJKT",
+            "CLS-SMK-XII-BUSANA",
+            "CLS-SMK-XII-DKV"
+          ]
+        }
+      },
+      "unitIds": [
+        "UNIT-SMK"
+      ],
+      "existingUid": null,
+      "status": "ready"
+    },
+    {
+      "staffId": "AMD-SDM-0035",
+      "name": "Husnul Hatimah",
+      "email": "hatimah@madaniapp",
+      "roles": [
+        "guru_mapel"
+      ],
+      "role": "guru_mapel",
+      "roleScopes": {
+        "guru_mapel": {
+          "unitIds": [
+            "UNIT-SMP"
+          ],
+          "classIds": [
+            "CLS-SMP-7-PUTRA",
+            "CLS-SMP-7-PUTRI",
+            "CLS-SMP-8-PUTRA",
+            "CLS-SMP-8-PUTRI",
+            "CLS-SMP-9-PUTRA",
+            "CLS-SMP-9-PUTRI"
+          ]
+        }
+      },
+      "unitIds": [
+        "UNIT-SMP"
+      ],
+      "existingUid": null,
+      "status": "ready"
+    },
+    {
+      "staffId": "AMD-SDM-0036",
+      "name": "IDA FITRIANA",
+      "email": "fitriana@madaniapp",
+      "roles": [
+        "guru_mapel"
+      ],
+      "role": "guru_mapel",
+      "roleScopes": {
+        "guru_mapel": {
+          "unitIds": [
+            "UNIT-SMP"
+          ],
+          "classIds": [
+            "CLS-SMP-7-PUTRA",
+            "CLS-SMP-7-PUTRI",
+            "CLS-SMP-8-PUTRA",
+            "CLS-SMP-8-PUTRI",
+            "CLS-SMP-9-PUTRA",
+            "CLS-SMP-9-PUTRI"
+          ]
+        }
+      },
+      "unitIds": [
+        "UNIT-SMP"
+      ],
+      "existingUid": null,
+      "status": "ready"
+    },
+    {
+      "staffId": "AMD-SDM-0037",
+      "name": "Ida Fitriana",
+      "email": "fitriana2@madaniapp",
+      "roles": [
+        "mentor_tahsin_tahfiz"
+      ],
+      "role": "mentor_tahsin_tahfiz",
+      "roleScopes": {},
+      "unitIds": [
+        "UNIT-SMK",
+        "UNIT-PONDOK"
+      ],
+      "existingUid": null,
+      "status": "ready"
+    },
+    {
+      "staffId": "AMD-SDM-0038",
+      "name": "IIN ZURIMA ADRIANI SAPUTRI",
+      "email": "saputri@madaniapp",
+      "roles": [
+        "guru_mapel"
+      ],
+      "role": "guru_mapel",
+      "roleScopes": {
+        "guru_mapel": {
+          "unitIds": [
+            "UNIT-SMP",
+            "UNIT-SMK"
+          ],
+          "classIds": [
+            "CLS-SMP-7-PUTRA",
+            "CLS-SMP-7-PUTRI",
+            "CLS-SMP-8-PUTRA",
+            "CLS-SMP-8-PUTRI",
+            "CLS-SMP-9-PUTRA",
+            "CLS-SMP-9-PUTRI",
+            "CLS-SMK-X-BUSANA",
+            "CLS-SMK-X-DKV",
+            "CLS-SMK-XI-BUSANA",
+            "CLS-SMK-XI-DKV",
+            "CLS-SMK-XI-TJKT",
+            "CLS-SMK-XII-BUSANA",
+            "CLS-SMK-XII-DKV"
+          ]
+        }
+      },
+      "unitIds": [
+        "UNIT-SMP",
+        "UNIT-SMK"
+      ],
+      "existingUid": null,
+      "status": "ready"
+    },
+    {
+      "staffId": "AMD-SDM-0039",
+      "name": "INDA SUKMA WARDANI",
+      "email": "wardani@madaniapp",
+      "roles": [
+        "guru_mapel"
+      ],
+      "role": "guru_mapel",
+      "roleScopes": {
+        "guru_mapel": {
+          "unitIds": [
+            "UNIT-TK"
+          ],
+          "classIds": [
+            "CLS-TK-A1",
+            "CLS-TK-A2",
+            "CLS-TK-B1",
+            "CLS-TK-B2"
+          ]
+        }
+      },
+      "unitIds": [
+        "UNIT-TK"
+      ],
+      "existingUid": null,
+      "status": "ready"
+    },
+    {
+      "staffId": "AMD-SDM-0040",
+      "name": "Ismi Dahlia Handayani",
+      "email": "handayani@madaniapp",
+      "roles": [
+        "guru_mapel"
+      ],
+      "role": "guru_mapel",
+      "roleScopes": {
+        "guru_mapel": {
+          "unitIds": [
+            "UNIT-SMP",
+            "UNIT-SMK"
+          ],
+          "classIds": [
+            "CLS-SMP-7-PUTRA",
+            "CLS-SMP-7-PUTRI",
+            "CLS-SMP-8-PUTRA",
+            "CLS-SMP-8-PUTRI",
+            "CLS-SMP-9-PUTRA",
+            "CLS-SMP-9-PUTRI",
+            "CLS-SMK-X-BUSANA",
+            "CLS-SMK-X-DKV",
+            "CLS-SMK-XI-BUSANA",
+            "CLS-SMK-XI-DKV",
+            "CLS-SMK-XI-TJKT",
+            "CLS-SMK-XII-BUSANA",
+            "CLS-SMK-XII-DKV"
+          ]
+        }
+      },
+      "unitIds": [
+        "UNIT-SMP",
+        "UNIT-SMK"
+      ],
+      "existingUid": null,
+      "status": "ready"
+    },
+    {
+      "staffId": "AMD-SDM-0041",
+      "name": "Itiansa",
+      "email": "itiansa@madaniapp",
+      "roles": [
+        "mentor_tahsin_tahfiz"
+      ],
+      "role": "mentor_tahsin_tahfiz",
+      "roleScopes": {},
+      "unitIds": [
+        "UNIT-PONDOK"
+      ],
+      "existingUid": null,
+      "status": "ready"
+    },
+    {
+      "staffId": "AMD-SDM-0042",
+      "name": "Kusma Dewi",
+      "email": "dewi@madaniapp",
+      "roles": [
+        "guru_mapel",
+        "guru_wali"
+      ],
+      "role": "guru_mapel",
+      "roleScopes": {
+        "guru_mapel": {
+          "unitIds": [
+            "UNIT-SMK"
+          ],
+          "classIds": [
+            "CLS-SMK-X-BUSANA",
+            "CLS-SMK-X-DKV",
+            "CLS-SMK-XI-BUSANA",
+            "CLS-SMK-XI-DKV",
+            "CLS-SMK-XI-TJKT",
+            "CLS-SMK-XII-BUSANA",
+            "CLS-SMK-XII-DKV"
+          ]
+        },
+        "guru_wali": {
+          "unitIds": [
+            "UNIT-SMK"
+          ],
+          "classIds": []
+        }
+      },
+      "unitIds": [
+        "UNIT-SMK"
+      ],
+      "existingUid": null,
+      "status": "ready"
+    },
+    {
+      "staffId": "AMD-SDM-0043",
+      "name": "LIDIA WATI",
+      "email": "wati@madaniapp",
+      "roles": [
+        "guru_mapel",
+        "guru_wali"
+      ],
+      "role": "guru_mapel",
+      "roleScopes": {
+        "guru_mapel": {
+          "unitIds": [
+            "UNIT-SMK"
+          ],
+          "classIds": [
+            "CLS-SMK-X-BUSANA",
+            "CLS-SMK-X-DKV",
+            "CLS-SMK-XI-BUSANA",
+            "CLS-SMK-XI-DKV",
+            "CLS-SMK-XI-TJKT",
+            "CLS-SMK-XII-BUSANA",
+            "CLS-SMK-XII-DKV"
+          ]
+        },
+        "guru_wali": {
+          "unitIds": [
+            "UNIT-SMK"
+          ],
+          "classIds": []
+        }
+      },
+      "unitIds": [
+        "UNIT-SMK"
+      ],
+      "existingUid": null,
+      "status": "ready"
+    },
+    {
+      "staffId": "AMD-SDM-0044",
+      "name": "LINDA LISTIANI",
+      "email": "listiani@madaniapp",
+      "roles": [
+        "guru_mapel"
+      ],
+      "role": "guru_mapel",
+      "roleScopes": {
+        "guru_mapel": {
+          "unitIds": [
+            "UNIT-TK"
+          ],
+          "classIds": [
+            "CLS-TK-A1",
+            "CLS-TK-A2",
+            "CLS-TK-B1",
+            "CLS-TK-B2"
+          ]
+        }
+      },
+      "unitIds": [
+        "UNIT-TK"
+      ],
+      "existingUid": null,
+      "status": "ready"
+    },
+    {
+      "staffId": "AMD-SDM-0045",
+      "name": "LUKMAN",
+      "email": "lukman@madaniapp",
+      "roles": [
+        "guru_mapel"
+      ],
+      "role": "guru_mapel",
+      "roleScopes": {
+        "guru_mapel": {
+          "unitIds": [
+            "UNIT-SD"
+          ],
+          "classIds": [
+            "CLS-SD-1",
+            "CLS-SD-2",
+            "CLS-SD-3",
+            "CLS-SD-4",
+            "CLS-SD-5",
+            "CLS-SD-6"
+          ]
+        }
+      },
+      "unitIds": [
+        "UNIT-SD"
+      ],
+      "existingUid": null,
+      "status": "ready"
+    },
+    {
+      "staffId": "AMD-SDM-0046",
+      "name": "M. KHAIRUL MISWARI",
+      "email": "miswari@madaniapp",
+      "roles": [
+        "guru_mapel"
+      ],
+      "role": "guru_mapel",
+      "roleScopes": {
+        "guru_mapel": {
+          "unitIds": [
+            "UNIT-SMP"
+          ],
+          "classIds": [
+            "CLS-SMP-7-PUTRA",
+            "CLS-SMP-7-PUTRI",
+            "CLS-SMP-8-PUTRA",
+            "CLS-SMP-8-PUTRI",
+            "CLS-SMP-9-PUTRA",
+            "CLS-SMP-9-PUTRI"
+          ]
+        }
+      },
+      "unitIds": [
+        "UNIT-SMP"
+      ],
+      "existingUid": null,
+      "status": "ready"
+    },
+    {
+      "staffId": "AMD-SDM-0047",
+      "name": "MAIMUNAH",
+      "email": "maimunah@madaniapp",
+      "roles": [
+        "guru_mapel"
+      ],
+      "role": "guru_mapel",
+      "roleScopes": {
+        "guru_mapel": {
+          "unitIds": [
+            "UNIT-SD"
+          ],
+          "classIds": [
+            "CLS-SD-1",
+            "CLS-SD-2",
+            "CLS-SD-3",
+            "CLS-SD-4",
+            "CLS-SD-5",
+            "CLS-SD-6"
+          ]
+        }
+      },
+      "unitIds": [
+        "UNIT-SD"
+      ],
+      "existingUid": null,
+      "status": "ready"
+    },
+    {
+      "staffId": "AMD-SDM-0048",
+      "name": "MASHARI",
+      "email": "mashari@madaniapp",
+      "roles": [
+        "guru_mapel"
+      ],
+      "role": "guru_mapel",
+      "roleScopes": {
+        "guru_mapel": {
+          "unitIds": [
+            "UNIT-SD"
+          ],
+          "classIds": [
+            "CLS-SD-1",
+            "CLS-SD-2",
+            "CLS-SD-3",
+            "CLS-SD-4",
+            "CLS-SD-5",
+            "CLS-SD-6"
+          ]
+        }
+      },
+      "unitIds": [
+        "UNIT-SD"
+      ],
+      "existingUid": null,
+      "status": "ready"
+    },
+    {
+      "staffId": "AMD-SDM-0049",
+      "name": "Melia",
+      "email": "melia@madaniapp",
+      "roles": [
+        "mentor_tahsin_tahfiz",
+        "naqib"
+      ],
+      "role": "mentor_tahsin_tahfiz",
+      "roleScopes": {},
+      "unitIds": [
+        "UNIT-PONDOK"
+      ],
+      "existingUid": null,
+      "status": "ready"
+    },
+    {
+      "staffId": "AMD-SDM-0050",
+      "name": "MIFTAHUL JANNAH",
+      "email": "jannah3@madaniapp",
+      "roles": [
+        "guru_mapel"
+      ],
+      "role": "guru_mapel",
+      "roleScopes": {
+        "guru_mapel": {
+          "unitIds": [
+            "UNIT-SMK"
+          ],
+          "classIds": [
+            "CLS-SMK-X-BUSANA",
+            "CLS-SMK-X-DKV",
+            "CLS-SMK-XI-BUSANA",
+            "CLS-SMK-XI-DKV",
+            "CLS-SMK-XI-TJKT",
+            "CLS-SMK-XII-BUSANA",
+            "CLS-SMK-XII-DKV"
+          ]
+        }
+      },
+      "unitIds": [
+        "UNIT-SMK"
+      ],
+      "existingUid": null,
+      "status": "ready"
+    },
+    {
+      "staffId": "AMD-SDM-0051",
+      "name": "MU'AMMAR",
+      "email": "ammar@madaniapp",
+      "roles": [
+        "guru_mapel"
+      ],
+      "role": "guru_mapel",
+      "roleScopes": {
+        "guru_mapel": {
+          "unitIds": [
+            "UNIT-SMP",
+            "UNIT-SMK"
+          ],
+          "classIds": [
+            "CLS-SMP-7-PUTRA",
+            "CLS-SMP-7-PUTRI",
+            "CLS-SMP-8-PUTRA",
+            "CLS-SMP-8-PUTRI",
+            "CLS-SMP-9-PUTRA",
+            "CLS-SMP-9-PUTRI",
+            "CLS-SMK-X-BUSANA",
+            "CLS-SMK-X-DKV",
+            "CLS-SMK-XI-BUSANA",
+            "CLS-SMK-XI-DKV",
+            "CLS-SMK-XI-TJKT",
+            "CLS-SMK-XII-BUSANA",
+            "CLS-SMK-XII-DKV"
+          ]
+        }
+      },
+      "unitIds": [
+        "UNIT-SMP",
+        "UNIT-SMK"
+      ],
+      "existingUid": null,
+      "status": "ready"
+    },
+    {
+      "staffId": "AMD-SDM-0052",
+      "name": "Muammar",
+      "email": "muammar@madaniapp",
+      "roles": [
+        "mentor_tahsin_tahfiz"
+      ],
+      "role": "mentor_tahsin_tahfiz",
+      "roleScopes": {},
+      "unitIds": [
+        "UNIT-PONDOK"
+      ],
+      "existingUid": null,
+      "status": "ready"
+    },
+    {
+      "staffId": "AMD-SDM-0053",
+      "name": "Muhammad Haikal",
+      "email": "haikal@madaniapp",
+      "roles": [
+        "naqib"
+      ],
+      "role": "naqib",
+      "roleScopes": {},
+      "unitIds": [
+        "UNIT-PONDOK"
+      ],
+      "existingUid": null,
+      "status": "ready"
+    },
+    {
+      "staffId": "AMD-SDM-0054",
+      "name": "Muhammad Tuzri",
+      "email": "tuzri@madaniapp",
+      "roles": [
+        "deputy_director",
+        "head_formal_school"
+      ],
+      "role": "deputy_director",
+      "roleScopes": {
+        "deputy_director": {
+          "unitIds": [],
+          "classIds": [],
+          "groupIds": []
+        },
+        "head_formal_school": {
+          "unitIds": [
+            "UNIT-SMP"
+          ],
+          "classIds": [
+            "CLS-SMP-7-PUTRA",
+            "CLS-SMP-7-PUTRI",
+            "CLS-SMP-8-PUTRA",
+            "CLS-SMP-8-PUTRI",
+            "CLS-SMP-9-PUTRA",
+            "CLS-SMP-9-PUTRI"
+          ]
+        }
+      },
+      "unitIds": [
+        "UNIT-SMP"
+      ],
+      "existingUid": null,
+      "status": "ready"
+    },
+    {
+      "staffId": "AMD-SDM-0055",
+      "name": "Muhasim",
+      "email": "muhasim@madaniapp",
+      "roles": [
+        "head_boys_dorm",
+        "guru_mapel",
+        "konselor"
+      ],
+      "role": "head_boys_dorm",
+      "roleScopes": {
+        "head_boys_dorm": {
+          "unitIds": [],
+          "classIds": [],
+          "groupIds": [],
+          "scopeGender": "L"
+        },
+        "guru_mapel": {
+          "unitIds": [
+            "UNIT-SMK"
+          ],
+          "classIds": [
+            "CLS-SMK-X-BUSANA",
+            "CLS-SMK-X-DKV",
+            "CLS-SMK-XI-BUSANA",
+            "CLS-SMK-XI-DKV",
+            "CLS-SMK-XI-TJKT",
+            "CLS-SMK-XII-BUSANA",
+            "CLS-SMK-XII-DKV"
+          ]
+        }
+      },
+      "unitIds": [
+        "UNIT-SMK"
+      ],
+      "existingUid": null,
+      "status": "ready"
+    },
+    {
+      "staffId": "AMD-SDM-0056",
+      "name": "MUNAWARAH",
+      "email": "munawarah@madaniapp",
+      "roles": [
+        "guru_mapel"
+      ],
+      "role": "guru_mapel",
+      "roleScopes": {
+        "guru_mapel": {
+          "unitIds": [
+            "UNIT-TK"
+          ],
+          "classIds": [
+            "CLS-TK-A1",
+            "CLS-TK-A2",
+            "CLS-TK-B1",
+            "CLS-TK-B2"
+          ]
+        }
+      },
+      "unitIds": [
+        "UNIT-TK"
+      ],
+      "existingUid": null,
+      "status": "ready"
+    },
+    {
+      "staffId": "AMD-SDM-0057",
+      "name": "MUNAWARAH KUZNIATI",
+      "email": "kuzniati@madaniapp",
+      "roles": [
+        "guru_mapel",
+        "guru_wali"
+      ],
+      "role": "guru_mapel",
+      "roleScopes": {
+        "guru_mapel": {
+          "unitIds": [
+            "UNIT-SMK"
+          ],
+          "classIds": [
+            "CLS-SMK-X-BUSANA",
+            "CLS-SMK-X-DKV",
+            "CLS-SMK-XI-BUSANA",
+            "CLS-SMK-XI-DKV",
+            "CLS-SMK-XI-TJKT",
+            "CLS-SMK-XII-BUSANA",
+            "CLS-SMK-XII-DKV"
+          ]
+        },
+        "guru_wali": {
+          "unitIds": [
+            "UNIT-SMK"
+          ],
+          "classIds": [
+            "CLS-SMK-XI-BUSANA",
+            "CLS-SMK-XI-DKV"
+          ]
+        }
+      },
+      "unitIds": [
+        "UNIT-SMK"
+      ],
+      "existingUid": null,
+      "status": "ready"
+    },
+    {
+      "staffId": "AMD-SDM-0058",
+      "name": "Munawarah Nazari",
+      "email": "nazari@madaniapp",
+      "roles": [
+        "guru_mapel"
+      ],
+      "role": "guru_mapel",
+      "roleScopes": {
+        "guru_mapel": {
+          "unitIds": [
+            "UNIT-TK",
+            "UNIT-SMP"
+          ],
+          "classIds": [
+            "CLS-TK-A1",
+            "CLS-TK-A2",
+            "CLS-TK-B1",
+            "CLS-TK-B2",
+            "CLS-SMP-7-PUTRA",
+            "CLS-SMP-7-PUTRI",
+            "CLS-SMP-8-PUTRA",
+            "CLS-SMP-8-PUTRI",
+            "CLS-SMP-9-PUTRA",
+            "CLS-SMP-9-PUTRI"
+          ]
+        }
+      },
+      "unitIds": [
+        "UNIT-TK",
+        "UNIT-SMP"
+      ],
+      "existingUid": null,
+      "status": "ready"
+    },
+    {
+      "staffId": "AMD-SDM-0059",
+      "name": "Nopan",
+      "email": "nopan@madaniapp",
+      "roles": [
+        "mentor_tahsin_tahfiz",
+        "naqib"
+      ],
+      "role": "mentor_tahsin_tahfiz",
+      "roleScopes": {},
+      "unitIds": [
+        "UNIT-PONDOK"
+      ],
+      "existingUid": null,
+      "status": "ready"
+    },
+    {
+      "staffId": "AMD-SDM-0060",
+      "name": "Novan Maulana",
+      "email": "maulana@madaniapp",
+      "roles": [
+        "naqib"
+      ],
+      "role": "naqib",
+      "roleScopes": {},
+      "unitIds": [
+        "UNIT-PONDOK"
+      ],
+      "existingUid": null,
+      "status": "ready"
+    },
+    {
+      "staffId": "AMD-SDM-0061",
+      "name": "Nuriantari",
+      "email": "nuriantari@madaniapp",
+      "roles": [
+        "guru_mapel"
+      ],
+      "role": "guru_mapel",
+      "roleScopes": {
+        "guru_mapel": {
+          "unitIds": [
+            "UNIT-SMP"
+          ],
+          "classIds": [
+            "CLS-SMP-7-PUTRA",
+            "CLS-SMP-7-PUTRI",
+            "CLS-SMP-8-PUTRA",
+            "CLS-SMP-8-PUTRI",
+            "CLS-SMP-9-PUTRA",
+            "CLS-SMP-9-PUTRI"
+          ]
+        }
+      },
+      "unitIds": [
+        "UNIT-SMP"
+      ],
+      "existingUid": null,
+      "status": "ready"
+    },
+    {
+      "staffId": "AMD-SDM-0062",
+      "name": "Nuril Azmi",
+      "email": "azmi@madaniapp",
+      "roles": [
+        "head_girls_dorm",
+        "guru_mapel"
+      ],
+      "role": "head_girls_dorm",
+      "roleScopes": {
+        "head_girls_dorm": {
+          "unitIds": [],
+          "classIds": [],
+          "groupIds": [],
+          "scopeGender": "P"
+        },
+        "guru_mapel": {
+          "unitIds": [
+            "UNIT-SMK"
+          ],
+          "classIds": [
+            "CLS-SMK-X-BUSANA",
+            "CLS-SMK-X-DKV",
+            "CLS-SMK-XI-BUSANA",
+            "CLS-SMK-XI-DKV",
+            "CLS-SMK-XI-TJKT",
+            "CLS-SMK-XII-BUSANA",
+            "CLS-SMK-XII-DKV"
+          ]
+        }
+      },
+      "unitIds": [
+        "UNIT-SMK"
+      ],
+      "existingUid": null,
+      "status": "ready"
+    },
+    {
+      "staffId": "AMD-SDM-0063",
+      "name": "NURLAILY",
+      "email": "nurlaily@madaniapp",
+      "roles": [
+        "guru_mapel"
+      ],
+      "role": "guru_mapel",
+      "roleScopes": {
+        "guru_mapel": {
+          "unitIds": [
+            "UNIT-SD"
+          ],
+          "classIds": [
+            "CLS-SD-1",
+            "CLS-SD-2",
+            "CLS-SD-3",
+            "CLS-SD-4",
+            "CLS-SD-5",
+            "CLS-SD-6"
+          ]
+        }
+      },
+      "unitIds": [
+        "UNIT-SD"
+      ],
+      "existingUid": null,
+      "status": "ready"
+    },
+    {
+      "staffId": "AMD-SDM-0064",
+      "name": "Nurul",
+      "email": "nurul@madaniapp",
+      "roles": [
+        "mentor_tahsin_tahfiz"
+      ],
+      "role": "mentor_tahsin_tahfiz",
+      "roleScopes": {},
+      "unitIds": [
+        "UNIT-PONDOK"
+      ],
+      "existingUid": null,
+      "status": "ready"
+    },
+    {
+      "staffId": "AMD-SDM-0065",
+      "name": "NURUL JANNAH",
+      "email": "jannah4@madaniapp",
+      "roles": [
+        "guru_mapel"
+      ],
+      "role": "guru_mapel",
+      "roleScopes": {
+        "guru_mapel": {
+          "unitIds": [
+            "UNIT-SD"
+          ],
+          "classIds": [
+            "CLS-SD-1",
+            "CLS-SD-2",
+            "CLS-SD-3",
+            "CLS-SD-4",
+            "CLS-SD-5",
+            "CLS-SD-6"
+          ]
+        }
+      },
+      "unitIds": [
+        "UNIT-SD"
+      ],
+      "existingUid": null,
+      "status": "ready"
+    },
+    {
+      "staffId": "AMD-SDM-0066",
+      "name": "RAHMANIYAH",
+      "email": "rahmaniyah@madaniapp",
+      "roles": [
+        "guru_mapel"
+      ],
+      "role": "guru_mapel",
+      "roleScopes": {
+        "guru_mapel": {
+          "unitIds": [
+            "UNIT-SD"
+          ],
+          "classIds": [
+            "CLS-SD-1",
+            "CLS-SD-2",
+            "CLS-SD-3",
+            "CLS-SD-4",
+            "CLS-SD-5",
+            "CLS-SD-6"
+          ]
+        }
+      },
+      "unitIds": [
+        "UNIT-SD"
+      ],
+      "existingUid": null,
+      "status": "ready"
+    },
+    {
+      "staffId": "AMD-SDM-0067",
+      "name": "RAUHUN",
+      "email": "rauhun@madaniapp",
+      "roles": [
+        "guru_mapel"
+      ],
+      "role": "guru_mapel",
+      "roleScopes": {
+        "guru_mapel": {
+          "unitIds": [
+            "UNIT-SD"
+          ],
+          "classIds": [
+            "CLS-SD-1",
+            "CLS-SD-2",
+            "CLS-SD-3",
+            "CLS-SD-4",
+            "CLS-SD-5",
+            "CLS-SD-6"
+          ]
+        }
+      },
+      "unitIds": [
+        "UNIT-SD"
+      ],
+      "existingUid": null,
+      "status": "ready"
+    },
+    {
+      "staffId": "AMD-SDM-0068",
+      "name": "Rokyal",
+      "email": "rokyal@madaniapp",
+      "roles": [
+        "mentor_tahsin_tahfiz",
+        "naqib"
+      ],
+      "role": "mentor_tahsin_tahfiz",
+      "roleScopes": {},
+      "unitIds": [
+        "UNIT-PONDOK"
+      ],
+      "existingUid": null,
+      "status": "ready"
+    },
+    {
+      "staffId": "AMD-SDM-0069",
+      "name": "RUMIATI",
+      "email": "rumiati@madaniapp",
+      "roles": [],
+      "role": "",
+      "roleScopes": {},
+      "unitIds": [
+        "UNIT-SD"
+      ],
+      "existingUid": null,
+      "status": "needs_role"
+    },
+    {
+      "staffId": "AMD-SDM-0070",
+      "name": "SAFWATIL QIROM",
+      "email": "qirom@madaniapp",
+      "roles": [
+        "guru_mapel"
+      ],
+      "role": "guru_mapel",
+      "roleScopes": {
+        "guru_mapel": {
+          "unitIds": [
+            "UNIT-TK"
+          ],
+          "classIds": [
+            "CLS-TK-A1",
+            "CLS-TK-A2",
+            "CLS-TK-B1",
+            "CLS-TK-B2"
+          ]
+        }
+      },
+      "unitIds": [
+        "UNIT-TK"
+      ],
+      "existingUid": null,
+      "status": "ready"
+    },
+    {
+      "staffId": "AMD-SDM-0071",
+      "name": "Sahrup",
+      "email": "sahrup@madaniapp",
+      "roles": [
+        "guru_mapel"
+      ],
+      "role": "guru_mapel",
+      "roleScopes": {
+        "guru_mapel": {
+          "unitIds": [
+            "UNIT-SMP"
+          ],
+          "classIds": [
+            "CLS-SMP-7-PUTRA",
+            "CLS-SMP-7-PUTRI",
+            "CLS-SMP-8-PUTRA",
+            "CLS-SMP-8-PUTRI",
+            "CLS-SMP-9-PUTRA",
+            "CLS-SMP-9-PUTRI"
+          ]
+        }
+      },
+      "unitIds": [
+        "UNIT-SMP"
+      ],
+      "existingUid": null,
+      "status": "ready"
+    },
+    {
+      "staffId": "AMD-SDM-0072",
+      "name": "Samsu Ariyanti",
+      "email": "ariyanti@madaniapp",
+      "roles": [
+        "guru_mapel"
+      ],
+      "role": "guru_mapel",
+      "roleScopes": {
+        "guru_mapel": {
+          "unitIds": [
+            "UNIT-SMK"
+          ],
+          "classIds": [
+            "CLS-SMK-X-BUSANA",
+            "CLS-SMK-X-DKV",
+            "CLS-SMK-XI-BUSANA",
+            "CLS-SMK-XI-DKV",
+            "CLS-SMK-XI-TJKT",
+            "CLS-SMK-XII-BUSANA",
+            "CLS-SMK-XII-DKV"
+          ]
+        }
+      },
+      "unitIds": [
+        "UNIT-SMK"
+      ],
+      "existingUid": null,
+      "status": "ready"
+    },
+    {
+      "staffId": "AMD-SDM-0073",
+      "name": "Saparwadi",
+      "email": "saparwadi@madaniapp",
+      "roles": [
+        "guru_mapel"
+      ],
+      "role": "guru_mapel",
+      "roleScopes": {
+        "guru_mapel": {
+          "unitIds": [
+            "UNIT-SMK"
+          ],
+          "classIds": [
+            "CLS-SMK-X-BUSANA",
+            "CLS-SMK-X-DKV",
+            "CLS-SMK-XI-BUSANA",
+            "CLS-SMK-XI-DKV",
+            "CLS-SMK-XI-TJKT",
+            "CLS-SMK-XII-BUSANA",
+            "CLS-SMK-XII-DKV"
+          ]
+        }
+      },
+      "unitIds": [
+        "UNIT-SMK"
+      ],
+      "existingUid": null,
+      "status": "ready"
+    },
+    {
+      "staffId": "AMD-SDM-0074",
+      "name": "SITI MAZIDATUL AINI",
+      "email": "aini@madaniapp",
+      "roles": [
+        "guru_mapel"
+      ],
+      "role": "guru_mapel",
+      "roleScopes": {
+        "guru_mapel": {
+          "unitIds": [
+            "UNIT-SMP"
+          ],
+          "classIds": [
+            "CLS-SMP-7-PUTRA",
+            "CLS-SMP-7-PUTRI",
+            "CLS-SMP-8-PUTRA",
+            "CLS-SMP-8-PUTRI",
+            "CLS-SMP-9-PUTRA",
+            "CLS-SMP-9-PUTRI"
+          ]
+        }
+      },
+      "unitIds": [
+        "UNIT-SMP"
+      ],
+      "existingUid": null,
+      "status": "ready"
+    },
+    {
+      "staffId": "AMD-SDM-0075",
+      "name": "SOHRIAH",
+      "email": "sohriah@madaniapp",
+      "roles": [
+        "guru_mapel"
+      ],
+      "role": "guru_mapel",
+      "roleScopes": {
+        "guru_mapel": {
+          "unitIds": [
+            "UNIT-SMK"
+          ],
+          "classIds": [
+            "CLS-SMK-X-BUSANA",
+            "CLS-SMK-X-DKV",
+            "CLS-SMK-XI-BUSANA",
+            "CLS-SMK-XI-DKV",
+            "CLS-SMK-XI-TJKT",
+            "CLS-SMK-XII-BUSANA",
+            "CLS-SMK-XII-DKV"
+          ]
+        }
+      },
+      "unitIds": [
+        "UNIT-SMK"
+      ],
+      "existingUid": null,
+      "status": "ready"
+    },
+    {
+      "staffId": "AMD-SDM-0076",
+      "name": "SUHARDI USMAN",
+      "email": "usman@madaniapp",
+      "roles": [
+        "guru_mapel"
+      ],
+      "role": "guru_mapel",
+      "roleScopes": {
+        "guru_mapel": {
+          "unitIds": [
+            "UNIT-SD"
+          ],
+          "classIds": [
+            "CLS-SD-1",
+            "CLS-SD-2",
+            "CLS-SD-3",
+            "CLS-SD-4",
+            "CLS-SD-5",
+            "CLS-SD-6"
+          ]
+        }
+      },
+      "unitIds": [
+        "UNIT-SD"
+      ],
+      "existingUid": null,
+      "status": "ready"
+    },
+    {
+      "staffId": "AMD-SDM-0077",
+      "name": "Supianhadi",
+      "email": "supianhadi@madaniapp",
+      "roles": [
+        "guru_mapel"
+      ],
+      "role": "guru_mapel",
+      "roleScopes": {
+        "guru_mapel": {
+          "unitIds": [
+            "UNIT-SMP"
+          ],
+          "classIds": [
+            "CLS-SMP-7-PUTRA",
+            "CLS-SMP-7-PUTRI",
+            "CLS-SMP-8-PUTRA",
+            "CLS-SMP-8-PUTRI",
+            "CLS-SMP-9-PUTRA",
+            "CLS-SMP-9-PUTRI"
+          ]
+        }
+      },
+      "unitIds": [
+        "UNIT-SMP"
+      ],
+      "existingUid": null,
+      "status": "ready"
+    },
+    {
+      "staffId": "AMD-SDM-0078",
+      "name": "SYAMSUL HAKIM",
+      "email": "hakim@madaniapp",
+      "roles": [
+        "guru_mapel"
+      ],
+      "role": "guru_mapel",
+      "roleScopes": {
+        "guru_mapel": {
+          "unitIds": [
+            "UNIT-SMK"
+          ],
+          "classIds": [
+            "CLS-SMK-X-BUSANA",
+            "CLS-SMK-X-DKV",
+            "CLS-SMK-XI-BUSANA",
+            "CLS-SMK-XI-DKV",
+            "CLS-SMK-XI-TJKT",
+            "CLS-SMK-XII-BUSANA",
+            "CLS-SMK-XII-DKV"
+          ]
+        }
+      },
+      "unitIds": [
+        "UNIT-SMK"
+      ],
+      "existingUid": null,
+      "status": "ready"
+    },
+    {
+      "staffId": "AMD-SDM-0079",
+      "name": "TGH. Mustafa Syar'an",
+      "email": "an@madaniapp",
+      "roles": [
+        "guru_mapel"
+      ],
+      "role": "guru_mapel",
+      "roleScopes": {
+        "guru_mapel": {
+          "unitIds": [
+            "UNIT-SMK",
+            "UNIT-PONDOK"
+          ],
+          "classIds": [
+            "CLS-SMK-X-BUSANA",
+            "CLS-SMK-X-DKV",
+            "CLS-SMK-XI-BUSANA",
+            "CLS-SMK-XI-DKV",
+            "CLS-SMK-XI-TJKT",
+            "CLS-SMK-XII-BUSANA",
+            "CLS-SMK-XII-DKV"
+          ]
+        }
+      },
+      "unitIds": [
+        "UNIT-SMK",
+        "UNIT-PONDOK"
+      ],
+      "existingUid": null,
+      "status": "ready"
+    },
+    {
+      "staffId": "AMD-SDM-0080",
+      "name": "WARDANI",
+      "email": "wardani2@madaniapp",
+      "roles": [
+        "guru_mapel"
+      ],
+      "role": "guru_mapel",
+      "roleScopes": {
+        "guru_mapel": {
+          "unitIds": [
+            "UNIT-SD"
+          ],
+          "classIds": [
+            "CLS-SD-1",
+            "CLS-SD-2",
+            "CLS-SD-3",
+            "CLS-SD-4",
+            "CLS-SD-5",
+            "CLS-SD-6"
+          ]
+        }
+      },
+      "unitIds": [
+        "UNIT-SD"
+      ],
+      "existingUid": null,
+      "status": "ready"
+    },
+    {
+      "staffId": "AMD-SDM-0081",
+      "name": "WIWIK KARUNIAWATI",
+      "email": "karuniawati@madaniapp",
+      "roles": [
+        "guru_mapel"
+      ],
+      "role": "guru_mapel",
+      "roleScopes": {
+        "guru_mapel": {
+          "unitIds": [
+            "UNIT-SMK"
+          ],
+          "classIds": [
+            "CLS-SMK-X-BUSANA",
+            "CLS-SMK-X-DKV",
+            "CLS-SMK-XI-BUSANA",
+            "CLS-SMK-XI-DKV",
+            "CLS-SMK-XI-TJKT",
+            "CLS-SMK-XII-BUSANA",
+            "CLS-SMK-XII-DKV"
+          ]
+        }
+      },
+      "unitIds": [
+        "UNIT-SMK"
+      ],
+      "existingUid": null,
+      "status": "ready"
+    },
+    {
+      "staffId": "AMD-SDM-0082",
+      "name": "Yanti",
+      "email": "yanti@madaniapp",
+      "roles": [
+        "mentor_tahsin_tahfiz"
+      ],
+      "role": "mentor_tahsin_tahfiz",
+      "roleScopes": {},
+      "unitIds": [
+        "UNIT-PONDOK"
+      ],
+      "existingUid": null,
+      "status": "ready"
+    },
+    {
+      "staffId": "AMD-SDM-0083",
+      "name": "Yumalia Ratmala",
+      "email": "ratmala@madaniapp",
+      "roles": [
+        "guru_mapel",
+        "guru_wali"
+      ],
+      "role": "guru_mapel",
+      "roleScopes": {
+        "guru_mapel": {
+          "unitIds": [
+            "UNIT-SMK"
+          ],
+          "classIds": [
+            "CLS-SMK-X-BUSANA",
+            "CLS-SMK-X-DKV",
+            "CLS-SMK-XI-BUSANA",
+            "CLS-SMK-XI-DKV",
+            "CLS-SMK-XI-TJKT",
+            "CLS-SMK-XII-BUSANA",
+            "CLS-SMK-XII-DKV"
+          ]
+        },
+        "guru_wali": {
+          "unitIds": [
+            "UNIT-SMK"
+          ],
+          "classIds": [
+            "CLS-SMK-XII-BUSANA"
+          ]
+        }
+      },
+      "unitIds": [
+        "UNIT-SMK"
+      ],
+      "existingUid": null,
+      "status": "ready"
+    },
+    {
+      "staffId": "AMD-SDM-0084",
+      "name": "YUSUF",
+      "email": "yusuf@madaniapp",
+      "roles": [
+        "guru_mapel",
+        "naqib",
+        "mentor_tahsin_tahfiz"
+      ],
+      "role": "guru_mapel",
+      "roleScopes": {
+        "guru_mapel": {
+          "unitIds": [
+            "UNIT-SD",
+            "UNIT-PONDOK"
+          ],
+          "classIds": [
+            "CLS-SD-1",
+            "CLS-SD-2",
+            "CLS-SD-3",
+            "CLS-SD-4",
+            "CLS-SD-5",
+            "CLS-SD-6"
+          ]
+        }
+      },
+      "unitIds": [
+        "UNIT-SD",
+        "UNIT-PONDOK"
+      ],
+      "existingUid": null,
+      "status": "ready"
+    },
+    {
+      "staffId": "AMD-SDM-0085",
+      "name": "ZANI ISTI HARIANI",
+      "email": "hariani@madaniapp",
+      "roles": [
+        "guru_mapel"
+      ],
+      "role": "guru_mapel",
+      "roleScopes": {
+        "guru_mapel": {
+          "unitIds": [
+            "UNIT-SD"
+          ],
+          "classIds": [
+            "CLS-SD-1",
+            "CLS-SD-2",
+            "CLS-SD-3",
+            "CLS-SD-4",
+            "CLS-SD-5",
+            "CLS-SD-6"
+          ]
+        }
+      },
+      "unitIds": [
+        "UNIT-SD"
+      ],
+      "existingUid": null,
+      "status": "ready"
+    }
+  ]
+}

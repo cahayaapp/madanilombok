@@ -9277,7 +9277,25 @@
       "roles": "Kepala Sekolah; Tendik; Kode Guru SMK 1",
       "unitIds": [
         "UNIT-SMK"
-      ]
+      ],
+      "displayName": "Abdul Hayyi",
+      "appRoles": [
+        "director",
+        "head_formal_school"
+      ],
+      "roleAssignmentSource": "Konfirmasi pengguna 2026-10-02",
+      "roleScopes": {
+        "director": {
+          "unitIds": [],
+          "classIds": [],
+          "groupIds": []
+        },
+        "head_formal_school": {
+          "unitIds": [
+            "UNIT-SMK"
+          ]
+        }
+      }
     },
     "AMD-SDM-0002": {
       "name": "ABDUL HAMID",
@@ -10398,7 +10416,25 @@
       "roles": "Kepala Sekolah; Tendik",
       "unitIds": [
         "UNIT-SMP"
-      ]
+      ],
+      "displayName": "Muhammad Tuzri",
+      "appRoles": [
+        "deputy_director",
+        "head_formal_school"
+      ],
+      "roleAssignmentSource": "Konfirmasi pengguna 2026-10-02",
+      "roleScopes": {
+        "deputy_director": {
+          "unitIds": [],
+          "classIds": [],
+          "groupIds": []
+        },
+        "head_formal_school": {
+          "unitIds": [
+            "UNIT-SMP"
+          ]
+        }
+      }
     },
     "AMD-SDM-0055": {
       "name": "Muhasim",
@@ -10422,7 +10458,20 @@
       "roles": "Guru; Kode Guru SMK 23 (Kepondokan)",
       "unitIds": [
         "UNIT-SMK"
-      ]
+      ],
+      "displayName": "Muhasim",
+      "appRoles": [
+        "head_boys_dorm"
+      ],
+      "roleAssignmentSource": "Konfirmasi pengguna 2026-10-02",
+      "roleScopes": {
+        "head_boys_dorm": {
+          "unitIds": [],
+          "classIds": [],
+          "groupIds": [],
+          "scopeGender": "L"
+        }
+      }
     },
     "AMD-SDM-0056": {
       "name": "MUNAWARAH",
@@ -10577,7 +10626,20 @@
       "roles": "Guru; Kode Guru SMK 5",
       "unitIds": [
         "UNIT-SMK"
-      ]
+      ],
+      "displayName": "Nuril Azmi",
+      "appRoles": [
+        "head_girls_dorm"
+      ],
+      "roleAssignmentSource": "Konfirmasi pengguna 2026-10-02",
+      "roleScopes": {
+        "head_girls_dorm": {
+          "unitIds": [],
+          "classIds": [],
+          "groupIds": [],
+          "scopeGender": "P"
+        }
+      }
     },
     "AMD-SDM-0063": {
       "name": "NURLAILY",

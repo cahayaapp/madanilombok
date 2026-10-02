@@ -33,7 +33,8 @@ Direktur (AH)
 
 ## Keputusan implementasi pilot
 
-- Kode AH, MT, Mhs dan Nrl dipertahankan sebagai petunjuk struktur, **tidak dipaksa menjadi Staff ID** sebelum identitasnya dikonfirmasi.
+- Identitas AH/MT/Mhs/Nrl dikonfirmasi pengguna pada 2 Oktober 2026: Abdul Hayyi (`AMD-SDM-0001`) Direktur + Kepala SMK; Muhammad Tuzri (`AMD-SDM-0054`) Wakil Direktur + Kepala SMP; Muhasim (`AMD-SDM-0055`) Kepala Asrama Putra; Nuril Azmi (`AMD-SDM-0062`) Kepala Asrama Putri.
+- Penugasan ganda memakai `roleScopes`: pimpinan lintas unit, Kepala Sekolah hanya unit SMK/SMP masing-masing. Data sumber tetap mempertahankan nama asli; nama terkonfirmasi disimpan dalam displayName.
 - Guru Wali adalah role yang menjalankan **mentoring individu**. Menu bernama Mentor tidak diberikan kepada user terpisah.
 - Pembina Tahsin/Tahfiz dipetakan ke `mentor_tahsin_tahfiz`.
 - Naqib menjalankan pengawalan program asrama dan pelaporan temuan/kasus.

@@ -4,12 +4,14 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   signOut,
+  deleteUser,
   sendPasswordResetEmail
 } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 import { firebaseConfig } from "../../config/firebase-config.js";
 import { requireAdmin, logout } from "./auth.js";
 import { listNode, setNode } from "./repository.js";
 import { escapeHtml, toast } from "./utils.js";
+import {buildStaffAccountPlan} from "./staff-account-plan.js";
 import { ROLE_LABELS } from "./permissions.js";
 
 const provisioningApp = initializeApp(firebaseConfig, "madani-account-provisioning");
@@ -21,6 +23,12 @@ let staff = [];
 let students = [];
 let classes = [];
 let groups = [];
+let staffPlan=[];
+let staffCredentials=[];
+let staffProvisioning=false;
+let staffCredentialsDownloaded=false;
+window.addEventListener("beforeunload",event=>{if(staffProvisioning||(staffCredentials.length&&!staffCredentialsDownloaded)){event.preventDefault();event.returnValue="";}});
+let staffSuggestions=[],confirmedLeadership=[];
 
 const $ = sel => document.querySelector(sel);
 
@@ -195,12 +203,72 @@ async function createCustom(event) {
   } finally { btn.disabled = false; }
 }
 
+function renderStaffPlan(){
+  const domain=$('#staffEmailDomain').value.trim().toLowerCase().replace(/^@/,'');
+  const validDomain=/^[a-z0-9](?:[a-z0-9-]*[a-z0-9])?(?:\.[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)+$/.test(domain);
+  staffPlan=buildStaffAccountPlan(staff,profiles,classes,staffSuggestions,confirmedLeadership,domain||'madaniapp');
+  const labels={ready:'Siap dibuat',existing:'Sudah ada',inactive:'SDM nonaktif',needs_role:'Menunggu role',identity_mismatch:'Identitas perlu diperiksa'};
+  $('#staffPlanBody').innerHTML=staffPlan.map(row=>`<tr><td>${escapeHtml(row.name)}</td><td>${escapeHtml(row.email)}</td><td>${escapeHtml(row.roles.map(roleText).join(', ')||'Belum ditetapkan')}</td><td>${escapeHtml(labels[row.status])}</td></tr>`).join('');
+  $('#staffPlanSummary').textContent=`${staffPlan.length} SDM · ${staffPlan.filter(x=>x.status==='ready').length} siap dibuat. Email menggunakan nama akhir; angka membedakan nama yang sama.`;
+  $('#createStaffButton').disabled=staffProvisioning||!validDomain||!staffPlan.some(x=>x.status==='ready');
+}
+function temporaryStaffPassword(){
+ const values=crypto.getRandomValues(new Uint8Array(18));
+ return 'M!'+Array.from(values,n=>n.toString(16).padStart(2,'0')).join('');
+}
+function downloadStaffCredentials(){
+ if(!staffCredentials.length)return;
+ const cell=value=>`"${String(value??'').replaceAll('"','""')}"`;
+ const content='\uFEFF'+[['Nama','Email','Password sementara','Role'],...staffCredentials.map(r=>[r.name,r.email,r.password,r.roles.map(roleText).join(', ')])].map(row=>row.map(cell).join(',')).join('\r\n');
+ const url=URL.createObjectURL(new Blob([content],{type:'text/csv;charset=utf-8'}));
+ const a=document.createElement('a');a.href=url;a.download='akun-sdm-madani.csv';a.click();staffCredentialsDownloaded=true;setTimeout(()=>URL.revokeObjectURL(url),1000);
+}
+async function createAllStaff(){
+ if(staffProvisioning||$('#createStaffButton').disabled)return;
+ staffProvisioning=true;$('#createStaffButton').disabled=true;
+ const results=[];
+ try{
+  await load();renderStaffPlan();
+  for(const row of staffPlan.filter(x=>x.status==='ready')){
+   let credential=null,profileSaved=false;
+   const password=temporaryStaffPassword();
+   try{
+    credential=await createUserWithEmailAndPassword(provisioningAuth,row.email,password);
+    const now=Date.now(),uid=credential.user.uid;
+    await setNode(`users/${uid}`,{uid,name:row.name,email:row.email,staffId:row.staffId,role:row.role,roles:row.roles,roleFlags:Object.fromEntries(row.roles.map(r=>[r,true])),roleScopes:row.roleScopes,unitIds:row.unitIds,active:true,accountKind:'staff',createdAt:now,updatedAt:now,updatedBy:session.user.uid});
+    profileSaved=true;
+    staffCredentialsDownloaded=false;
+    staffCredentials.push({name:row.name,email:row.email,password,roles:row.roles});
+    $('#downloadStaffCredentials').disabled=false;
+    results.push(`${row.email}: dibuat`);
+   }catch(error){
+    let rollback='';
+    if(credential&&!profileSaved){try{await deleteUser(credential.user);rollback=' Akun baru dibatalkan karena profil gagal disimpan.';}catch{rollback=' Akun Auth terbentuk tetapi profil gagal; perlu diperbaiki admin.';}}
+    results.push(`${row.email}: ${error.code==='auth/email-already-in-use'?'Email sudah digunakan; akun lama tidak diubah.':error.message||'Gagal'}${rollback}`);
+    if(['auth/invalid-email','auth/operation-not-allowed','auth/too-many-requests','auth/network-request-failed'].includes(error.code))break;
+   }finally{try{await signOut(provisioningAuth);}catch{}}
+   $('#staffProvisionResult').textContent=results.join('\n');
+  }
+  await refresh();
+ }catch(error){results.push(error.message||'Gagal memuat data SDM.');}
+ finally{
+  staffProvisioning=false;renderStaffPlan();$('#staffProvisionResult').textContent=results.join('\n');
+  $('#downloadStaffCredentials').disabled=!staffCredentials.length;
+ }
+}
+
 async function init() {
   session = await requireAdmin();
   $("#adminName").textContent = session.profile.name || session.user.email;
   await load();
   renderPilot();
   renderProfiles();
+  const [suggestions,leadership]=await Promise.all([fetch('../seed/role-assignment-suggestions.json').then(r=>r.json()),fetch('../seed/leadership-assignments.json').then(r=>r.json())]);
+  staffSuggestions=suggestions.people||[];confirmedLeadership=leadership.assignments||[];
+  renderStaffPlan();
+  $('#staffEmailDomain').addEventListener('input',renderStaffPlan);
+  $('#createStaffButton').addEventListener('click',createAllStaff);
+  $('#downloadStaffCredentials').addEventListener('click',downloadStaffCredentials);
   fillSelect($("#customStaff"), staff);
   fillSelect($("#customStudent"), students);
   fillSelect($("#customClass"), classes);

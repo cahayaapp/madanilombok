@@ -1,0 +1,39 @@
+{
+  "source": "Master lokal; belum diverifikasi terhadap database aktif",
+  "studentCount": 352,
+  "schoolCounts": {
+    "UNIT-TK": 40,
+    "UNIT-SMP": 100,
+    "UNIT-SMK": 80,
+    "UNIT-SD": 132
+  },
+  "nonSchoolStudents": [],
+  "duplicateCandidates": [
+    {
+      "studentIds": [
+        "AMD-SD-0002",
+        "AMD-SD-0003"
+      ],
+      "name": "ANIDA NUR AFIFAH",
+      "matchingFields": [
+        "nik",
+        "name"
+      ],
+      "differingFields": [
+        "studentNo",
+        "nisn",
+        "address",
+        "village",
+        "sourceRow",
+        "residenceType",
+        "hamlet",
+        "fatherName",
+        "previousSchool"
+      ],
+      "status": "needs_identity_review"
+    }
+  ],
+  "orphanAssignments": [],
+  "unresolvedRooms": 82,
+  "unresolvedGroups": 41
+}

@@ -11,7 +11,7 @@ Read `CODEX-HANDOFF.md`, `docs/FEATURE-SCOPE.md`, and `docs/CAHAYA-PARITY.md` be
 
 ## Current user instruction
 
-Compare all existing Madani roles with Cahaya, implement missing role features and experience, and retain Madani's finance features. Preserve the existing finance module, ledger, wallets, cashier restrictions, stock, payments, void/refund behavior, and parent finance view. Do not migrate operational records from Cahaya or write to either live database as part of local implementation/testing.
+Compare all existing Madani roles with Cahaya, implement missing role features and experience, and retain Madani's finance features. Preserve the existing finance module, ledger, wallets, cashier restrictions, stock, payments, void/refund behavior, and parent finance view. Do not migrate operational records from Cahaya or write to either live database as part of local implementation/testing. The subsequent user request explicitly authorizes live Madani staff account provisioning, four confirmed leadership assignments and verified student deduplication. Keep those maintenance operations scoped; never export the entire live database or alter finance as part of them.
 
 ## Latest scope clarification
 

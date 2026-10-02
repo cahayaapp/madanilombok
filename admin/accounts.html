@@ -32,6 +32,16 @@
         <div class="section-head"><div><h2>Akun Pilot</h2><p>Satu akun untuk menguji masing-masing role utama MadaniApp.</p></div><div class="section-actions"><button id="createAllButton" class="btn btn-primary">Buat / Sinkronkan Semua Akun Pilot</button></div></div>
         <div class="table-card"><div class="table-scroll"><table class="data-table"><thead><tr><th>Akun</th><th>Role</th><th>Terhubung ke</th><th>Status Profil</th><th>Aksi</th></tr></thead><tbody id="pilotBody"><tr><td colspan="5">Memuat…</td></tr></tbody></table></div></div>
 
+        <section class="panel" style="margin-top:20px">
+          <div class="panel-head"><h3>Akun Semua SDM</h3></div>
+          <label>Domain Email SDM<input id="staffEmailDomain" placeholder="Contoh: almadani.app" autocomplete="off"></label>
+          <p id="staffPlanSummary">Memuat rencana akun…</p>
+          <p>Password sementara dibuat unik per akun. Unduh daftar akun setelah proses selesai dan simpan sebelum menutup halaman. Firebase menolak @madaniapp tanpa akhiran domain. Pilih domain email sebelum membuat akun.</p>
+          <div class="section-actions"><button id="createStaffButton" class="btn btn-primary" disabled>Buat Semua Akun SDM yang Siap</button><button id="downloadStaffCredentials" class="btn btn-secondary" disabled>Unduh Daftar Akun & Password</button></div>
+          <div class="table-scroll"><table class="data-table"><thead><tr><th>Nama SDM</th><th>Email Login</th><th>Role</th><th>Status</th></tr></thead><tbody id="staffPlanBody"></tbody></table></div>
+          <pre id="staffProvisionResult" style="white-space:pre-wrap" role="status"></pre>
+        </section>
+
         <div class="grid-2" style="margin-top:20px">
           <div class="panel"><div class="panel-head"><h3>Buat Akun Lain</h3><span class="badge">Admin</span></div>
             <form id="customAccountForm" class="stack-form" style="margin-bottom:0">

@@ -1,7 +1,7 @@
 {
   "source": "Struktur organisasi yang dilampirkan pengguna pada 30 Sep 2026",
   "notes": [
-    "Kode personel AH/MT/Mhs/Nrl dipertahankan sebagai kode/hint dan tidak dipetakan otomatis ke Staff_ID karena identitas belum ditegaskan.",
+    "Identitas AH/MT/Mhs/Nrl dikonfirmasi pengguna pada 2 Oktober 2026.",
     "Guru Wali menggantikan Mentor untuk mentoring individu pada MadaniApp.",
     "Daftar Tahsin/Tahfiz putri pada gambar terpotong di bagian bawah; hanya nama yang terbaca jelas dimasukkan."
   ],
@@ -9,12 +9,18 @@
     "director": {
       "label": "Direktur",
       "personCode": "AH",
-      "role": "director"
+      "role": "director",
+      "staffId": "AMD-SDM-0001",
+      "name": "Abdul Hayyi",
+      "confirmed": true
     },
     "deputyDirector": {
       "label": "Wakil Direktur",
       "personCode": "MT",
-      "role": "deputy_director"
+      "role": "deputy_director",
+      "staffId": "AMD-SDM-0054",
+      "name": "Muhammad Tuzri",
+      "confirmed": true
     },
     "formalSchoolHead": {
       "label": "Kepala Sekolah Formal",
@@ -27,17 +33,35 @@
         "WK Humas",
         "WK Pres",
         "Pendidikan dan Kependidikan"
+      ],
+      "assignments": [
+        {
+          "staffId": "AMD-SDM-0001",
+          "name": "Abdul Hayyi",
+          "unitId": "UNIT-SMK"
+        },
+        {
+          "staffId": "AMD-SDM-0054",
+          "name": "Muhammad Tuzri",
+          "unitId": "UNIT-SMP"
+        }
       ]
     },
     "boysDormHead": {
       "label": "Kepala Asrama Putra",
       "personCode": "Mhs",
-      "role": "head_boys_dorm"
+      "role": "head_boys_dorm",
+      "staffId": "AMD-SDM-0055",
+      "name": "Muhasim",
+      "confirmed": true
     },
     "girlsDormHead": {
       "label": "Kepala Asrama Putri",
       "personCode": "Nrl",
-      "role": "head_girls_dorm"
+      "role": "head_girls_dorm",
+      "staffId": "AMD-SDM-0062",
+      "name": "Nuril Azmi",
+      "confirmed": true
     }
   },
   "formalSchool": {
