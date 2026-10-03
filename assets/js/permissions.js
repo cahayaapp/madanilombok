@@ -140,7 +140,7 @@ const financeAll = [
 ];
 
 export const ROLE_FEATURES = {
-  guru_mapel: ["academic.teacher_attendance","academic.student_attendance","academic.grades","academic.schedule","academic.lesson_plans"],
+  guru_mapel: ["academic.quran","academic.teacher_attendance","academic.student_attendance","academic.grades","academic.schedule","academic.lesson_plans"],
   mentor_tahsin_tahfiz: ["academic.teacher_attendance","academic.quran","academic.schedule"],
   naqib: naqibAll,
   guru_wali: mentorAll,

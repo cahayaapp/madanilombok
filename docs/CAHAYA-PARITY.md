@@ -74,3 +74,7 @@ Pencabutan bersifat dapat dipulihkan: profil, akun Firebase Auth, dan seluruh ri
 Scope disesuaikan dengan struktur Madani: unit sekolah, rombel, mapel, halaqah, santri binaan, anak wali, gender dan unit kasir. Metadata level Konselor dapat disimpan; alur eskalasi bertingkat tetap termasuk pekerjaan domain Konselor, bukan diklaim selesai oleh editor akun ini.
 
 Editor mempertahankan email login, UID, tanggal pembuatan, data profil lain dan snapshot role lama. Mengubah email Auth atau menghapus akun Firebase Auth permanen tidak termasuk fungsi cabut akses. Uji UI dan model mencakup tambah/edit, role ganda, role utama, relasi anak, cabut/pulihkan, dan validasi referensi master. Tampilan desktop dan ponsel 390px diperiksa memakai data simulasi, tanpa perubahan akun produksi.
+
+## Guru Mapel — port khusus berikutnya
+
+Route Guru Mapel sekarang memiliki implementasi khusus beranda, GPS per jadwal, presensi KBM dua tahap, target/capaian per pertemuan, nilai berbobot draft/final, tindak lanjut nilai rendah, setoran Tahsin/Tahfiz, kasus multi-santri, editor tulisan, refleksi dan KPI pekan kerja. Wali dapat membaca catatan baru tanpa menghapus data lama. Rincian skema, aturan dan **selisih yang masih terbuka** ada di [GURU-MAPEL.md](GURU-MAPEL.md). Ini menggantikan deskripsi implementasi guru awal di atas, bukan klaim 100% sama dengan seluruh cabang workflow Cahaya.

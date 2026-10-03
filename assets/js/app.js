@@ -1,3 +1,4 @@
+import {TEACHER_ROUTES} from './teacher/routes.js';
 import { PARENT_EXTRA_ROUTES } from "./modules/parent-extras.js";
 import { sessionForRole, bottomRoutes } from "./role-experience.js";
 import { renderRoleHome } from "./modules/role-home.js";
@@ -131,6 +132,7 @@ function syncBottomNav() {
 async function renderRoute() {
   const version=++renderVersion;
   if(!canRoute(currentRoute)){currentRoute='dashboard';history.replaceState(null,'',`${location.pathname}${location.search}#dashboard`);}
+  document.body.dataset.activeRole=activeRole;
   renderNav();syncBottomNav();
   document.getElementById('pageTitle').textContent=routeLabel[currentRoute]||'Beranda';
   const mount=document.createElement('div');
@@ -140,6 +142,7 @@ async function renderRoute() {
   const ctx={session:scopedSession,master,yearId:currentAcademicYearId(),year:currentAcademicYear(),root:mount,navigate,rerender:renderRoute,roleName:roleLabel([activeRole])};
   try {
     if(currentRoute==='dashboard')await renderDashboard(ctx);
+    else if(activeRole==='guru_mapel'&&TEACHER_ROUTES[currentRoute])await TEACHER_ROUTES[currentRoute](ctx);
     else await routes[currentRoute](ctx);
   } catch(error) {
     if(version===renderVersion)mount.innerHTML=`<div class="empty-state error-state"><strong>Gagal memuat halaman</strong><p>${escapeHtml(error.message||String(error))}</p><button type="button" class="btn btn-secondary" id="retryRoute">Coba Lagi</button></div>`;

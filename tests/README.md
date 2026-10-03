@@ -26,3 +26,12 @@ MADANI_JSDOM_MODULE=/absolute/path/to/jsdom/lib/api.js node --test tests/user-ma
 ```
 
 `access-rules.mjs` mengevaluasi ekspresi rules dengan snapshot simulasi; tidak menggantikan integrasi Firebase Emulator. Uji UI memakai callback palsu dan tidak membuat/mengubah akun Firebase.
+
+Guru Mapel:
+
+```sh
+node --test tests/teacher-model.mjs tests/teacher-rules.mjs
+MADANI_JSDOM_MODULE=/absolute/path/to/jsdom/lib/api.js node --experimental-vm-modules --test tests/teacher-ui.mjs
+```
+
+20 tes Guru memeriksa aturan dan skenario penyimpanan memakai data uji. Lokasi GPS perangkat dan izin nyata tidak diminta dalam uji. Detail dan batas verifikasi: `docs/GURU-MAPEL.md`.

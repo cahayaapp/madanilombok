@@ -1,0 +1,5 @@
+import {getNode} from '../repository.js';
+function records(node,predicate,out=[]){if(!node||typeof node!=='object')return out;if(predicate(node)){out.push(node);return out;}Object.values(node).forEach(n=>records(n,predicate,out));return out;}
+// Pilot RTDB permits authenticated reads. Filter by canonical student ID, never name.
+export async function learningForStudent(yearId,studentId){const node=await getNode(`academic/learning_sessions/${yearId}`);return records(node,r=>!!r.scheduleId&&!!r.students).filter(r=>r.students[studentId]).map(r=>({...r.students[studentId],date:r.date,subjectId:r.subjectId,scheduleId:r.scheduleId,note:r.note||'',stage:r.stage}));}
+export async function examsForStudent(yearId,studentId){const node=await getNode(`academic/exam_sessions/${yearId}`);return records(node,r=>!!r.schema&&!!r.students).filter(r=>r.stage==='FINAL'&&r.students[studentId]).map(r=>({...r.students[studentId],date:r.date,subjectId:r.subjectId,period:`${r.type} ${r.period}`,schema:r.schema}));}

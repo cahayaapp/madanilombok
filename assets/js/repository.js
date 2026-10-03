@@ -215,3 +215,18 @@ export async function saveWorkspaceRecord(path,id,data,actorUid) {
 export function watchUserProfile(uid,callback,onError){
   return onValue(ref(db,pathFor(`users/${uid}`)),snapshot=>callback(snapshot.val()),onError);
 }
+
+/** Atomic teacher session revision. A repeated check-in returns the original timestamp. */
+export async function saveTeacherSession(path,payload,{expectedVersion=null,createOnly=false,actorUid}={}) {
+  const initial=await get(ref(db,pathFor(path)));
+  if(createOnly&&initial.exists())return initial.val();
+  let rejection='Data telah berubah. Muat ulang sebelum menyimpan.';
+  const result=await runTransaction(ref(db,pathFor(path)),current=>{
+    if(createOnly&&current)return;
+    if(expectedVersion!==null&&(current?.version||0)!==expectedVersion)return;
+    if(current?.teacherUid&&current.teacherUid!==actorUid){rejection='Sesi ini telah dicatat guru lain.';return;}
+    return {...payload,createdBy:current?.createdBy||actorUid,createdAt:current?.createdAt||serverTimestamp(),updatedBy:actorUid,updatedAt:serverTimestamp()};
+  },{applyLocally:false});
+  if(!result.committed){if(createOnly&&result.snapshot.exists())return result.snapshot.val();throw Error(rejection);}
+  return result.snapshot.val();
+}

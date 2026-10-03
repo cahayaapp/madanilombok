@@ -1,3 +1,4 @@
+import {renderTeacherHome} from '../teacher/home.js';
 import {getNode,listNode} from '../repository.js';
 import {ROLE_EXPERIENCE,localDate,filterScopedStudents} from '../role-experience.js';
 import {pageHeader,panel,metric,escapeHtml,empty,badge} from './common.js';
@@ -6,6 +7,7 @@ import {renderFinanceDashboard} from './finance.js';
 export async function renderRoleHome(ctx,items) {
   const role=ctx.session.activeRole,exp=ROLE_EXPERIENCE[role];
   if(!exp){ctx.root.innerHTML=empty('Belum ada role aktif. Hubungi administrator.');return;}
+  if(role==='guru_mapel')return renderTeacherHome(ctx);
   if(role==='wali_santri') return renderParentHome(ctx);
   if(role==='kasir') return renderFinanceDashboard(ctx);
   const name=ctx.session.profile.name||ctx.session.profile.displayName||'Pengguna';

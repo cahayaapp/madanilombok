@@ -60,7 +60,132 @@
         ".write": "(auth != null && root.child('madani_app/users').child(auth.uid).exists() && root.child('madani_app/users').child(auth.uid).child('active').val() !== false && root.child('madani_app/users').child(auth.uid).child('accessRevoked').val() !== true) && (auth != null && (root.child('madani_app/users').child(auth.uid).child('role').val() === 'admin' || root.child('madani_app/users').child(auth.uid).child('role').val() === 'super_admin' || root.child('madani_app/users').child(auth.uid).child('roleFlags/admin').val() === true || root.child('madani_app/users').child(auth.uid).child('roleFlags/super_admin').val() === true))"
       },
       "academic": {
-        ".write": "(auth != null && root.child('madani_app/users').child(auth.uid).exists() && root.child('madani_app/users').child(auth.uid).child('active').val() !== false && root.child('madani_app/users').child(auth.uid).child('accessRevoked').val() !== true) && (auth != null && root.child('madani_app/users').child(auth.uid).child('role').val() !== 'wali_santri')"
+        "teacher_attendance": {
+          ".write": "(auth != null && root.child('madani_app/users').child(auth.uid).exists() && root.child('madani_app/users').child(auth.uid).child('active').val() !== false && root.child('madani_app/users').child(auth.uid).child('accessRevoked').val() !== true) && (auth != null && root.child('madani_app/users').child(auth.uid).child('role').val() !== 'wali_santri')"
+        },
+        "student_attendance": {
+          ".write": "(auth != null && root.child('madani_app/users').child(auth.uid).exists() && root.child('madani_app/users').child(auth.uid).child('active').val() !== false && root.child('madani_app/users').child(auth.uid).child('accessRevoked').val() !== true) && (auth != null && root.child('madani_app/users').child(auth.uid).child('role').val() !== 'wali_santri')"
+        },
+        "quran_records": {
+          ".write": "(auth != null && root.child('madani_app/users').child(auth.uid).exists() && root.child('madani_app/users').child(auth.uid).child('active').val() !== false && root.child('madani_app/users').child(auth.uid).child('accessRevoked').val() !== true) && (auth != null && root.child('madani_app/users').child(auth.uid).child('role').val() !== 'wali_santri')"
+        },
+        "grades": {
+          ".write": "(auth != null && root.child('madani_app/users').child(auth.uid).exists() && root.child('madani_app/users').child(auth.uid).child('active').val() !== false && root.child('madani_app/users').child(auth.uid).child('accessRevoked').val() !== true) && (auth != null && root.child('madani_app/users').child(auth.uid).child('role').val() !== 'wali_santri')"
+        },
+        "lesson_plans": {
+          ".write": "(auth != null && root.child('madani_app/users').child(auth.uid).exists() && root.child('madani_app/users').child(auth.uid).child('active').val() !== false && root.child('madani_app/users').child(auth.uid).child('accessRevoked').val() !== true) && (auth != null && root.child('madani_app/users').child(auth.uid).child('role').val() !== 'wali_santri')"
+        },
+        "teaching_attendance": {
+          "$yearId": {
+            "$staffId": {
+              ".write": "(auth != null && root.child('madani_app/users').child(auth.uid).exists() && root.child('madani_app/users').child(auth.uid).child('active').val() !== false && root.child('madani_app/users').child(auth.uid).child('accessRevoked').val() !== true) && (root.child('madani_app/users').child(auth.uid).child('role').val() === 'guru_mapel' || root.child('madani_app/users').child(auth.uid).child('roleFlags/guru_mapel').val() === true || root.child('madani_app/users').child(auth.uid).child('roles/guru_mapel').val() === true) && (root.child('madani_app/users').child(auth.uid).child('staffId').val() === $staffId || (!root.child('madani_app/users').child(auth.uid).child('staffId').exists() && auth.uid === $staffId))",
+              "$date": {
+                "$sessionId": {
+                  ".validate": "newData.exists() && newData.child('academicYearId').val() === $yearId && newData.child('staffId').val() === $staffId && newData.child('teacherUid').val() === auth.uid && !data.exists()"
+                }
+              }
+            }
+          }
+        },
+        "learning_sessions": {
+          "$yearId": {
+            "$staffId": {
+              ".write": "(auth != null && root.child('madani_app/users').child(auth.uid).exists() && root.child('madani_app/users').child(auth.uid).child('active').val() !== false && root.child('madani_app/users').child(auth.uid).child('accessRevoked').val() !== true) && (root.child('madani_app/users').child(auth.uid).child('role').val() === 'guru_mapel' || root.child('madani_app/users').child(auth.uid).child('roleFlags/guru_mapel').val() === true || root.child('madani_app/users').child(auth.uid).child('roles/guru_mapel').val() === true) && (root.child('madani_app/users').child(auth.uid).child('staffId').val() === $staffId || (!root.child('madani_app/users').child(auth.uid).child('staffId').exists() && auth.uid === $staffId))",
+              "$date": {
+                "$sessionId": {
+                  ".validate": "newData.exists() && newData.child('academicYearId').val() === $yearId && newData.child('staffId').val() === $staffId && newData.child('teacherUid').val() === auth.uid && (newData.child('stage').val() === 'AWAL' || newData.child('stage').val() === 'FINAL') && (!data.exists() || newData.child('stage').val() === 'FINAL')",
+                  "students": {
+                    "$studentId": {
+                      ".validate": "newData.child('studentId').val() === $studentId && (!data.exists() || (data.parent().parent().child('stage').val() !== 'FINAL' && data.child('statusAwal').val() === 'Belum Hadir') || newData.child('status').val() === data.child('status').val())"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "exam_sessions": {
+          "$yearId": {
+            "$staffId": {
+              ".write": "(auth != null && root.child('madani_app/users').child(auth.uid).exists() && root.child('madani_app/users').child(auth.uid).child('active').val() !== false && root.child('madani_app/users').child(auth.uid).child('accessRevoked').val() !== true) && (root.child('madani_app/users').child(auth.uid).child('role').val() === 'guru_mapel' || root.child('madani_app/users').child(auth.uid).child('roleFlags/guru_mapel').val() === true || root.child('madani_app/users').child(auth.uid).child('roles/guru_mapel').val() === true) && (root.child('madani_app/users').child(auth.uid).child('staffId').val() === $staffId || (!root.child('madani_app/users').child(auth.uid).child('staffId').exists() && auth.uid === $staffId))",
+              "$recordId": {
+                ".validate": "newData.exists() && newData.child('academicYearId').val() === $yearId && newData.child('staffId').val() === $staffId && newData.child('teacherUid').val() === auth.uid && (!data.exists() || data.child('stage').val() !== 'FINAL') && (newData.child('stage').val() === 'DRAFT' || newData.child('stage').val() === 'FINAL')"
+              }
+            }
+          }
+        },
+        "exam_followups": {
+          "$yearId": {
+            "$staffId": {
+              ".write": "(auth != null && root.child('madani_app/users').child(auth.uid).exists() && root.child('madani_app/users').child(auth.uid).child('active').val() !== false && root.child('madani_app/users').child(auth.uid).child('accessRevoked').val() !== true) && (root.child('madani_app/users').child(auth.uid).child('role').val() === 'guru_mapel' || root.child('madani_app/users').child(auth.uid).child('roleFlags/guru_mapel').val() === true || root.child('madani_app/users').child(auth.uid).child('roles/guru_mapel').val() === true) && (root.child('madani_app/users').child(auth.uid).child('staffId').val() === $staffId || (!root.child('madani_app/users').child(auth.uid).child('staffId').exists() && auth.uid === $staffId))",
+              "$recordId": {
+                ".validate": "newData.exists() && newData.child('academicYearId').val() === $yearId && newData.child('staffId').val() === $staffId && newData.child('teacherUid').val() === auth.uid"
+              }
+            }
+          }
+        },
+        "material_targets": {
+          "$yearId": {
+            "$staffId": {
+              ".write": "(auth != null && root.child('madani_app/users').child(auth.uid).exists() && root.child('madani_app/users').child(auth.uid).child('active').val() !== false && root.child('madani_app/users').child(auth.uid).child('accessRevoked').val() !== true) && (root.child('madani_app/users').child(auth.uid).child('role').val() === 'guru_mapel' || root.child('madani_app/users').child(auth.uid).child('roleFlags/guru_mapel').val() === true || root.child('madani_app/users').child(auth.uid).child('roles/guru_mapel').val() === true) && (root.child('madani_app/users').child(auth.uid).child('staffId').val() === $staffId || (!root.child('madani_app/users').child(auth.uid).child('staffId').exists() && auth.uid === $staffId))",
+              "$assignmentId": {
+                "$recordId": {
+                  ".validate": "newData.child('teacherUid').val() === auth.uid",
+                  "$date": {
+                    ".validate": "!newData.hasChild('material') || (newData.child('academicYearId').val() === $yearId && newData.child('staffId').val() === $staffId)"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "material_completions": {
+          "$yearId": {
+            "$staffId": {
+              ".write": "(auth != null && root.child('madani_app/users').child(auth.uid).exists() && root.child('madani_app/users').child(auth.uid).child('active').val() !== false && root.child('madani_app/users').child(auth.uid).child('accessRevoked').val() !== true) && (root.child('madani_app/users').child(auth.uid).child('role').val() === 'guru_mapel' || root.child('madani_app/users').child(auth.uid).child('roleFlags/guru_mapel').val() === true || root.child('madani_app/users').child(auth.uid).child('roles/guru_mapel').val() === true) && (root.child('madani_app/users').child(auth.uid).child('staffId').val() === $staffId || (!root.child('madani_app/users').child(auth.uid).child('staffId').exists() && auth.uid === $staffId))",
+              "$assignmentId": {
+                "$recordId": {
+                  ".validate": "newData.exists() && newData.child('academicYearId').val() === $yearId && newData.child('staffId').val() === $staffId && newData.child('teacherUid').val() === auth.uid"
+                }
+              }
+            }
+          }
+        },
+        "teacher_writings": {
+          "$yearId": {
+            "$staffId": {
+              ".write": "(auth != null && root.child('madani_app/users').child(auth.uid).exists() && root.child('madani_app/users').child(auth.uid).child('active').val() !== false && root.child('madani_app/users').child(auth.uid).child('accessRevoked').val() !== true) && (root.child('madani_app/users').child(auth.uid).child('role').val() === 'guru_mapel' || root.child('madani_app/users').child(auth.uid).child('roleFlags/guru_mapel').val() === true || root.child('madani_app/users').child(auth.uid).child('roles/guru_mapel').val() === true) && (root.child('madani_app/users').child(auth.uid).child('staffId').val() === $staffId || (!root.child('madani_app/users').child(auth.uid).child('staffId').exists() && auth.uid === $staffId))",
+              "$recordId": {
+                ".validate": "newData.exists() && newData.child('academicYearId').val() === $yearId && newData.child('staffId').val() === $staffId && newData.child('teacherUid').val() === auth.uid"
+              }
+            }
+          }
+        },
+        "teacher_reflections": {
+          "$yearId": {
+            "$staffId": {
+              ".write": "(auth != null && root.child('madani_app/users').child(auth.uid).exists() && root.child('madani_app/users').child(auth.uid).child('active').val() !== false && root.child('madani_app/users').child(auth.uid).child('accessRevoked').val() !== true) && (root.child('madani_app/users').child(auth.uid).child('role').val() === 'guru_mapel' || root.child('madani_app/users').child(auth.uid).child('roleFlags/guru_mapel').val() === true || root.child('madani_app/users').child(auth.uid).child('roles/guru_mapel').val() === true) && (root.child('madani_app/users').child(auth.uid).child('staffId').val() === $staffId || (!root.child('madani_app/users').child(auth.uid).child('staffId').exists() && auth.uid === $staffId))",
+              "$recordId": {
+                ".validate": "newData.exists() && newData.child('academicYearId').val() === $yearId && newData.child('staffId').val() === $staffId && newData.child('teacherUid').val() === auth.uid"
+              }
+            }
+          }
+        },
+        "quran_targets": {
+          ".write": "(auth != null && root.child('madani_app/users').child(auth.uid).exists() && root.child('madani_app/users').child(auth.uid).child('active').val() !== false && root.child('madani_app/users').child(auth.uid).child('accessRevoked').val() !== true) && (auth != null && root.child('madani_app/users').child(auth.uid).child('role').val() !== 'wali_santri')"
+        },
+        "weekly_kpi": {
+          ".write": "(auth != null && root.child('madani_app/users').child(auth.uid).exists() && root.child('madani_app/users').child(auth.uid).child('active').val() !== false && root.child('madani_app/users').child(auth.uid).child('accessRevoked').val() !== true) && (root.child('madani_app/users').child(auth.uid).child('role').val() === 'head_formal_school' || root.child('madani_app/users').child(auth.uid).child('roleFlags/head_formal_school').val() === true || root.child('madani_app/users').child(auth.uid).child('role').val() === 'super_admin' || root.child('madani_app/users').child(auth.uid).child('role').val() === 'admin')"
+        },
+        "teacher_observations": {
+          ".write": "(auth != null && root.child('madani_app/users').child(auth.uid).exists() && root.child('madani_app/users').child(auth.uid).child('active').val() !== false && root.child('madani_app/users').child(auth.uid).child('accessRevoked').val() !== true) && (root.child('madani_app/users').child(auth.uid).child('role').val() === 'head_formal_school' || root.child('madani_app/users').child(auth.uid).child('roleFlags/head_formal_school').val() === true || root.child('madani_app/users').child(auth.uid).child('role').val() === 'super_admin' || root.child('madani_app/users').child(auth.uid).child('role').val() === 'admin')"
+        },
+        "quran_placements": {
+          ".write": "(auth != null && root.child('madani_app/users').child(auth.uid).exists() && root.child('madani_app/users').child(auth.uid).child('active').val() !== false && root.child('madani_app/users').child(auth.uid).child('accessRevoked').val() !== true) && (auth != null && (root.child('madani_app/users').child(auth.uid).child('role').val() === 'admin' || root.child('madani_app/users').child(auth.uid).child('role').val() === 'super_admin' || root.child('madani_app/users').child(auth.uid).child('roleFlags/admin').val() === true || root.child('madani_app/users').child(auth.uid).child('roleFlags/super_admin').val() === true))",
+          "$id": {
+            ".validate": "newData.hasChildren(['studentId','academicYearId','programQuran','effectiveFrom']) && root.child('madani_app/students').child(newData.child('studentId').val()).exists() && (newData.child('programQuran').val() === 'TAHFIZ' || (newData.child('programQuran').val() === 'TAHSIN' && (newData.child('tahsinLevel').val() === 'LEVEL_1' || newData.child('tahsinLevel').val() === 'LEVEL_2' || newData.child('tahsinLevel').val() === 'LEVEL_3')))"
+          }
+        }
       },
       "boarding": {
         ".write": "(auth != null && root.child('madani_app/users').child(auth.uid).exists() && root.child('madani_app/users').child(auth.uid).child('active').val() !== false && root.child('madani_app/users').child(auth.uid).child('accessRevoked').val() !== true) && (auth != null && root.child('madani_app/users').child(auth.uid).child('role').val() !== 'wali_santri')"

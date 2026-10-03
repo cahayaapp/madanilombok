@@ -1,0 +1,11 @@
+// Same parsers as Cahaya Guru Menulis; file bytes stay in the browser.
+const loaded=new Map();
+function script(src){if(!loaded.has(src))loaded.set(src,new Promise((resolve,reject)=>{const el=document.createElement('script');el.src=src;el.onload=resolve;el.onerror=()=>{loaded.delete(src);el.remove();reject(Error('Pustaka impor belum dapat dimuat. Periksa koneksi lalu coba lagi.'));};document.head.append(el);}));return loaded.get(src);}
+export async function importTeacherDocument(file,onProgress=()=>{}){
+ if(file.size>10*1024*1024)throw Error('Batas impor dokumen 10 MB.');
+ const ext=file.name.split('.').pop().toLowerCase();
+ if(ext==='txt')return {text:await file.text(),type:'text'};
+ if(ext==='docx'){await script('https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.8.0/mammoth.browser.min.js');const result=await window.mammoth.convertToHtml({arrayBuffer:await file.arrayBuffer()},{styleMap:["p[style-name='Title'] => h2:fresh","p[style-name='Heading 1'] => h2:fresh","p[style-name='Heading 2'] => h3:fresh"]});return {html:result.value,type:'word'};}
+ if(ext==='pdf'){await script('https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js');window.pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';const pdf=await window.pdfjsLib.getDocument({data:await file.arrayBuffer(),isEvalSupported:false}).promise;try{const pages=[];for(let i=1;i<=pdf.numPages;i++){onProgress(`Membaca halaman ${i} dari ${pdf.numPages}…`);const page=await pdf.getPage(i),content=await page.getTextContent(),rows=[];for(const item of content.items){if(!item.str?.trim())continue;const x=Number(item.transform?.[4]||0),y=Number(item.transform?.[5]||0);let row=rows.find(r=>Math.abs(r.y-y)<=2.5);if(!row){row={y,parts:[]};rows.push(row);}row.parts.push({x,text:item.str});}pages.push(rows.sort((a,b)=>b.y-a.y).map(r=>r.parts.sort((a,b)=>a.x-b.x).map(p=>p.text).join(' ')).join('\n'));}const text=pages.join('\n\n').trim();if(!text)throw Error('PDF tidak memiliki teks yang dapat disalin. Tautkan file asli Google Drive untuk dokumen hasil pindai.');return {text,type:'pdf'};}finally{await pdf.destroy();}}
+ throw Error('Gunakan file .docx, .pdf, atau .txt.');
+}

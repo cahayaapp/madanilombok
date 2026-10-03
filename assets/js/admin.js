@@ -23,6 +23,8 @@ const pathMap = {
   subjects: "subjects",
   programs: "programs",
   "academic-schedules": "schedules/academic",
+  "attendance-locations": "settings/teacherAttendance/locations",
+  "quran-placements": "academic/quran_placements",
   "daily-schedules": "schedules/daily"
 };
 
@@ -31,6 +33,18 @@ const genderOptions = [{value:"L",label:"Putra"},{value:"P",label:"Putri"}];
 const activeOptions = [{value:"active",label:"Aktif"},{value:"inactive",label:"Nonaktif"}];
 
 const entityConfig = {
+  "quran-placements": {
+    title:"Program Al-Qur’an", subtitle:"Catat perpindahan dengan baris baru dan tanggal berlaku. Riwayat menentukan peserta ujian/setoran sesuai periodenya.", prefix:"QPL",
+    columns:[["studentId","Santri"],["academicYearId","Tahun Ajaran"],["programQuran","Program"],["tahsinLevel","Level Tahsin"],["effectiveFrom","Berlaku Mulai"],["status","Status"]],
+    fields:[
+      {name:"studentId",label:"Santri",type:"relation",relation:"students",required:true},
+      {name:"academicYearId",label:"Tahun Ajaran",type:"relation",relation:"academic-years",required:true},
+      {name:"programQuran",label:"Program",type:"select",options:[{value:"TAHSIN",label:"Tahsin"},{value:"TAHFIZ",label:"Tahfiz"}],required:true},
+      {name:"tahsinLevel",label:"Level Tahsin",type:"select",options:[1,2,3].map(n=>({value:`LEVEL_${n}`,label:`Level ${n}`}))},
+      {name:"effectiveFrom",label:"Berlaku Mulai",type:"date",required:true},
+      {name:"status",label:"Status",type:"select",options:activeOptions,default:"active"}
+    ]
+  },
   "academic-years": {
     title: "Tahun Ajaran", subtitle: "Pisahkan data berdasarkan periode agar riwayat penempatan dan jadwal tidak hilang.", prefix:"TA",
     columns: [["name","Tahun Ajaran"],["semester","Semester"],["startDate","Mulai"],["endDate","Selesai"],["status","Status"]],
@@ -122,6 +136,13 @@ const entityConfig = {
       {name:"description",label:"Keterangan",type:"textarea",full:true},{name:"status",label:"Status",type:"select",options:activeOptions,default:"active"}
     ]
   },
+  "attendance-locations": {
+    title:"Lokasi Absensi Guru", subtitle:"Titik GPS kampus Madani dan radius absensi. Kosongkan unit bila berlaku untuk semua sekolah.", prefix:"GPS",
+    columns:[["name","Lokasi"],["unitId","Unit"],["latitude","Latitude"],["longitude","Longitude"],["radiusMeter","Radius (m)"],["status","Status"]],
+    fields:[{name:"name",label:"Nama Lokasi",required:true},{name:"unitId",label:"Unit Sekolah (opsional)",type:"relation",relation:"units"},
+      {name:"latitude",label:"Latitude",type:"number",step:"any",min:-90,max:90,required:true},{name:"longitude",label:"Longitude",type:"number",step:"any",min:-180,max:180,required:true},
+      {name:"radiusMeter",label:"Radius (meter)",type:"number",min:1,required:true,default:700},{name:"status",label:"Status",type:"select",options:activeOptions,default:"active"}]
+  },
   "academic-schedules": {
     title:"Jadwal Pelajaran", subtitle:"Jadwal KBM mengambil referensi dari tahun ajaran, rombel, mata pelajaran, dan guru.", prefix:"JAD",
     columns:[["day","Hari"],["startTime","Mulai"],["endTime","Selesai"],["classId","Kelas"],["subjectId","Mapel"],["teacherStaffId","Guru"]],
@@ -155,6 +176,7 @@ function valueLabel(section, field, value) {
   if (["unitId"].includes(field)) return relationLabel("units", value);
   if (["homeroomStaffId","staffId","mentorStaffId","teacherStaffId"].includes(field)) return relationLabel("staff", value);
   if (field === "dormitoryId") return relationLabel("dormitories", value);
+  if (field === "studentId") return relationLabel("students", value);
   if (field === "classId") return relationLabel("classes", value);
   if (field === "subjectId") return relationLabel("subjects", value);
   if (field === "programId") return relationLabel("programs", value);
@@ -228,7 +250,7 @@ function renderEntity(section) {
 function rowsMarkup(section, rows) {
   const cfg = entityConfig[section];
   if (!rows.length) return `<tr><td colspan="${cfg.columns.length+1}" style="text-align:center;color:#7b8a84;padding:30px">Belum ada data.</td></tr>`;
-  return rows.map(row => `<tr>${cfg.columns.map(([f])=>`<td>${formatCell(section,f,row[f])}</td>`).join("")}<td><div class="row-actions"><button class="mini-btn" data-edit="${row.id}">Edit</button>${section==="academic-years"?`<button class="mini-btn" data-activate="${row.id}">Aktifkan</button>`:""}<button class="mini-btn danger" data-delete="${row.id}">Hapus</button></div></td></tr>`).join("");
+  return rows.map(row => `<tr>${cfg.columns.map(([f])=>`<td>${formatCell(section,f,row[f])}</td>`).join("")}<td><div class="row-actions"><button class="mini-btn" data-edit="${row.id}">Edit</button>${section==="academic-years"?`<button class="mini-btn" data-activate="${row.id}">Aktifkan</button>`:""}${section==="quran-placements"?"":`<button class="mini-btn danger" data-delete="${row.id}">Hapus</button>`}</div></td></tr>`).join("");
 }
 
 function formatCell(section, field, value) {
@@ -280,7 +302,7 @@ function fieldMarkup(field,value) {
   }else if(field.type==="multirelation"){
     const opts=fieldOptions(field); const selected=Array.isArray(value)?value:[]; control=`<select name="${field.name}" multiple size="5">${opts.map(o=>`<option value="${escapeHtml(o.value)}" ${selected.includes(o.value)?"selected":""}>${escapeHtml(o.label)}</option>`).join("")}</select>`;
   }else if(field.type==="textarea") control=`<textarea name="${field.name}" ${required} placeholder="${escapeHtml(field.placeholder||"")}">${safe}</textarea>`;
-  else control=`<input name="${field.name}" type="${field.type||"text"}" value="${safe}" ${required} placeholder="${escapeHtml(field.placeholder||"")}" />`;
+  else control=`<input name="${field.name}" type="${field.type||"text"}" value="${safe}" ${required} ${field.step?`step="${escapeHtml(field.step)}"`:""} ${field.min!==undefined?`min="${field.min}"`:""} ${field.max!==undefined?`max="${field.max}"`:""} placeholder="${escapeHtml(field.placeholder||"")}" />`;
   return `<label class="${cls}"><span>${field.label}${field.required?" *":""}</span>${control}${field.help?`<small class="muted">${escapeHtml(field.help)}</small>`:""}</label>`;
 }
 
@@ -289,6 +311,11 @@ function closeForm(){ $("#modalBackdrop").classList.add("hidden"); editState=nul
 async function submitForm(event){
   event.preventDefault(); if(!editState)return; const {section,id}=editState; const cfg=entityConfig[section]; const fd=new FormData(event.currentTarget); const data={};
   cfg.fields.forEach(f=>{let v=f.type==="multirelation"?fd.getAll(f.name):(fd.get(f.name)??""); if(f.type==="number"&&v!=="")v=Number(v); if(f.name==="roles")v=String(v).split(",").map(x=>x.trim()).filter(Boolean); data[f.name]=v;});
+  if(section==="quran-placements") {
+    if(data.programQuran==="TAHSIN"&&!data.tahsinLevel){toast("Pilih level Tahsin.","error");return;}
+    if(data.programQuran==="TAHFIZ")data.tahsinLevel="";
+    if((cache[section]||[]).some(r=>r.id!==id&&r.studentId===data.studentId&&r.academicYearId===data.academicYearId&&r.effectiveFrom===data.effectiveFrom&&r.status!=="inactive"&&data.status!=="inactive")){toast("Penempatan aktif pada tanggal itu sudah ada. Edit rekam yang sama.","error");return;}
+  }
   const recordId=id||makeId(cfg.prefix); try{await saveRecord(pathMap[section],recordId,data,session.user.uid);toast(id?"Data diperbarui.":"Data ditambahkan.");closeForm();await reloadAndRender(section);}catch(e){toast(e.message||"Gagal menyimpan data.","error")}
 }
 
