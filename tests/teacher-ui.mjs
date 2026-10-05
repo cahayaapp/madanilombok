@@ -23,9 +23,9 @@ test('teacher reflections require all 12 ratings and store objective evidence se
 test('parent read model sees published snapshots only and student-specific learning rows',async()=>{db={};const readModel=await load(new URL('assets/js/teacher/read-model.js',base).href);await readModel.evaluate();put(`academic/learning_sessions/${ctx.yearId}/staff1/day/j1`,{scheduleId:'j1',date:now.date,subjectId:'m1',students:{s1:{status:'Hadir'},s2:{status:'Alfa'}}});put(`academic/exam_sessions/${ctx.yearId}/staff1/final`,{schema:'bahasa_arab',stage:'FINAL',students:{s1:{score:80},s2:{score:60}}});put(`academic/exam_sessions/${ctx.yearId}/staff1/draft`,{schema:'bahasa_arab',stage:'DRAFT',students:{s1:{score:90}}});put(`academic/report_publications/${ctx.yearId}/s1/bulanan__2026-10`,{status:'PUBLISHED',type:'bulanan',period:'2026-10',rows:[{subjectId:'m1',score:80}]});put(`academic/report_publications/${ctx.yearId}/s1/semester__1`,{status:'WITHDRAWN',rows:[{score:99}]});const learning=await readModel.namespace.learningForStudent(ctx.yearId,'s1'),exams=await readModel.namespace.examsForStudent(ctx.yearId,'s1');assert.equal(learning.length,1);assert.equal(learning[0].status,'Hadir');assert.equal(exams.length,1);assert.equal(exams[0].score,80);});
 test('Quran roster follows historical placement and dedicated exams exclude unrelated subjects',async()=>{
  db={};put('academic/quran_placements/first',{studentId:'s1',academicYearId:ctx.yearId,programQuran:'TAHSIN',tahsinLevel:'LEVEL_1',effectiveFrom:'2026-01-01'});
- await renderQuran(ctx);assert.equal($('[data-student="s1"]'),null);assert.ok($('[data-student="s2"]'));
- change('#quranProgram','Tahsin');await settle();assert.ok($('[data-student="s1"]'));assert.equal($('[data-student="s2"]'),null);
- change('#quranDate','2025-12-31');await settle();assert.equal($('[data-student="s1"]'),null);
+ await renderQuran(ctx);assert.ok($('[data-student="s1"] [data-quality-score]'));assert.ok($('[data-student="s2"] [data-lines]'));
+ await renderQuran(ctx);assert.ok($('[data-student="s1"] [data-quality-score]'));assert.ok($('[data-student="s2"] [data-lines]'));
+ change('#quranDate','2025-12-31');await settle();assert.ok($('[data-student="s1"] [data-lines]'));
  await routes.grades(ctx);await click('[data-schema="bahasa_arab"]');assert.equal($('[data-assignment="c1__m1"]'),null);
 });
 test('combined lesson records both class rosters under one teacher attendance session',async()=>{
@@ -62,7 +62,7 @@ test('Tahfiz uses assigned halaqah only even when teacher has Quran class schedu
 });
 test('Tahsin halaqah includes unplaced members and excludes students from class only',async()=>{
  db={};const tahsin={...ctx,master:{...ctx.master,groups:[{id:'g1',name:'Tahsin — Pembina',programType:'quran',type:'Tahsin',mentorStaffId:'staff1'}],groupAssignments:{g1:{s1:true}}}};
- await renderQuran(tahsin);assert.equal($('#quranProgram').value,'Tahsin');assert.ok($('[data-student="s1"]'));assert.equal($('[data-student="s2"]'),null);
+ await renderQuran(tahsin);assert.equal($('#quranProgram'),null);assert.ok($('[data-student="s1"]'));assert.equal($('[data-student="s2"]'),null);
  assert.equal(quranModule.namespace.halaqahEligible('Tahsin',{},{name:'Tahsin & Tahfiz'}),true);
  assert.equal(quranModule.namespace.halaqahEligible('Tahfiz',{},{name:'Tahsin & Tahfiz'}),true);
 });
@@ -78,6 +78,17 @@ test('Quran multiple-surah mode saves expanded portions and validates last verse
 test('Quran manual drafts survive mode changes and reverse surah range works for Tahsin',async()=>{
  db={};await renderQuran(ctx);$('[data-student="s1"] [data-end]').value='4';await click('[data-student="s1"] [data-portion-mode="range"]');await click('[data-student="s1"] [data-portion-mode="manual"]');assert.equal($('[data-student="s1"] [data-end]').value,'4');
  await click('[data-student="s1"] [data-add]');assert.equal($('[data-student="s1"]').querySelectorAll('[data-portion]').length,2);
- put('academic/quran_placements/p',{studentId:'s1',academicYearId:ctx.yearId,programQuran:'TAHSIN',effectiveFrom:'2020-01-01'});change('#quranProgram','Tahsin');await settle();await click('[data-student="s1"] [data-portion-mode="range"]');change('[data-student="s1"] [data-first]','113');change('[data-student="s1"] [data-last]','112');$('[data-student="s1"] [data-last-verse]').value='2';await click('[data-student="s1"] [data-save]');
+ put('academic/quran_placements/p',{studentId:'s1',academicYearId:ctx.yearId,programQuran:'TAHSIN',effectiveFrom:'2020-01-01'});await renderQuran(ctx);await click('[data-student="s1"] [data-portion-mode="range"]');change('[data-student="s1"] [data-first]','113');change('[data-student="s1"] [data-last]','112');$('[data-student="s1"] [data-last-verse]').value='2';await click('[data-student="s1"] [data-save]');
  const r=Object.values(read(`academic/quran_records/${ctx.yearId}/g1/s1`))[0];assert.equal(r.totalVerses,8);assert.equal(r.portions[0].surah,113);assert.equal(r.portions[1].end,2);
+});
+
+test('Quran form takes activity from the home card without a program selector',async()=>{
+ db={};await renderQuran(ctx);assert.equal($('#quranProgram'),null);assert.match(ctx.root.textContent,/Setoran Ziyadah/);assert.equal($('#murojaahField').hidden,true);await quranModule.namespace.renderTeacherQuran({...ctx,session:{...ctx.session,activeRole:'mentor_tahsin_tahfiz'}},'Murojaah');assert.equal($('#quranProgram'),null);assert.match(ctx.root.textContent,/Setoran Muroja’ah/);assert.equal($('#murojaahField').hidden,false);assert.ok($('[data-student="s1"] [data-lines]'));
+});
+
+test('Tahfiz home has two cards that open the matching Quran activity',async()=>{
+ const homeModule=await load(new URL('assets/js/tahfiz-home.js',base).href);await homeModule.evaluate();const visited=[];await homeModule.namespace.renderTahfizHome({...ctx,navigate:r=>visited.push(r)});
+ assert.deepEqual([...ctx.root.querySelectorAll('[data-quran-route] b')].map(b=>b.textContent),['Ziyadah','Muroja’ah']);
+ ctx.root.querySelectorAll('[data-quran-route]').forEach(b=>b.click());assert.deepEqual(visited,['quran-ziyadah','quran-murojaah']);
+ await quranModule.namespace.renderTeacherQuran({...ctx,session:{...ctx.session,activeRole:'mentor_tahsin_tahfiz'}},'Murojaah');assert.equal($('#quranProgram'),null);assert.equal($('#murojaahField').hidden,false);
 });

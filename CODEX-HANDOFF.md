@@ -209,3 +209,15 @@ Verifikasi: 141 tes lokal lulus, termasuk kelompok tanpa jadwal, penolakan fallb
 Mengacu `fajrulislam/guru/inputSetoranTahfiz.html`: ditambahkan mode Satu Surat / Manual dan Banyak Surat (Dari Surat, Sampai Surat, Ayat Terakhir), total ayat otomatis, termasuk rentang mundur. Mode tersedia Tahfiz/Tahsin/Murojaah; beralih mode mempertahankan isian manual. Validasi rentang tetap dijalankan sebelum simpan ke groupId. Checkbox terjemah/tadabbur/Cahaya Tahfiz dihapus dari form dan field deepReflection tidak ditulis pada setoran baru; record lama tidak diubah. Tata letak row surat, Hapus Baris, tombol aksi, margin judul dan ruang navigasi bawah diatur khusus quran-page.
 
 143 tes lokal lulus; tambahan menguji total/rincian banyak surat, ayat terakhir tidak valid, rentang mundur Tahsin, pelestarian isian manual, serta field checkbox yang dihapus. UI akun Muhasim di VS Code terverifikasi membuka mode Banyak Surat tanpa menyimpan setoran percobaan. Bukti /tmp/madani-banyak-surat.png. Cache v52-quran-multi-surah; stylesheet app v52. Belum deploy hosting.
+
+## 6 Oktober — Dua pilihan program Quran
+
+Pilihan program form kini hanya Ziyadah dan Muroja’ah sesuai permintaan pengguna. Ziyadah memakai form Tahsin/Tahfiz sesuai penempatan individual bertanggal atau jenis halaqah; seluruh anggota halaqah tetap terlihat. Muroja’ah mempunyai jenis Harian/Pekanan/Bulanan. Setoran baru menyimpan activity dengan type lama untuk kompatibilitas riwayat. Tidak migrasi atau menulis database saat tes. 144 tes lulus termasuk pilihan dua menu dan form yang mengikuti penempatan. Cache v53-ziyadah-murojaah. Perubahan lokal, belum deploy hosting.
+
+## Koreksi pengguna — kartu beranda Tahfiz
+
+Maksud dua menu adalah dua kartu pada beranda, bukan sekadar dropdown form. Beranda Pembina Tahfiz kini mempunyai kartu Ziyadah dan Muroja’ah, masing-masing menuju route quran-ziyadah/quran-murojaah dengan pilihan form awal yang sesuai. Header identitas dan pengalih role tetap. Daftar kartu halaqah diganti ringkasan jumlah; halaqah dipilih di form. 145 tes lulus termasuk klik kedua kartu dan default Muroja’ah. Cache v54-tahfiz-home-cards, belum deploy hosting.
+
+## 6 Oktober — kartu emas dan form tanpa pemilih program
+
+Kartu Muroja’ah memakai kelas secondary dengan gradasi emas Madani yang sudah tersedia. Dropdown Program dihapus dari lembar setoran; selectedProgram berasal dari route kartu dan tetap selama memilih halaqah/tanggal. Judul menjadi Setoran Ziyadah atau Setoran Muroja’ah; jenis Muroja’ah Harian/Pekanan/Bulanan tetap tersedia. 145 tes lulus. Cache v55-tahfiz-direct-forms; lokal, belum deploy hosting.

@@ -40,6 +40,8 @@ export const routes = {
   "teacher-attendance": renderTeacherAttendance,
   "student-attendance": renderStudentAttendance,
   quran: renderQuran,
+  "quran-ziyadah": ctx=>renderTeacherQuran(ctx,'Ziyadah'),
+  "quran-murojaah": ctx=>renderTeacherQuran(ctx,'Murojaah'),
   grades: renderGrades,
   schedule: renderSchedule,
   "lesson-plans": renderLessonPlans,
@@ -102,6 +104,8 @@ export const routes = {
 
 const routeFeature = Object.fromEntries(MENU_GROUPS.flatMap(g => g.items.map(i => [i.id, i.feature || "dashboard"])));
 const routeLabel = Object.fromEntries(MENU_GROUPS.flatMap(g => g.items.map(i => [i.id, i.label])));
+Object.assign(routeFeature,{'quran-ziyadah':'academic.quran','quran-murojaah':'academic.quran'});
+Object.assign(routeLabel,{'quran-ziyadah':'Ziyadah','quran-murojaah':'Muroja’ah'});
 
 function visibleGroups() {
   return MENU_GROUPS.map(group => ({
