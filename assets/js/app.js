@@ -1,3 +1,7 @@
+import {decorateManagement} from './management-layout.js';
+import {HEALTH_ROUTES} from './health.js';
+import {renderMentorForm,renderMentorHistory} from './mentoring.js';
+import {renderTeacherQuran} from './teacher/quran.js';
 import {TEACHER_ROUTES} from './teacher/routes.js';
 import { PARENT_EXTRA_ROUTES } from "./modules/parent-extras.js";
 import { sessionForRole, bottomRoutes } from "./role-experience.js";
@@ -31,6 +35,7 @@ const root = document.getElementById("content");
 
 export const routes = {
   ...WORKSPACE_ROUTES,
+  ...HEALTH_ROUTES,
   ...PARENT_EXTRA_ROUTES,
   "teacher-attendance": renderTeacherAttendance,
   "student-attendance": renderStudentAttendance,
@@ -51,9 +56,9 @@ export const routes = {
   "naqib-kpi": renderNaqibKpi,
   "naqib-guide": renderNaqibGuide,
   "mentee-list": renderMenteeList,
-  mentoring: renderMentoring,
-  "mentoring-targets": renderMentoringTargets,
-  "mentoring-history": renderMentoringHistory,
+  mentoring: renderMentorForm,
+  "mentoring-targets": renderMentorHistory,
+  "mentoring-history": renderMentorHistory,
   "mentoring-kpi": renderMentoringKpi,
   "mentoring-guide": renderMentoringGuide,
   "case-inbox": renderCaseInbox,
@@ -142,8 +147,10 @@ async function renderRoute() {
   const ctx={session:scopedSession,master,yearId:currentAcademicYearId(),year:currentAcademicYear(),root:mount,navigate,rerender:renderRoute,roleName:roleLabel([activeRole])};
   try {
     if(currentRoute==='dashboard')await renderDashboard(ctx);
+    else if(activeRole==='mentor_tahsin_tahfiz'&&currentRoute==='quran')await renderTeacherQuran(ctx);
     else if(activeRole==='guru_mapel'&&TEACHER_ROUTES[currentRoute])await TEACHER_ROUTES[currentRoute](ctx);
     else await routes[currentRoute](ctx);
+    if(currentRoute.startsWith('management-'))decorateManagement(ctx);
   } catch(error) {
     if(version===renderVersion)mount.innerHTML=`<div class="empty-state error-state"><strong>Gagal memuat halaman</strong><p>${escapeHtml(error.message||String(error))}</p><button type="button" class="btn btn-secondary" id="retryRoute">Coba Lagi</button></div>`;
     mount.querySelector('#retryRoute')?.addEventListener('click',renderRoute);

@@ -230,3 +230,90 @@ export async function saveTeacherSession(path,payload,{expectedVersion=null,crea
   if(!result.committed){if(createOnly&&result.snapshot.exists())return result.snapshot.val();throw Error(rejection);}
   return result.snapshot.val();
 }
+
+/** UKS stock, examination and permission changes commit together, independent of finance. */
+export async function commitHealthOperation(yearId,operation,actorUid){
+ const {applyHealthOperation}=await import('./health-model.js');
+ const profile=await getNode(`users/${actorUid}`);
+ const roles=new Set([profile?.role,...(Array.isArray(profile?.roles)?profile.roles:[]),...Object.keys(profile?.roleFlags||{}).filter(r=>profile.roleFlags[r])]);
+ if(!profile||profile.active===false||profile.accessRevoked===true)throw Error('Akun tidak aktif.');
+ const decision=operation.type==='permit-decision',allowed=decision?['director','deputy_director','admin','super_admin']:['kesehatan','admin','super_admin'];
+ if(!allowed.some(r=>roles.has(r)))throw Error('Role tidak berwenang menyimpan operasi UKS ini.');
+ let rejection='Perubahan UKS belum dapat disimpan.';
+ const path=decision?`health/${yearId}/permits/${operation.examId}`:`health/${yearId}`;
+ await get(ref(db,pathFor(path)));
+ const result=await runTransaction(ref(db,pathFor(path)),current=>{
+  try{
+   if(decision)return applyHealthOperation({permits:{[operation.examId]:current}},operation,actorUid,Date.now()).permits[operation.examId];
+   return applyHealthOperation(current,operation,actorUid,Date.now());
+  }catch(error){rejection=error.message;return;}
+ },{applyLocally:false});
+ if(!result.committed)throw Error(rejection);
+ if(operation.type==='exam'&&operation.data?.learningStatus==='TIDAK_MENGIKUTI'){try{await correctHealthAttendance(yearId,operation.id,operation.data.studentId,actorUid);}catch(error){throw Error('Pemeriksaan dan stok sudah tersimpan; sinkronisasi absensi belum selesai. Tekan Simpan kembali dengan data yang sama. '+error.message);}}
+ return result.snapshot.val();
+}
+
+/** Case is authoritative; deterministic projections can be repaired by retrying the same operation. */
+export async function commitCaseOperation(yearId,caseId,operation,session){
+ const {applyCaseOperation}=await import('./counselor-model.js');
+ const record=await transitionWorkspaceRecord(`boarding/cases/${yearId}`,caseId,current=>applyCaseOperation(current,operation,session,Date.now()),session.user.uid);
+ const projections={};
+ if(operation.type==='session')projections[`boarding/counseling/${yearId}/${caseId}/${operation.id}`]=record.sessions[operation.id];
+ if(operation.type==='action')projections[`boarding/case_actions/${yearId}/${operation.id}`]={...record.actions[operation.id],caseId,studentId:record.studentId};
+ if(operation.type==='points')projections[`discipline/points/${yearId}/${record.studentId}/${operation.id}`]={...record.pointRecord,caseId};
+ if(operation.type==='escalation')projections[`boarding/escalations/${yearId}/${operation.id}`]={...record.escalations[operation.id],caseId,studentId:record.studentId,createdByUid:session.user.uid,status:'menunggu_arahan'};
+ if(Object.keys(projections).length)await update(ref(db,pathFor('')),projections);
+ return record;
+}
+
+/** Retroactive UKS correction is a retryable projection of an already committed examination. */
+export async function correctHealthAttendance(yearId,examId,studentId,actorUid){
+ const {correctAttendanceFromHealth}=await import('./health-model.js');
+ const memo=await getNode(`health/${yearId}/learning_memos/${studentId}/${examId}`);
+ if(!memo?.excusedFromLearning)return {count:0};
+ const [assignment,schedules,programs]=await Promise.all([getNode(`assignments/classes/${yearId}/${studentId}`),listNode('schedules/academic'),getNode(`boarding/program_attendance/${yearId}/${memo.date}`)]);
+ const staffIds=[...new Set(schedules.filter(s=>(!s.academicYearId||s.academicYearId===yearId)&&(s.classIds||s.combinedClassIds||[s.classId]).includes(assignment?.classId)).map(s=>s.staffId||s.teacherStaffId).filter(Boolean))];
+ const sessions=await Promise.all(staffIds.map(async id=>[id,await getNode(`academic/learning_sessions/${yearId}/${id}/${memo.date}`)]));
+ const targets=[];
+ for(const [staff,rows]of sessions)for(const [id,row]of Object.entries(rows||{}))if(row.students?.[studentId]?.status==='Alfa')targets.push(`academic/learning_sessions/${yearId}/${staff}/${memo.date}/${id}/students/${studentId}`);
+ for(const [id,rows]of Object.entries(programs||{}))if(rows?.[studentId]?.status==='Alfa')targets.push(`boarding/program_attendance/${yearId}/${memo.date}/${id}/${studentId}`);
+ let count=0;
+ for(const path of targets){const result=await runTransaction(ref(db,pathFor(path)),current=>{if(current?.status!=='Alfa')return;return correctAttendanceFromHealth(current,memo,examId,actorUid,Date.now());},{applyLocally:false});if(result.committed)count++;}
+ return {count};
+}
+
+/** Reopen only status/revision metadata; the existing grades stay intact. */
+export async function requestExamRevision(yearId,staffId,recordId,reason,actorUid){
+ const {examRevisionChanges}=await import('./academic-review.js');
+ const profile=await getNode(`users/${actorUid}`),roles=new Set([profile?.role,...(Array.isArray(profile?.roles)?profile.roles:[]),...Object.keys(profile?.roleFlags||{}).filter(r=>profile.roleFlags[r])]);
+ if(profile?.active===false||profile?.accessRevoked||!['head_formal_school','admin','super_admin'].some(r=>roles.has(r)))throw Error('Revisi dibuka oleh Kepala Sekolah atau administrator.');
+ const path=`academic/exam_sessions/${yearId}/${staffId}/${recordId}`,record=await getNode(path);
+ if(!record||record.staffId!==staffId)throw Error('Sesi nilai tidak ditemukan.');
+ if(!roles.has('admin')&&!roles.has('super_admin')){const scope=profile.roleScopes?.head_formal_school||profile,ids=record.classIds||[record.classId];if(scope.classIds?.length&&ids.some(id=>!scope.classIds.includes(id)))throw Error('Kelas di luar penugasan.');if(scope.unitIds?.length){const classes=await Promise.all(ids.map(id=>getNode(`classes/${id}`)));if(classes.some(c=>!scope.unitIds.includes(c?.unitId)))throw Error('Unit sekolah di luar penugasan.');}}
+ await update(ref(db,pathFor(path)),examRevisionChanges(record,reason,actorUid,Date.now()));
+}
+
+export async function commitReportPublication(yearId,request,actorUid){
+ const {reportKey,reportReadiness,mutatePublication,rankClassReports}=await import('./report-publication.js');
+ const profile=await getNode(`users/${actorUid}`),roles=new Set([profile?.role,...(Array.isArray(profile?.roles)?profile.roles:[]),...Object.keys(profile?.roleFlags||{}).filter(r=>profile.roleFlags[r])]);
+ if(!profile||profile.active===false||profile.accessRevoked||!roles.has(request.role))throw Error('Role peninjau tidak aktif.');
+ const [assignment,student,schedules,tree]=await Promise.all([getNode(`assignments/classes/${yearId}/${request.studentId}`),getNode(`students/${request.studentId}`),listNode('schedules/academic'),getNode(`academic/exam_sessions/${yearId}`)]);
+ if(assignment?.classId!==request.classId||!student)throw Error('Penempatan santri berubah.');
+ const scope=profile.roleScopes?.[request.role]||profile;
+ if(scope.unitIds?.length&&!scope.unitIds.includes(student.unitId)||scope.classIds?.length&&!scope.classIds.includes(request.classId))throw Error('Santri di luar penugasan.');
+ const assignments=await getNode(`assignments/classes/${yearId}`)||{};
+ const sessions=[];function walk(v){if(!v||typeof v!=='object')return;if(v.schema&&v.students){sessions.push(v);return;}Object.values(v).forEach(walk);}walk(tree);
+ const readiness=reportReadiness(sessions,schedules.filter(s=>!s.academicYearId||s.academicYearId===yearId),request.studentId,request.classId,request.type,request.period),path=`academic/report_publications/${yearId}/${request.studentId}/${reportKey(request.type,request.period)}`,target=ref(db,pathFor(path));
+ const ranking=rankClassReports(Object.entries(assignments).filter(([,a])=>a.classId===request.classId).map(([studentId])=>({studentId,readiness:reportReadiness(sessions,schedules.filter(s=>!s.academicYearId||s.academicYearId===yearId),studentId,request.classId,request.type,request.period)}))).find(r=>r.studentId===request.studentId)||null;
+ await get(target);let failure;const result=await runTransaction(target,current=>{try{return mutatePublication(current,request.action,{...request,actorUid,actorName:profile.name||'',readiness,ranking,now:Date.now()});}catch(error){failure=error;return;}},{applyLocally:false});
+ if(!result.committed)throw failure||Error('Publikasi belum tersimpan.');return result.snapshot.val();
+}
+
+export async function submitFindingResponse(yearId,findingId,id,data,actorUid){
+ const [finding,profile]=await Promise.all([getNode(`workspaces/${yearId}/findings/${findingId}`),getNode(`users/${actorUid}`)]);
+ if(!profile||profile.active===false||profile.accessRevoked||finding?.assigneeUid!==actorUid||['RESOLVED','DISMISSED'].includes(finding.status))throw Error('Temuan tidak ditugaskan kepada Anda atau sudah ditutup.');
+ if(!data.result?.trim()||!data.evidence?.trim())throw Error('Isi hasil dan bukti tindak lanjut.');
+ const target=ref(db,pathFor(`workspaces/${yearId}/finding_responses/${id}`)),existing=await get(target);if(existing.exists()){const old=existing.val();if(old.actorUid!==actorUid||old.findingId!==findingId)throw Error('ID tindak lanjut sudah digunakan.');return old;}
+ const result=await runTransaction(target,current=>current||{findingId,actorUid,actorName:profile.name||'',result:data.result.trim(),evidence:data.evidence.trim(),createdAt:Date.now()},{applyLocally:false});
+ if(!result.committed)throw Error('Tindak lanjut belum tersimpan.');return result.snapshot.val();
+}

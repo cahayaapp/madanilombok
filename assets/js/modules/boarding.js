@@ -1,9 +1,16 @@
-import { getNode, listNode, pushRecord, saveRecord, setNode, transitionWorkspaceRecord } from "../repository.js";
+import {renderCounselorWorkspace,renderCounselorReflection} from '../counselor-workspace.js';
+import {renderNaqibStudentAssessment,renderNaqibReflection} from '../naqib-assessment.js';
+import {counselorLevel,routeCounselorCase} from '../counselor-model.js';
+import {recurringView,arabicRosterView} from '../boarding-roster-view.js';
+import {dailyForStaff,programStudents,genderMatches} from '../daily-schedules.js';
+import { getNode, listNode, pushRecord, saveRecord, setNode, patchNode, transitionWorkspaceRecord, commitCaseOperation } from "../repository.js";
 import { byId, studentsForClass } from "../app-store.js";
+import {filterScopedStudents,localDate} from '../role-experience.js';
 import {
   pageHeader, panel, metric, table, formRow, input, textarea, select, selectOptions, studentOptions,
-  attachAsync, escapeHtml, badge, today, toast
+  attachAsync, escapeHtml, badge, toast
 } from "./common.js";
+const today=localDate;
 
 function boardingStudents(ctx) {
   const assigned = new Set(Object.keys(ctx.master.roomAssignments || {}));
@@ -25,51 +32,44 @@ function scopedCases(ctx, cases = []) {
   return cases.filter(c => studentMap[c.studentId]?.gender === gender);
 }
 
-function mentees(ctx) {
-  const profile = ctx.session.profile;
-  const explicit = profile.menteeStudentIds || [];
-  if (explicit.length) {
-    const map=byId(ctx.master.students||[]); return explicit.map(id=>map[id]).filter(Boolean);
-  }
-  const classIds = profile.classIds || [];
-  const autoClassIds = (ctx.master.classes||[]).filter(c => {
-    const n=(profile.name||profile.displayName||"").toLowerCase();
-    return n && (c.homeroomName||"").toLowerCase() === n;
-  }).map(c=>c.id);
-  const all=[...new Set([...classIds,...autoClassIds])];
-  return all.flatMap(id=>studentsForClass(id,ctx.master)).filter((s,i,a)=>a.findIndex(x=>x.id===s.id)===i);
-}
+function mentees(ctx) {return filterScopedStudents(ctx.master,ctx.session.profile,'guru_wali');}
 
 export async function renderNaqibPrograms(ctx) {
   const programMap=byId(ctx.master.programs||[]);
   const gender=profileGender(ctx);
-  const schedules=(ctx.master.dailySchedules||[]).filter(s=>!gender || !s.genderScope || s.genderScope===gender).sort((a,b)=>(a.order||999)-(b.order||999));
+  const schedules=(ctx.master.dailySchedules||[]).filter(s=>dailyForStaff(s,ctx.session.profile,ctx.yearId)).sort((a,b)=>(a.audience||"").localeCompare(b.audience||"")||(a.order||999)-(b.order||999));
   ctx.root.innerHTML=pageHeader("Program Hari Ini","Jadwal 24 jam yang menjadi panduan pendampingan Naqib.")+`
-    <div class="timeline">${schedules.map(s=>{const p=programMap[s.programId]||{};return `<article class="timeline-item"><div class="timeline-time">${escapeHtml(`${s.startTime||"—"}${s.endTime?`–${s.endTime}`:""}`)}</div><div class="timeline-dot"></div><div class="timeline-card"><span>${escapeHtml(s.audience||"Santri")}</span><strong>${escapeHtml(p.name||"Program")}</strong><p>${escapeHtml(p.detail||"")}</p><small>PJ sumber: ${escapeHtml(p.defaultPic||"—")}</small></div></article>`}).join("")}</div>`;
+    <label>Jadwal <select id="dailyAudience"><option value="">Semua asrama</option><option value="boarding_general">Asrama Umum</option><option value="boarding_gema">Asrama GEMA</option></select></label><div class="timeline">${schedules.map(s=>{const p=programMap[s.programId]||{};return `<article class="timeline-item" data-daily-scope="${escapeHtml(s.participantScope||'')}"><div class="timeline-time">${escapeHtml(`${s.startTime||"—"}${s.endTime?`–${s.endTime}${s.endsNextDay?" (+1 hari)":""}`:""}`)}</div><div class="timeline-dot"></div><div class="timeline-card"><span>${escapeHtml(s.audience||"Santri")}</span><strong>${escapeHtml(p.name||"Program")}</strong><p>${escapeHtml(p.detail||"")}</p><small>PJ sumber: ${escapeHtml(p.defaultPic||"—")}</small>${s.notes?`<p>${escapeHtml(s.notes)}</p>`:""}</div></article>`}).join("")}</div>`;
+  ctx.root.insertAdjacentHTML("beforeend",arabicRosterView(ctx.master,ctx.session.profile)+recurringView(ctx.master,ctx.session.profile,ctx.yearId));
+  ctx.root.querySelector("#dailyAudience").onchange=e=>ctx.root.querySelectorAll("[data-daily-scope]").forEach(row=>row.hidden=Boolean(e.target.value&&row.dataset.dailyScope!==e.target.value));
 }
 
 export async function renderNaqibAttendance(ctx) {
-  const gender=profileGender(ctx); const programs=(ctx.master.programs||[]).filter(p=>!gender || !p.genderScope || p.genderScope===gender); const students=boardingStudents(ctx);
+  const gender=profileGender(ctx); const programs=(ctx.master.programs||[]).filter(p=>p.status!=="inactive"&&genderMatches(p.genderScope,gender)&&(ctx.master.dailySchedules||[]).some(s=>s.programId===p.id&&dailyForStaff(s,ctx.session.profile,ctx.yearId)));
   ctx.root.innerHTML=pageHeader("Presensi Program Asrama","Catat kehadiran santri pada program kehidupan asrama.")+`
-    ${panel("Pilih Program",`<div class="filter-row wrap"><select id="programPick">${selectOptions(programs)}</select><input type="date" id="programDate" value="${today()}"><button class="btn btn-primary" id="loadProgramAtt">Tampilkan</button></div>`)}<div id="programAttWork" style="margin-top:18px"></div>`;
+    ${panel("Pilih Program",`<div class="filter-row wrap"><select id="programPick">${selectOptions(programs)}</select><select id="arabicGroupPick" hidden><option value="">Semua kelompok bahasa</option>${selectOptions((ctx.master.groups||[]).filter(g=>g.programType==="arabic"&&g.status!=="inactive"&&genderMatches(g.gender,gender)))}</select><input type="date" id="programDate" value="${today()}"><button class="btn btn-primary" id="loadProgramAtt">Tampilkan</button></div>`)}<div id="programAttWork" style="margin-top:18px"></div>`;
+  const programPick=ctx.root.querySelector('#programPick'),arabicPick=ctx.root.querySelector('#arabicGroupPick');
+  const updateArabic=()=>{arabicPick.hidden=!(ctx.master.dailySchedules||[]).some(s=>s.programId===programPick.value&&s.startTime==='05:40');if(arabicPick.hidden)arabicPick.value='';};
+  programPick.onchange=updateArabic;updateArabic();
   document.getElementById("loadProgramAtt")?.addEventListener("click",async()=>{
     const programId=document.getElementById("programPick").value,date=document.getElementById("programDate").value;
-    if(!programId) return toast("Pilih program.","warning");
+    if(!programId||!date) return toast("Pilih program dan tanggal.","warning");
+    const students=programStudents(programId,ctx.master).filter(s=>genderMatches(gender,s.gender)&&(!arabicPick.value||arabicPick.hidden||ctx.master.groupAssignments?.[arabicPick.value]?.[s.id]));
     const saved=await getNode(`boarding/program_attendance/${ctx.yearId}/${date}/${programId}`)||{};
     const ws=document.getElementById("programAttWork");
     ws.innerHTML=pageHeader("Daftar Santri",`${students.length} santri`,`<button class="btn btn-primary" id="saveProgramAtt">Simpan Presensi</button>`)+table(["Santri","Status","Catatan"],students.map(s=>`<tr data-student="${s.id}"><td><strong>${escapeHtml(s.name)}</strong></td><td><select class="pstatus"><option ${saved[s.id]?.status==="Hadir"?"selected":""}>Hadir</option><option ${saved[s.id]?.status==="Terlambat"?"selected":""}>Terlambat</option><option ${saved[s.id]?.status==="Sakit"?"selected":""}>Sakit</option><option ${saved[s.id]?.status==="Izin"?"selected":""}>Izin</option><option ${saved[s.id]?.status==="Alfa"?"selected":""}>Alfa</option></select></td><td><input class="pnote table-input" value="${escapeHtml(saved[s.id]?.note||"")}"></td></tr>`).join(""));
     document.getElementById("saveProgramAtt")?.addEventListener("click",async()=>{
       const payload={};ws.querySelectorAll("tr[data-student]").forEach(tr=>payload[tr.dataset.student]={studentId:tr.dataset.student,status:tr.querySelector(".pstatus").value,note:tr.querySelector(".pnote").value,recordedBy:ctx.session.user.uid,updatedAt:Date.now()});
-      await setNode(`boarding/program_attendance/${ctx.yearId}/${date}/${programId}`,payload);toast("Presensi program tersimpan.");
+      await patchNode(`boarding/program_attendance/${ctx.yearId}/${date}/${programId}`,payload);toast("Presensi program tersimpan.");
     });
   });
 }
 
 export async function renderNaqibReport(ctx) {
-  const gender=profileGender(ctx); const programs=(ctx.master.programs||[]).filter(p=>!gender || !p.genderScope || p.genderScope===gender); const rows=(await listNode(`boarding/program_reports/${ctx.yearId}`)).filter(r=>!gender || !r.genderScope || r.genderScope===gender);
+  const gender=profileGender(ctx); const programs=(ctx.master.programs||[]).filter(p=>p.status!=="inactive"&&genderMatches(p.genderScope,gender)&&(ctx.master.dailySchedules||[]).some(s=>s.programId===p.id&&dailyForStaff(s,ctx.session.profile,ctx.yearId))); const rows=(await listNode(`boarding/program_reports/${ctx.yearId}`)).filter(r=>!gender || !r.genderScope || r.genderScope===gender);
   ctx.root.innerHTML=pageHeader("Laporan Pelaksanaan Program","Catat kualitas pelaksanaan, kendala, dan tindak lanjut program.")+`<div class="portal-grid two">
     ${panel("Buat Laporan",`<form id="programReportForm" class="portal-form">${formRow("Tanggal",input("date",today(),"date","required"))}${formRow("Program",select("programId",selectOptions(programs),"required"))}${formRow("Kualitas",select("quality","<option value='baik'>Baik</option><option value='cukup'>Cukup</option><option value='perlu_perbaikan'>Perlu Perbaikan</option>"))}${formRow("Yang Berjalan Baik",textarea("strengths"),true)}${formRow("Kendala/Temuan",textarea("issues"),true)}${formRow("Tindak Lanjut",textarea("followUp"),true)}<div class="form-actions"><button class="btn btn-primary">Simpan Laporan</button></div></form>`)}
-    ${panel("Laporan Terbaru",rows.length?`<div class="stack-list">${rows.slice(-20).reverse().map(r=>`<article class="list-card"><div><span>${escapeHtml(r.date||"—")}</span><strong>${escapeHtml((byId(programs)[r.programId]?.name)||"Program")}</strong><small>${escapeHtml(r.issues||r.strengths||"Tanpa catatan")}</small></div>${badge(r.quality||"—")}</article>`).join("")}</div>`:`<div class="empty-state">Belum ada laporan.</div>`)}
+    ${panel("Laporan Terbaru",rows.length?`<div class="stack-list">${rows.slice(-20).reverse().map(r=>`<article class="list-card"><div><span>${escapeHtml(r.date||"—")}</span><strong>${escapeHtml((byId(ctx.master.programs||[])[r.programId]?.name)||"Program")}</strong><small>${escapeHtml(r.issues||r.strengths||"Tanpa catatan")}</small></div>${badge(r.quality||"—")}</article>`).join("")}</div>`:`<div class="empty-state">Belum ada laporan.</div>`)}
   </div>`;
   attachAsync(document.getElementById("programReportForm"),async data=>{await pushRecord(`boarding/program_reports/${ctx.yearId}`,{...data,genderScope:profileGender(ctx)||null,naqibUid:ctx.session.user.uid},ctx.session.user.uid);ctx.rerender();},"Laporan pelaksanaan tersimpan.");
 }
@@ -89,11 +89,7 @@ export async function renderNaqibExample(ctx) {
   attachAsync(document.getElementById("exampleForm"),async data=>{await pushRecord(`boarding/naqib_examples/${ctx.yearId}/${uid}`,{...data,uid},uid);ctx.rerender();},"Evidence keteladanan tersimpan.");
 }
 
-export async function renderNaqibAssessment(ctx) {
-  const students=boardingStudents(ctx);const defaultPeriod=today().slice(0,7);
-  ctx.root.innerHTML=pageHeader("Asesmen Perkembangan Santri","Asesmen bulanan sederhana dari perspektif Naqib. Indikator Madani dapat dikalibrasi lagi saat standar pembinaan resmi dikunci.")+panel("Form Asesmen",`<form id="studentAssessmentForm" class="portal-form max-860">${formRow("Periode",input("period",defaultPeriod,"month","required"))}${formRow("Santri",select("studentId",studentOptions(students),"required"))}${formRow("Ibadah",select("worship",ratingOptions()))}${formRow("Adab",select("adab",ratingOptions()))}${formRow("Kedisiplinan",select("discipline",ratingOptions()))}${formRow("Kemandirian",select("independence",ratingOptions()))}${formRow("Relasi Sosial",select("social",ratingOptions()))}${formRow("Kekuatan Utama",textarea("strengths"),true)}${formRow("Fokus Perbaikan",textarea("improvementFocus"),true)}${formRow("Pesan untuk Pembinaan",textarea("note"),true)}<div class="form-actions"><button class="btn btn-primary">Simpan Asesmen</button></div></form>`);
-  attachAsync(document.getElementById("studentAssessmentForm"),async data=>{const id=`${data.studentId}_${ctx.session.user.uid}`;await saveRecord(`boarding/student_assessments/${ctx.yearId}/${data.period}`,id,{...data,assessorUid:ctx.session.user.uid,assessorRole:"naqib"},ctx.session.user.uid);},"Asesmen santri tersimpan.");
-}
+export async function renderNaqibAssessment(ctx) {return renderNaqibStudentAssessment(ctx);}
 
 export async function renderNaqibDiscipline(ctx) {
   const students=boardingStudents(ctx);const node=await getNode(`discipline/points/${ctx.yearId}`)||{};
@@ -117,11 +113,7 @@ export async function renderNaqibCase(ctx) {
   attachAsync(document.getElementById("caseReportForm"),async data=>{await pushRecord(`boarding/cases/${ctx.yearId}`,{...data,status:"baru",reportedBy:ctx.session.user.uid,reportedByRole:"naqib"},ctx.session.user.uid);document.getElementById("caseReportForm").reset();},"Kasus dikirim ke Konselor.");
 }
 
-export async function renderNaqibSelf(ctx) {
-  const uid=ctx.session.user.uid; const date=today(); const saved=await getNode(`boarding/naqib_self_review/${ctx.yearId}/${uid}/${date}`)||{};
-  ctx.root.innerHTML=pageHeader("Self Review Naqib","Refleksi singkat kualitas pendampingan dan keteladanan hari ini.")+panel("Refleksi Hari Ini",`<form id="selfReviewForm" class="portal-form max-760">${formRow("Kehadiran & Ketepatan",select("presence",ratingOptions(saved.presence)))}${formRow("Keteladanan",select("example",ratingOptions(saved.example)))}${formRow("Pendampingan Santri",select("guidance",ratingOptions(saved.guidance)))}${formRow("Komunikasi & Koordinasi",select("communication",ratingOptions(saved.communication)))}${formRow("Catatan Refleksi",textarea("reflection",saved.reflection||""),true)}${formRow("Fokus Perbaikan Besok",textarea("nextFocus",saved.nextFocus||""),true)}<div class="form-actions"><button class="btn btn-primary">Simpan Self Review</button></div></form>`);
-  attachAsync(document.getElementById("selfReviewForm"),async data=>{await setNode(`boarding/naqib_self_review/${ctx.yearId}/${uid}/${date}`,{...data,date,uid,updatedAt:Date.now()});},"Self review tersimpan.");
-}
+export async function renderNaqibSelf(ctx) {return renderNaqibReflection(ctx);}
 function ratingOptions(selected="") {return ["1 - Perlu perhatian","2 - Perlu perbaikan","3 - Cukup","4 - Baik","5 - Sangat baik"].map(v=>`<option ${v===selected?"selected":""}>${v}</option>`).join("");}
 
 export async function renderNaqibHistory(ctx) {
@@ -180,18 +172,19 @@ export async function renderMentoringHistory(ctx) {
 
 export async function renderCaseInbox(ctx) {
   const cases=scopedCases(ctx,await listNode(`boarding/cases/${ctx.yearId}`));const students=byId(ctx.master.students||[]);const uid=ctx.session.user.uid;
-  const incoming=cases.filter(c=>!c.assignedCounselorUid && !["selesai","tidak_terbukti"].includes(c.status));
+  const incoming=cases.filter(c=>routeCounselorCase(c,cases).level===counselorLevel(ctx.session.profile)&&!c.assignedCounselorUid && !["selesai","tidak_terbukti"].includes(c.status));
   incoming.sort((a,b)=>(b.createdAt||0)-(a.createdAt||0));
-  ctx.root.innerHTML=pageHeader("Kasus Masuk","Konselor memeriksa laporan dan mengambil/claim kasus sesuai scope sebelum penanganan.")+table(["Tanggal","Santri","Kategori","Tingkat","Status","Aksi"],incoming.map(r=>`<tr><td>${escapeHtml(r.date||"—")}</td><td><strong>${escapeHtml(students[r.studentId]?.name||r.studentId||"—")}</strong></td><td>${escapeHtml(r.category||"—")}</td><td>${badge(r.severity||"—",r.severity==="berat"||r.severity==="kritis"?"red":"")}</td><td>${badge(r.status||"menunggu_konselor")}</td><td><button class="mini-btn case-claim" data-id="${r.id}">Claim Kasus</button></td></tr>`).join(""));
+  ctx.root.innerHTML=pageHeader("Kasus Masuk","Konselor memeriksa laporan dan mengambil/claim kasus sesuai scope sebelum penanganan.")+table(["Tanggal","Santri","Kategori","Tingkat","Status","Aksi"],incoming.map(r=>`<tr><td>${escapeHtml(r.date||"—")}</td><td><strong>${escapeHtml(students[r.studentId]?.name||r.studentId||"—")}</strong></td><td>${escapeHtml(r.category||"—")}</td><td>${badge(r.severity||"—",r.severity==="berat"||r.severity==="kritis"?"red":"")}</td><td>${badge(r.status||"menunggu_konselor")}</td><td>${ctx.session.activeRole==='konselor'?`<button class="mini-btn case-claim" data-id="${r.id}">Claim Kasus</button>`:'Tinjauan administrator'}</td></tr>`).join(""));
   document.querySelectorAll(".case-claim").forEach(btn=>btn.addEventListener("click",async()=>{
     btn.disabled=true;
     try {
       const id=btn.dataset.id;
       await transitionWorkspaceRecord(`boarding/cases/${ctx.yearId}`,id,current=>{
         if(!scopedCases(ctx,[current]).length)throw new Error("Kasus di luar scope aktif.");
+        if(routeCounselorCase(current,cases).level!==counselorLevel(ctx.session.profile))throw new Error('Kasus memerlukan tingkatan Konselor yang berbeda.');
         if(current.assignedCounselorUid && current.assignedCounselorUid!==uid)throw new Error("Kasus sudah diambil Konselor lain.");
         if(["selesai","tidak_terbukti"].includes(current.status))throw new Error("Kasus sudah ditutup.");
-        return {...current,status:"ditangani",assignedCounselorUid:uid,claimedAt:{".sv":"timestamp"}};
+        return {...current,status:"ditangani",assignedCounselorUid:uid,routeLevel:routeCounselorCase(current,cases).level,claimedAt:{".sv":"timestamp"}};
       },uid);
       sessionStorage.setItem("madaniSelectedCase",id);toast("Kasus berhasil di-claim.");ctx.navigate("case-active");
     } catch(error){toast(error.message,"error");}finally{btn.disabled=false;}
@@ -205,20 +198,12 @@ export async function renderCaseActive(ctx) {
   document.querySelectorAll(".active-case").forEach(btn=>btn.addEventListener("click",()=>{sessionStorage.setItem("madaniSelectedCase",btn.dataset.id);ctx.navigate("counseling");}));
 }
 
-export async function renderCounseling(ctx) {
-  const all=scopedCases(ctx,await listNode(`boarding/cases/${ctx.yearId}`));const uid=ctx.session.user.uid;const isCounselorOnly=ctx.session.activeRole==="konselor";const cases=isCounselorOnly?all.filter(c=>c.assignedCounselorUid===uid):all;const students=byId(ctx.master.students||[]);const selected=sessionStorage.getItem("madaniSelectedCase")||cases.find(c=>!["selesai","tidak_terbukti"].includes(c.status))?.id||"";const current=cases.find(c=>c.id===selected);
-  ctx.root.innerHTML=pageHeader("Sesi Konseling","Tabayyun dan catatan konseling formal oleh Konselor.")+`<div class="portal-grid two">
-    ${panel("Pilih Kasus",`<select id="caseSelect" class="wide-select"><option value="">Pilih kasus...</option>${cases.map(c=>`<option value="${c.id}" ${c.id===selected?"selected":""}>${escapeHtml(students[c.studentId]?.name||c.studentId)} · ${escapeHtml(c.category||"")}</option>`).join("")}</select>${current?`<div class="case-summary"><span>${escapeHtml(current.date||"—")}</span><strong>${escapeHtml(current.description||"Tanpa kronologi")}</strong><small>${escapeHtml(current.severity||"—")}</small></div>`:"<div class='empty-state'>Belum memilih kasus.</div>"}`)}
-    ${panel("Catatan Konseling", current?`<form id="counselForm" class="portal-form">${formRow("Tanggal Sesi",input("date",today(),"date","required"))}${formRow("Hasil Tabayyun",textarea("clarification","","required"),true)}${formRow("Akar Masalah / Pemahaman",textarea("insight"),true)}${formRow("Pembinaan / Intervensi",textarea("intervention"),true)}${formRow("Kesepakatan Santri",textarea("agreement"),true)}${formRow("Tahap Kasus",select("caseStatus","<option value='ditangani'>Ditangani</option><option value='tabayyun'>Tabayyun</option><option value='konseling'>Konseling</option><option value='konsekuensi'>Konsekuensi</option><option value='evaluasi'>Evaluasi</option><option value='selesai'>Selesai</option><option value='tidak_terbukti'>TIDAK TERBUKTI</option>"))}<div class="form-actions"><button class="btn btn-primary">Simpan Sesi</button></div></form>`:`<div class="empty-state">Pilih kasus dari panel kiri.</div>`)}
-  </div>`;
-  document.getElementById("caseSelect")?.addEventListener("change",e=>{sessionStorage.setItem("madaniSelectedCase",e.target.value);ctx.rerender();});
-  attachAsync(document.getElementById("counselForm"),async data=>{await pushRecord(`boarding/counseling/${ctx.yearId}/${selected}`,{...data,counselorUid:ctx.session.user.uid},ctx.session.user.uid);await saveRecord(`boarding/cases/${ctx.yearId}`,selected,{...current,status:data.caseStatus,assignedCounselorUid:ctx.session.user.uid},ctx.session.user.uid);ctx.rerender();},"Sesi konseling tersimpan.");
-}
+export async function renderCounseling(ctx) {return renderCounselorWorkspace(ctx);}
 
 export async function renderCaseActions(ctx) {
-  const cases=scopedCases(ctx,await listNode(`boarding/cases/${ctx.yearId}`));const students=byId(ctx.master.students||[]);const allowed=new Set(cases.map(c=>c.id));const actions=(await listNode(`boarding/case_actions/${ctx.yearId}`)).filter(a=>!a.caseId||allowed.has(a.caseId));
+  const cases=scopedCases(ctx,await listNode(`boarding/cases/${ctx.yearId}`)).filter(c=>c.assignedCounselorUid===ctx.session.user.uid&&!["selesai","tidak_terbukti"].includes(c.status));const students=byId(ctx.master.students||[]);const allowed=new Set(cases.map(c=>c.id));const actions=(await listNode(`boarding/case_actions/${ctx.yearId}`)).filter(a=>!a.caseId||allowed.has(a.caseId));
   ctx.root.innerHTML=pageHeader("Tindakan Edukatif","Konsekuensi/pembinaan formal dicatat oleh Konselor.")+`<div class="portal-grid two">${panel("Catat Tindakan",`<form id="actionForm" class="portal-form">${formRow("Kasus",select("caseId",`<option value=''>Pilih...</option>${cases.map(c=>`<option value='${c.id}'>${escapeHtml(students[c.studentId]?.name||c.studentId)} · ${escapeHtml(c.category||"")}</option>`).join("")}`,"required"))}${formRow("Tanggal",input("date",today(),"date","required"))}${formRow("Jenis Tindakan",input("actionType","","text","placeholder='Pembinaan, tugas edukatif, mediasi, dll' required"))}${formRow("Deskripsi",textarea("description","","required"),true)}${formRow("Evaluasi/Tindak Lanjut",textarea("followUp"),true)}<div class="form-actions"><button class="btn btn-primary">Simpan</button></div></form>`)}${panel("Riwayat",actions.length?`<div class="stack-list">${actions.slice(-20).reverse().map(a=>`<article class="list-card"><div><span>${escapeHtml(a.date||"—")}</span><strong>${escapeHtml(a.actionType||"Tindakan")}</strong><small>${escapeHtml(a.description||"")}</small></div></article>`).join("")}</div>`:`<div class="empty-state">Belum ada tindakan.</div>`)}</div>`;
-  attachAsync(document.getElementById("actionForm"),async data=>{const c=cases.find(x=>x.id===data.caseId);await pushRecord(`boarding/case_actions/${ctx.yearId}`,{...data,studentId:c?.studentId||null,counselorUid:ctx.session.user.uid},ctx.session.user.uid);ctx.rerender();},"Tindakan edukatif tersimpan.");
+  const actionOperationId=crypto.randomUUID();attachAsync(document.getElementById("actionForm"),async data=>{if(!allowed.has(data.caseId))throw Error("Kasus di luar penugasan.");await commitCaseOperation(ctx.yearId,data.caseId,{id:actionOperationId,type:'action',data},ctx.session);ctx.rerender();},"Tindakan edukatif tersimpan.");
 }
 
 export async function renderDisciplinePoints(ctx) {
@@ -235,18 +220,12 @@ export async function renderDisciplinePoints(ctx) {
   }
   recent.sort((a,b)=>(b.createdAt||0)-(a.createdAt||0));
   ctx.root.innerHTML=pageHeader("Finalisasi Poin","Poin kasus difinalisasi satu kali dari kasus aktif. Koreksi berikutnya tidak menimpa transaksi lama agar audit tetap utuh.")+`<div class="portal-grid two">
-    ${panel("Finalisasi Poin Kasus",eligible.length?`<form id="pointForm" class="portal-form">${formRow("Kasus",select("caseId",`<option value=''>Pilih kasus...</option>${eligible.map(c=>`<option value='${c.id}'>${escapeHtml(studentMap[c.studentId]?.name||c.studentId)} · ${escapeHtml(c.category||"Kasus")}</option>`).join("")}`,"required"))}${formRow("Tanggal",input("date",today(),"date","required"))}${formRow("Poin Final",input("points","-25","number","required"))}${formRow("Keterangan",textarea("description","","required"),true)}<div class="notice full">Nilai negatif = pelanggaran. Setelah difinalisasi, kasus tidak dapat diberi poin final kedua. Bila ada koreksi, buat transaksi koreksi terpisah melalui admin/otorisasi keuangan-operasional berikutnya.</div><div class="form-actions"><button class="btn btn-primary">Finalisasi Poin</button></div></form>`:`<div class="empty-state">Tidak ada kasus aktif yang menunggu finalisasi poin.</div>`)}
+    ${panel("Finalisasi Poin Kasus",eligible.length?`<form id="pointForm" class="portal-form">${formRow("Kasus",select("caseId",`<option value=''>Pilih kasus...</option>${eligible.map(c=>`<option value='${c.id}'>${escapeHtml(studentMap[c.studentId]?.name||c.studentId)} · ${escapeHtml(c.category||"Kasus")}</option>`).join("")}`,"required"))}${formRow("Tanggal",input("date",today(),"date","required"))}${formRow("Poin Final",select("points","<option value=0>Bimbingan · 0</option><option value=-25>Ringan · -25</option><option value=-50>Sedang · -50</option><option value=-100>Berat · -100</option><option value=-200>Kritis · -200</option>"))}${formRow("Keterangan",textarea("description","","required"),true)}<div class="notice full">Nilai negatif = pelanggaran. Setelah difinalisasi, kasus tidak dapat diberi poin final kedua. Bila ada koreksi, buat transaksi koreksi terpisah melalui admin/otorisasi keuangan-operasional berikutnya.</div><div class="form-actions"><button class="btn btn-primary">Finalisasi Poin</button></div></form>`:`<div class="empty-state">Tidak ada kasus aktif yang menunggu finalisasi poin.</div>`)}
     ${panel("Poin Kasus Terbaru",recent.length?`<div class="stack-list">${recent.slice(0,20).map(r=>`<article class="list-card"><div><span>${escapeHtml(r.date||"—")}</span><strong>${escapeHtml(studentMap[r.studentId]?.name||r.studentId||"Santri")}</strong><small>${escapeHtml(r.description||"")}</small></div><span class="score-chip ${Number(r.points||0)>=0?"positive":""}">${Number(r.points||0)>0?"+":""}${escapeHtml(r.points||0)}</span></article>`).join("")}</div>`:`<div class="empty-state">Belum ada poin final dari kasus aktif Anda.</div>`)}
   </div>`;
   attachAsync(document.getElementById("pointForm"),async data=>{
-    const current=await getNode(`boarding/cases/${ctx.yearId}/${data.caseId}`);
-    if(!current) throw new Error("Kasus tidak ditemukan.");
-    if(ctx.session.activeRole==="konselor" && current.assignedCounselorUid!==uid) throw new Error("Kasus bukan tanggung jawab Konselor aktif ini.");
-    if(current.finalPointTransactionId) throw new Error("Poin final untuk kasus ini sudah tercatat.");
-    const points=Number(data.points||0);
-    if(!Number.isFinite(points)||points===0) throw new Error("Poin final tidak boleh 0.");
-    const record=await pushRecord(`discipline/points/${ctx.yearId}/${current.studentId}`,{date:data.date,caseId:data.caseId,type:"final_case",points,description:data.description,counselorUid:uid},uid);
-    await saveRecord(`boarding/cases/${ctx.yearId}`,data.caseId,{...current,finalPointTransactionId:record.id,finalPoints:points,pointsFinalizedAt:Date.now(),pointsFinalizedBy:uid,status:current.status==="dieskalasi"?current.status:"evaluasi"},uid);
+    if(!cases.some(c=>c.id===data.caseId))throw Error('Kasus di luar penugasan.');
+    await commitCaseOperation(ctx.yearId,data.caseId,{id:`final_${data.caseId}`,type:'points',data:{...data,points:Number(data.points)}},ctx.session);
     ctx.rerender();
   },"Poin kasus berhasil difinalisasi.");
 }
@@ -269,15 +248,11 @@ export async function renderMentoringGuide(ctx) {
 
 export async function renderCaseEscalation(ctx) {
   const uid=ctx.session.user.uid;const cases=scopedCases(ctx,await listNode(`boarding/cases/${ctx.yearId}`)).filter(c=>c.assignedCounselorUid===uid && !["selesai","tidak_terbukti"].includes(c.status));const students=byId(ctx.master.students||[]);const rows=await listNode(`boarding/escalations/${ctx.yearId}`);
-  ctx.root.innerHTML=pageHeader("Eskalasi Kasus","Gunakan saat kasus melampaui kewenangan atau membutuhkan keputusan level lebih tinggi.")+`<div class="portal-grid two">${panel("Buat Eskalasi",`<form id="escalationForm" class="portal-form">${formRow("Kasus",select("caseId",`<option value=''>Pilih...</option>${cases.map(c=>`<option value='${c.id}'>${escapeHtml(students[c.studentId]?.name||c.studentId)} · ${escapeHtml(c.category||"")}</option>`).join("")}`,"required"))}${formRow("Tujuan",select("targetLevel","<option value='konselor_madya'>Konselor Madya</option><option value='pimpinan'>Pimpinan / Kepala Asrama / Direktur</option>"))}${formRow("Ringkasan Kebutuhan Keputusan",textarea("summary","","required"),true)}<div class="form-actions"><button class="btn btn-primary">Kirim Eskalasi</button></div></form>`)}${panel("Riwayat Eskalasi",rows.length?`<div class="stack-list">${rows.filter(r=>r.createdByUid===uid).slice(-20).reverse().map(r=>`<article class="list-card"><div><span>${escapeHtml(r.targetLevel||"—")}</span><strong>${escapeHtml(r.summary||"Eskalasi")}</strong><small>${escapeHtml(r.status||"menunggu_arahan")}</small></div></article>`).join("")}</div>`:`<div class="empty-state">Belum ada eskalasi.</div>`)}</div>`;
-  attachAsync(document.getElementById("escalationForm"),async data=>{const current=await getNode(`boarding/cases/${ctx.yearId}/${data.caseId}`)||{};await pushRecord(`boarding/escalations/${ctx.yearId}`,{...data,studentId:current.studentId||null,createdByUid:uid,status:"menunggu_arahan"},uid);await saveRecord(`boarding/cases/${ctx.yearId}`,data.caseId,{...current,status:"dieskalasi",escalatedAt:Date.now(),escalationTarget:data.targetLevel},uid);ctx.rerender();},"Eskalasi dikirim.");
+  ctx.root.innerHTML=pageHeader("Eskalasi Kasus","Gunakan saat kasus melampaui kewenangan atau membutuhkan keputusan level lebih tinggi.")+`<div class="portal-grid two">${panel("Buat Eskalasi",`<form id="escalationForm" class="portal-form">${formRow("Kasus",select("caseId",`<option value=''>Pilih...</option>${cases.map(c=>`<option value='${c.id}'>${escapeHtml(students[c.studentId]?.name||c.studentId)} · ${escapeHtml(c.category||"")}</option>`).join("")}`,"required"))}${formRow("Tujuan",select("targetLevel","<option value='konselor_madya'>Konselor Madya (dari Pemula)</option><option value='deputy_director'>Wakil Direktur (dari Madya)</option><option value='director'>Direktur (dari Madya)</option>"))}${formRow("Ringkasan Kebutuhan Keputusan",textarea("summary","","required"),true)}${formRow("Keputusan yang Dibutuhkan dari Pimpinan",textarea("decisionNeeded"),true)}<div class="form-actions"><button class="btn btn-primary">Kirim Eskalasi</button></div></form>`)}${panel("Riwayat Eskalasi",rows.length?`<div class="stack-list">${rows.filter(r=>r.createdByUid===uid).slice(-20).reverse().map(r=>`<article class="list-card"><div><span>${escapeHtml(r.targetLevel||"—")}</span><strong>${escapeHtml(r.summary||"Eskalasi")}</strong><small>${escapeHtml(r.status||"menunggu_arahan")}</small></div></article>`).join("")}</div>`:`<div class="empty-state">Belum ada eskalasi.</div>`)}</div>`;
+  const escalationOperationId=crypto.randomUUID();attachAsync(document.getElementById("escalationForm"),async data=>{if(!cases.some(c=>c.id===data.caseId))throw Error('Kasus di luar penugasan.');await commitCaseOperation(ctx.yearId,data.caseId,{id:escalationOperationId,type:'escalation',data},ctx.session);ctx.rerender();},"Eskalasi dikirim.");
 }
 
-export async function renderCounselorSelf(ctx) {
-  const uid=ctx.session.user.uid,date=today();const saved=await getNode(`boarding/counselor_self_review/${ctx.yearId}/${uid}/${date}`)||{};
-  ctx.root.innerHTML=pageHeader("Self Asesmen Konselor","Refleksi kualitas proses tanpa membuka narasi konseling yang tidak diperlukan.")+panel("Refleksi Hari Ini",`<form id="counselorSelfForm" class="portal-form max-760">${formRow("Ketelitian Tabayyun",select("clarificationQuality",ratingOptions(saved.clarificationQuality)))}${formRow("Kualitas Mendengar",select("listening",ratingOptions(saved.listening)))}${formRow("Kejelasan Tindak Lanjut",select("followUp",ratingOptions(saved.followUp)))}${formRow("Kerahasiaan & Etika",select("confidentiality",ratingOptions(saved.confidentiality)))}${formRow("Refleksi",textarea("reflection",saved.reflection||""),true)}${formRow("Fokus Perbaikan",textarea("nextFocus",saved.nextFocus||""),true)}<div class="form-actions"><button class="btn btn-primary">Simpan</button></div></form>`);
-  attachAsync(document.getElementById("counselorSelfForm"),async data=>{await setNode(`boarding/counselor_self_review/${ctx.yearId}/${uid}/${date}`,{...data,date,uid,updatedAt:Date.now()});},"Self asesmen Konselor tersimpan.");
-}
+export async function renderCounselorSelf(ctx){return renderCounselorReflection(ctx);}
 
 export async function renderCounselorKpi(ctx) {
   const uid=ctx.session.user.uid;const [cases,counselNode,actions,escalations,selfNode]=await Promise.all([listNode(`boarding/cases/${ctx.yearId}`),getNode(`boarding/counseling/${ctx.yearId}`),listNode(`boarding/case_actions/${ctx.yearId}`),listNode(`boarding/escalations/${ctx.yearId}`),getNode(`boarding/counselor_self_review/${ctx.yearId}/${uid}`)]);

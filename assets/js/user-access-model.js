@@ -1,6 +1,7 @@
 import {ROLE_LABELS} from './permissions.js';
 export const roleIds=p=>[...new Set([p.role,...(Array.isArray(p.roles)?p.roles:Object.keys(p.roles||{}).filter(k=>p.roles[k])),...Object.keys(p.roleFlags||{}).filter(k=>p.roleFlags[k])].filter(r=>Object.hasOwn(ROLE_LABELS,r)))];
 export const SCOPE_FIELDS={
+ kesehatan:['unitIds','scopeGender'],
  guru_mapel:['unitIds','classIds','subjectIds'],mentor_tahsin_tahfiz:['unitIds','groupIds','scopeGender'],guru_wali:['classIds','menteeStudentIds','scopeGender'],
  naqib:['scopeGender'],konselor:['scopeGender','counselorLevel'],head_formal_school:['unitIds','classIds'],head_boys_dorm:[],head_girls_dorm:[],
  director:['unitIds'],deputy_director:['unitIds'],kasir:['financeUnit'],wali_santri:['studentIds'],admin:[],super_admin:[]

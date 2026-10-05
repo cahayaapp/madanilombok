@@ -35,3 +35,10 @@ MADANI_JSDOM_MODULE=/absolute/path/to/jsdom/lib/api.js node --experimental-vm-mo
 ```
 
 20 tes Guru memeriksa aturan dan skenario penyimpanan memakai data uji. Lokasi GPS perangkat dan izin nyata tidak diminta dalam uji. Detail dan batas verifikasi: `docs/GURU-MAPEL.md`.
+# Pembaruan SMP
+
+`tests/smp-update.mjs` memverifikasi referensi sumber, perlindungan master lama dan kelas gabungan. `tests/smp-update-ui.mjs` menguji import bertarget dengan repository palsu (memerlukan jsdom dan `--experimental-vm-modules`, seperti tes UI lain).
+- `daily-update.mjs` / `daily-update-ui.mjs`: kelengkapan 24 jam umum/GEMA, peserta berdasarkan kamar, pemisahan TK, patch impor terbatas dan konflik ID. `role-rendering.mjs` juga memeriksa filter Naqib, jadwal wali dan patch presensi per siswa.
+- `boarding-rosters.mjs` / `boarding-update-ui.mjs`: referensi siswa, scope perubahan, roster tertunda, jadwal berulang, konflik tujuan dan impor ulang. Rendering juga memeriksa filter bahasa Arab pagi dan kelompok pada portal wali.
+
+Role workflows 2026-10-04: `report-publication.mjs`, `academic-review.mjs`, `operational-workflows.mjs`, `mentoring-ui.mjs`, `health-model.mjs`, `health-ui.mjs`, `health-rules.mjs`, `counselor-model.mjs`. Full suite: 121 passed using JSDOM and simulated data. Firebase Emulator not run (Java runtime unavailable). No operational Firebase writes in tests.

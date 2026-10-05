@@ -1,0 +1,1698 @@
+{
+  "matched": {
+    "Annisa": "AMD-SMP-0009",
+    "Anindya pramusita": "AMD-SMP-0008",
+    "Anindita salsabila": "AMD-SMP-0007",
+    "Salsabila": "AMD-SMP-0086",
+    "Zezee aqilla mouza": "AMD-SMP-0098",
+    "Nahera dinda Salina": "AMD-SMP-0070",
+    "Rabiatul Aini": "AMD-SMP-0081",
+    "Dinda cahyati": "AMD-SMP-0101",
+    "Aqila Medina azzahra": "AMD-SMP-0011",
+    "Titin Agustina": "AMD-SMK-0073",
+    "Dewi Sulastri": "AMD-SMK-0021",
+    "Nuroh": "AMD-SMP-0075",
+    "Mona Zahira": "AMD-SMP-0057",
+    "Dini Apriani": "AMD-SMK-0022",
+    "Evi Elvia": "AMD-SMK-0024",
+    "Haura zidni": "AMD-SMP-0032",
+    "Helga Elvina irawan": "AMD-SMP-0034",
+    "Sashabila": "AMD-SMP-0088",
+    "Azkiya althafunnisa": "AMD-SMP-0015",
+    "Sujiyana": "AMD-SMP-0093",
+    "Baiq bella Kaffa syaumi": "AMD-SMK-0020",
+    "Sitti bahirah ashilah": "AMD-SMP-0092",
+    "Zuraida ulya hazani": "AMD-SMP-0100",
+    "Via faezatul husna": "AMD-SMK-0074",
+    "Firdatul ardilah": "AMD-SMK-0025",
+    "Ririn Ekawati": "AMD-SMP-0084",
+    "Septia azira": "AMD-SMP-0089",
+    "Tyas Maulia Latif": "AMD-SMP-0094",
+    "Siti Malikah": "AMD-SMP-0091",
+    "Purnama nisfatullail": "AMD-SMP-0079",
+    "Silmi Afifah": "AMD-SMP-0090",
+    "Sartini": "AMD-SMK-0066",
+    "Aira juliarti": "AMD-SMK-0004",
+    "Aira Sanzabila": "AMD-SMK-0005",
+    "Alena": "AMD-SMK-0010",
+    "Sulistiana": "AMD-SMK-0069",
+    "Nisa'ul Husna": "AMD-SMK-0056",
+    "Puji Susana Putri": "AMD-SMK-0060",
+    "Nirmala": "AMD-SMK-0055",
+    "Nisa hadana": "AMD-SMP-0074",
+    "Aolia": "AMD-SMP-0010",
+    "Manggar atharrazka putri sutrisno": "AMD-SD-0098",
+    "Ahmad Bilal Febrian": "AMD-SMP-0003",
+    "Afrizal putra": "AMD-SMP-0001",
+    "Muhammad Latiful qolbi": "AMD-SMP-0062",
+    "M. Jayadi": "AMD-SMP-0051",
+    "Gilang agif Gunawan": "AMD-SMP-0028",
+    "Anam abqori": "AMD-SMK-0013",
+    "Ziad Ubaidillah syarif": "AMD-SMK-0079",
+    "M. FAQIH IQRO": "AMD-SMP-0049",
+    "SANDIYAT PRATAMA": "AMD-SMP-0087",
+    "MUHAMMAD NAUFAL ALFIARASYIDI": "AMD-SMP-0064",
+    "OKASHYA MUHAWILUR ROYYAN": "AMD-SMP-0077",
+    "DIRZA ADRIYAN PRATAMA": "AMD-SMP-0021",
+    "MUHAMMAD ASYRAF DANIAL": "AMD-SMP-0059",
+    "Habiburrahman": "AMD-SMP-0029",
+    "AHMAD AL BUKHORI": "AMD-SMP-0002",
+    "Joni Saputra": "AMD-SMK-0032",
+    "Irwan maulana": "AMD-SMP-0038",
+    "Rizki Anugrah": "AMD-SMP-0085",
+    "FAUZI ABDULLAH": "AMD-SMP-0026",
+    "Yandi Satria": "AMD-SMP-0095",
+    "MUHAMMAD RIPKI HADI": "AMD-SMP-0065",
+    "IZZUDDIN DA'I": "AMD-SMP-0039",
+    "Lalu Alvin Yulistiawan": "AMD-SMP-0044",
+    "Andreas Dwi Santoso": "AMD-SMK-0014",
+    "M. Ridho Razali": "AMD-SMP-0053",
+    "MUHAMMAD HABIB RAHMAN": "AMD-SMP-0060",
+    "Muh. Nafaz Adil": "AMD-SMK-0047",
+    "Zacky Prayoga Febriansyah": "AMD-SMK-0076",
+    "ASYRORUDDIN": "AMD-SMP-0012",
+    "FASYA SETIAWAN": "AMD-SMP-0025",
+    "MUHAMMAD AKBAR": "AMD-SMP-0102",
+    "MUHAMMAD ZAKA ROPIQI": "AMD-SMP-0066",
+    "LALU MAZID AFANDI": "AMD-SMP-0046",
+    "DINUL RIZQIAN ABIFARRIZ": "AMD-SMP-0020",
+    "KHAIRIL ARFAN": "AMD-SMP-0041",
+    "M. SAHRUL KHORI": "AMD-SMP-0054",
+    "Anam Abqori": "AMD-SMK-0013",
+    "Arman Maolana": "AMD-SMK-0016",
+    "M. Faqih iqro'": "AMD-SMP-0049",
+    "Irwan Maulana": "AMD-SMP-0038",
+    "Fauzi Abdullah": "AMD-SMP-0026",
+    "Rizki anugrah": "AMD-SMP-0085",
+    "Sandiyat Pratama": "AMD-SMP-0087",
+    "Andreas Dwi santoso": "AMD-SMK-0014",
+    "Izzuddin dai": "AMD-SMP-0039",
+    "Gibran Habil": "AMD-SMK-0027",
+    "Muhammad Zaka ropiqi": "AMD-SMP-0066",
+    "Fasya Setiawan": "AMD-SMP-0025",
+    "Rahmad Ramdani": "AMD-SMP-0082",
+    "Khairil Arfan": "AMD-SMP-0041"
+  },
+  "unresolved": {
+    "Khusnul khotimah": {
+      "candidates": [
+        {
+          "studentId": "AMD-SMP-0037",
+          "name": "Husnul khotimah"
+        },
+        {
+          "studentId": "AMD-SMP-0054",
+          "name": "M. Sahrul Khori"
+        },
+        {
+          "studentId": "AMD-TK-0018",
+          "name": "M. NURUL IMAN"
+        }
+      ]
+    },
+    "Khazzana ridha naila": {
+      "candidates": [
+        {
+          "studentId": "AMD-SMP-0043",
+          "name": "KHAZANA RIDHA NAILA"
+        },
+        {
+          "studentId": "AMD-SD-0010",
+          "name": "RIMHA ZIDNA ILMA"
+        },
+        {
+          "studentId": "AMD-SD-0002",
+          "name": "ANIDA NUR AFIFAH"
+        }
+      ]
+    },
+    "Bq.faiqa salwa wiradarma": {
+      "candidates": [
+        {
+          "studentId": "AMD-SMP-0017",
+          "name": "BAIQ FAIQA SALWA WIRADARMA"
+        },
+        {
+          "studentId": "AMD-SMK-0019",
+          "name": "Baiq Azkiya Amira"
+        },
+        {
+          "studentId": "AMD-SMP-0016",
+          "name": "BAIQ ATIKA ZAHRA RATIFA"
+        }
+      ]
+    },
+    "Bq.Atika zahra ratifa": {
+      "candidates": [
+        {
+          "studentId": "AMD-SMP-0016",
+          "name": "BAIQ ATIKA ZAHRA RATIFA"
+        },
+        {
+          "studentId": "AMD-SMP-0013",
+          "name": "ATIKA ZAHRA RATIFA"
+        },
+        {
+          "studentId": "AMD-SD-0075",
+          "name": "Adira Azahra"
+        }
+      ]
+    },
+    "Muzdalifa": {
+      "candidates": [
+        {
+          "studentId": "AMD-SMP-0067",
+          "name": "MUSDALIFAH"
+        },
+        {
+          "studentId": "AMD-SMP-0056",
+          "name": "MANDA ADELIA"
+        },
+        {
+          "studentId": "AMD-SD-0031",
+          "name": "TALIF ALI"
+        }
+      ]
+    },
+    "Mutami Fitri Sephia": {
+      "candidates": [
+        {
+          "studentId": "AMD-SMP-0068",
+          "name": "MUTAMI FITRI SEVIA"
+        },
+        {
+          "studentId": "AMD-SMP-0030",
+          "name": "HAIBA FITRI TUFAILA"
+        },
+        {
+          "studentId": "AMD-SMP-0065",
+          "name": "MUHAMMAD RIPKI HADI"
+        }
+      ]
+    },
+    "Huryatul Aina": {
+      "candidates": [
+        {
+          "studentId": "AMD-SMP-0036",
+          "name": "HURIATUN AENA"
+        },
+        {
+          "studentId": "AMD-SMP-0081",
+          "name": "RABIATUL AINI"
+        },
+        {
+          "studentId": "AMD-SMP-0097",
+          "name": "YULIANA"
+        }
+      ]
+    },
+    "Haya Sofia": {
+      "candidates": [
+        {
+          "studentId": "AMD-SMP-0033",
+          "name": "HAYA SHOFIA"
+        },
+        {
+          "studentId": "AMD-TK-0005",
+          "name": "AYA SHOFIYA"
+        },
+        {
+          "studentId": "AMD-SMP-0010",
+          "name": "AOLIA"
+        }
+      ]
+    },
+    "Hanna": {
+      "candidates": [
+        {
+          "studentId": "AMD-SMP-0009",
+          "name": "ANNISA"
+        },
+        {
+          "studentId": "AMD-SMK-0010",
+          "name": "ALENA"
+        },
+        {
+          "studentId": "AMD-SMP-0031",
+          "name": "HANNA SYAKIRA"
+        }
+      ]
+    },
+    "Bq. Laitani kuntu": {
+      "candidates": [
+        {
+          "studentId": "AMD-SMP-0019",
+          "name": "BAIQ LAITANI KUNTU"
+        },
+        {
+          "studentId": "AMD-SD-0049",
+          "name": "ARIANDI SAPUTRA"
+        },
+        {
+          "studentId": "AMD-SD-0122",
+          "name": "BALIAN HANIF"
+        }
+      ]
+    },
+    "Fayela sahdatin kuluba": {
+      "candidates": [
+        {
+          "studentId": "AMD-SMP-0027",
+          "name": "FAYELA SYAHHADATIN KULUBA"
+        },
+        {
+          "studentId": "AMD-SD-0130",
+          "name": "SALWA SALSABILA"
+        },
+        {
+          "studentId": "AMD-SMK-0074",
+          "name": "VIA FAEZATUL HUSNA"
+        }
+      ]
+    },
+    "Tazia Olivia": {
+      "candidates": [
+        {
+          "studentId": "AMD-SMP-0010",
+          "name": "AOLIA"
+        },
+        {
+          "studentId": "AMD-SD-0006",
+          "name": "AZIZA GANIA"
+        },
+        {
+          "studentId": "AMD-SMP-0073",
+          "name": "NAZIFA IMANI"
+        }
+      ]
+    },
+    "Hidayatul Naura": {
+      "candidates": [
+        {
+          "studentId": "AMD-SMK-0031",
+          "name": "HIDAYATUL NAZURA"
+        },
+        {
+          "studentId": "AMD-SMK-0025",
+          "name": "FIRDATUL ARDILAH"
+        },
+        {
+          "studentId": "AMD-SMP-0036",
+          "name": "HURIATUN AENA"
+        }
+      ]
+    },
+    "Ridatun najwi": {
+      "candidates": [
+        {
+          "studentId": "AMD-SMK-0063",
+          "name": "RIDHATUL NAJWI"
+        },
+        {
+          "studentId": "AMD-SMP-0036",
+          "name": "HURIATUN AENA"
+        },
+        {
+          "studentId": "AMD-SMP-0081",
+          "name": "RABIATUL AINI"
+        }
+      ]
+    },
+    "Silvi wahdiatun elena": {
+      "candidates": [
+        {
+          "studentId": "AMD-SMK-0068",
+          "name": "Silvy Wahdiyatun Elena"
+        },
+        {
+          "studentId": "AMD-SMP-0036",
+          "name": "HURIATUN AENA"
+        },
+        {
+          "studentId": "AMD-TK-0020",
+          "name": "M. SYAKIL RAHMATULLAH"
+        }
+      ]
+    },
+    "Nadhifa Husna Fadila": {
+      "candidates": [
+        {
+          "studentId": "AMD-SMP-0069",
+          "name": "NADIVA HASNA FADHILA"
+        },
+        {
+          "studentId": "AMD-SD-0005",
+          "name": "ASSYIFA MYSHA FADILA"
+        },
+        {
+          "studentId": "AMD-SD-0124",
+          "name": "HANIFA HUMAERA SALSABILA"
+        }
+      ]
+    },
+    "Ajeng putri rizky": {
+      "candidates": [
+        {
+          "studentId": "AMD-SMK-0008",
+          "name": "Ajeng Putri Rizki"
+        },
+        {
+          "studentId": "AMD-SMP-0055",
+          "name": "MABRUR RIZKI"
+        },
+        {
+          "studentId": "AMD-SD-0087",
+          "name": "NAJWA ANINDYA PUTRI"
+        }
+      ]
+    },
+    "Arifah Monica": {
+      "candidates": [
+        {
+          "studentId": "AMD-SMK-0015",
+          "name": "ARIFA MONICA EKARIANTI. J"
+        },
+        {
+          "studentId": "AMD-SMP-0073",
+          "name": "NAZIFA IMANI"
+        },
+        {
+          "studentId": "AMD-SMK-0016",
+          "name": "ARMAN MAOLANA"
+        }
+      ]
+    },
+    "Allamul muhlisah": {
+      "candidates": [
+        {
+          "studentId": "AMD-SMP-0006",
+          "name": "AMYLA TULHIKMAH"
+        },
+        {
+          "studentId": "AMD-SMP-0047",
+          "name": "LULU' AMELINA"
+        },
+        {
+          "studentId": "AMD-SD-0030",
+          "name": "SYAHILA MUMTAZA"
+        }
+      ]
+    },
+    "Aliyah afifah farzana": {
+      "candidates": [
+        {
+          "studentId": "AMD-SD-0067",
+          "name": "ALINA AYU HAFIZA"
+        },
+        {
+          "studentId": "AMD-SMK-0071",
+          "name": "SYARFANA IFA ADRIANA"
+        },
+        {
+          "studentId": "AMD-SD-0059",
+          "name": "Nazwa Hafifah"
+        }
+      ]
+    },
+    "Azka nabila": {
+      "candidates": [
+        {
+          "studentId": "AMD-SMK-0005",
+          "name": "AIRA SANZABILA"
+        },
+        {
+          "studentId": "AMD-SMP-0086",
+          "name": "SALSABILA"
+        },
+        {
+          "studentId": "AMD-SMP-0088",
+          "name": "Sashabila"
+        }
+      ]
+    },
+    "Zulfani royal": {
+      "candidates": [
+        {
+          "studentId": "AMD-SMP-0099",
+          "name": "Zulfani royya"
+        },
+        {
+          "studentId": "AMD-SMK-0044",
+          "name": "M. Zulfian Ramadhan"
+        },
+        {
+          "studentId": "AMD-SD-0021",
+          "name": "MOH. ZULFAN AIDI"
+        }
+      ]
+    },
+    "Zahra Nahdlatul Aini": {
+      "candidates": [
+        {
+          "studentId": "AMD-SMK-0077",
+          "name": "ZAHRA NANDATUL AENI"
+        },
+        {
+          "studentId": "AMD-SMK-0045",
+          "name": "Mawaddatul Aini"
+        },
+        {
+          "studentId": "AMD-SMP-0081",
+          "name": "RABIATUL AINI"
+        }
+      ]
+    },
+    "Kayla kusnia": {
+      "candidates": [
+        {
+          "studentId": "AMD-SMK-0033",
+          "name": "KAELA KUSNIA"
+        },
+        {
+          "studentId": "AMD-TK-0005",
+          "name": "AYA SHOFIYA"
+        },
+        {
+          "studentId": "AMD-SMP-0033",
+          "name": "HAYA SHOFIA"
+        }
+      ]
+    },
+    "Manggar atharrazka PS": {
+      "candidates": [
+        {
+          "studentId": "AMD-SD-0098",
+          "name": "MANGGAR ATHARRAZKA PUTRI SUTRISNO"
+        },
+        {
+          "studentId": "AMD-SD-0071",
+          "name": "M. ADHARA DWI RASKA"
+        },
+        {
+          "studentId": "AMD-SD-0054",
+          "name": "M. AZRIL NUGRAHA"
+        }
+      ]
+    },
+    "Syafira Julia nanda": {
+      "candidates": [
+        {
+          "studentId": "AMD-SMK-0070",
+          "name": "SYAFIRA JULIANANDA KURNIA"
+        },
+        {
+          "studentId": "AMD-SMK-0004",
+          "name": "Aira Juliarti"
+        },
+        {
+          "studentId": "AMD-SMP-0097",
+          "name": "YULIANA"
+        }
+      ]
+    },
+    "Aisyah Rayania": {
+      "candidates": [
+        {
+          "studentId": "AMD-SMK-0006",
+          "name": "AISYA RAYANIA"
+        },
+        {
+          "studentId": "AMD-SMP-0074",
+          "name": "Nisa Hadana"
+        },
+        {
+          "studentId": "AMD-SD-0033",
+          "name": "Aljia Ramdani"
+        }
+      ]
+    },
+    "Sakina Aulia": {
+      "candidates": [
+        {
+          "studentId": "AMD-SMK-0065",
+          "name": "Sakina Ulwiya Warahma"
+        },
+        {
+          "studentId": "AMD-SD-0062",
+          "name": "SIFA AL FIRA"
+        },
+        {
+          "studentId": "AMD-SD-0067",
+          "name": "ALINA AYU HAFIZA"
+        }
+      ]
+    },
+    "Nian Nafsani": {
+      "candidates": [
+        {
+          "studentId": "AMD-TK-0031",
+          "name": "RANIA AMAANI"
+        },
+        {
+          "studentId": "AMD-SMP-0031",
+          "name": "HANNA SYAKIRA"
+        },
+        {
+          "studentId": "AMD-SD-0060",
+          "name": "Piana Sapitri"
+        }
+      ]
+    },
+    "akfina kurniatunafis": {
+      "candidates": [
+        {
+          "studentId": "AMD-SMK-0009",
+          "name": "AKVINA KURNIATIN NAFIS"
+        },
+        {
+          "studentId": "AMD-SMP-0014",
+          "name": "AULIA IZATUNNISA"
+        },
+        {
+          "studentId": "AMD-SD-0051",
+          "name": "AZKIYATUNISA"
+        }
+      ]
+    },
+    "Nuri Maulida Marta": {
+      "candidates": [
+        {
+          "studentId": "AMD-SMK-0058",
+          "name": "NURI MAOLIYA MARTA"
+        },
+        {
+          "studentId": "AMD-SD-0010",
+          "name": "RIMHA ZIDNA ILMA"
+        },
+        {
+          "studentId": "AMD-SMK-0004",
+          "name": "Aira Juliarti"
+        }
+      ]
+    },
+    "Feby Aprilia": {
+      "candidates": [
+        {
+          "studentId": "AMD-SD-0114",
+          "name": "FEBY EFRILLIA"
+        },
+        {
+          "studentId": "AMD-SMK-0026",
+          "name": "Fiya Fadliya"
+        },
+        {
+          "studentId": "AMD-SMK-0024",
+          "name": "EVI ELVIA"
+        }
+      ]
+    },
+    "Lailatu Nubuah": {
+      "candidates": [
+        {
+          "studentId": "AMD-SMK-0038",
+          "name": "LAYLATUN NUBUAH"
+        },
+        {
+          "studentId": "AMD-SD-0011",
+          "name": "LAILAUZMA NAFIA"
+        },
+        {
+          "studentId": "AMD-SMP-0014",
+          "name": "AULIA IZATUNNISA"
+        }
+      ]
+    },
+    "Olivia Ramdani": {
+      "candidates": [
+        {
+          "studentId": "AMD-SMK-0059",
+          "name": "OLIVIA RAMADANI"
+        },
+        {
+          "studentId": "AMD-SD-0033",
+          "name": "Aljia Ramdani"
+        },
+        {
+          "studentId": "AMD-SD-0084",
+          "name": "M. Ardi Ramdani"
+        }
+      ]
+    },
+    "Syifa ula Sofia": {
+      "candidates": [
+        {
+          "studentId": "AMD-SMK-0072",
+          "name": "Syifa Ula Sophia"
+        },
+        {
+          "studentId": "AMD-SD-0062",
+          "name": "SIFA AL FIRA"
+        },
+        {
+          "studentId": "AMD-TK-0005",
+          "name": "AYA SHOFIYA"
+        }
+      ]
+    },
+    "Restu Indira afriadarsi": {
+      "candidates": [
+        {
+          "studentId": "AMD-SMK-0022",
+          "name": "Dini Apriani"
+        },
+        {
+          "studentId": "AMD-TK-0030",
+          "name": "QIANA AFRILIA"
+        },
+        {
+          "studentId": "AMD-SMK-0061",
+          "name": "Reno Hadi Sa'id"
+        }
+      ]
+    },
+    "Fazia Fitri": {
+      "candidates": [
+        {
+          "studentId": "AMD-SD-0062",
+          "name": "SIFA AL FIRA"
+        },
+        {
+          "studentId": "AMD-TK-0037",
+          "name": "ZAKIA ARSYILA FITRI"
+        },
+        {
+          "studentId": "AMD-SMP-0030",
+          "name": "HAIBA FITRI TUFAILA"
+        }
+      ]
+    },
+    "Lukiana jannatul ma'wa": {
+      "candidates": [
+        {
+          "studentId": "AMD-SMK-0036",
+          "name": "KIRANA FATIMAH AZ ZAHRA"
+        },
+        {
+          "studentId": "AMD-SMP-0043",
+          "name": "KHAZANA RIDHA NAILA"
+        },
+        {
+          "studentId": "AMD-SMK-0077",
+          "name": "ZAHRA NANDATUL AENI"
+        }
+      ]
+    },
+    "Herwisda peratiwi": {
+      "candidates": [
+        {
+          "studentId": "AMD-SMK-0030",
+          "name": "Herwisda Pratiwi"
+        },
+        {
+          "studentId": "AMD-SMK-0021",
+          "name": "DEWI SULASTRI"
+        },
+        {
+          "studentId": "AMD-SMP-0070",
+          "name": "NAHERA DINDA SALINA"
+        }
+      ]
+    },
+    "Bq. Laila suci Ramdani": {
+      "candidates": [
+        {
+          "studentId": "AMD-SMP-0018",
+          "name": "BAIQ LAILA SUCI RAMDANI"
+        },
+        {
+          "studentId": "AMD-SD-0011",
+          "name": "LAILAUZMA NAFIA"
+        },
+        {
+          "studentId": "AMD-SD-0033",
+          "name": "Aljia Ramdani"
+        }
+      ]
+    },
+    "Khairunnisa": {
+      "candidates": [
+        {
+          "studentId": "AMD-SMP-0040",
+          "name": "KHAERUN NISAQ"
+        },
+        {
+          "studentId": "AMD-SMP-0009",
+          "name": "ANNISA"
+        },
+        {
+          "studentId": "AMD-SMP-0076",
+          "name": "NURUL ANNISA"
+        }
+      ]
+    },
+    "Qila Rosyada": {
+      "candidates": [
+        {
+          "studentId": "AMD-SMP-0080",
+          "name": "QYLA ROSADA"
+        },
+        {
+          "studentId": "AMD-SD-0112",
+          "name": "ARSYA ARABI"
+        },
+        {
+          "studentId": "AMD-SD-0046",
+          "name": "RAANIA SYAHIDAH"
+        }
+      ]
+    },
+    "Aqilla Medina azzahra": {
+      "candidates": [
+        {
+          "studentId": "AMD-SMP-0011",
+          "name": "AQILA MEDINA AZZAHRA"
+        },
+        {
+          "studentId": "AMD-SMK-0012",
+          "name": "Aminata Zahra"
+        },
+        {
+          "studentId": "AMD-SD-0075",
+          "name": "Adira Azahra"
+        }
+      ]
+    },
+    "Huriatun nazura": {
+      "candidates": [
+        {
+          "studentId": "AMD-SMP-0036",
+          "name": "HURIATUN AENA"
+        },
+        {
+          "studentId": "AMD-SMK-0031",
+          "name": "HIDAYATUL NAZURA"
+        },
+        {
+          "studentId": "AMD-SMP-0014",
+          "name": "AULIA IZATUNNISA"
+        }
+      ]
+    },
+    "Restu Indira afriadarsih": {
+      "candidates": [
+        {
+          "studentId": "AMD-SD-0100",
+          "name": "RIZKI RAFA AL-FATIH"
+        },
+        {
+          "studentId": "AMD-SMP-0092",
+          "name": "SITTI BAHIRAH ASHILAH"
+        },
+        {
+          "studentId": "AMD-SMP-0090",
+          "name": "SILMI AFIFAH"
+        }
+      ]
+    },
+    "Lukiana jannatul makwa": {
+      "candidates": [
+        {
+          "studentId": "AMD-SMK-0036",
+          "name": "KIRANA FATIMAH AZ ZAHRA"
+        },
+        {
+          "studentId": "AMD-SMP-0043",
+          "name": "KHAZANA RIDHA NAILA"
+        },
+        {
+          "studentId": "AMD-SMK-0077",
+          "name": "ZAHRA NANDATUL AENI"
+        }
+      ]
+    },
+    "afira julia nanda": {
+      "candidates": [
+        {
+          "studentId": "AMD-SMK-0070",
+          "name": "SYAFIRA JULIANANDA KURNIA"
+        },
+        {
+          "studentId": "AMD-SMK-0004",
+          "name": "Aira Juliarti"
+        },
+        {
+          "studentId": "AMD-SMP-0038",
+          "name": "Irwan Maulana"
+        }
+      ]
+    },
+    "Lailatunnubuah": {
+      "candidates": [
+        {
+          "studentId": "AMD-SMK-0038",
+          "name": "LAYLATUN NUBUAH"
+        },
+        {
+          "studentId": "AMD-SMP-0014",
+          "name": "AULIA IZATUNNISA"
+        },
+        {
+          "studentId": "AMD-SD-0011",
+          "name": "LAILAUZMA NAFIA"
+        }
+      ]
+    },
+    "Aliyatin astri amanatillah": {
+      "candidates": [
+        {
+          "studentId": "AMD-SMP-0005",
+          "name": "Aliyatin Ashri Amanatillah"
+        },
+        {
+          "studentId": "AMD-TK-0036",
+          "name": "ZAHIRA PUTRI ARDILLAH"
+        },
+        {
+          "studentId": "AMD-SMP-0016",
+          "name": "BAIQ ATIKA ZAHRA RATIFA"
+        }
+      ]
+    },
+    "Aaliyah Afifah": {
+      "candidates": [
+        {
+          "studentId": "AMD-SD-0059",
+          "name": "Nazwa Hafifah"
+        },
+        {
+          "studentId": "AMD-SMP-0090",
+          "name": "SILMI AFIFAH"
+        },
+        {
+          "studentId": "AMD-SD-0046",
+          "name": "RAANIA SYAHIDAH"
+        }
+      ]
+    },
+    "Aiilla Medina azzahra": {
+      "candidates": [
+        {
+          "studentId": "AMD-SMP-0011",
+          "name": "AQILA MEDINA AZZAHRA"
+        },
+        {
+          "studentId": "AMD-SMK-0012",
+          "name": "Aminata Zahra"
+        },
+        {
+          "studentId": "AMD-SD-0075",
+          "name": "Adira Azahra"
+        }
+      ]
+    },
+    "ailatun nubuwwah": {
+      "candidates": [
+        {
+          "studentId": "AMD-SMK-0038",
+          "name": "LAYLATUN NUBUAH"
+        },
+        {
+          "studentId": "AMD-SMP-0014",
+          "name": "AULIA IZATUNNISA"
+        },
+        {
+          "studentId": "AMD-SMP-0036",
+          "name": "HURIATUN AENA"
+        }
+      ]
+    },
+    "Hizash Nabil": {
+      "candidates": [
+        {
+          "studentId": "AMD-SMP-0035",
+          "name": "HIZASH NABIL AKBAR"
+        },
+        {
+          "studentId": "AMD-SMP-0088",
+          "name": "Sashabila"
+        },
+        {
+          "studentId": "AMD-SMK-0005",
+          "name": "AIRA SANZABILA"
+        }
+      ]
+    },
+    "L. Khalilurrahman": {
+      "candidates": [
+        {
+          "studentId": "AMD-SMP-0045",
+          "name": "LALU KHALIKURRAHMAN"
+        },
+        {
+          "studentId": "AMD-SMP-0029",
+          "name": "HABIBURRAHMAN"
+        },
+        {
+          "studentId": "AMD-SMK-0028",
+          "name": "Habiburohman"
+        }
+      ]
+    },
+    "Ridho Hidayat": {
+      "candidates": [
+        {
+          "studentId": "AMD-SMP-0083",
+          "name": "RIDO HIDAYAT"
+        },
+        {
+          "studentId": "AMD-SMK-0075",
+          "name": "WINDA HIDAYATURROHMAH"
+        },
+        {
+          "studentId": "AMD-SD-0010",
+          "name": "RIMHA ZIDNA ILMA"
+        }
+      ]
+    },
+    "Randi": {
+      "candidates": [
+        {
+          "studentId": "AMD-SMP-0052",
+          "name": "M. RANDI ALWI"
+        },
+        {
+          "studentId": "AMD-SD-0078",
+          "name": "ARPANJI"
+        },
+        {
+          "studentId": "AMD-SMP-0009",
+          "name": "ANNISA"
+        }
+      ]
+    },
+    "Nabil Akbar Anandata": {
+      "candidates": [
+        {
+          "studentId": "AMD-SMK-0052",
+          "name": "NABIL AL AKBAR ANANDATA"
+        },
+        {
+          "studentId": "AMD-SMP-0035",
+          "name": "HIZASH NABIL AKBAR"
+        },
+        {
+          "studentId": "AMD-SMK-0077",
+          "name": "ZAHRA NANDATUL AENI"
+        }
+      ]
+    },
+    "Nabil wanajib": {
+      "candidates": [
+        {
+          "studentId": "AMD-SMK-0039",
+          "name": "M. NABIL WANNAJIB"
+        },
+        {
+          "studentId": "AMD-SMP-0081",
+          "name": "RABIATUL AINI"
+        },
+        {
+          "studentId": "AMD-SD-0040",
+          "name": "M. NABIL AYYASH"
+        }
+      ]
+    },
+    "Arman Maulana": {
+      "candidates": [
+        {
+          "studentId": "AMD-SMK-0016",
+          "name": "ARMAN MAOLANA"
+        },
+        {
+          "studentId": "AMD-SMP-0038",
+          "name": "Irwan Maulana"
+        },
+        {
+          "studentId": "AMD-TK-0016",
+          "name": "M. IHKTIAR MAULANA"
+        }
+      ]
+    },
+    "Habib Awaluddin": {
+      "candidates": [
+        {
+          "studentId": "AMD-SMK-0046",
+          "name": "MUH. HABIB AWALUDDIN"
+        },
+        {
+          "studentId": "AMD-SMP-0029",
+          "name": "HABIBURRAHMAN"
+        },
+        {
+          "studentId": "AMD-SD-0018",
+          "name": "M.HABIB AL-FARISI"
+        }
+      ]
+    },
+    "Zumirah fastawa": {
+      "candidates": [
+        {
+          "studentId": "AMD-SMK-0080",
+          "name": "ZUMIROH FASTAWA"
+        },
+        {
+          "studentId": "AMD-TK-0009",
+          "name": "GALUH FATMAWATI"
+        },
+        {
+          "studentId": "AMD-SMP-0025",
+          "name": "Fasya Setiawan"
+        }
+      ]
+    },
+    "Alvi Azra Wardana": {
+      "candidates": [
+        {
+          "studentId": "AMD-SMK-0011",
+          "name": "Alvin Azra Wardana"
+        },
+        {
+          "studentId": "AMD-SMK-0059",
+          "name": "OLIVIA RAMADANI"
+        },
+        {
+          "studentId": "AMD-SD-0033",
+          "name": "Aljia Ramdani"
+        }
+      ]
+    },
+    "M. Ridho": {
+      "candidates": [
+        {
+          "studentId": "AMD-SMP-0053",
+          "name": "M. RIDHO RAZALI"
+        },
+        {
+          "studentId": "AMD-SMK-0051",
+          "name": "MUHAMMAD RIDHO"
+        },
+        {
+          "studentId": "AMD-SMP-0083",
+          "name": "RIDO HIDAYAT"
+        }
+      ]
+    },
+    "Dilan fajar fadlillah": {
+      "candidates": [
+        {
+          "studentId": "AMD-SMK-0023",
+          "name": "DYLAN FAJAR FADLILLAH"
+        },
+        {
+          "studentId": "AMD-SMP-0056",
+          "name": "MANDA ADELIA"
+        },
+        {
+          "studentId": "AMD-SMK-0026",
+          "name": "Fiya Fadliya"
+        }
+      ]
+    },
+    "QOYYIM": {
+      "candidates": [
+        {
+          "studentId": "AMD-SD-0132",
+          "name": "ZHAFRAN DHIYA'UL QOYYIM"
+        },
+        {
+          "studentId": "AMD-SMK-0001",
+          "name": "Abdul Rohim"
+        },
+        {
+          "studentId": "AMD-SMK-0013",
+          "name": "ANAM ABQORI"
+        }
+      ]
+    },
+    "AL": {
+      "candidates": [
+        {
+          "studentId": "AMD-SMP-0010",
+          "name": "AOLIA"
+        },
+        {
+          "studentId": "AMD-SMK-0010",
+          "name": "ALENA"
+        },
+        {
+          "studentId": "AMD-SMK-0055",
+          "name": "NIRMALA"
+        }
+      ]
+    },
+    "Muhammad Ferdi aditia": {
+      "candidates": [
+        {
+          "studentId": "AMD-SMP-0065",
+          "name": "MUHAMMAD RIPKI HADI"
+        },
+        {
+          "studentId": "AMD-SMP-0058",
+          "name": "MUHAMMAD ASHFA DHIYA"
+        },
+        {
+          "studentId": "AMD-SMP-0050",
+          "name": "M. FHERDI HADITYA"
+        }
+      ]
+    },
+    "Ades suderat": {
+      "candidates": [
+        {
+          "studentId": "AMD-SMK-0002",
+          "name": "Adhes Soedirat"
+        },
+        {
+          "studentId": "AMD-SMP-0096",
+          "name": "YAZID ASSAURI"
+        },
+        {
+          "studentId": "AMD-SMP-0024",
+          "name": "EVA SASTRA"
+        }
+      ]
+    },
+    "M.Toni akbar": {
+      "candidates": [
+        {
+          "studentId": "AMD-SMK-0041",
+          "name": "M. PATONI AKBAR"
+        },
+        {
+          "studentId": "AMD-SMP-0035",
+          "name": "HIZASH NABIL AKBAR"
+        },
+        {
+          "studentId": "AMD-SMP-0102",
+          "name": "MUHAMMAD AKBAR"
+        }
+      ]
+    },
+    "Hamdi sumar": {
+      "candidates": [
+        {
+          "studentId": "AMD-SMK-0043",
+          "name": "M. ZAINUL HAMDI SUMAR"
+        },
+        {
+          "studentId": "AMD-SD-0121",
+          "name": "ANNISA HUMAIRO"
+        },
+        {
+          "studentId": "AMD-SMK-0007",
+          "name": "AISYAH KHUMAIRO"
+        }
+      ]
+    },
+    "Irwan Taufiq azhar": {
+      "candidates": [
+        {
+          "studentId": "AMD-SMP-0038",
+          "name": "Irwan Maulana"
+        },
+        {
+          "studentId": "AMD-SD-0032",
+          "name": "ALIYSA NAUFHA ZHAFIRA"
+        },
+        {
+          "studentId": "AMD-SD-0039",
+          "name": "M. GILANG ADITYA AZHARI"
+        }
+      ]
+    },
+    "M. Razak": {
+      "candidates": [
+        {
+          "studentId": "AMD-SD-0015",
+          "name": "M. IRSAN HAKIM"
+        },
+        {
+          "studentId": "AMD-SMP-0053",
+          "name": "M. RIDHO RAZALI"
+        },
+        {
+          "studentId": "AMD-SD-0089",
+          "name": "NURFAIZAH"
+        }
+      ]
+    },
+    "Bain azzikra": {
+      "candidates": [
+        {
+          "studentId": "AMD-SMK-0018",
+          "name": "BAIN AZIQRA"
+        },
+        {
+          "studentId": "AMD-SMK-0019",
+          "name": "Baiq Azkiya Amira"
+        },
+        {
+          "studentId": "AMD-SMK-0012",
+          "name": "Aminata Zahra"
+        }
+      ]
+    },
+    "Rahmad Ramadhani": {
+      "candidates": [
+        {
+          "studentId": "AMD-SMP-0082",
+          "name": "Rahmad Ramdani"
+        },
+        {
+          "studentId": "AMD-SD-0084",
+          "name": "M. Ardi Ramdani"
+        },
+        {
+          "studentId": "AMD-SD-0027",
+          "name": "MUHAMMAD RAMDANI"
+        }
+      ]
+    },
+    "Najih Fadil": {
+      "candidates": [
+        {
+          "studentId": "AMD-SMK-0053",
+          "name": "NAJIH PADIL"
+        },
+        {
+          "studentId": "AMD-SMP-0069",
+          "name": "NADIVA HASNA FADHILA"
+        },
+        {
+          "studentId": "AMD-SMK-0047",
+          "name": "Muh. Nafaz Adil"
+        }
+      ]
+    },
+    "PANDI HASANI IBROHIM": {
+      "candidates": [
+        {
+          "studentId": "AMD-SMP-0078",
+          "name": "PANDI HASANI IBRAHIM"
+        },
+        {
+          "studentId": "AMD-TK-0019",
+          "name": "M. SULTAN IBRAHIM"
+        },
+        {
+          "studentId": "AMD-SMK-0028",
+          "name": "Habiburohman"
+        }
+      ]
+    },
+    "HABIL GIBRAN": {
+      "candidates": [
+        {
+          "studentId": "AMD-SMK-0028",
+          "name": "Habiburohman"
+        },
+        {
+          "studentId": "AMD-SMP-0029",
+          "name": "HABIBURRAHMAN"
+        },
+        {
+          "studentId": "AMD-SMP-0003",
+          "name": "Ahmad Bilal Febrian"
+        }
+      ]
+    },
+    "KHAIRUL ANAM": {
+      "candidates": [
+        {
+          "studentId": "AMD-SMP-0041",
+          "name": "Khairil Arfan"
+        },
+        {
+          "studentId": "AMD-SMP-0061",
+          "name": "MUHAMMAD KHOIRUL ANAM"
+        },
+        {
+          "studentId": "AMD-TK-0016",
+          "name": "M. IHKTIAR MAULANA"
+        }
+      ]
+    },
+    "BAIN AZZIQRA": {
+      "candidates": [
+        {
+          "studentId": "AMD-SMK-0018",
+          "name": "BAIN AZIQRA"
+        },
+        {
+          "studentId": "AMD-SMK-0019",
+          "name": "Baiq Azkiya Amira"
+        },
+        {
+          "studentId": "AMD-SMK-0012",
+          "name": "Aminata Zahra"
+        }
+      ]
+    },
+    "Nabil Akbar anandata": {
+      "candidates": [
+        {
+          "studentId": "AMD-SMK-0052",
+          "name": "NABIL AL AKBAR ANANDATA"
+        },
+        {
+          "studentId": "AMD-SMP-0035",
+          "name": "HIZASH NABIL AKBAR"
+        },
+        {
+          "studentId": "AMD-SMK-0077",
+          "name": "ZAHRA NANDATUL AENI"
+        }
+      ]
+    },
+    "Nabil Wanajib": {
+      "candidates": [
+        {
+          "studentId": "AMD-SMK-0039",
+          "name": "M. NABIL WANNAJIB"
+        },
+        {
+          "studentId": "AMD-SMP-0081",
+          "name": "RABIATUL AINI"
+        },
+        {
+          "studentId": "AMD-SD-0040",
+          "name": "M. NABIL AYYASH"
+        }
+      ]
+    },
+    "M. Asyraf Danyal": {
+      "candidates": [
+        {
+          "studentId": "AMD-SMP-0059",
+          "name": "MUHAMMAD ASYRAF DANIAL"
+        },
+        {
+          "studentId": "AMD-SMK-0006",
+          "name": "AISYA RAYANIA"
+        },
+        {
+          "studentId": "AMD-SD-0072",
+          "name": "NATASYA ARIQA FATINA"
+        }
+      ]
+    },
+    "M. Razak Aprianto": {
+      "candidates": [
+        {
+          "studentId": "AMD-SMK-0040",
+          "name": "M. PAIZAL APANDI"
+        },
+        {
+          "studentId": "AMD-SD-0016",
+          "name": "M. NARAYA DIVA PRATAMA"
+        },
+        {
+          "studentId": "AMD-SMP-0004",
+          "name": "Aimam Apri Lesmana"
+        }
+      ]
+    },
+    "Irwan Taufiq Azhar": {
+      "candidates": [
+        {
+          "studentId": "AMD-SMP-0038",
+          "name": "Irwan Maulana"
+        },
+        {
+          "studentId": "AMD-SD-0032",
+          "name": "ALIYSA NAUFHA ZHAFIRA"
+        },
+        {
+          "studentId": "AMD-SD-0039",
+          "name": "M. GILANG ADITYA AZHARI"
+        }
+      ]
+    },
+    "M. Ferdi aditia": {
+      "candidates": [
+        {
+          "studentId": "AMD-SMP-0050",
+          "name": "M. FHERDI HADITYA"
+        },
+        {
+          "studentId": "AMD-SMK-0062",
+          "name": "RIA QISTINA"
+        },
+        {
+          "studentId": "AMD-SD-0084",
+          "name": "M. Ardi Ramdani"
+        }
+      ]
+    },
+    "M. Toni akbar": {
+      "candidates": [
+        {
+          "studentId": "AMD-SMK-0041",
+          "name": "M. PATONI AKBAR"
+        },
+        {
+          "studentId": "AMD-SMP-0035",
+          "name": "HIZASH NABIL AKBAR"
+        },
+        {
+          "studentId": "AMD-SMP-0102",
+          "name": "MUHAMMAD AKBAR"
+        }
+      ]
+    },
+    "Zumirah Fastawa": {
+      "candidates": [
+        {
+          "studentId": "AMD-SMK-0080",
+          "name": "ZUMIROH FASTAWA"
+        },
+        {
+          "studentId": "AMD-TK-0009",
+          "name": "GALUH FATMAWATI"
+        },
+        {
+          "studentId": "AMD-SMP-0025",
+          "name": "Fasya Setiawan"
+        }
+      ]
+    },
+    "Alvin Azra Wardani": {
+      "candidates": [
+        {
+          "studentId": "AMD-SMK-0011",
+          "name": "Alvin Azra Wardana"
+        },
+        {
+          "studentId": "AMD-SMK-0059",
+          "name": "OLIVIA RAMADANI"
+        },
+        {
+          "studentId": "AMD-SD-0033",
+          "name": "Aljia Ramdani"
+        }
+      ]
+    },
+    "Ahmad Bukhori": {
+      "candidates": [
+        {
+          "studentId": "AMD-SMP-0002",
+          "name": "Ahmad Al Bukhori"
+        },
+        {
+          "studentId": "AMD-SMP-0054",
+          "name": "M. Sahrul Khori"
+        },
+        {
+          "studentId": "AMD-SD-0105",
+          "name": "AHMAD KHAIROFI WARIS"
+        }
+      ]
+    },
+    "M. Hamdi sumar": {
+      "candidates": [
+        {
+          "studentId": "AMD-SMK-0043",
+          "name": "M. ZAINUL HAMDI SUMAR"
+        },
+        {
+          "studentId": "AMD-SD-0028",
+          "name": "MUHAMMAD ZAIYAN SULPA"
+        },
+        {
+          "studentId": "AMD-SMK-0048",
+          "name": "MUHAMAD SALIM ASIP"
+        }
+      ]
+    },
+    "Dirza Ardiyan Pratama": {
+      "candidates": [
+        {
+          "studentId": "AMD-SMP-0021",
+          "name": "DIRZA ADRIYAN PRATAMA"
+        },
+        {
+          "studentId": "AMD-SMP-0087",
+          "name": "SANDIYAT PRATAMA"
+        },
+        {
+          "studentId": "AMD-SD-0016",
+          "name": "M. NARAYA DIVA PRATAMA"
+        }
+      ]
+    },
+    "Bain azziqra": {
+      "candidates": [
+        {
+          "studentId": "AMD-SMK-0018",
+          "name": "BAIN AZIQRA"
+        },
+        {
+          "studentId": "AMD-SMK-0019",
+          "name": "Baiq Azkiya Amira"
+        },
+        {
+          "studentId": "AMD-SMK-0012",
+          "name": "Aminata Zahra"
+        }
+      ]
+    },
+    "M. Nafaz Adil": {
+      "candidates": [
+        {
+          "studentId": "AMD-SMK-0047",
+          "name": "Muh. Nafaz Adil"
+        },
+        {
+          "studentId": "AMD-SMP-0057",
+          "name": "Mona zahira"
+        },
+        {
+          "studentId": "AMD-SMK-0053",
+          "name": "NAJIH PADIL"
+        }
+      ]
+    },
+    "M. Bastian Faiz Ramzi": {
+      "candidates": [
+        {
+          "studentId": "AMD-SMK-0049",
+          "name": "MUHAMMAD BASTIAN FAIZ RAMZI"
+        },
+        {
+          "studentId": "AMD-TK-0019",
+          "name": "M. SULTAN IBRAHIM"
+        },
+        {
+          "studentId": "AMD-SMP-0089",
+          "name": "Septia azira"
+        }
+      ]
+    },
+    "Pandi HASANI IBROHIM": {
+      "candidates": [
+        {
+          "studentId": "AMD-SMP-0078",
+          "name": "PANDI HASANI IBRAHIM"
+        },
+        {
+          "studentId": "AMD-TK-0019",
+          "name": "M. SULTAN IBRAHIM"
+        },
+        {
+          "studentId": "AMD-SMK-0028",
+          "name": "Habiburohman"
+        }
+      ]
+    },
+    "Lalu Mazid APANDI": {
+      "candidates": [
+        {
+          "studentId": "AMD-SMP-0046",
+          "name": "LALU MAZID AFANDI"
+        },
+        {
+          "studentId": "AMD-SMP-0032",
+          "name": "HAURA ZIDNI"
+        },
+        {
+          "studentId": "AMD-TK-0011",
+          "name": "LALU MUHAMAD RIZKI ALFATIH"
+        }
+      ]
+    },
+    "M. Habib Rahman": {
+      "candidates": [
+        {
+          "studentId": "AMD-SMP-0029",
+          "name": "HABIBURRAHMAN"
+        },
+        {
+          "studentId": "AMD-SMK-0028",
+          "name": "Habiburohman"
+        },
+        {
+          "studentId": "AMD-SMP-0060",
+          "name": "MUHAMMAD HABIB RAHMAN"
+        }
+      ]
+    },
+    "M. Akbar": {
+      "candidates": [
+        {
+          "studentId": "AMD-SMK-0041",
+          "name": "M. PATONI AKBAR"
+        },
+        {
+          "studentId": "AMD-SMP-0102",
+          "name": "MUHAMMAD AKBAR"
+        },
+        {
+          "studentId": "AMD-TK-0001",
+          "name": "AHMAD ALBARRAN"
+        }
+      ]
+    },
+    "Asroruddin": {
+      "candidates": [
+        {
+          "studentId": "AMD-SMP-0012",
+          "name": "Asyroruddin"
+        },
+        {
+          "studentId": "AMD-SMK-0017",
+          "name": "ASRY AYU ARDITHA"
+        },
+        {
+          "studentId": "AMD-SMP-0039",
+          "name": "IZZUDDIN DA'I"
+        }
+      ]
+    },
+    "Khairul Anam": {
+      "candidates": [
+        {
+          "studentId": "AMD-SMP-0041",
+          "name": "Khairil Arfan"
+        },
+        {
+          "studentId": "AMD-SMP-0061",
+          "name": "MUHAMMAD KHOIRUL ANAM"
+        },
+        {
+          "studentId": "AMD-TK-0016",
+          "name": "M. IHKTIAR MAULANA"
+        }
+      ]
+    }
+  }
+}

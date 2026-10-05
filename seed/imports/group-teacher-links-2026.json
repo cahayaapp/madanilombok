@@ -1,0 +1,172 @@
+{
+  "id": "group-teacher-links-2026-v1",
+  "links": [
+    {
+      "groupId": "GRP-2026-quran-P-4",
+      "staffIds": [
+        "AMD-SDM-0082"
+      ],
+      "staffNames": {
+        "AMD-SDM-0082": "Yanti"
+      },
+      "sourceMentorName": "Usth Yanti",
+      "role": "mentor_tahsin_tahfiz"
+    },
+    {
+      "groupId": "GRP-2026-quran-P-6",
+      "staffIds": [
+        "AMD-SDM-0030"
+      ],
+      "staffNames": {
+        "AMD-SDM-0030": "Hikmah"
+      },
+      "sourceMentorName": "Usth. Hikmah",
+      "role": "mentor_tahsin_tahfiz"
+    },
+    {
+      "groupId": "GRP-2026-quran-P-7",
+      "staffIds": [
+        "AMD-SDM-0024"
+      ],
+      "staffNames": {
+        "AMD-SDM-0024": "Ustadzah Fathul Uyun"
+      },
+      "sourceMentorName": "Ust. Fathul Uyun",
+      "role": "mentor_tahsin_tahfiz"
+    },
+    {
+      "groupId": "GRP-2026-arabic-P-4",
+      "staffIds": [
+        "AMD-SDM-0062"
+      ],
+      "staffNames": {
+        "AMD-SDM-0062": "NURIL AZMI"
+      },
+      "sourceMentorName": "Usth Nuril A.",
+      "role": "guru_mapel"
+    },
+    {
+      "groupId": "GRP-2026-arabic-P-5",
+      "staffIds": [
+        "AMD-SDM-0024"
+      ],
+      "staffNames": {
+        "AMD-SDM-0024": "Ustadzah Fathul Uyun"
+      },
+      "sourceMentorName": "Usth Fathul U.",
+      "role": "guru_mapel"
+    },
+    {
+      "groupId": "GRP-2026-quran-L-tuzri",
+      "staffIds": [
+        "AMD-SDM-0054"
+      ],
+      "staffNames": {
+        "AMD-SDM-0054": "Muhammad Tuzri"
+      },
+      "sourceMentorName": "Muhammad Tuzri",
+      "role": "mentor_tahsin_tahfiz"
+    },
+    {
+      "groupId": "GRP-2026-quran-L-muammar",
+      "staffIds": [
+        "AMD-SDM-0052"
+      ],
+      "staffNames": {
+        "AMD-SDM-0052": "Muammar"
+      },
+      "sourceMentorName": "Muammar",
+      "role": "mentor_tahsin_tahfiz"
+    },
+    {
+      "groupId": "GRP-2026-quran-L-mutqin",
+      "staffIds": [
+        "AMD-SDM-0055"
+      ],
+      "staffNames": {
+        "AMD-SDM-0055": "Muhasim"
+      },
+      "sourceMentorName": "Muhasim",
+      "role": "mentor_tahsin_tahfiz"
+    },
+    {
+      "groupId": "GRP-2026-arabic-L-c2",
+      "staffIds": [
+        "AMD-SDM-0013"
+      ],
+      "staffNames": {
+        "AMD-SDM-0013": "Bintang"
+      },
+      "sourceMentorName": "Bintang",
+      "role": "guru_mapel"
+    },
+    {
+      "groupId": "GRP-2026-arabic-L-gema",
+      "staffIds": [
+        "AMD-SDM-0055"
+      ],
+      "staffNames": {
+        "AMD-SDM-0055": "Muhasim"
+      },
+      "sourceMentorName": "Muhasim",
+      "role": "guru_mapel"
+    }
+  ],
+  "pending": [
+    {
+      "groupId": "GRP-2026-quran-P-3",
+      "name": "Kelompok Tahsin A",
+      "sourceMentorName": "Usth Alya R. & Nurul"
+    },
+    {
+      "groupId": "GRP-2026-quran-P-5",
+      "name": "Halaqoh Khatam",
+      "sourceMentorName": "Usth Ida Fitriana"
+    },
+    {
+      "groupId": "GRP-2026-quran-P-8",
+      "name": "Kelompok Umum I — Usth. Alfi NH & Rokyal  A",
+      "sourceMentorName": "Usth. Alfi NH & Rokyal  A"
+    },
+    {
+      "groupId": "GRP-2026-quran-P-9",
+      "name": "Kelompok Umum I — Usth. Dewi I & Melia A",
+      "sourceMentorName": "Usth. Dewi I & Melia A"
+    },
+    {
+      "groupId": "GRP-2026-quran-P-10",
+      "name": "Kelompok Umum I — Usth Rokyal Aeni",
+      "sourceMentorName": "Usth Rokyal Aeni"
+    },
+    {
+      "groupId": "GRP-2026-arabic-P-3",
+      "name": "kelompok Sigor",
+      "sourceMentorName": "Usth Ida Fitriana"
+    },
+    {
+      "groupId": "GRP-2026-quran-L-zakaria",
+      "name": "Tahsin — H. Zakaria",
+      "sourceMentorName": "H. Zakaria"
+    },
+    {
+      "groupId": "GRP-2026-quran-L-yusuf",
+      "name": "Tahsin — M. Yusuf",
+      "sourceMentorName": "M. Yusuf"
+    },
+    {
+      "groupId": "GRP-2026-quran-L-fahri",
+      "name": "Tahsin & Tahfiz — Fahri Husain",
+      "sourceMentorName": "Fahri Husain"
+    },
+    {
+      "groupId": "GRP-2026-quran-L-ziyadah",
+      "name": "GEMA Ziyadah — Ahmad Budiawan Alkhair",
+      "sourceMentorName": "Ahmad Budiawan Alkhair"
+    },
+    {
+      "groupId": "GRP-2026-arabic-L-c3",
+      "name": "Bahasa Arab Pagi — Cordova 3",
+      "sourceMentorName": "Fahri Gontor"
+    }
+  ]
+}

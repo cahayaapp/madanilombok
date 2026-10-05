@@ -1,0 +1,1260 @@
+{
+  "files": [
+    {
+      "name": "KELOMPOK HALAOH.xlsx",
+      "sha256": "e85c766a1d1c815e82c18afda766919d8bd8d4cb50eb2b7ec5df7280c83d3712",
+      "sheet": "Sheet1"
+    },
+    {
+      "name": "BELAJAR BAHASA ARAB.xlsx",
+      "sha256": "a5eb0ca9de4812a311589fd438dc782904dc398ac04c5b690d8f8aaa23366424",
+      "sheet": "Sheet1"
+    },
+    {
+      "name": "data santri perkamar.xlsx",
+      "sha256": "a06055af58c49ced899c42fff566a9d01e2f59e34e4d9746d480b031ef82f7a9",
+      "sheet": "Sheet1"
+    }
+  ],
+  "collections": [
+    {
+      "key": "quran-P-3",
+      "kind": "quran",
+      "gender": "P",
+      "name": "Kelompok Tahsin A",
+      "mentor": "Usth Alya R. & Nurul",
+      "source": "KELOMPOK HALAOH.xlsx",
+      "members": [
+        {
+          "name": "Annisa",
+          "cell": "C7"
+        },
+        {
+          "name": "Anindya pramusita",
+          "cell": "C8"
+        },
+        {
+          "name": "Anindita salsabila",
+          "cell": "C9"
+        },
+        {
+          "name": "Khusnul khotimah",
+          "cell": "C10"
+        },
+        {
+          "name": "Salsabila",
+          "cell": "C11"
+        },
+        {
+          "name": "Khazzana ridha naila",
+          "cell": "C12"
+        },
+        {
+          "name": "Zezee aqilla mouza",
+          "cell": "C13"
+        },
+        {
+          "name": "Bq.faiqa salwa wiradarma",
+          "cell": "C14"
+        },
+        {
+          "name": "Nahera dinda Salina",
+          "cell": "C15"
+        },
+        {
+          "name": "Bq.Atika zahra ratifa",
+          "cell": "C16"
+        },
+        {
+          "name": "Rabiatul Aini",
+          "cell": "C17"
+        },
+        {
+          "name": "Dinda cahyati",
+          "cell": "C18"
+        },
+        {
+          "name": "Aqila Medina azzahra",
+          "cell": "C19"
+        },
+        {
+          "name": "Muzdalifa",
+          "cell": "C20"
+        }
+      ],
+      "staffRoom": false
+    },
+    {
+      "key": "quran-P-4",
+      "kind": "quran",
+      "gender": "P",
+      "name": "Kelompok Tahsin B",
+      "mentor": "Usth Yanti",
+      "source": "KELOMPOK HALAOH.xlsx",
+      "members": [
+        {
+          "name": "Mutami Fitri Sephia",
+          "cell": "D7"
+        },
+        {
+          "name": "Huryatul Aina",
+          "cell": "D8"
+        },
+        {
+          "name": "Titin Agustina",
+          "cell": "D9"
+        },
+        {
+          "name": "Dewi Sulastri",
+          "cell": "D10"
+        },
+        {
+          "name": "Haya Sofia",
+          "cell": "D11"
+        },
+        {
+          "name": "Nuroh",
+          "cell": "D12"
+        },
+        {
+          "name": "Hanna",
+          "cell": "D13"
+        },
+        {
+          "name": "Bq. Laitani kuntu",
+          "cell": "D14"
+        },
+        {
+          "name": "Fayela sahdatin kuluba",
+          "cell": "D15"
+        },
+        {
+          "name": "Tazia Olivia",
+          "cell": "D16"
+        },
+        {
+          "name": "Hidayatul Naura",
+          "cell": "D17"
+        },
+        {
+          "name": "Mona Zahira",
+          "cell": "D18"
+        }
+      ],
+      "staffRoom": false
+    },
+    {
+      "key": "quran-P-5",
+      "kind": "quran",
+      "gender": "P",
+      "name": "Halaqoh Khatam",
+      "mentor": "Usth Ida Fitriana",
+      "source": "KELOMPOK HALAOH.xlsx",
+      "members": [
+        {
+          "name": "Dini Apriani",
+          "cell": "E7"
+        },
+        {
+          "name": "Ridatun najwi",
+          "cell": "E8"
+        },
+        {
+          "name": "Evi Elvia",
+          "cell": "E9"
+        },
+        {
+          "name": "Silvi wahdiatun elena",
+          "cell": "E10"
+        },
+        {
+          "name": "Nadhifa Husna Fadila",
+          "cell": "E11"
+        },
+        {
+          "name": "Ajeng putri rizky",
+          "cell": "E12"
+        },
+        {
+          "name": "Arifah Monica",
+          "cell": "E13"
+        },
+        {
+          "name": "Haura zidni",
+          "cell": "E14"
+        }
+      ],
+      "staffRoom": false
+    },
+    {
+      "key": "quran-P-6",
+      "kind": "quran",
+      "gender": "P",
+      "name": "Gema  Ziyadah",
+      "mentor": "Usth. Hikmah",
+      "source": "KELOMPOK HALAOH.xlsx",
+      "members": [
+        {
+          "name": "Allamul muhlisah",
+          "cell": "F7"
+        },
+        {
+          "name": "Helga Elvina irawan",
+          "cell": "F8"
+        },
+        {
+          "name": "Aliyah afifah farzana",
+          "cell": "F9"
+        },
+        {
+          "name": "Sashabila",
+          "cell": "F10"
+        },
+        {
+          "name": "Azkiya althafunnisa",
+          "cell": "F11"
+        },
+        {
+          "name": "Sujiyana",
+          "cell": "F12"
+        }
+      ],
+      "staffRoom": false
+    },
+    {
+      "key": "quran-P-7",
+      "kind": "quran",
+      "gender": "P",
+      "name": "Gema Mutqin",
+      "mentor": "Ust. Fathul Uyun",
+      "source": "KELOMPOK HALAOH.xlsx",
+      "members": [
+        {
+          "name": "Baiq bella Kaffa syaumi",
+          "cell": "G7"
+        },
+        {
+          "name": "Sitti bahirah ashilah",
+          "cell": "G8"
+        },
+        {
+          "name": "Azka nabila",
+          "cell": "G9"
+        },
+        {
+          "name": "Zuraida ulya hazani",
+          "cell": "G10"
+        },
+        {
+          "name": "Via faezatul husna",
+          "cell": "G11"
+        },
+        {
+          "name": "Firdatul ardilah",
+          "cell": "G12"
+        }
+      ],
+      "staffRoom": false
+    },
+    {
+      "key": "quran-P-8",
+      "kind": "quran",
+      "gender": "P",
+      "name": "Kelompok Umum I",
+      "mentor": "Usth. Alfi NH & Rokyal  A",
+      "source": "KELOMPOK HALAOH.xlsx",
+      "members": [
+        {
+          "name": "Ririn Ekawati",
+          "cell": "H7"
+        },
+        {
+          "name": "Zulfani royal",
+          "cell": "H8"
+        },
+        {
+          "name": "Septia azira",
+          "cell": "H9"
+        },
+        {
+          "name": "Tyas Maulia Latif",
+          "cell": "H10"
+        },
+        {
+          "name": "Siti Malikah",
+          "cell": "H11"
+        },
+        {
+          "name": "Purnama nisfatullail",
+          "cell": "H12"
+        },
+        {
+          "name": "Silmi Afifah",
+          "cell": "H13"
+        },
+        {
+          "name": "Sartini",
+          "cell": "H14"
+        },
+        {
+          "name": "Zahra Nahdlatul Aini",
+          "cell": "H15"
+        },
+        {
+          "name": "Kayla kusnia",
+          "cell": "H16"
+        },
+        {
+          "name": "Aira juliarti",
+          "cell": "H17"
+        },
+        {
+          "name": "Manggar atharrazka PS",
+          "cell": "H18"
+        }
+      ],
+      "staffRoom": false
+    },
+    {
+      "key": "quran-P-9",
+      "kind": "quran",
+      "gender": "P",
+      "name": "Kelompok Umum I",
+      "mentor": "Usth. Dewi I & Melia A",
+      "source": "KELOMPOK HALAOH.xlsx",
+      "members": [
+        {
+          "name": "Syafira Julia nanda",
+          "cell": "I7"
+        },
+        {
+          "name": "Aisyah Rayania",
+          "cell": "I8"
+        },
+        {
+          "name": "Aira Sanzabila",
+          "cell": "I9"
+        },
+        {
+          "name": "Sakina Aulia",
+          "cell": "I10"
+        },
+        {
+          "name": "Alena",
+          "cell": "I11"
+        },
+        {
+          "name": "Nian Nafsani",
+          "cell": "I12"
+        },
+        {
+          "name": "Sakina Aulia",
+          "cell": "I13"
+        },
+        {
+          "name": "akfina kurniatunafis",
+          "cell": "I14"
+        },
+        {
+          "name": "Sulistiana",
+          "cell": "I15"
+        },
+        {
+          "name": "Nuri Maulida Marta",
+          "cell": "I16"
+        },
+        {
+          "name": "Nisa'ul Husna",
+          "cell": "I17"
+        },
+        {
+          "name": "Puji Susana Putri",
+          "cell": "I18"
+        },
+        {
+          "name": "Feby Aprilia",
+          "cell": "I19"
+        }
+      ],
+      "staffRoom": false
+    },
+    {
+      "key": "quran-P-10",
+      "kind": "quran",
+      "gender": "P",
+      "name": "Kelompok Umum I",
+      "mentor": "Usth Rokyal Aeni",
+      "source": "KELOMPOK HALAOH.xlsx",
+      "members": [
+        {
+          "name": "Lailatu Nubuah",
+          "cell": "J7"
+        },
+        {
+          "name": "Olivia Ramdani",
+          "cell": "J8"
+        },
+        {
+          "name": "Nirmala",
+          "cell": "J9"
+        },
+        {
+          "name": "Syifa ula Sofia",
+          "cell": "J10"
+        },
+        {
+          "name": "Restu Indira afriadarsi",
+          "cell": "J11"
+        },
+        {
+          "name": "Fazia Fitri",
+          "cell": "J12"
+        },
+        {
+          "name": "Lukiana jannatul ma'wa",
+          "cell": "J13"
+        },
+        {
+          "name": "Herwisda peratiwi",
+          "cell": "J14"
+        },
+        {
+          "name": "Bq. Laila suci Ramdani",
+          "cell": "J15"
+        },
+        {
+          "name": "Nisa hadana",
+          "cell": "J16"
+        },
+        {
+          "name": "Khairunnisa",
+          "cell": "J17"
+        },
+        {
+          "name": "Qila Rosyada",
+          "cell": "J18"
+        },
+        {
+          "name": "Aolia",
+          "cell": "J19"
+        }
+      ],
+      "staffRoom": false
+    },
+    {
+      "key": "arabic-P-3",
+      "kind": "arabic",
+      "gender": "P",
+      "name": "kelompok Sigor",
+      "mentor": "Usth Ida Fitriana",
+      "source": "BELAJAR BAHASA ARAB.xlsx",
+      "members": [
+        {
+          "name": "Annisa",
+          "cell": "C6"
+        },
+        {
+          "name": "Anindya pramusita",
+          "cell": "C7"
+        },
+        {
+          "name": "Anindita salsabila",
+          "cell": "C8"
+        },
+        {
+          "name": "Khusnul khotimah",
+          "cell": "C9"
+        },
+        {
+          "name": "Salsabila",
+          "cell": "C10"
+        },
+        {
+          "name": "Khazzana ridha naila",
+          "cell": "C11"
+        },
+        {
+          "name": "Zezee aqilla mouza",
+          "cell": "C12"
+        },
+        {
+          "name": "Bq.faiqa salwa wiradarma",
+          "cell": "C13"
+        },
+        {
+          "name": "Nahera dinda Salina",
+          "cell": "C14"
+        },
+        {
+          "name": "Bq.Atika zahra ratifa",
+          "cell": "C15"
+        },
+        {
+          "name": "Rabiatul Aini",
+          "cell": "C16"
+        },
+        {
+          "name": "Dinda cahyati",
+          "cell": "C17"
+        },
+        {
+          "name": "Aqilla Medina azzahra",
+          "cell": "C18"
+        },
+        {
+          "name": "Fayela sahdatin kuluba",
+          "cell": "C19"
+        },
+        {
+          "name": "Ririn Ekawati",
+          "cell": "C20"
+        },
+        {
+          "name": "Zulfani royal",
+          "cell": "C21"
+        },
+        {
+          "name": "Haya Sofia",
+          "cell": "C22"
+        },
+        {
+          "name": "Septia azira",
+          "cell": "C23"
+        },
+        {
+          "name": "Nuroh",
+          "cell": "C24"
+        },
+        {
+          "name": "Tyas Maulia Latif",
+          "cell": "C25"
+        },
+        {
+          "name": "Siti Malikah",
+          "cell": "C26"
+        },
+        {
+          "name": "Purnama nisfatullail",
+          "cell": "C27"
+        },
+        {
+          "name": "Bq. Laitani kuntu",
+          "cell": "C28"
+        },
+        {
+          "name": "Silmi Afifah",
+          "cell": "C29"
+        },
+        {
+          "name": "Khairunnisa",
+          "cell": "C30"
+        },
+        {
+          "name": "Qila Rosyada",
+          "cell": "C31"
+        },
+        {
+          "name": "Nadhifa Husna Fadila",
+          "cell": "C32"
+        },
+        {
+          "name": "Huryatul Aina",
+          "cell": "C33"
+        },
+        {
+          "name": "Haura zidni",
+          "cell": "C34"
+        },
+        {
+          "name": "Huriatun nazura",
+          "cell": "C35"
+        },
+        {
+          "name": "Bq. Laila suci Ramdani",
+          "cell": "C36"
+        },
+        {
+          "name": "Nisa hadana",
+          "cell": "C37"
+        },
+        {
+          "name": "Mona Zahira",
+          "cell": "C38"
+        },
+        {
+          "name": "Aolia",
+          "cell": "C39"
+        },
+        {
+          "name": "Muzdalifa",
+          "cell": "C40"
+        }
+      ],
+      "staffRoom": false
+    },
+    {
+      "key": "arabic-P-4",
+      "kind": "arabic",
+      "gender": "P",
+      "name": "Kelompok Kibar",
+      "mentor": "Usth Nuril A.",
+      "source": "BELAJAR BAHASA ARAB.xlsx",
+      "members": [
+        {
+          "name": "Zahra Nahdlatul Aini",
+          "cell": "D6"
+        },
+        {
+          "name": "Kayla kusnia",
+          "cell": "D7"
+        },
+        {
+          "name": "Alena",
+          "cell": "D8"
+        },
+        {
+          "name": "Fazia Fitri",
+          "cell": "D9"
+        },
+        {
+          "name": "Restu Indira afriadarsih",
+          "cell": "D10"
+        },
+        {
+          "name": "Lukiana jannatul makwa",
+          "cell": "D11"
+        },
+        {
+          "name": "Herwisda peratiwi",
+          "cell": "D12"
+        },
+        {
+          "name": "afira julia nanda",
+          "cell": "D13"
+        },
+        {
+          "name": "Evi Elvia",
+          "cell": "D14"
+        },
+        {
+          "name": "Silvi wahdiatun elena",
+          "cell": "D15"
+        },
+        {
+          "name": "Dewi Sulastri",
+          "cell": "D16"
+        },
+        {
+          "name": "akfina kurniatunafis",
+          "cell": "D17"
+        },
+        {
+          "name": "Ajeng putri rizky",
+          "cell": "D18"
+        },
+        {
+          "name": "Arifah Monica",
+          "cell": "D19"
+        },
+        {
+          "name": "Aisyah Rayania",
+          "cell": "D20"
+        },
+        {
+          "name": "Aira Sanzabila",
+          "cell": "D21"
+        },
+        {
+          "name": "Olivia Ramdani",
+          "cell": "D22"
+        },
+        {
+          "name": "Titin Agustina",
+          "cell": "D23"
+        },
+        {
+          "name": "Nirmala",
+          "cell": "D24"
+        },
+        {
+          "name": "Syifa ula Sofia",
+          "cell": "D25"
+        },
+        {
+          "name": "Sakina Aulia",
+          "cell": "D26"
+        },
+        {
+          "name": "Dini Apriani",
+          "cell": "D27"
+        },
+        {
+          "name": "Ridatun najwi",
+          "cell": "D28"
+        },
+        {
+          "name": "Puji Susana Putri",
+          "cell": "D29"
+        },
+        {
+          "name": "Nian Nafsani",
+          "cell": "D30"
+        },
+        {
+          "name": "Sartini",
+          "cell": "D31"
+        },
+        {
+          "name": "Tazia Olivia",
+          "cell": "D32"
+        },
+        {
+          "name": "Lailatunnubuah",
+          "cell": "D33"
+        },
+        {
+          "name": "Sulistiana",
+          "cell": "D34"
+        },
+        {
+          "name": "Nuri Maulida Marta",
+          "cell": "D35"
+        },
+        {
+          "name": "Nisa'ul Husna",
+          "cell": "D36"
+        },
+        {
+          "name": "Aira juliarti",
+          "cell": "D37"
+        },
+        {
+          "name": "Mutami Fitri Sephia",
+          "cell": "D38"
+        }
+      ],
+      "staffRoom": false
+    },
+    {
+      "key": "arabic-P-5",
+      "kind": "arabic",
+      "gender": "P",
+      "name": "Kelompok Gema",
+      "mentor": "Usth Fathul U.",
+      "source": "BELAJAR BAHASA ARAB.xlsx",
+      "members": [
+        {
+          "name": "Aliyatin astri amanatillah",
+          "cell": "E6"
+        },
+        {
+          "name": "Baiq bella Kaffa syaumi",
+          "cell": "E7"
+        },
+        {
+          "name": "Helga Elvina irawan",
+          "cell": "E8"
+        },
+        {
+          "name": "Sitti bahirah ashilah",
+          "cell": "E9"
+        },
+        {
+          "name": "Sashabila",
+          "cell": "E10"
+        },
+        {
+          "name": "Azka nabila",
+          "cell": "E11"
+        },
+        {
+          "name": "Azkiya althafunnisa",
+          "cell": "E12"
+        },
+        {
+          "name": "Sujiyana",
+          "cell": "E13"
+        },
+        {
+          "name": "Zuraida ulya hazani",
+          "cell": "E14"
+        },
+        {
+          "name": "Via faezatul husna",
+          "cell": "E15"
+        },
+        {
+          "name": "Manggar atharrazka PS",
+          "cell": "E16"
+        },
+        {
+          "name": "Allamul muhlisah",
+          "cell": "E17"
+        },
+        {
+          "name": "Aliyah afifah farzana",
+          "cell": "E18"
+        },
+        {
+          "name": "Firdatul ardilah",
+          "cell": "E19"
+        },
+        {
+          "name": "Aaliyah Afifah",
+          "cell": "E20"
+        }
+      ],
+      "staffRoom": false
+    },
+    {
+      "key": "rooms-P-3",
+      "kind": "rooms",
+      "gender": "P",
+      "name": "KAMAR MAKKAH I",
+      "mentor": "",
+      "source": "data santri perkamar.xlsx",
+      "members": [
+        {
+          "name": "Annisa",
+          "cell": "C6"
+        },
+        {
+          "name": "Anindya pramusita",
+          "cell": "C7"
+        },
+        {
+          "name": "Anindita salsabila",
+          "cell": "C8"
+        },
+        {
+          "name": "Khusnul khotimah",
+          "cell": "C9"
+        },
+        {
+          "name": "Salsabila",
+          "cell": "C10"
+        },
+        {
+          "name": "Khazzana ridha naila",
+          "cell": "C11"
+        },
+        {
+          "name": "Zezee aqilla mouza",
+          "cell": "C12"
+        },
+        {
+          "name": "Bq.faiqa salwa wiradarma",
+          "cell": "C13"
+        },
+        {
+          "name": "Nahera dinda Salina",
+          "cell": "C14"
+        },
+        {
+          "name": "Bq.Atika zahra ratifa",
+          "cell": "C15"
+        },
+        {
+          "name": "Rabiatul Aini",
+          "cell": "C16"
+        },
+        {
+          "name": "Dinda cahyati",
+          "cell": "C17"
+        },
+        {
+          "name": "Aiilla Medina azzahra",
+          "cell": "C18"
+        },
+        {
+          "name": "Sulistiana",
+          "cell": "C19"
+        },
+        {
+          "name": "Nuri Maulida Marta",
+          "cell": "C20"
+        },
+        {
+          "name": "Nisa'ul Husna",
+          "cell": "C21"
+        },
+        {
+          "name": "Aira juliarti",
+          "cell": "C22"
+        }
+      ],
+      "staffRoom": false
+    },
+    {
+      "key": "rooms-P-4",
+      "kind": "rooms",
+      "gender": "P",
+      "name": "KAMAR MAKKAH II",
+      "mentor": "",
+      "source": "data santri perkamar.xlsx",
+      "members": [
+        {
+          "name": "Usth. Alya Roynna",
+          "cell": "D6"
+        },
+        {
+          "name": "Usth Nurul Asri Ramdhani",
+          "cell": "D7"
+        },
+        {
+          "name": "Usth Rokyal Aini",
+          "cell": "D8"
+        },
+        {
+          "name": "Usth. Dewi Itiansa",
+          "cell": "D9"
+        },
+        {
+          "name": "Usth Melia Arpiana",
+          "cell": "D10"
+        },
+        {
+          "name": "Usth Anggi Aprilia",
+          "cell": "D11"
+        },
+        {
+          "name": "Usth Fitrianih",
+          "cell": "D12"
+        },
+        {
+          "name": "Usth Wanda Saputri",
+          "cell": "D13"
+        },
+        {
+          "name": "Usth Nanda Rahmawati",
+          "cell": "D14"
+        },
+        {
+          "name": "Usth Riska Yunita",
+          "cell": "D15"
+        },
+        {
+          "name": "Usth Alfi Nur hafizoh",
+          "cell": "D16"
+        },
+        {
+          "name": "Usth Fitrah",
+          "cell": "D17"
+        }
+      ],
+      "staffRoom": true
+    },
+    {
+      "key": "rooms-P-5",
+      "kind": "rooms",
+      "gender": "P",
+      "name": "KAMAR MAKKAH III",
+      "mentor": "",
+      "source": "data santri perkamar.xlsx",
+      "members": [
+        {
+          "name": "Fayela sahdatin kuluba",
+          "cell": "E6"
+        },
+        {
+          "name": "Fazia Fitri",
+          "cell": "E7"
+        },
+        {
+          "name": "Ririn Ekawati",
+          "cell": "E8"
+        },
+        {
+          "name": "Zulfani royal",
+          "cell": "E9"
+        },
+        {
+          "name": "Haya Sofia",
+          "cell": "E10"
+        },
+        {
+          "name": "Restu Indira afriadarsih",
+          "cell": "E11"
+        },
+        {
+          "name": "Septia azira",
+          "cell": "E12"
+        },
+        {
+          "name": "Nuroh",
+          "cell": "E13"
+        },
+        {
+          "name": "Tyas Maulia Latif",
+          "cell": "E14"
+        },
+        {
+          "name": "Siti Malikah",
+          "cell": "E15"
+        },
+        {
+          "name": "Purnama nisfatullail",
+          "cell": "E16"
+        },
+        {
+          "name": "Bq. Laitani kuntu",
+          "cell": "E17"
+        },
+        {
+          "name": "Lukiana jannatul makwa",
+          "cell": "E18"
+        },
+        {
+          "name": "Silmi Afifah",
+          "cell": "E19"
+        },
+        {
+          "name": "Herwisda peratiwi",
+          "cell": "E20"
+        },
+        {
+          "name": "Zahra Nahdlatul Aini",
+          "cell": "E21"
+        },
+        {
+          "name": "Kayla kusnia",
+          "cell": "E22"
+        },
+        {
+          "name": "Alena",
+          "cell": "E23"
+        }
+      ],
+      "staffRoom": false
+    },
+    {
+      "key": "rooms-P-6",
+      "kind": "rooms",
+      "gender": "P",
+      "name": "KAMAR  PUSTAKA I",
+      "mentor": "",
+      "source": "data santri perkamar.xlsx",
+      "members": [
+        {
+          "name": "Tazia Olivia",
+          "cell": "F6"
+        },
+        {
+          "name": "afira julia nanda",
+          "cell": "F7"
+        },
+        {
+          "name": "Evi Elvia",
+          "cell": "F8"
+        },
+        {
+          "name": "Silvi wahdiatun elena",
+          "cell": "F9"
+        },
+        {
+          "name": "Khairunnisa",
+          "cell": "F10"
+        },
+        {
+          "name": "Qila Rosyada",
+          "cell": "F11"
+        },
+        {
+          "name": "Mutami Fitri Sephia",
+          "cell": "F12"
+        },
+        {
+          "name": "Dewi Sulastri",
+          "cell": "F13"
+        },
+        {
+          "name": "Feby Aprilia",
+          "cell": "F14"
+        },
+        {
+          "name": "Nadhifa Husna Fadila",
+          "cell": "F15"
+        },
+        {
+          "name": "Huryatul Aina",
+          "cell": "F16"
+        },
+        {
+          "name": "akfina kurniatunafis",
+          "cell": "F17"
+        },
+        {
+          "name": "Ajeng putri rizky",
+          "cell": "F18"
+        },
+        {
+          "name": "Arifah Monica",
+          "cell": "F19"
+        },
+        {
+          "name": "Aisyah Rayania",
+          "cell": "F20"
+        },
+        {
+          "name": "Aira Sanzabila",
+          "cell": "F21"
+        },
+        {
+          "name": "Haura zidni",
+          "cell": "F22"
+        }
+      ],
+      "staffRoom": false
+    },
+    {
+      "key": "rooms-P-7",
+      "kind": "rooms",
+      "gender": "P",
+      "name": "KAMAR PUSTAKA II",
+      "mentor": "",
+      "source": "data santri perkamar.xlsx",
+      "members": [
+        {
+          "name": "Huriatun nazura",
+          "cell": "G6"
+        },
+        {
+          "name": "ailatun nubuwwah",
+          "cell": "G7"
+        },
+        {
+          "name": "Olivia Ramdani",
+          "cell": "G8"
+        },
+        {
+          "name": "Titin Agustina",
+          "cell": "G9"
+        },
+        {
+          "name": "Nirmala",
+          "cell": "G10"
+        },
+        {
+          "name": "Syifa ula Sofia",
+          "cell": "G11"
+        },
+        {
+          "name": "Bq. Laila suci Ramdani",
+          "cell": "G12"
+        },
+        {
+          "name": "Nisa hadana",
+          "cell": "G13"
+        },
+        {
+          "name": "Mona Zahira",
+          "cell": "G14"
+        },
+        {
+          "name": "Aolia",
+          "cell": "G15"
+        },
+        {
+          "name": "Sakina Aulia",
+          "cell": "G16"
+        },
+        {
+          "name": "Muzdalifa",
+          "cell": "G17"
+        },
+        {
+          "name": "Dini Apriani",
+          "cell": "G18"
+        },
+        {
+          "name": "Ridatun najwi",
+          "cell": "G19"
+        },
+        {
+          "name": "Puji Susana Putri",
+          "cell": "G20"
+        },
+        {
+          "name": "Nian Nafsani",
+          "cell": "G21"
+        },
+        {
+          "name": "Sartini",
+          "cell": "G22"
+        }
+      ],
+      "staffRoom": false
+    },
+    {
+      "key": "rooms-P-8",
+      "kind": "rooms",
+      "gender": "P",
+      "name": "KAMAR GEMA I",
+      "mentor": "",
+      "source": "data santri perkamar.xlsx",
+      "members": [
+        {
+          "name": "Aliyatin astri amanatillah",
+          "cell": "H6"
+        },
+        {
+          "name": "Baiq bella Kaffa syaumi",
+          "cell": "H7"
+        },
+        {
+          "name": "Helga Elvina irawan",
+          "cell": "H8"
+        },
+        {
+          "name": "Sitti bahirah ashilah",
+          "cell": "H9"
+        },
+        {
+          "name": "Sashabila",
+          "cell": "H10"
+        },
+        {
+          "name": "Azka nabila",
+          "cell": "H11"
+        },
+        {
+          "name": "Azkiya althafunnisa",
+          "cell": "H12"
+        },
+        {
+          "name": "Sujiyana",
+          "cell": "H13"
+        },
+        {
+          "name": "Zuraida ulya hazani",
+          "cell": "H14"
+        },
+        {
+          "name": "Via faezatul husna",
+          "cell": "H15"
+        },
+        {
+          "name": "Manggar atharrazka putri sutrisno",
+          "cell": "H16"
+        },
+        {
+          "name": "Allamul muhlisah",
+          "cell": "H17"
+        },
+        {
+          "name": "Aliyah afifah farzana",
+          "cell": "H18"
+        },
+        {
+          "name": "Firdatul ardilah",
+          "cell": "H19"
+        },
+        {
+          "name": "Aaliyah Afifah",
+          "cell": "H20"
+        }
+      ],
+      "staffRoom": false
+    }
+  ]
+}

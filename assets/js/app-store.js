@@ -9,22 +9,23 @@ const state = {
 
 export async function loadMaster(force = false) {
   if (state.master && !force) return state.master;
-  const [students, staff, classes, units, rooms, groups, subjects, programs, academicSchedules, dailySchedules, dormitories] = await Promise.all([
+  const [students, staff, classes, units, rooms, groups, subjects, programs, academicSchedules, dailySchedules, dormitories, recurringSchedules] = await Promise.all([
     listNode("students"), listNode("staff"), listNode("classes"), listNode("units"), listNode("rooms"),
-    listNode("groups"), listNode("subjects"), listNode("programs"), listNode("schedules/academic"), listNode("schedules/daily"), listNode("dormitories")
+    listNode("groups"), listNode("subjects"), listNode("programs"), listNode("schedules/academic"), listNode("schedules/daily"), listNode("dormitories"), listNode("schedules/recurring")
   ]);
   const yearId = await getCurrentAcademicYearId();
-  const [year, classAssignments, roomAssignments, groupAssignments] = await Promise.all([
+  const [year, classAssignments, roomAssignments, groupAssignments, mentorAssignments] = await Promise.all([
     yearId ? getNode(`academic_years/${yearId}`) : null,
     yearId ? getNode(`assignments/classes/${yearId}`) : null,
     yearId ? getNode(`assignments/rooms/${yearId}`) : null,
-    yearId ? getNode(`assignments/groups/${yearId}`) : null
+    yearId ? getNode(`assignments/groups/${yearId}`) : null,
+    yearId ? getNode(`assignments/mentors/${yearId}`) : null
   ]);
   state.yearId = yearId;
   state.year = year;
   state.master = {
-    students, staff, classes, units, rooms, groups, subjects, programs, academicSchedules, dailySchedules, dormitories,
-    classAssignments: classAssignments || {}, roomAssignments: roomAssignments || {}, groupAssignments: groupAssignments || {}
+    students, staff, classes, units, rooms, groups:groups.filter(g=>g.status!=="inactive"), subjects, programs, recurringSchedules, academicSchedules:academicSchedules.filter(s=>s.status!=="inactive"), dailySchedules:dailySchedules.filter(s=>s.status!=="inactive"&&(!s.academicYearId||s.academicYearId===yearId)), dormitories,
+    classAssignments: classAssignments || {}, roomAssignments: roomAssignments || {}, groupAssignments: groupAssignments || {}, mentorAssignments: mentorAssignments || {}
   };
   state.loadedAt = Date.now();
   return state.master;
@@ -46,6 +47,9 @@ export function studentsForClass(classId, master = state.master) {
     .map(([studentId]) => studentId);
   const map = byId(master.students || []);
   return ids.map(id => map[id]).filter(Boolean).sort((a,b) => (a.name || "").localeCompare(b.name || ""));
+}
+export function studentsForTeaching(schedule, master = state.master) {
+  return [...new Map((schedule.classIds||schedule.combinedClassIds||[schedule.classId]).flatMap(id=>studentsForClass(id,master)).map(s=>[s.id,s])).values()].sort((a,b)=>a.name.localeCompare(b.name));
 }
 
 export function studentsForGroup(groupId, master = state.master) {

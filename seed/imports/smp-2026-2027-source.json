@@ -1,0 +1,1505 @@
+{
+  "GURU WALI SMP 2026-2027.xlsx": {
+    "SMT GANJIL": {
+      "rows": [
+        {
+          "row": 1,
+          "cells": {
+            "A": "DAFTAR GURU WALI"
+          }
+        },
+        {
+          "row": 2,
+          "cells": {
+            "A": "SMP ISLAM AL MADANI MAMBEN LAUK"
+          }
+        },
+        {
+          "row": 3,
+          "cells": {
+            "A": "TAHUN 2026/2027"
+          }
+        },
+        {
+          "row": 5,
+          "cells": {
+            "A": "NO",
+            "B": "NAMA GURU WALI",
+            "C": "NAMA ANAK BIMBINGAN"
+          }
+        },
+        {
+          "row": 7,
+          "cells": {
+            "A": 1,
+            "B": "IDA FITRIANA, S.Pd",
+            "C": "ANINDITA SALSABILA"
+          }
+        },
+        {
+          "row": 8,
+          "cells": {
+            "C": "ANINDYA PRAMUSITA"
+          }
+        },
+        {
+          "row": 9,
+          "cells": {
+            "C": "ANNISA"
+          }
+        },
+        {
+          "row": 10,
+          "cells": {
+            "C": "AQILA MEDINA AZZAHRA"
+          }
+        },
+        {
+          "row": 11,
+          "cells": {
+            "C": "BAIQ ATIKA ZAHRA RATIFA"
+          }
+        },
+        {
+          "row": 12,
+          "cells": {
+            "C": "BAIQ FAIQA SALWA WIRADARMA"
+          }
+        },
+        {
+          "row": 13,
+          "cells": {
+            "C": "DINDA CAHYATI"
+          }
+        },
+        {
+          "row": 14,
+          "cells": {
+            "C": "HUSNUL KHOTIMAH"
+          }
+        },
+        {
+          "row": 15,
+          "cells": {
+            "A": 2,
+            "B": "ELY HERLINA, S.Pd",
+            "C": "DIRZA ADRIYAN PRATAMA"
+          }
+        },
+        {
+          "row": 16,
+          "cells": {
+            "C": "MUHAMMAD NAUFAL ALFIARASYIDI"
+          }
+        },
+        {
+          "row": 17,
+          "cells": {
+            "C": "MUHAMMAD RIPKI HADI"
+          }
+        },
+        {
+          "row": 18,
+          "cells": {
+            "C": "OKASHYA MUHAWILUR ROYYAN"
+          }
+        },
+        {
+          "row": 19,
+          "cells": {
+            "C": "YANDI SATRIA"
+          }
+        },
+        {
+          "row": 20,
+          "cells": {
+            "A": 3,
+            "B": "SUPIAN HADI, S.Pd",
+            "C": "DINUL RIZQIAN ABIFARRIZ"
+          }
+        },
+        {
+          "row": 21,
+          "cells": {
+            "C": "KHAIRIL ARFAN"
+          }
+        },
+        {
+          "row": 22,
+          "cells": {
+            "C": "LALU MAZID AFANDI"
+          }
+        },
+        {
+          "row": 23,
+          "cells": {
+            "C": "M. SAHRUL KHORI"
+          }
+        },
+        {
+          "row": 24,
+          "cells": {
+            "C": "MUHAMMAD KHOIRUL ANAM"
+          }
+        },
+        {
+          "row": 25,
+          "cells": {
+            "A": 4,
+            "B": "ARNIATI, S.Pd",
+            "C": "AOLIA"
+          }
+        },
+        {
+          "row": 26,
+          "cells": {
+            "C": "BAIQ LAILA SUCI RAMDANI"
+          }
+        },
+        {
+          "row": 27,
+          "cells": {
+            "C": "NISA HADANA"
+          }
+        },
+        {
+          "row": 28,
+          "cells": {
+            "C": "QYLA ROSADA"
+          }
+        },
+        {
+          "row": 29,
+          "cells": {
+            "C": "MUTAMI FITRI SEVIA"
+          }
+        },
+        {
+          "row": 30,
+          "cells": {
+            "C": "SASHABILA"
+          }
+        },
+        {
+          "row": 31,
+          "cells": {
+            "C": "SITI BAHIRAH ASILAH"
+          }
+        },
+        {
+          "row": 32,
+          "cells": {
+            "C": "ZURAIDA ULYA HAZANI"
+          }
+        },
+        {
+          "row": 33,
+          "cells": {
+            "A": 5,
+            "B": "SITI MAZIDATUL AINI, S.Pd",
+            "C": "KHAZANA RIDHA NAILA"
+          }
+        },
+        {
+          "row": 34,
+          "cells": {
+            "C": "LULU' AMELINA"
+          }
+        },
+        {
+          "row": 35,
+          "cells": {
+            "C": "MUSDALIFAH"
+          }
+        },
+        {
+          "row": 36,
+          "cells": {
+            "C": "NAHERA DINDA SALINA"
+          }
+        },
+        {
+          "row": 37,
+          "cells": {
+            "C": "RABIATUL AINI"
+          }
+        },
+        {
+          "row": 38,
+          "cells": {
+            "C": "SALSABILA"
+          }
+        },
+        {
+          "row": 39,
+          "cells": {
+            "C": "ZEZEE AQILLA MOUZA"
+          }
+        },
+        {
+          "row": 40,
+          "cells": {
+            "A": 6,
+            "B": "M. KHAIRUL MISWARI, S.Pd",
+            "C": "AHMAD AL BUKHORI"
+          }
+        },
+        {
+          "row": 41,
+          "cells": {
+            "C": "FAUZI ABDULLAH"
+          }
+        },
+        {
+          "row": 42,
+          "cells": {
+            "C": "IRWAN MAULANA"
+          }
+        },
+        {
+          "row": 43,
+          "cells": {
+            "C": "M. FAQIH IQRO"
+          }
+        },
+        {
+          "row": 44,
+          "cells": {
+            "C": "RIZKI AHUGRAH"
+          }
+        },
+        {
+          "row": 45,
+          "cells": {
+            "C": "SANDIYAT PRATAMA"
+          }
+        },
+        {
+          "row": 46,
+          "cells": {
+            "C": "ASYRORUDDIN"
+          }
+        },
+        {
+          "row": 47,
+          "cells": {
+            "C": "FASYA SETIAWAN"
+          }
+        },
+        {
+          "row": 48,
+          "cells": {
+            "A": 7,
+            "B": "HASRUL ALI",
+            "C": "IZZUDDIN DA'I"
+          }
+        },
+        {
+          "row": 49,
+          "cells": {
+            "C": "LALU ALVIN YULISTIAWAN"
+          }
+        },
+        {
+          "row": 50,
+          "cells": {
+            "C": "M. RIDHO RAZALI"
+          }
+        },
+        {
+          "row": 51,
+          "cells": {
+            "C": "MUHAMMAD AKBAR"
+          }
+        },
+        {
+          "row": 52,
+          "cells": {
+            "C": "MUHAMMAD HABIB RAHMAN"
+          }
+        },
+        {
+          "row": 53,
+          "cells": {
+            "C": "MUHAMMAD ZAKA ROPIQI"
+          }
+        },
+        {
+          "row": 54,
+          "cells": {
+            "C": "PANDI HASANI IBRAHIM"
+          }
+        },
+        {
+          "row": 55,
+          "cells": {
+            "C": "RAHMAD RAMDANI"
+          }
+        },
+        {
+          "row": 56,
+          "cells": {
+            "A": 8,
+            "B": "MUNAWARAH NAZARI, S.Pd",
+            "C": "GILANG AGIF GUNAWAN"
+          }
+        },
+        {
+          "row": 57,
+          "cells": {
+            "C": "M. FHERDI HADITYA"
+          }
+        },
+        {
+          "row": 58,
+          "cells": {
+            "C": "M. JAYADI"
+          }
+        },
+        {
+          "row": 59,
+          "cells": {
+            "C": "AFRIZAL PUTRA"
+          }
+        },
+        {
+          "row": 60,
+          "cells": {
+            "C": "HIZASH NABIL AKBAR"
+          }
+        },
+        {
+          "row": 61,
+          "cells": {
+            "A": 9,
+            "B": "SAHRUP, S.Pd",
+            "C": "MUHAMMAD ASYRAF DANIAL"
+          }
+        },
+        {
+          "row": 62,
+          "cells": {
+            "C": "MUHAMMAD LATIFUL QOLBI"
+          }
+        },
+        {
+          "row": 63,
+          "cells": {
+            "C": "RIDO HIDAYAT"
+          }
+        },
+        {
+          "row": 64,
+          "cells": {
+            "C": "YAZID  ASSAURI"
+          }
+        },
+        {
+          "row": 65,
+          "cells": {
+            "C": "AHMAD BILAL FEBRIAN"
+          }
+        },
+        {
+          "row": 66,
+          "cells": {
+            "C": "LALU KHALIKURRAHMAN"
+          }
+        },
+        {
+          "row": 67,
+          "cells": {
+            "A": 10,
+            "B": "ISMI DAHLIA HANDAYANI, S.Pd",
+            "C": "HAIBA FITRI TUFAILA"
+          }
+        },
+        {
+          "row": 68,
+          "cells": {
+            "C": "HURIATUN AENA"
+          }
+        },
+        {
+          "row": 69,
+          "cells": {
+            "C": "KHAERUN NISAQ"
+          }
+        },
+        {
+          "row": 70,
+          "cells": {
+            "C": "MONA ZAHIRA"
+          }
+        },
+        {
+          "row": 71,
+          "cells": {
+            "C": "NADIVA HASNA FADHILA"
+          }
+        },
+        {
+          "row": 72,
+          "cells": {
+            "C": "ALIYATIN ASHRI AMANATILLAH"
+          }
+        },
+        {
+          "row": 73,
+          "cells": {
+            "C": "AZKIYA ALTHAFUNNISA"
+          }
+        },
+        {
+          "row": 74,
+          "cells": {
+            "C": "HAURA ZIDNI"
+          }
+        },
+        {
+          "row": 75,
+          "cells": {
+            "A": 11,
+            "B": "HUSNUL HATIMAH, S.Pd.",
+            "C": "BAIQ LAITANI KUNTU"
+          }
+        },
+        {
+          "row": 76,
+          "cells": {
+            "C": "FAYELA SYAHHADATIN KULUBA"
+          }
+        },
+        {
+          "row": 77,
+          "cells": {
+            "C": "HANNA SYAKIRA"
+          }
+        },
+        {
+          "row": 78,
+          "cells": {
+            "C": "HAYA SHOFIA"
+          }
+        },
+        {
+          "row": 79,
+          "cells": {
+            "C": "NUROH"
+          }
+        },
+        {
+          "row": 80,
+          "cells": {
+            "C": "PURNAMA NISFATUL LAIL"
+          }
+        },
+        {
+          "row": 81,
+          "cells": {
+            "A": 12,
+            "B": "HAUFIANA HARIAYANTI, S.Ag",
+            "C": "RIRIN EKAWATI"
+          }
+        },
+        {
+          "row": 82,
+          "cells": {
+            "C": "SEPTIA AZIRA"
+          }
+        },
+        {
+          "row": 83,
+          "cells": {
+            "C": "SILMI AFIFAH"
+          }
+        },
+        {
+          "row": 84,
+          "cells": {
+            "C": "SITI MALIKAH"
+          }
+        },
+        {
+          "row": 85,
+          "cells": {
+            "C": "TYAS MAULIA LATIF"
+          }
+        },
+        {
+          "row": 86,
+          "cells": {
+            "C": "ZULFANI ROYYA"
+          }
+        }
+      ],
+      "merges": [
+        "A56:A60",
+        "A67:A74",
+        "B75:B80",
+        "A40:A47",
+        "A48:A55",
+        "B7:B14",
+        "B25:B32",
+        "A20:A24",
+        "A3:C3",
+        "B81:B86",
+        "B15:B19",
+        "A2:C2",
+        "A61:A66",
+        "B67:B74",
+        "B61:B66",
+        "A33:A39",
+        "B20:B24",
+        "B33:B39",
+        "A25:A32",
+        "A75:A80",
+        "A5:A6",
+        "A7:A14",
+        "B48:B55",
+        "A15:A19",
+        "B56:B60",
+        "B5:B6",
+        "A1:C1",
+        "B40:B47",
+        "A81:A86",
+        "C5:C6"
+      ]
+    },
+    "sha256": "0c11e7d99a990503dbca9fdf3345aa9c4ac1ce9c0041d69de866a5213d0cb280"
+  },
+  "JADWAL SMP GANJIL 2026-2027 TERBARU.xlsx": {
+    "SMT GANJIL": {
+      "rows": [
+        {
+          "row": 1,
+          "cells": {
+            "A": "JADWAL PELAJARAN SMP ISLAM AL-MADANI"
+          }
+        },
+        {
+          "row": 2,
+          "cells": {
+            "A": "SEMESTER GANJIL TAHUN PELAJARAN 2026/2027"
+          }
+        },
+        {
+          "row": 4,
+          "cells": {
+            "A": "HARI",
+            "B": "JAM",
+            "C": "WAKTU",
+            "D": "KELAS",
+            "J": "KODE GURU"
+          }
+        },
+        {
+          "row": 5,
+          "cells": {
+            "B": "KE",
+            "D": "VII PI",
+            "E": "VII PA",
+            "F": "VIII PI",
+            "G": "VIII PA",
+            "H": "IX PI",
+            "I": "IX PA"
+          }
+        },
+        {
+          "row": 6,
+          "cells": {
+            "A": "SENIN",
+            "B": 1,
+            "C": "07.00-08.00",
+            "D": "UPACARA BENDERA",
+            "J": "1.",
+            "K": "MUHAMMAD TUZRI, M.Pd"
+          }
+        },
+        {
+          "row": 7,
+          "cells": {
+            "B": 2,
+            "C": "08.00-08.40",
+            "D": "H.16",
+            "E": "P.12",
+            "F": "F.14",
+            "G": "C.2",
+            "H": "E.5",
+            "I": "G.7",
+            "J": "2.",
+            "K": "HUSNUL HATIMAH, S.Pd"
+          }
+        },
+        {
+          "row": 8,
+          "cells": {
+            "B": 3,
+            "C": "08.40-09.20",
+            "D": "H.16",
+            "E": "P.12",
+            "F": "F.14",
+            "G": "C.2",
+            "H": "E.5",
+            "I": "G.7",
+            "J": "3.",
+            "K": "ARNIATI, S.Pd"
+          }
+        },
+        {
+          "row": 9,
+          "cells": {
+            "B": 4,
+            "C": "09.20-10.00",
+            "D": "E.5",
+            "E": "H.16",
+            "F": "F.14",
+            "G": "C.2",
+            "H": "P.12",
+            "I": "G.7",
+            "J": "4.",
+            "K": "MUNAWARAH NAZARI, S.Pd"
+          }
+        },
+        {
+          "row": 10,
+          "cells": {
+            "C": "10.00-10.20",
+            "D": "ISTIRAHAT",
+            "J": "5.",
+            "K": "ISMI DAHLIA HANDAYANI, S.Pd."
+          }
+        },
+        {
+          "row": 11,
+          "cells": {
+            "B": 5,
+            "C": "10.20-11.00",
+            "D": "E.5",
+            "E": "H.16",
+            "F": "C.2",
+            "G": "F.14",
+            "H": "P.12",
+            "I": "G.7",
+            "J": "6.",
+            "K": "M. KHAIRUL MISWARI, S.Pd"
+          }
+        },
+        {
+          "row": 12,
+          "cells": {
+            "B": 6,
+            "C": "11.00-11.40",
+            "D": "P.12",
+            "E": "E.5",
+            "F": "C.2",
+            "G": "F.14",
+            "H": "G.7",
+            "I": "H.16",
+            "J": "7.",
+            "K": "SITI MAZIDATUL AINI, S.Pd"
+          }
+        },
+        {
+          "row": 13,
+          "cells": {
+            "B": 7,
+            "C": "11.40-12.20",
+            "D": "P.12",
+            "E": "E.5",
+            "F": "C.2",
+            "G": "F.14",
+            "H": "G.7",
+            "I": "H.16",
+            "J": "8.",
+            "K": "IIN ZURIMA ADRIANI SAPUTRI, S.Pd"
+          }
+        },
+        {
+          "row": 14,
+          "cells": {
+            "C": "12.20-13.30",
+            "D": "SHOLAT ZOHOR & MAKAN SIANG",
+            "J": "9.",
+            "K": "BUDY KURNIAWAN, S.Pd"
+          }
+        },
+        {
+          "row": 15,
+          "cells": {
+            "B": 8,
+            "C": "13.30-14.10",
+            "D": "I.17",
+            "E": "C.2",
+            "F": "R.19",
+            "G": "P.12",
+            "H": "G.7",
+            "I": "T.20",
+            "J": 10,
+            "K": "SAHRUP, S.Pd."
+          }
+        },
+        {
+          "row": 16,
+          "cells": {
+            "B": 9,
+            "C": "14.10-14.50",
+            "D": "I.17",
+            "E": "C.2",
+            "F": "R.19",
+            "G": "P.12",
+            "H": "G.7",
+            "I": "T.20",
+            "J": "11.",
+            "K": "YUMALIA RATMALA, S.Pd"
+          }
+        },
+        {
+          "row": 17,
+          "cells": {
+            "J": "12.",
+            "K": "IDA FITRIANA, S.Pd"
+          }
+        },
+        {
+          "row": 18,
+          "cells": {
+            "A": "SELASA",
+            "B": 1,
+            "C": "07.00-08.00",
+            "D": "TAHFIDZ QUR'AN",
+            "J": "13.",
+            "K": "HAUFIANA HARIANTI, S.Ag"
+          }
+        },
+        {
+          "row": 19,
+          "cells": {
+            "B": 2,
+            "C": "08.00-08.40",
+            "D": "Q.12",
+            "E": "G.7",
+            "F": "E.5",
+            "G": "R.19",
+            "H": "O.8",
+            "I": "C.2",
+            "J": 14,
+            "K": "ELY HERLINA, S.Pd"
+          }
+        },
+        {
+          "row": 20,
+          "cells": {
+            "B": 3,
+            "C": "08.40-09.20",
+            "D": "Q.12",
+            "E": "G.7",
+            "F": "E.5",
+            "G": "R.19",
+            "H": "O.8",
+            "I": "C.2",
+            "J": 15,
+            "K": "MUAMMAR, S.E"
+          }
+        },
+        {
+          "row": 21,
+          "cells": {
+            "B": 4,
+            "C": "09.20-10.00",
+            "D": "O.8",
+            "E": "G.7",
+            "F": "Q.12",
+            "G": "E.5",
+            "H": "F.14",
+            "I": "C.2",
+            "J": 16,
+            "K": "SUPIAN HADI, S.Pd"
+          }
+        },
+        {
+          "row": 22,
+          "cells": {
+            "C": "10.00-10.20",
+            "D": "ISTIRAHAT",
+            "J": 17,
+            "K": "NURIANTARI, S.Pd."
+          }
+        },
+        {
+          "row": 23,
+          "cells": {
+            "B": 5,
+            "C": "10.20-11.00",
+            "D": "O.8",
+            "E": "G.7",
+            "F": "Q.12",
+            "G": "E.5",
+            "H": "F.14",
+            "I": "R.19",
+            "J": 18,
+            "K": "HASRUL ALI"
+          }
+        },
+        {
+          "row": 24,
+          "cells": {
+            "B": 6,
+            "C": "11.00-11.40",
+            "D": "G.7",
+            "E": "Q.12",
+            "F": "O.8",
+            "G": "C.2",
+            "H": "F.14",
+            "I": "R.19",
+            "J": 19,
+            "K": "BINTANG ARIA PUTRA PRATAMA"
+          }
+        },
+        {
+          "row": 25,
+          "cells": {
+            "B": 7,
+            "C": "11.40-12.20",
+            "D": "G.7",
+            "E": "Q.12",
+            "F": "O.8",
+            "G": "C.2",
+            "H": "C.3",
+            "I": "F.14",
+            "J": 20,
+            "K": "FAHRI ALDIAN EFFENDI"
+          }
+        },
+        {
+          "row": 26,
+          "cells": {
+            "C": "12.20-13.30",
+            "D": "SHOLAT ZOHOR & MAKAN SIANG"
+          }
+        },
+        {
+          "row": 27,
+          "cells": {
+            "B": 8,
+            "C": "13.30-14.10",
+            "D": "G.7",
+            "E": "T.20",
+            "F": "I.17",
+            "G": "Q.12",
+            "H": "C.3",
+            "I": "F.14"
+          }
+        },
+        {
+          "row": 28,
+          "cells": {
+            "B": 9,
+            "C": "14.10-14.50",
+            "D": "G.7",
+            "E": "T.20",
+            "F": "I.17",
+            "G": "Q.12",
+            "H": "C.3",
+            "I": "F.14"
+          }
+        },
+        {
+          "row": 30,
+          "cells": {
+            "A": "RABU",
+            "B": 1,
+            "C": "07.00-08.00",
+            "D": "TAHFIDZ QUR'AN"
+          }
+        },
+        {
+          "row": 31,
+          "cells": {
+            "B": 2,
+            "C": "08.00-08.40",
+            "D": "T.20",
+            "E": "D.6",
+            "F": "G.7",
+            "G": "H.16",
+            "H": "E.5",
+            "I": "S.13"
+          }
+        },
+        {
+          "row": 32,
+          "cells": {
+            "B": 3,
+            "C": "08.40-09.20",
+            "D": "T.20",
+            "E": "D.6",
+            "F": "G.7",
+            "G": "H.16",
+            "H": "E.5",
+            "I": "S.13"
+          }
+        },
+        {
+          "row": 33,
+          "cells": {
+            "B": 4,
+            "C": "09.20-10.00",
+            "D": "D.5",
+            "E": "S.13",
+            "F": "G.7",
+            "G": "D.6",
+            "H": "H.16",
+            "I": "N.10"
+          }
+        },
+        {
+          "row": 34,
+          "cells": {
+            "C": "10.00-10.20",
+            "D": "ISTIRAHAT"
+          }
+        },
+        {
+          "row": 35,
+          "cells": {
+            "B": 5,
+            "C": "10.20-11.00",
+            "D": "D.5",
+            "E": "S.13",
+            "F": "G.7",
+            "G": "D.6",
+            "H": "H.16",
+            "I": "N.10"
+          }
+        },
+        {
+          "row": 36,
+          "cells": {
+            "B": 6,
+            "C": "11.00-11.40",
+            "D": "S.13",
+            "E": "N.10",
+            "F": "H.16",
+            "G": "G.7",
+            "H": "D.6",
+            "I": "E.5",
+            "J": "KODE MAPEL"
+          }
+        },
+        {
+          "row": 37,
+          "cells": {
+            "B": 7,
+            "C": "11.40-12.20",
+            "D": "S.13",
+            "E": "N.10",
+            "F": "H.16",
+            "G": "G.7",
+            "H": "D.6",
+            "I": "E.5"
+          }
+        },
+        {
+          "row": 38,
+          "cells": {
+            "C": "12.20-13.30",
+            "D": "SHOLAT ZOHOR & MAKAN SIANG",
+            "J": "A.",
+            "K": "PENDIDIKAN AGAMA ISLAM"
+          }
+        },
+        {
+          "row": 39,
+          "cells": {
+            "B": 8,
+            "C": "13.30-14.10",
+            "D": "N.10",
+            "E": "R.19",
+            "F": "T.20",
+            "G": "G.7",
+            "H": "I.17",
+            "I": "D.6",
+            "J": "B.",
+            "K": "PPKn"
+          }
+        },
+        {
+          "row": 40,
+          "cells": {
+            "B": 9,
+            "C": "14.10-14.50",
+            "D": "N.10",
+            "E": "R.19",
+            "F": "T.20",
+            "G": "G.7",
+            "H": "I.17",
+            "I": "D.6",
+            "J": "C.",
+            "K": "BAHASA INDONESIA"
+          }
+        },
+        {
+          "row": 41,
+          "cells": {
+            "J": "D.",
+            "K": "MATEMATIKA"
+          }
+        },
+        {
+          "row": 42,
+          "cells": {
+            "A": "KAMIS",
+            "B": 1,
+            "C": "07.00-08.00",
+            "D": "TAHFIDZ QUR'AN",
+            "J": "E.",
+            "K": "IPA"
+          }
+        },
+        {
+          "row": 43,
+          "cells": {
+            "B": 2,
+            "C": "08.00-08.40",
+            "D": "F.14",
+            "E": "C.2",
+            "F": "E.5",
+            "G": "I.18",
+            "H": "N.10",
+            "I": "I.18",
+            "J": "F.",
+            "K": "IPS"
+          }
+        },
+        {
+          "row": 44,
+          "cells": {
+            "B": 3,
+            "C": "08.40-09.20",
+            "D": "F.14",
+            "E": "C.2",
+            "F": "E.5",
+            "G": "I.18",
+            "H": "N.10",
+            "I": "I.18",
+            "J": "G.",
+            "K": "BAHASA INGGRIS"
+          }
+        },
+        {
+          "row": 45,
+          "cells": {
+            "B": 4,
+            "C": "09.20-10.00",
+            "D": "F.14",
+            "E": "C.2",
+            "F": "P.12",
+            "G": "N.10",
+            "H": "D.6",
+            "I": "E.5",
+            "J": "H.",
+            "K": "SENI BUDAYA"
+          }
+        },
+        {
+          "row": 46,
+          "cells": {
+            "C": "10.00-10.20",
+            "D": "ISTIRAHAT",
+            "J": "I.",
+            "K": "PJOK"
+          }
+        },
+        {
+          "row": 47,
+          "cells": {
+            "B": 5,
+            "C": "10.20-11.00",
+            "D": "J.4",
+            "E": "F.14",
+            "F": "P.12",
+            "G": "N.10",
+            "H": "D.6",
+            "I": "E.5",
+            "J": "J.",
+            "K": "INFORMATIKA"
+          }
+        },
+        {
+          "row": 48,
+          "cells": {
+            "B": 6,
+            "C": "11.00-11.40",
+            "D": "J.4",
+            "E": "F.14",
+            "F": "N.10",
+            "G": "D.6",
+            "H": "T.20",
+            "I": "B.9",
+            "J": "K.",
+            "K": "MULOK/B. SASAK"
+          }
+        },
+        {
+          "row": 49,
+          "cells": {
+            "B": 7,
+            "C": "11.40-12.20",
+            "D": "C.2",
+            "E": "F.14",
+            "F": "N.10",
+            "G": "D.6",
+            "H": "T.20",
+            "I": "B.9",
+            "J": "L.",
+            "K": "BP / BK"
+          }
+        },
+        {
+          "row": 50,
+          "cells": {
+            "C": "12.20-13.30",
+            "D": "SHOLAT ZOHOR & MAKAN SIANG",
+            "J": "M.",
+            "K": "TAHFIZ"
+          }
+        },
+        {
+          "row": 51,
+          "cells": {
+            "B": 8,
+            "C": "13.30-14.10",
+            "D": "C.2",
+            "E": "J.4",
+            "F": "D.6",
+            "G": "T.20",
+            "H": "B.9",
+            "I": "P.12",
+            "J": "N",
+            "K": "FIQIH"
+          }
+        },
+        {
+          "row": 52,
+          "cells": {
+            "B": 9,
+            "C": "14.10-14.50",
+            "D": "C.2",
+            "E": "J.4",
+            "F": "D.6",
+            "G": "T.20",
+            "H": "B.9",
+            "I": "P.12",
+            "J": "O",
+            "K": "AQIDAH AKHLAK"
+          }
+        },
+        {
+          "row": 53,
+          "cells": {
+            "J": "P",
+            "K": "SKI "
+          }
+        },
+        {
+          "row": 54,
+          "cells": {
+            "A": "JUMAT",
+            "B": 1,
+            "C": "07.00-08.00",
+            "D": "IMTAQ",
+            "J": "Q",
+            "K": "TAJWID"
+          }
+        },
+        {
+          "row": 55,
+          "cells": {
+            "B": 2,
+            "C": "08.00-08.40",
+            "D": "E.5",
+            "E": "O.11",
+            "F": "S.13",
+            "G": "B.15",
+            "H": "C.3",
+            "I": "J.4",
+            "J": "R",
+            "K": "MAHFUZHOT"
+          }
+        },
+        {
+          "row": 56,
+          "cells": {
+            "B": 3,
+            "C": "08.40-09.20",
+            "D": "E.5",
+            "E": "O.11",
+            "F": "S.13",
+            "G": "B.15",
+            "H": "C.3",
+            "I": "J.4",
+            "J": "S",
+            "K": "QUR'AN HADIST"
+          }
+        },
+        {
+          "row": 57,
+          "cells": {
+            "B": 4,
+            "C": "09.20-09.40",
+            "D": "ISTIRAHAT",
+            "J": "T",
+            "K": "BAHASA ARAB"
+          }
+        },
+        {
+          "row": 58,
+          "cells": {
+            "B": 5,
+            "C": "09.40-10.20",
+            "D": "C.2",
+            "E": "E.5",
+            "F": "B.15",
+            "G": "S.13",
+            "H": "J.4",
+            "I": "O.11"
+          }
+        },
+        {
+          "row": 59,
+          "cells": {
+            "B": 6,
+            "C": "10.20-11.00",
+            "D": "C.2",
+            "E": "E.5",
+            "F": "B.15",
+            "G": "S.13",
+            "H": "J.4",
+            "I": "O.11"
+          }
+        },
+        {
+          "row": 61,
+          "cells": {
+            "A": "SABTU",
+            "B": 1,
+            "C": "07.00-08.00",
+            "D": "PAGI CERIA"
+          }
+        },
+        {
+          "row": 62,
+          "cells": {
+            "B": 2,
+            "C": "08.00-08.40",
+            "D": "D.5",
+            "E": "I.18",
+            "F": "C.2",
+            "G": "J.4",
+            "H": "S.13",
+            "I": "D.6"
+          }
+        },
+        {
+          "row": 63,
+          "cells": {
+            "B": 3,
+            "C": "08.40-09.20",
+            "D": "D.5",
+            "E": "I.18",
+            "F": "C.2",
+            "G": "J.4",
+            "H": "S.13",
+            "I": "D.6"
+          }
+        },
+        {
+          "row": 64,
+          "cells": {
+            "B": 4,
+            "C": "09.20-10.00",
+            "D": "R.19",
+            "E": "B.13",
+            "F": "D.6",
+            "G": "E.5",
+            "H": "Q.12",
+            "I": "C.2"
+          }
+        },
+        {
+          "row": 65,
+          "cells": {
+            "C": "10.00-10.20",
+            "D": "ISTIRAHAT"
+          }
+        },
+        {
+          "row": 66,
+          "cells": {
+            "B": 5,
+            "C": "10.20-11.00",
+            "D": "R.19",
+            "E": "B.13",
+            "F": "D.6",
+            "G": "E.5",
+            "H": "Q.12",
+            "I": "C.2"
+          }
+        },
+        {
+          "row": 67,
+          "cells": {
+            "B": 6,
+            "C": "11.00-11.40",
+            "D": "B.13",
+            "E": "D.6",
+            "F": "J.4",
+            "G": "O.11",
+            "H": "R.19",
+            "I": "Q.12"
+          }
+        },
+        {
+          "row": 68,
+          "cells": {
+            "B": 7,
+            "C": "11.40-12.20",
+            "D": "B.13",
+            "E": "D.6",
+            "F": "J.4",
+            "G": "O.11",
+            "H": "R.19",
+            "I": "Q.12"
+          }
+        },
+        {
+          "row": 70,
+          "cells": {
+            "A": "DAFTAR WALI KELAS"
+          }
+        },
+        {
+          "row": 71,
+          "cells": {
+            "A": "NO",
+            "B": "KELAS",
+            "D": "WALI KELAS",
+            "K": "Mamben Lauk, 13 Juli 2026"
+          }
+        },
+        {
+          "row": 72,
+          "cells": {
+            "A": 1,
+            "B": "VII PUTRA",
+            "D": "ISMI DAHLIA HANDAYANI, S.Pd",
+            "K": "Kepala Sekolah"
+          }
+        },
+        {
+          "row": 73,
+          "cells": {
+            "A": 2,
+            "B": "VII PUTRI",
+            "D": "SITI MAZIDATUL AINI, S.Pd"
+          }
+        },
+        {
+          "row": 74,
+          "cells": {
+            "A": 3,
+            "B": "VIII PUTRA",
+            "D": "ELY HERLINA, S.Pd"
+          }
+        },
+        {
+          "row": 75,
+          "cells": {
+            "A": 4,
+            "B": "VIII PUTRI",
+            "D": "HUSNUL HATIMAH, S.Pd"
+          }
+        },
+        {
+          "row": 76,
+          "cells": {
+            "A": 5,
+            "B": "IX PUTRA",
+            "D": "M. KHAIRUL MISWARI, S.Pd",
+            "K": "MUHAMMAD TUZRI, S.HI., M.Pd."
+          }
+        },
+        {
+          "row": 77,
+          "cells": {
+            "A": 6,
+            "B": "IX PUTRI",
+            "D": "ARNIATI, S. Pd"
+          }
+        },
+        {
+          "row": 78,
+          "cells": {
+            "A": "TU"
+          }
+        }
+      ],
+      "merges": [
+        "D77:I77",
+        "D57:I57",
+        "L69:L78",
+        "A41:I41",
+        "J4:K5",
+        "B72:C72",
+        "D76:I76",
+        "C4:C5",
+        "J36:K37",
+        "D61:I61",
+        "A6:A16",
+        "D75:I75",
+        "B71:C71",
+        "A1:K1",
+        "D72:I72",
+        "D78:I78",
+        "B77:C77",
+        "A18:A28",
+        "A61:A68",
+        "D4:I4",
+        "D18:I18",
+        "D71:I71",
+        "A17:I17",
+        "A54:A59",
+        "A53:I53",
+        "D74:I74",
+        "D30:I30",
+        "B73:C73",
+        "A29:I29",
+        "D73:I73",
+        "D42:I42",
+        "A42:A52",
+        "D38:I38",
+        "D14:I14",
+        "A4:A5",
+        "D54:I54",
+        "A2:K2",
+        "D50:I50",
+        "D26:I26",
+        "B74:C74",
+        "D34:I34",
+        "D10:I10",
+        "D46:I46",
+        "A60:I60",
+        "D22:I22",
+        "B76:C76",
+        "D65:I65",
+        "A70:I70",
+        "A78:C78",
+        "D6:I6",
+        "A69:I69",
+        "A30:A40",
+        "B75:C75"
+      ]
+    },
+    "sha256": "a7309810b8e49a676a81e1c961e1dda4bf7dd365a124b3d4ec59c81ea951a0c9"
+  }
+}

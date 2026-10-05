@@ -263,10 +263,30 @@
       "name": "Arniati",
       "email": "arniati@madaniapp",
       "roles": [
+        "guru_wali",
         "guru_mapel"
       ],
-      "role": "guru_mapel",
+      "role": "guru_wali",
       "roleScopes": {
+        "guru_wali": {
+          "unitIds": [
+            "UNIT-SMP",
+            "UNIT-SMK"
+          ],
+          "classIds": [
+            "CLS-SMP-9-PUTRI"
+          ],
+          "menteeStudentIds": [
+            "AMD-SMP-0010",
+            "AMD-SMP-0018",
+            "AMD-SMP-0074",
+            "AMD-SMP-0080",
+            "AMD-SMP-0068",
+            "AMD-SMP-0088",
+            "AMD-SMP-0092",
+            "AMD-SMP-0100"
+          ]
+        },
         "guru_mapel": {
           "unitIds": [
             "UNIT-SMP",
@@ -363,12 +383,32 @@
       "name": "Bintang",
       "email": "bintang@madaniapp",
       "roles": [
+        "guru_mapel",
         "naqib"
       ],
-      "role": "naqib",
-      "roleScopes": {},
+      "role": "guru_mapel",
+      "roleScopes": {
+        "guru_mapel": {
+          "unitIds": [
+            "UNIT-PONDOK",
+            "UNIT-SMP"
+          ],
+          "classIds": [
+            "CLS-SMP-7-PUTRA",
+            "CLS-SMP-7-PUTRI",
+            "CLS-SMP-8-PUTRA",
+            "CLS-SMP-8-PUTRI",
+            "CLS-SMP-9-PUTRA",
+            "CLS-SMP-9-PUTRI"
+          ],
+          "groupIds": [
+            "GRP-2026-arabic-L-c2"
+          ]
+        }
+      },
       "unitIds": [
-        "UNIT-PONDOK"
+        "UNIT-PONDOK",
+        "UNIT-SMP"
       ],
       "existingUid": null,
       "status": "ready"
@@ -531,11 +571,25 @@
       "name": "ELI HERLINA KUSUMAYANI",
       "email": "kusumayani@madaniapp",
       "roles": [
+        "guru_mapel",
         "head_formal_school"
       ],
-      "role": "head_formal_school",
+      "role": "guru_mapel",
       "roleScopes": {
         "head_formal_school": {
+          "unitIds": [
+            "UNIT-SD"
+          ],
+          "classIds": [
+            "CLS-SD-1",
+            "CLS-SD-2",
+            "CLS-SD-3",
+            "CLS-SD-4",
+            "CLS-SD-5",
+            "CLS-SD-6"
+          ]
+        },
+        "guru_mapel": {
           "unitIds": [
             "UNIT-SD"
           ],
@@ -560,11 +614,26 @@
       "name": "Ely Herlina",
       "email": "herlina@madaniapp",
       "roles": [
-        "guru_mapel",
-        "guru_wali"
+        "guru_wali",
+        "guru_mapel"
       ],
-      "role": "guru_mapel",
+      "role": "guru_wali",
       "roleScopes": {
+        "guru_wali": {
+          "unitIds": [
+            "UNIT-SMP"
+          ],
+          "classIds": [
+            "CLS-SMP-8-PUTRA"
+          ],
+          "menteeStudentIds": [
+            "AMD-SMP-0021",
+            "AMD-SMP-0064",
+            "AMD-SMP-0065",
+            "AMD-SMP-0077",
+            "AMD-SMP-0095"
+          ]
+        },
         "guru_mapel": {
           "unitIds": [
             "UNIT-SMP"
@@ -576,14 +645,6 @@
             "CLS-SMP-8-PUTRI",
             "CLS-SMP-9-PUTRA",
             "CLS-SMP-9-PUTRI"
-          ]
-        },
-        "guru_wali": {
-          "unitIds": [
-            "UNIT-SMP"
-          ],
-          "classIds": [
-            "CLS-SMP-8-PUTRI"
           ]
         }
       },
@@ -613,12 +674,29 @@
       "name": "Fahri Effendi",
       "email": "effendi@madaniapp",
       "roles": [
+        "guru_mapel",
         "naqib"
       ],
-      "role": "naqib",
-      "roleScopes": {},
+      "role": "guru_mapel",
+      "roleScopes": {
+        "guru_mapel": {
+          "unitIds": [
+            "UNIT-PONDOK",
+            "UNIT-SMP"
+          ],
+          "classIds": [
+            "CLS-SMP-7-PUTRA",
+            "CLS-SMP-7-PUTRI",
+            "CLS-SMP-8-PUTRA",
+            "CLS-SMP-8-PUTRI",
+            "CLS-SMP-9-PUTRA",
+            "CLS-SMP-9-PUTRI"
+          ]
+        }
+      },
       "unitIds": [
-        "UNIT-PONDOK"
+        "UNIT-PONDOK",
+        "UNIT-SMP"
       ],
       "existingUid": null,
       "status": "ready"
@@ -628,10 +706,16 @@
       "name": "Ustadzah Fathul Uyun",
       "email": "uyun@madaniapp",
       "roles": [
+        "mentor_tahsin_tahfiz",
         "guru_mapel"
       ],
-      "role": "guru_mapel",
+      "role": "mentor_tahsin_tahfiz",
       "roleScopes": {
+        "mentor_tahsin_tahfiz": {
+          "groupIds": [
+            "GRP-2026-quran-P-7"
+          ]
+        },
         "guru_mapel": {
           "unitIds": [
             "UNIT-SMK",
@@ -645,6 +729,9 @@
             "CLS-SMK-XI-TJKT",
             "CLS-SMK-XII-BUSANA",
             "CLS-SMK-XII-DKV"
+          ],
+          "groupIds": [
+            "GRP-2026-arabic-P-5"
           ]
         }
       },
@@ -764,15 +851,38 @@
       "name": "HAUFIANA HARIYANTI",
       "email": "hariyanti@madaniapp",
       "roles": [
+        "guru_wali",
         "guru_mapel"
       ],
-      "role": "guru_mapel",
+      "role": "guru_wali",
       "roleScopes": {
+        "guru_wali": {
+          "unitIds": [
+            "UNIT-SMP",
+            "UNIT-SD"
+          ],
+          "classIds": [],
+          "menteeStudentIds": [
+            "AMD-SMP-0084",
+            "AMD-SMP-0089",
+            "AMD-SMP-0090",
+            "AMD-SMP-0091",
+            "AMD-SMP-0094",
+            "AMD-SMP-0099"
+          ]
+        },
         "guru_mapel": {
           "unitIds": [
-            "UNIT-SMP"
+            "UNIT-SMP",
+            "UNIT-SD"
           ],
           "classIds": [
+            "CLS-SD-1",
+            "CLS-SD-2",
+            "CLS-SD-3",
+            "CLS-SD-4",
+            "CLS-SD-5",
+            "CLS-SD-6",
             "CLS-SMP-7-PUTRA",
             "CLS-SMP-7-PUTRI",
             "CLS-SMP-8-PUTRA",
@@ -783,7 +893,8 @@
         }
       },
       "unitIds": [
-        "UNIT-SMP"
+        "UNIT-SMP",
+        "UNIT-SD"
       ],
       "existingUid": null,
       "status": "ready"
@@ -796,7 +907,13 @@
         "mentor_tahsin_tahfiz"
       ],
       "role": "mentor_tahsin_tahfiz",
-      "roleScopes": {},
+      "roleScopes": {
+        "mentor_tahsin_tahfiz": {
+          "groupIds": [
+            "GRP-2026-quran-P-6"
+          ]
+        }
+      },
       "unitIds": [
         "UNIT-PONDOK"
       ],
@@ -939,10 +1056,27 @@
       "name": "Husnul Hatimah",
       "email": "hatimah@madaniapp",
       "roles": [
+        "guru_wali",
         "guru_mapel"
       ],
-      "role": "guru_mapel",
+      "role": "guru_wali",
       "roleScopes": {
+        "guru_wali": {
+          "unitIds": [
+            "UNIT-SMP"
+          ],
+          "classIds": [
+            "CLS-SMP-8-PUTRI"
+          ],
+          "menteeStudentIds": [
+            "AMD-SMP-0019",
+            "AMD-SMP-0027",
+            "AMD-SMP-0031",
+            "AMD-SMP-0033",
+            "AMD-SMP-0075",
+            "AMD-SMP-0079"
+          ]
+        },
         "guru_mapel": {
           "unitIds": [
             "UNIT-SMP"
@@ -968,10 +1102,27 @@
       "name": "IDA FITRIANA",
       "email": "fitriana@madaniapp",
       "roles": [
+        "guru_wali",
         "guru_mapel"
       ],
-      "role": "guru_mapel",
+      "role": "guru_wali",
       "roleScopes": {
+        "guru_wali": {
+          "unitIds": [
+            "UNIT-SMP"
+          ],
+          "classIds": [],
+          "menteeStudentIds": [
+            "AMD-SMP-0007",
+            "AMD-SMP-0008",
+            "AMD-SMP-0009",
+            "AMD-SMP-0011",
+            "AMD-SMP-0016",
+            "AMD-SMP-0017",
+            "AMD-SMP-0101",
+            "AMD-SMP-0037"
+          ]
+        },
         "guru_mapel": {
           "unitIds": [
             "UNIT-SMP"
@@ -1078,10 +1229,30 @@
       "name": "Ismi Dahlia Handayani",
       "email": "handayani@madaniapp",
       "roles": [
+        "guru_wali",
         "guru_mapel"
       ],
-      "role": "guru_mapel",
+      "role": "guru_wali",
       "roleScopes": {
+        "guru_wali": {
+          "unitIds": [
+            "UNIT-SMP",
+            "UNIT-SMK"
+          ],
+          "classIds": [
+            "CLS-SMP-7-PUTRA"
+          ],
+          "menteeStudentIds": [
+            "AMD-SMP-0030",
+            "AMD-SMP-0036",
+            "AMD-SMP-0040",
+            "AMD-SMP-0057",
+            "AMD-SMP-0069",
+            "AMD-SMP-0005",
+            "AMD-SMP-0015",
+            "AMD-SMP-0032"
+          ]
+        },
         "guru_mapel": {
           "unitIds": [
             "UNIT-SMP",
@@ -1261,10 +1432,29 @@
       "name": "M. KHAIRUL MISWARI",
       "email": "miswari@madaniapp",
       "roles": [
+        "guru_wali",
         "guru_mapel"
       ],
-      "role": "guru_mapel",
+      "role": "guru_wali",
       "roleScopes": {
+        "guru_wali": {
+          "unitIds": [
+            "UNIT-SMP"
+          ],
+          "classIds": [
+            "CLS-SMP-9-PUTRA"
+          ],
+          "menteeStudentIds": [
+            "AMD-SMP-0002",
+            "AMD-SMP-0026",
+            "AMD-SMP-0038",
+            "AMD-SMP-0049",
+            "AMD-SMP-0085",
+            "AMD-SMP-0087",
+            "AMD-SMP-0012",
+            "AMD-SMP-0025"
+          ]
+        },
         "guru_mapel": {
           "unitIds": [
             "UNIT-SMP"
@@ -1435,7 +1625,13 @@
         "mentor_tahsin_tahfiz"
       ],
       "role": "mentor_tahsin_tahfiz",
-      "roleScopes": {},
+      "roleScopes": {
+        "mentor_tahsin_tahfiz": {
+          "groupIds": [
+            "GRP-2026-quran-L-muammar"
+          ]
+        }
+      },
       "unitIds": [
         "UNIT-PONDOK"
       ],
@@ -1463,7 +1659,8 @@
       "email": "tuzri@madaniapp",
       "roles": [
         "deputy_director",
-        "head_formal_school"
+        "head_formal_school",
+        "mentor_tahsin_tahfiz"
       ],
       "role": "deputy_director",
       "roleScopes": {
@@ -1484,6 +1681,11 @@
             "CLS-SMP-9-PUTRA",
             "CLS-SMP-9-PUTRI"
           ]
+        },
+        "mentor_tahsin_tahfiz": {
+          "groupIds": [
+            "GRP-2026-quran-L-tuzri"
+          ]
         }
       },
       "unitIds": [
@@ -1498,6 +1700,7 @@
       "email": "muhasim@madaniapp",
       "roles": [
         "head_boys_dorm",
+        "mentor_tahsin_tahfiz",
         "guru_mapel",
         "konselor"
       ],
@@ -1508,6 +1711,11 @@
           "classIds": [],
           "groupIds": [],
           "scopeGender": "L"
+        },
+        "mentor_tahsin_tahfiz": {
+          "groupIds": [
+            "GRP-2026-quran-L-mutqin"
+          ]
         },
         "guru_mapel": {
           "unitIds": [
@@ -1521,6 +1729,9 @@
             "CLS-SMK-XI-TJKT",
             "CLS-SMK-XII-BUSANA",
             "CLS-SMK-XII-DKV"
+          ],
+          "groupIds": [
+            "GRP-2026-arabic-L-gema"
           ]
         }
       },
@@ -1602,10 +1813,25 @@
       "name": "Munawarah Nazari",
       "email": "nazari@madaniapp",
       "roles": [
+        "guru_wali",
         "guru_mapel"
       ],
-      "role": "guru_mapel",
+      "role": "guru_wali",
       "roleScopes": {
+        "guru_wali": {
+          "unitIds": [
+            "UNIT-TK",
+            "UNIT-SMP"
+          ],
+          "classIds": [],
+          "menteeStudentIds": [
+            "AMD-SMP-0028",
+            "AMD-SMP-0050",
+            "AMD-SMP-0051",
+            "AMD-SMP-0001",
+            "AMD-SMP-0035"
+          ]
+        },
         "guru_mapel": {
           "unitIds": [
             "UNIT-TK",
@@ -1720,6 +1946,9 @@
             "CLS-SMK-XI-TJKT",
             "CLS-SMK-XII-BUSANA",
             "CLS-SMK-XII-DKV"
+          ],
+          "groupIds": [
+            "GRP-2026-arabic-P-4"
           ]
         }
       },
@@ -1921,10 +2150,25 @@
       "name": "Sahrup",
       "email": "sahrup@madaniapp",
       "roles": [
+        "guru_wali",
         "guru_mapel"
       ],
-      "role": "guru_mapel",
+      "role": "guru_wali",
       "roleScopes": {
+        "guru_wali": {
+          "unitIds": [
+            "UNIT-SMP"
+          ],
+          "classIds": [],
+          "menteeStudentIds": [
+            "AMD-SMP-0059",
+            "AMD-SMP-0062",
+            "AMD-SMP-0083",
+            "AMD-SMP-0096",
+            "AMD-SMP-0003",
+            "AMD-SMP-0045"
+          ]
+        },
         "guru_mapel": {
           "unitIds": [
             "UNIT-SMP"
@@ -2010,10 +2254,28 @@
       "name": "SITI MAZIDATUL AINI",
       "email": "aini@madaniapp",
       "roles": [
+        "guru_wali",
         "guru_mapel"
       ],
-      "role": "guru_mapel",
+      "role": "guru_wali",
       "roleScopes": {
+        "guru_wali": {
+          "unitIds": [
+            "UNIT-SMP"
+          ],
+          "classIds": [
+            "CLS-SMP-7-PUTRI"
+          ],
+          "menteeStudentIds": [
+            "AMD-SMP-0043",
+            "AMD-SMP-0047",
+            "AMD-SMP-0067",
+            "AMD-SMP-0070",
+            "AMD-SMP-0081",
+            "AMD-SMP-0086",
+            "AMD-SMP-0098"
+          ]
+        },
         "guru_mapel": {
           "unitIds": [
             "UNIT-SMP"
@@ -2098,10 +2360,24 @@
       "name": "Supianhadi",
       "email": "supianhadi@madaniapp",
       "roles": [
+        "guru_wali",
         "guru_mapel"
       ],
-      "role": "guru_mapel",
+      "role": "guru_wali",
       "roleScopes": {
+        "guru_wali": {
+          "unitIds": [
+            "UNIT-SMP"
+          ],
+          "classIds": [],
+          "menteeStudentIds": [
+            "AMD-SMP-0020",
+            "AMD-SMP-0041",
+            "AMD-SMP-0046",
+            "AMD-SMP-0054",
+            "AMD-SMP-0061"
+          ]
+        },
         "guru_mapel": {
           "unitIds": [
             "UNIT-SMP"
@@ -2251,7 +2527,13 @@
         "mentor_tahsin_tahfiz"
       ],
       "role": "mentor_tahsin_tahfiz",
-      "roleScopes": {},
+      "roleScopes": {
+        "mentor_tahsin_tahfiz": {
+          "groupIds": [
+            "GRP-2026-quran-P-4"
+          ]
+        }
+      },
       "unitIds": [
         "UNIT-PONDOK"
       ],
@@ -2270,9 +2552,16 @@
       "roleScopes": {
         "guru_mapel": {
           "unitIds": [
-            "UNIT-SMK"
+            "UNIT-SMK",
+            "UNIT-SMP"
           ],
           "classIds": [
+            "CLS-SMP-7-PUTRA",
+            "CLS-SMP-7-PUTRI",
+            "CLS-SMP-8-PUTRA",
+            "CLS-SMP-8-PUTRI",
+            "CLS-SMP-9-PUTRA",
+            "CLS-SMP-9-PUTRI",
             "CLS-SMK-X-BUSANA",
             "CLS-SMK-X-DKV",
             "CLS-SMK-XI-BUSANA",
@@ -2284,7 +2573,8 @@
         },
         "guru_wali": {
           "unitIds": [
-            "UNIT-SMK"
+            "UNIT-SMK",
+            "UNIT-SMP"
           ],
           "classIds": [
             "CLS-SMK-XII-BUSANA"
@@ -2292,7 +2582,8 @@
         }
       },
       "unitIds": [
-        "UNIT-SMK"
+        "UNIT-SMK",
+        "UNIT-SMP"
       ],
       "existingUid": null,
       "status": "ready"
@@ -2334,6 +2625,90 @@
       "staffId": "AMD-SDM-0085",
       "name": "ZANI ISTI HARIANI",
       "email": "hariani@madaniapp",
+      "roles": [
+        "guru_mapel"
+      ],
+      "role": "guru_mapel",
+      "roleScopes": {
+        "guru_mapel": {
+          "unitIds": [
+            "UNIT-SD"
+          ],
+          "classIds": [
+            "CLS-SD-1",
+            "CLS-SD-2",
+            "CLS-SD-3",
+            "CLS-SD-4",
+            "CLS-SD-5",
+            "CLS-SD-6"
+          ]
+        }
+      },
+      "unitIds": [
+        "UNIT-SD"
+      ],
+      "existingUid": null,
+      "status": "ready"
+    },
+    {
+      "staffId": "AMD-SDM-0086",
+      "name": "Hasrul Ali",
+      "email": "ali@madaniapp",
+      "roles": [
+        "guru_mapel",
+        "guru_wali"
+      ],
+      "role": "guru_mapel",
+      "roleScopes": {
+        "guru_wali": {
+          "unitIds": [
+            "UNIT-SMP",
+            "UNIT-SD"
+          ],
+          "classIds": [],
+          "menteeStudentIds": [
+            "AMD-SMP-0039",
+            "AMD-SMP-0044",
+            "AMD-SMP-0053",
+            "AMD-SMP-0102",
+            "AMD-SMP-0060",
+            "AMD-SMP-0066",
+            "AMD-SMP-0078",
+            "AMD-SMP-0082"
+          ]
+        },
+        "guru_mapel": {
+          "unitIds": [
+            "UNIT-SMP",
+            "UNIT-SD"
+          ],
+          "classIds": [
+            "CLS-SD-1",
+            "CLS-SD-2",
+            "CLS-SD-3",
+            "CLS-SD-4",
+            "CLS-SD-5",
+            "CLS-SD-6",
+            "CLS-SMP-7-PUTRA",
+            "CLS-SMP-7-PUTRI",
+            "CLS-SMP-8-PUTRA",
+            "CLS-SMP-8-PUTRI",
+            "CLS-SMP-9-PUTRA",
+            "CLS-SMP-9-PUTRI"
+          ]
+        }
+      },
+      "unitIds": [
+        "UNIT-SMP",
+        "UNIT-SD"
+      ],
+      "existingUid": null,
+      "status": "ready"
+    },
+    {
+      "staffId": "AMD-SDM-0087",
+      "name": "MIFTAHUSSURUR",
+      "email": "miftahussurur@madaniapp",
       "roles": [
         "guru_mapel"
       ],

@@ -7,12 +7,12 @@ import {validateTransition} from '../assets/js/workflow-model.js';
 import {validateActivity,validateReport,HOLIDAY_ACTIVITIES,DEPOSIT_TRANSITIONS} from '../assets/js/holiday-model.js';
 const all=MENU_GROUPS.flatMap(g=>g.items),ids=new Set(all.map(i=>i.id));
 const session=(activeRole)=>({activeRole,roles:[activeRole],profile:{},user:{uid:'reviewer'}});
-test('every assigned role has real schedule/KPI/message destinations',()=>{
+test('every assigned role has real schedule/message destinations',()=>{
  assert.equal(ids.size,all.length,'duplicate menu IDs');
  for(const role of Object.keys(ROLE_LABELS)){
   assert.ok(ROLE_EXPERIENCE[role]);
   const allowed=id=>ids.has(id)&&canAccess(all.find(i=>i.id===id)?.feature||'dashboard',[role]);
-  for(const [key,id] of Object.entries(bottomRoutes(role,allowed)))assert.ok(allowed(id),`${role}: ${key} -> ${id}`);
+  for(const [key,id] of Object.entries(bottomRoutes(role,allowed)).filter(([key])=>key!=='kpi'))assert.ok(allowed(id),`${role}: ${key} -> ${id}`);
   for(const id of ROLE_EXPERIENCE[role].quick)assert.ok(allowed(id),`${role}: quick ${id}`);
  }
 });
@@ -60,7 +60,7 @@ test('holiday forms require complete activity and submitted report answers',()=>
 });
 test('brand remains BSI tosca and all menus have registered handlers',()=>{
  assert.match(readFileSync(new URL('../assets/css/brand-theme.css',import.meta.url),'utf8'),/#00a39d/i);
- const source=['app.js','modules/workspaces.js','modules/parent-extras.js'].map(f=>readFileSync(new URL(`../assets/js/${f}`,import.meta.url),'utf8')).join('\n');
+ const source=['app.js','modules/workspaces.js','modules/parent-extras.js','health.js','management-operations.js','management-registry.js'].map(f=>readFileSync(new URL(`../assets/js/${f}`,import.meta.url),'utf8')).join('\n');
  for(const id of ids)if(id!=='dashboard')assert.ok(source.includes(`"${id}"`)||source.includes(`'${id}'`)||source.includes(`${id}:`),`route ${id} missing`);
 });
 
@@ -72,3 +72,21 @@ test('holiday journal and monitoring are disabled for every role without deletin
  const rules=JSON.parse(readFileSync(new URL('../database.rules.json',import.meta.url),'utf8'));
  for(const name of ['holiday_daily','holiday_reports'])assert.equal(rules.rules.madani_app.workspaces.$yearId[name].$studentId.$recordId['.write'],false);
 });
+
+test('KPI navigation and feature access are disabled in every role',()=>{
+ for(const r of Object.keys(ROLE_LABELS))for(const feature of ['workspace.work-kpi','workspace.teacher-kpi','workspace.management-kpi','boarding.naqib.kpi','boarding.mentor.kpi','boarding.counselor.kpi'])assert.equal(canAccess(feature,[r]),false);
+ assert.ok(all.every(i=>!i.id.includes('kpi')));
+ assert.equal(readFileSync(new URL('../app/index.html',import.meta.url),'utf8').includes('data-shell-nav="kpi"'),false);
+});
+test('Guru Mapel and Pembina Tahfiz are separate active roles',()=>{
+ assert.equal(canAccess('academic.quran',['guru_mapel']),false);
+ assert.equal(canAccess('academic.quran',['mentor_tahsin_tahfiz']),true);
+ assert.equal(canAccess('academic.grades',['mentor_tahsin_tahfiz']),false);
+ assert.equal(ROLE_LABELS.mentor_tahsin_tahfiz,'Pembina Tahfiz');
+});
+test('Guru Wali never inherits homeroom authority',()=>{
+ const m={students:[{id:'s'}],classes:[{id:'c',homeroomName:'Guru'}],classAssignments:{s:{classId:'c'}}};
+ assert.deepEqual(filterScopedStudents(m,{name:'Guru',classIds:['c']},'guru_wali'),[]);
+});
+
+test('management escalation decisions follow the selected hierarchy',()=>{const record={scope:'education',status:'ESCALATED',escalationTargetRole:'deputy_director'};assert.throws(()=>validateTransition(record,'IN_PROGRESS',session('director'),'Keputusan'),/tujuan/);assert.equal(validateTransition(record,'ESCALATED',session('deputy_director'),'Perlu keputusan Direktur'),true);assert.equal(validateTransition({...record,escalationTargetRole:'director'},'IN_PROGRESS',session('director'),'Arahan'),true);assert.throws(()=>validateTransition({...record,escalationTargetRole:'director'},'ESCALATED',session('director'),'Lanjut'),/akhir/);});

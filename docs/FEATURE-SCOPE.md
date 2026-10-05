@@ -1,4 +1,8 @@
+> Tambahan 4 Oktober: revisi nilai, publikasi/penarikan snapshot rapor, tautan observasi–temuan–pembinaan, eskalasi berjenjang dan bukti tindak lanjut personil tersedia secara lokal. Rincian terverifikasi dan sisa kesenjangan: `docs/ROLE-WORKFLOWS-2026-10-04.md`.
+
 # MadaniApp V2 Pilot — Scope Fitur Aktif
+
+> Pembaruan 4 Oktober 2026: KPI disembunyikan dan route-nya ditolak untuk semua role. Guru Mapel tidak memuat Tahfiz; Pembina Tahfiz menggunakan role tersendiri. Role Kesehatan/UKS ditambahkan. Daftar lama di bawah adalah riwayat lingkup awal; status terbaru ada di [pembaruan role](ROLE-WORKFLOWS-2026-10-04.md).
 
 Brief 2 Oktober 2026 memperluas pilot berdasarkan Cahaya App (`fajrulislam`). Bagian inti di bawah dipertahankan; penambahan dan celah kesetaraan dirinci di `CAHAYA-PARITY.md`.
 

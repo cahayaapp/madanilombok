@@ -66,3 +66,5 @@ Transaksi sesi memakai versi dan timestamp server. Penulisan capaian dari KBM di
 Perintah ada di `tests/README.md`. Screenshot lokal memakai nama Guru Madani dan siswa simulasi, tidak merepresentasikan akun/data produksi.
 
 Hasil akhir lokal: 60 tes lulus (36 aturan/model dan 24 UI), 49 berkas JavaScript lolos syntax check. JSON valid, diff bersih dari whitespace error, modul dan rules keuangan identik terhadap HEAD. Tidak ada deployment.
+
+Pembaruan 4 Oktober 2026: jadwal SMP asli dan mentor sudah tersedia dalam master lokal. Kelas gabungan PJOK yang dikonfirmasi pengguna kini memakai satu sesi guru per periode dengan roster kedua rombel, termasuk presensi dan nilai. Lihat `SMP-UPDATE-2026-10-04.md`; status database produksi tetap terpisah.

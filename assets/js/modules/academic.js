@@ -1,3 +1,4 @@
+import {teachingGroups} from '../group-teachers.js';
 import { getNode, listNode, saveRecord, pushRecord, setNode } from "../repository.js";
 import { studentsForClass, studentsForGroup, byId } from "../app-store.js";
 import {
@@ -22,14 +23,10 @@ function scopedSubjects(ctx) {
 }
 
 function scopedQuranGroups(ctx) {
-  let groups = (ctx.master.groups || []).filter(g => {
-    const values = [g.programType, g.type, g.sourceProgramType].map(v => String(v || "").toLowerCase()).join(" ");
-    return ["tahfiz","tahfidz","tahsin","mutqin","halaqah","gema","qur'an","quran"].some(k => values.includes(k));
-  });
-  const groupIds = ctx.session.profile.groupIds || [];
-  if (Array.isArray(groupIds) && groupIds.length) groups = scopedList(groups, groupIds);
-  const gender = ctx.session.profile.genderScope || ctx.session.profile.scopeGender;
-  if (gender === "L" || gender === "P") groups = groups.filter(g => !g.gender || g.gender === gender);
+  const management=['admin','super_admin','director','deputy_director','head_formal_school','head_boys_dorm','head_girls_dorm'].includes(ctx.session.activeRole);
+  let groups=management?(ctx.master.groups||[]).filter(g=>g.status!=="inactive"&&g.programType!=="arabic"):teachingGroups(ctx.master,ctx.session.profile,'quran');
+  const gender=ctx.session.profile.genderScope||ctx.session.profile.scopeGender;
+  if(gender==='L'||gender==='P')groups=groups.filter(g=>!g.gender||g.gender===gender);
   return groups;
 }
 
@@ -135,6 +132,7 @@ export async function renderQuran(ctx) {
     hist.innerHTML=table(["Tanggal","Jenis","Porsi","Skor","Kualitas","Catatan"],rows.map(([,r])=>`<tr><td>${escapeHtml(r.date||"—")}</td><td>${badge(r.type||"—")}</td><td>${escapeHtml(r.portion||"—")}</td><td>${escapeHtml(r.score||"—")}</td><td>${escapeHtml(r.quality||"—")}</td><td>${escapeHtml(r.note||"—")}</td></tr>`).join(""),640);
   });
   attachAsync(document.getElementById("quranForm"), async data=>{
+    if(!groups.some(g=>g.id===data.groupId)||!studentsForGroup(data.groupId,ctx.master).some(s=>s.id===data.studentId))throw Error("Kelompok atau santri di luar penugasan pembina.");
     await pushRecord(`academic/quran_records/${ctx.yearId}/${data.groupId}/${data.studentId}`, {...data, mentorUid:ctx.session.user.uid, staffId:ctx.session.profile.staffId||null}, ctx.session.user.uid);
     document.getElementById("quranStudent").dispatchEvent(new Event("change"));
   },"Setoran Al-Qur'an tersimpan.");

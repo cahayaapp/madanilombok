@@ -1,0 +1,30 @@
+{
+  "id": "room-metadata-2026-v1",
+  "report": {
+    "counts": {},
+    "pending": [],
+    "recurring": 0
+  },
+  "changes": {
+    "rooms/ROOM-PTR-GEMA/name": "GEMA Gedung Cairo",
+    "rooms/ROOM-PTR-GEMA/building": "Cairo",
+    "rooms/ROOM-PTRI-GEMA/name": "GEMA I (Putri)",
+    "rooms/ROOM-PTRI-M2/occupantType": "Staf",
+    "rooms/ROOM-PTRI-M2/sourceReview": "Daftar terbaru memuat 12 ustazah; penempatan lama perlu diperiksa.",
+    "rooms/ROOM-PTR-C1/sourceReview": "Tidak tercantum di roster terbaru; status penggunaan menunggu konfirmasi."
+  },
+  "expected": {
+    "rooms/ROOM-PTR-GEMA/name": "GEMA Putra",
+    "rooms/ROOM-PTR-GEMA/building": "Cairo",
+    "rooms/ROOM-PTRI-GEMA/name": "GEMA Putri",
+    "rooms/ROOM-PTRI-M2/occupantType": null,
+    "rooms/ROOM-PTRI-M2/sourceReview": null,
+    "rooms/ROOM-PTR-C1/sourceReview": null
+  },
+  "acceptedPrevious": {
+    "rooms/ROOM-PTR-GEMA/building": [
+      "ASPURA",
+      "Cairo"
+    ]
+  }
+}

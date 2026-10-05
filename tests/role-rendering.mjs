@@ -20,6 +20,7 @@ const repository={
  listNode:async path=>Object.entries(database.get(path)||{}).map(([id,data])=>({id,...data})),
  createWorkspaceRecord:async(path,data,actor)=>{const id=`r${nextId++}`,payload={...data,createdBy:actor,updatedBy:actor,createdAt:Date.now()};database.set(path,{...database.get(path),[id]:payload});database.set(`${path}/${id}`,payload);writes.push({path,id,data:payload});return {id,...payload};},
  saveWorkspaceRecord:async(path,id,data,actor)=>{database.set(`${path}/${id}`,{...data,createdBy:actor});writes.push({path,id,data});},
+ commitCaseOperation:async()=>{throw Error("Use counselor-model tests for mutations");},
  transitionWorkspaceRecord:async(path,id,fn,actor)=>{const current=database.get(`${path}/${id}`);if(!current)throw Error('Missing record');const updated=fn(current);database.set(`${path}/${id}`,updated);database.set(path,{...database.get(path),[id]:updated});writes.push({path,id,data:updated,actor});return updated;},
  getCurrentAcademicYearId:async()=> 'year',
 };
@@ -28,12 +29,12 @@ for(const name of exports)if(!repository[name])repository[name]=async()=>{throw 
 const context=vm.createContext({console,document:win.document,window:win,sessionStorage:win.sessionStorage,localStorage:win.localStorage,FormData:win.FormData,Event:win.Event,CustomEvent:win.CustomEvent,crypto:webcrypto,Intl,Date,URL,URLSearchParams,setTimeout:(f)=>0,clearTimeout:()=>{},requestAnimationFrame:f=>f(),TextEncoder,Uint8Array});
 const cache=new Map();
 const mock=new vm.SyntheticModule(exports,function(){for(const name of exports)this.setExport(name,repository[name]);},{context});
-async function load(url){
+function getModule(url){
  if(url.endsWith('/repository.js'))return mock;
- if(cache.has(url))return cache.get(url);
- const mod=new vm.SourceTextModule(readFileSync(fileURLToPath(url),'utf8'),{context,identifier:url});cache.set(url,mod);
- await mod.link((specifier,parent)=>load(new URL(specifier,parent.identifier).href));return mod;
+ if(!cache.has(url))cache.set(url,new vm.SourceTextModule(readFileSync(fileURLToPath(url),'utf8'),{context,identifier:url}));
+ return cache.get(url);
 }
+async function load(url){const mod=getModule(url);if(mod.status==='unlinked')await mod.link((specifier,parent)=>getModule(new URL(specifier,parent.identifier).href));return mod;}
 const work=await load(new URL('assets/js/modules/workspaces.js',base).href);await work.evaluate();
 const extras=await load(new URL('assets/js/modules/parent-extras.js',base).href);await extras.evaluate();
 const homes=await load(new URL('assets/js/modules/role-home.js',base).href);await homes.evaluate();
@@ -50,7 +51,7 @@ test('every permitted new workspace renders for each assigned role using an isol
  }
  assert.ok(count>100);console.log(`Rendered ${count} role/workspace combinations without Firebase.`);
 });
-test('all 14 homes render and non-finance roles do not request finance collections',async()=>{
+test('all 15 homes render and non-finance roles do not request finance collections',async()=>{
  for(const role of Object.keys(ROLE_LABELS)){
  const reads=[];const original=repository.getNode;repository.getNode=async p=>{reads.push(p);return original(p)};
  // Synthetic exports are stable; reset an instrumented export for this test.
@@ -78,6 +79,7 @@ test('legacy role pages still render through the same registered handlers',async
  for(const name of ['academic','boarding','parent','finance']){
   const mod=await load(new URL(`assets/js/modules/${name}.js`,base).href);await mod.evaluate();Object.assign(handlers,mod.namespace);
  }
+ const mentor=await load(new URL('assets/js/mentoring.js',base).href);await mentor.evaluate();Object.assign(handlers,mentor.namespace);
  const registry=source('assets/js/app.js').split('export const routes = {')[1].split('\n};')[0];
  const mapped=[...registry.matchAll(/^\s*(?:"([\w-]+)"|(\w+)):\s*(render\w+)/gm)].map(m=>[m[1]||m[2],handlers[m[3]]]);
  let count=0;
@@ -88,13 +90,7 @@ test('legacy role pages still render through the same registered handlers',async
  }
  console.log(`Rendered ${count} legacy role/page combinations without Firebase.`);
 });
-test('teacher evidence reads canonical per-staff material records',async()=>{
- database.set('academic/lesson_plans/year/staff1',{p1:{topic:'Bab 1',status:'ready'}});
- const ctx=ctxFor('guru_mapel');await routes['teacher-kpi'](ctx);
- const card=[...ctx.root.querySelectorAll('.portal-metric')].find(el=>el.textContent.includes('Rencana / Materi'));
- assert.equal(card.querySelector('strong').textContent,'1');
- database.delete('academic/lesson_plans/year/staff1');
-});
+test('KPI workspace is inaccessible even by direct invocation',async()=>{await assert.rejects(routes['teacher-kpi'](ctxFor('guru_mapel')),/Akses role/);});
 
 test('management finding keeps evidence and appends its complete evaluation history',async()=>{
  const ctx=ctxFor('director');await routes['management-findings'](ctx);
@@ -116,4 +112,24 @@ test('deposit receipt reaches handover on one record and becomes visible to guar
  }
  assert.equal(writes.at(-1).id,initial.id);assert.equal(Object.keys(writes.at(-1).data.history).length,3);
  await routes['parent-deposits'](ctxFor('wali_santri'));assert.match(ctx.root.textContent,/Buku uji/);assert.match(ctx.root.textContent,/SUDAH_DISERAHKAN/);assert.equal(ctx.root.querySelectorAll('form').length,0);
+});
+
+test('daily schedule filters GEMA and saves only the selected gender roster without replacing other attendance',async()=>{
+ const boarding=await load(new URL('assets/js/modules/boarding.js',base).href);if(boarding.status!=='evaluated')await boarding.evaluate();
+ const ctx=ctxFor('naqib');ctx.session.profile.scopeGender='L';
+ ctx.master={...master,students:[...master.students,{id:'s3',name:'Umum',gender:'L'}],roomAssignments:{s1:{roomId:'ROOM-PTR-GEMA'},s2:{roomId:'ROOM-PTRI-GEMA'},s3:{roomId:'ROOM-PTR-C1'}},programs:[{id:'g',name:'GEMA',genderScope:'mixed'},{id:'u',name:'Umum',genderScope:'mixed'}],dailySchedules:[{programId:'g',participantScope:'boarding_gema',audience:'Asrama GEMA',genderScope:'mixed'},{programId:'u',participantScope:'boarding_general',audience:'Asrama Umum',genderScope:'mixed'}]};
+ await boarding.namespace.renderNaqibPrograms(ctx);const filter=ctx.root.querySelector('#dailyAudience');filter.value='boarding_gema';filter.onchange({target:filter});assert.equal(ctx.root.querySelectorAll('[data-daily-scope]:not([hidden])').length,1);
+ await boarding.namespace.renderNaqibAttendance(ctx);ctx.root.querySelector('#programPick').value='g';ctx.root.querySelector('#loadProgramAtt').click();await settle();
+ assert.deepEqual([...ctx.root.querySelectorAll('[data-student]')].map(x=>x.dataset.student),['s1']);
+ let patch;mock.setExport('patchNode',async(path,data)=>{patch={path,data}});
+ ctx.root.querySelector('#saveProgramAtt').click();await settle();assert.deepEqual(Object.keys(patch.data),['s1']);assert.match(patch.path,/\/g$/);
+ mock.setExport('patchNode',repository.patchNode);
+ const parent=await load(new URL('assets/js/modules/parent.js',base).href);if(parent.status!=='evaluated')await parent.evaluate();ctx.session.profile.studentIds=['s1'];await parent.namespace.renderParentPrograms(ctx);assert.match(ctx.root.textContent,/GEMA/);assert.doesNotMatch(ctx.root.textContent,/Umum/);
+});
+
+test('morning Arabic selector narrows attendance and parent sees only their child group',async()=>{
+ const boarding=await load(new URL('assets/js/modules/boarding.js',base).href);if(boarding.status!=='evaluated')await boarding.evaluate();
+ const ctx=ctxFor('naqib');ctx.master={...master,students:[...master.students,{id:'s3',name:'Other boy',gender:'L'}],roomAssignments:{s1:{roomId:'ROOM-PTR-C2'},s3:{roomId:'ROOM-PTR-C3'}},programs:[{id:'m',name:'Mufrodat',genderScope:'mixed'}],dailySchedules:[{programId:'m',participantScope:'boarding_general',startTime:'05:40',genderScope:'mixed'}],groups:[{id:'a',name:'Arab Cordova 2',programType:'arabic',gender:'L'},{id:'b',name:'Arab Cordova 3',programType:'arabic',gender:'L'}],groupAssignments:{a:{s1:{studentId:'s1'}},b:{s3:{studentId:'s3'}}}};
+ await boarding.namespace.renderNaqibAttendance(ctx);const program=ctx.root.querySelector('#programPick');program.value='m';program.onchange();const pick=ctx.root.querySelector('#arabicGroupPick');assert.equal(pick.hidden,false);pick.value='a';ctx.root.querySelector('#loadProgramAtt').click();await settle();assert.deepEqual([...ctx.root.querySelectorAll('[data-student]')].map(x=>x.dataset.student),['s1']);
+ const parent=await load(new URL('assets/js/modules/parent.js',base).href);if(parent.status!=='evaluated')await parent.evaluate();await parent.namespace.renderParentPrograms(ctx);assert.match(ctx.root.textContent,/Arab Cordova 2/);assert.doesNotMatch(ctx.root.textContent,/Arab Cordova 3|Other boy/);
 });

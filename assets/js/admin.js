@@ -1,3 +1,7 @@
+import {renderGroupTeacherUpdate} from './group-teacher-update.js';
+import {renderBoardingUpdate,renderRoomMetadataUpdate} from './boarding-update.js';
+import {renderDailyUpdate} from './daily-update.js';
+import {renderSmpUpdate,renderSdUpdate} from './smp-update.js';
 import { requireAdmin, logout } from "./auth.js";
 import {
   listNode, saveRecord, deleteRecord, getCurrentAcademicYearId, setCurrentAcademicYear,
@@ -105,17 +109,17 @@ const entityConfig = {
   },
   rooms: {
     title:"Kamar", subtitle:"Kamar terhubung ke asrama sehingga penempatan santri otomatis bisa mengikuti putra/putri.", prefix:"ROOM",
-    columns:[["name","Nama Kamar"],["dormitoryId","Asrama"],["floor","Lantai"],["capacity","Kapasitas"],["staffId","Musyrif/Naqib"],["status","Status"]],
+    columns:[["name","Nama Kamar"],["dormitoryId","Asrama"],["building","Gedung"],["occupantType","Penghuni"],["sourceReview","Catatan Sumber"],["capacity","Kapasitas"],["staffId","Musyrif/Naqib"],["status","Status"]],
     fields:[
-      {name:"name",label:"Nama Kamar",required:true},{name:"dormitoryId",label:"Asrama",type:"relation",relation:"dormitories",required:true},{name:"floor",label:"Lantai / Area"},{name:"capacity",label:"Kapasitas",type:"number"},{name:"staffId",label:"Musyrif / Naqib",type:"relation",relation:"staff"},{name:"status",label:"Status",type:"select",options:activeOptions,default:"active"}
+      {name:"name",label:"Nama Kamar",required:true},{name:"dormitoryId",label:"Asrama",type:"relation",relation:"dormitories",required:true},{name:"building",label:"Gedung"},{name:"floor",label:"Lantai / Area"},{name:"occupantType",label:"Jenis Penghuni",type:"select",options:[{value:"Santri",label:"Santri"},{value:"Staf",label:"Staf"}]},{name:"sourceReview",label:"Catatan Sumber"},{name:"capacity",label:"Kapasitas",type:"number"},{name:"staffId",label:"Musyrif / Naqib",type:"relation",relation:"staff"},{name:"status",label:"Status",type:"select",options:activeOptions,default:"active"}
     ]
   },
   groups: {
     title:"Kelompok / Halaqah", subtitle:"Satu struktur generik untuk Tahfiz, Tahsin, GEMA, Mentoring, Ekskul, dan kelompok khusus lain.", prefix:"GRP",
     columns:[["name","Nama Kelompok"],["type","Jenis"],["unitId","Unit"],["mentorStaffId","Pembina"],["status","Status"]],
     fields:[
-      {name:"name",label:"Nama Kelompok",required:true,placeholder:"Halaqah Muammar"},{name:"type",label:"Jenis Kelompok",type:"select",options:["Tahfiz","Tahsin","GEMA","Halaqah Al-Qur'an","Mentoring","Ekstrakurikuler","Lainnya"].map(v=>({value:v,label:v})),required:true},
-      {name:"unitId",label:"Unit (opsional)",type:"relation",relation:"units"},{name:"mentorStaffId",label:"Pembina",type:"relation",relation:"staff"},{name:"capacity",label:"Kapasitas",type:"number"},{name:"status",label:"Status",type:"select",options:activeOptions,default:"active"}
+      {name:"name",label:"Nama Kelompok",required:true,placeholder:"Halaqah Muammar"},{name:"type",label:"Jenis Kelompok",type:"select",options:["Tahfiz","Tahsin","GEMA","Halaqah Al-Qur'an","Bahasa Arab","Mentoring","Ekstrakurikuler","Lainnya"].map(v=>({value:v,label:v})),required:true},
+      {name:"unitId",label:"Unit (opsional)",type:"relation",relation:"units"},{name:"mentorStaffId",label:"Pembina Utama",type:"relation",relation:"staff"},{name:"mentorStaffIds",label:"Seluruh Pembina",type:"multirelation",relation:"staff",help:"Gunakan ID SDM yang sama dengan akun guru. Dapat memilih lebih dari satu pembina."},{name:"capacity",label:"Kapasitas",type:"number"},{name:"status",label:"Status",type:"select",options:activeOptions,default:"active"}
     ]
   },
   subjects: {
@@ -132,7 +136,7 @@ const entityConfig = {
     fields:[
       {name:"name",label:"Nama Program",required:true},{name:"category",label:"Kategori",type:"select",options:["Spiritual","Akademik","Fisik","Relasional","Kebersihan","Kehidupan Asrama","Lainnya"].map(v=>({value:v,label:v})),required:true},
       {name:"attendanceRequired",label:"Wajib Absensi",type:"select",options:[{value:"yes",label:"Ya"},{value:"no",label:"Tidak"}],default:"yes"},
-      {name:"defaultScope",label:"Peserta Default",type:"select",options:[{value:"all_boarding",label:"Semua Santri Asrama"},{value:"all_students",label:"Semua Santri"},{value:"class",label:"Per Kelas"},{value:"group",label:"Per Kelompok"},{value:"unit",label:"Per Unit"}],default:"all_boarding"},
+      {name:"defaultScope",label:"Peserta Default",type:"select",options:[{value:"boarding_general",label:"Asrama Umum (non-GEMA)"},{value:"boarding_gema",label:"Asrama GEMA"},{value:"all_boarding",label:"Semua Santri Asrama"},{value:"all_students",label:"Semua Santri"},{value:"class",label:"Per Kelas"},{value:"group",label:"Per Kelompok"},{value:"unit",label:"Per Unit"}],default:"all_boarding"},
       {name:"description",label:"Keterangan",type:"textarea",full:true},{name:"status",label:"Status",type:"select",options:activeOptions,default:"active"}
     ]
   },
@@ -158,7 +162,7 @@ const entityConfig = {
     fields:[
       {name:"academicYearId",label:"Tahun Ajaran",type:"relation",relation:"academic-years",required:true},{name:"day",label:"Hari",type:"select",options:[{value:"Setiap Hari",label:"Setiap Hari"},...dayOptions.map(v=>({value:v,label:v}))],required:true},
       {name:"startTime",label:"Jam Mulai",type:"time",required:true},{name:"endTime",label:"Jam Selesai",type:"time",required:true},{name:"programId",label:"Program",type:"relation",relation:"programs",required:true},
-      {name:"participantScope",label:"Cakupan Peserta",type:"select",options:[{value:"all_boarding",label:"Semua Asrama"},{value:"all_students",label:"Semua Santri"},{value:"unit",label:"Unit"},{value:"class",label:"Kelas"},{value:"group",label:"Kelompok"}],required:true},
+      {name:"participantScope",label:"Cakupan Peserta",type:"select",options:[{value:"boarding_general",label:"Asrama Umum (non-GEMA)"},{value:"boarding_gema",label:"Asrama GEMA"},{value:"all_boarding",label:"Semua Asrama"},{value:"all_students",label:"Semua Santri"},{value:"unit",label:"Unit"},{value:"class",label:"Kelas"},{value:"group",label:"Kelompok"}],required:true},
       {name:"targetId",label:"Target (bila Unit/Kelas/Kelompok)",type:"relationUnion",relations:["units","classes","groups"]},{name:"notes",label:"Catatan",type:"textarea",full:true}
     ]
   }
@@ -363,7 +367,10 @@ async function savePlacement(kind){
 }
 
 function renderImport(){
-  $("#content").innerHTML=`<div class="section-head"><div><h2>Import Data</h2><p>Import massal untuk migrasi data awal Al-Madani. Sistem menampilkan preview sebelum data masuk Firebase.</p></div></div><div class="import-grid"><div class="panel"><div class="panel-head"><h3>Import Santri</h3><a class="btn btn-secondary" href="../templates/template-import-santri.csv" download>Template CSV</a></div><div class="dropzone"><strong>Upload CSV Santri</strong><p class="muted" style="font-size:11px">ID kosong akan dibuat otomatis. unitId harus sesuai master Unit.</p><input type="file" id="studentImportFile" accept=".csv,text/csv"></div><div id="studentImportPreview" class="preview-box"></div></div><div class="panel"><div class="panel-head"><h3>Import SDM</h3><a class="btn btn-secondary" href="../templates/template-import-sdm.csv" download>Template CSV</a></div><div class="dropzone"><strong>Upload CSV SDM</strong><p class="muted" style="font-size:11px">roles dan unitIds dapat dipisahkan dengan tanda |.</p><input type="file" id="staffImportFile" accept=".csv,text/csv"></div><div id="staffImportPreview" class="preview-box"></div></div></div>`;
+  $("#content").innerHTML=`<div class="section-head"><div><h2>Import Data</h2><p>Import massal untuk migrasi data awal Al-Madani. Sistem menampilkan preview sebelum data masuk Firebase.</p></div></div><div id="preparedUpdates" class="stack-list"></div><div class="import-grid"><div class="panel"><div class="panel-head"><h3>Import Santri</h3><a class="btn btn-secondary" href="../templates/template-import-santri.csv" download>Template CSV</a></div><div class="dropzone"><strong>Upload CSV Santri</strong><p class="muted" style="font-size:11px">ID kosong akan dibuat otomatis. unitId harus sesuai master Unit.</p><input type="file" id="studentImportFile" accept=".csv,text/csv"></div><div id="studentImportPreview" class="preview-box"></div></div><div class="panel"><div class="panel-head"><h3>Import SDM</h3><a class="btn btn-secondary" href="../templates/template-import-sdm.csv" download>Template CSV</a></div><div class="dropzone"><strong>Upload CSV SDM</strong><p class="muted" style="font-size:11px">roles dan unitIds dapat dipisahkan dengan tanda |.</p><input type="file" id="staffImportFile" accept=".csv,text/csv"></div><div id="staffImportPreview" class="preview-box"></div></div></div>`;
+  for(const renderUpdate of [renderGroupTeacherUpdate,renderRoomMetadataUpdate,renderBoardingUpdate,renderDailyUpdate,renderSdUpdate,renderSmpUpdate]){
+    const section=document.createElement("section");section.className="panel";$("#preparedUpdates").append(section);renderUpdate(section,session);
+  }
   $("#studentImportFile").addEventListener("change",e=>prepareImport("students",e.target.files[0],"studentImportPreview")); $("#staffImportFile").addEventListener("change",e=>prepareImport("staff",e.target.files[0],"staffImportPreview"));
 }
 

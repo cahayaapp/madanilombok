@@ -1,3 +1,8 @@
+import {renderManagementHome} from '../management-layout.js';
+import {renderHealthHome} from '../health.js';
+import {renderMentorHome} from '../mentoring.js';
+import {renderTahfizHome} from '../tahfiz-home.js';
+import {dailyForStaff} from '../daily-schedules.js';
 import {renderTeacherHome} from '../teacher/home.js';
 import {getNode,listNode} from '../repository.js';
 import {ROLE_EXPERIENCE,localDate,filterScopedStudents} from '../role-experience.js';
@@ -7,6 +12,10 @@ import {renderFinanceDashboard} from './finance.js';
 export async function renderRoleHome(ctx,items) {
   const role=ctx.session.activeRole,exp=ROLE_EXPERIENCE[role];
   if(!exp){ctx.root.innerHTML=empty('Belum ada role aktif. Hubungi administrator.');return;}
+  if(['director','deputy_director','head_formal_school','head_boys_dorm','head_girls_dorm'].includes(role))return renderManagementHome(ctx,items);
+  if(role==='kesehatan')return renderHealthHome(ctx);
+  if(role==='guru_wali')return renderMentorHome(ctx);
+  if(role==='mentor_tahsin_tahfiz')return renderTahfizHome(ctx);
   if(role==='guru_mapel')return renderTeacherHome(ctx);
   if(role==='wali_santri') return renderParentHome(ctx);
   if(role==='kasir') return renderFinanceDashboard(ctx);
@@ -37,7 +46,7 @@ export async function renderRoleHome(ctx,items) {
     } else if(role==='naqib') {
       const reports=(await listNode(`boarding/program_reports/${ctx.yearId}`)).filter(r=>r.naqibUid===uid&&r.date===date);
       const gender=ctx.session.profile.scopeGender||ctx.session.profile.genderScope;
-      const schedules=(ctx.master.dailySchedules||[]).filter(s=>!gender||!s.genderScope||s.genderScope===gender);
+      const schedules=(ctx.master.dailySchedules||[]).filter(s=>dailyForStaff(s,ctx.session.profile,ctx.yearId));
       content=panel('Program & Evidence Hari Ini',`<div class="portal-metrics compact">${metric('Program Terjadwal',String(schedules.length),'Scope asrama aktif')}${metric('Laporan Anda',String(reports.length),date,'cyan')}</div><p class="role-hint">Belum ada laporan berarti belum tercatat, bukan otomatis program tidak berjalan.</p>`);
     } else if(role==='guru_wali') {
       const ids=ctx.session.profile.menteeStudentIds||students.filter(s=>ctx.session.profile.classIds?.includes(ctx.master.classAssignments?.[s.id]?.classId)).map(s=>s.id);

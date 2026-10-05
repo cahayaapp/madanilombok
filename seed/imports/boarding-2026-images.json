@@ -1,0 +1,1081 @@
+{
+  "files": [
+    {
+      "name": "WhatsApp Image 2026-10-02 at 14.25.02.jpeg",
+      "sha256": "7b8ae45d58f55e7a2be50fa28df50d008eaf62678342b59258d2aeb733e34d9b"
+    },
+    {
+      "name": "WhatsApp Image 2026-10-02 at 14.28.36.jpeg",
+      "sha256": "e6d35d8f0f7dde9cb05ac4f591a935e7e9c2e16e90160db66e1d47c2c2b8461e"
+    },
+    {
+      "name": "WhatsApp Image 2026-10-03 at 10.22.05.jpeg",
+      "sha256": "7b0563038bf6603a51c7353fd10eb021b3368beb912e93df1f26662b2e005ed6"
+    }
+  ],
+  "collections": [
+    {
+      "key": "quran-L-tuzri",
+      "kind": "quran",
+      "gender": "L",
+      "name": "Tahsin — Muhammad Tuzri",
+      "mentor": "Muhammad Tuzri",
+      "source": "WhatsApp Image 2026-10-02 at 14.25.02.jpeg",
+      "members": [
+        {
+          "name": "Hizash Nabil",
+          "position": 1,
+          "roomLeader": false
+        },
+        {
+          "name": "L. Khalilurrahman",
+          "position": 2,
+          "roomLeader": false
+        },
+        {
+          "name": "Ahmad Bilal Febrian",
+          "position": 3,
+          "roomLeader": false
+        },
+        {
+          "name": "Afrizal putra",
+          "position": 4,
+          "roomLeader": false
+        },
+        {
+          "name": "Ridho Hidayat",
+          "position": 5,
+          "roomLeader": false
+        },
+        {
+          "name": "Muhammad Latiful qolbi",
+          "position": 6,
+          "roomLeader": false
+        },
+        {
+          "name": "M. Jayadi",
+          "position": 7,
+          "roomLeader": false
+        },
+        {
+          "name": "Gilang agif Gunawan",
+          "position": 8,
+          "roomLeader": false
+        },
+        {
+          "name": "Randi",
+          "position": 9,
+          "roomLeader": false
+        }
+      ]
+    },
+    {
+      "key": "quran-L-muammar",
+      "kind": "quran",
+      "gender": "L",
+      "name": "Tahfiz — Muammar",
+      "mentor": "Muammar",
+      "source": "WhatsApp Image 2026-10-02 at 14.25.02.jpeg",
+      "members": [
+        {
+          "name": "Nabil Akbar Anandata",
+          "position": 1,
+          "roomLeader": false
+        },
+        {
+          "name": "Nabil wanajib",
+          "position": 2,
+          "roomLeader": false
+        },
+        {
+          "name": "Anam abqori",
+          "position": 3,
+          "roomLeader": false
+        },
+        {
+          "name": "Arman Maulana",
+          "position": 4,
+          "roomLeader": false
+        },
+        {
+          "name": "Habib Awaluddin",
+          "position": 5,
+          "roomLeader": false
+        },
+        {
+          "name": "Zumirah fastawa",
+          "position": 6,
+          "roomLeader": false
+        },
+        {
+          "name": "Alvi Azra Wardana",
+          "position": 7,
+          "roomLeader": false
+        },
+        {
+          "name": "M. Ridho",
+          "position": 8,
+          "roomLeader": false
+        },
+        {
+          "name": "Dilan fajar fadlillah",
+          "position": 9,
+          "roomLeader": false
+        },
+        {
+          "name": "Ziad Ubaidillah syarif",
+          "position": 10,
+          "roomLeader": false
+        },
+        {
+          "name": "M. FAQIH IQRO",
+          "position": 11,
+          "roomLeader": false
+        }
+      ]
+    },
+    {
+      "key": "quran-L-zakaria",
+      "kind": "quran",
+      "gender": "L",
+      "name": "Tahsin — H. Zakaria",
+      "mentor": "H. Zakaria",
+      "source": "WhatsApp Image 2026-10-02 at 14.25.02.jpeg",
+      "members": [
+        {
+          "name": "SANDIYAT PRATAMA",
+          "position": 1,
+          "roomLeader": false
+        },
+        {
+          "name": "MUHAMMAD NAUFAL ALFIARASYIDI",
+          "position": 2,
+          "roomLeader": false
+        },
+        {
+          "name": "OKASHYA MUHAWILUR ROYYAN",
+          "position": 3,
+          "roomLeader": false
+        },
+        {
+          "name": "QOYYIM",
+          "position": 4,
+          "roomLeader": false
+        },
+        {
+          "name": "AL",
+          "position": 5,
+          "roomLeader": false
+        }
+      ]
+    },
+    {
+      "key": "quran-L-yusuf",
+      "kind": "quran",
+      "gender": "L",
+      "name": "Tahsin — M. Yusuf",
+      "mentor": "M. Yusuf",
+      "source": "WhatsApp Image 2026-10-02 at 14.25.02.jpeg",
+      "members": [
+        {
+          "name": "DIRZA ADRIYAN PRATAMA",
+          "position": 1,
+          "roomLeader": false
+        },
+        {
+          "name": "Muhammad Ferdi aditia",
+          "position": 2,
+          "roomLeader": false
+        },
+        {
+          "name": "MUHAMMAD ASYRAF DANIAL",
+          "position": 3,
+          "roomLeader": false
+        }
+      ]
+    },
+    {
+      "key": "quran-L-fahri",
+      "kind": "quran",
+      "gender": "L",
+      "name": "Tahsin & Tahfiz — Fahri Husain",
+      "mentor": "Fahri Husain",
+      "source": "WhatsApp Image 2026-10-02 at 14.25.02.jpeg",
+      "members": [
+        {
+          "name": "Ades suderat",
+          "position": 1,
+          "roomLeader": false
+        },
+        {
+          "name": "M.Toni akbar",
+          "position": 2,
+          "roomLeader": false
+        },
+        {
+          "name": "Habiburrahman",
+          "position": 3,
+          "roomLeader": false
+        },
+        {
+          "name": "AHMAD AL BUKHORI",
+          "position": 4,
+          "roomLeader": false
+        },
+        {
+          "name": "Hamdi sumar",
+          "position": 5,
+          "roomLeader": false
+        },
+        {
+          "name": "Irwan Taufiq azhar",
+          "position": 6,
+          "roomLeader": false
+        },
+        {
+          "name": "M. Razak",
+          "position": 7,
+          "roomLeader": false
+        },
+        {
+          "name": "Joni Saputra",
+          "position": 8,
+          "roomLeader": false
+        },
+        {
+          "name": "Irwan maulana",
+          "position": 9,
+          "roomLeader": false
+        },
+        {
+          "name": "Rizki Anugrah",
+          "position": 10,
+          "roomLeader": false
+        },
+        {
+          "name": "FAUZI ABDULLAH",
+          "position": 11,
+          "roomLeader": false
+        },
+        {
+          "name": "Yandi Satria",
+          "position": 12,
+          "roomLeader": false
+        },
+        {
+          "name": "MUHAMMAD RIPKI HADI",
+          "position": 13,
+          "roomLeader": false
+        }
+      ]
+    },
+    {
+      "key": "quran-L-mutqin",
+      "kind": "quran",
+      "gender": "L",
+      "name": "GEMA Mutqin — Muhasim",
+      "mentor": "Muhasim",
+      "source": "WhatsApp Image 2026-10-02 at 14.25.02.jpeg",
+      "members": [
+        {
+          "name": "IZZUDDIN DA'I",
+          "position": 1,
+          "roomLeader": false
+        },
+        {
+          "name": "Bain azzikra",
+          "position": 2,
+          "roomLeader": false
+        },
+        {
+          "name": "Lalu Alvin Yulistiawan",
+          "position": 3,
+          "roomLeader": false
+        },
+        {
+          "name": "Rahmad Ramadhani",
+          "position": 4,
+          "roomLeader": false
+        },
+        {
+          "name": "Andreas Dwi Santoso",
+          "position": 5,
+          "roomLeader": false
+        },
+        {
+          "name": "M. Ridho Razali",
+          "position": 6,
+          "roomLeader": false
+        },
+        {
+          "name": "Najih Fadil",
+          "position": 7,
+          "roomLeader": false
+        },
+        {
+          "name": "MUHAMMAD HABIB RAHMAN",
+          "position": 8,
+          "roomLeader": false
+        },
+        {
+          "name": "Muh. Nafaz Adil",
+          "position": 9,
+          "roomLeader": false
+        },
+        {
+          "name": "Zacky Prayoga Febriansyah",
+          "position": 10,
+          "roomLeader": false
+        }
+      ]
+    },
+    {
+      "key": "quran-L-ziyadah",
+      "kind": "quran",
+      "gender": "L",
+      "name": "GEMA Ziyadah — Ahmad Budiawan Alkhair",
+      "mentor": "Ahmad Budiawan Alkhair",
+      "source": "WhatsApp Image 2026-10-02 at 14.25.02.jpeg",
+      "members": [
+        {
+          "name": "ASYRORUDDIN",
+          "position": 1,
+          "roomLeader": false
+        },
+        {
+          "name": "FASYA SETIAWAN",
+          "position": 2,
+          "roomLeader": false
+        },
+        {
+          "name": "MUHAMMAD AKBAR",
+          "position": 3,
+          "roomLeader": false
+        },
+        {
+          "name": "MUHAMMAD ZAKA ROPIQI",
+          "position": 4,
+          "roomLeader": false
+        },
+        {
+          "name": "PANDI HASANI IBROHIM",
+          "position": 5,
+          "roomLeader": false
+        },
+        {
+          "name": "HABIL GIBRAN",
+          "position": 6,
+          "roomLeader": false
+        },
+        {
+          "name": "LALU MAZID AFANDI",
+          "position": 7,
+          "roomLeader": false
+        },
+        {
+          "name": "DINUL RIZQIAN ABIFARRIZ",
+          "position": 8,
+          "roomLeader": false
+        },
+        {
+          "name": "KHAIRIL ARFAN",
+          "position": 9,
+          "roomLeader": false
+        },
+        {
+          "name": "M. SAHRUL KHORI",
+          "position": 10,
+          "roomLeader": false
+        },
+        {
+          "name": "KHAIRUL ANAM",
+          "position": 11,
+          "roomLeader": false
+        },
+        {
+          "name": "BAIN AZZIQRA",
+          "position": 12,
+          "roomLeader": false
+        }
+      ]
+    },
+    {
+      "key": "rooms-L-c2",
+      "kind": "rooms",
+      "gender": "L",
+      "name": "Cordova 2",
+      "mentor": "Bintang",
+      "source": "WhatsApp Image 2026-10-02 at 14.28.36.jpeg",
+      "members": [
+        {
+          "name": "Nabil Akbar anandata",
+          "position": 1,
+          "roomLeader": true
+        },
+        {
+          "name": "Nabil Wanajib",
+          "position": 2,
+          "roomLeader": true
+        },
+        {
+          "name": "Anam Abqori",
+          "position": 3,
+          "roomLeader": true
+        },
+        {
+          "name": "Arman Maolana",
+          "position": 4,
+          "roomLeader": true
+        },
+        {
+          "name": "Dilan fajar fadlillah",
+          "position": 5,
+          "roomLeader": true
+        },
+        {
+          "name": "Hizash Nabil",
+          "position": 6,
+          "roomLeader": false
+        },
+        {
+          "name": "L. Khalilurrahman",
+          "position": 7,
+          "roomLeader": false
+        },
+        {
+          "name": "Ahmad Bilal Febrian",
+          "position": 8,
+          "roomLeader": false
+        },
+        {
+          "name": "Afrizal putra",
+          "position": 9,
+          "roomLeader": false
+        },
+        {
+          "name": "Ridho Hidayat",
+          "position": 10,
+          "roomLeader": false
+        },
+        {
+          "name": "Muhammad Latiful qolbi",
+          "position": 11,
+          "roomLeader": false
+        },
+        {
+          "name": "M. Jayadi",
+          "position": 12,
+          "roomLeader": false
+        },
+        {
+          "name": "Gilang agif Gunawan",
+          "position": 13,
+          "roomLeader": false
+        },
+        {
+          "name": "M. Asyraf Danyal",
+          "position": 14,
+          "roomLeader": false
+        },
+        {
+          "name": "M. Razak Aprianto",
+          "position": 15,
+          "roomLeader": false
+        },
+        {
+          "name": "Irwan Taufiq Azhar",
+          "position": 16,
+          "roomLeader": false
+        },
+        {
+          "name": "Muhammad Ferdi aditia",
+          "position": 17,
+          "roomLeader": false
+        },
+        {
+          "name": "M. Ferdi aditia",
+          "position": 18,
+          "roomLeader": false
+        },
+        {
+          "name": "Ziad Ubaidillah syarif",
+          "position": 19,
+          "roomLeader": false
+        },
+        {
+          "name": "M. Toni akbar",
+          "position": 20,
+          "roomLeader": false
+        }
+      ]
+    },
+    {
+      "key": "rooms-L-c3",
+      "kind": "rooms",
+      "gender": "L",
+      "name": "Cordova 3",
+      "mentor": "Fahri Gontor",
+      "source": "WhatsApp Image 2026-10-02 at 14.28.36.jpeg",
+      "members": [
+        {
+          "name": "Zumirah Fastawa",
+          "position": 1,
+          "roomLeader": true
+        },
+        {
+          "name": "M. Ridho",
+          "position": 2,
+          "roomLeader": true
+        },
+        {
+          "name": "Alvin Azra Wardani",
+          "position": 3,
+          "roomLeader": true
+        },
+        {
+          "name": "Habib Awaluddin",
+          "position": 4,
+          "roomLeader": true
+        },
+        {
+          "name": "Ades suderat",
+          "position": 5,
+          "roomLeader": false
+        },
+        {
+          "name": "Joni Saputra",
+          "position": 6,
+          "roomLeader": false
+        },
+        {
+          "name": "Habiburrahman",
+          "position": 7,
+          "roomLeader": false
+        },
+        {
+          "name": "Ahmad Bukhori",
+          "position": 8,
+          "roomLeader": false
+        },
+        {
+          "name": "M. Faqih iqro'",
+          "position": 9,
+          "roomLeader": false
+        },
+        {
+          "name": "Irwan Maulana",
+          "position": 10,
+          "roomLeader": false
+        },
+        {
+          "name": "Fauzi Abdullah",
+          "position": 11,
+          "roomLeader": false
+        },
+        {
+          "name": "M. Hamdi sumar",
+          "position": 12,
+          "roomLeader": false
+        },
+        {
+          "name": "OKASHYA MUHAWILUR ROYYAN",
+          "position": 13,
+          "roomLeader": false
+        },
+        {
+          "name": "Dirza Ardiyan Pratama",
+          "position": 14,
+          "roomLeader": false
+        },
+        {
+          "name": "MUHAMMAD NAUFAL ALFIARASYIDI",
+          "position": 15,
+          "roomLeader": false
+        },
+        {
+          "name": "Rizki anugrah",
+          "position": 16,
+          "roomLeader": false
+        },
+        {
+          "name": "MUHAMMAD RIPKI HADI",
+          "position": 17,
+          "roomLeader": false
+        },
+        {
+          "name": "Yandi Satria",
+          "position": 18,
+          "roomLeader": false
+        },
+        {
+          "name": "Sandiyat Pratama",
+          "position": 19,
+          "roomLeader": false
+        }
+      ]
+    },
+    {
+      "key": "rooms-L-gema",
+      "kind": "rooms",
+      "gender": "L",
+      "name": "GEMA Gedung Cairo",
+      "mentor": "Muhasim",
+      "source": "WhatsApp Image 2026-10-02 at 14.28.36.jpeg",
+      "members": [
+        {
+          "name": "Najih Fadil",
+          "position": 1,
+          "roomLeader": true
+        },
+        {
+          "name": "Bain azziqra",
+          "position": 2,
+          "roomLeader": true
+        },
+        {
+          "name": "Andreas Dwi santoso",
+          "position": 3,
+          "roomLeader": true
+        },
+        {
+          "name": "M. Nafaz Adil",
+          "position": 4,
+          "roomLeader": true
+        },
+        {
+          "name": "M. Bastian Faiz Ramzi",
+          "position": 5,
+          "roomLeader": true
+        },
+        {
+          "name": "Izzuddin dai",
+          "position": 6,
+          "roomLeader": false
+        },
+        {
+          "name": "Gibran Habil",
+          "position": 7,
+          "roomLeader": false
+        },
+        {
+          "name": "Muhammad Zaka ropiqi",
+          "position": 8,
+          "roomLeader": false
+        },
+        {
+          "name": "Fasya Setiawan",
+          "position": 9,
+          "roomLeader": false
+        },
+        {
+          "name": "Pandi HASANI IBROHIM",
+          "position": 10,
+          "roomLeader": false
+        },
+        {
+          "name": "Lalu Alvin Yulistiawan",
+          "position": 11,
+          "roomLeader": false
+        },
+        {
+          "name": "Rahmad Ramdani",
+          "position": 12,
+          "roomLeader": false
+        },
+        {
+          "name": "M. SAHRUL KHORI",
+          "position": 13,
+          "roomLeader": false
+        },
+        {
+          "name": "M. Ridho Razali",
+          "position": 14,
+          "roomLeader": false
+        },
+        {
+          "name": "Lalu Mazid APANDI",
+          "position": 15,
+          "roomLeader": false
+        },
+        {
+          "name": "M. Habib Rahman",
+          "position": 16,
+          "roomLeader": false
+        },
+        {
+          "name": "M. Akbar",
+          "position": 17,
+          "roomLeader": false
+        },
+        {
+          "name": "Zacky Prayoga Febriansyah",
+          "position": 18,
+          "roomLeader": false
+        },
+        {
+          "name": "Asroruddin",
+          "position": 19,
+          "roomLeader": false
+        },
+        {
+          "name": "DINUL RIZQIAN ABIFARRIZ",
+          "position": 20,
+          "roomLeader": false
+        },
+        {
+          "name": "Khairil Arfan",
+          "position": 21,
+          "roomLeader": false
+        },
+        {
+          "name": "Khairul Anam",
+          "position": 22,
+          "roomLeader": false
+        }
+      ]
+    },
+    {
+      "key": "arabic-L-c2",
+      "kind": "arabic",
+      "gender": "L",
+      "name": "Bahasa Arab Pagi — Cordova 2",
+      "mentor": "Bintang",
+      "source": "WhatsApp Image 2026-10-02 at 14.28.36.jpeg",
+      "members": [
+        {
+          "name": "Nabil Akbar anandata",
+          "position": 1,
+          "roomLeader": true
+        },
+        {
+          "name": "Nabil Wanajib",
+          "position": 2,
+          "roomLeader": true
+        },
+        {
+          "name": "Anam Abqori",
+          "position": 3,
+          "roomLeader": true
+        },
+        {
+          "name": "Arman Maolana",
+          "position": 4,
+          "roomLeader": true
+        },
+        {
+          "name": "Dilan fajar fadlillah",
+          "position": 5,
+          "roomLeader": true
+        },
+        {
+          "name": "Hizash Nabil",
+          "position": 6,
+          "roomLeader": false
+        },
+        {
+          "name": "L. Khalilurrahman",
+          "position": 7,
+          "roomLeader": false
+        },
+        {
+          "name": "Ahmad Bilal Febrian",
+          "position": 8,
+          "roomLeader": false
+        },
+        {
+          "name": "Afrizal putra",
+          "position": 9,
+          "roomLeader": false
+        },
+        {
+          "name": "Ridho Hidayat",
+          "position": 10,
+          "roomLeader": false
+        },
+        {
+          "name": "Muhammad Latiful qolbi",
+          "position": 11,
+          "roomLeader": false
+        },
+        {
+          "name": "M. Jayadi",
+          "position": 12,
+          "roomLeader": false
+        },
+        {
+          "name": "Gilang agif Gunawan",
+          "position": 13,
+          "roomLeader": false
+        },
+        {
+          "name": "M. Asyraf Danyal",
+          "position": 14,
+          "roomLeader": false
+        },
+        {
+          "name": "M. Razak Aprianto",
+          "position": 15,
+          "roomLeader": false
+        },
+        {
+          "name": "Irwan Taufiq Azhar",
+          "position": 16,
+          "roomLeader": false
+        },
+        {
+          "name": "Muhammad Ferdi aditia",
+          "position": 17,
+          "roomLeader": false
+        },
+        {
+          "name": "M. Ferdi aditia",
+          "position": 18,
+          "roomLeader": false
+        },
+        {
+          "name": "Ziad Ubaidillah syarif",
+          "position": 19,
+          "roomLeader": false
+        },
+        {
+          "name": "M. Toni akbar",
+          "position": 20,
+          "roomLeader": false
+        }
+      ],
+      "timeLabel": "Ba’da Subuh"
+    },
+    {
+      "key": "arabic-L-c3",
+      "kind": "arabic",
+      "gender": "L",
+      "name": "Bahasa Arab Pagi — Cordova 3",
+      "mentor": "Fahri Gontor",
+      "source": "WhatsApp Image 2026-10-02 at 14.28.36.jpeg",
+      "members": [
+        {
+          "name": "Zumirah Fastawa",
+          "position": 1,
+          "roomLeader": true
+        },
+        {
+          "name": "M. Ridho",
+          "position": 2,
+          "roomLeader": true
+        },
+        {
+          "name": "Alvin Azra Wardani",
+          "position": 3,
+          "roomLeader": true
+        },
+        {
+          "name": "Habib Awaluddin",
+          "position": 4,
+          "roomLeader": true
+        },
+        {
+          "name": "Ades suderat",
+          "position": 5,
+          "roomLeader": false
+        },
+        {
+          "name": "Joni Saputra",
+          "position": 6,
+          "roomLeader": false
+        },
+        {
+          "name": "Habiburrahman",
+          "position": 7,
+          "roomLeader": false
+        },
+        {
+          "name": "Ahmad Bukhori",
+          "position": 8,
+          "roomLeader": false
+        },
+        {
+          "name": "M. Faqih iqro'",
+          "position": 9,
+          "roomLeader": false
+        },
+        {
+          "name": "Irwan Maulana",
+          "position": 10,
+          "roomLeader": false
+        },
+        {
+          "name": "Fauzi Abdullah",
+          "position": 11,
+          "roomLeader": false
+        },
+        {
+          "name": "M. Hamdi sumar",
+          "position": 12,
+          "roomLeader": false
+        },
+        {
+          "name": "OKASHYA MUHAWILUR ROYYAN",
+          "position": 13,
+          "roomLeader": false
+        },
+        {
+          "name": "Dirza Ardiyan Pratama",
+          "position": 14,
+          "roomLeader": false
+        },
+        {
+          "name": "MUHAMMAD NAUFAL ALFIARASYIDI",
+          "position": 15,
+          "roomLeader": false
+        },
+        {
+          "name": "Rizki anugrah",
+          "position": 16,
+          "roomLeader": false
+        },
+        {
+          "name": "MUHAMMAD RIPKI HADI",
+          "position": 17,
+          "roomLeader": false
+        },
+        {
+          "name": "Yandi Satria",
+          "position": 18,
+          "roomLeader": false
+        },
+        {
+          "name": "Sandiyat Pratama",
+          "position": 19,
+          "roomLeader": false
+        }
+      ],
+      "timeLabel": "Ba’da Subuh"
+    },
+    {
+      "key": "arabic-L-gema",
+      "kind": "arabic",
+      "gender": "L",
+      "name": "Bahasa Arab Pagi — GEMA Gedung Cairo",
+      "mentor": "Muhasim",
+      "source": "WhatsApp Image 2026-10-02 at 14.28.36.jpeg",
+      "members": [
+        {
+          "name": "Najih Fadil",
+          "position": 1,
+          "roomLeader": true
+        },
+        {
+          "name": "Bain azziqra",
+          "position": 2,
+          "roomLeader": true
+        },
+        {
+          "name": "Andreas Dwi santoso",
+          "position": 3,
+          "roomLeader": true
+        },
+        {
+          "name": "M. Nafaz Adil",
+          "position": 4,
+          "roomLeader": true
+        },
+        {
+          "name": "M. Bastian Faiz Ramzi",
+          "position": 5,
+          "roomLeader": true
+        },
+        {
+          "name": "Izzuddin dai",
+          "position": 6,
+          "roomLeader": false
+        },
+        {
+          "name": "Gibran Habil",
+          "position": 7,
+          "roomLeader": false
+        },
+        {
+          "name": "Muhammad Zaka ropiqi",
+          "position": 8,
+          "roomLeader": false
+        },
+        {
+          "name": "Fasya Setiawan",
+          "position": 9,
+          "roomLeader": false
+        },
+        {
+          "name": "Pandi HASANI IBROHIM",
+          "position": 10,
+          "roomLeader": false
+        },
+        {
+          "name": "Lalu Alvin Yulistiawan",
+          "position": 11,
+          "roomLeader": false
+        },
+        {
+          "name": "Rahmad Ramdani",
+          "position": 12,
+          "roomLeader": false
+        },
+        {
+          "name": "M. SAHRUL KHORI",
+          "position": 13,
+          "roomLeader": false
+        },
+        {
+          "name": "M. Ridho Razali",
+          "position": 14,
+          "roomLeader": false
+        },
+        {
+          "name": "Lalu Mazid APANDI",
+          "position": 15,
+          "roomLeader": false
+        },
+        {
+          "name": "M. Habib Rahman",
+          "position": 16,
+          "roomLeader": false
+        },
+        {
+          "name": "M. Akbar",
+          "position": 17,
+          "roomLeader": false
+        },
+        {
+          "name": "Zacky Prayoga Febriansyah",
+          "position": 18,
+          "roomLeader": false
+        },
+        {
+          "name": "Asroruddin",
+          "position": 19,
+          "roomLeader": false
+        },
+        {
+          "name": "DINUL RIZQIAN ABIFARRIZ",
+          "position": 20,
+          "roomLeader": false
+        },
+        {
+          "name": "Khairil Arfan",
+          "position": 21,
+          "roomLeader": false
+        },
+        {
+          "name": "Khairul Anam",
+          "position": 22,
+          "roomLeader": false
+        }
+      ],
+      "timeLabel": "Ba’da Subuh"
+    }
+  ],
+  "weeklyReference": {
+    "source": "WhatsApp Image 2026-10-03 at 10.22.05.jpeg",
+    "sourcePeriod": "Oktober 2025",
+    "status": "needs_confirmation"
+  }
+}

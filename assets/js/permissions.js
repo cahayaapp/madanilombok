@@ -9,14 +9,15 @@ export const ROLE_LABELS = {
   head_girls_dorm: "Kepala Asrama Putri",
   guru_mapel: "Guru Mapel",
   guru_wali: "Guru Wali",
-  mentor_tahsin_tahfiz: "Mentor Tahsin Tahfiz",
+  mentor_tahsin_tahfiz: "Pembina Tahfiz",
   naqib: "Naqib",
   konselor: "Konselor",
+  kesehatan: "Kesehatan / UKS",
   kasir: "Kasir",
   wali_santri: "Wali Santri"
 };
 
-export const MENU_GROUPS = [
+const ALL_MENU_GROUPS = [
   {
     label: "Utama",
     items: [
@@ -114,8 +115,18 @@ export const MENU_GROUPS = [
       { id: "finance-reports", label: "Laporan Keuangan", icon: "▥", feature: "finance.reports" }
     ]
   },
+  {label:"Kesehatan / UKS",items:[
+    {id:"health-journal",label:"Jurnal Kesehatan",icon:"▤",feature:"health.journal"},
+    {id:"health-examination",label:"Pemeriksaan Kesehatan",icon:"+",feature:"health.examination"},
+    {id:"health-permits",label:"Perizinan Medis UKS",icon:"↗",feature:"health.permits"},
+    {id:"health-stock",label:"Stok Obat UKS",icon:"□",feature:"health.stock"},
+    {id:"health-review",label:"Review Izin Medis",icon:"✓",feature:"health.review"}
+  ]},
   ...WORKSPACE_GROUPS
 ];
+
+// KPI is disabled across every active role; historical records remain intact.
+export const MENU_GROUPS=ALL_MENU_GROUPS.map(g=>({...g,items:g.items.filter(i=>!i.id.includes('kpi'))})).filter(g=>g.items.length);
 
 const academicAll = [
   "academic.teacher_attendance","academic.student_attendance","academic.quran","academic.grades","academic.schedule","academic.lesson_plans"
@@ -139,9 +150,11 @@ const financeAll = [
   "finance.history","finance.reports"
 ];
 
+const healthAll=["health.journal","health.examination","health.permits","health.stock"];
 export const ROLE_FEATURES = {
-  guru_mapel: ["academic.quran","academic.teacher_attendance","academic.student_attendance","academic.grades","academic.schedule","academic.lesson_plans"],
-  mentor_tahsin_tahfiz: ["academic.teacher_attendance","academic.quran","academic.schedule"],
+  kesehatan:healthAll,
+  guru_mapel: ["academic.teacher_attendance","academic.student_attendance","academic.grades","academic.schedule","academic.lesson_plans"],
+  mentor_tahsin_tahfiz: ["academic.quran"],
   naqib: naqibAll,
   guru_wali: mentorAll,
   konselor: counselorAll,
@@ -150,15 +163,15 @@ export const ROLE_FEATURES = {
   head_formal_school: ["academic.schedule"],
   head_boys_dorm: [],
   head_girls_dorm: [],
-  deputy_director: [...financeAll],
-  director: [...financeAll],
-  admin: [...academicAll,...naqibAll,...mentorAll,...counselorAll,...financeAll],
-  super_admin: [...academicAll,...naqibAll,...mentorAll,...counselorAll,...financeAll]
+  deputy_director: [...financeAll,"health.review"],
+  director: [...financeAll,"health.review"],
+  admin: [...academicAll,...naqibAll,...mentorAll,...counselorAll,...financeAll,...healthAll],
+  super_admin: [...academicAll,...naqibAll,...mentorAll,...counselorAll,...financeAll,...healthAll]
 };
 
 export function featuresForRoles(roles = []) {
   const out = new Set(["dashboard"]);
-  roles.forEach(role => [...(ROLE_FEATURES[role] || []), ...workspaceFeatures(role)].forEach(feature => out.add(feature)));
+  roles.forEach(role => [...(ROLE_FEATURES[role] || []), ...workspaceFeatures(role)].forEach(feature => !feature.includes('kpi') && out.add(feature)));
   return out;
 }
 

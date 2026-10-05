@@ -1,7 +1,9 @@
+import {teachingGroups} from './group-teachers.js';
 // Navigation and role composition are data-only; no Firebase reads or writes here.
 export const ROLE_EXPERIENCE = {
+  kesehatan:{title:'Pelayanan kesehatan dan UKS santri.',focus:'Kesehatan / UKS',primary:'health-examination',quick:['health-journal','health-examination','health-permits','health-stock'],schedule:'work-schedule'},
   guru_mapel: {title:'Siap mengajar dan mendampingi hari ini.', focus:'Pembelajaran', primary:'teacher-attendance', quick:['teacher-attendance','student-attendance','lesson-plans','grades'], schedule:'schedule', kpi:'teacher-kpi'},
-  mentor_tahsin_tahfiz: {title:'Dampingi bacaan dan perkembangan hafalan santri.', focus:'Tahsin & Tahfiz', primary:'quran', quick:['quran','teacher-attendance','schedule','academic-followup'], schedule:'schedule', kpi:'teacher-kpi'},
+  mentor_tahsin_tahfiz: {title:'Dampingi bacaan dan perkembangan hafalan santri.', focus:'Tahsin & Tahfiz', primary:'quran', quick:['quran','work-schedule','work-profile','work-guide'], schedule:'work-schedule', kpi:'work-kpi'},
   naqib: {title:'Kawal program, dampingi santri, catat perkembangannya.', focus:'Program hari ini', primary:'naqib-programs', quick:['naqib-programs','naqib-attendance','naqib-report','naqib-case'], schedule:'naqib-programs', kpi:'naqib-kpi'},
   guru_wali: {title:'Satu pendampingan, satu langkah perbaikan.', focus:'Santri binaan', primary:'mentee-list', quick:['mentee-list','mentoring','mentoring-targets','mentoring-history'], schedule:'work-schedule', kpi:'mentoring-kpi'},
   konselor: {title:'Tangani kasus dengan tabayyun dan tindak lanjut.', focus:'Antrean kasus', primary:'case-inbox', quick:['case-inbox','case-active','counseling','case-escalation'], schedule:'work-schedule', kpi:'counselor-kpi'},
@@ -34,7 +36,9 @@ export function sessionForRole(session,role) {
 }
 export function filterScopedStudents(master,profile,role) {
   let rows=master.students||[];
+  if(role==='mentor_tahsin_tahfiz'){const groups=teachingGroups(master,profile,'quran');return rows.filter(s=>groups.some(g=>master.groupAssignments?.[g.id]?.[s.id]));}
   if(role==='wali_santri') return rows.filter(s=>(profile.studentIds||[profile.studentId]).includes(s.id));
+  if(role==='guru_wali')return rows.filter(s=>{const a=master.mentorAssignments?.[s.id];return a?!!profile.staffId&&a.status==='active'&&a.mentorStaffId===profile.staffId:!!profile.menteeStudentIds?.includes(s.id);});
   const gender=profile.scopeGender||profile.genderScope;
   if(gender) rows=rows.filter(s=>s.gender===gender);
   if(profile.unitIds?.length) rows=rows.filter(s=>profile.unitIds.includes(s.unitId));
@@ -49,5 +53,5 @@ export function filterScopedStudents(master,profile,role) {
 export function bottomRoutes(role,canRoute) {
   const exp=ROLE_EXPERIENCE[role]||{};
   const safe=(id,fallback)=>canRoute(id)?id:(canRoute(fallback)?fallback:null);
-  return {schedule:safe(exp.schedule,'work-schedule'),kpi:safe(exp.kpi,'work-kpi'),home:'dashboard',messages:safe(role==='wali_santri'?'parent-messages':'work-messages',null)};
+  return {schedule:safe(exp.schedule,'work-schedule'),kpi:null,home:'dashboard',messages:safe(role==='wali_santri'?'parent-messages':'work-messages',null)};
 }

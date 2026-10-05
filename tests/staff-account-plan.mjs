@@ -33,5 +33,5 @@ test('ambiguous or unrelated staff never receive guessed admin or leadership pri
 });
 test('staff data and operational student IDs remain intact during account planning',()=>{
  const before=JSON.stringify(seed);const plan=buildStaffAccountPlan(rows(seed.staff),[],rows(seed.classes),[],leadership);
- assert.equal(plan.length,85);assert.equal(new Set(plan.map(p=>p.email)).size,85);assert.equal(JSON.stringify(seed),before);
+ assert.equal(plan.length,Object.keys(seed.staff).length);assert.equal(new Set(plan.map(p=>p.email)).size,plan.length);assert.equal(JSON.stringify(seed),before);
 });

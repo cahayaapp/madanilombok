@@ -1,9 +1,9 @@
 {
   "source": "Master lokal; belum diverifikasi terhadap database aktif",
-  "studentCount": 352,
+  "studentCount": 354,
   "schoolCounts": {
     "UNIT-TK": 40,
-    "UNIT-SMP": 100,
+    "UNIT-SMP": 102,
     "UNIT-SMK": 80,
     "UNIT-SD": 132
   },

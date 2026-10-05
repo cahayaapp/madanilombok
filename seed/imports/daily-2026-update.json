@@ -1,0 +1,1506 @@
+{
+  "id": "daily-2026-docx",
+  "report": {
+    "academicYearId": "TA-2026-2027-GANJIL",
+    "general": 14,
+    "gema": 17,
+    "retired": 50,
+    "dayBasis": "Jadwal harian; dokumen tidak merinci pengecualian akhir pekan."
+  },
+  "expected": {
+    "schedules/daily/DS-001": {
+      "source": "roundown kegiatan harian ASPURA 2025.pdf"
+    },
+    "programs/PRG-DAY-001": {
+      "source": "roundown kegiatan harian ASPURA 2025.pdf"
+    },
+    "schedules/daily/DS-002": {
+      "source": "roundown kegiatan harian ASPURA 2025.pdf"
+    },
+    "programs/PRG-DAY-002": {
+      "source": "roundown kegiatan harian ASPURA 2025.pdf"
+    },
+    "schedules/daily/DS-003": {
+      "source": "roundown kegiatan harian ASPURA 2025.pdf"
+    },
+    "programs/PRG-DAY-003": {
+      "source": "roundown kegiatan harian ASPURA 2025.pdf"
+    },
+    "schedules/daily/DS-004": {
+      "source": "roundown kegiatan harian ASPURA 2025.pdf"
+    },
+    "programs/PRG-DAY-004": {
+      "source": "roundown kegiatan harian ASPURA 2025.pdf"
+    },
+    "schedules/daily/DS-005": {
+      "source": "roundown kegiatan harian ASPURA 2025.pdf"
+    },
+    "programs/PRG-DAY-005": {
+      "source": "roundown kegiatan harian ASPURA 2025.pdf"
+    },
+    "schedules/daily/DS-006": {
+      "source": "roundown kegiatan harian ASPURA 2025.pdf"
+    },
+    "programs/PRG-DAY-006": {
+      "source": "roundown kegiatan harian ASPURA 2025.pdf"
+    },
+    "schedules/daily/DS-007": {
+      "source": "roundown kegiatan harian ASPURA 2025.pdf"
+    },
+    "programs/PRG-DAY-007": {
+      "source": "roundown kegiatan harian ASPURA 2025.pdf"
+    },
+    "schedules/daily/DS-008": {
+      "source": "roundown kegiatan harian ASPURA 2025.pdf"
+    },
+    "programs/PRG-DAY-008": {
+      "source": "roundown kegiatan harian ASPURA 2025.pdf"
+    },
+    "schedules/daily/DS-009": {
+      "source": "roundown kegiatan harian ASPURA 2025.pdf"
+    },
+    "programs/PRG-DAY-009": {
+      "source": "roundown kegiatan harian ASPURA 2025.pdf"
+    },
+    "schedules/daily/DS-010": {
+      "source": "roundown kegiatan harian ASPURA 2025.pdf"
+    },
+    "programs/PRG-DAY-010": {
+      "source": "roundown kegiatan harian ASPURA 2025.pdf"
+    },
+    "schedules/daily/DS-011": {
+      "source": "roundown kegiatan harian ASPURA 2025.pdf"
+    },
+    "programs/PRG-DAY-011": {
+      "source": "roundown kegiatan harian ASPURA 2025.pdf"
+    },
+    "schedules/daily/DS-012": {
+      "source": "roundown kegiatan harian ASPURA 2025.pdf"
+    },
+    "programs/PRG-DAY-012": {
+      "source": "roundown kegiatan harian ASPURA 2025.pdf"
+    },
+    "schedules/daily/DS-013": {
+      "source": "roundown kegiatan harian ASPURA 2025.pdf"
+    },
+    "programs/PRG-DAY-013": {
+      "source": "roundown kegiatan harian ASPURA 2025.pdf"
+    },
+    "schedules/daily/DS-014": {
+      "source": "roundown kegiatan harian ASPURA 2025.pdf"
+    },
+    "programs/PRG-DAY-014": {
+      "source": "roundown kegiatan harian ASPURA 2025.pdf"
+    },
+    "schedules/daily/DS-015": {
+      "source": "roundown kegiatan harian ASPURA 2025.pdf"
+    },
+    "programs/PRG-DAY-015": {
+      "source": "roundown kegiatan harian ASPURA 2025.pdf"
+    },
+    "schedules/daily/DS-016": {
+      "source": "Jadwal_Harian_Santriwi Umum.xlsx"
+    },
+    "programs/PRG-DAY-016": {
+      "source": "Jadwal_Harian_Santriwi Umum.xlsx"
+    },
+    "schedules/daily/DS-017": {
+      "source": "Jadwal_Harian_Santriwi Umum.xlsx"
+    },
+    "programs/PRG-DAY-017": {
+      "source": "Jadwal_Harian_Santriwi Umum.xlsx"
+    },
+    "schedules/daily/DS-018": {
+      "source": "Jadwal_Harian_Santriwi Umum.xlsx"
+    },
+    "programs/PRG-DAY-018": {
+      "source": "Jadwal_Harian_Santriwi Umum.xlsx"
+    },
+    "schedules/daily/DS-019": {
+      "source": "Jadwal_Harian_Santriwi Umum.xlsx"
+    },
+    "programs/PRG-DAY-019": {
+      "source": "Jadwal_Harian_Santriwi Umum.xlsx"
+    },
+    "schedules/daily/DS-020": {
+      "source": "Jadwal_Harian_Santriwi Umum.xlsx"
+    },
+    "programs/PRG-DAY-020": {
+      "source": "Jadwal_Harian_Santriwi Umum.xlsx"
+    },
+    "schedules/daily/DS-021": {
+      "source": "Jadwal_Harian_Santriwi Umum.xlsx"
+    },
+    "programs/PRG-DAY-021": {
+      "source": "Jadwal_Harian_Santriwi Umum.xlsx"
+    },
+    "schedules/daily/DS-022": {
+      "source": "Jadwal_Harian_Santriwi Umum.xlsx"
+    },
+    "programs/PRG-DAY-022": {
+      "source": "Jadwal_Harian_Santriwi Umum.xlsx"
+    },
+    "schedules/daily/DS-023": {
+      "source": "Jadwal_Harian_Santriwi Umum.xlsx"
+    },
+    "programs/PRG-DAY-023": {
+      "source": "Jadwal_Harian_Santriwi Umum.xlsx"
+    },
+    "schedules/daily/DS-024": {
+      "source": "Jadwal_Harian_Santriwi Umum.xlsx"
+    },
+    "programs/PRG-DAY-024": {
+      "source": "Jadwal_Harian_Santriwi Umum.xlsx"
+    },
+    "schedules/daily/DS-025": {
+      "source": "Jadwal_Harian_Santriwi Umum.xlsx"
+    },
+    "programs/PRG-DAY-025": {
+      "source": "Jadwal_Harian_Santriwi Umum.xlsx"
+    },
+    "schedules/daily/DS-026": {
+      "source": "Jadwal_Harian_Santriwi Umum.xlsx"
+    },
+    "programs/PRG-DAY-026": {
+      "source": "Jadwal_Harian_Santriwi Umum.xlsx"
+    },
+    "schedules/daily/DS-027": {
+      "source": "Jadwal_Harian_Santriwi Umum.xlsx"
+    },
+    "programs/PRG-DAY-027": {
+      "source": "Jadwal_Harian_Santriwi Umum.xlsx"
+    },
+    "schedules/daily/DS-028": {
+      "source": "Jadwal_Harian_Santriwi Umum.xlsx"
+    },
+    "programs/PRG-DAY-028": {
+      "source": "Jadwal_Harian_Santriwi Umum.xlsx"
+    },
+    "schedules/daily/DS-029": {
+      "source": "Jadwal_Harian_Santriwi Umum.xlsx"
+    },
+    "programs/PRG-DAY-029": {
+      "source": "Jadwal_Harian_Santriwi Umum.xlsx"
+    },
+    "schedules/daily/DS-030": {
+      "source": "Jadwal_Harian_Santriwi Umum.xlsx"
+    },
+    "programs/PRG-DAY-030": {
+      "source": "Jadwal_Harian_Santriwi Umum.xlsx"
+    },
+    "schedules/daily/DS-031": {
+      "source": "Jadwal_Harian_Santriwi Umum.xlsx"
+    },
+    "programs/PRG-DAY-031": {
+      "source": "Jadwal_Harian_Santriwi Umum.xlsx"
+    },
+    "schedules/daily/DS-032": {
+      "source": "Jadwal_Harian_Santriwi Umum.xlsx"
+    },
+    "programs/PRG-DAY-032": {
+      "source": "Jadwal_Harian_Santriwi Umum.xlsx"
+    },
+    "schedules/daily/DS-033": {
+      "source": "Kegiatan Harian Santriwati GEMA.xlsx"
+    },
+    "programs/PRG-DAY-033": {
+      "source": "Kegiatan Harian Santriwati GEMA.xlsx"
+    },
+    "schedules/daily/DS-034": {
+      "source": "Kegiatan Harian Santriwati GEMA.xlsx"
+    },
+    "programs/PRG-DAY-034": {
+      "source": "Kegiatan Harian Santriwati GEMA.xlsx"
+    },
+    "schedules/daily/DS-035": {
+      "source": "Kegiatan Harian Santriwati GEMA.xlsx"
+    },
+    "programs/PRG-DAY-035": {
+      "source": "Kegiatan Harian Santriwati GEMA.xlsx"
+    },
+    "schedules/daily/DS-036": {
+      "source": "Kegiatan Harian Santriwati GEMA.xlsx"
+    },
+    "programs/PRG-DAY-036": {
+      "source": "Kegiatan Harian Santriwati GEMA.xlsx"
+    },
+    "schedules/daily/DS-037": {
+      "source": "Kegiatan Harian Santriwati GEMA.xlsx"
+    },
+    "programs/PRG-DAY-037": {
+      "source": "Kegiatan Harian Santriwati GEMA.xlsx"
+    },
+    "schedules/daily/DS-038": {
+      "source": "Kegiatan Harian Santriwati GEMA.xlsx"
+    },
+    "programs/PRG-DAY-038": {
+      "source": "Kegiatan Harian Santriwati GEMA.xlsx"
+    },
+    "schedules/daily/DS-039": {
+      "source": "Kegiatan Harian Santriwati GEMA.xlsx"
+    },
+    "programs/PRG-DAY-039": {
+      "source": "Kegiatan Harian Santriwati GEMA.xlsx"
+    },
+    "schedules/daily/DS-040": {
+      "source": "Kegiatan Harian Santriwati GEMA.xlsx"
+    },
+    "programs/PRG-DAY-040": {
+      "source": "Kegiatan Harian Santriwati GEMA.xlsx"
+    },
+    "schedules/daily/DS-041": {
+      "source": "Kegiatan Harian Santriwati GEMA.xlsx"
+    },
+    "programs/PRG-DAY-041": {
+      "source": "Kegiatan Harian Santriwati GEMA.xlsx"
+    },
+    "schedules/daily/DS-042": {
+      "source": "Kegiatan Harian Santriwati GEMA.xlsx"
+    },
+    "programs/PRG-DAY-042": {
+      "source": "Kegiatan Harian Santriwati GEMA.xlsx"
+    },
+    "schedules/daily/DS-043": {
+      "source": "Kegiatan Harian Santriwati GEMA.xlsx"
+    },
+    "programs/PRG-DAY-043": {
+      "source": "Kegiatan Harian Santriwati GEMA.xlsx"
+    },
+    "schedules/daily/DS-044": {
+      "source": "Kegiatan Harian Santriwati GEMA.xlsx"
+    },
+    "programs/PRG-DAY-044": {
+      "source": "Kegiatan Harian Santriwati GEMA.xlsx"
+    },
+    "schedules/daily/DS-045": {
+      "source": "Kegiatan Harian Santriwati GEMA.xlsx"
+    },
+    "programs/PRG-DAY-045": {
+      "source": "Kegiatan Harian Santriwati GEMA.xlsx"
+    },
+    "schedules/daily/DS-046": {
+      "source": "Kegiatan Harian Santriwati GEMA.xlsx"
+    },
+    "programs/PRG-DAY-046": {
+      "source": "Kegiatan Harian Santriwati GEMA.xlsx"
+    },
+    "schedules/daily/DS-047": {
+      "source": "Kegiatan Harian Santriwati GEMA.xlsx"
+    },
+    "programs/PRG-DAY-047": {
+      "source": "Kegiatan Harian Santriwati GEMA.xlsx"
+    },
+    "schedules/daily/DS-048": {
+      "source": "Kegiatan Harian Santriwati GEMA.xlsx"
+    },
+    "programs/PRG-DAY-048": {
+      "source": "Kegiatan Harian Santriwati GEMA.xlsx"
+    },
+    "schedules/daily/DS-049": {
+      "source": "Kegiatan Harian Santriwati GEMA.xlsx"
+    },
+    "programs/PRG-DAY-049": {
+      "source": "Kegiatan Harian Santriwati GEMA.xlsx"
+    },
+    "schedules/daily/DS-050": {
+      "source": "Kegiatan Harian Santriwati GEMA.xlsx"
+    },
+    "programs/PRG-DAY-050": {
+      "source": "Kegiatan Harian Santriwati GEMA.xlsx"
+    }
+  },
+  "changes": {
+    "schedules/daily/DS-001/status": "inactive",
+    "schedules/daily/DS-001/supersededBy": "daily-2026-docx",
+    "programs/PRG-DAY-001/status": "inactive",
+    "programs/PRG-DAY-001/supersededBy": "daily-2026-docx",
+    "schedules/daily/DS-002/status": "inactive",
+    "schedules/daily/DS-002/supersededBy": "daily-2026-docx",
+    "programs/PRG-DAY-002/status": "inactive",
+    "programs/PRG-DAY-002/supersededBy": "daily-2026-docx",
+    "schedules/daily/DS-003/status": "inactive",
+    "schedules/daily/DS-003/supersededBy": "daily-2026-docx",
+    "programs/PRG-DAY-003/status": "inactive",
+    "programs/PRG-DAY-003/supersededBy": "daily-2026-docx",
+    "schedules/daily/DS-004/status": "inactive",
+    "schedules/daily/DS-004/supersededBy": "daily-2026-docx",
+    "programs/PRG-DAY-004/status": "inactive",
+    "programs/PRG-DAY-004/supersededBy": "daily-2026-docx",
+    "schedules/daily/DS-005/status": "inactive",
+    "schedules/daily/DS-005/supersededBy": "daily-2026-docx",
+    "programs/PRG-DAY-005/status": "inactive",
+    "programs/PRG-DAY-005/supersededBy": "daily-2026-docx",
+    "schedules/daily/DS-006/status": "inactive",
+    "schedules/daily/DS-006/supersededBy": "daily-2026-docx",
+    "programs/PRG-DAY-006/status": "inactive",
+    "programs/PRG-DAY-006/supersededBy": "daily-2026-docx",
+    "schedules/daily/DS-007/status": "inactive",
+    "schedules/daily/DS-007/supersededBy": "daily-2026-docx",
+    "programs/PRG-DAY-007/status": "inactive",
+    "programs/PRG-DAY-007/supersededBy": "daily-2026-docx",
+    "schedules/daily/DS-008/status": "inactive",
+    "schedules/daily/DS-008/supersededBy": "daily-2026-docx",
+    "programs/PRG-DAY-008/status": "inactive",
+    "programs/PRG-DAY-008/supersededBy": "daily-2026-docx",
+    "schedules/daily/DS-009/status": "inactive",
+    "schedules/daily/DS-009/supersededBy": "daily-2026-docx",
+    "programs/PRG-DAY-009/status": "inactive",
+    "programs/PRG-DAY-009/supersededBy": "daily-2026-docx",
+    "schedules/daily/DS-010/status": "inactive",
+    "schedules/daily/DS-010/supersededBy": "daily-2026-docx",
+    "programs/PRG-DAY-010/status": "inactive",
+    "programs/PRG-DAY-010/supersededBy": "daily-2026-docx",
+    "schedules/daily/DS-011/status": "inactive",
+    "schedules/daily/DS-011/supersededBy": "daily-2026-docx",
+    "programs/PRG-DAY-011/status": "inactive",
+    "programs/PRG-DAY-011/supersededBy": "daily-2026-docx",
+    "schedules/daily/DS-012/status": "inactive",
+    "schedules/daily/DS-012/supersededBy": "daily-2026-docx",
+    "programs/PRG-DAY-012/status": "inactive",
+    "programs/PRG-DAY-012/supersededBy": "daily-2026-docx",
+    "schedules/daily/DS-013/status": "inactive",
+    "schedules/daily/DS-013/supersededBy": "daily-2026-docx",
+    "programs/PRG-DAY-013/status": "inactive",
+    "programs/PRG-DAY-013/supersededBy": "daily-2026-docx",
+    "schedules/daily/DS-014/status": "inactive",
+    "schedules/daily/DS-014/supersededBy": "daily-2026-docx",
+    "programs/PRG-DAY-014/status": "inactive",
+    "programs/PRG-DAY-014/supersededBy": "daily-2026-docx",
+    "schedules/daily/DS-015/status": "inactive",
+    "schedules/daily/DS-015/supersededBy": "daily-2026-docx",
+    "programs/PRG-DAY-015/status": "inactive",
+    "programs/PRG-DAY-015/supersededBy": "daily-2026-docx",
+    "schedules/daily/DS-016/status": "inactive",
+    "schedules/daily/DS-016/supersededBy": "daily-2026-docx",
+    "programs/PRG-DAY-016/status": "inactive",
+    "programs/PRG-DAY-016/supersededBy": "daily-2026-docx",
+    "schedules/daily/DS-017/status": "inactive",
+    "schedules/daily/DS-017/supersededBy": "daily-2026-docx",
+    "programs/PRG-DAY-017/status": "inactive",
+    "programs/PRG-DAY-017/supersededBy": "daily-2026-docx",
+    "schedules/daily/DS-018/status": "inactive",
+    "schedules/daily/DS-018/supersededBy": "daily-2026-docx",
+    "programs/PRG-DAY-018/status": "inactive",
+    "programs/PRG-DAY-018/supersededBy": "daily-2026-docx",
+    "schedules/daily/DS-019/status": "inactive",
+    "schedules/daily/DS-019/supersededBy": "daily-2026-docx",
+    "programs/PRG-DAY-019/status": "inactive",
+    "programs/PRG-DAY-019/supersededBy": "daily-2026-docx",
+    "schedules/daily/DS-020/status": "inactive",
+    "schedules/daily/DS-020/supersededBy": "daily-2026-docx",
+    "programs/PRG-DAY-020/status": "inactive",
+    "programs/PRG-DAY-020/supersededBy": "daily-2026-docx",
+    "schedules/daily/DS-021/status": "inactive",
+    "schedules/daily/DS-021/supersededBy": "daily-2026-docx",
+    "programs/PRG-DAY-021/status": "inactive",
+    "programs/PRG-DAY-021/supersededBy": "daily-2026-docx",
+    "schedules/daily/DS-022/status": "inactive",
+    "schedules/daily/DS-022/supersededBy": "daily-2026-docx",
+    "programs/PRG-DAY-022/status": "inactive",
+    "programs/PRG-DAY-022/supersededBy": "daily-2026-docx",
+    "schedules/daily/DS-023/status": "inactive",
+    "schedules/daily/DS-023/supersededBy": "daily-2026-docx",
+    "programs/PRG-DAY-023/status": "inactive",
+    "programs/PRG-DAY-023/supersededBy": "daily-2026-docx",
+    "schedules/daily/DS-024/status": "inactive",
+    "schedules/daily/DS-024/supersededBy": "daily-2026-docx",
+    "programs/PRG-DAY-024/status": "inactive",
+    "programs/PRG-DAY-024/supersededBy": "daily-2026-docx",
+    "schedules/daily/DS-025/status": "inactive",
+    "schedules/daily/DS-025/supersededBy": "daily-2026-docx",
+    "programs/PRG-DAY-025/status": "inactive",
+    "programs/PRG-DAY-025/supersededBy": "daily-2026-docx",
+    "schedules/daily/DS-026/status": "inactive",
+    "schedules/daily/DS-026/supersededBy": "daily-2026-docx",
+    "programs/PRG-DAY-026/status": "inactive",
+    "programs/PRG-DAY-026/supersededBy": "daily-2026-docx",
+    "schedules/daily/DS-027/status": "inactive",
+    "schedules/daily/DS-027/supersededBy": "daily-2026-docx",
+    "programs/PRG-DAY-027/status": "inactive",
+    "programs/PRG-DAY-027/supersededBy": "daily-2026-docx",
+    "schedules/daily/DS-028/status": "inactive",
+    "schedules/daily/DS-028/supersededBy": "daily-2026-docx",
+    "programs/PRG-DAY-028/status": "inactive",
+    "programs/PRG-DAY-028/supersededBy": "daily-2026-docx",
+    "schedules/daily/DS-029/status": "inactive",
+    "schedules/daily/DS-029/supersededBy": "daily-2026-docx",
+    "programs/PRG-DAY-029/status": "inactive",
+    "programs/PRG-DAY-029/supersededBy": "daily-2026-docx",
+    "schedules/daily/DS-030/status": "inactive",
+    "schedules/daily/DS-030/supersededBy": "daily-2026-docx",
+    "programs/PRG-DAY-030/status": "inactive",
+    "programs/PRG-DAY-030/supersededBy": "daily-2026-docx",
+    "schedules/daily/DS-031/status": "inactive",
+    "schedules/daily/DS-031/supersededBy": "daily-2026-docx",
+    "programs/PRG-DAY-031/status": "inactive",
+    "programs/PRG-DAY-031/supersededBy": "daily-2026-docx",
+    "schedules/daily/DS-032/status": "inactive",
+    "schedules/daily/DS-032/supersededBy": "daily-2026-docx",
+    "programs/PRG-DAY-032/status": "inactive",
+    "programs/PRG-DAY-032/supersededBy": "daily-2026-docx",
+    "schedules/daily/DS-033/status": "inactive",
+    "schedules/daily/DS-033/supersededBy": "daily-2026-docx",
+    "programs/PRG-DAY-033/status": "inactive",
+    "programs/PRG-DAY-033/supersededBy": "daily-2026-docx",
+    "schedules/daily/DS-034/status": "inactive",
+    "schedules/daily/DS-034/supersededBy": "daily-2026-docx",
+    "programs/PRG-DAY-034/status": "inactive",
+    "programs/PRG-DAY-034/supersededBy": "daily-2026-docx",
+    "schedules/daily/DS-035/status": "inactive",
+    "schedules/daily/DS-035/supersededBy": "daily-2026-docx",
+    "programs/PRG-DAY-035/status": "inactive",
+    "programs/PRG-DAY-035/supersededBy": "daily-2026-docx",
+    "schedules/daily/DS-036/status": "inactive",
+    "schedules/daily/DS-036/supersededBy": "daily-2026-docx",
+    "programs/PRG-DAY-036/status": "inactive",
+    "programs/PRG-DAY-036/supersededBy": "daily-2026-docx",
+    "schedules/daily/DS-037/status": "inactive",
+    "schedules/daily/DS-037/supersededBy": "daily-2026-docx",
+    "programs/PRG-DAY-037/status": "inactive",
+    "programs/PRG-DAY-037/supersededBy": "daily-2026-docx",
+    "schedules/daily/DS-038/status": "inactive",
+    "schedules/daily/DS-038/supersededBy": "daily-2026-docx",
+    "programs/PRG-DAY-038/status": "inactive",
+    "programs/PRG-DAY-038/supersededBy": "daily-2026-docx",
+    "schedules/daily/DS-039/status": "inactive",
+    "schedules/daily/DS-039/supersededBy": "daily-2026-docx",
+    "programs/PRG-DAY-039/status": "inactive",
+    "programs/PRG-DAY-039/supersededBy": "daily-2026-docx",
+    "schedules/daily/DS-040/status": "inactive",
+    "schedules/daily/DS-040/supersededBy": "daily-2026-docx",
+    "programs/PRG-DAY-040/status": "inactive",
+    "programs/PRG-DAY-040/supersededBy": "daily-2026-docx",
+    "schedules/daily/DS-041/status": "inactive",
+    "schedules/daily/DS-041/supersededBy": "daily-2026-docx",
+    "programs/PRG-DAY-041/status": "inactive",
+    "programs/PRG-DAY-041/supersededBy": "daily-2026-docx",
+    "schedules/daily/DS-042/status": "inactive",
+    "schedules/daily/DS-042/supersededBy": "daily-2026-docx",
+    "programs/PRG-DAY-042/status": "inactive",
+    "programs/PRG-DAY-042/supersededBy": "daily-2026-docx",
+    "schedules/daily/DS-043/status": "inactive",
+    "schedules/daily/DS-043/supersededBy": "daily-2026-docx",
+    "programs/PRG-DAY-043/status": "inactive",
+    "programs/PRG-DAY-043/supersededBy": "daily-2026-docx",
+    "schedules/daily/DS-044/status": "inactive",
+    "schedules/daily/DS-044/supersededBy": "daily-2026-docx",
+    "programs/PRG-DAY-044/status": "inactive",
+    "programs/PRG-DAY-044/supersededBy": "daily-2026-docx",
+    "schedules/daily/DS-045/status": "inactive",
+    "schedules/daily/DS-045/supersededBy": "daily-2026-docx",
+    "programs/PRG-DAY-045/status": "inactive",
+    "programs/PRG-DAY-045/supersededBy": "daily-2026-docx",
+    "schedules/daily/DS-046/status": "inactive",
+    "schedules/daily/DS-046/supersededBy": "daily-2026-docx",
+    "programs/PRG-DAY-046/status": "inactive",
+    "programs/PRG-DAY-046/supersededBy": "daily-2026-docx",
+    "schedules/daily/DS-047/status": "inactive",
+    "schedules/daily/DS-047/supersededBy": "daily-2026-docx",
+    "programs/PRG-DAY-047/status": "inactive",
+    "programs/PRG-DAY-047/supersededBy": "daily-2026-docx",
+    "schedules/daily/DS-048/status": "inactive",
+    "schedules/daily/DS-048/supersededBy": "daily-2026-docx",
+    "programs/PRG-DAY-048/status": "inactive",
+    "programs/PRG-DAY-048/supersededBy": "daily-2026-docx",
+    "schedules/daily/DS-049/status": "inactive",
+    "schedules/daily/DS-049/supersededBy": "daily-2026-docx",
+    "programs/PRG-DAY-049/status": "inactive",
+    "programs/PRG-DAY-049/supersededBy": "daily-2026-docx",
+    "schedules/daily/DS-050/status": "inactive",
+    "schedules/daily/DS-050/supersededBy": "daily-2026-docx",
+    "programs/PRG-DAY-050/status": "inactive",
+    "programs/PRG-DAY-050/supersededBy": "daily-2026-docx",
+    "programs/PRG-2026-UMUM-01": {
+      "status": "active",
+      "source": "kegiatan santriwan santriwati umum 2026.docx",
+      "sourceRow": 3,
+      "importId": "daily-2026-docx",
+      "genderScope": "mixed",
+      "name": "Asrama Umum 03:30 · Bangun tidur",
+      "detail": "Bangun tidur, diawali dengan membaca do’a, afirmasi syukur dan niat logos. Dilanjutkan bersihkan kamar, melipat kasur dengan rapi dan mandi tanpa menggunakan sabun dan sampo, hanya menggunakan sikat gigi.",
+      "description": "Bangun tidur, diawali dengan membaca do’a, afirmasi syukur dan niat logos. Dilanjutkan bersihkan kamar, melipat kasur dengan rapi dan mandi tanpa menggunakan sabun dan sampo, hanya menggunakan sikat gigi.",
+      "defaultPic": "Osma &\nNaqib",
+      "notes": "Bagi yang tidak bangun/belum mau bangun setelah dibangunkan dengan kalimat atau gerakan maka disemprot/diguyur air. Setelah itu semua kamar dikunci hingga selesai Halqah subuh bagi gema dan selesai mufrodat bagi anak umum.",
+      "category": "Program 24 Jam",
+      "sourceCategory": "program_24_jam",
+      "defaultScope": "boarding_general"
+    },
+    "schedules/daily/DS-2026-UMUM-01": {
+      "status": "active",
+      "source": "kegiatan santriwan santriwati umum 2026.docx",
+      "sourceRow": 3,
+      "importId": "daily-2026-docx",
+      "genderScope": "mixed",
+      "programId": "PRG-2026-UMUM-01",
+      "academicYearId": "TA-2026-2027-GANJIL",
+      "day": "Setiap Hari",
+      "startTime": "03:30",
+      "endTime": "04:00",
+      "endsNextDay": false,
+      "order": 1,
+      "participantScope": "boarding_general",
+      "audience": "Asrama Umum",
+      "notes": "Bagi yang tidak bangun/belum mau bangun setelah dibangunkan dengan kalimat atau gerakan maka disemprot/diguyur air. Setelah itu semua kamar dikunci hingga selesai Halqah subuh bagi gema dan selesai mufrodat bagi anak umum."
+    },
+    "programs/PRG-2026-UMUM-02": {
+      "status": "active",
+      "source": "kegiatan santriwan santriwati umum 2026.docx",
+      "sourceRow": 4,
+      "importId": "daily-2026-docx",
+      "genderScope": "mixed",
+      "name": "Asrama Umum 04:00 · Chating Time",
+      "detail": "Chating Time, diawali dengan shalat tahajjud berjama’ah, dilanjutkan do’a, dan membaca surat ar-Rahman.",
+      "description": "Chating Time, diawali dengan shalat tahajjud berjama’ah, dilanjutkan do’a, dan membaca surat ar-Rahman.",
+      "defaultPic": "Naqib",
+      "notes": "Menggunakan pakaian sholat seperti, koko, gamis, kemeja (untuk putra) dan mukenah putih (untuk putri)",
+      "category": "Program 24 Jam",
+      "sourceCategory": "program_24_jam",
+      "defaultScope": "boarding_general"
+    },
+    "schedules/daily/DS-2026-UMUM-02": {
+      "status": "active",
+      "source": "kegiatan santriwan santriwati umum 2026.docx",
+      "sourceRow": 4,
+      "importId": "daily-2026-docx",
+      "genderScope": "mixed",
+      "programId": "PRG-2026-UMUM-02",
+      "academicYearId": "TA-2026-2027-GANJIL",
+      "day": "Setiap Hari",
+      "startTime": "04:00",
+      "endTime": "05:00",
+      "endsNextDay": false,
+      "order": 2,
+      "participantScope": "boarding_general",
+      "audience": "Asrama Umum",
+      "notes": "Menggunakan pakaian sholat seperti, koko, gamis, kemeja (untuk putra) dan mukenah putih (untuk putri)"
+    },
+    "programs/PRG-2026-UMUM-03": {
+      "status": "active",
+      "source": "kegiatan santriwan santriwati umum 2026.docx",
+      "sourceRow": 5,
+      "importId": "daily-2026-docx",
+      "genderScope": "mixed",
+      "name": "Asrama Umum 05:00 · Qobliyah subuh",
+      "detail": "Qobliyah subuh, tilawah 1 lembar, Shalat Subuh,  ma’surat, streaching jika dibutuhkan, dilanjutkan dengan musyafahah",
+      "description": "Qobliyah subuh, tilawah 1 lembar, Shalat Subuh,  ma’surat, streaching jika dibutuhkan, dilanjutkan dengan musyafahah",
+      "defaultPic": "Naqib",
+      "notes": "Saat dzikir dan tilawah, serta proses mengambil atau meletakkan mushaf, tidak boleh ada yang ngobrol satu sama lain, santri membawa maksurat saat pembacaan ma’surot",
+      "category": "Program 24 Jam",
+      "sourceCategory": "program_24_jam",
+      "defaultScope": "boarding_general"
+    },
+    "schedules/daily/DS-2026-UMUM-03": {
+      "status": "active",
+      "source": "kegiatan santriwan santriwati umum 2026.docx",
+      "sourceRow": 5,
+      "importId": "daily-2026-docx",
+      "genderScope": "mixed",
+      "programId": "PRG-2026-UMUM-03",
+      "academicYearId": "TA-2026-2027-GANJIL",
+      "day": "Setiap Hari",
+      "startTime": "05:00",
+      "endTime": "05:40",
+      "endsNextDay": false,
+      "order": 3,
+      "participantScope": "boarding_general",
+      "audience": "Asrama Umum",
+      "notes": "Saat dzikir dan tilawah, serta proses mengambil atau meletakkan mushaf, tidak boleh ada yang ngobrol satu sama lain, santri membawa maksurat saat pembacaan ma’surot"
+    },
+    "programs/PRG-2026-UMUM-04": {
+      "status": "active",
+      "source": "kegiatan santriwan santriwati umum 2026.docx",
+      "sourceRow": 6,
+      "importId": "daily-2026-docx",
+      "genderScope": "mixed",
+      "name": "Asrama Umum 05:40 · MUFRODAT",
+      "detail": "MUFRODAT",
+      "description": "MUFRODAT",
+      "defaultPic": "NAQIB & BAGIAN BAHASA",
+      "notes": "Setelah musyafahah lanjut program mufrodat dengan bagian bahasa, semua santri membawa buku dan polpen",
+      "category": "Program 24 Jam",
+      "sourceCategory": "program_24_jam",
+      "defaultScope": "boarding_general"
+    },
+    "schedules/daily/DS-2026-UMUM-04": {
+      "status": "active",
+      "source": "kegiatan santriwan santriwati umum 2026.docx",
+      "sourceRow": 6,
+      "importId": "daily-2026-docx",
+      "genderScope": "mixed",
+      "programId": "PRG-2026-UMUM-04",
+      "academicYearId": "TA-2026-2027-GANJIL",
+      "day": "Setiap Hari",
+      "startTime": "05:40",
+      "endTime": "06:10",
+      "endsNextDay": false,
+      "order": 4,
+      "participantScope": "boarding_general",
+      "audience": "Asrama Umum",
+      "notes": "Setelah musyafahah lanjut program mufrodat dengan bagian bahasa, semua santri membawa buku dan polpen"
+    },
+    "programs/PRG-2026-UMUM-05": {
+      "status": "active",
+      "source": "kegiatan santriwan santriwati umum 2026.docx",
+      "sourceRow": 7,
+      "importId": "daily-2026-docx",
+      "genderScope": "mixed",
+      "name": "Asrama Umum 06:10 · Mandi",
+      "detail": "Mandi, sarapan, bersih bersih",
+      "description": "Mandi, sarapan, bersih bersih",
+      "defaultPic": "Naqib & Osma",
+      "notes": "Menyesuaikan dengan tugas khidmat masing-masing.",
+      "category": "Program 24 Jam",
+      "sourceCategory": "program_24_jam",
+      "defaultScope": "boarding_general"
+    },
+    "schedules/daily/DS-2026-UMUM-05": {
+      "status": "active",
+      "source": "kegiatan santriwan santriwati umum 2026.docx",
+      "sourceRow": 7,
+      "importId": "daily-2026-docx",
+      "genderScope": "mixed",
+      "programId": "PRG-2026-UMUM-05",
+      "academicYearId": "TA-2026-2027-GANJIL",
+      "day": "Setiap Hari",
+      "startTime": "06:10",
+      "endTime": "07:00",
+      "endsNextDay": false,
+      "order": 5,
+      "participantScope": "boarding_general",
+      "audience": "Asrama Umum",
+      "notes": "Menyesuaikan dengan tugas khidmat masing-masing."
+    },
+    "programs/PRG-2026-UMUM-06": {
+      "status": "active",
+      "source": "kegiatan santriwan santriwati umum 2026.docx",
+      "sourceRow": 8,
+      "importId": "daily-2026-docx",
+      "genderScope": "mixed",
+      "name": "Asrama Umum 07:00 · Sholat duha",
+      "detail": "Sholat duha, i’dadul hifzi",
+      "description": "Sholat duha, i’dadul hifzi",
+      "defaultPic": "Naqib",
+      "notes": "Semua santri sudah menggunakan seragam sekolah, membawa al-quran dan buku mata pelajaran di hari itu",
+      "category": "Program 24 Jam",
+      "sourceCategory": "program_24_jam",
+      "defaultScope": "boarding_general"
+    },
+    "schedules/daily/DS-2026-UMUM-06": {
+      "status": "active",
+      "source": "kegiatan santriwan santriwati umum 2026.docx",
+      "sourceRow": 8,
+      "importId": "daily-2026-docx",
+      "genderScope": "mixed",
+      "programId": "PRG-2026-UMUM-06",
+      "academicYearId": "TA-2026-2027-GANJIL",
+      "day": "Setiap Hari",
+      "startTime": "07:00",
+      "endTime": "07:50",
+      "endsNextDay": false,
+      "order": 6,
+      "participantScope": "boarding_general",
+      "audience": "Asrama Umum",
+      "notes": "Semua santri sudah menggunakan seragam sekolah, membawa al-quran dan buku mata pelajaran di hari itu"
+    },
+    "programs/PRG-2026-UMUM-07": {
+      "status": "active",
+      "source": "kegiatan santriwan santriwati umum 2026.docx",
+      "sourceRow": 9,
+      "importId": "daily-2026-docx",
+      "genderScope": "mixed",
+      "name": "Asrama Umum 07:50 · Sekolah",
+      "detail": "Sekolah",
+      "description": "Sekolah",
+      "defaultPic": "Naqib, guru",
+      "notes": "Diawali dengan baris pagi dan doa bersama",
+      "category": "Program 24 Jam",
+      "sourceCategory": "program_24_jam",
+      "defaultScope": "boarding_general"
+    },
+    "schedules/daily/DS-2026-UMUM-07": {
+      "status": "active",
+      "source": "kegiatan santriwan santriwati umum 2026.docx",
+      "sourceRow": 9,
+      "importId": "daily-2026-docx",
+      "genderScope": "mixed",
+      "programId": "PRG-2026-UMUM-07",
+      "academicYearId": "TA-2026-2027-GANJIL",
+      "day": "Setiap Hari",
+      "startTime": "07:50",
+      "endTime": "15:30",
+      "endsNextDay": false,
+      "order": 7,
+      "participantScope": "boarding_general",
+      "audience": "Asrama Umum",
+      "notes": "Diawali dengan baris pagi dan doa bersama"
+    },
+    "programs/PRG-2026-UMUM-08": {
+      "status": "active",
+      "source": "kegiatan santriwan santriwati umum 2026.docx",
+      "sourceRow": 10,
+      "importId": "daily-2026-docx",
+      "genderScope": "mixed",
+      "name": "Asrama Umum 15:30 · Sholat asar",
+      "detail": "Sholat asar, maksurat, murojaah zaujiyyah, talqin hafalan",
+      "description": "Sholat asar, maksurat, murojaah zaujiyyah, talqin hafalan",
+      "defaultPic": "Naqib & pembina halaqoh",
+      "notes": "Setelah baca maksurot santri langsung murojaah zaujiyyah durasi waktu sama-sama 10 menit, santri boleh keluar dari masjid setelah melaporkan capaian murojaah  zaujiyyahnya ke pembina. Talqin hafalan bagi santri yang masih tahsin, pembina halaqoh talqinkan 2 sampai 3 baris lalu di hafalkan dan boleh keluar dari masjid setelah di setorkan ke pembina",
+      "category": "Program 24 Jam",
+      "sourceCategory": "program_24_jam",
+      "defaultScope": "boarding_general"
+    },
+    "schedules/daily/DS-2026-UMUM-08": {
+      "status": "active",
+      "source": "kegiatan santriwan santriwati umum 2026.docx",
+      "sourceRow": 10,
+      "importId": "daily-2026-docx",
+      "genderScope": "mixed",
+      "programId": "PRG-2026-UMUM-08",
+      "academicYearId": "TA-2026-2027-GANJIL",
+      "day": "Setiap Hari",
+      "startTime": "15:30",
+      "endTime": "16:30",
+      "endsNextDay": false,
+      "order": 8,
+      "participantScope": "boarding_general",
+      "audience": "Asrama Umum",
+      "notes": "Setelah baca maksurot santri langsung murojaah zaujiyyah durasi waktu sama-sama 10 menit, santri boleh keluar dari masjid setelah melaporkan capaian murojaah  zaujiyyahnya ke pembina. Talqin hafalan bagi santri yang masih tahsin, pembina halaqoh talqinkan 2 sampai 3 baris lalu di hafalkan dan boleh keluar dari masjid setelah di setorkan ke pembina"
+    },
+    "programs/PRG-2026-UMUM-09": {
+      "status": "active",
+      "source": "kegiatan santriwan santriwati umum 2026.docx",
+      "sourceRow": 11,
+      "importId": "daily-2026-docx",
+      "genderScope": "mixed",
+      "name": "Asrama Umum 16:30 · olahraga",
+      "detail": "olahraga, bersih-bersih, istirahat",
+      "description": "olahraga, bersih-bersih, istirahat",
+      "defaultPic": "Naqib",
+      "notes": "Santri bisa ikut olahraga, belanja, ikut extrakulikuler",
+      "category": "Program 24 Jam",
+      "sourceCategory": "program_24_jam",
+      "defaultScope": "boarding_general"
+    },
+    "schedules/daily/DS-2026-UMUM-09": {
+      "status": "active",
+      "source": "kegiatan santriwan santriwati umum 2026.docx",
+      "sourceRow": 11,
+      "importId": "daily-2026-docx",
+      "genderScope": "mixed",
+      "programId": "PRG-2026-UMUM-09",
+      "academicYearId": "TA-2026-2027-GANJIL",
+      "day": "Setiap Hari",
+      "startTime": "16:30",
+      "endTime": "18:00",
+      "endsNextDay": false,
+      "order": 9,
+      "participantScope": "boarding_general",
+      "audience": "Asrama Umum",
+      "notes": "Santri bisa ikut olahraga, belanja, ikut extrakulikuler"
+    },
+    "programs/PRG-2026-UMUM-10": {
+      "status": "active",
+      "source": "kegiatan santriwan santriwati umum 2026.docx",
+      "sourceRow": 12,
+      "importId": "daily-2026-docx",
+      "genderScope": "mixed",
+      "name": "Asrama Umum 18:00 · Sholat magrib",
+      "detail": "Sholat magrib, tafwidul hifzi Sholat isya, ba’diyyah, sholat taubat & al-mulk",
+      "description": "Sholat magrib, tafwidul hifzi Sholat isya, ba’diyyah, sholat taubat & al-mulk",
+      "defaultPic": "Naqib",
+      "notes": "Santri berada di masjid paling lambat 5 menit sebelum azan magrib di kumandangkan, menggunakan pakain yang rapi sesuai pakain yg di tetapkan oleh pondok",
+      "category": "Program 24 Jam",
+      "sourceCategory": "program_24_jam",
+      "defaultScope": "boarding_general"
+    },
+    "schedules/daily/DS-2026-UMUM-10": {
+      "status": "active",
+      "source": "kegiatan santriwan santriwati umum 2026.docx",
+      "sourceRow": 12,
+      "importId": "daily-2026-docx",
+      "genderScope": "mixed",
+      "programId": "PRG-2026-UMUM-10",
+      "academicYearId": "TA-2026-2027-GANJIL",
+      "day": "Setiap Hari",
+      "startTime": "18:00",
+      "endTime": "20:30",
+      "endsNextDay": false,
+      "order": 10,
+      "participantScope": "boarding_general",
+      "audience": "Asrama Umum",
+      "notes": "Santri berada di masjid paling lambat 5 menit sebelum azan magrib di kumandangkan, menggunakan pakain yang rapi sesuai pakain yg di tetapkan oleh pondok"
+    },
+    "programs/PRG-2026-UMUM-11": {
+      "status": "active",
+      "source": "kegiatan santriwan santriwati umum 2026.docx",
+      "sourceRow": 13,
+      "importId": "daily-2026-docx",
+      "genderScope": "mixed",
+      "name": "Asrama Umum 20:30 · Makan malam & break",
+      "detail": "Makan malam & break",
+      "description": "Makan malam & break",
+      "defaultPic": "Naqib & pembina halaqoh",
+      "notes": "Semua santri umum sholat isya di masjid",
+      "category": "Program 24 Jam",
+      "sourceCategory": "program_24_jam",
+      "defaultScope": "boarding_general"
+    },
+    "schedules/daily/DS-2026-UMUM-11": {
+      "status": "active",
+      "source": "kegiatan santriwan santriwati umum 2026.docx",
+      "sourceRow": 13,
+      "importId": "daily-2026-docx",
+      "genderScope": "mixed",
+      "programId": "PRG-2026-UMUM-11",
+      "academicYearId": "TA-2026-2027-GANJIL",
+      "day": "Setiap Hari",
+      "startTime": "20:30",
+      "endTime": "21:00",
+      "endsNextDay": false,
+      "order": 11,
+      "participantScope": "boarding_general",
+      "audience": "Asrama Umum",
+      "notes": "Semua santri umum sholat isya di masjid"
+    },
+    "programs/PRG-2026-UMUM-12": {
+      "status": "active",
+      "source": "kegiatan santriwan santriwati umum 2026.docx",
+      "sourceRow": 14,
+      "importId": "daily-2026-docx",
+      "genderScope": "mixed",
+      "name": "Asrama Umum 21:00 · Program bahasa",
+      "detail": "Program bahasa",
+      "description": "Program bahasa",
+      "defaultPic": "Naqib & Bagian bahasa",
+      "notes": "",
+      "category": "Program 24 Jam",
+      "sourceCategory": "program_24_jam",
+      "defaultScope": "boarding_general"
+    },
+    "schedules/daily/DS-2026-UMUM-12": {
+      "status": "active",
+      "source": "kegiatan santriwan santriwati umum 2026.docx",
+      "sourceRow": 14,
+      "importId": "daily-2026-docx",
+      "genderScope": "mixed",
+      "programId": "PRG-2026-UMUM-12",
+      "academicYearId": "TA-2026-2027-GANJIL",
+      "day": "Setiap Hari",
+      "startTime": "21:00",
+      "endTime": "21:30",
+      "endsNextDay": false,
+      "order": 12,
+      "participantScope": "boarding_general",
+      "audience": "Asrama Umum",
+      "notes": ""
+    },
+    "programs/PRG-2026-UMUM-13": {
+      "status": "active",
+      "source": "kegiatan santriwan santriwati umum 2026.docx",
+      "sourceRow": 15,
+      "importId": "daily-2026-docx",
+      "genderScope": "mixed",
+      "name": "Asrama Umum 21:30 · Konseling/mahkamah",
+      "detail": "Konseling/mahkamah",
+      "description": "Konseling/mahkamah",
+      "defaultPic": "konselor",
+      "notes": "Santri yang tidak ada pelanggaran boleh break",
+      "category": "Program 24 Jam",
+      "sourceCategory": "program_24_jam",
+      "defaultScope": "boarding_general"
+    },
+    "schedules/daily/DS-2026-UMUM-13": {
+      "status": "active",
+      "source": "kegiatan santriwan santriwati umum 2026.docx",
+      "sourceRow": 15,
+      "importId": "daily-2026-docx",
+      "genderScope": "mixed",
+      "programId": "PRG-2026-UMUM-13",
+      "academicYearId": "TA-2026-2027-GANJIL",
+      "day": "Setiap Hari",
+      "startTime": "21:30",
+      "endTime": "22:00",
+      "endsNextDay": false,
+      "order": 13,
+      "participantScope": "boarding_general",
+      "audience": "Asrama Umum",
+      "notes": "Santri yang tidak ada pelanggaran boleh break"
+    },
+    "programs/PRG-2026-UMUM-14": {
+      "status": "active",
+      "source": "kegiatan santriwan santriwati umum 2026.docx",
+      "sourceRow": 16,
+      "importId": "daily-2026-docx",
+      "genderScope": "mixed",
+      "name": "Asrama Umum 22:00 · Istirahat Malam",
+      "detail": "Istirahat Malam, diawali dengan berwudhu, membaca do’a, afirmasi syukur/hypnosleep di kamar masing-masing.",
+      "description": "Istirahat Malam, diawali dengan berwudhu, membaca do’a, afirmasi syukur/hypnosleep di kamar masing-masing.",
+      "defaultPic": "Naqib & osma",
+      "notes": "Semua santri tidur di kamar masing-masing",
+      "category": "Program 24 Jam",
+      "sourceCategory": "program_24_jam",
+      "defaultScope": "boarding_general"
+    },
+    "schedules/daily/DS-2026-UMUM-14": {
+      "status": "active",
+      "source": "kegiatan santriwan santriwati umum 2026.docx",
+      "sourceRow": 16,
+      "importId": "daily-2026-docx",
+      "genderScope": "mixed",
+      "programId": "PRG-2026-UMUM-14",
+      "academicYearId": "TA-2026-2027-GANJIL",
+      "day": "Setiap Hari",
+      "startTime": "22:00",
+      "endTime": "03:30",
+      "endsNextDay": true,
+      "order": 14,
+      "participantScope": "boarding_general",
+      "audience": "Asrama Umum",
+      "notes": "Semua santri tidur di kamar masing-masing"
+    },
+    "programs/PRG-2026-GEMA-01": {
+      "status": "active",
+      "source": "kegiatan santriwan santriwati GEMA 2026.docx",
+      "sourceRow": 3,
+      "importId": "daily-2026-docx",
+      "genderScope": "mixed",
+      "name": "Asrama GEMA 03:30 · Bangun tidur",
+      "detail": "Bangun tidur, diawali dengan membaca do’a, afirmasi syukur dan niat logos. Dilanjutkan bersihkan kamar, melipat kasur dengan rapi dan mandi tanpa menggunakan sabun dan sampo, hanya menggunakan sikat gigi.",
+      "description": "Bangun tidur, diawali dengan membaca do’a, afirmasi syukur dan niat logos. Dilanjutkan bersihkan kamar, melipat kasur dengan rapi dan mandi tanpa menggunakan sabun dan sampo, hanya menggunakan sikat gigi.",
+      "defaultPic": "Osma &\nNaqib",
+      "notes": "Bagi yang tidak bangun/belum mau bangun setelah dibangunkan dengan kalimat atau gerakan maka disemprot/diguyur air. Setelah itu semua kamar dikunci hingga selesai Halqah subuh bagi gema dan selesai mufrodat bagi anak umum.",
+      "category": "Program 24 Jam",
+      "sourceCategory": "program_24_jam",
+      "defaultScope": "boarding_gema"
+    },
+    "schedules/daily/DS-2026-GEMA-01": {
+      "status": "active",
+      "source": "kegiatan santriwan santriwati GEMA 2026.docx",
+      "sourceRow": 3,
+      "importId": "daily-2026-docx",
+      "genderScope": "mixed",
+      "programId": "PRG-2026-GEMA-01",
+      "academicYearId": "TA-2026-2027-GANJIL",
+      "day": "Setiap Hari",
+      "startTime": "03:30",
+      "endTime": "04:00",
+      "endsNextDay": false,
+      "order": 1,
+      "participantScope": "boarding_gema",
+      "audience": "Asrama GEMA",
+      "notes": "Bagi yang tidak bangun/belum mau bangun setelah dibangunkan dengan kalimat atau gerakan maka disemprot/diguyur air. Setelah itu semua kamar dikunci hingga selesai Halqah subuh bagi gema dan selesai mufrodat bagi anak umum."
+    },
+    "programs/PRG-2026-GEMA-02": {
+      "status": "active",
+      "source": "kegiatan santriwan santriwati GEMA 2026.docx",
+      "sourceRow": 4,
+      "importId": "daily-2026-docx",
+      "genderScope": "mixed",
+      "name": "Asrama GEMA 04:00 · Chating Time",
+      "detail": "Chating Time, diawali dengan shalat tahajjud berjama’ah, dilanjutkan do’a, dan membaca surat ar-Rahman.",
+      "description": "Chating Time, diawali dengan shalat tahajjud berjama’ah, dilanjutkan do’a, dan membaca surat ar-Rahman.",
+      "defaultPic": "Naqib",
+      "notes": "Menggunakan pakaian sholat seperti, koko, gamis, kemeja (untuk putra) dan mukenah putih (untuk putri)",
+      "category": "Program 24 Jam",
+      "sourceCategory": "program_24_jam",
+      "defaultScope": "boarding_gema"
+    },
+    "schedules/daily/DS-2026-GEMA-02": {
+      "status": "active",
+      "source": "kegiatan santriwan santriwati GEMA 2026.docx",
+      "sourceRow": 4,
+      "importId": "daily-2026-docx",
+      "genderScope": "mixed",
+      "programId": "PRG-2026-GEMA-02",
+      "academicYearId": "TA-2026-2027-GANJIL",
+      "day": "Setiap Hari",
+      "startTime": "04:00",
+      "endTime": "05:00",
+      "endsNextDay": false,
+      "order": 2,
+      "participantScope": "boarding_gema",
+      "audience": "Asrama GEMA",
+      "notes": "Menggunakan pakaian sholat seperti, koko, gamis, kemeja (untuk putra) dan mukenah putih (untuk putri)"
+    },
+    "programs/PRG-2026-GEMA-03": {
+      "status": "active",
+      "source": "kegiatan santriwan santriwati GEMA 2026.docx",
+      "sourceRow": 5,
+      "importId": "daily-2026-docx",
+      "genderScope": "mixed",
+      "name": "Asrama GEMA 05:00 · Qobliyah subuh",
+      "detail": "Qobliyah subuh, tilawah 1 lembar, Shalat Subuh,  ma’surat, streaching jika dibutuhkan, dilanjutkan dengan musyafahah",
+      "description": "Qobliyah subuh, tilawah 1 lembar, Shalat Subuh,  ma’surat, streaching jika dibutuhkan, dilanjutkan dengan musyafahah",
+      "defaultPic": "Naqib",
+      "notes": "Saat dzikir dan tilawah, serta proses mengambil atau meletakkan mushaf, tidak boleh ada yang ngobrol satu sama lain, santri membawa maksurat saat pembacaan ma’surot",
+      "category": "Program 24 Jam",
+      "sourceCategory": "program_24_jam",
+      "defaultScope": "boarding_gema"
+    },
+    "schedules/daily/DS-2026-GEMA-03": {
+      "status": "active",
+      "source": "kegiatan santriwan santriwati GEMA 2026.docx",
+      "sourceRow": 5,
+      "importId": "daily-2026-docx",
+      "genderScope": "mixed",
+      "programId": "PRG-2026-GEMA-03",
+      "academicYearId": "TA-2026-2027-GANJIL",
+      "day": "Setiap Hari",
+      "startTime": "05:00",
+      "endTime": "05:40",
+      "endsNextDay": false,
+      "order": 3,
+      "participantScope": "boarding_gema",
+      "audience": "Asrama GEMA",
+      "notes": "Saat dzikir dan tilawah, serta proses mengambil atau meletakkan mushaf, tidak boleh ada yang ngobrol satu sama lain, santri membawa maksurat saat pembacaan ma’surot"
+    },
+    "programs/PRG-2026-GEMA-04": {
+      "status": "active",
+      "source": "kegiatan santriwan santriwati GEMA 2026.docx",
+      "sourceRow": 6,
+      "importId": "daily-2026-docx",
+      "genderScope": "mixed",
+      "name": "Asrama GEMA 05:40 · MUFRODAT",
+      "detail": "MUFRODAT",
+      "description": "MUFRODAT",
+      "defaultPic": "NAQIB & BAGIAN BAHASA",
+      "notes": "Setelah musyafahah lanjut program mufrodat dengan bagian bahasa, semua santri membawa buku dan polpen",
+      "category": "Program 24 Jam",
+      "sourceCategory": "program_24_jam",
+      "defaultScope": "boarding_gema"
+    },
+    "schedules/daily/DS-2026-GEMA-04": {
+      "status": "active",
+      "source": "kegiatan santriwan santriwati GEMA 2026.docx",
+      "sourceRow": 6,
+      "importId": "daily-2026-docx",
+      "genderScope": "mixed",
+      "programId": "PRG-2026-GEMA-04",
+      "academicYearId": "TA-2026-2027-GANJIL",
+      "day": "Setiap Hari",
+      "startTime": "05:40",
+      "endTime": "06:10",
+      "endsNextDay": false,
+      "order": 4,
+      "participantScope": "boarding_gema",
+      "audience": "Asrama GEMA",
+      "notes": "Setelah musyafahah lanjut program mufrodat dengan bagian bahasa, semua santri membawa buku dan polpen"
+    },
+    "programs/PRG-2026-GEMA-05": {
+      "status": "active",
+      "source": "kegiatan santriwan santriwati GEMA 2026.docx",
+      "sourceRow": 7,
+      "importId": "daily-2026-docx",
+      "genderScope": "mixed",
+      "name": "Asrama GEMA 06:10 · HALAQOH QUR’AN",
+      "detail": "HALAQOH QUR’AN",
+      "description": "HALAQOH QUR’AN",
+      "defaultPic": "Naqib & PEMBINA HALAQOH",
+      "notes": "DI AWALI DENGAN DOA BERSAMA PEMBUKA HALAQOH QUR’AN",
+      "category": "Program 24 Jam",
+      "sourceCategory": "program_24_jam",
+      "defaultScope": "boarding_gema"
+    },
+    "schedules/daily/DS-2026-GEMA-05": {
+      "status": "active",
+      "source": "kegiatan santriwan santriwati GEMA 2026.docx",
+      "sourceRow": 7,
+      "importId": "daily-2026-docx",
+      "genderScope": "mixed",
+      "programId": "PRG-2026-GEMA-05",
+      "academicYearId": "TA-2026-2027-GANJIL",
+      "day": "Setiap Hari",
+      "startTime": "06:10",
+      "endTime": "07:00",
+      "endsNextDay": false,
+      "order": 5,
+      "participantScope": "boarding_gema",
+      "audience": "Asrama GEMA",
+      "notes": "DI AWALI DENGAN DOA BERSAMA PEMBUKA HALAQOH QUR’AN"
+    },
+    "programs/PRG-2026-GEMA-06": {
+      "status": "active",
+      "source": "kegiatan santriwan santriwati GEMA 2026.docx",
+      "sourceRow": 8,
+      "importId": "daily-2026-docx",
+      "genderScope": "mixed",
+      "name": "Asrama GEMA 07:00 · Sholat duha",
+      "detail": "Sholat duha, sarapan, bersih-bersih, OLAHRAGA RINGAN",
+      "description": "Sholat duha, sarapan, bersih-bersih, OLAHRAGA RINGAN",
+      "defaultPic": "Naqib",
+      "notes": "IMAM SHOLAT DUHA SESUAI JADWAL DAN BERSIH-BERSIH SESUAI TEMPAT KHIDMAH",
+      "category": "Program 24 Jam",
+      "sourceCategory": "program_24_jam",
+      "defaultScope": "boarding_gema"
+    },
+    "schedules/daily/DS-2026-GEMA-06": {
+      "status": "active",
+      "source": "kegiatan santriwan santriwati GEMA 2026.docx",
+      "sourceRow": 8,
+      "importId": "daily-2026-docx",
+      "genderScope": "mixed",
+      "programId": "PRG-2026-GEMA-06",
+      "academicYearId": "TA-2026-2027-GANJIL",
+      "day": "Setiap Hari",
+      "startTime": "07:00",
+      "endTime": "09:00",
+      "endsNextDay": false,
+      "order": 6,
+      "participantScope": "boarding_gema",
+      "audience": "Asrama GEMA",
+      "notes": "IMAM SHOLAT DUHA SESUAI JADWAL DAN BERSIH-BERSIH SESUAI TEMPAT KHIDMAH"
+    },
+    "programs/PRG-2026-GEMA-07": {
+      "status": "active",
+      "source": "kegiatan santriwan santriwati GEMA 2026.docx",
+      "sourceRow": 9,
+      "importId": "daily-2026-docx",
+      "genderScope": "mixed",
+      "name": "Asrama GEMA 09:00 · HALAQOH QUR’AN",
+      "detail": "HALAQOH QUR’AN",
+      "description": "HALAQOH QUR’AN",
+      "defaultPic": "Naqib, PEMBINA HALAQIH",
+      "notes": "Diawali dengan doa bersama PEMBUKA HALAQOH",
+      "category": "Program 24 Jam",
+      "sourceCategory": "program_24_jam",
+      "defaultScope": "boarding_gema"
+    },
+    "schedules/daily/DS-2026-GEMA-07": {
+      "status": "active",
+      "source": "kegiatan santriwan santriwati GEMA 2026.docx",
+      "sourceRow": 9,
+      "importId": "daily-2026-docx",
+      "genderScope": "mixed",
+      "programId": "PRG-2026-GEMA-07",
+      "academicYearId": "TA-2026-2027-GANJIL",
+      "day": "Setiap Hari",
+      "startTime": "09:00",
+      "endTime": "11:00",
+      "endsNextDay": false,
+      "order": 7,
+      "participantScope": "boarding_gema",
+      "audience": "Asrama GEMA",
+      "notes": "Diawali dengan doa bersama PEMBUKA HALAQOH"
+    },
+    "programs/PRG-2026-GEMA-08": {
+      "status": "active",
+      "source": "kegiatan santriwan santriwati GEMA 2026.docx",
+      "sourceRow": 10,
+      "importId": "daily-2026-docx",
+      "genderScope": "mixed",
+      "name": "Asrama GEMA 11:00 · Istirahat",
+      "detail": "Istirahat, qoilullah",
+      "description": "Istirahat, qoilullah",
+      "defaultPic": "Naqib & OSMA",
+      "notes": "Santri gema istirahat di kamar, boleh belanja",
+      "category": "Program 24 Jam",
+      "sourceCategory": "program_24_jam",
+      "defaultScope": "boarding_gema"
+    },
+    "schedules/daily/DS-2026-GEMA-08": {
+      "status": "active",
+      "source": "kegiatan santriwan santriwati GEMA 2026.docx",
+      "sourceRow": 10,
+      "importId": "daily-2026-docx",
+      "genderScope": "mixed",
+      "programId": "PRG-2026-GEMA-08",
+      "academicYearId": "TA-2026-2027-GANJIL",
+      "day": "Setiap Hari",
+      "startTime": "11:00",
+      "endTime": "12:00",
+      "endsNextDay": false,
+      "order": 8,
+      "participantScope": "boarding_gema",
+      "audience": "Asrama GEMA",
+      "notes": "Santri gema istirahat di kamar, boleh belanja"
+    },
+    "programs/PRG-2026-GEMA-09": {
+      "status": "active",
+      "source": "kegiatan santriwan santriwati GEMA 2026.docx",
+      "sourceRow": 11,
+      "importId": "daily-2026-docx",
+      "genderScope": "mixed",
+      "name": "Asrama GEMA 12:00 · Sholat zuhur",
+      "detail": "Sholat zuhur, makan siang, i’dadul hifzi & murojaah mandiri",
+      "description": "Sholat zuhur, makan siang, i’dadul hifzi & murojaah mandiri",
+      "defaultPic": "naqib & osma",
+      "notes": "",
+      "category": "Program 24 Jam",
+      "sourceCategory": "program_24_jam",
+      "defaultScope": "boarding_gema"
+    },
+    "schedules/daily/DS-2026-GEMA-09": {
+      "status": "active",
+      "source": "kegiatan santriwan santriwati GEMA 2026.docx",
+      "sourceRow": 11,
+      "importId": "daily-2026-docx",
+      "genderScope": "mixed",
+      "programId": "PRG-2026-GEMA-09",
+      "academicYearId": "TA-2026-2027-GANJIL",
+      "day": "Setiap Hari",
+      "startTime": "12:00",
+      "endTime": "14:00",
+      "endsNextDay": false,
+      "order": 9,
+      "participantScope": "boarding_gema",
+      "audience": "Asrama GEMA",
+      "notes": ""
+    },
+    "programs/PRG-2026-GEMA-10": {
+      "status": "active",
+      "source": "kegiatan santriwan santriwati GEMA 2026.docx",
+      "sourceRow": 12,
+      "importId": "daily-2026-docx",
+      "genderScope": "mixed",
+      "name": "Asrama GEMA 14:00 · HALAQOH QURAN",
+      "detail": "HALAQOH QURAN",
+      "description": "HALAQOH QURAN",
+      "defaultPic": "Naqib",
+      "notes": "",
+      "category": "Program 24 Jam",
+      "sourceCategory": "program_24_jam",
+      "defaultScope": "boarding_gema"
+    },
+    "schedules/daily/DS-2026-GEMA-10": {
+      "status": "active",
+      "source": "kegiatan santriwan santriwati GEMA 2026.docx",
+      "sourceRow": 12,
+      "importId": "daily-2026-docx",
+      "genderScope": "mixed",
+      "programId": "PRG-2026-GEMA-10",
+      "academicYearId": "TA-2026-2027-GANJIL",
+      "day": "Setiap Hari",
+      "startTime": "14:00",
+      "endTime": "15:30",
+      "endsNextDay": false,
+      "order": 10,
+      "participantScope": "boarding_gema",
+      "audience": "Asrama GEMA",
+      "notes": ""
+    },
+    "programs/PRG-2026-GEMA-11": {
+      "status": "active",
+      "source": "kegiatan santriwan santriwati GEMA 2026.docx",
+      "sourceRow": 13,
+      "importId": "daily-2026-docx",
+      "genderScope": "mixed",
+      "name": "Asrama GEMA 15:30 · Sholat asar",
+      "detail": "Sholat asar, maksurat, murojaah zaujiyyah, SETORAN ZIYADAH",
+      "description": "Sholat asar, maksurat, murojaah zaujiyyah, SETORAN ZIYADAH",
+      "defaultPic": "Naqib & pembina halaqoh",
+      "notes": "Setelah baca maksurot santri langsung murojaah zaujiyyah durasi waktu sama-sama 10 menit, santri boleh keluar dari masjid setelah melaporkan capaian murojaah  zaujiyyahnya ke pembina.",
+      "category": "Program 24 Jam",
+      "sourceCategory": "program_24_jam",
+      "defaultScope": "boarding_gema"
+    },
+    "schedules/daily/DS-2026-GEMA-11": {
+      "status": "active",
+      "source": "kegiatan santriwan santriwati GEMA 2026.docx",
+      "sourceRow": 13,
+      "importId": "daily-2026-docx",
+      "genderScope": "mixed",
+      "programId": "PRG-2026-GEMA-11",
+      "academicYearId": "TA-2026-2027-GANJIL",
+      "day": "Setiap Hari",
+      "startTime": "15:30",
+      "endTime": "17:00",
+      "endsNextDay": false,
+      "order": 11,
+      "participantScope": "boarding_gema",
+      "audience": "Asrama GEMA",
+      "notes": "Setelah baca maksurot santri langsung murojaah zaujiyyah durasi waktu sama-sama 10 menit, santri boleh keluar dari masjid setelah melaporkan capaian murojaah  zaujiyyahnya ke pembina."
+    },
+    "programs/PRG-2026-GEMA-12": {
+      "status": "active",
+      "source": "kegiatan santriwan santriwati GEMA 2026.docx",
+      "sourceRow": 14,
+      "importId": "daily-2026-docx",
+      "genderScope": "mixed",
+      "name": "Asrama GEMA 17:00 · olahraga",
+      "detail": "olahraga, bersih-bersih, istirahat",
+      "description": "olahraga, bersih-bersih, istirahat",
+      "defaultPic": "Naqib",
+      "notes": "Santri bisa ikut olahraga, belanja",
+      "category": "Program 24 Jam",
+      "sourceCategory": "program_24_jam",
+      "defaultScope": "boarding_gema"
+    },
+    "schedules/daily/DS-2026-GEMA-12": {
+      "status": "active",
+      "source": "kegiatan santriwan santriwati GEMA 2026.docx",
+      "sourceRow": 14,
+      "importId": "daily-2026-docx",
+      "genderScope": "mixed",
+      "programId": "PRG-2026-GEMA-12",
+      "academicYearId": "TA-2026-2027-GANJIL",
+      "day": "Setiap Hari",
+      "startTime": "17:00",
+      "endTime": "18:00",
+      "endsNextDay": false,
+      "order": 12,
+      "participantScope": "boarding_gema",
+      "audience": "Asrama GEMA",
+      "notes": "Santri bisa ikut olahraga, belanja"
+    },
+    "programs/PRG-2026-GEMA-13": {
+      "status": "active",
+      "source": "kegiatan santriwan santriwati GEMA 2026.docx",
+      "sourceRow": 15,
+      "importId": "daily-2026-docx",
+      "genderScope": "mixed",
+      "name": "Asrama GEMA 18:00 · Sholat magrib",
+      "detail": "Sholat magrib, tafwidul hifzi Sholat isya, ba’diyyah, sholat taubat & al-mulk",
+      "description": "Sholat magrib, tafwidul hifzi Sholat isya, ba’diyyah, sholat taubat & al-mulk",
+      "defaultPic": "Naqib",
+      "notes": "Santri berada di masjid paling lambat 5 menit sebelum azan magrib di kumandangkan, menggunakan pakain yang rapi sesuai pakain yg di tetapkan oleh pondok",
+      "category": "Program 24 Jam",
+      "sourceCategory": "program_24_jam",
+      "defaultScope": "boarding_gema"
+    },
+    "schedules/daily/DS-2026-GEMA-13": {
+      "status": "active",
+      "source": "kegiatan santriwan santriwati GEMA 2026.docx",
+      "sourceRow": 15,
+      "importId": "daily-2026-docx",
+      "genderScope": "mixed",
+      "programId": "PRG-2026-GEMA-13",
+      "academicYearId": "TA-2026-2027-GANJIL",
+      "day": "Setiap Hari",
+      "startTime": "18:00",
+      "endTime": "20:30",
+      "endsNextDay": false,
+      "order": 13,
+      "participantScope": "boarding_gema",
+      "audience": "Asrama GEMA",
+      "notes": "Santri berada di masjid paling lambat 5 menit sebelum azan magrib di kumandangkan, menggunakan pakain yang rapi sesuai pakain yg di tetapkan oleh pondok"
+    },
+    "programs/PRG-2026-GEMA-14": {
+      "status": "active",
+      "source": "kegiatan santriwan santriwati GEMA 2026.docx",
+      "sourceRow": 16,
+      "importId": "daily-2026-docx",
+      "genderScope": "mixed",
+      "name": "Asrama GEMA 20:30 · Makan malam & break",
+      "detail": "Makan malam & break",
+      "description": "Makan malam & break",
+      "defaultPic": "Naqib & pembina halaqoh",
+      "notes": "",
+      "category": "Program 24 Jam",
+      "sourceCategory": "program_24_jam",
+      "defaultScope": "boarding_gema"
+    },
+    "schedules/daily/DS-2026-GEMA-14": {
+      "status": "active",
+      "source": "kegiatan santriwan santriwati GEMA 2026.docx",
+      "sourceRow": 16,
+      "importId": "daily-2026-docx",
+      "genderScope": "mixed",
+      "programId": "PRG-2026-GEMA-14",
+      "academicYearId": "TA-2026-2027-GANJIL",
+      "day": "Setiap Hari",
+      "startTime": "20:30",
+      "endTime": "21:00",
+      "endsNextDay": false,
+      "order": 14,
+      "participantScope": "boarding_gema",
+      "audience": "Asrama GEMA",
+      "notes": ""
+    },
+    "programs/PRG-2026-GEMA-15": {
+      "status": "active",
+      "source": "kegiatan santriwan santriwati GEMA 2026.docx",
+      "sourceRow": 17,
+      "importId": "daily-2026-docx",
+      "genderScope": "mixed",
+      "name": "Asrama GEMA 21:00 · Program bahasa",
+      "detail": "Program bahasa",
+      "description": "Program bahasa",
+      "defaultPic": "Naqib & Bagian bahasa",
+      "notes": "Santri menyetorkan hafalan mufrodatnya ke osma atau bagian bahasa",
+      "category": "Program 24 Jam",
+      "sourceCategory": "program_24_jam",
+      "defaultScope": "boarding_gema"
+    },
+    "schedules/daily/DS-2026-GEMA-15": {
+      "status": "active",
+      "source": "kegiatan santriwan santriwati GEMA 2026.docx",
+      "sourceRow": 17,
+      "importId": "daily-2026-docx",
+      "genderScope": "mixed",
+      "programId": "PRG-2026-GEMA-15",
+      "academicYearId": "TA-2026-2027-GANJIL",
+      "day": "Setiap Hari",
+      "startTime": "21:00",
+      "endTime": "21:30",
+      "endsNextDay": false,
+      "order": 15,
+      "participantScope": "boarding_gema",
+      "audience": "Asrama GEMA",
+      "notes": "Santri menyetorkan hafalan mufrodatnya ke osma atau bagian bahasa"
+    },
+    "programs/PRG-2026-GEMA-16": {
+      "status": "active",
+      "source": "kegiatan santriwan santriwati GEMA 2026.docx",
+      "sourceRow": 18,
+      "importId": "daily-2026-docx",
+      "genderScope": "mixed",
+      "name": "Asrama GEMA 21:30 · Konseling/mahkamah",
+      "detail": "Konseling/mahkamah",
+      "description": "Konseling/mahkamah",
+      "defaultPic": "konselor",
+      "notes": "Santri yang tidak ada pelanggaran boleh break",
+      "category": "Program 24 Jam",
+      "sourceCategory": "program_24_jam",
+      "defaultScope": "boarding_gema"
+    },
+    "schedules/daily/DS-2026-GEMA-16": {
+      "status": "active",
+      "source": "kegiatan santriwan santriwati GEMA 2026.docx",
+      "sourceRow": 18,
+      "importId": "daily-2026-docx",
+      "genderScope": "mixed",
+      "programId": "PRG-2026-GEMA-16",
+      "academicYearId": "TA-2026-2027-GANJIL",
+      "day": "Setiap Hari",
+      "startTime": "21:30",
+      "endTime": "22:00",
+      "endsNextDay": false,
+      "order": 16,
+      "participantScope": "boarding_gema",
+      "audience": "Asrama GEMA",
+      "notes": "Santri yang tidak ada pelanggaran boleh break"
+    },
+    "programs/PRG-2026-GEMA-17": {
+      "status": "active",
+      "source": "kegiatan santriwan santriwati GEMA 2026.docx",
+      "sourceRow": 19,
+      "importId": "daily-2026-docx",
+      "genderScope": "mixed",
+      "name": "Asrama GEMA 22:00 · Istirahat Malam",
+      "detail": "Istirahat Malam, diawali dengan berwudhu, membaca do’a, afirmasi syukur/hypnosleep di kamar masing-masing.",
+      "description": "Istirahat Malam, diawali dengan berwudhu, membaca do’a, afirmasi syukur/hypnosleep di kamar masing-masing.",
+      "defaultPic": "Naqib & osma",
+      "notes": "Semua santri tidur di kamar masing-masing",
+      "category": "Program 24 Jam",
+      "sourceCategory": "program_24_jam",
+      "defaultScope": "boarding_gema"
+    },
+    "schedules/daily/DS-2026-GEMA-17": {
+      "status": "active",
+      "source": "kegiatan santriwan santriwati GEMA 2026.docx",
+      "sourceRow": 19,
+      "importId": "daily-2026-docx",
+      "genderScope": "mixed",
+      "programId": "PRG-2026-GEMA-17",
+      "academicYearId": "TA-2026-2027-GANJIL",
+      "day": "Setiap Hari",
+      "startTime": "22:00",
+      "endTime": "03:30",
+      "endsNextDay": true,
+      "order": 17,
+      "participantScope": "boarding_gema",
+      "audience": "Asrama GEMA",
+      "notes": "Semua santri tidur di kamar masing-masing"
+    }
+  }
+}

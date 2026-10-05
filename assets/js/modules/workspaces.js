@@ -1,8 +1,13 @@
+import {renderWorkFollowups} from '../work-followups.js';
+import {renderManagementReports} from '../management-reports.js';
+import {renderResidentStaff,renderStaffWorship} from '../staff-worship.js';
+import {OPERATION_VIEWS,renderManagementOperations} from '../management-operations.js';
+import {renderRegistry,renderManagementPeople,renderCaseDecisions} from '../management-registry.js';
 import {getNode,listNode,createWorkspaceRecord,transitionWorkspaceRecord} from '../repository.js';
 import {canAccess,ROLE_LABELS} from '../permissions.js';
 import {ROLE_EXPERIENCE,filterScopedStudents,localDate} from '../role-experience.js';
 import {MANAGEMENT_ROLES,LEADERSHIP_ROLES} from '../role-workspace-catalog.js';
-import {managementScope,canSeeManagement,validateTransition,FINDING_TRANSITIONS,FINDING_LABELS,requireAssignedId} from '../workflow-model.js';
+import {managementScope,canSeeManagement,validateTransition,escalationTarget,FINDING_TRANSITIONS,FINDING_LABELS,requireAssignedId} from '../workflow-model.js';
 import {pageHeader,panel,metric,table,formRow,input,textarea,select,selectOptions,studentOptions,attachAsync,escapeHtml as e,badge,empty,toast} from './common.js';
 const uid=ctx=>ctx.session.user.uid;
 const role=ctx=>ctx.session.activeRole;
@@ -122,17 +127,19 @@ export async function renderManagementFindings(ctx,escalationsOnly=false){
  const records=(await listNode(pathFor(ctx,'findings'))).filter(r=>canSeeManagement(r,ctx.session)&&(!escalationsOnly||r.status==='ESCALATED'));
  const users=(await listNode('users')).filter(u=>u.active!==false&&u.role!=='wali_santri');
  const staff=users.map(u=>({id:u.id,name:u.name||u.displayName||u.id}));
- const fields=formRow('Judul temuan',input('title','','text','required maxlength="160"'))+scopeField(ctx)+textField('Fakta dan evidence','evidence')+textField('Standar yang dirujuk','standard')+formRow('Penanggung jawab',select('assigneeUid',selectOptions(staff),'required'))+formRow('Batas tindak lanjut',input('dueDate',localDate(),'date','required'));
+ const responses=await listNode(pathFor(ctx,'finding_responses'));
+ const observations=(await listNode(pathFor(ctx,'observations'))).filter(r=>canSeeManagement(r,ctx.session));
+ const fields=formRow('Observasi sumber (opsional)',select('sourceObservationId','<option value="">Temuan langsung</option>'+observations.map(r=>`<option value="${e(r.id)}">${e(r.title)}</option>`).join('')))+formRow('Judul temuan',input('title','','text','required maxlength="160"'))+scopeField(ctx)+textField('Fakta dan evidence','evidence')+textField('Standar yang dirujuk','standard')+formRow('Penanggung jawab',select('assigneeUid',selectOptions(staff),'required'))+formRow('Batas tindak lanjut',input('dueDate',localDate(),'date','required'));
  ctx.root.innerHTML=pageHeader(escalationsOnly?'Eskalasi & Keputusan':'Temuan & Tindak Lanjut','Fakta → verifikasi → tindakan → evaluasi → selesai / eskalasi. Riwayat disimpan pada rekam yang sama.')+(escalationsOnly?'':form(ctx,'findingForm','Catat Temuan',fields))+panel(escalationsOnly?'Eskalasi Masuk':'Daftar Temuan',records.length?records.map(r=>{
- const transitions=FINDING_TRANSITIONS[r.status]||[];
- return `<article class="workspace-record"><div class="workspace-record-head"><h3>${e(r.title)}</h3>${badge(FINDING_LABELS[r.status]||r.status)}</div><p><strong>Evidence:</strong> ${e(r.evidence)}</p><p><strong>Standar:</strong> ${e(r.standard)}</p><p><strong>PJ:</strong> ${e(staff.find(s=>s.id===r.assigneeUid)?.name||r.assigneeUid)} · ${e(r.dueDate)}</p><details><summary>Riwayat tindakan & keputusan</summary>${Object.values(r.history||{}).map(h=>`<p>${badge(FINDING_LABELS[h.to]||h.to)} ${e(h.note)} <small>— ${e(h.actorName||h.actorUid)}</small></p>`).join('')||'<p>Belum ada perubahan status.</p>'}</details>${transitions.length?`<form data-transition="${e(r.id)}" class="portal-form">${formRow('Tahap berikutnya',select('status',transitions.map(s=>`<option value="${s}">${e(FINDING_LABELS[s])}</option>`).join('')))}${textField('Tindakan / hasil evaluasi / keputusan','note')}<button type="submit" class="btn btn-primary">Simpan Tindak Lanjut</button></form>`:''}</article>`;
+ const transitions=(FINDING_TRANSITIONS[r.status]||[]).filter(next=>{try{validateTransition(r,next,ctx.session,'preview');return true;}catch{return false;}});
+ return `<article class="workspace-record"><div class="workspace-record-head"><h3>${e(r.title)}</h3>${badge(FINDING_LABELS[r.status]||r.status)}</div><p><strong>Evidence:</strong> ${e(r.evidence)}</p><p><strong>Standar:</strong> ${e(r.standard)}</p>${r.sourceObservationId?`<p>Observasi sumber: ${e(r.sourceObservationId)}</p>`:''}${r.escalationTargetRole?`<p>Tujuan eskalasi: ${e(ROLE_LABELS[r.escalationTargetRole])}</p>`:''}<p><strong>PJ:</strong> ${e(staff.find(s=>s.id===r.assigneeUid)?.name||r.assigneeUid)} · ${e(r.dueDate)}</p><details><summary>Bukti tindak lanjut personil</summary>${responses.filter(x=>x.findingId===r.id).map(x=>`<p><b>${e(x.actorName||x.actorUid)}</b>: ${e(x.result)} · ${e(x.evidence)}</p>`).join('')||'<p>Belum ada bukti dari personil.</p>'}</details><details><summary>Riwayat tindakan & keputusan</summary>${Object.values(r.history||{}).map(h=>`<p>${badge(FINDING_LABELS[h.to]||h.to)} ${e(h.note)} <small>— ${e(h.actorName||h.actorUid)}</small></p>`).join('')||'<p>Belum ada perubahan status.</p>'}</details>${transitions.length?`<form data-transition="${e(r.id)}" class="portal-form">${formRow('Tahap berikutnya',select('status',transitions.map(s=>`<option value="${s}">${e(FINDING_LABELS[s])}</option>`).join('')))}${textField('Tindakan / hasil evaluasi / keputusan','note')}<button type="submit" class="btn btn-primary">Simpan Tindak Lanjut</button></form>`:''}</article>`;
  }).join(''):empty('Tidak ada temuan dalam scope ini.'));
- attachAsync(ctx.root.querySelector('#findingForm'),async data=>{assertScope(ctx,data.scope);requireAssignedId(data.assigneeUid,staff,'Penanggung jawab');await save(ctx,'findings',{...data,status:'NEW'});await ctx.rerender();});
+ attachAsync(ctx.root.querySelector('#findingForm'),async data=>{assertScope(ctx,data.scope);if(data.sourceObservationId&&!observations.some(r=>r.id===data.sourceObservationId&&r.scope===data.scope))throw Error('Observasi sumber di luar lingkup.');requireAssignedId(data.assigneeUid,staff,'Penanggung jawab');await save(ctx,'findings',{...data,status:'NEW'});await ctx.rerender();});
  ctx.root.querySelectorAll('[data-transition]').forEach(form=>attachAsync(form,async data=>{
  const eventId=crypto.randomUUID();
  await transitionWorkspaceRecord(pathFor(ctx,'findings'),form.dataset.transition,current=>{
  validateTransition(current,data.status,ctx.session,data.note);
- return {...current,status:data.status,history:{...current.history,[eventId]:{from:current.status,to:data.status,note:data.note,actorUid:uid(ctx),actorName:ctx.session.profile.name||'',at:{'.sv':'timestamp'}}}};
+ return {...current,status:data.status,...(data.status==='ESCALATED'?{escalationTargetRole:escalationTarget(role(ctx)),escalatedBy:uid(ctx)}:{}),history:{...current.history,[eventId]:{from:current.status,to:data.status,note:data.note,actorUid:uid(ctx),actorName:ctx.session.profile.name||'',at:{'.sv':'timestamp'}}}};
  },uid(ctx));await ctx.rerender();
  }));
 }
@@ -155,8 +162,11 @@ export async function renderManagementKpi(ctx){
  ctx.root.innerHTML=pageHeader('KPI & Evidence Manajemen','Rekap siklus temuan dalam scope; tidak mengubah penilaian personel secara otomatis.')+`<div class="portal-metrics">${metric('Temuan',String(rows.length),'Evidence tercatat')}${metric('Selesai',String(rows.filter(r=>r.status==='RESOLVED').length),'Setelah evaluasi','cyan')}${metric('Menunggu Evaluasi',String(rows.filter(r=>r.status==='EVALUATION').length),'Perlu verifikasi','coral')}${metric('Dieskalasi',String(rows.filter(r=>r.status==='ESCALATED').length),'Memerlukan keputusan')}</div>`+panel('Penilaian',`<p class="role-hint">Rekap belum menjadi skor KPI berbobot. Target dan pembobotan mengikuti standar kerja yang disetujui pesantren.</p>`);
 }
 export const WORKSPACE_ROUTES={
+ 'management-reports':renderManagementReports,'work-followups':renderWorkFollowups,
+ 'management-residents':renderResidentStaff,'management-worship':renderStaffWorship,
+ ...Object.fromEntries(Object.keys(OPERATION_VIEWS).map(r=>[r,ctx=>renderManagementOperations(ctx,r)])),
  'work-profile':renderProfile,'work-guide':renderGuide,'work-schedule':renderWorkSchedule,'work-messages':renderWorkMessages,'work-kpi':renderWorkKpi,
  'education-calendar':renderEducationCalendar,'teacher-writing':renderTeacherWriting,'teacher-assessment':renderTeacherAssessment,'academic-followup':renderAcademicFollowup,'teacher-case':renderTeacherCase,'teacher-kpi':renderTeacherKpi,
- 'management-control':renderManagementControl,'management-findings':renderManagementFindings,'management-escalations':ctx=>renderManagementFindings(ctx,true),'management-kpi':renderManagementKpi,
- ...Object.fromEntries(Object.keys(MANAGEMENT_FORMS).map(route=>[route,ctx=>renderManagementRecord(ctx,route)]))
+ 'management-control':renderManagementControl,'management-findings':renderManagementFindings,'management-escalations':async ctx=>{await renderManagementFindings(ctx,true);await renderCaseDecisions(ctx);},'management-people':renderManagementPeople,'management-changes':ctx=>renderRegistry(ctx,'management-changes'),'management-kpi':renderManagementKpi,
+ ...Object.fromEntries(Object.keys(MANAGEMENT_FORMS).map(route=>[route,ctx=>renderRegistry(ctx,route)]))
 };

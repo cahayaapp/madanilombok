@@ -1,0 +1,63 @@
+{
+  "source": "Konfirmasi pengguna 4 Oktober 2026",
+  "staffAliases": {
+    "BINTANG ARIA PUTRA PRATAMA": "AMD-SDM-0013",
+    "FAHRI ALDIAN EFFENDI": "AMD-SDM-0023",
+    "HAUFIANA HARIANTI": "AMD-SDM-0029",
+    "HAUFIANA HARIAYANTI": "AMD-SDM-0029"
+  },
+  "newStaff": {
+    "AMD-SDM-0086": {
+      "name": "Hasrul Ali",
+      "unitIds": [
+        "UNIT-SMP"
+      ],
+      "unitTask": "SMP",
+      "roles": "Guru PJOK; Guru Wali (mentoring individu)",
+      "appRoles": [
+        "guru_mapel",
+        "guru_wali"
+      ],
+      "status": "active",
+      "source": "JADWAL SMP GANJIL 2026-2027 TERBARU.xlsx; GURU WALI SMP 2026-2027.xlsx; konfirmasi pengguna 4 Oktober 2026",
+      "validationStatus": "Identitas dan penugasan dikonfirmasi pengguna; biodata lainnya belum tersedia",
+      "seeded": true
+    }
+  },
+  "studentAliases": {
+    "SITI BAHIRAH ASILAH": "AMD-SMP-0092",
+    "RIZKI AHUGRAH": "AMD-SMP-0085"
+  },
+  "newStudents": {
+    "AMD-SMP-0101": {
+      "name": "DINDA CAHYATI",
+      "unitId": "UNIT-SMP",
+      "status": "active",
+      "validationStatus": "Penambahan dikonfirmasi pengguna; kelas, NISN dan biodata belum tersedia",
+      "source": "GURU WALI SMP 2026-2027.xlsx; konfirmasi pengguna 4 Oktober 2026",
+      "seeded": true
+    },
+    "AMD-SMP-0102": {
+      "name": "MUHAMMAD AKBAR",
+      "unitId": "UNIT-SMP",
+      "status": "active",
+      "validationStatus": "Penambahan dikonfirmasi pengguna; kelas, NISN dan biodata belum tersedia",
+      "source": "GURU WALI SMP 2026-2027.xlsx; konfirmasi pengguna 4 Oktober 2026",
+      "seeded": true
+    }
+  },
+  "combinedLessons": [
+    {
+      "teacherCode": "18",
+      "day": "Kamis",
+      "periods": [
+        2,
+        3
+      ],
+      "classIds": [
+        "CLS-SMP-8-PUTRA",
+        "CLS-SMP-9-PUTRA"
+      ]
+    }
+  ]
+}

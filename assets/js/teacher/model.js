@@ -14,17 +14,18 @@ export function teacherSchedules(ctx,{examples=true}={}) {
   const allowed=new Set(classes.map(c=>c.id));
   // Empty scope must not silently grant every class to a teacher.
   const scoped=!!(p.classIds?.length||p.unitIds?.length||p.subjectIds?.length);
-  const schedules=(master.academicSchedules||[]).filter(s=>s.status!=='inactive'&&(!s.academicYearId||s.academicYearId===ctx.yearId)&&allowed.has(s.classId)&&(!p.subjectIds?.length||p.subjectIds.includes(s.subjectId))&&((s.staffId||s.teacherStaffId)?(s.staffId||s.teacherStaffId)===staffId(ctx):scoped));
-  const result=schedules.map(s=>({...s,unitId:s.unitId||classes.find(c=>c.id===s.classId)?.unitId||'',day:s.day==='Ahad'?'Minggu':s.day,assignmentConfirmed:!!(s.staffId||s.teacherStaffId||(p.classIds?.length&&p.subjectIds?.length))}));
+  const schedules=(master.academicSchedules||[]).filter(s=>!(ctx.session.activeRole==='guru_mapel'&&/tahsin|tahfi[dz]|mutqin|ziyadah|muraja|muroja/i.test((master.subjects||[]).find(x=>x.id===s.subjectId)?.name||s.activityName||''))&&s.status!=='inactive'&&(!s.academicYearId||s.academicYearId===ctx.yearId)&&allowed.has(s.classId)&&(!p.subjectIds?.length||p.subjectIds.includes(s.subjectId))&&((s.staffId||s.teacherStaffId)?(s.staffId||s.teacherStaffId)===staffId(ctx):scoped));
+  const result=schedules.map(s=>({...s,unitId:s.unitId||classes.find(c=>c.id===s.classId)?.unitId||'',day:s.day==='Ahad'?'Minggu':s.day,assignmentConfirmed:s.teacherAssignmentStatus==='needs_review'?false:!!(s.staffId||s.teacherStaffId||(p.classIds?.length&&p.subjectIds?.length))}));
   if(examples&&scoped) for(const c of classes) {
     // Existing timetable always wins, including when it belongs to another teacher.
     if((master.academicSchedules||[]).some(s=>s.classId===c.id&&s.status!=='inactive'&&(!s.academicYearId||s.academicYearId===ctx.yearId)))continue;
     const subject=(master.subjects||[]).find(s=>(!p.subjectIds?.length||p.subjectIds.includes(s.id))&&(s.unitId===c.unitId||s.unitIds?.includes(c.unitId)));
     if(subject)for(const day of ['Senin','Rabu','Jumat'])result.push({id:`example-${c.id}-${subject.id}-${day}`,classId:c.id,subjectId:subject.id,unitId:c.unitId,day,startTime:'08:00',endTime:'08:45',academicYearId:ctx.yearId,isExample:true,validationStatus:'Contoh — belum dikonfirmasi',source:'Contoh otomatis Madani'});
   }
-  return result.sort((a,b)=>DAYS.indexOf(a.day)-DAYS.indexOf(b.day)||minutes(a.startTime)-minutes(b.startTime));
+  const sessions=new Map();for(const s of result){const id=s.teachingSessionId||s.id;if(!sessions.has(id))sessions.set(id,{...s,id,classIds:s.combinedClassIds||[s.classId]});}
+  return [...sessions.values()].sort((a,b)=>DAYS.indexOf(a.day)-DAYS.indexOf(b.day)||minutes(a.startTime)-minutes(b.startTime));
 }
-export const assignmentKey=s=>`${s.classId}__${s.subjectId}`;
+export const assignmentKey=s=>`${s.classIds?.length>1?[...s.classIds].sort().join('+'):s.classId}__${s.subjectId}`;
 export function assignments(schedules) {const map=new Map();for(const s of schedules){const key=assignmentKey(s);if(!map.has(key))map.set(key,{...s,id:key,days:[]});const a=map.get(key);if(!a.days.includes(s.day))a.days.push(s.day);}return [...map.values()];}
 export function meetingDates(year,semester,days,holidays=[]) {
   const start=`${year+(semester===2?1:0)}-${semester===2?'01':'07'}-01`,end=`${year+(semester===2?1:0)}-${semester===2?'06-30':'12-31'}`;
@@ -70,7 +71,7 @@ export function learningTransition(previous,input,{roster,schedule,date,actor,su
     if(score!==null&&(!Number.isFinite(score)||score<0||score>100))throw Error('Nilai harian harus 0–100.');
     students[s.id]={studentId:s.id,statusAwal,status,score,points:attendancePoints(status,isQuran(subjectName))};
   }
-  return {...previous,academicYearId:schedule.academicYearId,scheduleId:schedule.id,classId:schedule.classId,subjectId:schedule.subjectId,staffId:actor.staffId,teacherUid:actor.uid,date,stage:final?'FINAL':'AWAL',students,materialIds:input.materialIds||[],note:input.note||'',version:(previous?.version||0)+1};
+  return {...previous,academicYearId:schedule.academicYearId,scheduleId:schedule.id,classId:schedule.classId,classIds:schedule.classIds||[schedule.classId],subjectId:schedule.subjectId,staffId:actor.staffId,teacherUid:actor.uid,date,stage:final?'FINAL':'AWAL',students,materialIds:input.materialIds||[],note:input.note||'',version:(previous?.version||0)+1};
 }
 export const ASSESSMENTS={
  tahfiz:{label:'Tahfiz Al-Qur’an',components:[['Lisan',80],['Tulisan',20]]},

@@ -1,4 +1,8 @@
+> Tambahan 4 Oktober: revisi nilai, publikasi/penarikan snapshot rapor, tautan observasi–temuan–pembinaan, eskalasi berjenjang dan bukti tindak lanjut personil tersedia secara lokal. Rincian terverifikasi dan sisa kesenjangan: `docs/ROLE-WORKFLOWS-2026-10-04.md`.
+
 # Audit kesetaraan role MadaniApp / Cahaya
+
+**Pembaruan aktif 4 Oktober 2026:** lihat [status workflow terbaru](ROLE-WORKFLOWS-2026-10-04.md). KPI dikecualikan secara eksplisit oleh pengguna. Pembina Tahfiz dipisahkan, UKS ditambahkan; audit awal di bawah tidak menggambarkan seluruh perubahan terbaru.
 
 **Koreksi terbaru pengguna:** Jurnal Liburan beserta monitoring dinonaktifkan (menu, akses route, dan write rules lokal); rekam lama dipertahankan. Penitipan tetap aktif. Pada data rombel, `homeroomStaffId` berlabel **Wali Kelas**, berbeda dari role Guru Wali untuk mentoring. Lima role pimpinan juga tersedia pada form pembuatan akun. Catatan implementasi awal di bawah merupakan riwayat sebelum koreksi ini.
 

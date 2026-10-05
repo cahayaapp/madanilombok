@@ -1,0 +1,46 @@
+{
+  "source": "JADWAL PELAJARAN semester GANJIL 2026-2027.xlsx",
+  "status": "Sheet1_confirmed_by_user",
+  "differences": [
+    {
+      "class": "I",
+      "day": "Senin",
+      "subject": "PJOK",
+      "Sheet1": "08:45–09:45",
+      "Sheet2": "08:00–09:35"
+    }
+  ],
+  "issues": [
+    {
+      "sheet": "Sheet2",
+      "cell": "H25",
+      "value": "12. 1",
+      "reason": "Kode mapel angka 1 tidak ada dalam legenda huruf A–N"
+    },
+    {
+      "sheet": "Sheet1",
+      "cells": [
+        "B28",
+        "B38",
+        "B48",
+        "B58"
+      ],
+      "value": "15.00-selesai",
+      "reason": "Jam selesai tidak ditentukan sumber"
+    },
+    {
+      "sheet": "Sheet1",
+      "cells": [
+        "B57",
+        "B58"
+      ],
+      "reason": "Pelajaran kelas VI 14.30–15.30 beririsan dengan Asar mulai 15.00"
+    }
+  ],
+  "unmatchedStaff": [],
+  "notes": [
+    "Pengguna memilih Sheet1 sebagai jadwal resmi dan mengizinkan penambahan Miftahussurur.",
+    "Sheet2 tidak digunakan untuk jam, mapel atau pengampu operasional."
+  ],
+  "codedLessonCellsSheet2": 93
+}

@@ -1,0 +1,1414 @@
+{
+  "file": "JADWAL PELAJARAN semester GANJIL 2026-2027.xlsx",
+  "sha256": "438ada45ead5a675a7d531bb18470001c3af8e4c197ffbc67f358f2a758920f0",
+  "sheets": {
+    "Sheet1": {
+      "rows": [
+        {
+          "row": 1,
+          "cells": {
+            "A": "YAYASAN PONDOK PESANTREN ISLAM TERPADU AL MADANI"
+          }
+        },
+        {
+          "row": 2,
+          "cells": {
+            "A": "\"Pusat Pembibitan Penghafal dan Pemangku Al-Qur'an\""
+          }
+        },
+        {
+          "row": 3,
+          "cells": {
+            "A": "SEKOLAH DASAR ISLAM TERPADU AL-MADANI"
+          }
+        },
+        {
+          "row": 4,
+          "cells": {
+            "A": "Jln. Cendikia Lengkok Desa Mamben Lauk Kecamatan Wanasaba LOTIM-NTB, KP.83658. Email:sditalmadani15@gmail.com"
+          }
+        },
+        {
+          "row": 6,
+          "cells": {
+            "A": "JADWAL PELAJARAN SD IT AL-MADANI SEMESTER GANJIL TP. 2026/2027"
+          }
+        },
+        {
+          "row": 7,
+          "cells": {
+            "A": "KELAS",
+            "B": "WAKTU",
+            "C": "HARI",
+            "J": "NO",
+            "K": "NAMA GURU",
+            "L": "JABATAN"
+          }
+        },
+        {
+          "row": 8,
+          "cells": {
+            "C": "SENIN",
+            "D": "SELASA",
+            "E": "RABU",
+            "F": "KAMIS",
+            "G": "JUM'AT",
+            "H": "SABTU",
+            "J": 1,
+            "K": "ELI HERLINA KUSUMAYANI",
+            "L": "KEPALA SEKOLAHDAN GURU MAPEL B.INGGRIS KELAS 1&2"
+          }
+        },
+        {
+          "row": 9,
+          "cells": {
+            "A": "I",
+            "B": "07.15-08.00",
+            "C": "Muraja'ah dan Sholat Dhuha",
+            "J": 2,
+            "K": "SUHARDI USMAN",
+            "L": "BENDAHARA/ OPERATOR SEKOLAH"
+          }
+        },
+        {
+          "row": 10,
+          "cells": {
+            "B": "08.00-08.45",
+            "C": "TAHFIDZ",
+            "D": "TAHFIDZ",
+            "E": "TAHFIDZ",
+            "F": "TAHFIDZ",
+            "G": "BTA",
+            "H": "TAHFIDZ",
+            "J": 3,
+            "K": "WARDANI, S.Pd",
+            "L": "GURU KELAS SATU DAN FIQIH KELAS 3"
+          }
+        },
+        {
+          "row": 11,
+          "cells": {
+            "B": "08.45-09.45",
+            "C": "PJOK",
+            "D": "PAI",
+            "E": "B.INDONESIA",
+            "F": "B.INGGRIS",
+            "G": "B. INDONESIA",
+            "H": "B. SASAK",
+            "J": 4,
+            "K": "RAUHUN, S.Pd",
+            "L": "GURU KELAS DUA"
+          }
+        },
+        {
+          "row": 12,
+          "cells": {
+            "B": "09.45-10.10",
+            "C": "ISTIRAHAT",
+            "D": "ISTIRAHAT",
+            "E": "ISTIRAHAT",
+            "F": "ISTIRAHAT",
+            "H": "ISTIRAHAT",
+            "J": 5,
+            "K": "NURLAILY, S.Pd",
+            "L": "GURU KELAS TIGA DAN AKIDAH AHLAK KELAS 4"
+          }
+        },
+        {
+          "row": 13,
+          "cells": {
+            "B": "10.10-11.10",
+            "C": "SENI RUPA",
+            "D": "MTK",
+            "E": "BTA",
+            "F": "P.PANCASILA",
+            "H": "MTK",
+            "J": 6,
+            "K": "MASHARI, S.Pd",
+            "L": "GURU KELAS EMPAT"
+          }
+        },
+        {
+          "row": 14,
+          "cells": {
+            "A": "II",
+            "B": "07.15-08.00",
+            "C": "Muraja'ah dan Sholat Dhuha",
+            "J": 7,
+            "K": "NURUL JANNAH, S.Pd",
+            "L": "GURU KELAS LIMA, AKIDAH AHLAK KELAS 6 DAN PEMBINA PERAMUKA"
+          }
+        },
+        {
+          "row": 15,
+          "cells": {
+            "B": "08.00-08.45",
+            "C": "TAHFIDZ",
+            "D": "TAHFIDZ",
+            "E": "TAHFIDZ",
+            "F": "TAHFIDZ",
+            "G": "B. INDONESIA",
+            "H": "TAHFIDZ",
+            "J": 8,
+            "K": "FITRIATL WAHYUNI, S.Pd",
+            "L": "GURU KELAS ENAM, AKIDAH AHLAK KELAS LIMA DAN PEMBINA PERAMUKA"
+          }
+        },
+        {
+          "row": 16,
+          "cells": {
+            "B": "08.45-09.45",
+            "C": "PJOK",
+            "D": "B.INGGRIS",
+            "E": "PAI",
+            "F": "P.PANCASILA",
+            "G": "B. SASAK",
+            "H": "MTK",
+            "J": 9,
+            "K": "DARUSMAN ZAKARIA, S.Pd",
+            "L": "GURU MAPEL PJOK DAN PEMBINA PERAMUKA"
+          }
+        },
+        {
+          "row": 17,
+          "cells": {
+            "B": "09.45-10.10",
+            "C": "ISTIRAHAT",
+            "D": "ISTIRAHAT",
+            "E": "ISTIRAHAT",
+            "F": "ISTIRAHAT",
+            "H": "ISTIRAHAT",
+            "J": 10,
+            "K": "ZANI ISTI HARIANI, S.Pd",
+            "L": "GURU PENDIDIDKAN PANCASIALDAN FIQIH KELAS 4&5"
+          }
+        },
+        {
+          "row": 18,
+          "cells": {
+            "B": "10.10-11.10",
+            "C": "MTK",
+            "D": "SENI RUPA",
+            "E": "B.INDONESIA",
+            "F": "BTA",
+            "H": "BTA",
+            "J": 11,
+            "K": "RAHMANIYAH, S.HI",
+            "L": "GURU PAI BP DAN AQIDAH AHLAK KELAS 3"
+          }
+        },
+        {
+          "row": 19,
+          "cells": {
+            "A": "III",
+            "B": "07.15-08.00",
+            "C": "Muraja'ah dan Sholat Dhuha",
+            "J": 12,
+            "K": "MIFTAHUSSURUR, S.Pd",
+            "L": "GURU BAHASA INGGRIS KELAS 3-6 DAN FIQIH KELAS 6"
+          }
+        },
+        {
+          "row": 20,
+          "cells": {
+            "B": "08.00-08.45",
+            "C": "TAHFIDZ",
+            "D": "TAHFIDZ",
+            "E": "TAHFIDZ",
+            "F": "TAHFIDZ",
+            "G": "B. INDONESIA",
+            "H": "TAHFIDZ",
+            "J": 13,
+            "K": "HASRUL ALI",
+            "L": "PEMBINA WUSHU"
+          }
+        },
+        {
+          "row": 21,
+          "cells": {
+            "B": "08.45-09.45",
+            "C": "P.PANCASILA",
+            "D": "PJOK",
+            "E": "MTK",
+            "F": "PAI",
+            "G": "PAI",
+            "H": "SBDP",
+            "J": 14,
+            "K": "HAUFIANA HARIYANTI, S.Ag",
+            "L": "GURU BAHASA ARAB KELAS 3-6"
+          }
+        },
+        {
+          "row": 22,
+          "cells": {
+            "B": "09.45-10.10",
+            "C": "ISTIRAHAT",
+            "D": "ISTIRAHAT",
+            "E": "ISTIRAHAT",
+            "F": "ISTIRAHAT",
+            "H": "ISTIRAHAT"
+          }
+        },
+        {
+          "row": 23,
+          "cells": {
+            "B": "10.10-11.10",
+            "C": "BTA",
+            "D": "BTA",
+            "E": "B.INGGRIS",
+            "F": "MTK",
+            "H": "P.PANCASILA"
+          }
+        },
+        {
+          "row": 24,
+          "cells": {
+            "B": "11.10-12.10",
+            "C": "B.INDONESIA",
+            "D": "B.INDONESIA",
+            "E": "B.SASAK",
+            "F": "IPAS",
+            "H": "IPAS"
+          }
+        },
+        {
+          "row": 25,
+          "cells": {
+            "B": "12.10-13.00",
+            "C": "Sholat Zuhur Berjamaah"
+          }
+        },
+        {
+          "row": 26,
+          "cells": {
+            "B": "13.00-14.00",
+            "C": "Latihan Wushu",
+            "D": "Mahfuzat",
+            "E": "mahfuzat",
+            "F": "Mahfuzat"
+          }
+        },
+        {
+          "row": 27,
+          "cells": {
+            "B": "14.00-15.00",
+            "C": "FIQIH",
+            "D": "AKIDAH AHLAK",
+            "E": "B.ARAB",
+            "F": "PRAMUKA"
+          }
+        },
+        {
+          "row": 28,
+          "cells": {
+            "B": "15.00-selesai",
+            "C": "Sholat Ashar Berjamaah"
+          }
+        },
+        {
+          "row": 29,
+          "cells": {
+            "A": "IV",
+            "B": "07.15-08.00",
+            "C": "Muraja'ah dan Sholat Dhuha"
+          }
+        },
+        {
+          "row": 30,
+          "cells": {
+            "B": "08.00-08.45",
+            "C": "TAHFIDZ",
+            "D": "TAHFIDZ",
+            "E": "TAHFIDZ",
+            "F": "TAHFIDZ",
+            "G": "P.PANCASILA",
+            "H": "TAHFIDZ"
+          }
+        },
+        {
+          "row": 31,
+          "cells": {
+            "B": "08.45-09.45",
+            "C": "PAI",
+            "D": "B.INDONESIA",
+            "E": "BTA",
+            "F": "B.SASAK",
+            "G": "SBDP",
+            "H": "PJOK"
+          }
+        },
+        {
+          "row": 32,
+          "cells": {
+            "B": "09.45-10.10",
+            "C": "ISTIRAHAT",
+            "D": "ISTIRAHAT",
+            "E": "ISTIRAHAT",
+            "F": "ISTIRAHAT",
+            "H": "ISTIRAHAT"
+          }
+        },
+        {
+          "row": 33,
+          "cells": {
+            "B": "10.10-11.10",
+            "C": "IPAS",
+            "D": "MTK",
+            "E": "IPAS",
+            "F": "PAI",
+            "H": "MTK"
+          }
+        },
+        {
+          "row": 34,
+          "cells": {
+            "B": "11.10-12.10",
+            "C": "B.INDONESIA",
+            "D": "P.PANCASILA",
+            "E": "B.INGGRIS",
+            "F": "BTA",
+            "H": "B.INDONESIA"
+          }
+        },
+        {
+          "row": 35,
+          "cells": {
+            "B": "12.10-13.00",
+            "C": "Sholat Zuhur Berjamaah"
+          }
+        },
+        {
+          "row": 36,
+          "cells": {
+            "B": "13.00-14.00",
+            "C": "Latihan Wushu",
+            "D": "Mahfuzat",
+            "E": "mahfuzat",
+            "F": "Mahfuzat"
+          }
+        },
+        {
+          "row": 37,
+          "cells": {
+            "B": "14.00-15.00",
+            "C": "B.ARAB",
+            "D": "FIQIH",
+            "E": "AKIDAH AHLAK",
+            "F": "PRAMUKA"
+          }
+        },
+        {
+          "row": 38,
+          "cells": {
+            "B": "15.00-selesai",
+            "C": "Sholat Ashar Berjamaah"
+          }
+        },
+        {
+          "row": 39,
+          "cells": {
+            "A": "V",
+            "B": "07.15-08.00",
+            "C": "Muraja'ah dan Sholat Dhuha"
+          }
+        },
+        {
+          "row": 40,
+          "cells": {
+            "B": "08.00-08.45",
+            "C": "TAHFIDZ",
+            "D": "TAHFIDZ",
+            "E": "TAHFIDZ",
+            "F": "TAHFIDZ",
+            "G": "B.INDONESIA",
+            "H": "TAHFIDZ"
+          }
+        },
+        {
+          "row": 41,
+          "cells": {
+            "B": "08.45-09.45",
+            "C": "MTK",
+            "D": "MTK",
+            "E": "P.PANCASILA",
+            "F": "PJOK",
+            "G": "SBDP",
+            "H": "PAI"
+          }
+        },
+        {
+          "row": 42,
+          "cells": {
+            "B": "09.45-10.10",
+            "C": "ISTIRAHAT",
+            "D": "ISTIRAHAT",
+            "E": "ISTIRAHAT",
+            "F": "ISTIRAHAT",
+            "H": "ISTIRAHAT"
+          }
+        },
+        {
+          "row": 43,
+          "cells": {
+            "B": "10.10-11.10",
+            "C": "P.PANCASILA",
+            "D": "PAI",
+            "E": "IPAS",
+            "F": "BTA",
+            "H": "B. INDONESIA"
+          }
+        },
+        {
+          "row": 44,
+          "cells": {
+            "B": "11.10-12.10",
+            "C": "B.ARAB",
+            "D": "B. INDONESIA",
+            "E": "B. SASAK",
+            "F": "IPAS",
+            "H": "BTA"
+          }
+        },
+        {
+          "row": 45,
+          "cells": {
+            "B": "12.10-13.00",
+            "C": "Sholat Zuhur Berjamaah"
+          }
+        },
+        {
+          "row": 46,
+          "cells": {
+            "B": "13.00-14.00",
+            "C": "Latihan Wushu",
+            "D": "Mahfuzat",
+            "E": "mahfuzat",
+            "F": "Mahfuzat"
+          }
+        },
+        {
+          "row": 47,
+          "cells": {
+            "B": "14.00-15.00",
+            "C": "AKIDAH AHLAK",
+            "D": "B. INGGRIS",
+            "E": "FIQIH",
+            "F": "PRAMUKA"
+          }
+        },
+        {
+          "row": 48,
+          "cells": {
+            "B": "15.00-selesai",
+            "C": "Sholat Ashar Berjamaah"
+          }
+        },
+        {
+          "row": 49,
+          "cells": {
+            "A": "VI",
+            "B": "07.15-08.00",
+            "C": "Muraja'ah dan Sholat Dhuha"
+          }
+        },
+        {
+          "row": 50,
+          "cells": {
+            "B": "08.00-08.45",
+            "C": "TAHFIDZ",
+            "D": "TAHFIDZ",
+            "E": "TAHFIDZ",
+            "F": "TAHFIDZ",
+            "G": "B. INDONESIA",
+            "H": "TAHFIDZ"
+          }
+        },
+        {
+          "row": 51,
+          "cells": {
+            "B": "08.45-09.45",
+            "C": "B.INDONESIA",
+            "D": "B.INDONESIA",
+            "E": "PJOK",
+            "F": "B.SASAK",
+            "G": "MTK",
+            "H": "BTA"
+          }
+        },
+        {
+          "row": 52,
+          "cells": {
+            "B": "09.45-10.10",
+            "C": "ISTIRAHAT",
+            "D": "ISTIRAHAT",
+            "E": "ISTIRAHAT",
+            "F": "ISTIRAHAT",
+            "H": "ISTIRAHAT"
+          }
+        },
+        {
+          "row": 53,
+          "cells": {
+            "B": "10.10-11.10",
+            "C": "PAI",
+            "D": "P.PANCASILA",
+            "E": "IPAS",
+            "F": "IPAS",
+            "H": "PAI"
+          }
+        },
+        {
+          "row": 54,
+          "cells": {
+            "B": "11.10-12.10",
+            "C": "BTA",
+            "D": "B.ARAB",
+            "E": "P.PANCASILA",
+            "F": "SBDP",
+            "H": "MTK"
+          }
+        },
+        {
+          "row": 55,
+          "cells": {
+            "B": "12.10-13.00",
+            "C": "Sholat Zuhur Berjamaah"
+          }
+        },
+        {
+          "row": 56,
+          "cells": {
+            "B": "13.00-14.00",
+            "C": "Latihan Wushu",
+            "D": "Mahfuzat",
+            "E": "mahfuzat",
+            "F": "Mahfuzat"
+          }
+        },
+        {
+          "row": 57,
+          "cells": {
+            "B": "14.30-15.30",
+            "C": "B. INGGRIS",
+            "D": "AKIDAH AHLAK",
+            "E": "FIQIH",
+            "F": "PRAMUKA"
+          }
+        },
+        {
+          "row": 58,
+          "cells": {
+            "B": "15.00-selesai",
+            "C": "Sholat Ashar Berjamaah"
+          }
+        },
+        {
+          "row": 60,
+          "cells": {
+            "H": "Mamben Lauk, 20 Juli 2026"
+          }
+        },
+        {
+          "row": 61,
+          "cells": {
+            "H": "Mengetahui,"
+          }
+        },
+        {
+          "row": 62,
+          "cells": {
+            "H": "Kepala Sekolah SD IT Al-Madani"
+          }
+        },
+        {
+          "row": 67,
+          "cells": {
+            "H": "ELI HERLINA KUSUMAYANI, S.Pd"
+          }
+        }
+      ],
+      "merges": [
+        "C25:H25",
+        "C55:H55",
+        "A29:A38",
+        "C9:H9",
+        "A7:A8",
+        "A19:A28",
+        "A14:A18",
+        "A1:H1",
+        "A49:A58",
+        "A6:H6",
+        "A39:A48",
+        "A9:A13",
+        "C39:H39",
+        "C48:H48",
+        "C7:H7",
+        "A3:H3",
+        "C19:H19",
+        "C38:H38",
+        "C28:H28",
+        "A2:H2",
+        "C49:H49",
+        "A4:H4",
+        "C58:H58",
+        "C14:H14",
+        "C45:H45",
+        "B7:B8",
+        "C35:H35",
+        "C29:H29"
+      ]
+    },
+    "Sheet2": {
+      "rows": [
+        {
+          "row": 1,
+          "cells": {
+            "A": "hari",
+            "B": "jam ke",
+            "C": "waktu",
+            "D": "kelas",
+            "J": "Kode Guru"
+          }
+        },
+        {
+          "row": 2,
+          "cells": {
+            "D": "I",
+            "E": "II",
+            "F": "III",
+            "G": "IV",
+            "H": "V",
+            "I": "VI",
+            "J": "1. ELI HERLINA KUSUMAYANI"
+          }
+        },
+        {
+          "row": 3,
+          "cells": {
+            "A": "SENIN",
+            "B": "I",
+            "C": "07.15-08.00",
+            "D": "Murajaah dan sholat duha",
+            "J": "2. MIFTAHUSSURUR, S.Pd"
+          }
+        },
+        {
+          "row": 4,
+          "cells": {
+            "B": "II",
+            "C": "08.00-08.45",
+            "D": "4. H",
+            "E": "4. H",
+            "F": "K.8",
+            "G": "K.9",
+            "H": "K.10",
+            "I": "K.11",
+            "J": "3. RAHMANIYAH, S.H.I"
+          }
+        },
+        {
+          "row": 5,
+          "cells": {
+            "B": "III",
+            "C": "08.45-09.10",
+            "D": "4. H",
+            "E": "4. H",
+            "F": "J.8",
+            "G": "3. A",
+            "H": "10. D",
+            "I": "11. C",
+            "J": "4. DARUSMAN ZAKARIA, S.Pd"
+          }
+        },
+        {
+          "row": 6,
+          "cells": {
+            "B": "IV",
+            "C": "09.10-09.35",
+            "D": "4. H",
+            "E": "4. H",
+            "F": "J.8",
+            "G": "3. A",
+            "H": "10. D",
+            "I": "11.C",
+            "J": "5. SUHARDI USMAN, S.Pd"
+          }
+        },
+        {
+          "row": 7,
+          "cells": {
+            "C": "09.35.10.00",
+            "D": "ISTIRAHAT",
+            "J": "6. WARDANI, S.Pd"
+          }
+        },
+        {
+          "row": 8,
+          "cells": {
+            "B": "V",
+            "C": "10.00-10.25",
+            "D": "G.6",
+            "E": "D.7",
+            "F": "I.12",
+            "G": "9. E",
+            "H": "10. G",
+            "I": "3. A",
+            "J": "7. RAUHUN, S.Pd"
+          }
+        },
+        {
+          "row": 9,
+          "cells": {
+            "B": "VI",
+            "C": "10.25-10.50",
+            "D": "G.6",
+            "E": "D.7",
+            "F": "I.12",
+            "G": "9. E",
+            "H": "10. G",
+            "I": "3. A",
+            "J": "8. NURLAILY, S.Pd"
+          }
+        },
+        {
+          "row": 10,
+          "cells": {
+            "B": "VII",
+            "C": "10.50-11.15",
+            "F": "C.8",
+            "G": "9. C",
+            "H": "10. J",
+            "I": "11. J",
+            "J": "9. MASHARI, S.Pd"
+          }
+        },
+        {
+          "row": 11,
+          "cells": {
+            "B": "VIII",
+            "C": "11.15-11.40",
+            "F": "C.8",
+            "G": "9. C",
+            "H": "10. J",
+            "I": "11. J",
+            "J": "10. NURUL JANNAH, S.Pd"
+          }
+        },
+        {
+          "row": 12,
+          "cells": {
+            "C": "11.40-12.10",
+            "D": "ISTIRAHAT",
+            "J": "11. FITRIATUL WAHYUNI, S.Pd"
+          }
+        },
+        {
+          "row": 13,
+          "cells": {
+            "C": "12.10-14.00",
+            "D": "SHOLAT ZUHUR DAN MENGAJI",
+            "J": "12. ZANI ISTI HARIANI. S.Pd"
+          }
+        },
+        {
+          "row": 14,
+          "cells": {
+            "B": "IX",
+            "C": "14.00-14.30",
+            "J": "13. LUKMAN"
+          }
+        },
+        {
+          "row": 15,
+          "cells": {
+            "B": "X",
+            "C": "14.30-15.00"
+          }
+        },
+        {
+          "row": 16,
+          "cells": {
+            "C": "15.00-Selesai"
+          }
+        },
+        {
+          "row": 17,
+          "cells": {
+            "A": "SELASA",
+            "B": "I",
+            "C": "07.15-08.00",
+            "D": "Murajaah dan sholat duha",
+            "J": "KODE MAPEL"
+          }
+        },
+        {
+          "row": 18,
+          "cells": {
+            "B": "II",
+            "C": "08.00-08.45",
+            "D": "6. K",
+            "E": "7. K",
+            "F": "4. H",
+            "G": "K.9",
+            "H": "K.10",
+            "I": "K.11",
+            "J": "A. PAI BP"
+          }
+        },
+        {
+          "row": 19,
+          "cells": {
+            "B": "III",
+            "C": "08.45-09.10",
+            "D": "3.A",
+            "E": "1. F",
+            "F": "4. H",
+            "G": "9. B",
+            "H": "10. D",
+            "I": "2.F",
+            "J": "B. PPKN"
+          }
+        },
+        {
+          "row": 20,
+          "cells": {
+            "B": "IV",
+            "C": "09.10-09.35",
+            "D": "3.A",
+            "E": "1. F",
+            "F": "4. H",
+            "G": "9. B",
+            "H": "10. D",
+            "I": "2. F",
+            "J": "C. BAHASA INDONESIA"
+          }
+        },
+        {
+          "row": 21,
+          "cells": {
+            "C": "09.35.10.00",
+            "D": "ISTIRAHAT",
+            "J": "D. MATEMATIKA"
+          }
+        },
+        {
+          "row": 22,
+          "cells": {
+            "B": "V",
+            "C": "10.00-10.25",
+            "D": "6. D",
+            "E": "7. G",
+            "F": "8. J",
+            "G": "9. D",
+            "H": "3. A",
+            "I": "11. C",
+            "J": "E. IPAS"
+          }
+        },
+        {
+          "row": 23,
+          "cells": {
+            "B": "VI",
+            "C": "10.25-10.50",
+            "D": "6. D",
+            "E": "7. G",
+            "F": "8. J",
+            "G": "9. D",
+            "H": "3. A",
+            "I": "11. C",
+            "J": "F. BAHASA INGGRIS"
+          }
+        },
+        {
+          "row": 24,
+          "cells": {
+            "B": "VII",
+            "C": "10.50-11.15",
+            "F": "8. C",
+            "G": "9. E",
+            "H": "12. I",
+            "I": "11. B",
+            "J": "G. SENI RUPA"
+          }
+        },
+        {
+          "row": 25,
+          "cells": {
+            "B": "VIII",
+            "C": "11.15-11.40",
+            "F": "8. C",
+            "G": "9. E",
+            "H": "12. 1",
+            "I": "11. B",
+            "J": "H. PJOK"
+          }
+        },
+        {
+          "row": 26,
+          "cells": {
+            "C": "11.40-12.10",
+            "D": "ISTIRAHAT",
+            "J": "I. MULOK/B.SASAK"
+          }
+        },
+        {
+          "row": 27,
+          "cells": {
+            "C": "12.10-14.00",
+            "D": "SHOLAT ZUHUR DAN MENGAJI",
+            "J": "J. BTA"
+          }
+        },
+        {
+          "row": 28,
+          "cells": {
+            "B": "IX",
+            "C": "14.00-14.30",
+            "J": "K. TAHFIZ"
+          }
+        },
+        {
+          "row": 29,
+          "cells": {
+            "B": "X",
+            "C": "14.30-15.00",
+            "J": "L. FIQIH"
+          }
+        },
+        {
+          "row": 30,
+          "cells": {
+            "C": "15.00-Selesai",
+            "J": "M. BAHASA ARAB"
+          }
+        },
+        {
+          "row": 31,
+          "cells": {
+            "A": "RABU",
+            "B": "I",
+            "C": "07.15-08.00",
+            "D": "Murajaah dan sholat duha",
+            "J": "N. AKIDAH AHLAK"
+          }
+        },
+        {
+          "row": 32,
+          "cells": {
+            "B": "II",
+            "C": "08.00-08.45",
+            "I": "4. H"
+          }
+        },
+        {
+          "row": 33,
+          "cells": {
+            "B": "III",
+            "C": "08.45-09.10",
+            "I": "4. H",
+            "J": "DAFTAR WALI KELAS"
+          }
+        },
+        {
+          "row": 34,
+          "cells": {
+            "B": "IV",
+            "C": "09.10-09.35",
+            "I": "4. H",
+            "J": "I",
+            "K": "WARDANI, S.PD"
+          }
+        },
+        {
+          "row": 35,
+          "cells": {
+            "C": "09.35.10.00",
+            "D": "ISTIRAHAT",
+            "J": "II",
+            "K": "RAUHUN, S.PD"
+          }
+        },
+        {
+          "row": 36,
+          "cells": {
+            "B": "V",
+            "C": "10.00-10.25",
+            "I": "11. E",
+            "J": "III",
+            "K": "NURLAILY, S.PD"
+          }
+        },
+        {
+          "row": 37,
+          "cells": {
+            "B": "VI",
+            "C": "10.25-10.50",
+            "I": "11. E",
+            "J": "IV",
+            "K": "MASHARI, S.PD"
+          }
+        },
+        {
+          "row": 38,
+          "cells": {
+            "B": "VII",
+            "C": "10.50-11.15",
+            "I": "12. I",
+            "J": "V",
+            "K": "NURUL JANNAH, S.PD"
+          }
+        },
+        {
+          "row": 39,
+          "cells": {
+            "B": "VIII",
+            "C": "11.15-11.40",
+            "I": "12. I",
+            "J": "VI",
+            "K": "FITRIATUL WAHYUNI"
+          }
+        },
+        {
+          "row": 40,
+          "cells": {
+            "C": "11.40-12.10",
+            "D": "ISTIRAHAT"
+          }
+        },
+        {
+          "row": 41,
+          "cells": {
+            "C": "12.10-14.00",
+            "D": "SHOLAT ZUHUR DAN MENGAJI"
+          }
+        },
+        {
+          "row": 42,
+          "cells": {
+            "B": "IX",
+            "C": "14.00-14.30"
+          }
+        },
+        {
+          "row": 43,
+          "cells": {
+            "B": "X",
+            "C": "14.30-15.00"
+          }
+        },
+        {
+          "row": 44,
+          "cells": {
+            "C": "15.00-Selesai"
+          }
+        },
+        {
+          "row": 45,
+          "cells": {
+            "A": "KAMIS",
+            "B": "I",
+            "C": "07.15-08.00",
+            "D": "Murajaah dan sholat duha"
+          }
+        },
+        {
+          "row": 46,
+          "cells": {
+            "B": "II",
+            "C": "08.00-08.45",
+            "F": "K.8",
+            "H": "4. H",
+            "I": "K.11"
+          }
+        },
+        {
+          "row": 47,
+          "cells": {
+            "B": "III",
+            "C": "08.45-09.10",
+            "H": "4. H"
+          }
+        },
+        {
+          "row": 48,
+          "cells": {
+            "B": "IV",
+            "C": "09.10-09.35",
+            "H": "4. H"
+          }
+        },
+        {
+          "row": 49,
+          "cells": {
+            "C": "09.35.10.00",
+            "D": "ISTIRAHAT"
+          }
+        },
+        {
+          "row": 50,
+          "cells": {
+            "B": "V",
+            "C": "10.00-10.25"
+          }
+        },
+        {
+          "row": 51,
+          "cells": {
+            "B": "VI",
+            "C": "10.25-10.50"
+          }
+        },
+        {
+          "row": 52,
+          "cells": {
+            "B": "VII",
+            "C": "10.50-11.15"
+          }
+        },
+        {
+          "row": 53,
+          "cells": {
+            "B": "VIII",
+            "C": "11.15-11.40"
+          }
+        },
+        {
+          "row": 54,
+          "cells": {
+            "C": "11.40-12.10",
+            "D": "ISTIRAHAT"
+          }
+        },
+        {
+          "row": 55,
+          "cells": {
+            "C": "12.10-14.00",
+            "D": "SHOLAT ZUHUR DAN MENGAJI"
+          }
+        },
+        {
+          "row": 56,
+          "cells": {
+            "B": "IX",
+            "C": "14.00-14.30"
+          }
+        },
+        {
+          "row": 57,
+          "cells": {
+            "B": "X",
+            "C": "14.30-15.00"
+          }
+        },
+        {
+          "row": 58,
+          "cells": {
+            "C": "15.00-Selesai"
+          }
+        },
+        {
+          "row": 59,
+          "cells": {
+            "A": "JUM'AT",
+            "B": "I",
+            "C": "07.00-07.40",
+            "D": "Murajaah dan sholat duha"
+          }
+        },
+        {
+          "row": 60,
+          "cells": {
+            "B": "II",
+            "C": "07.40-08.10",
+            "D": "ISTIRAHAT"
+          }
+        },
+        {
+          "row": 61,
+          "cells": {
+            "B": "III",
+            "C": "08.10-08.35"
+          }
+        },
+        {
+          "row": 62,
+          "cells": {
+            "B": "IV",
+            "C": "08.35-09.00"
+          }
+        },
+        {
+          "row": 63,
+          "cells": {
+            "C": "09.00-09.25"
+          }
+        },
+        {
+          "row": 64,
+          "cells": {
+            "B": "V",
+            "C": "09.25.09.50"
+          }
+        },
+        {
+          "row": 65,
+          "cells": {
+            "A": "SABTU",
+            "B": "I",
+            "C": "07.15-08.00",
+            "D": "Murajaah dan sholat duha"
+          }
+        },
+        {
+          "row": 66,
+          "cells": {
+            "B": "II",
+            "C": "08.00-08.45",
+            "F": "K.8",
+            "G": "4. H",
+            "H": "K.10",
+            "I": "K.11"
+          }
+        },
+        {
+          "row": 67,
+          "cells": {
+            "B": "III",
+            "C": "08.45-09.10",
+            "G": "4. H"
+          }
+        },
+        {
+          "row": 68,
+          "cells": {
+            "B": "IV",
+            "C": "09.10-09.35",
+            "G": "4. H"
+          }
+        },
+        {
+          "row": 69,
+          "cells": {
+            "C": "09.35.10.00",
+            "D": "ISTIRAHAT"
+          }
+        },
+        {
+          "row": 70,
+          "cells": {
+            "B": "V",
+            "C": "10.00-10.25"
+          }
+        },
+        {
+          "row": 71,
+          "cells": {
+            "B": "VI",
+            "C": "10.25-10.50"
+          }
+        },
+        {
+          "row": 72,
+          "cells": {
+            "B": "VII",
+            "C": "10.50-11.15"
+          }
+        },
+        {
+          "row": 73,
+          "cells": {
+            "B": "VIII",
+            "C": "11.15-11.40"
+          }
+        },
+        {
+          "row": 74,
+          "cells": {
+            "C": "11.40-12.10",
+            "D": "ISTIRAHAT"
+          }
+        },
+        {
+          "row": 75,
+          "cells": {
+            "C": "12.10-14.00",
+            "D": "SHOLAT ZUHUR DAN MENGAJI"
+          }
+        },
+        {
+          "row": 76,
+          "cells": {
+            "B": "IX",
+            "C": "14.00-14.30"
+          }
+        },
+        {
+          "row": 77,
+          "cells": {
+            "B": "X",
+            "C": "14.30-15.00"
+          }
+        },
+        {
+          "row": 78,
+          "cells": {
+            "C": "15.00-Selesai"
+          }
+        }
+      ],
+      "merges": [
+        "J6:L6",
+        "D27:I27",
+        "J24:L24",
+        "D13:I13",
+        "A17:A30",
+        "A59:A64",
+        "D41:I41",
+        "J27:L27",
+        "D17:I17",
+        "D21:I21",
+        "C1:C2",
+        "J4:L4",
+        "J26:L26",
+        "J20:L20",
+        "D7:I7",
+        "J11:L11",
+        "J7:L7",
+        "J25:L25",
+        "J22:L22",
+        "J31:L31",
+        "B1:B2",
+        "D12:I12",
+        "D3:I3",
+        "A31:A44",
+        "J12:L12",
+        "J3:L3",
+        "J21:L21",
+        "J2:L2",
+        "J33:L33",
+        "J18:L18",
+        "J23:L23",
+        "J8:L8",
+        "A45:A58",
+        "D35:I35",
+        "D26:I26",
+        "J17:L17",
+        "D1:I1",
+        "J29:L29",
+        "J5:L5",
+        "J14:L14",
+        "A65:A78",
+        "J10:L10",
+        "J28:L28",
+        "J13:L13",
+        "D40:I40",
+        "J19:L19",
+        "A3:A16",
+        "D31:I31",
+        "J9:L9",
+        "J30:L30",
+        "A1:A2"
+      ]
+    }
+  }
+}
