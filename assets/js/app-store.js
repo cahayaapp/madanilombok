@@ -46,7 +46,7 @@ export function studentsForClass(classId, master = state.master) {
     .filter(([, a]) => a?.classId === classId)
     .map(([studentId]) => studentId);
   const map = byId(master.students || []);
-  return ids.map(id => map[id]).filter(Boolean).sort((a,b) => (a.name || "").localeCompare(b.name || ""));
+  return ids.map(id => map[id]).filter(s=>s&&!s.mergedInto).sort((a,b) => (a.name || "").localeCompare(b.name || ""));
 }
 export function studentsForTeaching(schedule, master = state.master) {
   return [...new Map((schedule.classIds||schedule.combinedClassIds||[schedule.classId]).flatMap(id=>studentsForClass(id,master)).map(s=>[s.id,s])).values()].sort((a,b)=>a.name.localeCompare(b.name));
@@ -56,7 +56,7 @@ export function studentsForGroup(groupId, master = state.master) {
   if (!master) return [];
   const members = master.groupAssignments?.[groupId] || {};
   const map = byId(master.students || []);
-  return Object.keys(members).map(id => map[id]).filter(Boolean).sort((a,b) => (a.name || "").localeCompare(b.name || ""));
+  return Object.keys(members).map(id => map[id]).filter(s=>s&&!s.mergedInto).sort((a,b) => (a.name || "").localeCompare(b.name || ""));
 }
 
 export function childrenForParent(profile = {}, master = state.master) {

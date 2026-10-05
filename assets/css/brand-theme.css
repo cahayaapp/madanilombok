@@ -101,3 +101,25 @@ body[data-active-role=admin] .home-dashboard .role-evidence,body[data-active-rol
 .home-dashboard:has(.role-hero) .role-evidence{display:none}
 .home-dashboard>.role-evidence{display:none}
 @media(max-height:700px){.home-dashboard .official-greeting{min-height:76px;padding:8px 10px}.home-dashboard .official-date{display:none}.home-dashboard .guru-hub .hub-menu-card{min-height:44px;padding:8px}.home-dashboard .hub-quick-grid{margin-bottom:8px}.home-dense .me-menu .me-grid{grid-template-columns:repeat(4,minmax(0,1fr))}.home-dense .me-menu .me-card{padding:5px;min-height:42px}.home-dense .me-menu .me-card b{font-size:10px}.home-dashboard .official-name-row h1{font-size:19px}}
+
+/* Quran form: explicit rows keep action buttons clear of inputs and mobile navigation. */
+.quran-page{padding-bottom:calc(110px + env(safe-area-inset-bottom));min-width:0}
+.quran-page .teacher-student{min-width:0;scroll-margin-bottom:110px}
+.quran-page .teacher-student-head b{overflow-wrap:anywhere}
+.quran-page .teacher-student button{min-height:44px;white-space:normal;line-height:1.4;max-width:100%}
+.quran-page [hidden]{display:none!important}
+.quran-mode{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:12px 0 16px}
+.quran-mode button[aria-pressed="true"]{background:#008d87;color:white;box-shadow:inset 0 -3px #eaa329}
+.quran-portion{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;padding:14px;border:1px solid #dceae5;border-radius:14px;margin-bottom:12px;align-items:start}
+.quran-portion .quran-surah,.quran-portion .quran-remove{grid-column:1/-1}
+.quran-page .quran-portion .field{margin:0;min-width:0}
+.quran-remove{justify-self:start}
+.quran-range{display:grid;gap:12px;border-left:3px solid #eaa329;padding:14px;background:#fffcf4;border-radius:12px}
+.quran-range .field,.quran-range p{margin:0}
+.quran-total{padding:12px 0;margin:0 0 12px;color:#075a59}
+.quran-page .teacher-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;padding-bottom:8px}
+.quran-page button:focus-visible{outline:3px solid #eaa329;outline-offset:3px}
+@media(max-width:380px){.quran-mode{grid-template-columns:1fr}.quran-page .teacher-student{padding:12px}}
+.quran-page .teacher-student h3{margin:22px 0 14px;line-height:1.4}
+body:has(.quran-page){scroll-padding-top:90px;scroll-padding-bottom:110px}
+.quran-page input,.quran-page select,.quran-page textarea,.quran-page button{scroll-margin-top:100px;scroll-margin-bottom:110px}

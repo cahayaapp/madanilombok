@@ -178,3 +178,34 @@ Atas instruksi langsung pengguna, lokasi Kampus Al-Madani sudah disimpan lewat U
 - Header/hero yang sama dipasang pada seluruh 15 role, mempertahankan handler menu asli. Avatar menggunakan object-fit:cover, ukuran penuh, padding nol. Subtitle sesuai koreksi pengguna: PONDOK PESANTREN AL-MADANI.
 - brand-theme.css v49 diperbarui pada aplikasi/admin/publik; entry tetap memakai entry.css sesuai kontrak identitas. SVG code-native home-mosque/home-waves ditambahkan dan masuk cache PWA v49. Acuan identitas ditambahkan ke AGENTS.md.
 - 133 tests lulus; visual 15 role diperiksa dengan data mock, termasuk 320×568 tanpa tombol melewati batas navigasi bawah. Bukti /tmp/madani-official-home.png. Tidak deploy atau mengubah database pada pekerjaan tema.
+
+### 6 Oktober — pembaruan Guru Wali SMK dan pemeriksaan ulang SMP
+- Daftar screenshot SMK 6 Oktober: 64 siswa aktif live dipetakan ke 12 SDM canonical, termasuk ID STD yang dibuat admin. Paket seed/imports/smk-mentor-2026-update.json menyimpan nama sumber/master dan nomor urut untuk review.
+- Admin Import Data: tombol Terapkan Guru Wali SMK, preview seluruh pencocokan; pemeriksaan identitas/status/unit siswa dan SDM serta konflik mentor sebelum atomic patch. Menambah role Guru Wali dan mentee scope akun aktif terkait; role lain/SMP dipertahankan. Marker menyimpan assignment sebelumnya; tidak membuat siswa atau mengganti Wali Kelas/jadwal/finance.
+- File GURU WALI SMP 2026-2027 (1).xlsx diperiksa: seluruh isi baris sama dengan file awal, 80 assignment sama dengan export live. Tiga nama belum tercantum: HABIBURRAHMAN, HELGA ELVINA IRAWAN, SUJIYANA. ATIKA ZAHRA RATIFA dan BAIQ ATIKA ZAHRA RATIFA masih dua ID aktif; hanya yang berawalan BAIQ ada pada sumber (Ida Fitriana). Konfirmasi user diminta, belum menggabungkan atau menetapkan mentor tanpa sumber.
+- Paket SMK belum diterapkan live; sesi VS Code masih Kusma Dewi. Permintaan login Admin sudah dikirim. Hasrul Ali belum punya akun aktif terhubung pada audit; provisioning tidak dilakukan di pembaruan ini.
+
+### Konfirmasi identitas Atika — 6 Oktober 2026
+Pengguna menegaskan AMD-SMP-0013 ATIKA ZAHRA RATIFA = AMD-SMP-0016 BAIQ ATIKA ZAHRA RATIFA. Simpan alias terkonfirmasi di seed/imports/student-identity-confirmations-20261006.json, mentor Ida Fitriana. Pemeriksaan export live menemukan konflik NISN/NIK/tanggal lahir/nama orang tua dan biodata lain. Belum memilih/menimpa biodata, menonaktifkan record, memindahkan riwayat atau menulis live; perlu kepastian record biodata mana yang benar. Tiga nama SMP lain tetap belum punya sumber mentor.
+
+### Guru Wali SMK diterapkan LIVE
+6 Oktober: user login Admin dan meminta penerapan. Tombol Terapkan Guru Wali SMK berhasil menyimpan atomic patch; pembacaan ulang memverifikasi seluruh 64 penugasan aktif ke 12 mentor. Tidak ada missingAccounts pada hasil. Bukti /tmp/madani-guru-wali-smk-success.png.
+User kemudian memberi gambar NISN Baiq Atika; nomor cocok persis dengan AMD-SMP-0016, bukan AMD-SMP-0013. Biodata canonical AMD-SMP-0016 dikonfirmasi.
+
+### Atika: arsip duplikat LIVE selesai
+NISN canonical divalidasi sesuai screenshot user. Admin Import Data → Terapkan Identitas Atika: AMD-SMP-0013 status inactive, mergedInto AMD-SMP-0016, alasan validasi; canonical confirmedAliases ditambah. Pembacaan ulang berhasil: record canonical tetap aktif/binaan Ida Fitriana. Tidak menghapus/memindahkan riwayat lama, biodata canonical dan finance tidak ditulis. Daftar kelas/kelompok dan scoped roster lokal mengecualikan mergedInto untuk menghindari entri ganda; master lengkap tetap tersedia untuk lookup riwayat. 137 tes lulus. Tiga siswa SMP lain masih belum ada sumber Guru Wali.
+
+### 6 Oktober — laporan pelanggaran lintas unit
+Seluruh role internal memperoleh menu laporan (Naqib tetap memakai menu naqib-case agar tidak dobel). Guru Mapel, form workspace dan Naqib kini memilih reportableStudents dari seluruh santri aktif, tanpa batas unit/kelas/gender/mentee/asrama/jadwal, mengabaikan mergedInto. Submit memvalidasi ID dari roster aktif; metadata pelapor tetap disimpan; handler/transisi Konselor dan finance tidak diperluas. Pertanyaan cakupan Wali Santri/orang tua masih menunggu; asumsi sementara seluruh role internal, akses orang tua tetap seperti semula. Aturan boarding lokal sudah mengizinkan akun staf aktif lintas unit, tidak diubah/dideploy. 139 tes lulus termasuk pengiriman lintas unit untuk 13 role workspace dan Guru Mapel tanpa jadwal, rendering Naqib lintas scope. Cache v50. Tidak mengirim laporan kasus percobaan ke database produksi.
+
+## 6 Oktober — Pembina Tahfiz berdasarkan halaqah
+
+Permintaan terbaru: halaman Pembina Tahfiz mengikuti pembagian halaqah pengguna. `teacher/quran.js` sekarang hanya memakai kelompok binaan dari `teachingGroups`, tanpa memasukkan rombel dari jadwal pelajaran. Roster dan setoran baru memakai groupId; riwayat lama tidak diubah. Kelompok Tahsin otomatis memilih Tahsin dan menjadi acuan program anggota yang belum memiliki penempatan individual; kelompok campuran mendukung keduanya, penempatan individual bertanggal tetap diutamakan. Pembina yang belum pasti tidak dicocokkan otomatis.
+
+Verifikasi: 141 tes lokal lulus, termasuk kelompok tanpa jadwal, penolakan fallback kelas, anggota Tahsin tanpa placement dan penyimpanan groupId. Halaman VS Code dengan sesi Muhasim dan database aktif setelah reload menampilkan GEMA Mutqin — Muhasim dengan sembilan nama anggota yang cocok dengan daftar terkonfirmasi; Bain tetap tidak masuk sesuai penundaan pengguna. Tidak menulis catatan setoran percobaan maupun mengubah database. Belum deploy website hosting. Cache v51-tahfiz-halaqah.
+
+## 6 Oktober — Form banyak surat dan tata letak Tahfiz
+
+Mengacu `fajrulislam/guru/inputSetoranTahfiz.html`: ditambahkan mode Satu Surat / Manual dan Banyak Surat (Dari Surat, Sampai Surat, Ayat Terakhir), total ayat otomatis, termasuk rentang mundur. Mode tersedia Tahfiz/Tahsin/Murojaah; beralih mode mempertahankan isian manual. Validasi rentang tetap dijalankan sebelum simpan ke groupId. Checkbox terjemah/tadabbur/Cahaya Tahfiz dihapus dari form dan field deepReflection tidak ditulis pada setoran baru; record lama tidak diubah. Tata letak row surat, Hapus Baris, tombol aksi, margin judul dan ruang navigasi bawah diatur khusus quran-page.
+
+143 tes lokal lulus; tambahan menguji total/rincian banyak surat, ayat terakhir tidak valid, rentang mundur Tahsin, pelestarian isian manual, serta field checkbox yang dihapus. UI akun Muhasim di VS Code terverifikasi membuka mode Banyak Surat tanpa menyimpan setoran percobaan. Bukti /tmp/madani-banyak-surat.png. Cache v52-quran-multi-surah; stylesheet app v52. Belum deploy hosting.

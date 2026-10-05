@@ -15,6 +15,8 @@ export const WORKSPACE_GRANTS={
  head_formal_school:[...utilities,...managing,'management-residents','management-worship','management-learning','management-materials','management-scores','management-reports','education-calendar'],head_boys_dorm:[...utilities,...managing,'management-worship','management-programs','management-mentoring'],head_girls_dorm:[...utilities,...managing,'management-worship','management-programs','management-mentoring'],
  deputy_director:[...utilities,...leadership],director:[...utilities,...leadership],admin:[...utilities,...leadership,...teaching,'deposit-admin'],super_admin:[...utilities,...leadership,...teaching,'deposit-admin'],wali_santri:['work-profile','work-guide','parent-deposits']
 };
+// Naqib already has the dedicated naqib-case menu; avoid a duplicate reporting link.
+for(const role of Object.keys(WORKSPACE_GRANTS))if(!['wali_santri','naqib'].includes(role))WORKSPACE_GRANTS[role]=[...new Set([...WORKSPACE_GRANTS[role],'teacher-case'])];
 export function workspaceFeatures(role){return (WORKSPACE_GRANTS[role]||[]).map(id=>`workspace.${id}`);}
 export const MANAGEMENT_ROLES=['head_formal_school','head_boys_dorm','head_girls_dorm','deputy_director','director','admin','super_admin'];
 export const LEADERSHIP_ROLES=['deputy_director','director','admin','super_admin'];

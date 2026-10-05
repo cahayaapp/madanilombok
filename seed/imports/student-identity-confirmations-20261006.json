@@ -1,0 +1,17 @@
+{
+  "confirmedBy": "User, 6 Oktober 2026",
+  "identities": [
+    {
+      "canonicalStudentId": "AMD-SMP-0016",
+      "canonicalName": "BAIQ ATIKA ZAHRA RATIFA",
+      "aliasStudentId": "AMD-SMP-0013",
+      "aliasName": "ATIKA ZAHRA RATIFA",
+      "samePersonConfirmed": true,
+      "mentorStaffId": "AMD-SDM-0036",
+      "mentorName": "Ida Fitriana",
+      "mergeStatus": "duplicate_archived_live",
+      "reason": "NISN pada gambar pengguna cocok dengan record canonical AMD-SMP-0016. Biodata canonical dipertahankan; record duplikat dapat dinonaktifkan tanpa menghapus riwayat.",
+      "biodataSource": "Screenshot 2026-10-06 at 06.17.54.png"
+    }
+  ]
+}

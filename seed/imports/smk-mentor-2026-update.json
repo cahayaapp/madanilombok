@@ -1,0 +1,584 @@
+{
+  "id": "smk-guru-wali-20261006-v1",
+  "academicYearId": "TA-2026-2027-GANJIL",
+  "unitId": "UNIT-SMK",
+  "source": "Screenshot 2026-10-06 at 06.04.35.png",
+  "records": [
+    {
+      "studentId": "AMD-SMK-0027",
+      "studentName": "GIBRAN HABIL",
+      "mentorStaffId": "AMD-SDM-0042",
+      "mentorName": "Kusma Dewi",
+      "sourceName": "Gibran Habil",
+      "sourceRow": 1,
+      "sourceClass": "X DKV"
+    },
+    {
+      "studentId": "AMD-SMK-0041",
+      "studentName": "M. PATONI AKBAR",
+      "mentorStaffId": "AMD-SDM-0042",
+      "mentorName": "Kusma Dewi",
+      "sourceName": "M. Fatoni Akbar",
+      "sourceRow": 2,
+      "sourceClass": "X DKV"
+    },
+    {
+      "studentId": "STD-20261002091814-LCDZ",
+      "studentName": "Muh. Razaq Afrianto",
+      "mentorStaffId": "AMD-SDM-0042",
+      "mentorName": "Kusma Dewi",
+      "sourceName": "Muh. Razak Aprianto",
+      "sourceRow": 3,
+      "sourceClass": "X DKV"
+    },
+    {
+      "studentId": "AMD-SMK-0079",
+      "studentName": "ZIAD UBAIDILLAH SYARIF",
+      "mentorStaffId": "AMD-SDM-0042",
+      "mentorName": "Kusma Dewi",
+      "sourceName": "Ziad Ubaidillah",
+      "sourceRow": 4,
+      "sourceClass": "X DKV"
+    },
+    {
+      "studentId": "AMD-SMK-0076",
+      "studentName": "ZACKY PRAYOGA FEBRIANSYAH",
+      "mentorStaffId": "AMD-SDM-0042",
+      "mentorName": "Kusma Dewi",
+      "sourceName": "Zacky Prayoga Febriansyah",
+      "sourceRow": 5,
+      "sourceClass": "X DKV"
+    },
+    {
+      "studentId": "AMD-SMK-0021",
+      "studentName": "DEWI SULASTRI",
+      "mentorStaffId": "AMD-SDM-0081",
+      "mentorName": "WIWIK KARUNIAWATI",
+      "sourceName": "Dewi Sulastri",
+      "sourceRow": 6,
+      "sourceClass": "X TB"
+    },
+    {
+      "studentId": "AMD-SMK-0073",
+      "studentName": "TITIN AGUSTINA",
+      "mentorStaffId": "AMD-SDM-0081",
+      "mentorName": "WIWIK KARUNIAWATI",
+      "sourceName": "Titin Agustina",
+      "sourceRow": 7,
+      "sourceClass": "X TB"
+    },
+    {
+      "studentId": "AMD-SMK-0038",
+      "studentName": "LAYLATUN NUBUAH",
+      "mentorStaffId": "AMD-SDM-0081",
+      "mentorName": "WIWIK KARUNIAWATI",
+      "sourceName": "Laylatunnubuah",
+      "sourceRow": 8,
+      "sourceClass": "X TB"
+    },
+    {
+      "studentId": "AMD-SMK-0071",
+      "studentName": "SYARFANA IFA ADRIANA",
+      "mentorStaffId": "AMD-SDM-0081",
+      "mentorName": "WIWIK KARUNIAWATI",
+      "sourceName": "Syarfana Ifa Adriana",
+      "sourceRow": 9,
+      "sourceClass": "X TB"
+    },
+    {
+      "studentId": "AMD-SMK-0059",
+      "studentName": "OLIVIA RAMADANI",
+      "mentorStaffId": "AMD-SDM-0081",
+      "mentorName": "WIWIK KARUNIAWATI",
+      "sourceName": "Olivia Ramadani",
+      "sourceRow": 10,
+      "sourceClass": "X TB"
+    },
+    {
+      "studentId": "AMD-SMK-0055",
+      "studentName": "NIRMALA",
+      "mentorStaffId": "AMD-SDM-0052",
+      "mentorName": "Muammar",
+      "sourceName": "Nirmala",
+      "sourceRow": 11,
+      "sourceClass": "X TB"
+    },
+    {
+      "studentId": "AMD-SMK-0072",
+      "studentName": "Syifa Ula Sophia",
+      "mentorStaffId": "AMD-SDM-0052",
+      "mentorName": "Muammar",
+      "sourceName": "Syifa Ulya Shopia",
+      "sourceRow": 12,
+      "sourceClass": "X TB"
+    },
+    {
+      "studentId": "STD-20261002091913-D6PH",
+      "studentName": "Fazia Fitri",
+      "mentorStaffId": "AMD-SDM-0052",
+      "mentorName": "Muammar",
+      "sourceName": "Fazia Fitri",
+      "sourceRow": 13,
+      "sourceClass": "X TB"
+    },
+    {
+      "studentId": "STD-20261002091932-MYMY",
+      "studentName": "Restu Indira Afriadarsi",
+      "mentorStaffId": "AMD-SDM-0052",
+      "mentorName": "Muammar",
+      "sourceName": "Restu Indira Afriadarsi",
+      "sourceRow": 14,
+      "sourceClass": "X TB"
+    },
+    {
+      "studentId": "STD-20261002091959-OXKZ",
+      "studentName": "Lukina Jannatul Makwa",
+      "mentorStaffId": "AMD-SDM-0052",
+      "mentorName": "Muammar",
+      "sourceName": "Lukiana Jannatul Makwa",
+      "sourceRow": 15,
+      "sourceClass": "X TB"
+    },
+    {
+      "studentId": "AMD-SMK-0074",
+      "studentName": "VIA FAEZATUL HUSNA",
+      "mentorStaffId": "AMD-SDM-0015",
+      "mentorName": "Budy Kurniawan",
+      "sourceName": "Via Faizatul Husna",
+      "sourceRow": 16,
+      "sourceClass": "X TB"
+    },
+    {
+      "studentId": "STD-20261002092014-WH8U",
+      "studentName": "Azka Nabila",
+      "mentorStaffId": "AMD-SDM-0015",
+      "mentorName": "Budy Kurniawan",
+      "sourceName": "Azka Nabila",
+      "sourceRow": 17,
+      "sourceClass": "X TB"
+    },
+    {
+      "studentId": "AMD-SMK-0030",
+      "studentName": "Herwisda Pratiwi",
+      "mentorStaffId": "AMD-SDM-0015",
+      "mentorName": "Budy Kurniawan",
+      "sourceName": "Herwisda Pratiwi",
+      "sourceRow": 18,
+      "sourceClass": "X TB"
+    },
+    {
+      "studentId": "AMD-SMK-0005",
+      "studentName": "AIRA SANZABILA",
+      "mentorStaffId": "AMD-SDM-0015",
+      "mentorName": "Budy Kurniawan",
+      "sourceName": "Aira Sanzabila",
+      "sourceRow": 19,
+      "sourceClass": "XI TB"
+    },
+    {
+      "studentId": "AMD-SMK-0006",
+      "studentName": "AISYA RAYANIA",
+      "mentorStaffId": "AMD-SDM-0015",
+      "mentorName": "Budy Kurniawan",
+      "sourceName": "Aisya Rayania",
+      "sourceRow": 20,
+      "sourceClass": "XI TB"
+    },
+    {
+      "studentId": "AMD-SMK-0010",
+      "studentName": "ALENA",
+      "mentorStaffId": "AMD-SDM-0015",
+      "mentorName": "Budy Kurniawan",
+      "sourceName": "Alena",
+      "sourceRow": 21,
+      "sourceClass": "XI TB"
+    },
+    {
+      "studentId": "AMD-SMK-0017",
+      "studentName": "ASRY AYU ARDITHA",
+      "mentorStaffId": "AMD-SDM-0043",
+      "mentorName": "LIDIA WATI",
+      "sourceName": "Asry Ayu Arditha",
+      "sourceRow": 22,
+      "sourceClass": "XI TB"
+    },
+    {
+      "studentId": "AMD-SMK-0020",
+      "studentName": "BAIQ BELLA KAFFA SYAUMI",
+      "mentorStaffId": "AMD-SDM-0043",
+      "mentorName": "LIDIA WATI",
+      "sourceName": "Baiq Bella Kaffa Syaumi",
+      "sourceRow": 23,
+      "sourceClass": "XI TB"
+    },
+    {
+      "studentId": "AMD-SMK-0031",
+      "studentName": "HIDAYATUL NAZURA",
+      "mentorStaffId": "AMD-SDM-0043",
+      "mentorName": "LIDIA WATI",
+      "sourceName": "Hidayatul Nazura",
+      "sourceRow": 24,
+      "sourceClass": "XI TB"
+    },
+    {
+      "studentId": "AMD-SMK-0054",
+      "studentName": "Nian Napsani Yunita Nastari",
+      "mentorStaffId": "AMD-SDM-0043",
+      "mentorName": "LIDIA WATI",
+      "sourceName": "Nian Napsani Yunita Nastari",
+      "sourceRow": 25,
+      "sourceClass": "XI TB"
+    },
+    {
+      "studentId": "AMD-SMK-0062",
+      "studentName": "RIA QISTINA",
+      "mentorStaffId": "AMD-SDM-0043",
+      "mentorName": "LIDIA WATI",
+      "sourceName": "Ria Qistina",
+      "sourceRow": 26,
+      "sourceClass": "XI TB"
+    },
+    {
+      "studentId": "AMD-SMK-0070",
+      "studentName": "SYAFIRA JULIANANDA KURNIA",
+      "mentorStaffId": "AMD-SDM-0043",
+      "mentorName": "LIDIA WATI",
+      "sourceName": "Syafira Juliannada Kurnia",
+      "sourceRow": 27,
+      "sourceClass": "XI TB"
+    },
+    {
+      "studentId": "AMD-SMK-0024",
+      "studentName": "EVI ELVIA",
+      "mentorStaffId": "AMD-SDM-0034",
+      "mentorName": "HURRIATUL JANNAH",
+      "sourceName": "Evi Elvia",
+      "sourceRow": 28,
+      "sourceClass": "XI DKV"
+    },
+    {
+      "studentId": "AMD-SMK-0056",
+      "studentName": "NISA ULHUSNA",
+      "mentorStaffId": "AMD-SDM-0034",
+      "mentorName": "HURRIATUL JANNAH",
+      "sourceName": "Nisa Ulhusna",
+      "sourceRow": 29,
+      "sourceClass": "XI DKV"
+    },
+    {
+      "studentId": "AMD-SMK-0065",
+      "studentName": "Sakina Ulwiya Warahma",
+      "mentorStaffId": "AMD-SDM-0034",
+      "mentorName": "HURRIATUL JANNAH",
+      "sourceName": "Sakina Ulwiya Warahma",
+      "sourceRow": 30,
+      "sourceClass": "XI DKV"
+    },
+    {
+      "studentId": "STD-20261002092033-8YX3",
+      "studentName": "Tazzia Olipia",
+      "mentorStaffId": "AMD-SDM-0034",
+      "mentorName": "HURRIATUL JANNAH",
+      "sourceName": "Tazia Olivia",
+      "sourceRow": 31,
+      "sourceClass": "XI DKV"
+    },
+    {
+      "studentId": "AMD-SMK-0008",
+      "studentName": "Ajeng Putri Rizki",
+      "mentorStaffId": "AMD-SDM-0034",
+      "mentorName": "HURRIATUL JANNAH",
+      "sourceName": "Ajeng Putri Rizki",
+      "sourceRow": 32,
+      "sourceClass": "XI DKV"
+    },
+    {
+      "studentId": "AMD-SMK-0002",
+      "studentName": "Adhes Soedirat",
+      "mentorStaffId": "AMD-SDM-0033",
+      "mentorName": "HURIL IPTIHANI",
+      "sourceName": "Adhes Soedirat",
+      "sourceRow": 33,
+      "sourceClass": "XI TJKT"
+    },
+    {
+      "studentId": "AMD-SMK-0013",
+      "studentName": "ANAM ABQORI",
+      "mentorStaffId": "AMD-SDM-0033",
+      "mentorName": "HURIL IPTIHANI",
+      "sourceName": "Anam Abqori",
+      "sourceRow": 34,
+      "sourceClass": "XI TJKT"
+    },
+    {
+      "studentId": "AMD-SMK-0014",
+      "studentName": "Andreas Dwi Santoso",
+      "mentorStaffId": "AMD-SDM-0033",
+      "mentorName": "HURIL IPTIHANI",
+      "sourceName": "Andreas Dwi Santoso",
+      "sourceRow": 35,
+      "sourceClass": "XI TJKT"
+    },
+    {
+      "studentId": "AMD-SMK-0018",
+      "studentName": "BAIN AZIQRA",
+      "mentorStaffId": "AMD-SDM-0033",
+      "mentorName": "HURIL IPTIHANI",
+      "sourceName": "Bain Aziqra",
+      "sourceRow": 36,
+      "sourceClass": "XI TJKT"
+    },
+    {
+      "studentId": "AMD-SMK-0028",
+      "studentName": "Habiburohman",
+      "mentorStaffId": "AMD-SDM-0033",
+      "mentorName": "HURIL IPTIHANI",
+      "sourceName": "Habiburohman",
+      "sourceRow": 37,
+      "sourceClass": "XI TJKT"
+    },
+    {
+      "studentId": "AMD-SMK-0032",
+      "studentName": "Joni Saputra",
+      "mentorStaffId": "AMD-SDM-0033",
+      "mentorName": "HURIL IPTIHANI",
+      "sourceName": "Joni Saputra",
+      "sourceRow": 38,
+      "sourceClass": "XI TJKT"
+    },
+    {
+      "studentId": "AMD-SMK-0039",
+      "studentName": "M. NABIL WANNAJIB",
+      "mentorStaffId": "AMD-SDM-0083",
+      "mentorName": "Yumalia Ratmala",
+      "sourceName": "M. Nabil Wannajib",
+      "sourceRow": 39,
+      "sourceClass": "XI TJKT"
+    },
+    {
+      "studentId": "AMD-SMK-0043",
+      "studentName": "M. ZAINUL HAMDI SUMAR",
+      "mentorStaffId": "AMD-SDM-0083",
+      "mentorName": "Yumalia Ratmala",
+      "sourceName": "M. Zainul Hamdi Sumar",
+      "sourceRow": 40,
+      "sourceClass": "XI TJKT"
+    },
+    {
+      "studentId": "AMD-SMK-0047",
+      "studentName": "Muh. Nafaz Adil",
+      "mentorStaffId": "AMD-SDM-0083",
+      "mentorName": "Yumalia Ratmala",
+      "sourceName": "MUH. Nafaz Adil",
+      "sourceRow": 41,
+      "sourceClass": "XI TJKT"
+    },
+    {
+      "studentId": "AMD-SMK-0049",
+      "studentName": "MUHAMMAD BASTIAN FAIZ RAMZI",
+      "mentorStaffId": "AMD-SDM-0083",
+      "mentorName": "Yumalia Ratmala",
+      "sourceName": "Muhammad Bastian Faiz Ramzi",
+      "sourceRow": 42,
+      "sourceClass": "XI TJKT"
+    },
+    {
+      "studentId": "AMD-SMK-0053",
+      "studentName": "NAJIH PADIL",
+      "mentorStaffId": "AMD-SDM-0083",
+      "mentorName": "Yumalia Ratmala",
+      "sourceName": "Najil Padil",
+      "sourceRow": 43,
+      "sourceClass": "XI TJKT"
+    },
+    {
+      "studentId": "STD-20261002092108-LMR3",
+      "studentName": "Irwan Taufiq Azhar",
+      "mentorStaffId": "AMD-SDM-0083",
+      "mentorName": "Yumalia Ratmala",
+      "sourceName": "Irwan Taufiq Azhar",
+      "sourceRow": 44,
+      "sourceClass": "XI TJKT"
+    },
+    {
+      "studentId": "AMD-SMK-0004",
+      "studentName": "Aira Juliarti",
+      "mentorStaffId": "AMD-SDM-0011",
+      "mentorName": "AYU KHAFIFATUL JANNAH",
+      "sourceName": "Aira Juliarti",
+      "sourceRow": 45,
+      "sourceClass": "XII TB"
+    },
+    {
+      "studentId": "AMD-SMK-0009",
+      "studentName": "AKVINA KURNIATIN NAFIS",
+      "mentorStaffId": "AMD-SDM-0011",
+      "mentorName": "AYU KHAFIFATUL JANNAH",
+      "sourceName": "Akvina Kurniawatin Nafis",
+      "sourceRow": 46,
+      "sourceClass": "XII TB"
+    },
+    {
+      "studentId": "AMD-SMK-0015",
+      "studentName": "ARIFA MONICA EKARIANTI. J",
+      "mentorStaffId": "AMD-SDM-0011",
+      "mentorName": "AYU KHAFIFATUL JANNAH",
+      "sourceName": "Arifa Monica Ekarianti",
+      "sourceRow": 47,
+      "sourceClass": "XII TB"
+    },
+    {
+      "studentId": "AMD-SMK-0022",
+      "studentName": "Dini Apriani",
+      "mentorStaffId": "AMD-SDM-0011",
+      "mentorName": "AYU KHAFIFATUL JANNAH",
+      "sourceName": "Dini Apriani",
+      "sourceRow": 48,
+      "sourceClass": "XII TB"
+    },
+    {
+      "studentId": "AMD-SMK-0033",
+      "studentName": "KAELA KUSNIA",
+      "mentorStaffId": "AMD-SDM-0011",
+      "mentorName": "AYU KHAFIFATUL JANNAH",
+      "sourceName": "Kaela Kusnia",
+      "sourceRow": 49,
+      "sourceClass": "XII TB"
+    },
+    {
+      "studentId": "AMD-SMK-0058",
+      "studentName": "NURI MAOLIYA MARTA",
+      "mentorStaffId": "AMD-SDM-0011",
+      "mentorName": "AYU KHAFIFATUL JANNAH",
+      "sourceName": "Nuri Maoliya Marta",
+      "sourceRow": 50,
+      "sourceClass": "XII TB"
+    },
+    {
+      "studentId": "AMD-SMK-0060",
+      "studentName": "PUJI SUSANA PUTRI",
+      "mentorStaffId": "AMD-SDM-0038",
+      "mentorName": "IIN ZURIMA ADRIANI SAPUTRI",
+      "sourceName": "Puji Susana Putri",
+      "sourceRow": 51,
+      "sourceClass": "XII TB"
+    },
+    {
+      "studentId": "AMD-SMK-0063",
+      "studentName": "RIDHATUL NAJWI",
+      "mentorStaffId": "AMD-SDM-0038",
+      "mentorName": "IIN ZURIMA ADRIANI SAPUTRI",
+      "sourceName": "Ridhatul Najwi",
+      "sourceRow": 52,
+      "sourceClass": "XII TB"
+    },
+    {
+      "studentId": "AMD-SMK-0066",
+      "studentName": "SARTINI",
+      "mentorStaffId": "AMD-SDM-0038",
+      "mentorName": "IIN ZURIMA ADRIANI SAPUTRI",
+      "sourceName": "Sartini",
+      "sourceRow": 53,
+      "sourceClass": "XII TB"
+    },
+    {
+      "studentId": "AMD-SMK-0068",
+      "studentName": "Silvy Wahdiyatun Elena",
+      "mentorStaffId": "AMD-SDM-0038",
+      "mentorName": "IIN ZURIMA ADRIANI SAPUTRI",
+      "sourceName": "Silvy Wahdiyatun Elena",
+      "sourceRow": 54,
+      "sourceClass": "XII TB"
+    },
+    {
+      "studentId": "AMD-SMK-0069",
+      "studentName": "Sulistiana",
+      "mentorStaffId": "AMD-SDM-0038",
+      "mentorName": "IIN ZURIMA ADRIANI SAPUTRI",
+      "sourceName": "Sulistiana",
+      "sourceRow": 55,
+      "sourceClass": "XII TB"
+    },
+    {
+      "studentId": "AMD-SMK-0077",
+      "studentName": "ZAHRA NANDATUL AENI",
+      "mentorStaffId": "AMD-SDM-0038",
+      "mentorName": "IIN ZURIMA ADRIANI SAPUTRI",
+      "sourceName": "Zahra Nandatul Aeni",
+      "sourceRow": 56,
+      "sourceClass": "XII TB"
+    },
+    {
+      "studentId": "AMD-SMK-0025",
+      "studentName": "FIRDATUL ARDILAH",
+      "mentorStaffId": "AMD-SDM-0038",
+      "mentorName": "IIN ZURIMA ADRIANI SAPUTRI",
+      "sourceName": "Firdatul Ardilah",
+      "sourceRow": 57,
+      "sourceClass": "XII TB"
+    },
+    {
+      "studentId": "AMD-SMK-0011",
+      "studentName": "Alvin Azra Wardana",
+      "mentorStaffId": "AMD-SDM-0073",
+      "mentorName": "Saparwadi",
+      "sourceName": "Alvin Azra Wardana",
+      "sourceRow": 58,
+      "sourceClass": "XII DKV"
+    },
+    {
+      "studentId": "AMD-SMK-0016",
+      "studentName": "ARMAN MAOLANA",
+      "mentorStaffId": "AMD-SDM-0073",
+      "mentorName": "Saparwadi",
+      "sourceName": "Arman Maolana",
+      "sourceRow": 59,
+      "sourceClass": "XII DKV"
+    },
+    {
+      "studentId": "AMD-SMK-0023",
+      "studentName": "DYLAN FAJAR FADLILLAH",
+      "mentorStaffId": "AMD-SDM-0073",
+      "mentorName": "Saparwadi",
+      "sourceName": "Dylan Fajar Fadlillah",
+      "sourceRow": 60,
+      "sourceClass": "XII DKV"
+    },
+    {
+      "studentId": "AMD-SMK-0046",
+      "studentName": "MUH. HABIB AWALUDDIN",
+      "mentorStaffId": "AMD-SDM-0004",
+      "mentorName": "AHMAD HANAFI HASBIBULLOH",
+      "sourceName": "MUH. Habib Awaluddin",
+      "sourceRow": 61,
+      "sourceClass": "XII DKV"
+    },
+    {
+      "studentId": "AMD-SMK-0051",
+      "studentName": "MUHAMMAD RIDHO",
+      "mentorStaffId": "AMD-SDM-0004",
+      "mentorName": "AHMAD HANAFI HASBIBULLOH",
+      "sourceName": "Muhammad Ridho",
+      "sourceRow": 62,
+      "sourceClass": "XII DKV"
+    },
+    {
+      "studentId": "AMD-SMK-0052",
+      "studentName": "NABIL AL AKBAR ANANDATA",
+      "mentorStaffId": "AMD-SDM-0004",
+      "mentorName": "AHMAD HANAFI HASBIBULLOH",
+      "sourceName": "Nabil Al Akbar Anandata",
+      "sourceRow": 63,
+      "sourceClass": "XII DKV"
+    },
+    {
+      "studentId": "AMD-SMK-0080",
+      "studentName": "ZUMIROH FASTAWA",
+      "mentorStaffId": "AMD-SDM-0004",
+      "mentorName": "AHMAD HANAFI HASBIBULLOH",
+      "sourceName": "Zumiroh Fastawa",
+      "sourceRow": 64,
+      "sourceClass": "XII DKV"
+    }
+  ]
+}

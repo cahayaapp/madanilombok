@@ -148,3 +148,13 @@ test('profile saves only presentation fields and preserves canonical identity an
  const profile=getModule(new URL('assets/js/profile.js',base).href).namespace;
  assert.throws(()=>profile.profileDraft(' ',''));assert.throws(()=>profile.profileDraft('Nama','javascript:alert(1)'));assert.throws(()=>profile.validatePassword('old','short','short'));assert.throws(()=>profile.validatePassword('old-password','new-password','different'));assert.doesNotThrow(()=>profile.validatePassword('old-password','new-password','new-password'));
 });
+
+test('every internal reporting role can submit an active student outside its unit, class and gender scope',async()=>{
+ for(const role of Object.keys(ROLE_LABELS).filter(r=>!['wali_santri','naqib'].includes(r))){
+  const ctx=ctxFor(role);ctx.session.profile={...ctx.session.profile,unitIds:['u1'],scopeGender:'L',menteeStudentIds:['s1']};ctx.master={...master,students:[...master.students,{id:'other-unit',name:'Santri Lintas Unit',unitId:'u2',gender:'P',status:'active'},{id:'archived',name:'Duplikat',mergedInto:'other-unit',status:'inactive'}]};
+  assert.ok(canAccess('workspace.teacher-case',[role]));await routes['teacher-case'](ctx);const form=ctx.root.querySelector('#teacherCaseForm');assert.ok(form.elements.studentId.querySelector('option[value="other-unit"]'));assert.equal(form.elements.studentId.querySelector('option[value="archived"]'),null);
+  for(const [k,v]of Object.entries({studentId:'other-unit',date:'2026-10-06',category:'Kedisiplinan',description:'Kejadian uji lintas unit',evidence:'Saksi'}))form.elements[k].value=v;
+  writes=[];submit(form);await settle();assert.equal(writes.length,1);assert.equal(writes[0].data.studentId,'other-unit');assert.equal(writes[0].data.reporterRole,role);assert.equal(writes[0].data.status,'menunggu_konselor');
+ }
+ const boarding=await load(new URL('assets/js/modules/boarding.js',base).href);await boarding.evaluate();const ctx=ctxFor('naqib');ctx.master={...master,students:[{id:'other-unit',name:'Lintas Unit',unitId:'u2',gender:'P',status:'active'}]};ctx.session.profile={unitIds:['u1'],scopeGender:'L'};await boarding.namespace.renderNaqibCase(ctx);assert.ok(ctx.root.querySelector('option[value="other-unit"]'));
+});

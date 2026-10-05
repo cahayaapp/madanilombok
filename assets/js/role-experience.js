@@ -35,7 +35,7 @@ export function sessionForRole(session,role) {
   return {...scoped,profile:effectiveProfile(scoped)};
 }
 export function filterScopedStudents(master,profile,role) {
-  let rows=master.students||[];
+  let rows=(master.students||[]).filter(s=>!s.mergedInto);
   if(role==='mentor_tahsin_tahfiz'){const groups=teachingGroups(master,profile,'quran');return rows.filter(s=>groups.some(g=>master.groupAssignments?.[g.id]?.[s.id]));}
   if(role==='wali_santri') return rows.filter(s=>(profile.studentIds||[profile.studentId]).includes(s.id));
   if(role==='guru_wali')return rows.filter(s=>{const a=master.mentorAssignments?.[s.id];return a?!!profile.staffId&&a.status==='active'&&a.mentorStaffId===profile.staffId:!!profile.menteeStudentIds?.includes(s.id);});
@@ -54,4 +54,9 @@ export function bottomRoutes(role,canRoute) {
   const exp=ROLE_EXPERIENCE[role]||{};
   const safe=(id,fallback)=>canRoute(id)?id:(canRoute(fallback)?fallback:null);
   return {profile:safe('work-profile',null),schedule:safe(exp.schedule,'work-schedule'),kpi:null,home:'dashboard',messages:safe(role==='wali_santri'?'parent-messages':'work-messages',null)};
+}
+
+// Reporting a witnessed incident is independent of teaching, mentoring and dorm scopes.
+export function reportableStudents(master={}) {
+ return [...new Map((master.students||[]).filter(s=>!s.mergedInto&&(!s.status||s.status==='active')).map(s=>[s.id,s])).values()].sort((a,b)=>(a.name||'').localeCompare(b.name||''));
 }

@@ -6,7 +6,7 @@ import {OPERATION_VIEWS,renderManagementOperations} from '../management-operatio
 import {renderRegistry,renderManagementPeople,renderCaseDecisions} from '../management-registry.js';
 import {getNode,listNode,createWorkspaceRecord,transitionWorkspaceRecord} from '../repository.js';
 import {canAccess,ROLE_LABELS} from '../permissions.js';
-import {ROLE_EXPERIENCE,filterScopedStudents,localDate} from '../role-experience.js';
+import {ROLE_EXPERIENCE,filterScopedStudents,reportableStudents,localDate} from '../role-experience.js';
 import {MANAGEMENT_ROLES,LEADERSHIP_ROLES} from '../role-workspace-catalog.js';
 import {managementScope,canSeeManagement,validateTransition,escalationTarget,FINDING_TRANSITIONS,FINDING_LABELS,requireAssignedId} from '../workflow-model.js';
 import {pageHeader,panel,metric,table,formRow,input,textarea,select,selectOptions,studentOptions,attachAsync,escapeHtml as e,badge,empty,toast} from './common.js';
@@ -81,8 +81,8 @@ export async function renderAcademicFollowup(ctx){
 }
 export async function renderTeacherCase(ctx){
  authorize(ctx,'teacher-case');
- const students=filterScopedStudents(ctx.master,ctx.session.profile,role(ctx));
- ctx.root.innerHTML=pageHeader('Lapor Kasus / Pelanggaran','Guru melaporkan fakta; Konselor menangani tabayyun dan tindakan formal.')+form(ctx,'teacherCaseForm','Laporan Guru',formRow('Santri',select('studentId',studentOptions(students),'required'))+formRow('Tanggal',input('date',localDate(),'date','required'))+formRow('Kategori',input('category','','text','required maxlength="120"'))+textField('Kronologi faktual','description')+textField('Evidence / saksi','evidence'));
+ const students=reportableStudents(ctx.master);
+ ctx.root.innerHTML=pageHeader('Lapor Kasus / Pelanggaran','Laporkan santri dari semua unit pendidikan. Konselor menangani tabayyun dan tindakan formal.')+form(ctx,'teacherCaseForm','Laporan Pelanggaran',formRow('Santri',select('studentId',studentOptions(students),'required'))+formRow('Tanggal',input('date',localDate(),'date','required'))+formRow('Kategori',input('category','','text','required maxlength="120"'))+textField('Kronologi faktual','description')+textField('Evidence / saksi','evidence'));
  attachAsync(ctx.root.querySelector('#teacherCaseForm'),async data=>{requireAssignedId(data.studentId,students,'Santri');await createWorkspaceRecord(`boarding/cases/${ctx.yearId}`,{...payload(ctx,data),status:'menunggu_konselor',reportedByUid:uid(ctx),reporterRole:role(ctx),parentVisible:false},uid(ctx));await ctx.rerender();},'Laporan masuk ke antrean Konselor.');
 }
 export async function renderWorkKpi(ctx){

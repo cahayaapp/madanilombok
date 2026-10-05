@@ -5,7 +5,7 @@ import {recurringView,arabicRosterView} from '../boarding-roster-view.js';
 import {dailyForStaff,programStudents,genderMatches} from '../daily-schedules.js';
 import { getNode, listNode, pushRecord, saveRecord, setNode, patchNode, transitionWorkspaceRecord, commitCaseOperation } from "../repository.js";
 import { byId, studentsForClass } from "../app-store.js";
-import {filterScopedStudents,localDate} from '../role-experience.js';
+import {filterScopedStudents,reportableStudents,localDate} from '../role-experience.js';
 import {
   pageHeader, panel, metric, table, formRow, input, textarea, select, selectOptions, studentOptions,
   attachAsync, escapeHtml, badge, toast
@@ -108,9 +108,9 @@ export async function renderNaqibGuide(ctx) {
 }
 
 export async function renderNaqibCase(ctx) {
-  const students=boardingStudents(ctx);
-  ctx.root.innerHTML=pageHeader("Lapor Kasus / Pelanggaran","Naqib melaporkan temuan. Penanganan formal dilakukan Konselor.")+panel("Form Laporan",`<form id="caseReportForm" class="portal-form max-760">${formRow("Tanggal",input("date",today(),"date","required"))}${formRow("Santri",select("studentId",studentOptions(students),"required"))}${formRow("Kategori",select("category","<option>Kedisiplinan</option><option>Akhlak</option><option>Ibadah</option><option>Relasi</option><option>Akademik</option><option>Keamanan</option><option>Lainnya</option>"))}${formRow("Tingkat",select("severity","<option value='ringan'>Ringan</option><option value='sedang'>Sedang</option><option value='berat'>Berat</option><option value='kritis'>Kritis</option>"))}${formRow("Kronologi",textarea("description","","required"),true)}${formRow("Saksi/Bukti Awal",textarea("evidence"),true)}<div class="notice info full">Laporan ini masuk ke Kotak Kasus Konselor. Naqib tidak memberikan konsekuensi formal dari halaman ini.</div><div class="form-actions"><button class="btn btn-primary">Kirim ke Konselor</button></div></form>`);
-  attachAsync(document.getElementById("caseReportForm"),async data=>{await pushRecord(`boarding/cases/${ctx.yearId}`,{...data,status:"baru",reportedBy:ctx.session.user.uid,reportedByRole:"naqib"},ctx.session.user.uid);document.getElementById("caseReportForm").reset();},"Kasus dikirim ke Konselor.");
+  const students=reportableStudents(ctx.master);
+  ctx.root.innerHTML=pageHeader("Lapor Kasus / Pelanggaran","Laporkan santri dari semua unit pendidikan. Penanganan formal dilakukan Konselor.")+panel("Form Laporan",`<form id="caseReportForm" class="portal-form max-760">${formRow("Tanggal",input("date",today(),"date","required"))}${formRow("Santri",select("studentId",studentOptions(students),"required"))}${formRow("Kategori",select("category","<option>Kedisiplinan</option><option>Akhlak</option><option>Ibadah</option><option>Relasi</option><option>Akademik</option><option>Keamanan</option><option>Lainnya</option>"))}${formRow("Tingkat",select("severity","<option value='ringan'>Ringan</option><option value='sedang'>Sedang</option><option value='berat'>Berat</option><option value='kritis'>Kritis</option>"))}${formRow("Kronologi",textarea("description","","required"),true)}${formRow("Saksi/Bukti Awal",textarea("evidence"),true)}<div class="notice info full">Laporan ini masuk ke Kotak Kasus Konselor. Naqib tidak memberikan konsekuensi formal dari halaman ini.</div><div class="form-actions"><button class="btn btn-primary">Kirim ke Konselor</button></div></form>`);
+  attachAsync(document.getElementById("caseReportForm"),async data=>{if(!students.some(s=>s.id===data.studentId))throw Error("Santri tidak tersedia dalam master aktif.");await pushRecord(`boarding/cases/${ctx.yearId}`,{...data,status:"baru",reportedBy:ctx.session.user.uid,reportedByRole:"naqib"},ctx.session.user.uid);document.getElementById("caseReportForm").reset();},"Kasus dikirim ke Konselor.");
 }
 
 export async function renderNaqibSelf(ctx) {return renderNaqibReflection(ctx);}
