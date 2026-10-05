@@ -12,7 +12,17 @@
       "database.rules.json",
       "seed-admin-profile.example.json",
       "**/.*",
-      "**/node_modules/**"
+      "**/node_modules/**",
+      "AGENTS.md",
+      "docs/**",
+      "tests/**",
+      "scripts/**",
+      "outputs/**",
+      "source-data/**",
+      "*.md",
+      "setup/**",
+      "assets/js/setup-admin.js",
+      "seed/pilot-accounts.json"
     ],
     "cleanUrls": true
   }

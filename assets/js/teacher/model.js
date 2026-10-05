@@ -17,8 +17,20 @@ export function teacherSchedules(ctx) {
   const schedules=(master.academicSchedules||[]).filter(s=>!s.isExample&&!String(s.id||'').startsWith('example-')&&!(ctx.session.activeRole==='guru_mapel'&&/tahsin|tahfi[dz]|mutqin|ziyadah|muraja|muroja/i.test((master.subjects||[]).find(x=>x.id===s.subjectId)?.name||s.activityName||''))&&s.status!=='inactive'&&(!s.academicYearId||s.academicYearId===ctx.yearId)&&allowed.has(s.classId)&&(!p.subjectIds?.length||p.subjectIds.includes(s.subjectId))&&((s.staffId||s.teacherStaffId)?(s.staffId||s.teacherStaffId)===staffId(ctx):scoped));
   const result=schedules.map(s=>({...s,unitId:s.unitId||classes.find(c=>c.id===s.classId)?.unitId||'',day:s.day==='Ahad'?'Minggu':s.day,assignmentConfirmed:s.teacherAssignmentStatus==='needs_review'?false:!!(s.staffId||s.teacherStaffId||(p.classIds?.length&&p.subjectIds?.length))}));
   const sessions=new Map();for(const s of result){const id=s.teachingSessionId||s.id;if(!sessions.has(id))sessions.set(id,{...s,id,classIds:s.combinedClassIds||[s.classId]});}
-  return [...sessions.values()].sort((a,b)=>DAYS.indexOf(a.day)-DAYS.indexOf(b.day)||minutes(a.startTime)-minutes(b.startTime));
+  return mergeConsecutiveSchedules([...sessions.values()]);
 }
+// Keep the first source ID as the canonical session ID; never rewrite timetable/history.
+export function mergeConsecutiveSchedules(rows){
+ const groups=new Map();
+ for(const row of rows){const key=JSON.stringify([row.academicYearId||'',row.day,row.unitId||'',row.staffId||row.teacherStaffId||'',row.subjectId,[...(row.classIds||[row.classId])].sort(),row.assignmentConfirmed,row.teacherAssignmentStatus||'']);if(!groups.has(key))groups.set(key,[]);groups.get(key).push(row);}
+ const result=[];
+ for(const rows of groups.values()){
+  rows.sort((a,b)=>minutes(a.startTime)-minutes(b.startTime)||String(a.id).localeCompare(String(b.id)));let previous=null;
+  for(const row of rows){const ids=row.sourceScheduleIds||[row.id];if(previous&&Number.isFinite(minutes(row.startTime))&&minutes(previous.endTime)===minutes(row.startTime)&&minutes(row.endTime)>minutes(row.startTime)){previous.endTime=row.endTime;previous.sourceScheduleIds.push(...ids);previous.slotCount=previous.sourceScheduleIds.length;}else{previous={...row,sourceScheduleIds:[...ids],slotCount:ids.length};result.push(previous);}}
+ }
+ return result.sort((a,b)=>DAYS.indexOf(a.day)-DAYS.indexOf(b.day)||minutes(a.startTime)-minutes(b.startTime)||String(a.id).localeCompare(String(b.id)));
+}
+export function attendanceForSchedule(records,schedule){return (schedule.sourceScheduleIds||[schedule.id]).map(id=>records?.[id]).find(Boolean)||null;}
 export const assignmentKey=s=>`${s.classIds?.length>1?[...s.classIds].sort().join('+'):s.classId}__${s.subjectId}`;
 export function assignments(schedules) {const map=new Map();for(const s of schedules){const key=assignmentKey(s);if(!map.has(key))map.set(key,{...s,id:key,days:[]});const a=map.get(key);if(!a.days.includes(s.day))a.days.push(s.day);}return [...map.values()];}
 export function meetingDates(year,semester,days,holidays=[]) {

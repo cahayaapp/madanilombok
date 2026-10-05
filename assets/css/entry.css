@@ -8,3 +8,31 @@
 @media(min-width:600px){.scene{padding:28px 0}.entry-shell{min-height:940px;border-radius:34px;padding-top:114px}.brand-logo{width:92px;height:92px}.brand-name{font-size:36px}.brand-sub{font-size:14px}.install-title{font-size:31px}.install-desc{font-size:14px}.benefit{min-height:116px}.benefit strong{font-size:14px}.official{font-size:12px}.install-hint{font-size:12px}.continue-web{font-size:14px}.install-btn{font-size:22px;min-height:62px}}
 @media(max-width:360px){.entry-shell{padding-left:20px;padding-right:20px}.brand-name{font-size:29px}.install-title{font-size:25px}.install-btn{font-size:18px}.benefit strong{font-size:11px}}
 @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
+
+/* Fit the entry screen to the available viewport, including browser chrome. */
+[hidden]{display:none!important}
+html,body{height:100%;min-height:0;overflow:hidden}
+.scene{height:100svh;height:100dvh;min-height:0;padding:0}
+.entry-shell{height:100%;min-height:0;max-height:960px;align-self:center;justify-content:center;padding: max(18px,env(safe-area-inset-top)) 28px max(24px,env(safe-area-inset-bottom));border-radius:0}
+.brand-logo{width:clamp(48px,9dvh,84px);height:clamp(48px,9dvh,84px)}
+.brand-name{font-size:clamp(26px,4dvh,36px);margin-top:8px}
+.brand-sub{font-size:12px}
+.install-title{font-size:clamp(24px,3.6dvh,31px);margin-top:clamp(10px,2dvh,21px)}
+.install-desc{font-size:12px;margin-top:8px}
+.benefits{margin-top:clamp(10px,2dvh,18px)}
+.benefit{min-height:0;padding:10px 3px;gap:4px}
+.benefit-icon{width:clamp(34px,6dvh,55px);height:clamp(34px,6dvh,55px)}
+.benefit-icon svg{width:28px;height:28px}
+.benefit strong{font-size:12px}
+.install-btn{min-height:50px;font-size:20px;margin-top:14px}
+.install-btn:disabled{opacity:.65;cursor:wait}
+.install-hint-box{margin-top:10px;padding:10px 12px;min-height:0}
+.install-hint{font-size:11px;line-height:1.4}
+.continue-web,.back-install{min-height:44px;font-size:12px}
+.login-main{margin-top:20px}
+.field input{font-size:16px}
+@media(min-width:600px) and (min-height:650px){.scene{padding:16px}.entry-shell{border-radius:28px}}
+@media(max-height:680px){.entry-shell{padding: max(10px,env(safe-area-inset-top)) 20px max(10px,env(safe-area-inset-bottom))}.official{margin-top:8px;font-size:10px;padding:5px 10px}.install-desc{font-size:11px}.brand-logo{width:48px;height:48px}.brand-name{font-size:26px}.brand-sub{font-size:11px}.install-title{font-size:24px;margin-top:10px}.benefit{padding:7px 3px}.benefit:after{display:none}.install-btn{margin-top:10px}.install-hint{font-size:10px}.login-main{margin-top:12px}.login-copy{margin:6px 0 12px}.form{gap:10px}.security{margin-top:10px}}
+@media(max-height:530px){#installScene .brand-logo,.benefits,.official,.security{display:none}.entry-shell:before{opacity:.45}.brand-name{margin-top:0}.install-title{font-size:22px}.login-main{margin-top:8px}.login-title{font-size:20px}.login-copy{display:none}.form{gap:8px;margin-top:10px}.field{gap:3px}.field input{height:44px}.eye{top:2px}.primary{min-height:44px;padding:8px}.back-install{margin:0}.error{padding:6px;max-height:64px;overflow:auto}}
+/* Preserve form access with a keyboard, extreme zoom, or a very short window. */
+@media(max-height:360px){.scene{overflow-y:auto}.entry-shell{height:auto;min-height:100%;flex-shrink:0}.brand{display:none}}

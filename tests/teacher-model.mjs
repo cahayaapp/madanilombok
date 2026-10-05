@@ -20,3 +20,10 @@ test('weighted exams preserve missing values; Tahsin and Tahfiz use source gradi
 test('weekly KPI never grants reward from operational evidence alone or missing observations',()=>{const operational=Object.fromEntries(K.CONFIG.GURU.operational.map(([id])=>[id,100]));const partial=K.calculate('GURU',{operational});assert.equal(partial.total,null);assert.equal(partial.rewardEligible,false);const full={operational,observations:[{scores:[5,5,5,5,5],subject:'m'}],exemplaryRecord:{scores:[4,4,4,4,4]},closure:{closedAt:'now'}};assert.equal(K.calculate('GURU',full).total,100);assert.equal(K.calculate('GURU',full).rewardEligible,true);assert.equal(K.calculate('GURU',{...full,criticalFailures:[{active:true}]}).rewardEligible,false);assert.equal(K.scoreOperational('GURU',{attendance:{value:null}}).score,null);});
 
 test('saved example rows never enter operational teacher schedules',()=>{const example={...ctx.master.academicSchedules[0],isExample:true};assert.equal(teacherSchedules({...ctx,master:{...ctx.master,academicSchedules:[example]}}).length,0);});
+
+test('consecutive lessons merge into one session, but breaks, classes and teachers stay separate',()=>{
+ const base={academicYearId:'y',day:'Senin',subjectId:'bahasa',classId:'putra8',teacherStaffId:'t',assignmentConfirmed:true};
+ const slots=[{...base,id:'a',startTime:'08:00',endTime:'08:40'},{...base,id:'b',startTime:'08:40',endTime:'09:20'},{...base,id:'c',startTime:'09:20',endTime:'10:00'},{...base,id:'d',startTime:'10:20',endTime:'11:00'},{...base,id:'e',classId:'putri8',startTime:'11:00',endTime:'11:40'},{...base,id:'f',teacherStaffId:'other',startTime:'11:00',endTime:'11:40'}];
+ const result=mergeConsecutiveSchedules(slots);assert.equal(result.length,4);assert.equal(result[0].id,'a');assert.equal(result[0].endTime,'10:00');assert.deepEqual(result[0].sourceScheduleIds,['a','b','c']);assert.equal(slots[0].endTime,'08:40');assert.deepEqual(attendanceForSchedule({b:{status:'TERLAMBAT'}},result[0]),{status:'TERLAMBAT'});
+});
+import {mergeConsecutiveSchedules,attendanceForSchedule} from '../assets/js/teacher/model.js';

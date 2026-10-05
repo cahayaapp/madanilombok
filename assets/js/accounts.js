@@ -18,7 +18,6 @@ import { ROLE_LABELS } from "./permissions.js";
 const provisioningApp = initializeApp(firebaseConfig, "madani-account-provisioning");
 const provisioningAuth = getAuth(provisioningApp);
 let session;
-let pilotConfig;
 let profiles = [];
 let staff = [];
 let students = [];
@@ -35,15 +34,6 @@ let staffSuggestions=[],confirmedLeadership=[];
 const $ = sel => document.querySelector(sel);
 
 function roleText(role) { return ROLE_LABELS[role] || role || "—"; }
-function linkedName(profile) {
-  if (profile.staffId) return staff.find(x => x.id === profile.staffId)?.name || profile.staffId;
-  if (profile.studentIds?.length) return profile.studentIds.map(id => students.find(x=>x.id===id)?.name || id).join(", ");
-  return "—";
-}
-function statusFor(account) {
-  return profiles.find(p => (p.email || "").toLowerCase() === account.email.toLowerCase());
-}
-
 async function provision({name,email,password,role,profile={}}){
   let credential=null,saved=false;
   try{
@@ -58,8 +48,7 @@ async function provision({name,email,password,role,profile={}}){
 }
 
 async function load() {
-  [pilotConfig, profiles, staff, students, classes, groups, units, subjects] = await Promise.all([
-    fetch("../seed/pilot-accounts.json").then(r => r.json()),
+  [profiles, staff, students, classes, groups, units, subjects] = await Promise.all([
     listNode("users"),
     listNode("staff"),
     listNode("students"),
@@ -68,67 +57,11 @@ async function load() {
   ]);
 }
 
-function renderPilot() {
-  const rows = pilotConfig.accounts.map(account => {
-    const current = statusFor(account);
-    return `<tr>
-      <td><strong>${escapeHtml(account.name)}</strong><br><small class="muted">${escapeHtml(account.email)}</small></td>
-      <td><span class="badge">${escapeHtml(roleText(account.role))}</span></td>
-      <td>${escapeHtml(linkedName(account.profile))}</td>
-      <td>${current ? '<span class="badge">Profil aktif</span>' : '<span class="badge muted">Belum dibuat</span>'}</td>
-      <td><button class="mini-btn" data-create="${escapeHtml(account.key)}" ${current?"disabled":""}>${current ? "Sudah ada" : "Buat Akun"}</button></td>
-    </tr>`;
-  }).join("");
-  $("#pilotBody").innerHTML = rows;
-  $("#pilotPassword").textContent = pilotConfig.temporaryPassword;
-  document.querySelectorAll("[data-create]").forEach(btn => btn.addEventListener("click", () => createPilot(btn.dataset.create, btn)));
-}
-
 function renderProfiles(){userManager?.render();}
 
 async function refresh() {
   profiles = await listNode("users");
-  renderPilot();
   renderProfiles();
-}
-
-async function createPilot(key, btn) {
-  const account = pilotConfig.accounts.find(x => x.key === key);
-  if (!account) return;
-  btn.disabled = true;
-  const original = btn.textContent;
-  btn.textContent = "Memproses…";
-  try {
-    if(statusFor(account))throw new Error("Akun sudah ada. Gunakan Edit pada Manajemen User untuk mengubah akses.");
-    await provision({ ...account, password: pilotConfig.temporaryPassword });
-    toast(`${account.name} siap digunakan.`);
-    await refresh();
-  } catch (err) {
-    console.error(err);
-    toast(err.message || "Gagal membuat akun", "error");
-  } finally {
-    btn.disabled = false;
-    btn.textContent = original;
-  }
-}
-
-async function createAll() {
-  const btn = $("#createAllButton");
-  btn.disabled = true;
-  const result = [];
-  for (const account of pilotConfig.accounts) {
-    if (statusFor(account)) { result.push(`${account.email}: sudah ada`); continue; }
-    try {
-      await provision({ ...account, password: pilotConfig.temporaryPassword });
-      result.push(`${account.email}: OK`);
-    } catch (err) {
-      result.push(`${account.email}: ${err.message || "gagal"}`);
-    }
-  }
-  toast("Proses akun pilot selesai. Lihat status di tabel.");
-  console.table(result);
-  await refresh();
-  btn.disabled = false;
 }
 
 function renderStaffPlan(){
@@ -216,7 +149,6 @@ async function init() {
       }finally{await signOut(provisioningAuth);}
     }
   });
-  renderPilot();
   renderProfiles();
   const [suggestions,leadership]=await Promise.all([fetch('../seed/role-assignment-suggestions.json').then(r=>r.json()),fetch('../seed/leadership-assignments.json').then(r=>r.json())]);
   staffSuggestions=suggestions.people||[];confirmedLeadership=leadership.assignments||[];
@@ -224,7 +156,6 @@ async function init() {
   $('#staffEmailDomain').addEventListener('input',renderStaffPlan);
   $('#createStaffButton').addEventListener('click',createAllStaff);
   $('#downloadStaffCredentials').addEventListener('click',downloadStaffCredentials);
-  $("#createAllButton").addEventListener("click", createAll);
   $("#logoutButton").addEventListener("click", async () => { await logout(); location.href = "../index.html"; });
 }
 

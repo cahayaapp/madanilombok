@@ -1,3 +1,4 @@
+import {mountHomeRoleSwitcher} from '../home-role-switcher.js';
 import {renderManagementHome} from '../management-layout.js';
 import {renderHealthHome} from '../health.js';
 import {renderMentorHome} from '../mentoring.js';
@@ -10,6 +11,9 @@ import {pageHeader,panel,metric,escapeHtml,empty,badge} from './common.js';
 import {renderParentHome} from './parent.js';
 import {renderFinanceDashboard} from './finance.js';
 export async function renderRoleHome(ctx,items) {
+  try { await renderHomeContent(ctx,items); } finally { mountHomeRoleSwitcher(ctx); }
+}
+async function renderHomeContent(ctx,items) {
   const role=ctx.session.activeRole,exp=ROLE_EXPERIENCE[role];
   if(!exp){ctx.root.innerHTML=empty('Belum ada role aktif. Hubungi administrator.');return;}
   if(['director','deputy_director','head_formal_school','head_boys_dorm','head_girls_dorm'].includes(role))return renderManagementHome(ctx,items);
@@ -19,7 +23,7 @@ export async function renderRoleHome(ctx,items) {
   if(role==='guru_mapel')return renderTeacherHome(ctx);
   if(role==='wali_santri') return renderParentHome(ctx);
   if(role==='kasir') return renderFinanceDashboard(ctx);
-  const name=ctx.session.profile.name||ctx.session.profile.displayName||'Pengguna';
+  const name=ctx.session.profile.displayName||ctx.session.profile.name||'Pengguna';
   const date=localDate(),uid=ctx.session.user.uid;
   const available=new Map(items.map(i=>[i.id,i]));
   const quick=exp.quick.map(id=>available.get(id)).filter(Boolean);

@@ -9,6 +9,8 @@ Read `CODEX-HANDOFF.md`, `docs/FEATURE-SCOPE.md`, and `docs/CAHAYA-PARITY.md` be
 - Apply `assets/css/brand-theme.css` last on application/public pages; `entry.css` owns the entry screen.
 - Do not restore Cahaya's branding, institution name, colors, people, or database. Cahaya is a workflow/UI reference only.
 
+The approved 6 October home reference uses a shared logo/bell/full-circle avatar header, pale tosca mosque greeting, white rounded cards, gold workspace accents, and a five-item bottom bar with Beranda centered. Apply this visual identity across roles while keeping role-specific workflows and compact, unobscured home menus.
+
 ## Current user instruction
 
 Compare all existing Madani roles with Cahaya, implement missing role features and experience, and retain Madani's finance features. Preserve the existing finance module, ledger, wallets, cashier restrictions, stock, payments, void/refund behavior, and parent finance view. Do not migrate operational records from Cahaya or write to either live database as part of local implementation/testing. The subsequent user request explicitly authorizes live Madani staff account provisioning, four confirmed leadership assignments and verified student deduplication. Keep those maintenance operations scoped; never export the entire live database or alter finance as part of them.

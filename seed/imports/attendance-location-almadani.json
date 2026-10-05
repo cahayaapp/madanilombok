@@ -1,0 +1,14 @@
+{
+  "value": {
+    "name": "Kampus Al-Madani",
+    "latitude": -8.5854457,
+    "longitude": 116.5755207,
+    "radiusMeter": 700,
+    "unitId": "",
+    "status": "active"
+  },
+  "source": "Titik sekolah dalam tautan Google Maps yang diberikan pengguna pada 6 Oktober 2026",
+  "deploymentStatus": "saved_via_admin_ui_2026-10-06",
+  "collection": "settings/teacherAttendance/locations",
+  "verification": "Admin menampilkan 1 record: Kampus Al-Madani, latitude -8.5854457, longitude 116.5755207, radius 700, unit kosong, status Aktif. ID dibuat oleh form admin."
+}

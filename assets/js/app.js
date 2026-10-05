@@ -112,7 +112,7 @@ function visibleGroups() {
 
 function renderNav() {
   const nav=document.getElementById("navMenu");
-  nav.innerHTML=visibleGroups().map(group=>`<div class="nav-caption">${escapeHtml(group.label)}</div>${group.items.map(item=>`<button class="nav-item ${item.id===currentRoute?"active":""}" data-route="${item.id}"><span class="nav-icon">${item.icon}</span><span>${escapeHtml(item.label)}</span></button>`).join("")}`).join("");
+  nav.innerHTML=visibleGroups().map(group=>`<div class="nav-caption">${escapeHtml(group.label)}</div>${group.items.map(item=>`<button class="nav-item ${item.id===currentRoute?"active":""}" data-route="${item.id}"><span class="nav-icon">${item.id.includes("messages")?'<svg viewBox="0 0 24 24" class="chat-menu-icon" aria-hidden="true"><path d="M21 11a8 8 0 0 1-8 8H6l-4 3 1.5-6A8 8 0 1 1 21 11Z"/><path d="M7 10h9M7 14h6"/></svg>':item.icon}</span><span>${escapeHtml(item.label)}</span></button>`).join("")}`).join("");
   nav.querySelectorAll("[data-route]").forEach(btn=>btn.addEventListener("click",()=>navigate(btn.dataset.route)));
 }
 
@@ -138,6 +138,7 @@ async function renderRoute() {
   const version=++renderVersion;
   if(!canRoute(currentRoute)){currentRoute='dashboard';history.replaceState(null,'',`${location.pathname}${location.search}#dashboard`);}
   document.body.dataset.activeRole=activeRole;
+  document.body.dataset.home=String(currentRoute==='dashboard');
   renderNav();syncBottomNav();
   document.getElementById('pageTitle').textContent=routeLabel[currentRoute]||'Beranda';
   const mount=document.createElement('div');
@@ -145,6 +146,7 @@ async function renderRoute() {
   root.replaceChildren(mount);
   const scopedSession=sessionForRole(session,activeRole);
   const ctx={session:scopedSession,master,yearId:currentAcademicYearId(),year:currentAcademicYear(),root:mount,navigate,rerender:renderRoute,roleName:roleLabel([activeRole])};
+  ctx.updateProfile=changes=>{Object.assign(session.profile,changes);document.getElementById('userName').textContent=session.profile.displayName||session.profile.name;};
   ctx.refreshMaster=async()=>{const fresh=await loadMaster(true);master=fresh;ctx.master=fresh;ctx.yearId=currentAcademicYearId();ctx.year=currentAcademicYear();};
   try {
     if(currentRoute==='dashboard')await renderDashboard(ctx);
@@ -184,7 +186,7 @@ async function init() {
   master=await loadMaster();
   const year=currentAcademicYear();
   document.getElementById("activeYearLabel").textContent=year ? `${year.name} · ${year.semesterLabel||`Semester ${year.semester||""}`}` : "Belum diatur";
-  document.getElementById("userName").textContent=session.profile.name||session.profile.displayName||session.user.email;
+  document.getElementById("userName").textContent=session.profile.displayName||session.profile.name||session.user.email;
   const storedRole=sessionStorage.getItem("madaniActiveRole");
   activeRole=(storedRole&&session.roles.includes(storedRole)?storedRole:null)||session.profile.defaultRole||session.roles[0]||"";
   if(!session.roles.includes(activeRole)) activeRole=session.roles[0]||"";

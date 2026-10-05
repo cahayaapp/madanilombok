@@ -12,5 +12,5 @@ export const appConfig = {
   appName: "Madani App",
   organizationName: "Pondok Pesantren Al-Madani",
   databaseRoot: "madani_app",
-  version: "2.1.0-pilot-accounts"
+  version: "2.1.0"
 };

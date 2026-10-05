@@ -5,7 +5,15 @@
       "users": {
         "$uid": {
           ".write": "auth != null && newData.exists() && ((auth.uid === $uid && !root.child('madani_app/users').exists()) || ((auth != null && root.child('madani_app/users').child(auth.uid).exists() && root.child('madani_app/users').child(auth.uid).child('active').val() !== false && root.child('madani_app/users').child(auth.uid).child('accessRevoked').val() !== true) && (root.child('madani_app/users').child(auth.uid).child('role').val() === 'admin' || root.child('madani_app/users').child(auth.uid).child('role').val() === 'super_admin' || root.child('madani_app/users').child(auth.uid).child('roleFlags/admin').val() === true || root.child('madani_app/users').child(auth.uid).child('roleFlags/super_admin').val() === true) && (auth.uid !== $uid || (newData.child('active').val() !== false && newData.child('accessRevoked').val() !== true && (newData.child('role').val() === 'admin' || newData.child('role').val() === 'super_admin' || newData.child('roleFlags/admin').val() === true || newData.child('roleFlags/super_admin').val() === true)))))",
-          ".read": "auth != null && auth.uid === $uid"
+          ".read": "auth != null && auth.uid === $uid",
+          "displayName": {
+            ".write": "auth != null && auth.uid === $uid && data.parent().exists() && data.parent().child('active').val() !== false && data.parent().child('accessRevoked').val() !== true",
+            ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 80"
+          },
+          "photoURL": {
+            ".write": "auth != null && auth.uid === $uid && data.parent().exists() && data.parent().child('active').val() !== false && data.parent().child('accessRevoked').val() !== true",
+            ".validate": "newData.isString() && newData.val().length <= 180000 && (newData.val() === '' || newData.val().beginsWith('data:image/jpeg;base64,'))"
+          }
         },
         ".read": "auth != null && !data.exists()"
       },

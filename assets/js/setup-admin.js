@@ -80,7 +80,7 @@ form.addEventListener("submit", async event => {
       updatedAt: Date.now()
     };
     await set(ref(db, `${rootPath}/users/${uid}`), profile);
-    show("Super Admin berhasil dibuat. Anda sudah login sebagai admin. Lanjutkan ke Manajemen Akun untuk membuat akun pilot lainnya.");
+    show("Super Admin berhasil dibuat. Anda sudah login sebagai admin. Lanjutkan ke Manajemen Akun untuk mengelola akun pengguna.");
     button.textContent = "Berhasil";
     document.getElementById("continueLink").classList.remove("hidden");
   } catch (err) {

@@ -124,3 +124,57 @@ Perubahan baru: role Pembina Tahfiz (ID lama), kesehatan; KPI diblok semua role;
 
 ### 5 Oktober — presensi memakai jadwal resmi
 Keluhan jadwal contoh: teacherSchedules sebelumnya membuat fallback otomatis untuk kelas cakupan tanpa jadwal aktif, sedangkan master disimpan sepanjang sesi. Generator contoh dihapus dari jalur operasional; row isExample/example-* disaring. Konteks app menyediakan refreshMaster, dipanggil sebelum daftar jadwal/presensi dibuka; kegagalan baca ditampilkan tanpa memakai data lama. 123 tests lulus. Tidak mengubah/mengimpor database produksi; status impor akun pengguna belum diverifikasi. SW v40.
+
+### 5 Oktober — gabungkan JP berurutan
+- teacherSchedules menggabungkan slot yang waktunya tepat bersambung dengan guru, kelas/kelas gabungan, mapel, hari, tahun dan status penugasan yang sama. Istirahat/jeda tetap memisahkan sesi.
+- ID slot pertama tetap ID sesi; sourceScheduleIds mempertahankan rujukan seluruh slot. Master/import dan riwayat tidak dihapus/ditulis ulang.
+- Presensi guru mengenali presensi lama pada slot anggota. KBM memakai rekam anggota pertama yang sudah ada; jika beberapa slot dahulu sudah tercatat, riwayat tambahan tetap disimpan dan diberi keterangan.
+- Seed Husnul Hatimah Senin terverifikasi: 8 Putra 08:00–10:00 (3 JP), 8 Putri 10:20–12:20 (3 JP), 7 Putra 13:30–14:50 (2 JP). PJOK gabungan Hasrul juga menjadi satu sesi 08:00–09:20 dengan kedua rombel.
+- 125 tests lulus; syntax checks dan diff whitespace bersih. SW v41. Tidak menulis database produksi.
+
+### 6 Oktober — lokasi absensi diterapkan
+Atas instruksi langsung pengguna, lokasi Kampus Al-Madani sudah disimpan lewat UI Admin ke database: latitude -8.5854457, longitude 116.5755207, radius 700 meter, unit kosong (semua sekolah), Aktif. Tabel setelah simpan menampilkan 1 record dengan nilai tersebut. ID dibuat otomatis form; tidak memakai ID rencana GPS-ALMADANI. Uji GPS fisik guru belum dilakukan.
+
+### 6 Oktober — jadwal SMK resmi diterapkan
+- Sumber: DATABASE SMKS ISLAM PLUS AL-MADANI 2026-2027.xlsx, sheet kedua JADWAL MAPEL + WALI KELAS. Sebelumnya master aplikasi hanya memuat jadwal SD/SMP, sehingga Kusma Dewi tidak mendapat jadwal SMK.
+- scripts/extract-smk-update.py menghasilkan paket seed/imports/smk-2026-2027-update.json: 398 slot untuk 7 kelas; kode guru ditautkan ke ID SDM yang sudah ada; merged cells mengikuti Excel. Tidak menambah identitas atau mengubah Wali Kelas/mentor/finance.
+- Tombol Pembaruan SMK pada Import Data memeriksa referensi master sebelum menulis, menyesuaikan penugasan akun guru terkait, dan mencegah impor ulang melalui marker smk-2026-2027-sheet2-v1.
+- SUDAH diterapkan ke database lewat UI Administrator atas instruksi pengguna. UI mengonfirmasi “Pembaruan SMK tersimpan” dan tombol menjadi disabled. Bukti /tmp/madani-smk-import-success.png.
+- Kusma Dewi (AMD-SDM-0042/kode 2), Selasa XII DKV: 08:00–10:00, 10:20–12:20, 13:00–14:20. Penggabungan sesuai jeda teruji lokal. Akun guru perlu masuk ulang; tampilan sesi guru setelah impor belum diuji produksi.
+- E89 Jumat tertulis 14.20.15.00, diparsing 14:20–15:00 dengan catatan sumber. Paket tidak mengubah file Excel asli.
+- 128 tests lulus; JS syntax dan git diff --check lulus. Tidak deploy/commit/push.
+
+### 6 Oktober — penyederhanaan menu dan tampilan operasional
+- Guru Mapel: Ruang Kerja menyaring ID yang sudah berada pada Akses Cepat (Presensi Santri dan Materi Pembelajaran); Materi di Akses Cepat tetap membuka pilihan target/capaian. Pimpinan sudah menyaring menu cepat dari Ruang Kerja; beranda role lain tidak memiliki duplikasi pasangan ini.
+- Label pilot/demo di admin, validasi, setup dan inisialisasi diganti istilah operasional. Panel pembuatan akun pilot dihapus beserta fetch konfigurasi/password serta handler provisioning pilot; manajemen user dan provisioning SDM tetap tersedia. Tidak menghapus/mengubah akun live.
+- Hosting ignore menambahkan setup awal, konfigurasi akun pilot, dokumen internal, sumber, script, tests dan outputs. Ini konfigurasi lokal untuk deployment berikutnya; tidak melakukan deploy. Cache PWA v42.
+- 128 tes lulus termasuk nonduplikasi menu; 74 JS syntax/31 JSON valid; diff whitespace bersih. Database/finance tidak diubah.
+- Penghapusan label uji coba BUKAN sertifikasi kesiapan produksi: batas akses root RTDB dan uji Emulator pada docs/SECURITY-PILOT.md masih perlu dituntaskan sebelum peluncuran. Catatan audit internal dipertahankan.
+
+### 6 Oktober — index satu layar dan instalasi PWA
+- Entry memakai tinggi viewport dinamis, safe area, ukuran komponen adaptif dan layout ringkas untuk layar pendek. Tidak ada document scroll pada 320×568, 375×667, 390×844, 844×390, 1366×768 (terukur di browser). Login juga pas pada 320×568, 844×390, 390×450. Tinggi ekstrem <=360px mengizinkan scroll internal untuk akses form/zoom/keyboard, bukan memotong kontrol.
+- Standalone/fullscreen/minimal-ui dan iOS standalone langsung ke login; tombol lanjut browser, kembali instalasi dan instalasi disembunyikan. Perubahan display mode dipantau.
+- beforeinstallprompt hanya dipakai sekali, mencegah klik ganda, menangani batal/gagal/retry; appinstalled membuka login. Fallback petunjuk spesifik iOS/Android/desktop, koneksi offline dan konteks non-HTTPS. Tidak menjanjikan dialog otomatis pada browser yang tidak mendukung.
+- SW registration menangani dokumen yang sudah loaded, scope tetap root; manifest.webmanifest disamakan dengan manifest.json. Cache v43, entry CSS/JS v43.
+- 131 tests lulus; syntax/diff checks lulus. Bukti tampilan /tmp/madani-entry-mobile.png. Instalasi native pada perangkat nyata belum diuji, tidak deploy.
+
+### 6 Oktober — beranda, navigasi, dan profil personal
+- Beranda seluruh 15 role dipasangi tombol role di samping nama melalui home-role-switcher.js; pilihan hanya session.roles, memakai rolePicker yang sama untuk menyimpan role aktif/reset ke dashboard. Satu role tetap menampilkan status; tidak memberi role baru.
+- Menu ruang kerja memakai tombol ringkas beraksen emas, akses cepat tetap berupa kartu. Bottom nav menjadi Jadwal, Pesan, Beranda, Profil, Lainnya: 5 slot sama lebar, Beranda tengah dengan label terlihat. Ikon pesan berupa SVG gelembung chat pada bottom, sidebar, dan quick menu.
+- data-home pada app menerapkan beranda viewport tetap dan padding untuk bottom nav/safe area. Daftar panjang kelompok Arab tidak ditampilkan di beranda (tetap tersedia pada jadwal); ringkasan dekoratif dipadatkan. 15 mock-role home diuji lewat browser pada 320×568 dan 390×844: tidak ada tombol melampaui batas atas bottom nav, tidak ada horizontal overflow. Bukti /tmp/madani-home-navigation.png. Data panjang/jumlah anggota real tidak ditulis selama QA.
+- Profil mengikuti alur fajrulislam/profil.html: nama sapaan, pilih/hapus foto, kompresi JPEG 250px, simpan identitas/foto, ganti password. Nama resmi SDM/role/scope tetap milik admin. Profil hanya patch users/{ownUid}/displayName dan photoURL. Password diverifikasi ulang memakai kredensial sekarang lalu updatePassword Firebase; tidak disimpan di database/log/repo. Tidak mengganti kredensial pengguna lewat tool.
+- Aturan child displayName/photoURL mengizinkan akun aktif mengedit kolom sendiri, dengan batas tipe/ukuran. Rules lokal BELUM deploy/Emulator; penyimpanan profil non-admin membutuhkan rules ini di server. Batasan root read lama tetap belum dibereskan, jangan klaim hardening produksi selesai.
+- 133 tests lulus (termasuk role picker dan profile patch), 77 JS syntax valid, JSON/diff checks lulus. Finance module tidak diubah. Preview outputs/home-preview hanya data mock, dikecualikan dari hosting. Cache v47. Tidak deploy/commit/push.
+
+### 6 Oktober — perbaikan izin profil LIVE
+- Pengguna melaporkan penolakan server pada Simpan Identitas & Foto. Aturan live diperiksa melalui Firebase Console Safari; users/$uid hanya mengizinkan admin, belum memuat child self-edit.
+- Dua child rules displayName dan photoURL disisipkan pada aturan LIVE yang ada lalu Publish berhasil (draft unpublished/Publish hilang). Tidak mengganti seluruh rules dengan file lokal; aturan domain lain tetap seperti sebelumnya.
+- Keduanya mewajibkan auth.uid===uid, profil sudah ada, aktif dan tidak dicabut; validasi nama 1–80 karakter serta foto JPEG data URL maksimal 180000 karakter. Hak role/scope tidak diperluas.
+- Form Kusma Dewi yang masih berisi foto pilihan pengguna dicoba Simpan ulang lewat VS Code; UI mengonfirmasi “Identitas dan foto berhasil disimpan.” Bukti /tmp/madani-profile-save-success.png. Password tidak disentuh.
+- Ini hanya deployment dua kolom profil; aturan lokal/domain lain serta hardening produksi tetap belum dideploy.
+
+### 6 Oktober — tema resmi referensi beranda terbaru
+- Referensi visual pengguna diterapkan sebagai tema bersama: header logo, lonceng pesan, avatar lingkaran penuh; hero masjid tosca; kartu akses cepat putih/tosca, menu ruang kerja aksen emas, ornamen gelombang, bottom Beranda bergaris emas.
+- Header/hero yang sama dipasang pada seluruh 15 role, mempertahankan handler menu asli. Avatar menggunakan object-fit:cover, ukuran penuh, padding nol. Subtitle sesuai koreksi pengguna: PONDOK PESANTREN AL-MADANI.
+- brand-theme.css v49 diperbarui pada aplikasi/admin/publik; entry tetap memakai entry.css sesuai kontrak identitas. SVG code-native home-mosque/home-waves ditambahkan dan masuk cache PWA v49. Acuan identitas ditambahkan ke AGENTS.md.
+- 133 tests lulus; visual 15 role diperiksa dengan data mock, termasuk 320×568 tanpa tombol melewati batas navigasi bawah. Bukti /tmp/madani-official-home.png. Tidak deploy atau mengubah database pada pekerjaan tema.

@@ -2,7 +2,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import vm from 'node:vm';
-import {readFileSync} from 'node:fs';
+import {readFileSync,writeFileSync,mkdirSync} from 'node:fs';
 import {createRequire} from 'node:module';
 import {fileURLToPath} from 'node:url';
 import {webcrypto} from 'node:crypto';
@@ -57,6 +57,8 @@ test('all 15 homes render and non-finance roles do not request finance collectio
  // Synthetic exports are stable; reset an instrumented export for this test.
  mock.setExport('getNode',repository.getNode);
  const ctx=ctxFor(role);ctx.root.innerHTML='';const items=MENU_GROUPS.flatMap(g=>g.items).filter(i=>canAccess(i.feature||'dashboard',[role]));await homes.namespace.renderRoleHome(ctx,items);
+ assert.ok(ctx.root.querySelector('.home-role-button'),role);
+ if(process.env.MADANI_HOME_PREVIEW){mkdirSync('outputs/home-preview',{recursive:true});const shell=source('app/index.html');const css=[...shell.matchAll(/<link[^>]+rel="stylesheet"[^>]*>/g)].map(m=>m[0].replaceAll('../assets/','/assets/')).join('');const nav=shell.match(/<nav class="mobile-bottom-nav"[\s\S]*?<\/nav>/)[0];writeFileSync(`outputs/home-preview/${role}.html`,`<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">${css}</head><body class="app-body portal-body" data-home="true"><main class="main-area"><section class="content-area portal-content"><div class="${ctx.root.className}">${ctx.root.innerHTML.replaceAll('../assets/','/assets/')}</div></section></main>${nav}</body></html>`);}
  assert.ok(ctx.root.textContent.trim(),role);if(!['kasir','wali_santri'].includes(role))assert.ok(reads.every(p=>!p.startsWith('finance/')),role);
  repository.getNode=original;mock.setExport('getNode',original);
  }
@@ -132,4 +134,17 @@ test('morning Arabic selector narrows attendance and parent sees only their chil
  const ctx=ctxFor('naqib');ctx.master={...master,students:[...master.students,{id:'s3',name:'Other boy',gender:'L'}],roomAssignments:{s1:{roomId:'ROOM-PTR-C2'},s3:{roomId:'ROOM-PTR-C3'}},programs:[{id:'m',name:'Mufrodat',genderScope:'mixed'}],dailySchedules:[{programId:'m',participantScope:'boarding_general',startTime:'05:40',genderScope:'mixed'}],groups:[{id:'a',name:'Arab Cordova 2',programType:'arabic',gender:'L'},{id:'b',name:'Arab Cordova 3',programType:'arabic',gender:'L'}],groupAssignments:{a:{s1:{studentId:'s1'}},b:{s3:{studentId:'s3'}}}};
  await boarding.namespace.renderNaqibAttendance(ctx);const program=ctx.root.querySelector('#programPick');program.value='m';program.onchange();const pick=ctx.root.querySelector('#arabicGroupPick');assert.equal(pick.hidden,false);pick.value='a';ctx.root.querySelector('#loadProgramAtt').click();await settle();assert.deepEqual([...ctx.root.querySelectorAll('[data-student]')].map(x=>x.dataset.student),['s1']);
  const parent=await load(new URL('assets/js/modules/parent.js',base).href);if(parent.status!=='evaluated')await parent.evaluate();await parent.namespace.renderParentPrograms(ctx);assert.match(ctx.root.textContent,/Arab Cordova 2/);assert.doesNotMatch(ctx.root.textContent,/Arab Cordova 3|Other boy/);
+});
+
+test('home role button switches only among assigned roles through the shared picker',async()=>{
+ win.HTMLDialogElement.prototype.showModal=function(){this.setAttribute('open','');};win.HTMLDialogElement.prototype.close=function(){this.dispatchEvent(new win.Event('close'));};
+ const picker=win.document.createElement('select');picker.id='rolePicker';picker.innerHTML='<option value="guru_mapel">Guru</option><option value="guru_wali">Wali</option>';win.document.body.append(picker);let changed=0;picker.onchange=()=>changed++;
+ const ctx=ctxFor('guru_mapel');ctx.session.roles=['guru_mapel','guru_wali'];await homes.namespace.renderRoleHome(ctx,[]);ctx.root.querySelector('.home-role-button').click();assert.equal(ctx.root.querySelectorAll('[data-role-choice]').length,2);ctx.root.querySelector('[data-role-choice="guru_wali"]').click();assert.equal(picker.value,'guru_wali');assert.equal(changed,1);picker.remove();
+});
+test('profile saves only presentation fields and preserves canonical identity and access',async()=>{
+ const ctx=ctxFor('guru_mapel');let saved;mock.setExport('patchNode',async(path,changes)=>{saved={path,changes};});await routes['work-profile'](ctx);
+ if(process.env.MADANI_HOME_PREVIEW){const shell=source('app/index.html');const css=[...shell.matchAll(/<link[^>]+rel="stylesheet"[^>]*>/g)].map(m=>m[0].replaceAll('../assets/','/assets/')).join('');writeFileSync('outputs/home-preview/profile.html',`<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">${css}</head><body><main class="content-area">${ctx.root.innerHTML}</main></body></html>`);}
+ const form=ctx.root.querySelector('#profileForm');form.elements.displayName.value='Ustadz Madani';submit(form);await settle();assert.equal(saved.path,'users/teacher');assert.deepEqual(Object.keys(saved.changes).sort(),['displayName','photoURL']);assert.equal(saved.changes.displayName,'Ustadz Madani');assert.equal(ctx.session.profile.name,'Pengguna Uji');assert.equal(ctx.session.profile.displayName,'Ustadz Madani');
+ const profile=getModule(new URL('assets/js/profile.js',base).href).namespace;
+ assert.throws(()=>profile.profileDraft(' ',''));assert.throws(()=>profile.profileDraft('Nama','javascript:alert(1)'));assert.throws(()=>profile.validatePassword('old','short','short'));assert.throws(()=>profile.validatePassword('old-password','new-password','different'));assert.doesNotThrow(()=>profile.validatePassword('old-password','new-password','new-password'));
 });

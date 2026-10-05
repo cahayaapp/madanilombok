@@ -2,7 +2,12 @@ const installScene = document.getElementById('installScene');
 const loginScene = document.getElementById('loginScene');
 const hint = document.getElementById('installHint');
 let deferredInstallPrompt = null;
-const isStandalone = () => matchMedia('(display-mode: standalone)').matches || navigator.standalone === true;
+const displayModes = ['standalone', 'fullscreen', 'minimal-ui'].map(mode => matchMedia(`(display-mode: ${mode})`));
+const isStandalone = () => displayModes.some(mode => mode.matches) || navigator.standalone === true;
+const installButton = document.getElementById('installMainBtn');
+const continueButton = document.getElementById('continueWebBtn');
+const backButton = document.getElementById('backInstallBtn');
+let installing = false;
 const isIOS = () => /iphone|ipad|ipod/i.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
 function showLogin(focus = false) {
   installScene.classList.add('hidden');
@@ -13,7 +18,8 @@ document.getElementById('continueWebBtn').onclick = () => showLogin(true);
 document.getElementById('backInstallBtn').onclick = () => {
   loginScene.classList.add('hidden');
   installScene.classList.remove('hidden');
-  document.getElementById('continueWebBtn').focus();
+  if (isStandalone()) return showLogin();
+  installButton.focus();
 };
 document.getElementById('togglePassword').onclick = event => {
   const input = document.getElementById('password');
@@ -22,29 +28,58 @@ document.getElementById('togglePassword').onclick = event => {
   event.currentTarget.setAttribute('aria-label', visible ? 'Sembunyikan kata sandi' : 'Tampilkan kata sandi');
   event.currentTarget.setAttribute('aria-pressed', String(visible));
 };
+function installHelp() {
+  if (!window.isSecureContext || !/^https?:$/.test(location.protocol)) return 'Pasang MadaniApp untuk akses langsung dari layar utama perangkat Anda.';
+  if (!navigator.onLine) return 'Sambungkan internet untuk memasang aplikasi. Anda tetap dapat membuka halaman masuk.';
+  if (isIOS()) return 'Di iPhone/iPad: buka menu Bagikan, pilih Tambahkan ke Layar Utama, lalu Tambah. Jika pilihan belum tersedia, buka halaman ini di Safari.';
+  if (/android/i.test(navigator.userAgent)) return 'Buka menu ⋮ browser, lalu pilih Instal aplikasi atau Tambahkan ke layar utama. Jika tidak tersedia, buka halaman ini di Chrome. Jika sudah terpasang, buka ikon MadaniApp di layar utama.';
+  return 'Buka menu browser dan pilih Instal MadaniApp. Di Safari Mac, pilih File → Tambahkan ke Dock. Jika sudah terpasang, buka MadaniApp dari daftar aplikasi.';
+}
+function syncInstallState() {
+  const standalone = isStandalone();
+  continueButton.hidden = standalone;
+  backButton.hidden = standalone;
+  installButton.hidden = standalone;
+  if (standalone) { deferredInstallPrompt = null; showLogin(); }
+  else hint.textContent = deferredInstallPrompt ? 'Pasang sekali, akses MadaniApp langsung dari layar utama perangkat Anda.' : installHelp();
+}
 window.addEventListener('beforeinstallprompt', event => {
   event.preventDefault();
   deferredInstallPrompt = event;
-  hint.textContent = 'Pasang sekali, akses MadaniApp langsung dari layar utama perangkat Anda.';
+  syncInstallState();
 });
-document.getElementById('installMainBtn').onclick = async () => {
-  if (deferredInstallPrompt) {
-    try {
-      await deferredInstallPrompt.prompt();
-      const choice = await deferredInstallPrompt.userChoice;
-      hint.textContent = choice.outcome === 'accepted' ? 'Instalasi sedang diproses.' : 'Anda dapat memasang aplikasi nanti atau melanjutkan lewat browser.';
-    } catch {
-      hint.textContent = 'Buka menu browser lalu pilih “Install MadaniApp” atau “Tambahkan ke layar utama”.';
-    }
-    deferredInstallPrompt = null;
-  } else if (isIOS()) {
-    hint.innerHTML = 'Di iPhone/iPad: tekan tombol <b>Bagikan</b>, lalu pilih <b>Tambahkan ke Layar Utama.</b>';
-  } else {
-    hint.textContent = 'Buka menu browser lalu pilih “Install MadaniApp” atau “Tambahkan ke layar utama”.';
+installButton.onclick = async () => {
+  if (isStandalone()) return showLogin(true);
+  if (installing) return;
+  if (!deferredInstallPrompt) { hint.textContent = installHelp(); return; }
+  const prompt = deferredInstallPrompt;
+  deferredInstallPrompt = null;
+  installing = true;
+  installButton.disabled = true;
+  try {
+    await prompt.prompt();
+    const choice = await prompt.userChoice;
+    hint.textContent = choice.outcome === 'accepted'
+      ? 'Permintaan instalasi diterima. Setelah selesai, buka MadaniApp dari ikon aplikasi.'
+      : 'Instalasi dibatalkan. Anda dapat mencoba lagi melalui menu browser atau melanjutkan ke halaman masuk.';
+  } catch {
+    hint.textContent = installHelp();
+  } finally {
+    installing = false;
+    installButton.disabled = false;
   }
 };
-window.addEventListener('appinstalled', () => showLogin());
-if (isStandalone() || (new URLSearchParams(location.search).has('error') || new URLSearchParams(location.search).has('login'))) showLogin();
+window.addEventListener('appinstalled', () => {
+  deferredInstallPrompt = null;
+  hint.textContent = 'MadaniApp berhasil dipasang. Buka melalui ikon aplikasi di perangkat Anda.';
+  showLogin();
+});
+for (const mode of displayModes) mode.addEventListener?.('change', syncInstallState);
+window.addEventListener('pageshow', syncInstallState);
+window.addEventListener('online', syncInstallState);
+window.addEventListener('offline', syncInstallState);
+syncInstallState();
+if (new URLSearchParams(location.search).has('error') || new URLSearchParams(location.search).has('login')) showLogin();
 // Load authentication separately so the install screen and navigation work even offline.
 let authModules;
 function loadAuth() {
@@ -81,6 +116,8 @@ loadAuth().then(async ([{ waitForAuth }, { getNode }]) => {
   const profile = await getNode(`users/${user.uid}`);
   if (profile && profile.active !== false) location.replace('./app/index.html');
 }).catch(() => { /* Keep the public install screen available without a connection. */ });
-if ('serviceWorker' in navigator) window.addEventListener('load', () => {
-  navigator.serviceWorker.register('./sw.js?v=25', { scope: './', updateViaCache: 'none' }).catch(console.warn);
-});
+function registerWorker() {
+  if ('serviceWorker' in navigator && window.isSecureContext && /^https?:$/.test(location.protocol)) navigator.serviceWorker.register('./sw.js', { scope: './', updateViaCache: 'none' }).catch(() => { if (!deferredInstallPrompt) hint.textContent = installHelp(); });
+}
+if (document.readyState === 'complete') registerWorker();
+else window.addEventListener('load', registerWorker, { once: true });

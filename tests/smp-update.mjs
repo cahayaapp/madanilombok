@@ -19,7 +19,7 @@ test('SMP update preserves student identities, other school schedules and financ
  }
  for(const [gid,members] of Object.entries(prior.groups[year]))if(gid.startsWith('GRP-2026-')&&!Object.keys(members).length)delete prior.groups[year][gid];
  for(const kind of ['classes','rooms','groups'])assert.equal(hash(prior[kind]),checks[kind]);
- assert.equal(hash(Object.fromEntries(Object.entries(d.schedules.academic).filter(([id,s])=>s.unitId!=='UNIT-SMP'&&!id.startsWith('JSD-2627G-')).map(([id,s])=>{const old={...s};if(old.supersededBy==='sd-2026-2027-20261004'){old.status='active';delete old.supersededBy;}return [id,old];}))),checks.schedules);
+ assert.equal(hash(Object.fromEntries(Object.entries(d.schedules.academic).filter(([id,s])=>s.unitId!=='UNIT-SMP'&&!id.startsWith('JSD-2627G-')&&!id.startsWith('JSMK-2627G-')).map(([id,s])=>{const old={...s};if(old.supersededBy==='sd-2026-2027-20261004'){old.status='active';delete old.supersededBy;}return [id,old];}))),checks.schedules);
  assert.equal(pack.report.scheduleCount,252);assert.equal(pack.report.homerooms,6);assert.equal(pack.report.matchedStudents,80);
  assert.ok(Object.keys(pack.changes).every(p=>!p.startsWith('finance/')));
  assert.deepEqual(Object.keys(pack.changes).filter(p=>p.startsWith('students/')).sort(),['students/AMD-SMP-0101','students/AMD-SMP-0102']);
@@ -43,10 +43,10 @@ test('all teachers are linked; broad scope cannot steal their assigned lessons',
  const ctx={yearId:year,session:{profile:{staffId:'unknown',unitIds:['UNIT-SMP'],classIds:rows(d.classes).filter(r=>r.unitId==='UNIT-SMP').map(r=>r.id),subjectIds:Object.keys(d.subjects)},user:{uid:'u'}},master:{classes:rows(d.classes),subjects:rows(d.subjects),academicSchedules:rows(d.schedules.academic)}};
  const schedules=teacherSchedules(ctx);assert.equal(schedules.length,0);
 });
-test('confirmed combined PJOK has one teacher session per period and both rosters',()=>{
+test('confirmed combined PJOK merges consecutive periods and retains both rosters',()=>{
  const master={classes:rows(d.classes),subjects:rows(d.subjects),students:rows(d.students),classAssignments:d.assignments.classes[year],academicSchedules:rows(d.schedules.academic)};
  const sessions=teacherSchedules({yearId:year,master,session:{profile:{staffId:'AMD-SDM-0086'},user:{uid:'hasrul'}}}).filter(s=>s.day==='Kamis');
- assert.equal(sessions.length,2);assert.ok(sessions.every(s=>s.classIds.length===2&&s.id.startsWith('JSMP-2627G-GABUNG')));
+ assert.equal(sessions.length,1);assert.equal(sessions[0].startTime,'08:00');assert.equal(sessions[0].endTime,'09:20');assert.equal(sessions[0].sourceScheduleIds.length,2);assert.ok(sessions.every(s=>s.classIds.length===2&&s.id.startsWith('JSMP-2627G-GABUNG')));
  const keys=Object.keys(pack.changes);assert.ok(keys.every(p=>!keys.some(q=>q!==p&&q.startsWith(p+'/'))));
  assert.equal(pack.report.issues.length,0);assert.equal(pack.report.activeMentoring,80);
 });

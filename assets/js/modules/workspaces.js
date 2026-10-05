@@ -1,3 +1,4 @@
+import {renderAccountProfile} from '../profile.js';
 import {renderWorkFollowups} from '../work-followups.js';
 import {renderManagementReports} from '../management-reports.js';
 import {renderResidentStaff,renderStaffWorship} from '../staff-worship.js';
@@ -29,10 +30,7 @@ function form(ctx,id,title,fields,saveLabel='Simpan'){
 const required='required maxlength="3000"';
 const textField=(label,name,full=true)=>formRow(label,textarea(name,'',required),full);
 
-export async function renderProfile(ctx){
- const p=ctx.session.profile;
- ctx.root.innerHTML=pageHeader('Profil Saya','Identitas akun dan penugasan role aktif.')+panel(p.name||p.displayName||'Pengguna',`<dl class="profile-details"><dt>Email</dt><dd>${e(ctx.session.user.email||'—')}</dd><dt>Role aktif</dt><dd>${e(ROLE_LABELS[role(ctx)]||role(ctx))}</dd><dt>Role ditugaskan</dt><dd>${ctx.session.roles.map(r=>e(ROLE_LABELS[r]||r)).join(' · ')}</dd><dt>Tahun ajaran</dt><dd>${e(ctx.year?.name||ctx.yearId||'Belum diatur')}</dd><dt>Scope</dt><dd>${e([p.scopeGender==='L'?'Putra':p.scopeGender==='P'?'Putri':'',...(p.classIds||[]),...(p.groupIds||[])].filter(Boolean).join(' · ')||'Sesuai penugasan administrator')}</dd></dl><p class="role-hint">Perubahan identitas atau penugasan dilakukan oleh administrator.</p>`);
-}
+export async function renderProfile(ctx){return renderAccountProfile(ctx);}
 export async function renderGuide(ctx){
  const exp=ROLE_EXPERIENCE[role(ctx)]||{};
  const guides={guru_mapel:['Lihat jadwal dan catat presensi Anda.','Catat kehadiran santri dan capaian materi.','Input nilai, tindak lanjuti kebutuhan belajar, lalu lengkapi refleksi.'],mentor_tahsin_tahfiz:['Pilih halaqah yang ditugaskan.','Catat setoran, mutu bacaan dan fokus perbaikan santri.','Tinjau tindak lanjut dan evidence pendampingan.'],naqib:['Kawal program hari ini dan catat presensi.','Catat laporan, inisiatif, dan perkembangan santri.','Laporkan kasus kepada Konselor; jangan menetapkan konsekuensi formal.'],guru_wali:['Buka santri binaan dan refleksi perkembangannya.','Catat fokus, target, Strong Why, serta strategi.','Perbarui hasil pada rekam mentoring yang sama.'],konselor:['Ambil kasus sesuai scope.','Lakukan tabayyun, konseling, dan tindakan edukatif.','Evaluasi, finalisasi poin satu kali, lalu tutup atau eskalasi.'],wali_santri:['Pilih Ananda yang terhubung ke akun.','Tinjau laporan dan informasi pesantren.','Ajukan izin atau kirim pesan melalui layanan wali.'],kasir:['Pastikan unit kasir Putra/Putri benar.','Periksa produk, stok, saldo belanja dan PIN transaksi.','Gunakan pembatalan/refund berjejak audit bila terjadi koreksi.']};

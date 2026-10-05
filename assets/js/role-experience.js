@@ -53,5 +53,5 @@ export function filterScopedStudents(master,profile,role) {
 export function bottomRoutes(role,canRoute) {
   const exp=ROLE_EXPERIENCE[role]||{};
   const safe=(id,fallback)=>canRoute(id)?id:(canRoute(fallback)?fallback:null);
-  return {schedule:safe(exp.schedule,'work-schedule'),kpi:null,home:'dashboard',messages:safe(role==='wali_santri'?'parent-messages':'work-messages',null)};
+  return {profile:safe('work-profile',null),schedule:safe(exp.schedule,'work-schedule'),kpi:null,home:'dashboard',messages:safe(role==='wali_santri'?'parent-messages':'work-messages',null)};
 }

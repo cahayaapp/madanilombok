@@ -97,7 +97,7 @@ const ALL_MENU_GROUPS = [
       { id: "parent-health", label: "Riwayat Kesehatan", icon: "+", feature: "parent.health" },
       { id: "parent-rules", label: "Tata Tertib", icon: "≡", feature: "parent.rules" },
       { id: "parent-permission", label: "Izin Santri", icon: "↗", feature: "parent.permissions" },
-      { id: "parent-messages", label: "Pesan", icon: "✉", feature: "parent.messages" },
+      { id: "parent-messages", label: "Pesan", icon: '<svg viewBox="0 0 24 24" class="chat-menu-icon" aria-hidden="true"><path d="M21 11a8 8 0 0 1-8 8H6l-4 3 1.5-6A8 8 0 1 1 21 11Z"/><path d="M7 10h9M7 14h6"/></svg>', feature: "parent.messages" },
       { id: "parent-announcements", label: "Informasi Penting", icon: "◒", feature: "parent.announcements" },
       { id: "parent-finance", label: "Keuangan", icon: "Rp", feature: "parent.finance" }
     ]

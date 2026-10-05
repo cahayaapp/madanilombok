@@ -4,7 +4,7 @@ import {escapeHtml as e} from './utils.js';
 // An incremental update only: bootstrap must never be rerun on an occupied database.
 export async function renderSmpUpdate(host,session,options={}){
  const unit=options.unit||'SMP';
- host.innerHTML='<p>Memuat pembaruan SMP…</p>';
+ host.innerHTML=`<p>Memuat pembaruan ${unit}…</p>`;
  try{
   const response=await fetch(options.packageUrl||'../seed/imports/smp-2026-2027-update.json');if(!response.ok)throw Error('Paket pembaruan tidak tersedia.');
   const pack=await response.json(),r=pack.report;
@@ -13,6 +13,12 @@ export async function renderSmpUpdate(host,session,options={}){
   button.onclick=async()=>{button.disabled=true;try{
    const marker=await getNode(`settings/imports/${pack.id}`);if(marker){status.textContent='Pembaruan ini sudah diterapkan. Data terbaru tidak ditimpa ulang.';return;}
    const changes={},keys=Object.keys(pack.changes);
+   if(unit==='SMK'){
+    const schedules=Object.entries(pack.changes).filter(([path,r])=>/^schedules\/academic\/[^/]+$/.test(path)&&r&&typeof r==='object').map(([,r])=>r);
+    const references=[...new Set(schedules.flatMap(r=>[`classes/${r.classId}`,`subjects/${r.subjectId}`,`staff/${r.teacherStaffId}`]))];
+    for(let i=0;i<references.length;i+=25)await Promise.all(references.slice(i,i+25).map(async path=>{if(!await getNode(path))throw Error(`Master ${path} belum tersedia. Pembaruan SMK dibatalkan.`);}));
+   }
+
    // Read only the exact target nodes; merge staff roles and other fields rather than overwrite whole masters.
    for(let i=0;i<keys.length;i+=25)await Promise.all(keys.slice(i,i+25).map(async path=>{
     const value=pack.changes[path],old=await getNode(path);
@@ -46,3 +52,5 @@ export async function renderSmpUpdate(host,session,options={}){
 }
 
 export function renderSdUpdate(host,session){return renderSmpUpdate(host,session,{unit:'SD',packageUrl:'../seed/imports/sd-2026-2027-update.json',summary:'Sheet1 resmi. Jadwal lama dinonaktifkan; riwayat tetap tersimpan.',detail:'Miftahussurur ditambahkan. Pengampu kegiatan yang belum ditentukan dan jam selesai Asar tetap perlu dilengkapi. Kelas VI memiliki jadwal 14.30–15.30 yang beririsan dengan Asar pukul 15.00 sesuai sumber.'});}
+
+export function renderSmkUpdate(host,session){return renderSmpUpdate(host,session,{unit:'SMK',packageUrl:'../seed/imports/smk-2026-2027-update.json',summary:'Sheet kedua resmi. Slot berurutan digabung pada halaman guru.',detail:'Kode guru ditautkan ke SDM yang sudah ada. Sel kelas gabungan mengikuti Excel. Penugasan Wali Kelas dan mentor tidak diubah. Penulisan jam Jumat 14.20.15.00 dibaca 14.20–15.00.'});}
