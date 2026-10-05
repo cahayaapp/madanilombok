@@ -8,20 +8,14 @@ export function localClock(now=new Date()) {
 }
 export const minutes=v=>{const m=String(v||'').match(/^(\d{1,2})[:.](\d{2})$/);return m&&+m[1]<24&&+m[2]<60?+m[1]*60+(+m[2]):NaN;};
 export const staffId=ctx=>ctx.session.profile.staffId||ctx.session.user.uid;
-export function teacherSchedules(ctx,{examples=true}={}) {
+export function teacherSchedules(ctx) {
   const p=ctx.session.profile,master=ctx.master;
   const classes=(master.classes||[]).filter(c=>(!p.classIds?.length||p.classIds.includes(c.id))&&(!p.unitIds?.length||p.unitIds.includes(c.unitId)));
   const allowed=new Set(classes.map(c=>c.id));
   // Empty scope must not silently grant every class to a teacher.
   const scoped=!!(p.classIds?.length||p.unitIds?.length||p.subjectIds?.length);
-  const schedules=(master.academicSchedules||[]).filter(s=>!(ctx.session.activeRole==='guru_mapel'&&/tahsin|tahfi[dz]|mutqin|ziyadah|muraja|muroja/i.test((master.subjects||[]).find(x=>x.id===s.subjectId)?.name||s.activityName||''))&&s.status!=='inactive'&&(!s.academicYearId||s.academicYearId===ctx.yearId)&&allowed.has(s.classId)&&(!p.subjectIds?.length||p.subjectIds.includes(s.subjectId))&&((s.staffId||s.teacherStaffId)?(s.staffId||s.teacherStaffId)===staffId(ctx):scoped));
+  const schedules=(master.academicSchedules||[]).filter(s=>!s.isExample&&!String(s.id||'').startsWith('example-')&&!(ctx.session.activeRole==='guru_mapel'&&/tahsin|tahfi[dz]|mutqin|ziyadah|muraja|muroja/i.test((master.subjects||[]).find(x=>x.id===s.subjectId)?.name||s.activityName||''))&&s.status!=='inactive'&&(!s.academicYearId||s.academicYearId===ctx.yearId)&&allowed.has(s.classId)&&(!p.subjectIds?.length||p.subjectIds.includes(s.subjectId))&&((s.staffId||s.teacherStaffId)?(s.staffId||s.teacherStaffId)===staffId(ctx):scoped));
   const result=schedules.map(s=>({...s,unitId:s.unitId||classes.find(c=>c.id===s.classId)?.unitId||'',day:s.day==='Ahad'?'Minggu':s.day,assignmentConfirmed:s.teacherAssignmentStatus==='needs_review'?false:!!(s.staffId||s.teacherStaffId||(p.classIds?.length&&p.subjectIds?.length))}));
-  if(examples&&scoped) for(const c of classes) {
-    // Existing timetable always wins, including when it belongs to another teacher.
-    if((master.academicSchedules||[]).some(s=>s.classId===c.id&&s.status!=='inactive'&&(!s.academicYearId||s.academicYearId===ctx.yearId)))continue;
-    const subject=(master.subjects||[]).find(s=>(!p.subjectIds?.length||p.subjectIds.includes(s.id))&&(s.unitId===c.unitId||s.unitIds?.includes(c.unitId)));
-    if(subject)for(const day of ['Senin','Rabu','Jumat'])result.push({id:`example-${c.id}-${subject.id}-${day}`,classId:c.id,subjectId:subject.id,unitId:c.unitId,day,startTime:'08:00',endTime:'08:45',academicYearId:ctx.yearId,isExample:true,validationStatus:'Contoh — belum dikonfirmasi',source:'Contoh otomatis Madani'});
-  }
   const sessions=new Map();for(const s of result){const id=s.teachingSessionId||s.id;if(!sessions.has(id))sessions.set(id,{...s,id,classIds:s.combinedClassIds||[s.classId]});}
   return [...sessions.values()].sort((a,b)=>DAYS.indexOf(a.day)-DAYS.indexOf(b.day)||minutes(a.startTime)-minutes(b.startTime));
 }

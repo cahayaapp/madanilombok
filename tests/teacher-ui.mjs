@@ -33,3 +33,9 @@ test('combined lesson records both class rosters under one teacher attendance se
  await routes['student-attendance'](combined);assert.equal(ctx.root.querySelectorAll('[data-schedule]').length,1);await click('[data-schedule="combined"]');assert.equal(ctx.root.querySelectorAll('[data-student]').length,2);await click('#saveLearning');
  const saved=read(`academic/learning_sessions/${ctx.yearId}/staff1/${now.date}/combined`);assert.deepEqual(Object.keys(saved.students).sort(),['s1','s2']);assert.equal(saved.classIds.length,2);
 });
+
+test('attendance refreshes master before selecting official schedules and does not fall back after read failure',async()=>{
+ const original=ctx.master;let refreshed=0;const c={...ctx,master:{...original,academicSchedules:[]},refreshMaster:async()=>{refreshed++;c.master=original;}};
+ await home.namespace.openSchedule(c);assert.equal(refreshed,1);assert.ok($('[data-attend="j1"]'));assert.doesNotMatch(ctx.root.textContent,/Contoh otomatis/);
+ await home.namespace.openSchedule({...ctx,refreshMaster:async()=>{throw Error('Jaringan terputus');}});assert.match(ctx.root.textContent,/Data tidak dapat dimuat: Jaringan terputus/);assert.equal([...ctx.root.querySelectorAll('dialog[open]')].at(-1).querySelectorAll('[data-attend]').length,0);
+});

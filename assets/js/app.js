@@ -145,6 +145,7 @@ async function renderRoute() {
   root.replaceChildren(mount);
   const scopedSession=sessionForRole(session,activeRole);
   const ctx={session:scopedSession,master,yearId:currentAcademicYearId(),year:currentAcademicYear(),root:mount,navigate,rerender:renderRoute,roleName:roleLabel([activeRole])};
+  ctx.refreshMaster=async()=>{const fresh=await loadMaster(true);master=fresh;ctx.master=fresh;ctx.yearId=currentAcademicYearId();ctx.year=currentAcademicYear();};
   try {
     if(currentRoute==='dashboard')await renderDashboard(ctx);
     else if(activeRole==='mentor_tahsin_tahfiz'&&currentRoute==='quran')await renderTeacherQuran(ctx);

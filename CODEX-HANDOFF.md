@@ -121,3 +121,6 @@ Perubahan baru: role Pembina Tahfiz (ID lama), kesehatan; KPI diblok semua role;
 - Belum deploy. Java runtime tidak tersedia untuk Emulator. Root database read masih pilot luas; jangan klaim isolasi klinis/role di produksi.
 - Akun kesehatan@madani.app BELUM dibuat: auto-review menolak Simpan dan meminta konfirmasi langsung. Pertanyaan tertunda. Jangan bypass dengan jalur API/CLI. Password tidak disimpan di repo.
 - Audit kesetaraan 100%, ranking Santri Terbaik lintas domain, GPS Madani dan identitas yang ditunda belum selesai. Lihat docs/ROLE-WORKFLOWS-2026-10-04.md.
+
+### 5 Oktober — presensi memakai jadwal resmi
+Keluhan jadwal contoh: teacherSchedules sebelumnya membuat fallback otomatis untuk kelas cakupan tanpa jadwal aktif, sedangkan master disimpan sepanjang sesi. Generator contoh dihapus dari jalur operasional; row isExample/example-* disaring. Konteks app menyediakan refreshMaster, dipanggil sebelum daftar jadwal/presensi dibuka; kegagalan baca ditampilkan tanpa memakai data lama. 123 tests lulus. Tidak mengubah/mengimpor database produksi; status impor akun pengguna belum diverifikasi. SW v40.
