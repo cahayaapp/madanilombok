@@ -218,17 +218,27 @@ export function watchUserProfile(uid,callback,onError){
 
 /** Atomic teacher session revision. A repeated check-in returns the original timestamp. */
 export async function saveTeacherSession(path,payload,{expectedVersion=null,createOnly=false,actorUid}={}) {
-  const initial=await get(ref(db,pathFor(path)));
-  if(createOnly&&initial.exists())return initial.val();
-  let rejection='Data telah berubah. Muat ulang sebelum menyimpan.';
-  const result=await runTransaction(ref(db,pathFor(path)),current=>{
-    if(createOnly&&current)return;
-    if(expectedVersion!==null&&(current?.version||0)!==expectedVersion)return;
-    if(current?.teacherUid&&current.teacherUid!==actorUid){rejection='Sesi ini telah dicatat guru lain.';return;}
-    return {...payload,createdBy:current?.createdBy||actorUid,createdAt:current?.createdAt||serverTimestamp(),updatedBy:actorUid,updatedAt:serverTimestamp()};
-  },{applyLocally:false});
-  if(!result.committed){if(createOnly&&result.snapshot.exists())return result.snapshot.val();throw Error(rejection);}
-  return result.snapshot.val();
+  const sessionRef=ref(db,pathFor(path));
+  let unsubscribe=()=>{},timer;
+  try{
+    // Keep the value listener alive through the transaction. get() alone does not
+    // guarantee a populated transaction cache, so a stored revision can look null.
+    const initial=await new Promise((resolve,reject)=>{
+      timer=setTimeout(()=>reject(Error('Data sesi belum dapat dimuat. Periksa koneksi lalu coba simpan kembali.')),20000);
+      unsubscribe=onValue(sessionRef,resolve,reject);
+    });
+    clearTimeout(timer);
+    if(createOnly&&initial.exists())return initial.val();
+    let rejection='Data telah berubah. Muat ulang sebelum menyimpan.';
+    const result=await runTransaction(sessionRef,current=>{
+      if(createOnly&&current)return;
+      if(expectedVersion!==null&&(current?.version||0)!==expectedVersion)return;
+      if(current?.teacherUid&&current.teacherUid!==actorUid){rejection='Sesi ini telah dicatat guru lain.';return;}
+      return {...payload,createdBy:current?.createdBy||actorUid,createdAt:current?.createdAt||serverTimestamp(),updatedBy:actorUid,updatedAt:serverTimestamp()};
+    },{applyLocally:false});
+    if(!result.committed){if(createOnly&&result.snapshot.exists())return result.snapshot.val();throw Error(rejection);}
+    return result.snapshot.val();
+  }finally{clearTimeout(timer);unsubscribe();}
 }
 
 /** UKS stock, examination and permission changes commit together, independent of finance. */
