@@ -187,17 +187,19 @@ export async function createWorkspaceRecord(path, data, actorUid) {
 
 /** Compare-and-transition prevents stale screens from overwriting newer workflow state. */
 export async function transitionWorkspaceRecord(path, id, transition, actorUid) {
-  await get(ref(db,pathFor(`${path}/${id}`)));
-  let rejection='Rekam tidak ditemukan.';
-  const result=await runTransaction(ref(db,pathFor(`${path}/${id}`)),current=>{
-    if(!current)return;
-    try {
-      const next=transition(current);
-      return {...next,updatedAt:serverTimestamp(),updatedBy:actorUid};
-    } catch(error){rejection=error.message;return;}
-  },{applyLocally:false});
-  if(!result.committed)throw new Error(rejection);
-  return result.snapshot.val();
+  const target=ref(db,pathFor(`${path}/${id}`));let stop=()=>{},timer;
+  try{
+    await new Promise((resolve,reject)=>{timer=setTimeout(()=>reject(Error('Data belum dapat dimuat. Periksa koneksi lalu coba kembali.')),20000);stop=onValue(target,resolve,reject);});
+    clearTimeout(timer);
+    let rejection='Rekam tidak ditemukan.';
+    const result=await runTransaction(target,current=>{
+      if(!current)return;
+      try{return {...transition(current),updatedAt:serverTimestamp(),updatedBy:actorUid};}
+      catch(error){rejection=error.message;return;}
+    },{applyLocally:false});
+    if(!result.committed)throw new Error(rejection);
+    return result.snapshot.val();
+  }finally{clearTimeout(timer);stop();}
 }
 
 export async function saveWorkspaceRecord(path,id,data,actorUid) {
