@@ -91,5 +91,15 @@
     "Dua entri Ferdi orang sama.",
     "Fahri Husain berbeda dari Fahri Effendi. Identitas Fahri Gontor belum pasti.",
     "Nama lain ditelusuri lagi; belum diizinkan menambah siswa baru."
-  ]
+  ],
+  "staffIdentityConfirmations": {
+    "confirmedOn": "2026-10-06",
+    "Fahri Gontor": "AMD-SDM-0023",
+    "canonicalFahriName": "Fahri Aldian Effendi",
+    "Ida Fitriana": "AMD-SDM-0036",
+    "mergedStaffIds": {
+      "AMD-SDM-0037": "AMD-SDM-0036"
+    },
+    "notes": "Fahri Husain tetap berbeda. Konfirmasi langsung pengguna."
+  }
 }

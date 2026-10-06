@@ -1,3 +1,5 @@
+import {renderHomeroomCases} from '../homeroom-cases.js';
+import {schoolCaseRoute} from '../school-case-routing.js';
 import {renderAccountProfile} from '../profile.js';
 import {renderWorkFollowups} from '../work-followups.js';
 import {renderManagementReports} from '../management-reports.js';
@@ -82,8 +84,8 @@ export async function renderAcademicFollowup(ctx){
 export async function renderTeacherCase(ctx){
  authorize(ctx,'teacher-case');
  const students=reportableStudents(ctx.master);
- ctx.root.innerHTML=pageHeader('Lapor Kasus / Pelanggaran','Laporkan santri dari semua unit pendidikan. Konselor menangani tabayyun dan tindakan formal.')+form(ctx,'teacherCaseForm','Laporan Pelanggaran',formRow('Santri',select('studentId',studentOptions(students),'required'))+formRow('Tanggal',input('date',localDate(),'date','required'))+formRow('Kategori',input('category','','text','required maxlength="120"'))+textField('Kronologi faktual','description')+textField('Evidence / saksi','evidence'));
- attachAsync(ctx.root.querySelector('#teacherCaseForm'),async data=>{requireAssignedId(data.studentId,students,'Santri');await createWorkspaceRecord(`boarding/cases/${ctx.yearId}`,{...payload(ctx,data),status:'menunggu_konselor',reportedByUid:uid(ctx),reporterRole:role(ctx),parentVisible:false},uid(ctx));await ctx.rerender();},'Laporan masuk ke antrean Konselor.');
+ ctx.root.innerHTML=pageHeader('Lapor Kasus / Pelanggaran','Laporkan santri dari semua unit pendidikan. Laporan SD ditangani Wali Kelas; unit lainnya ditangani Konselor.')+form(ctx,'teacherCaseForm','Laporan Pelanggaran',formRow('Santri',select('studentId',studentOptions(students),'required'))+formRow('Tanggal',input('date',localDate(),'date','required'))+formRow('Kategori',input('category','','text','required maxlength="120"'))+textField('Kronologi faktual','description')+textField('Evidence / saksi','evidence'));
+ attachAsync(ctx.root.querySelector('#teacherCaseForm'),async data=>{requireAssignedId(data.studentId,students,'Santri');const destination=schoolCaseRoute(ctx.master,data.studentId,ctx.yearId);await createWorkspaceRecord(destination.path,{...payload(ctx,data),...destination.fields,reportedByUid:uid(ctx),reporterRole:role(ctx),parentVisible:false},uid(ctx));await ctx.rerender();},'Laporan diteruskan ke Wali Kelas untuk siswa SD, atau Konselor untuk unit lainnya.');
 }
 export async function renderWorkKpi(ctx){
  const kinds=['schedules','writings','teacher_assessments','academic_followups','observations','coaching'];
@@ -160,6 +162,7 @@ export async function renderManagementKpi(ctx){
  ctx.root.innerHTML=pageHeader('KPI & Evidence Manajemen','Rekap siklus temuan dalam scope; tidak mengubah penilaian personel secara otomatis.')+`<div class="portal-metrics">${metric('Temuan',String(rows.length),'Evidence tercatat')}${metric('Selesai',String(rows.filter(r=>r.status==='RESOLVED').length),'Setelah evaluasi','cyan')}${metric('Menunggu Evaluasi',String(rows.filter(r=>r.status==='EVALUATION').length),'Perlu verifikasi','coral')}${metric('Dieskalasi',String(rows.filter(r=>r.status==='ESCALATED').length),'Memerlukan keputusan')}</div>`+panel('Penilaian',`<p class="role-hint">Rekap belum menjadi skor KPI berbobot. Target dan pembobotan mengikuti standar kerja yang disetujui pesantren.</p>`);
 }
 export const WORKSPACE_ROUTES={
+ "homeroom-cases":renderHomeroomCases,
  'management-reports':renderManagementReports,'work-followups':renderWorkFollowups,
  'management-residents':renderResidentStaff,'management-worship':renderStaffWorship,
  ...Object.fromEntries(Object.keys(OPERATION_VIEWS).map(r=>[r,ctx=>renderManagementOperations(ctx,r)])),

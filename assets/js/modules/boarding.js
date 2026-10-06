@@ -1,3 +1,4 @@
+import {schoolCaseRoute,isSdStudent} from '../school-case-routing.js';
 import {renderCounselorWorkspace,renderCounselorReflection} from '../counselor-workspace.js';
 import {renderNaqibStudentAssessment,renderNaqibReflection} from '../naqib-assessment.js';
 import {counselorLevel,routeCounselorCase} from '../counselor-model.js';
@@ -26,6 +27,7 @@ function profileGender(ctx) {
 }
 
 function scopedCases(ctx, cases = []) {
+  cases=cases.filter(c=>c.handlingRole!=="wali_kelas"&&!isSdStudent(ctx.master,c.studentId));
   const gender = profileGender(ctx);
   if (!gender) return cases;
   const studentMap = byId(ctx.master.students || []);
@@ -109,8 +111,8 @@ export async function renderNaqibGuide(ctx) {
 
 export async function renderNaqibCase(ctx) {
   const students=reportableStudents(ctx.master);
-  ctx.root.innerHTML=pageHeader("Lapor Kasus / Pelanggaran","Laporkan santri dari semua unit pendidikan. Penanganan formal dilakukan Konselor.")+panel("Form Laporan",`<form id="caseReportForm" class="portal-form max-760">${formRow("Tanggal",input("date",today(),"date","required"))}${formRow("Santri",select("studentId",studentOptions(students),"required"))}${formRow("Kategori",select("category","<option>Kedisiplinan</option><option>Akhlak</option><option>Ibadah</option><option>Relasi</option><option>Akademik</option><option>Keamanan</option><option>Lainnya</option>"))}${formRow("Tingkat",select("severity","<option value='ringan'>Ringan</option><option value='sedang'>Sedang</option><option value='berat'>Berat</option><option value='kritis'>Kritis</option>"))}${formRow("Kronologi",textarea("description","","required"),true)}${formRow("Saksi/Bukti Awal",textarea("evidence"),true)}<div class="notice info full">Laporan ini masuk ke Kotak Kasus Konselor. Naqib tidak memberikan konsekuensi formal dari halaman ini.</div><div class="form-actions"><button class="btn btn-primary">Kirim ke Konselor</button></div></form>`);
-  attachAsync(document.getElementById("caseReportForm"),async data=>{if(!students.some(s=>s.id===data.studentId))throw Error("Santri tidak tersedia dalam master aktif.");await pushRecord(`boarding/cases/${ctx.yearId}`,{...data,status:"baru",reportedBy:ctx.session.user.uid,reportedByRole:"naqib"},ctx.session.user.uid);document.getElementById("caseReportForm").reset();},"Kasus dikirim ke Konselor.");
+  ctx.root.innerHTML=pageHeader("Lapor Kasus / Pelanggaran","Laporkan santri dari semua unit pendidikan. Penanganan formal dilakukan Konselor.")+panel("Form Laporan",`<form id="caseReportForm" class="portal-form max-760">${formRow("Tanggal",input("date",today(),"date","required"))}${formRow("Santri",select("studentId",studentOptions(students),"required"))}${formRow("Kategori",select("category","<option>Kedisiplinan</option><option>Akhlak</option><option>Ibadah</option><option>Relasi</option><option>Akademik</option><option>Keamanan</option><option>Lainnya</option>"))}${formRow("Tingkat",select("severity","<option value='ringan'>Ringan</option><option value='sedang'>Sedang</option><option value='berat'>Berat</option><option value='kritis'>Kritis</option>"))}${formRow("Kronologi",textarea("description","","required"),true)}${formRow("Saksi/Bukti Awal",textarea("evidence"),true)}<div class="notice info full">Laporan siswa SD masuk ke Wali Kelas; unit lainnya masuk ke Konselor. Naqib tidak memberikan konsekuensi formal dari halaman ini.</div><div class="form-actions"><button class="btn btn-primary">Kirim Laporan</button></div></form>`);
+  attachAsync(document.getElementById("caseReportForm"),async data=>{if(!students.some(s=>s.id===data.studentId))throw Error("Santri tidak tersedia dalam master aktif.");const destination=schoolCaseRoute(ctx.master,data.studentId,ctx.yearId);await pushRecord(destination.path,{...data,...destination.fields,reportedBy:ctx.session.user.uid,reportedByRole:"naqib"},ctx.session.user.uid);document.getElementById("caseReportForm").reset();},"Laporan SD dikirim ke Wali Kelas; unit lainnya ke Konselor.");
 }
 
 export async function renderNaqibSelf(ctx) {return renderNaqibReflection(ctx);}

@@ -13,6 +13,17 @@
       "role": "mentor_tahsin_tahfiz"
     },
     {
+      "groupId": "GRP-2026-quran-P-5",
+      "staffIds": [
+        "AMD-SDM-0036"
+      ],
+      "staffNames": {
+        "AMD-SDM-0036": "IDA FITRIANA"
+      },
+      "sourceMentorName": "Usth Ida Fitriana",
+      "role": "mentor_tahsin_tahfiz"
+    },
+    {
       "groupId": "GRP-2026-quran-P-6",
       "staffIds": [
         "AMD-SDM-0030"
@@ -33,6 +44,17 @@
       },
       "sourceMentorName": "Ust. Fathul Uyun",
       "role": "mentor_tahsin_tahfiz"
+    },
+    {
+      "groupId": "GRP-2026-arabic-P-3",
+      "staffIds": [
+        "AMD-SDM-0036"
+      ],
+      "staffNames": {
+        "AMD-SDM-0036": "IDA FITRIANA"
+      },
+      "sourceMentorName": "Usth Ida Fitriana",
+      "role": "guru_mapel"
     },
     {
       "groupId": "GRP-2026-arabic-P-4",
@@ -101,6 +123,17 @@
       "role": "guru_mapel"
     },
     {
+      "groupId": "GRP-2026-arabic-L-c3",
+      "staffIds": [
+        "AMD-SDM-0023"
+      ],
+      "staffNames": {
+        "AMD-SDM-0023": "Fahri Aldian Effendi"
+      },
+      "sourceMentorName": "Fahri Gontor",
+      "role": "guru_mapel"
+    },
+    {
       "groupId": "GRP-2026-arabic-L-gema",
       "staffIds": [
         "AMD-SDM-0055"
@@ -119,11 +152,6 @@
       "sourceMentorName": "Usth Alya R. & Nurul"
     },
     {
-      "groupId": "GRP-2026-quran-P-5",
-      "name": "Halaqoh Khatam",
-      "sourceMentorName": "Usth Ida Fitriana"
-    },
-    {
       "groupId": "GRP-2026-quran-P-8",
       "name": "Kelompok Umum I — Usth. Alfi NH & Rokyal  A",
       "sourceMentorName": "Usth. Alfi NH & Rokyal  A"
@@ -137,11 +165,6 @@
       "groupId": "GRP-2026-quran-P-10",
       "name": "Kelompok Umum I — Usth Rokyal Aeni",
       "sourceMentorName": "Usth Rokyal Aeni"
-    },
-    {
-      "groupId": "GRP-2026-arabic-P-3",
-      "name": "kelompok Sigor",
-      "sourceMentorName": "Usth Ida Fitriana"
     },
     {
       "groupId": "GRP-2026-quran-L-zakaria",
@@ -162,11 +185,6 @@
       "groupId": "GRP-2026-quran-L-ziyadah",
       "name": "GEMA Ziyadah — Ahmad Budiawan Alkhair",
       "sourceMentorName": "Ahmad Budiawan Alkhair"
-    },
-    {
-      "groupId": "GRP-2026-arabic-L-c3",
-      "name": "Bahasa Arab Pagi — Cordova 3",
-      "sourceMentorName": "Fahri Gontor"
     }
   ]
 }

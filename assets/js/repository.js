@@ -256,6 +256,8 @@ export async function commitHealthOperation(yearId,operation,actorUid){
 /** Case is authoritative; deterministic projections can be repaired by retrying the same operation. */
 export async function commitCaseOperation(yearId,caseId,operation,session){
  const {applyCaseOperation}=await import('./counselor-model.js');
+ const existing=await getNode(`boarding/cases/${yearId}/${caseId}`);
+ if(existing?.studentId){const student=await getNode(`students/${existing.studentId}`);if(student?.unitId==='UNIT-SD')throw Error('Kasus SD ditangani Wali Kelas.');}
  const record=await transitionWorkspaceRecord(`boarding/cases/${yearId}`,caseId,current=>applyCaseOperation(current,operation,session,Date.now()),session.user.uid);
  const projections={};
  if(operation.type==='session')projections[`boarding/counseling/${yearId}/${caseId}/${operation.id}`]=record.sessions[operation.id];

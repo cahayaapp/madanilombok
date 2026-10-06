@@ -9816,7 +9816,7 @@
       ]
     },
     "AMD-SDM-0023": {
-      "name": "Fahri Effendi",
+      "name": "Fahri Aldian Effendi",
       "unitTask": "Pondok/Asrama",
       "roleSummary": "Pembina Kamar Cordova 1",
       "dataStatus": "Placeholder - perlu verifikasi identitas",
@@ -9830,7 +9830,14 @@
       ],
       "appRoles": [
         "guru_mapel"
-      ]
+      ],
+      "roleScopes": {
+        "guru_mapel": {
+          "groupIds": [
+            "GRP-2026-arabic-L-c3"
+          ]
+        }
+      }
     },
     "AMD-SDM-0024": {
       "name": "Ustadzah Fathul Uyun",
@@ -10166,7 +10173,6 @@
     "AMD-SDM-0036": {
       "name": "IDA FITRIANA",
       "gender": "P",
-      "nuptk": "4563768669230823",
       "nik": "5203144505890001",
       "unitTask": "SMP",
       "roleSummary": "Guru",
@@ -10185,11 +10191,15 @@
       "seeded": true,
       "roles": "Guru",
       "unitIds": [
-        "UNIT-SMP"
+        "UNIT-SMP",
+        "UNIT-SMK",
+        "UNIT-PONDOK"
       ],
+      "nuptk": "4563768669230823",
       "appRoles": [
         "guru_wali",
-        "guru_mapel"
+        "guru_mapel",
+        "mentor_tahsin_tahfiz"
       ],
       "roleScopes": {
         "guru_wali": {
@@ -10203,32 +10213,20 @@
             "AMD-SMP-0101",
             "AMD-SMP-0037"
           ]
+        },
+        "guru_mapel": {
+          "groupIds": [
+            "GRP-2026-arabic-P-3"
+          ]
+        },
+        "mentor_tahsin_tahfiz": {
+          "groupIds": [
+            "GRP-2026-quran-P-5"
+          ]
         }
-      }
-    },
-    "AMD-SDM-0037": {
-      "name": "Ida Fitriana",
-      "gender": "P",
-      "nik": "5203147112900028",
-      "unitTask": "SMK; Pondok/Al-Qur’an",
-      "roleSummary": "Tenaga Kependidikan; Tendik; PJ Mutqin Umum Putri",
-      "employmentStatus": "GTY/PTY",
-      "staffType": "Tenaga Kependidikan",
-      "phone": "081997935997",
-      "email": "idfhiraisthisod@gmail.com",
-      "birthPlace": "LENGKOK",
-      "birthDate": "1990-12-31",
-      "address": "LENGKOK",
-      "village": "MAMBEN LAUK",
-      "district": "Kec. Wanasaba",
-      "dataStatus": "Dari data sekolah",
-      "source": "daftar-tendik-SMKS ISLAM PLUS AL MADANI-2026-08-26 19_04_55.xlsx; Data asrama/halaqah",
-      "status": "active",
-      "seeded": true,
-      "roles": "Tenaga Kependidikan; Tendik; PJ Mutqin Umum Putri",
-      "unitIds": [
-        "UNIT-SMK",
-        "UNIT-PONDOK"
+      },
+      "confirmedDuplicateIds": [
+        "AMD-SDM-0037"
       ]
     },
     "AMD-SDM-0038": {
@@ -12356,13 +12354,17 @@
       "programType": "quran",
       "type": "Halaqah Al-Qur'an",
       "unitId": "UNIT-PONDOK",
-      "mentorName": "Usth Ida Fitriana",
-      "mentorStaffIds": [],
+      "mentorName": "IDA FITRIANA",
+      "mentorStaffIds": [
+        "AMD-SDM-0036"
+      ],
       "status": "active",
       "source": "KELOMPOK HALAOH.xlsx",
       "importId": "boarding-rosters-2026",
       "rosterStatus": "linked",
-      "sourceMemberCount": 8
+      "sourceMemberCount": 8,
+      "mentorStaffId": "AMD-SDM-0036",
+      "sourceMentorName": "Usth Ida Fitriana"
     },
     "GRP-2026-quran-P-6": {
       "name": "Gema  Ziyadah",
@@ -12448,8 +12450,10 @@
       "programType": "arabic",
       "type": "Bahasa Arab",
       "unitId": "UNIT-PONDOK",
-      "mentorName": "Usth Ida Fitriana",
-      "mentorStaffIds": [],
+      "mentorName": "IDA FITRIANA",
+      "mentorStaffIds": [
+        "AMD-SDM-0036"
+      ],
       "status": "active",
       "source": "BELAJAR BAHASA ARAB.xlsx",
       "importId": "boarding-rosters-2026",
@@ -12458,8 +12462,10 @@
       "timeLabel": "Ba’da Subuh",
       "startTime": "05:40",
       "endTime": "06:10",
-      "scheduleBasis": "Jadwal 24 jam DOCX 2026, Mufrodat",
-      "category": "Bahasa Arab Pagi"
+      "scheduleBasis": "Jadwal 24 jam DOCX 2026, Bahasa Arab",
+      "category": "Bahasa Arab Pagi",
+      "mentorStaffId": "AMD-SDM-0036",
+      "sourceMentorName": "Usth Ida Fitriana"
     },
     "GRP-2026-arabic-P-4": {
       "name": "Kelompok Kibar",
@@ -12480,7 +12486,7 @@
       "timeLabel": "Ba’da Subuh",
       "startTime": "05:40",
       "endTime": "06:10",
-      "scheduleBasis": "Jadwal 24 jam DOCX 2026, Mufrodat",
+      "scheduleBasis": "Jadwal 24 jam DOCX 2026, Bahasa Arab",
       "category": "Bahasa Arab Pagi",
       "sourceMentorName": "Usth Nuril A."
     },
@@ -12503,7 +12509,7 @@
       "timeLabel": "Ba’da Subuh",
       "startTime": "05:40",
       "endTime": "06:10",
-      "scheduleBasis": "Jadwal 24 jam DOCX 2026, Mufrodat",
+      "scheduleBasis": "Jadwal 24 jam DOCX 2026, Bahasa Arab",
       "category": "Bahasa Arab Pagi",
       "sourceMentorName": "Usth Fathul U."
     },
@@ -12636,7 +12642,7 @@
       "timeLabel": "Ba’da Subuh",
       "startTime": "05:40",
       "endTime": "06:10",
-      "scheduleBasis": "Jadwal 24 jam DOCX 2026, Mufrodat",
+      "scheduleBasis": "Jadwal 24 jam DOCX 2026, Bahasa Arab",
       "category": "Bahasa Arab Pagi",
       "sourceMentorName": "Bintang"
     },
@@ -12646,8 +12652,10 @@
       "programType": "arabic",
       "type": "Bahasa Arab",
       "unitId": "UNIT-PONDOK",
-      "mentorName": "Fahri Gontor",
-      "mentorStaffIds": [],
+      "mentorName": "Fahri Aldian Effendi",
+      "mentorStaffIds": [
+        "AMD-SDM-0023"
+      ],
       "status": "active",
       "source": "WhatsApp Image 2026-10-02 at 14.28.36.jpeg",
       "importId": "boarding-rosters-2026",
@@ -12656,8 +12664,10 @@
       "timeLabel": "Ba’da Subuh",
       "startTime": "05:40",
       "endTime": "06:10",
-      "scheduleBasis": "Jadwal 24 jam DOCX 2026, Mufrodat",
-      "category": "Bahasa Arab Pagi"
+      "scheduleBasis": "Jadwal 24 jam DOCX 2026, Bahasa Arab",
+      "category": "Bahasa Arab Pagi",
+      "mentorStaffId": "AMD-SDM-0023",
+      "sourceMentorName": "Fahri Gontor"
     },
     "GRP-2026-arabic-L-gema": {
       "name": "Bahasa Arab Pagi — GEMA Gedung Cairo",
@@ -12678,7 +12688,7 @@
       "timeLabel": "Ba’da Subuh",
       "startTime": "05:40",
       "endTime": "06:10",
-      "scheduleBasis": "Jadwal 24 jam DOCX 2026, Mufrodat",
+      "scheduleBasis": "Jadwal 24 jam DOCX 2026, Bahasa Arab",
       "category": "Bahasa Arab Pagi",
       "sourceMentorName": "Muhasim"
     }
@@ -14606,11 +14616,11 @@
       "sourceRow": 6,
       "importId": "daily-2026-docx",
       "genderScope": "mixed",
-      "name": "Asrama Umum 05:40 · MUFRODAT",
-      "detail": "MUFRODAT",
-      "description": "MUFRODAT",
+      "name": "Asrama Umum 05:40 · Bahasa Arab",
+      "detail": "Bahasa Arab",
+      "description": "Bahasa Arab",
       "defaultPic": "NAQIB & BAGIAN BAHASA",
-      "notes": "Setelah musyafahah lanjut program mufrodat dengan bagian bahasa, semua santri membawa buku dan polpen",
+      "notes": "Setelah musyafahah lanjut program Bahasa Arab dengan bagian bahasa, semua santri membawa buku dan polpen",
       "category": "Program 24 Jam",
       "sourceCategory": "program_24_jam",
       "defaultScope": "boarding_general"
@@ -14816,11 +14826,11 @@
       "sourceRow": 6,
       "importId": "daily-2026-docx",
       "genderScope": "mixed",
-      "name": "Asrama GEMA 05:40 · MUFRODAT",
-      "detail": "MUFRODAT",
-      "description": "MUFRODAT",
+      "name": "Asrama GEMA 05:40 · Bahasa Arab",
+      "detail": "Bahasa Arab",
+      "description": "Bahasa Arab",
       "defaultPic": "NAQIB & BAGIAN BAHASA",
-      "notes": "Setelah musyafahah lanjut program mufrodat dengan bagian bahasa, semua santri membawa buku dan polpen",
+      "notes": "Setelah musyafahah lanjut program Bahasa Arab dengan bagian bahasa, semua santri membawa buku dan polpen",
       "category": "Program 24 Jam",
       "sourceCategory": "program_24_jam",
       "defaultScope": "boarding_gema"
@@ -49819,6 +49829,37 @@
         ],
         "recurring": 11,
         "groupCount": 21
+      }
+    },
+    "staffIdentityMerges": {
+      "AMD-SDM-0037": {
+        "canonicalStaffId": "AMD-SDM-0036",
+        "sourceStaff": {
+          "name": "Ida Fitriana",
+          "gender": "P",
+          "nik": "5203147112900028",
+          "unitTask": "SMK; Pondok/Al-Qur’an",
+          "roleSummary": "Tenaga Kependidikan; Tendik; PJ Mutqin Umum Putri",
+          "employmentStatus": "GTY/PTY",
+          "staffType": "Tenaga Kependidikan",
+          "phone": "081997935997",
+          "email": "idfhiraisthisod@gmail.com",
+          "birthPlace": "LENGKOK",
+          "birthDate": "1990-12-31",
+          "address": "LENGKOK",
+          "village": "MAMBEN LAUK",
+          "district": "Kec. Wanasaba",
+          "dataStatus": "Dari data sekolah",
+          "source": "daftar-tendik-SMKS ISLAM PLUS AL MADANI-2026-08-26 19_04_55.xlsx; Data asrama/halaqah",
+          "status": "active",
+          "seeded": true,
+          "roles": "Tenaga Kependidikan; Tendik; PJ Mutqin Umum Putri",
+          "unitIds": [
+            "UNIT-SMK",
+            "UNIT-PONDOK"
+          ]
+        },
+        "confirmation": "Pengguna mengonfirmasi satu identitas, 6 Oktober 2026"
       }
     }
   },

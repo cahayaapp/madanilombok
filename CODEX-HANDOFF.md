@@ -221,3 +221,28 @@ Maksud dua menu adalah dua kartu pada beranda, bukan sekadar dropdown form. Bera
 ## 6 Oktober — kartu emas dan form tanpa pemilih program
 
 Kartu Muroja’ah memakai kelas secondary dengan gradasi emas Madani yang sudah tersedia. Dropdown Program dihapus dari lembar setoran; selectedProgram berasal dari route kartu dan tetap selama memilih halaqah/tanggal. Judul menjadi Setoran Ziyadah atau Setoran Muroja’ah; jenis Muroja’ah Harian/Pekanan/Bulanan tetap tersedia. 145 tes lulus. Cache v55-tahfiz-direct-forms; lokal, belum deploy hosting.
+
+## 6 Oktober — pelanggaran SD kepada Wali Kelas
+
+Instruksi pengguna: tidak ada Guru Wali/mentor individu untuk TK; pemetaan rombel/jadwal TK menunggu konfirmasi kepala sekolah. Pelanggaran siswa SD ditangani Wali Kelas (homeroomStaffId), bukan Konselor atau Guru Wali.
+
+Ketiga formulir pelaporan (Guru Mapel, workspace role internal, Naqib) memakai schoolCaseRoute. Laporan baru SD masuk boarding/homeroom_cases/{year} dengan status menunggu_wali_kelas, classId dan assignedHomeroomStaffId; non-SD tetap boarding/cases. Laporan multi-siswa lintas unit dibagi sesuai penerima dalam patch yang sama. Wali belum tersedia ditandai needs_homeroom, tanpa fallback Konselor.
+
+Menu Pelanggaran Kelas SD pada role Guru Mapel (kartu beranda muncul untuk pemegang Wali Kelas SD) membaca laporan kelasnya, termasuk legacy SD di node cases; catatan klarifikasi/pembinaan dan penutupan memakai transitionWorkspaceRecord dengan pemeriksaan ownership Wali Kelas saat ini, histori append, tanpa poin otomatis. Semua scoped case lists Konselor dan counselor-workspace mengecualikan SD. commitCaseOperation menolak SD berdasarkan master siswa dan model menolak handlingRole wali_kelas. Data historis tidak dimigrasi/dihapus. Implementasi ini bukan klaim penguatan Firebase Rules; rule boarding lama tidak berubah, belum uji emulator/produksi.
+
+149 tes lokal lulus termasuk routing SD/non-SD, multi-unit atomic report, Wali Kelas berbeda ditolak, penyelesaian dengan histori dan baca legacy. Syntax JS, JSON rules, diff check lulus. Tidak menulis laporan percobaan ke live atau mengubah finance. Cache v56-sd-homeroom-cases; belum deploy hosting.
+
+## 6 Oktober — konfirmasi Fahri/Ida dan Bahasa Arab
+
+Pengguna mengonfirmasi Fahri Gontor = Fahri Aldian Effendi (0023); Fahri Husain tetap terpisah. Ida Fitriana 0037 digabung ke 0036 (Guru Wali SMP). Lokal: semua enam kelompok Arab terhubung, termasuk Sigor/Ida dan Cordova 3/Fahri; Halaqoh Khatam/Ida ikut tertaut. Master duplikat dihapus setelah arsip reference/staffIdentityMerges dan referensi dipindahkan. Akun Auth dan histori tidak dihapus; finance tetap. Jadwal umum/GEMA 05.40–06.10 berganti nama Bahasa Arab (ID tetap). Paket terpisah Admin Import Data: Terapkan Konfirmasi Guru & Bahasa Arab, marker arabic-staff-confirmed-20261006-v1. 151 tests lulus; cache v57. Belum diterapkan live atau deploy; sesi lokal Muhasim, sudah meminta pengguna masuk Administrator.
+
+## 6 Oktober — diagnosis PWA toolbar dan GPS tablet
+
+Read-only HTTP header check verified http://app.almadanilombok.com returns 200 directly (no HTTPS redirect), hosted by GitHub Pages; HTTPS works. Manifest deployed is already standalone/root scope. Portal/admin lacked manifest link. Screenshot browser toolbar is not DOM and cannot be removed by CSS; old HTTP/other-origin shortcut may need reinstall from HTTPS. Exact tablet install origin and actual geolocation error code not verified.
+
+Local fixes: secure-origin.js redirects official HTTP origins to HTTPS preserving path/query/hash, excludes file/localhost; loaded before modules on entry, portal, admin. Portal/admin link shared root manifest, manifest id equals previous effective start_url to preserve identity. GPS helper distinguishes insecure/permission/unavailable/timeout, fresh high accuracy request with one fresh network-location fallback only after codes 2/3; same verifyLocation radius retained, no attendance bypass. SW v58. 156 tests passed, syntax/diff checks passed. No physical tablet test, no attendance written, no hosting deployment.
+
+GitHub Pages settings opened in agent Chrome tab, but browser is logged out. Login requested asynchronously to enable server Enforce HTTPS; not changed yet. Do not claim live HTTPS enforced or installed tablet fixed. Pending previous Arabic identity live import remains separate.
+
+### HTTPS hosting diterapkan melalui Safari
+Pengguna mengarahkan memakai sesi Safari yang telah login. Enforce HTTPS pada GitHub Pages cahayaapp/madanilombok diaktifkan; UI checked + DNS successful. Read-only curl memverifikasi HTTP portal mengembalikan 301 Location https://app.almadanilombok.com/app/index.html (6 Oktober 2026 02:42 UTC). Bukti /tmp/madani-https-enabled.png. Ini perubahan setting hosting saja; kode lokal PWA/GPS belum dipublikasikan. Uji tablet/install lama dan presensi fisik belum dilakukan.

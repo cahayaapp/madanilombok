@@ -29,11 +29,12 @@ for audience in ['umum','GEMA']:
         count+=1; start,end=[v.replace('.',':') for v in times]
         scope='boarding_gema' if audience=='GEMA' else 'boarding_general'
         suffix=f'{audience.upper()}-{count:02d}'; pid='PRG-2026-'+suffix; sid='DS-2026-'+suffix
-        detail=row[2]; name=detail.split(',')[0].strip()
+        notes=re.sub('mufrodat','Bahasa Arab',row[4],flags=re.I) if start=='05:40' else row[4]
+        detail=re.sub('mufrodat','Bahasa Arab',row[2],flags=re.I) if start=='05:40' else row[2]; name=detail.split(',')[0].strip()
         label='Asrama GEMA' if audience=='GEMA' else 'Asrama Umum'
         common={'status':'active','source':path.name,'sourceRow':rownum+1,'importId':update,'genderScope':'mixed'}
-        change('programs/'+pid,{**common,'name':f'{label} {start} · {name}','detail':detail,'description':detail,'defaultPic':row[3],'notes':row[4],'category':'Program 24 Jam','sourceCategory':'program_24_jam','defaultScope':scope})
-        change('schedules/daily/'+sid,{**common,'programId':pid,'academicYearId':year,'day':'Setiap Hari','startTime':start,'endTime':end,'endsNextDay':end<start,'order':count,'participantScope':scope,'audience':label,'notes':row[4]})
+        change('programs/'+pid,{**common,'name':f'{label} {start} · {name}','detail':detail,'description':detail,'defaultPic':row[3],'notes':notes,'category':'Program 24 Jam','sourceCategory':'program_24_jam','defaultScope':scope})
+        change('schedules/daily/'+sid,{**common,'programId':pid,'academicYearId':year,'day':'Setiap Hari','startTime':start,'endTime':end,'endsNextDay':end<start,'order':count,'participantScope':scope,'audience':label,'notes':notes})
 report={'academicYearId':year,'general':14,'gema':17,'retired':50,'dayBasis':'Jadwal harian; dokumen tidak merinci pengecualian akhir pekan.'}
 (root/'seed/imports/daily-2026-source.json').write_text(json.dumps(sources,ensure_ascii=False,indent=2)+'\n')
 (root/'seed/imports/daily-2026-update.json').write_text(json.dumps({'id':update,'report':report,'expected':expected,'changes':changes},ensure_ascii=False,indent=2)+'\n')

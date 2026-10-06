@@ -20,6 +20,7 @@ export function assertCaseOwner(record,session){
 }
 export function applyCaseOperation(current,operation,session,now){
  if(!current)throw Error('Kasus tidak ditemukan.');
+ if(current.handlingRole==='wali_kelas')throw Error('Kasus SD ditangani Wali Kelas.');
  if(current.operations?.[operation.id]){if(current.operations[operation.id].actorUid!==session.user.uid)throw Error('Operasi milik petugas lain.');return current;}
  const r=structuredClone(current),d=operation.data||{},uid=session.user.uid;
  if(operation.type==='response'){

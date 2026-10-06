@@ -14,7 +14,7 @@ def put(path,value):
  for part in parts[:-1]:node=node.setdefault(part,{})
  old=node.get(parts[-1]);expected[path]=previous.get('expected',{}).get(path,copy.deepcopy(old));node[parts[-1]]=value;changes[path]=value
 roomids={'rooms-P-3':'ROOM-PTRI-M1','rooms-P-4':'ROOM-PTRI-M2','rooms-P-5':'ROOM-PTRI-M3','rooms-P-6':'ROOM-PTRI-P1','rooms-P-7':'ROOM-PTRI-P2','rooms-P-8':'ROOM-PTRI-GEMA','rooms-L-c2':'ROOM-PTR-C2','rooms-L-c3':'ROOM-PTR-C3','rooms-L-gema':'ROOM-PTR-GEMA'}
-staff={'Muhammad Tuzri':['AMD-SDM-0054'],'Muhasim':['AMD-SDM-0055'],'Bintang':['AMD-SDM-0013'],'Usth. Fathul Uyun':['AMD-SDM-0024'],'Ust. Fathul Uyun':['AMD-SDM-0024'],'Usth Yanti':['AMD-SDM-0082'],'Usth. Hikmah':['AMD-SDM-0030'],'Muammar':['AMD-SDM-0052'],'Usth Fathul U.':['AMD-SDM-0024'],'Usth Nuril A.':['AMD-SDM-0062']}
+staff={'Fahri Gontor':['AMD-SDM-0023'],'Usth Ida Fitriana':['AMD-SDM-0036'],'Muhammad Tuzri':['AMD-SDM-0054'],'Muhasim':['AMD-SDM-0055'],'Bintang':['AMD-SDM-0013'],'Usth. Fathul Uyun':['AMD-SDM-0024'],'Ust. Fathul Uyun':['AMD-SDM-0024'],'Usth Yanti':['AMD-SDM-0082'],'Usth. Hikmah':['AMD-SDM-0030'],'Muammar':['AMD-SDM-0052'],'Usth Fathul U.':['AMD-SDM-0024'],'Usth Nuril A.':['AMD-SDM-0062']}
 for source in sources:
  for c in source['collections']:
   key=c['key'];kind=c['kind'];records={}
@@ -38,7 +38,7 @@ for source in sources:
    typ='Bahasa Arab' if kind=='arabic' else 'Tahsin' if 'tahsin' in name.lower() else 'Halaqah Al-Qur\'an'
    group={'name':name,'gender':c['gender'],'programType':'arabic' if kind=='arabic' else 'quran','type':typ,'unitId':'UNIT-PONDOK','mentorName':c['mentor'],'mentorStaffIds':staff.get(c['mentor'],[]),'status':'active','source':c['source'],'importId':update,'rosterStatus':'needs_review' if len(records)<len(c['members']) else 'linked','sourceMemberCount':len(c['members'])}
    if group['mentorStaffIds']:group['mentorStaffId']=group['mentorStaffIds'][0]
-   if kind=='arabic':group.update({'timeLabel':'Ba’da Subuh','startTime':'05:40','endTime':'06:10','scheduleBasis':'Jadwal 24 jam DOCX 2026, Mufrodat','category':'Bahasa Arab Pagi'})
+   if kind=='arabic':group.update({'timeLabel':'Ba’da Subuh','startTime':'05:40','endTime':'06:10','scheduleBasis':'Jadwal 24 jam DOCX 2026, Bahasa Arab','category':'Bahasa Arab Pagi'})
    put('groups/'+gid,group)
    for sid,r in records.items():put(f'assignments/groups/{year}/{gid}/{sid}',{**r,'groupId':gid})
 # Preserve old group membership history; active groups are replaced by the new source.

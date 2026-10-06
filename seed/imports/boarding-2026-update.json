@@ -548,7 +548,7 @@
       "programType": "quran",
       "type": "Tahsin",
       "unitId": "UNIT-PONDOK",
-      "mentorName": "Usth Yanti",
+      "mentorName": "Yanti",
       "mentorStaffIds": [
         "AMD-SDM-0082"
       ],
@@ -557,7 +557,8 @@
       "importId": "boarding-rosters-2026",
       "rosterStatus": "needs_review",
       "sourceMemberCount": 12,
-      "mentorStaffId": "AMD-SDM-0082"
+      "mentorStaffId": "AMD-SDM-0082",
+      "sourceMentorName": "Usth Yanti"
     },
     "assignments/groups/TA-2026-2027-GANJIL/GRP-2026-quran-P-4/AMD-SMP-0068": {
       "studentId": "AMD-SMP-0068",
@@ -685,13 +686,17 @@
       "programType": "quran",
       "type": "Halaqah Al-Qur'an",
       "unitId": "UNIT-PONDOK",
-      "mentorName": "Usth Ida Fitriana",
-      "mentorStaffIds": [],
+      "mentorName": "IDA FITRIANA",
+      "mentorStaffIds": [
+        "AMD-SDM-0036"
+      ],
       "status": "active",
       "source": "KELOMPOK HALAOH.xlsx",
       "importId": "boarding-rosters-2026",
       "rosterStatus": "linked",
-      "sourceMemberCount": 8
+      "sourceMemberCount": 8,
+      "mentorStaffId": "AMD-SDM-0036",
+      "sourceMentorName": "Usth Ida Fitriana"
     },
     "assignments/groups/TA-2026-2027-GANJIL/GRP-2026-quran-P-5/AMD-SMK-0022": {
       "studentId": "AMD-SMK-0022",
@@ -795,7 +800,7 @@
       "programType": "quran",
       "type": "Halaqah Al-Qur'an",
       "unitId": "UNIT-PONDOK",
-      "mentorName": "Usth. Hikmah",
+      "mentorName": "Hikmah",
       "mentorStaffIds": [
         "AMD-SDM-0030"
       ],
@@ -804,7 +809,8 @@
       "importId": "boarding-rosters-2026",
       "rosterStatus": "needs_review",
       "sourceMemberCount": 6,
-      "mentorStaffId": "AMD-SDM-0030"
+      "mentorStaffId": "AMD-SDM-0030",
+      "sourceMentorName": "Usth. Hikmah"
     },
     "assignments/groups/TA-2026-2027-GANJIL/GRP-2026-quran-P-6/AMD-SMP-0034": {
       "studentId": "AMD-SMP-0034",
@@ -860,7 +866,7 @@
       "programType": "quran",
       "type": "Halaqah Al-Qur'an",
       "unitId": "UNIT-PONDOK",
-      "mentorName": "Ust. Fathul Uyun",
+      "mentorName": "Ustadzah Fathul Uyun",
       "mentorStaffIds": [
         "AMD-SDM-0024"
       ],
@@ -869,7 +875,8 @@
       "importId": "boarding-rosters-2026",
       "rosterStatus": "needs_review",
       "sourceMemberCount": 6,
-      "mentorStaffId": "AMD-SDM-0024"
+      "mentorStaffId": "AMD-SDM-0024",
+      "sourceMentorName": "Ust. Fathul Uyun"
     },
     "assignments/groups/TA-2026-2027-GANJIL/GRP-2026-quran-P-7/AMD-SMK-0020": {
       "studentId": "AMD-SMK-0020",
@@ -1375,8 +1382,10 @@
       "programType": "arabic",
       "type": "Bahasa Arab",
       "unitId": "UNIT-PONDOK",
-      "mentorName": "Usth Ida Fitriana",
-      "mentorStaffIds": [],
+      "mentorName": "IDA FITRIANA",
+      "mentorStaffIds": [
+        "AMD-SDM-0036"
+      ],
       "status": "active",
       "source": "BELAJAR BAHASA ARAB.xlsx",
       "importId": "boarding-rosters-2026",
@@ -1385,8 +1394,10 @@
       "timeLabel": "Ba’da Subuh",
       "startTime": "05:40",
       "endTime": "06:10",
-      "scheduleBasis": "Jadwal 24 jam DOCX 2026, Mufrodat",
-      "category": "Bahasa Arab Pagi"
+      "scheduleBasis": "Jadwal 24 jam DOCX 2026, Bahasa Arab",
+      "category": "Bahasa Arab Pagi",
+      "mentorStaffId": "AMD-SDM-0036",
+      "sourceMentorName": "Usth Ida Fitriana"
     },
     "assignments/groups/TA-2026-2027-GANJIL/GRP-2026-arabic-P-3/AMD-SMP-0009": {
       "studentId": "AMD-SMP-0009",
@@ -1802,7 +1813,7 @@
       "programType": "arabic",
       "type": "Bahasa Arab",
       "unitId": "UNIT-PONDOK",
-      "mentorName": "Usth Nuril A.",
+      "mentorName": "NURIL AZMI",
       "mentorStaffIds": [
         "AMD-SDM-0062"
       ],
@@ -1815,8 +1826,9 @@
       "timeLabel": "Ba’da Subuh",
       "startTime": "05:40",
       "endTime": "06:10",
-      "scheduleBasis": "Jadwal 24 jam DOCX 2026, Mufrodat",
-      "category": "Bahasa Arab Pagi"
+      "scheduleBasis": "Jadwal 24 jam DOCX 2026, Bahasa Arab",
+      "category": "Bahasa Arab Pagi",
+      "sourceMentorName": "Usth Nuril A."
     },
     "assignments/groups/TA-2026-2027-GANJIL/GRP-2026-arabic-P-4/AMD-SMK-0077": {
       "studentId": "AMD-SMK-0077",
@@ -2172,7 +2184,7 @@
       "programType": "arabic",
       "type": "Bahasa Arab",
       "unitId": "UNIT-PONDOK",
-      "mentorName": "Usth Fathul U.",
+      "mentorName": "Ustadzah Fathul Uyun",
       "mentorStaffIds": [
         "AMD-SDM-0024"
       ],
@@ -2185,8 +2197,9 @@
       "timeLabel": "Ba’da Subuh",
       "startTime": "05:40",
       "endTime": "06:10",
-      "scheduleBasis": "Jadwal 24 jam DOCX 2026, Mufrodat",
-      "category": "Bahasa Arab Pagi"
+      "scheduleBasis": "Jadwal 24 jam DOCX 2026, Bahasa Arab",
+      "category": "Bahasa Arab Pagi",
+      "sourceMentorName": "Usth Fathul U."
     },
     "assignments/groups/TA-2026-2027-GANJIL/GRP-2026-arabic-P-5/AMD-SMP-0005": {
       "studentId": "AMD-SMP-0005",
@@ -3282,7 +3295,8 @@
       "importId": "boarding-rosters-2026",
       "rosterStatus": "linked",
       "sourceMemberCount": 9,
-      "mentorStaffId": "AMD-SDM-0054"
+      "mentorStaffId": "AMD-SDM-0054",
+      "sourceMentorName": "Muhammad Tuzri"
     },
     "assignments/groups/TA-2026-2027-GANJIL/GRP-2026-quran-L-tuzri/AMD-SMP-0035": {
       "studentId": "AMD-SMP-0035",
@@ -3407,7 +3421,8 @@
       "importId": "boarding-rosters-2026",
       "rosterStatus": "linked",
       "sourceMemberCount": 11,
-      "mentorStaffId": "AMD-SDM-0052"
+      "mentorStaffId": "AMD-SDM-0052",
+      "sourceMentorName": "Muammar"
     },
     "assignments/groups/TA-2026-2027-GANJIL/GRP-2026-quran-L-muammar/AMD-SMK-0052": {
       "studentId": "AMD-SMK-0052",
@@ -3802,7 +3817,8 @@
       "importId": "boarding-rosters-2026",
       "rosterStatus": "needs_review",
       "sourceMemberCount": 10,
-      "mentorStaffId": "AMD-SDM-0055"
+      "mentorStaffId": "AMD-SDM-0055",
+      "sourceMentorName": "Muhasim"
     },
     "assignments/groups/TA-2026-2027-GANJIL/GRP-2026-quran-L-mutqin/AMD-SMP-0039": {
       "studentId": "AMD-SMP-0039",
@@ -4762,8 +4778,9 @@
       "timeLabel": "Ba’da Subuh",
       "startTime": "05:40",
       "endTime": "06:10",
-      "scheduleBasis": "Jadwal 24 jam DOCX 2026, Mufrodat",
-      "category": "Bahasa Arab Pagi"
+      "scheduleBasis": "Jadwal 24 jam DOCX 2026, Bahasa Arab",
+      "category": "Bahasa Arab Pagi",
+      "sourceMentorName": "Bintang"
     },
     "assignments/groups/TA-2026-2027-GANJIL/GRP-2026-arabic-L-c2/AMD-SMK-0052": {
       "studentId": "AMD-SMK-0052",
@@ -4975,8 +4992,10 @@
       "programType": "arabic",
       "type": "Bahasa Arab",
       "unitId": "UNIT-PONDOK",
-      "mentorName": "Fahri Gontor",
-      "mentorStaffIds": [],
+      "mentorName": "Fahri Aldian Effendi",
+      "mentorStaffIds": [
+        "AMD-SDM-0023"
+      ],
       "status": "active",
       "source": "WhatsApp Image 2026-10-02 at 14.28.36.jpeg",
       "importId": "boarding-rosters-2026",
@@ -4985,8 +5004,10 @@
       "timeLabel": "Ba’da Subuh",
       "startTime": "05:40",
       "endTime": "06:10",
-      "scheduleBasis": "Jadwal 24 jam DOCX 2026, Mufrodat",
-      "category": "Bahasa Arab Pagi"
+      "scheduleBasis": "Jadwal 24 jam DOCX 2026, Bahasa Arab",
+      "category": "Bahasa Arab Pagi",
+      "mentorStaffId": "AMD-SDM-0023",
+      "sourceMentorName": "Fahri Gontor"
     },
     "assignments/groups/TA-2026-2027-GANJIL/GRP-2026-arabic-L-c3/AMD-SMK-0080": {
       "studentId": "AMD-SMK-0080",
@@ -5235,8 +5256,9 @@
       "timeLabel": "Ba’da Subuh",
       "startTime": "05:40",
       "endTime": "06:10",
-      "scheduleBasis": "Jadwal 24 jam DOCX 2026, Mufrodat",
-      "category": "Bahasa Arab Pagi"
+      "scheduleBasis": "Jadwal 24 jam DOCX 2026, Bahasa Arab",
+      "category": "Bahasa Arab Pagi",
+      "sourceMentorName": "Muhasim"
     },
     "assignments/groups/TA-2026-2027-GANJIL/GRP-2026-arabic-L-gema/AMD-SMK-0053": {
       "studentId": "AMD-SMK-0053",
