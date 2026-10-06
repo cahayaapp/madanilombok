@@ -4,7 +4,7 @@ const rules=JSON.parse(fs.readFileSync(new URL('../database.rules.json',import.m
 function snapshot(value){return {val:()=>value??null,exists:()=>value!==null&&value!==undefined,child:path=>snapshot(path.split('/').reduce((v,k)=>v?.[k],value)),hasChildren:keys=>keys.every(k=>value?.[k]!==undefined),isNumber:()=>typeof value==='number',isString:()=>typeof value==='string',isBoolean:()=>typeof value==='boolean'};}
 function check(expression,profiles,current={},next={},uid='actor',target='target'){
  if(typeof expression==='boolean')return expression;
- return Function('auth','root','data','newData','$uid','$yearId','$studentId','$recordId',`return (${expression})`)({uid},snapshot({madani_app:{users:profiles}}),snapshot(current),snapshot(next),target,'year','student','record');
+ return Function('auth','root','data','newData','$uid','$yearId','$studentId','$recordId','$other',`return (${expression})`)({uid},snapshot({madani_app:{users:profiles}}),snapshot(current),snapshot(next),target,'year','student','record','cases');
 }
 const admin={role:'admin',roleFlags:{admin:true},active:true};
 test('revoked and inactive users cannot read operational data or write any branch',()=>{

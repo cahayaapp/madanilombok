@@ -71,6 +71,7 @@ function renderStaffPlan(){
   const labels={ready:'Siap dibuat',existing:'Sudah ada',inactive:'SDM nonaktif',needs_role:'Menunggu role',identity_mismatch:'Identitas perlu diperiksa'};
   $('#staffPlanBody').innerHTML=staffPlan.map(row=>`<tr><td>${escapeHtml(row.name)}</td><td>${escapeHtml(row.email)}</td><td>${escapeHtml(row.roles.map(roleText).join(', ')||'Belum ditetapkan')}</td><td>${escapeHtml(labels[row.status])}</td></tr>`).join('');
   $('#staffPlanSummary').textContent=`${staffPlan.length} SDM · ${staffPlan.filter(x=>x.status==='ready').length} siap dibuat. Email menggunakan nama akhir; angka membedakan nama yang sama.`;
+  $('#createNaqibahAccounts').disabled=staffProvisioning||!validDomain||!staffPlan.some(x=>x.status==='ready'&&['AMD-SDM-0088','AMD-SDM-0064'].includes(x.staffId));
   $('#createStaffButton').disabled=staffProvisioning||!validDomain||!staffPlan.some(x=>x.status==='ready');
 }
 function temporaryStaffPassword(){
@@ -84,13 +85,13 @@ function downloadStaffCredentials(){
  const url=URL.createObjectURL(new Blob([content],{type:'text/csv;charset=utf-8'}));
  const a=document.createElement('a');a.href=url;a.download='akun-sdm-madani.csv';a.click();staffCredentialsDownloaded=true;setTimeout(()=>URL.revokeObjectURL(url),1000);
 }
-async function createAllStaff(){
+async function createAllStaff(onlyStaffIds=null){
  if(staffProvisioning||$('#createStaffButton').disabled)return;
  staffProvisioning=true;$('#createStaffButton').disabled=true;
  const results=[];
  try{
   await load();renderStaffPlan();
-  for(const row of staffPlan.filter(x=>x.status==='ready')){
+  for(const row of staffPlan.filter(x=>x.status==='ready'&&(!Array.isArray(onlyStaffIds)||onlyStaffIds.includes(x.staffId)))){
    let credential=null,profileSaved=false;
    const password=temporaryStaffPassword();
    try{
@@ -154,7 +155,8 @@ async function init() {
   staffSuggestions=suggestions.people||[];confirmedLeadership=leadership.assignments||[];
   renderStaffPlan();
   $('#staffEmailDomain').addEventListener('input',renderStaffPlan);
-  $('#createStaffButton').addEventListener('click',createAllStaff);
+  $('#createStaffButton').addEventListener('click',()=>createAllStaff());
+  $('#createNaqibahAccounts').addEventListener('click',()=>createAllStaff(['AMD-SDM-0088','AMD-SDM-0064']));
   $('#downloadStaffCredentials').addEventListener('click',downloadStaffCredentials);
   $("#logoutButton").addEventListener("click", async () => { await logout(); location.href = "../index.html"; });
 }

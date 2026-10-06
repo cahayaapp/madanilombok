@@ -82,3 +82,11 @@ Editor mempertahankan email login, UID, tanggal pembuatan, data profil lain dan 
 ## Guru Mapel — port khusus berikutnya
 
 Route Guru Mapel sekarang memiliki implementasi khusus beranda, GPS per jadwal, presensi KBM dua tahap, target/capaian per pertemuan, nilai berbobot draft/final, tindak lanjut nilai rendah, setoran Tahsin/Tahfiz, kasus multi-santri, editor tulisan, refleksi dan KPI pekan kerja. Wali dapat membaca catatan baru tanpa menghapus data lama. Rincian skema, aturan dan **selisih yang masih terbuka** ada di [GURU-MAPEL.md](GURU-MAPEL.md). Ini menggantikan deskripsi implementasi guru awal di atas, bukan klaim 100% sama dengan seluruh cabang workflow Cahaya.
+
+## Piket Naqib — 6 Oktober 2026
+
+Pembagian harian dikonfirmasi pengguna: 04.00–12.00 Novan Maulana / Anggi & Alfi; 12.00–20.00 Muhammad Haikal / Melia & Fitriani; 20.00–04.00 Dai Robbani / Nurul & Rokyal (WITA). Fitriani adalah identitas baru; Nurul memakai AMD-SDM-0064, bukan Nurul Jannah. Program dimiliki shift berdasarkan jam mulai; program lintas tengah malam mempertahankan tanggal mulainya. Presensi/laporan hanya dapat disimpan setelah program mulai dan sebelum shift berakhir. Form memeriksa ulang penugasan saat simpan. Perubahan jadwal harian perlu menerapkan ulang paket piket agar indeks jam server diperbarui.
+
+Paket Import Data `naqib-duty.json` mengatur roster, scope role dan menonaktifkan role Naqib di luar roster; role lainnya dan riwayat dipertahankan. Manajemen Akun memiliki tombol khusus Fitriani & Nurul, password acak diunduh melalui CSV setelah pembuatan. Aturan RTDB lokal memakai waktu server untuk kedua cabang presensi/laporan, dengan pengecualian administrator dan koreksi UKS. Cabang keuangan tidak berubah.
+
+Validasi lokal: model batas shift/malam, ekspresi aturan server, roster dan pemeliharaan role, serta formulir yang disimpan sesudah batas shift. Ini bukan pengujian Firebase Emulator (Java runtime belum tersedia). Penerapan data/akun, publikasi kode dan deployment rules produksi perlu diverifikasi terpisah; jangan menyatakan akun atau pembatasan server sudah aktif sebelum penerapan berhasil.

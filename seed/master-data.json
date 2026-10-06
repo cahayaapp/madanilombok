@@ -9441,7 +9441,16 @@
       "roles": "PJ Halaqah Putri Kelompok III",
       "unitIds": [
         "UNIT-PONDOK"
-      ]
+      ],
+      "appRoles": [
+        "naqib"
+      ],
+      "roleScopes": {
+        "naqib": {
+          "genderScope": "P",
+          "dutyShiftId": "shift1"
+        }
+      }
     },
     "AMD-SDM-0007": {
       "name": "Aliya",
@@ -9467,7 +9476,16 @@
       "roles": "PJ Halaqah Putri Kelompok V",
       "unitIds": [
         "UNIT-PONDOK"
-      ]
+      ],
+      "appRoles": [
+        "naqib"
+      ],
+      "roleScopes": {
+        "naqib": {
+          "genderScope": "P",
+          "dutyShiftId": "shift1"
+        }
+      }
     },
     "AMD-SDM-0009": {
       "name": "Ustadz Anwar",
@@ -9599,7 +9617,10 @@
             "GRP-2026-arabic-L-c2"
           ]
         }
-      }
+      },
+      "disabledAppRoles": [
+        "naqib"
+      ]
     },
     "AMD-SDM-0014": {
       "name": "Budiawan Khaer",
@@ -9655,7 +9676,16 @@
       "roles": "Pembina Kamar Cordova 3",
       "unitIds": [
         "UNIT-PONDOK"
-      ]
+      ],
+      "appRoles": [
+        "naqib"
+      ],
+      "roleScopes": {
+        "naqib": {
+          "genderScope": "L",
+          "dutyShiftId": "shift3"
+        }
+      }
     },
     "AMD-SDM-0017": {
       "name": "DARUSMAN ZAKARIA",
@@ -9837,7 +9867,10 @@
             "GRP-2026-arabic-L-c3"
           ]
         }
-      }
+      },
+      "disabledAppRoles": [
+        "naqib"
+      ]
     },
     "AMD-SDM-0024": {
       "name": "Ustadzah Fathul Uyun",
@@ -10556,7 +10589,16 @@
       "roles": "PJ Halaqah Putri Kelompok IV",
       "unitIds": [
         "UNIT-PONDOK"
-      ]
+      ],
+      "appRoles": [
+        "naqib"
+      ],
+      "roleScopes": {
+        "naqib": {
+          "genderScope": "P",
+          "dutyShiftId": "shift2"
+        }
+      }
     },
     "AMD-SDM-0050": {
       "name": "MIFTAHUL JANNAH",
@@ -10638,7 +10680,16 @@
       "roles": "Pembina Kamar Cordova 2",
       "unitIds": [
         "UNIT-PONDOK"
-      ]
+      ],
+      "appRoles": [
+        "naqib"
+      ],
+      "roleScopes": {
+        "naqib": {
+          "genderScope": "L",
+          "dutyShiftId": "shift2"
+        }
+      }
     },
     "AMD-SDM-0054": {
       "name": "Muhammad Tuzri",
@@ -10847,6 +10898,10 @@
       "roles": "PJ Halaqah Tahfiz Putra",
       "unitIds": [
         "UNIT-PONDOK"
+      ],
+      "appRoles": [],
+      "disabledAppRoles": [
+        "naqib"
       ]
     },
     "AMD-SDM-0060": {
@@ -10860,7 +10915,16 @@
       "roles": "Pembina Kamar Cordova 2",
       "unitIds": [
         "UNIT-PONDOK"
-      ]
+      ],
+      "appRoles": [
+        "naqib"
+      ],
+      "roleScopes": {
+        "naqib": {
+          "genderScope": "L",
+          "dutyShiftId": "shift1"
+        }
+      }
     },
     "AMD-SDM-0061": {
       "name": "Nuriantari",
@@ -10973,7 +11037,16 @@
       "roles": "PJ Halaqah Putri Kelompok III",
       "unitIds": [
         "UNIT-PONDOK"
-      ]
+      ],
+      "appRoles": [
+        "naqib"
+      ],
+      "roleScopes": {
+        "naqib": {
+          "genderScope": "P",
+          "dutyShiftId": "shift3"
+        }
+      }
     },
     "AMD-SDM-0065": {
       "name": "NURUL JANNAH",
@@ -11070,7 +11143,16 @@
       "roles": "PJ Halaqah Putri Kelompok II",
       "unitIds": [
         "UNIT-PONDOK"
-      ]
+      ],
+      "appRoles": [
+        "naqib"
+      ],
+      "roleScopes": {
+        "naqib": {
+          "genderScope": "P",
+          "dutyShiftId": "shift3"
+        }
+      }
     },
     "AMD-SDM-0069": {
       "name": "RUMIATI",
@@ -11527,6 +11609,10 @@
       "unitIds": [
         "UNIT-SD",
         "UNIT-PONDOK"
+      ],
+      "appRoles": [],
+      "disabledAppRoles": [
+        "naqib"
       ]
     },
     "AMD-SDM-0085": {
@@ -11604,6 +11690,25 @@
       "sourceSheet": "Sheet1",
       "sourceCell": "K19",
       "seeded": true
+    },
+    "AMD-SDM-0088": {
+      "name": "Fitriani",
+      "gender": "P",
+      "unitIds": [
+        "UNIT-PONDOK"
+      ],
+      "appRoles": [
+        "naqib"
+      ],
+      "roleSummary": "Naqibah",
+      "status": "active",
+      "source": "Konfirmasi pengguna 6 Oktober 2026",
+      "roleScopes": {
+        "naqib": {
+          "genderScope": "P",
+          "dutyShiftId": "shift2"
+        }
+      }
     }
   },
   "classes": {

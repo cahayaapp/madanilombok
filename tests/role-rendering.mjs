@@ -116,15 +116,22 @@ test('deposit receipt reaches handover on one record and becomes visible to guar
  await routes['parent-deposits'](ctxFor('wali_santri'));assert.match(ctx.root.textContent,/Buku uji/);assert.match(ctx.root.textContent,/SUDAH_DISERAHKAN/);assert.equal(ctx.root.querySelectorAll('form').length,0);
 });
 
+function prepareDuty(ctx){
+ context.Date=class extends Date {static now(){return Date.parse('2026-10-06T10:00:00+08:00')}};
+ database.set('settings/naqibDuty',{staff:{staff1:{shiftId:'shift1',gender:'L',active:true}}});
+ ctx.master.dailySchedules=ctx.master.dailySchedules.map((s,i)=>({id:'daily'+i,academicYearId:ctx.yearId,day:'Setiap Hari',startTime:'08:00',...s}));
+ database.set('schedules/daily',Object.fromEntries(ctx.master.dailySchedules.map(s=>[s.id,s])));
+}
 test('daily schedule filters GEMA and saves only the selected gender roster without replacing other attendance',async()=>{
  const boarding=await load(new URL('assets/js/modules/boarding.js',base).href);if(boarding.status!=='evaluated')await boarding.evaluate();
  const ctx=ctxFor('naqib');ctx.session.profile.scopeGender='L';
  ctx.master={...master,students:[...master.students,{id:'s3',name:'Umum',gender:'L'}],roomAssignments:{s1:{roomId:'ROOM-PTR-GEMA'},s2:{roomId:'ROOM-PTRI-GEMA'},s3:{roomId:'ROOM-PTR-C1'}},programs:[{id:'g',name:'GEMA',genderScope:'mixed'},{id:'u',name:'Umum',genderScope:'mixed'}],dailySchedules:[{programId:'g',participantScope:'boarding_gema',audience:'Asrama GEMA',genderScope:'mixed'},{programId:'u',participantScope:'boarding_general',audience:'Asrama Umum',genderScope:'mixed'}]};
  await boarding.namespace.renderNaqibPrograms(ctx);const filter=ctx.root.querySelector('#dailyAudience');filter.value='boarding_gema';filter.onchange({target:filter});assert.equal(ctx.root.querySelectorAll('[data-daily-scope]:not([hidden])').length,1);
- await boarding.namespace.renderNaqibAttendance(ctx);ctx.root.querySelector('#programPick').value='g';ctx.root.querySelector('#loadProgramAtt').click();await settle();
+ prepareDuty(ctx);await boarding.namespace.renderNaqibAttendance(ctx);ctx.root.querySelector('#programPick').value='g';ctx.root.querySelector('#loadProgramAtt').click();await settle();
  assert.deepEqual([...ctx.root.querySelectorAll('[data-student]')].map(x=>x.dataset.student),['s1']);
  let patch;mock.setExport('patchNode',async(path,data)=>{patch={path,data}});
  ctx.root.querySelector('#saveProgramAtt').click();await settle();assert.deepEqual(Object.keys(patch.data),['s1']);assert.match(patch.path,/\/g$/);
+ patch=null;context.Date=class extends Date {static now(){return Date.parse('2026-10-06T12:00:00+08:00')}};ctx.root.querySelector('#saveProgramAtt').click();await settle();assert.equal(patch,null,'form opened earlier must not save after shift ends');
  mock.setExport('patchNode',repository.patchNode);
  const parent=await load(new URL('assets/js/modules/parent.js',base).href);if(parent.status!=='evaluated')await parent.evaluate();ctx.session.profile.studentIds=['s1'];await parent.namespace.renderParentPrograms(ctx);assert.match(ctx.root.textContent,/GEMA/);assert.doesNotMatch(ctx.root.textContent,/Umum/);
 });
@@ -132,7 +139,7 @@ test('daily schedule filters GEMA and saves only the selected gender roster with
 test('morning Arabic selector narrows attendance and parent sees only their child group',async()=>{
  const boarding=await load(new URL('assets/js/modules/boarding.js',base).href);if(boarding.status!=='evaluated')await boarding.evaluate();
  const ctx=ctxFor('naqib');ctx.master={...master,students:[...master.students,{id:'s3',name:'Other boy',gender:'L'}],roomAssignments:{s1:{roomId:'ROOM-PTR-C2'},s3:{roomId:'ROOM-PTR-C3'}},programs:[{id:'m',name:'Mufrodat',genderScope:'mixed'}],dailySchedules:[{programId:'m',participantScope:'boarding_general',startTime:'05:40',genderScope:'mixed'}],groups:[{id:'a',name:'Arab Cordova 2',programType:'arabic',gender:'L'},{id:'b',name:'Arab Cordova 3',programType:'arabic',gender:'L'}],groupAssignments:{a:{s1:{studentId:'s1'}},b:{s3:{studentId:'s3'}}}};
- await boarding.namespace.renderNaqibAttendance(ctx);const program=ctx.root.querySelector('#programPick');program.value='m';program.onchange();const pick=ctx.root.querySelector('#arabicGroupPick');assert.equal(pick.hidden,false);pick.value='a';ctx.root.querySelector('#loadProgramAtt').click();await settle();assert.deepEqual([...ctx.root.querySelectorAll('[data-student]')].map(x=>x.dataset.student),['s1']);
+ prepareDuty(ctx);await boarding.namespace.renderNaqibAttendance(ctx);const program=ctx.root.querySelector('#programPick');program.value='m';program.onchange();const pick=ctx.root.querySelector('#arabicGroupPick');assert.equal(pick.hidden,false);pick.value='a';ctx.root.querySelector('#loadProgramAtt').click();await settle();assert.deepEqual([...ctx.root.querySelectorAll('[data-student]')].map(x=>x.dataset.student),['s1']);
  const parent=await load(new URL('assets/js/modules/parent.js',base).href);if(parent.status!=='evaluated')await parent.evaluate();await parent.namespace.renderParentPrograms(ctx);assert.match(ctx.root.textContent,/Arab Cordova 2/);assert.doesNotMatch(ctx.root.textContent,/Arab Cordova 3|Other boy/);
 });
 

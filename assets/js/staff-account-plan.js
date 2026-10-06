@@ -23,7 +23,7 @@ export function inferStaffRoles(person,suggestions=[]){
   if(normalized(suggestion.displayName)!==normalized(person.name))continue;
   if(suggestion.staffCandidates?.length===1&&suggestion.staffCandidates[0].staffId===person.id&&Object.hasOwn(ROLE_LABELS,suggestion.suggestedRole))roles.add(suggestion.suggestedRole);
  }
- return [...roles];
+ return [...roles].filter(role=>!(person.disabledAppRoles||[]).includes(role));
 }
 export function buildStaffAccountPlan(staff,profiles=[],classes=[],suggestions=[],leadership=[],emailDomain='madaniapp'){
  const reserved=new Map(profiles.filter(p=>p.email).map(p=>[p.email.toLowerCase(),p.staffId||p.id]));
