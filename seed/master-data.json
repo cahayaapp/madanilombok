@@ -9940,7 +9940,8 @@
         "UNIT-SD"
       ],
       "appRoles": [
-        "guru_mapel"
+        "guru_mapel",
+        "guru_wali"
       ]
     },
     "AMD-SDM-0027": {
@@ -10575,7 +10576,8 @@
         "UNIT-SD"
       ],
       "appRoles": [
-        "guru_mapel"
+        "guru_mapel",
+        "guru_wali"
       ]
     },
     "AMD-SDM-0049": {
@@ -11023,7 +11025,8 @@
         "UNIT-SD"
       ],
       "appRoles": [
-        "guru_mapel"
+        "guru_mapel",
+        "guru_wali"
       ]
     },
     "AMD-SDM-0064": {
@@ -11073,7 +11076,8 @@
         "UNIT-SD"
       ],
       "appRoles": [
-        "guru_mapel"
+        "guru_mapel",
+        "guru_wali"
       ]
     },
     "AMD-SDM-0066": {
@@ -11129,7 +11133,8 @@
         "UNIT-SD"
       ],
       "appRoles": [
-        "guru_mapel"
+        "guru_mapel",
+        "guru_wali"
       ]
     },
     "AMD-SDM-0068": {
@@ -11503,7 +11508,8 @@
         "UNIT-SD"
       ],
       "appRoles": [
-        "guru_mapel"
+        "guru_mapel",
+        "guru_wali"
       ]
     },
     "AMD-SDM-0081": {

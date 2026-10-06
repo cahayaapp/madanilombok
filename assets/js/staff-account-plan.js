@@ -37,6 +37,7 @@ export function buildStaffAccountPlan(staff,profiles=[],classes=[],suggestions=[
   else {while(reserved.has(email)&&reserved.get(email)!==person.id)email=`${local}${index++}@${domain}`;}
   reserved.set(email,person.id);
   const roles=inferStaffRoles(person,suggestions),units=person.unitIds||[];
+  if(classes.some(c=>c.unitId==='UNIT-SD'&&c.status!=='inactive'&&c.homeroomStaffId===person.id)&&!roles.includes('guru_wali'))roles.push('guru_wali');
   const roleScopes={...(person.roleScopes||{})};
   if(roles.includes('head_formal_school')){const scopedUnits=roleScopes.head_formal_school?.unitIds||units;roleScopes.head_formal_school={unitIds:scopedUnits,classIds:classes.filter(c=>scopedUnits.includes(c.unitId)).map(c=>c.id),...roleScopes.head_formal_school};}
   if(roles.includes('director'))roleScopes.director={unitIds:[],classIds:[],groupIds:[]};

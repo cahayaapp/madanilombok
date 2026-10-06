@@ -162,3 +162,7 @@ Satu orang boleh memiliki lebih dari satu role.
 Guru/mentor memperoleh tindak lanjut akademik, lapor kasus, tulisan, refleksi guru, kalender dan evidence. Pimpinan memperoleh ruang kontrol, temuan, observasi, pembinaan dan evaluasi; fitur standar/target/eskalasi/masalah sistemik khusus pimpinan. Menu manajerial dipisahkan dari pencatatan rutin personel; pegawai dengan dua fungsi dapat beralih ke role yang ditugaskan.
 
 Semua staf memiliki profil, pesan internal, panduan, jadwal pribadi dan evidence. KPI tambahan belum merupakan perhitungan delapan indikator atau skor berbobot Cahaya. Gunakan matriks `permissions.js` dan `role-workspace-catalog.js` sebagai daftar akses aktual.
+
+### Koreksi 6 Oktober 2026 — Guru Wali SD
+
+Untuk SD, Guru Wali adalah Wali Kelas pada rombel siswa saat ini (`homeroomStaffId`). Daftar santri binaan dan mentoring mengikuti penempatan kelas aktif, termasuk ketika Wali Kelas berganti; penugasan mentor individu lama tidak mengalahkan aturan SD ini. SMP/SMK tetap memakai penugasan Guru Wali tersendiri. TK tidak mendapat role Guru Wali otomatis. Tombol **Terapkan Guru Wali SD** di Import Data menyinkronkan role pada akun Wali Kelas SD aktif, dan perencanaan akun baru otomatis menyertakan role tersebut. Perubahan lokal memerlukan penerapan akun pada database produksi.

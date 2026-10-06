@@ -90,3 +90,10 @@ test('Guru Wali never inherits homeroom authority',()=>{
 });
 
 test('management escalation decisions follow the selected hierarchy',()=>{const record={scope:'education',status:'ESCALATED',escalationTargetRole:'deputy_director'};assert.throws(()=>validateTransition(record,'IN_PROGRESS',session('director'),'Keputusan'),/tujuan/);assert.equal(validateTransition(record,'ESCALATED',session('deputy_director'),'Perlu keputusan Direktur'),true);assert.equal(validateTransition({...record,escalationTargetRole:'director'},'IN_PROGRESS',session('director'),'Arahan'),true);assert.throws(()=>validateTransition({...record,escalationTargetRole:'director'},'ESCALATED',session('director'),'Lanjut'),/akhir/);});
+test('SD mentoring follows current homeroom teacher, overriding stale individual assignments',()=>{
+ const m={students:[{id:'sd',unitId:'UNIT-SD'},{id:'smp',unitId:'UNIT-SMP'},{id:'tk',unitId:'UNIT-TK'}],classes:[{id:'c',unitId:'UNIT-SD',homeroomStaffId:'new',status:'active'}],classAssignments:{sd:{classId:'c'}},mentorAssignments:{sd:{mentorStaffId:'old',status:'active'},smp:{mentorStaffId:'old',status:'active'}}};
+ assert.deepEqual(filterScopedStudents(m,{staffId:'new'},'guru_wali').map(s=>s.id),['sd']);
+ assert.deepEqual(filterScopedStudents(m,{staffId:'old',menteeStudentIds:['sd']},'guru_wali').map(s=>s.id),['smp']);
+ m.classes[0].homeroomStaffId='replacement';assert.deepEqual(filterScopedStudents(m,{staffId:'new'},'guru_wali'),[]);
+ m.classAssignments.sd.status='inactive';assert.deepEqual(filterScopedStudents(m,{staffId:'replacement'},'guru_wali'),[]);
+});
