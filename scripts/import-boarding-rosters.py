@@ -39,6 +39,7 @@ for source in sources:
    group={'name':name,'gender':c['gender'],'programType':'arabic' if kind=='arabic' else 'quran','type':typ,'unitId':'UNIT-PONDOK','mentorName':c['mentor'],'mentorStaffIds':staff.get(c['mentor'],[]),'status':'active','source':c['source'],'importId':update,'rosterStatus':'needs_review' if len(records)<len(c['members']) else 'linked','sourceMemberCount':len(c['members'])}
    if group['mentorStaffIds']:group['mentorStaffId']=group['mentorStaffIds'][0]
    if kind=='arabic':group.update({'timeLabel':'Ba’da Subuh','startTime':'05:40','endTime':'06:10','scheduleBasis':'Jadwal 24 jam DOCX 2026, Bahasa Arab','category':'Bahasa Arab Pagi'})
+   group.update({k:seed.get('groups',{}).get(gid,{}).get(k) for k in ['teachingEnabled','subjectId','dailyScheduleId'] if k in seed.get('groups',{}).get(gid,{})})
    put('groups/'+gid,group)
    for sid,r in records.items():put(f'assignments/groups/{year}/{gid}/{sid}',{**r,'groupId':gid})
 # Preserve old group membership history; active groups are replaced by the new source.

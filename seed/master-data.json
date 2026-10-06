@@ -12465,7 +12465,10 @@
       "scheduleBasis": "Jadwal 24 jam DOCX 2026, Bahasa Arab",
       "category": "Bahasa Arab Pagi",
       "mentorStaffId": "AMD-SDM-0036",
-      "sourceMentorName": "Usth Ida Fitriana"
+      "sourceMentorName": "Usth Ida Fitriana",
+      "teachingEnabled": true,
+      "subjectId": "MPL-PONDOK-ARAB-PAGI",
+      "dailyScheduleId": "DS-2026-UMUM-04"
     },
     "GRP-2026-arabic-P-4": {
       "name": "Kelompok Kibar",
@@ -12488,7 +12491,10 @@
       "endTime": "06:10",
       "scheduleBasis": "Jadwal 24 jam DOCX 2026, Bahasa Arab",
       "category": "Bahasa Arab Pagi",
-      "sourceMentorName": "Usth Nuril A."
+      "sourceMentorName": "Usth Nuril A.",
+      "teachingEnabled": true,
+      "subjectId": "MPL-PONDOK-ARAB-PAGI",
+      "dailyScheduleId": "DS-2026-UMUM-04"
     },
     "GRP-2026-arabic-P-5": {
       "name": "Kelompok Gema",
@@ -12511,7 +12517,10 @@
       "endTime": "06:10",
       "scheduleBasis": "Jadwal 24 jam DOCX 2026, Bahasa Arab",
       "category": "Bahasa Arab Pagi",
-      "sourceMentorName": "Usth Fathul U."
+      "sourceMentorName": "Usth Fathul U.",
+      "teachingEnabled": true,
+      "subjectId": "MPL-PONDOK-ARAB-PAGI",
+      "dailyScheduleId": "DS-2026-GEMA-04"
     },
     "GRP-2026-quran-L-tuzri": {
       "name": "Tahsin — Muhammad Tuzri",
@@ -12644,7 +12653,10 @@
       "endTime": "06:10",
       "scheduleBasis": "Jadwal 24 jam DOCX 2026, Bahasa Arab",
       "category": "Bahasa Arab Pagi",
-      "sourceMentorName": "Bintang"
+      "sourceMentorName": "Bintang",
+      "teachingEnabled": true,
+      "subjectId": "MPL-PONDOK-ARAB-PAGI",
+      "dailyScheduleId": "DS-2026-UMUM-04"
     },
     "GRP-2026-arabic-L-c3": {
       "name": "Bahasa Arab Pagi — Cordova 3",
@@ -12667,7 +12679,10 @@
       "scheduleBasis": "Jadwal 24 jam DOCX 2026, Bahasa Arab",
       "category": "Bahasa Arab Pagi",
       "mentorStaffId": "AMD-SDM-0023",
-      "sourceMentorName": "Fahri Gontor"
+      "sourceMentorName": "Fahri Gontor",
+      "teachingEnabled": true,
+      "subjectId": "MPL-PONDOK-ARAB-PAGI",
+      "dailyScheduleId": "DS-2026-UMUM-04"
     },
     "GRP-2026-arabic-L-gema": {
       "name": "Bahasa Arab Pagi — GEMA Gedung Cairo",
@@ -12690,7 +12705,10 @@
       "endTime": "06:10",
       "scheduleBasis": "Jadwal 24 jam DOCX 2026, Bahasa Arab",
       "category": "Bahasa Arab Pagi",
-      "sourceMentorName": "Muhasim"
+      "sourceMentorName": "Muhasim",
+      "teachingEnabled": true,
+      "subjectId": "MPL-PONDOK-ARAB-PAGI",
+      "dailyScheduleId": "DS-2026-GEMA-04"
     }
   },
   "subjects": {
@@ -13658,6 +13676,12 @@
       "sourceSheet": "Sheet1",
       "sourceCell": "C25:C26",
       "seeded": true
+    },
+    "MPL-PONDOK-ARAB-PAGI": {
+      "name": "Bahasa Arab Pagi",
+      "unitId": "UNIT-PONDOK",
+      "status": "active",
+      "source": "Kelompok Bahasa Arab dan jadwal 24 jam 2026; instruksi pengguna 6 Oktober 2026"
     }
   },
   "programs": {

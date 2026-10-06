@@ -49,6 +49,7 @@ export function studentsForClass(classId, master = state.master) {
   return ids.map(id => map[id]).filter(s=>s&&!s.mergedInto).sort((a,b) => (a.name || "").localeCompare(b.name || ""));
 }
 export function studentsForTeaching(schedule, master = state.master) {
+  if(schedule.groupId)return studentsForGroup(schedule.groupId,master).filter(s=>s.status!=='inactive'&&master.groupAssignments?.[schedule.groupId]?.[s.id]?.status!=='inactive');
   return [...new Map((schedule.classIds||schedule.combinedClassIds||[schedule.classId]).flatMap(id=>studentsForClass(id,master)).map(s=>[s.id,s])).values()].sort((a,b)=>a.name.localeCompare(b.name));
 }
 

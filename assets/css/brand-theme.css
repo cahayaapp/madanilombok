@@ -123,3 +123,12 @@ body[data-active-role=admin] .home-dashboard .role-evidence,body[data-active-rol
 .quran-page .teacher-student h3{margin:22px 0 14px;line-height:1.4}
 body:has(.quran-page){scroll-padding-top:90px;scroll-padding-bottom:110px}
 .quran-page input,.quran-page select,.quran-page textarea,.quran-page button{scroll-margin-top:100px;scroll-margin-bottom:110px}
+
+/* Confirmation after a committed final attendance, shared by classes and groups. */
+.teacher-sheet.attendance-success{width:min(440px,calc(100vw - 32px));max-height:calc(100dvh - 32px);box-sizing:border-box;overflow:auto;border:1px solid #d2ebe5;border-top:5px solid #eaa329;border-radius:28px;padding:30px 24px;background:radial-gradient(ellipse at top,#dff5ef,transparent 65%),#fffdf7;text-align:center;box-shadow:0 24px 80px #004d4e33;animation:attendance-success-in .25s ease-out}
+.attendance-success::backdrop{background:#003f4866;backdrop-filter:blur(4px)}
+.attendance-success .teacher-header{display:block;position:relative;padding:0 20px}.attendance-success .teacher-header h2{font-size:25px;line-height:1.2;color:#00565b;margin:0 0 10px}.attendance-success .teacher-header p{font-size:14px;line-height:1.5;color:#55747c}.attendance-success .teacher-close{position:absolute;right:-14px;top:-20px}.attendance-success .teacher-errors:empty{display:none}
+.attendance-success-emblem{margin:22px auto;width:84px;height:84px;border-radius:50%;background:#00a39d;box-shadow:0 0 0 7px #e0f4ee,0 0 0 9px #eaa32955;padding:14px;box-sizing:border-box}.attendance-success-emblem svg{width:100%;height:100%;stroke:white;stroke-width:4;stroke-linecap:round;stroke-linejoin:round}.attendance-success-emblem circle{stroke:#fff8;stroke-width:1.5}
+.attendance-success-detail{display:grid;gap:7px;margin:18px 0 24px;color:#075456}.attendance-success-detail small{color:#617d83}.attendance-success [data-attendance-home]{width:100%;min-height:50px;border-radius:15px;background:linear-gradient(110deg,#00a39d,#007d79);color:#fff;font-weight:800}.attendance-success [data-attendance-home]:focus-visible{outline:3px solid #eaa329;outline-offset:4px}
+@keyframes attendance-success-in{from{opacity:0;transform:translateY(12px) scale(.97)}to{opacity:1;transform:none}}
+@media(prefers-reduced-motion:reduce){.teacher-sheet.attendance-success{animation:none}}

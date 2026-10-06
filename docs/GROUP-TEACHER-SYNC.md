@@ -13,3 +13,11 @@ Pilihan halaqah dan roster mentor membaca penugasan berdasarkan ID SDM, mendukun
 Admin → Import Data → **Terapkan Konfirmasi Guru & Bahasa Arab** memakai marker `arabic-staff-confirmed-20261006-v1`, sehingga dapat dijalankan setelah paket sebelumnya sudah diterapkan. Memindahkan referensi master/penugasan dan staffId profil dari Ida 0037 ke 0036, menyatukan unit/role/scope SDM, lalu menghapus duplikat dari node staff dengan salinan sumber di reference/staffIdentityMerges. Tidak menghapus akun Auth, catatan historis, atau finance. Biodata utama SMP dipertahankan; perbedaan biodata lama tersedia di arsip, bukan ditebak.
 
 Menautkan Cordova 3 ke Fahri; Sigor dan Halaqoh Khatam ke Ida. Program pagi umum/GEMA berganti nama menjadi Bahasa Arab tanpa mengubah ID/jam 05.40–06.10 maupun riwayat presensi. Implementasi lokal diuji; belum diterapkan live (sesi terakhir Muhasim, menunggu Administrator).
+
+## Bahasa Arab sebagai pelajaran kelompok
+
+Paket arabic-group-lessons-20261006-v1 mengaktifkan teachingEnabled, subjectId MPL-PONDOK-ARAB-PAGI, dan dailyScheduleId pada enam kelompok. Jadwal Guru Mapel diturunkan dari jadwal 24 jam aktif tahun berjalan (05.40–06.10, Setiap Hari sesuai DOCX), bukan jadwal contoh atau rombel baru. Kelompok GEMA memakai sumber GEMA; lainnya sumber umum. Pengecualian hari khusus belum ditetapkan pada sumber harian, sehingga tidak dibuat otomatis.
+
+Guru wajib memiliki staffId dalam mentorStaffId(s) kelompok; scope rombel formal tidak membatasi kelompok yang memang ditugaskan. Peserta hanya anggota kelompok aktif dan siswa master aktif, tanpa siswa duplikat/merged. groupId disimpan pada presensi guru, KBM dua tahap, target/capaian materi, nilai ujian, tindak lanjut dan tulisan; classId null untuk kelompok. assignment key berawalan group- memisahkan materi/nilai dari rombel formal. Presensi GPS tetap memeriksa radius kampus; penilaian Bahasa Arab memakai skema 50% lisan/50% tulisan yang sudah ada.
+
+167 pengujian lokal lulus termasuk GPS, anggota nonaktif dikecualikan, tahap awal→final, penyimpanan materi, nilai kelompok, larangan akses guru lain, sumber jadwal hilang/inactive/tahun lain. Tidak menguji presensi riil. Rules lama tidak diubah; ini bukan klaim hardening akses server. Kode belum dipublikasikan.

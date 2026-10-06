@@ -1,0 +1,29 @@
+{
+  "id": "arabic-group-lessons-20261006-v1",
+  "changes": {
+    "subjects/MPL-PONDOK-ARAB-PAGI": {
+      "name": "Bahasa Arab Pagi",
+      "unitId": "UNIT-PONDOK",
+      "status": "active",
+      "source": "Kelompok Bahasa Arab dan jadwal 24 jam 2026; instruksi pengguna 6 Oktober 2026"
+    },
+    "groups/GRP-2026-arabic-P-3/teachingEnabled": true,
+    "groups/GRP-2026-arabic-P-3/subjectId": "MPL-PONDOK-ARAB-PAGI",
+    "groups/GRP-2026-arabic-P-3/dailyScheduleId": "DS-2026-UMUM-04",
+    "groups/GRP-2026-arabic-P-4/teachingEnabled": true,
+    "groups/GRP-2026-arabic-P-4/subjectId": "MPL-PONDOK-ARAB-PAGI",
+    "groups/GRP-2026-arabic-P-4/dailyScheduleId": "DS-2026-UMUM-04",
+    "groups/GRP-2026-arabic-P-5/teachingEnabled": true,
+    "groups/GRP-2026-arabic-P-5/subjectId": "MPL-PONDOK-ARAB-PAGI",
+    "groups/GRP-2026-arabic-P-5/dailyScheduleId": "DS-2026-GEMA-04",
+    "groups/GRP-2026-arabic-L-c2/teachingEnabled": true,
+    "groups/GRP-2026-arabic-L-c2/subjectId": "MPL-PONDOK-ARAB-PAGI",
+    "groups/GRP-2026-arabic-L-c2/dailyScheduleId": "DS-2026-UMUM-04",
+    "groups/GRP-2026-arabic-L-c3/teachingEnabled": true,
+    "groups/GRP-2026-arabic-L-c3/subjectId": "MPL-PONDOK-ARAB-PAGI",
+    "groups/GRP-2026-arabic-L-c3/dailyScheduleId": "DS-2026-UMUM-04",
+    "groups/GRP-2026-arabic-L-gema/teachingEnabled": true,
+    "groups/GRP-2026-arabic-L-gema/subjectId": "MPL-PONDOK-ARAB-PAGI",
+    "groups/GRP-2026-arabic-L-gema/dailyScheduleId": "DS-2026-GEMA-04"
+  }
+}

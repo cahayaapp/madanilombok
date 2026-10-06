@@ -1,7 +1,8 @@
+import {teachingTargetFields} from './group-schedules.js';
 import {getNode,saveTeacherSession,patchNode} from '../repository.js';
 import {studentsForTeaching} from '../app-store.js';
 import {teacherSchedules,localClock,staffId,learningTransition,assignmentKey} from './model.js';
-import {e,empty,chip,mount,stats,labels,action,exampleNote} from './ui.js';
+import {e,empty,chip,mount,stats,labels,action,sheet,exampleNote} from './ui.js';
 export async function renderTeacherLearning(ctx){
  await ctx.refreshMaster?.();
  const date=localClock().date,schedules=teacherSchedules(ctx).filter(s=>s.day===localClock().day),ws=mount(ctx,'Absensi KBM','Pilih jadwal pembelajaran hari ini.');
@@ -11,7 +12,13 @@ export async function renderTeacherLearning(ctx){
  const refreshStats=()=>{const states=[...ws.querySelectorAll('input[type=radio]:checked')].map(x=>x.value);ws.querySelector('#learningStats').innerHTML=stats([[roster.length,'Total Santri'],[states.filter(x=>x==='Hadir').length,'Hadir'],[states.filter(x=>['Belum Hadir','Alfa','Terlambat'].includes(x)).length,saved?'Terlambat / Alfa':'Belum Hadir']]);};refreshStats();ws.querySelectorAll('input[type=radio]').forEach(x=>x.onchange=refreshStats);ws.querySelector('#backSchedules').onclick=draw;ws.querySelector('#studentSearch').oninput=ev=>ws.querySelectorAll('[data-student]').forEach(row=>row.hidden=!row.dataset.search.includes(ev.target.value.toLowerCase()));if(!saved)ws.querySelector('#allPresent').onclick=()=>{ws.querySelectorAll('input[value="Hadir"]').forEach(x=>x.checked=true);refreshStats();};
  action(ctx,ws.querySelector('#saveLearning'),async()=>{if(localClock().date!==date)throw Error('Tanggal sudah berubah. Buka ulang absensi.');const students={};ws.querySelectorAll('[data-student]').forEach(row=>{students[row.dataset.student]={status:row.querySelector('input[type=radio]:checked')?.value||'',score:row.querySelector('[data-score]')?.value??null};});const materialIds=[...ws.querySelectorAll('[data-material]:checked')].map(x=>x.dataset.material);const next=learningTransition(saved,{students,materialIds,note:ws.querySelector('#learningNote').value},{roster,schedule:{...s,id:recordId,academicYearId:ctx.yearId},date,actor:{staffId:staffId(ctx),uid:ctx.session.user.uid},subjectName:l.subjectName,targets});next.sourceScheduleIds=ids;next.startTime=s.startTime;next.endTime=s.endTime;await saveTeacherSession(path,next,{expectedVersion:saved?.version||0,actorUid:ctx.session.user.uid});
  // Each subject keeps its own session. The legacy parent daily summary is not overwritten.
- const updates={};for(const id of materialIds){const target=targets.find(t=>t.id===id);updates[`academic/material_completions/${ctx.yearId}/${staffId(ctx)}/${assignmentKey(s)}/${id}`]={academicYearId:ctx.yearId,staffId:staffId(ctx),teacherUid:ctx.session.user.uid,targetId:id,scheduleId:s.id,classId:s.classId,classIds:s.classIds||[s.classId],subjectId:s.subjectId,date,status:'TERCAPAI',material:target.material,updatedAt:Date.now(),source:'Absensi KBM'};}try{if(Object.keys(updates).length)await patchNode('',updates);}catch(ex){await open(s);throw Error('Presensi tersimpan, tetapi capaian materi belum tersinkron. Simpan ulang nilai dan materi. '+ex.message);}await open(s);});
+ const updates={};for(const id of materialIds){const target=targets.find(t=>t.id===id);updates[`academic/material_completions/${ctx.yearId}/${staffId(ctx)}/${assignmentKey(s)}/${id}`]={academicYearId:ctx.yearId,staffId:staffId(ctx),teacherUid:ctx.session.user.uid,targetId:id,scheduleId:s.id,...teachingTargetFields(s),subjectId:s.subjectId,date,status:'TERCAPAI',material:target.material,updatedAt:Date.now(),source:'Absensi KBM'};}try{if(Object.keys(updates).length)await patchNode('',updates);}catch(ex){await open(s);throw Error('Presensi tersimpan, tetapi capaian materi belum tersinkron. Simpan ulang nilai dan materi. '+ex.message);}await open(s);
+ if(next.stage==='FINAL'){
+  const dialog=sheet(ctx,'Presensi berhasil disimpan','Absen Akhir telah tersimpan dengan aman.',`<div class="attendance-success-emblem" aria-hidden="true"><svg viewBox="0 0 64 64" fill="none"><circle cx="32" cy="32" r="29"/><path d="m19 32 9 9 18-19"/></svg></div><div class="attendance-success-detail"><strong>${e(l.subjectName)}</strong><span>${e(l.className)}</span><small>${e(date)} · ${e(s.startTime)}–${e(s.endTime)}</small></div><button type="button" class="teacher-primary" data-attendance-home>Kembali ke Beranda <span aria-hidden="true">→</span></button>`);
+  dialog.classList.add('attendance-success');dialog.setAttribute('aria-label','Presensi berhasil disimpan');
+  const home=dialog.querySelector('[data-attendance-home]');home.onclick=()=>{dialog.close();ctx.navigate('dashboard');};home.focus();
+ }
+ });
  }
  draw();
 }
