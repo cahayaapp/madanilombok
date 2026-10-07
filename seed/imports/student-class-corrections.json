@@ -1,0 +1,106 @@
+{
+  "id": "student-class-corrections-20261008",
+  "academicYearId": "TA-2026-2027-GANJIL",
+  "students": [
+    {
+      "id": "AMD-SMK-0081",
+      "name": "Tazia Olivia",
+      "classId": "CLS-SMK-XI-DKV",
+      "unitId": "UNIT-SMK",
+      "nisn": "0093048209",
+      "existing": false
+    },
+    {
+      "id": "AMD-SMK-0008",
+      "name": "Ajeng Putri Rizki",
+      "classId": "CLS-SMK-XI-DKV",
+      "unitId": "UNIT-SMK",
+      "nisn": "",
+      "existing": true
+    },
+    {
+      "id": "AMD-SMK-0082",
+      "name": "Fazia Fitri",
+      "classId": "CLS-SMK-X-BUSANA",
+      "unitId": "UNIT-SMK",
+      "nisn": "",
+      "existing": false
+    },
+    {
+      "id": "AMD-SMK-0083",
+      "name": "Lukiana Jannatul Makwa",
+      "classId": "CLS-SMK-X-BUSANA",
+      "unitId": "UNIT-SMK",
+      "nisn": "",
+      "existing": false
+    },
+    {
+      "id": "AMD-SMK-0084",
+      "name": "Restu Indira Apridarsi",
+      "classId": "CLS-SMK-X-BUSANA",
+      "unitId": "UNIT-SMK",
+      "nisn": "0115794446",
+      "existing": false
+    },
+    {
+      "id": "AMD-SMK-0085",
+      "name": "Azka Nabila",
+      "classId": "CLS-SMK-X-BUSANA",
+      "unitId": "UNIT-SMK",
+      "nisn": "3117225258",
+      "existing": false
+    },
+    {
+      "id": "AMD-SMK-0086",
+      "name": "Irwan Taufiq Azhar",
+      "classId": "CLS-SMK-XI-TJKT",
+      "unitId": "UNIT-SMK",
+      "nisn": "0109944256",
+      "existing": false
+    },
+    {
+      "id": "AMD-SMK-0087",
+      "name": "Muh. Razaq Afrianto",
+      "classId": "CLS-SMK-X-DKV",
+      "unitId": "UNIT-SMK",
+      "nisn": "3113920236",
+      "existing": false
+    },
+    {
+      "id": "AMD-SMP-0101",
+      "name": "DINDA CAHYATI",
+      "classId": "CLS-SMP-7-PUTRI",
+      "unitId": "UNIT-SMP",
+      "nisn": "",
+      "existing": true
+    },
+    {
+      "id": "AMD-SMP-0102",
+      "name": "MUHAMMAD AKBAR",
+      "classId": "CLS-SMP-9-PUTRA",
+      "unitId": "UNIT-SMP",
+      "nisn": "",
+      "existing": true
+    }
+  ],
+  "expectedClasses": {
+    "AMD-SMK-0081": null,
+    "AMD-SMK-0008": {
+      "studentId": "AMD-SMK-0008",
+      "classId": "CLS-SMK-XI-BUSANA",
+      "academicYearId": "TA-2026-2027-GANJIL",
+      "status": "active",
+      "source": "daftar_pd-SMKS ISLAM PLUS AL MADANI-2026-08-26 18_27_21.xlsx",
+      "sourceStatus": "Aktif menurut sumber / perlu pengesahan",
+      "seeded": true
+    },
+    "AMD-SMK-0082": null,
+    "AMD-SMK-0083": null,
+    "AMD-SMK-0084": null,
+    "AMD-SMK-0085": null,
+    "AMD-SMK-0086": null,
+    "AMD-SMK-0087": null,
+    "AMD-SMP-0101": null,
+    "AMD-SMP-0102": null
+  }
+}

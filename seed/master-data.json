@@ -9279,6 +9279,55 @@
       "validationStatus": "Penambahan dikonfirmasi pengguna; kelas, NISN dan biodata belum tersedia",
       "source": "GURU WALI SMP 2026-2027.xlsx; konfirmasi pengguna 4 Oktober 2026",
       "seeded": true
+    },
+    "AMD-SMK-0081": {
+      "name": "Tazia Olivia",
+      "unitId": "UNIT-SMK",
+      "status": "active",
+      "nisn": "0093048209",
+      "source": "Konfirmasi pengguna 8 Oktober 2026"
+    },
+    "AMD-SMK-0082": {
+      "name": "Fazia Fitri",
+      "unitId": "UNIT-SMK",
+      "status": "active",
+      "nisn": "",
+      "source": "Konfirmasi pengguna 8 Oktober 2026"
+    },
+    "AMD-SMK-0083": {
+      "name": "Lukiana Jannatul Makwa",
+      "unitId": "UNIT-SMK",
+      "status": "active",
+      "nisn": "",
+      "source": "Konfirmasi pengguna 8 Oktober 2026"
+    },
+    "AMD-SMK-0084": {
+      "name": "Restu Indira Apridarsi",
+      "unitId": "UNIT-SMK",
+      "status": "active",
+      "nisn": "0115794446",
+      "source": "Konfirmasi pengguna 8 Oktober 2026"
+    },
+    "AMD-SMK-0085": {
+      "name": "Azka Nabila",
+      "unitId": "UNIT-SMK",
+      "status": "active",
+      "nisn": "3117225258",
+      "source": "Konfirmasi pengguna 8 Oktober 2026"
+    },
+    "AMD-SMK-0086": {
+      "name": "Irwan Taufiq Azhar",
+      "unitId": "UNIT-SMK",
+      "status": "active",
+      "nisn": "0109944256",
+      "source": "Konfirmasi pengguna 8 Oktober 2026"
+    },
+    "AMD-SMK-0087": {
+      "name": "Muh. Razaq Afrianto",
+      "unitId": "UNIT-SMK",
+      "status": "active",
+      "nisn": "3113920236",
+      "source": "Konfirmasi pengguna 8 Oktober 2026"
     }
   },
   "staff": {
@@ -11715,6 +11764,13 @@
           "dutyShiftId": "shift2"
         }
       }
+    },
+    "AMD-SDM-0089": {
+      "name": "TGH. Hudhori",
+      "status": "active",
+      "appRoles": [
+        "guru_mapel"
+      ]
     }
   },
   "classes": {
@@ -12824,6 +12880,55 @@
       "teachingEnabled": true,
       "subjectId": "MPL-PONDOK-ARAB-PAGI",
       "dailyScheduleId": "DS-2026-GEMA-04"
+    },
+    "GRP-GEMA-LESSON-KAJIAN": {
+      "name": "Kajian GEMA — TGH. Hudhori",
+      "status": "active",
+      "programType": "lesson",
+      "gemaAudience": "all",
+      "teachingEnabled": true,
+      "mentorStaffId": "AMD-SDM-0089",
+      "mentorStaffIds": [
+        "AMD-SDM-0089"
+      ],
+      "dailyScheduleIds": [
+        "DS-GEMA-LESSON-KAJIAN-SABTU"
+      ],
+      "subjectId": "MPL-GEMA-KAJIAN",
+      "gender": "mixed"
+    },
+    "GRP-GEMA-LESSON-NAHWU": {
+      "name": "Nahwu — Syaikh Anwar",
+      "status": "active",
+      "programType": "lesson",
+      "gemaAudience": "mutqin",
+      "teachingEnabled": true,
+      "mentorStaffId": "AMD-SDM-0009",
+      "mentorStaffIds": [
+        "AMD-SDM-0009"
+      ],
+      "dailyScheduleIds": [
+        "DS-GEMA-LESSON-NAHWU-JUMAT"
+      ],
+      "subjectId": "MPL-GEMA-NAHWU",
+      "gender": "mixed"
+    },
+    "GRP-GEMA-LESSON-ARAB": {
+      "name": "Bahasa Arab Durusulugoh — Ustadz Bahtiar",
+      "status": "active",
+      "programType": "lesson",
+      "gemaAudience": "mutqin",
+      "teachingEnabled": true,
+      "mentorStaffId": "AMD-SDM-0012",
+      "mentorStaffIds": [
+        "AMD-SDM-0012"
+      ],
+      "dailyScheduleIds": [
+        "DS-GEMA-LESSON-ARAB-SENIN",
+        "DS-GEMA-LESSON-ARAB-SELASA"
+      ],
+      "subjectId": "MPL-GEMA-ARAB",
+      "gender": "mixed"
     }
   },
   "subjects": {
@@ -13800,6 +13905,18 @@
     },
     "MPL-PONDOK-QURAN": {
       "name": "Tahsin / Tahfiz",
+      "status": "active"
+    },
+    "MPL-GEMA-KAJIAN": {
+      "name": "Kajian GEMA — TGH. Hudhori",
+      "status": "active"
+    },
+    "MPL-GEMA-NAHWU": {
+      "name": "Nahwu — Syaikh Anwar",
+      "status": "active"
+    },
+    "MPL-GEMA-ARAB": {
+      "name": "Bahasa Arab Durusulugoh — Ustadz Bahtiar",
       "status": "active"
     }
   },
@@ -15190,6 +15307,22 @@
       "status": "active",
       "genderScope": "mixed",
       "source": "Konfirmasi pengguna 8 Oktober 2026"
+    },
+    "PRG-GEMA-LESSON-KAJIAN": {
+      "name": "Kajian GEMA — TGH. Hudhori",
+      "status": "active"
+    },
+    "PRG-GEMA-LESSON-NAHWU": {
+      "name": "Nahwu — Syaikh Anwar",
+      "status": "active"
+    },
+    "PRG-GEMA-LESSON-ARAB": {
+      "name": "Bahasa Arab Durusulugoh — Ustadz Bahtiar",
+      "status": "active"
+    },
+    "PRG-APEL-TRANSISI": {
+      "name": "Apel transisi pondok–formal",
+      "status": "active"
     }
   },
   "assignments": {
@@ -16520,12 +16653,10 @@
         },
         "AMD-SMK-0008": {
           "studentId": "AMD-SMK-0008",
-          "classId": "CLS-SMK-XI-BUSANA",
+          "classId": "CLS-SMK-XI-DKV",
           "academicYearId": "TA-2026-2027-GANJIL",
           "status": "active",
-          "source": "daftar_pd-SMKS ISLAM PLUS AL MADANI-2026-08-26 18_27_21.xlsx",
-          "sourceStatus": "Aktif menurut sumber / perlu pengesahan",
-          "seeded": true
+          "source": "Konfirmasi pengguna 8 Oktober 2026"
         },
         "AMD-SMK-0009": {
           "studentId": "AMD-SMK-0009",
@@ -18362,6 +18493,69 @@
           "source": "daftar_pd-SDS IT AL- MADANI-2026-07 NEW.xlsx",
           "sourceStatus": "Aktif menurut sumber / perlu pengesahan",
           "seeded": true
+        },
+        "AMD-SMK-0081": {
+          "studentId": "AMD-SMK-0081",
+          "classId": "CLS-SMK-XI-DKV",
+          "academicYearId": "TA-2026-2027-GANJIL",
+          "status": "active",
+          "source": "Konfirmasi pengguna 8 Oktober 2026"
+        },
+        "AMD-SMK-0082": {
+          "studentId": "AMD-SMK-0082",
+          "classId": "CLS-SMK-X-BUSANA",
+          "academicYearId": "TA-2026-2027-GANJIL",
+          "status": "active",
+          "source": "Konfirmasi pengguna 8 Oktober 2026"
+        },
+        "AMD-SMK-0083": {
+          "studentId": "AMD-SMK-0083",
+          "classId": "CLS-SMK-X-BUSANA",
+          "academicYearId": "TA-2026-2027-GANJIL",
+          "status": "active",
+          "source": "Konfirmasi pengguna 8 Oktober 2026"
+        },
+        "AMD-SMK-0084": {
+          "studentId": "AMD-SMK-0084",
+          "classId": "CLS-SMK-X-BUSANA",
+          "academicYearId": "TA-2026-2027-GANJIL",
+          "status": "active",
+          "source": "Konfirmasi pengguna 8 Oktober 2026"
+        },
+        "AMD-SMK-0085": {
+          "studentId": "AMD-SMK-0085",
+          "classId": "CLS-SMK-X-BUSANA",
+          "academicYearId": "TA-2026-2027-GANJIL",
+          "status": "active",
+          "source": "Konfirmasi pengguna 8 Oktober 2026"
+        },
+        "AMD-SMK-0086": {
+          "studentId": "AMD-SMK-0086",
+          "classId": "CLS-SMK-XI-TJKT",
+          "academicYearId": "TA-2026-2027-GANJIL",
+          "status": "active",
+          "source": "Konfirmasi pengguna 8 Oktober 2026"
+        },
+        "AMD-SMK-0087": {
+          "studentId": "AMD-SMK-0087",
+          "classId": "CLS-SMK-X-DKV",
+          "academicYearId": "TA-2026-2027-GANJIL",
+          "status": "active",
+          "source": "Konfirmasi pengguna 8 Oktober 2026"
+        },
+        "AMD-SMP-0101": {
+          "studentId": "AMD-SMP-0101",
+          "classId": "CLS-SMP-7-PUTRI",
+          "academicYearId": "TA-2026-2027-GANJIL",
+          "status": "active",
+          "source": "Konfirmasi pengguna 8 Oktober 2026"
+        },
+        "AMD-SMP-0102": {
+          "studentId": "AMD-SMP-0102",
+          "classId": "CLS-SMP-9-PUTRA",
+          "academicYearId": "TA-2026-2027-GANJIL",
+          "status": "active",
+          "source": "Konfirmasi pengguna 8 Oktober 2026"
         }
       }
     },
@@ -48441,6 +48635,69 @@
         "quranMorning": false,
         "source": "Konfirmasi pengguna 8 Oktober 2026",
         "naqibProgramKind": "senam"
+      },
+      "DS-GEMA-LESSON-KAJIAN-SABTU": {
+        "academicYearId": "TA-2026-2027-GANJIL",
+        "programId": "PRG-GEMA-LESSON-KAJIAN",
+        "status": "active",
+        "day": "Sabtu",
+        "startTime": "08:30",
+        "endTime": "09:30",
+        "participantScope": "group",
+        "targetId": "GRP-GEMA-LESSON-KAJIAN",
+        "attendanceRole": "guru_mapel",
+        "genderScope": "mixed"
+      },
+      "DS-GEMA-LESSON-NAHWU-JUMAT": {
+        "academicYearId": "TA-2026-2027-GANJIL",
+        "programId": "PRG-GEMA-LESSON-NAHWU",
+        "status": "active",
+        "day": "Jumat",
+        "startTime": "14:00",
+        "endTime": "15:30",
+        "participantScope": "group",
+        "targetId": "GRP-GEMA-LESSON-NAHWU",
+        "attendanceRole": "guru_mapel",
+        "genderScope": "mixed"
+      },
+      "DS-GEMA-LESSON-ARAB-SENIN": {
+        "academicYearId": "TA-2026-2027-GANJIL",
+        "programId": "PRG-GEMA-LESSON-ARAB",
+        "status": "active",
+        "day": "Senin",
+        "startTime": "14:00",
+        "endTime": "15:30",
+        "participantScope": "group",
+        "targetId": "GRP-GEMA-LESSON-ARAB",
+        "attendanceRole": "guru_mapel",
+        "genderScope": "mixed"
+      },
+      "DS-GEMA-LESSON-ARAB-SELASA": {
+        "academicYearId": "TA-2026-2027-GANJIL",
+        "programId": "PRG-GEMA-LESSON-ARAB",
+        "status": "active",
+        "day": "Selasa",
+        "startTime": "14:00",
+        "endTime": "15:30",
+        "participantScope": "group",
+        "targetId": "GRP-GEMA-LESSON-ARAB",
+        "attendanceRole": "guru_mapel",
+        "genderScope": "mixed"
+      },
+      "DS-APEL-TRANSISI": {
+        "academicYearId": "TA-2026-2027-GANJIL",
+        "programId": "PRG-APEL-TRANSISI",
+        "status": "active",
+        "day": "Setiap Hari",
+        "startTime": "07:50",
+        "endTime": "08:00",
+        "participantScope": "units",
+        "targetUnitIds": [
+          "UNIT-SMP",
+          "UNIT-SMK"
+        ],
+        "genderScope": "mixed",
+        "naqibProgramKind": "apel_transisi"
       }
     },
     "recurring": {
@@ -48487,8 +48744,8 @@
         "order": 3
       },
       "REC-2026-04": {
-        "name": "Kajian GEMA bersama TGH. Sahabudin, Lc., M.Sy",
-        "timeLabel": "Pagi Sabtu",
+        "name": "Kajian GEMA — TGH. Hudhori",
+        "timeLabel": "Sabtu 08:30–09:30",
         "frequency": "weekly",
         "participantScope": "boarding_gema",
         "genderScope": "mixed",
@@ -48499,7 +48756,11 @@
         "confirmedCurrentPeriod": "Konfirmasi pengguna: berlaku 2026/2027",
         "importId": "boarding-rosters-2026",
         "order": 4,
-        "attendanceRole": "guru_mapel"
+        "attendanceRole": "guru_mapel",
+        "startTime": "08:30",
+        "endTime": "09:30",
+        "teacherStaffId": "AMD-SDM-0089",
+        "lessonGroupId": "GRP-GEMA-LESSON-KAJIAN"
       },
       "REC-2026-05": {
         "name": "Pramuka",
@@ -48572,8 +48833,8 @@
         "order": 9
       },
       "REC-2026-10": {
-        "name": "Belajar Bahasa Arab Durusulugoh bersama Ustadz Bahtiar Ahadi, Lc., MA",
-        "timeLabel": "Siang Senin dan Selasa",
+        "name": "Bahasa Arab Durusulugoh — Ustadz Bahtiar",
+        "timeLabel": "Senin, Selasa 14:00–15:30",
         "frequency": "weekly",
         "participantScope": "boarding_gema",
         "genderScope": "mixed",
@@ -48584,11 +48845,15 @@
         "confirmedCurrentPeriod": "Konfirmasi pengguna: berlaku 2026/2027",
         "importId": "boarding-rosters-2026",
         "order": 10,
-        "attendanceRole": "guru_mapel"
+        "attendanceRole": "guru_mapel",
+        "startTime": "14:00",
+        "endTime": "15:30",
+        "teacherStaffId": "AMD-SDM-0012",
+        "lessonGroupId": "GRP-GEMA-LESSON-ARAB"
       },
       "REC-2026-11": {
-        "name": "Belajar Nahwu bersama Kyai Anwar Syafi’i, Lc",
-        "timeLabel": "Jumat Siang",
+        "name": "Nahwu — Syaikh Anwar",
+        "timeLabel": "Jumat 14:00–15:30",
         "frequency": "weekly",
         "participantScope": "boarding_gema",
         "genderScope": "mixed",
@@ -48599,7 +48864,11 @@
         "confirmedCurrentPeriod": "Konfirmasi pengguna: berlaku 2026/2027",
         "importId": "boarding-rosters-2026",
         "order": 11,
-        "attendanceRole": "guru_mapel"
+        "attendanceRole": "guru_mapel",
+        "startTime": "14:00",
+        "endTime": "15:30",
+        "teacherStaffId": "AMD-SDM-0009",
+        "lessonGroupId": "GRP-GEMA-LESSON-NAHWU"
       }
     }
   },

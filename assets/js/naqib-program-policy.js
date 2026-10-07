@@ -3,10 +3,9 @@
 export const NAQIB_PROGRAM_KINDS=['tahajjud','subuh','zuhur','ashar','magrib','isya','kebersihan','apel_transisi','apel_pagi','senam'];
 export function naqibProgramKind(schedule,program){
  if(schedule?.naqibAttendance===false||program?.status==='inactive')return null;
- // GEMA is supervised by its own pembina/teachers, never by Naqib.
- if(schedule?.participantScope==='boarding_gema')return null;
+
  const kind=schedule?.naqibProgramKind;
- if(kind)return NAQIB_PROGRAM_KINDS.includes(kind)?kind:null;
+ if(kind)return NAQIB_PROGRAM_KINDS.includes(kind)&&!(schedule?.participantScope==='boarding_gema'&&kind==='apel_transisi')?kind:null;
  const name=(program?.name||'').toLowerCase().replace(/^asrama (?:umum|gema) \d{2}:\d{2}\s*·\s*/,'').trim();
  const names={
   'sholat tahajjud':'tahajjud','salat tahajud':'tahajjud',

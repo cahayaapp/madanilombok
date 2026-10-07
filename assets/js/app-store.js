@@ -1,3 +1,4 @@
+import {gemaLessonStudents} from './gema-lessons.js';
 import { getNode, listNode, getCurrentAcademicYearId } from "./repository.js";
 
 const state = {
@@ -55,6 +56,7 @@ export function studentsForTeaching(schedule, master = state.master) {
 
 export function studentsForGroup(groupId, master = state.master) {
   if (!master) return [];
+  const group=(master.groups||[]).find(g=>g.id===groupId);if(group?.gemaAudience)return gemaLessonStudents(group,master);
   const members = master.groupAssignments?.[groupId] || {};
   const map = byId(master.students || []);
   return Object.keys(members).map(id => map[id]).filter(s=>s&&!s.mergedInto).sort((a,b) => (a.name || "").localeCompare(b.name || ""));

@@ -1,0 +1,173 @@
+{
+  "id": "gema-lessons-20261008",
+  "changes": {
+    "staff/AMD-SDM-0089": {
+      "name": "TGH. Hudhori",
+      "status": "active",
+      "appRoles": [
+        "guru_mapel"
+      ]
+    },
+    "schedules/daily/DS-GEMA-LESSON-KAJIAN-SABTU": {
+      "academicYearId": "TA-2026-2027-GANJIL",
+      "programId": "PRG-GEMA-LESSON-KAJIAN",
+      "status": "active",
+      "day": "Sabtu",
+      "startTime": "08:30",
+      "endTime": "09:30",
+      "participantScope": "group",
+      "targetId": "GRP-GEMA-LESSON-KAJIAN",
+      "attendanceRole": "guru_mapel",
+      "genderScope": "mixed"
+    },
+    "groups/GRP-GEMA-LESSON-KAJIAN": {
+      "name": "Kajian GEMA — TGH. Hudhori",
+      "status": "active",
+      "programType": "lesson",
+      "gemaAudience": "all",
+      "teachingEnabled": true,
+      "mentorStaffId": "AMD-SDM-0089",
+      "mentorStaffIds": [
+        "AMD-SDM-0089"
+      ],
+      "dailyScheduleIds": [
+        "DS-GEMA-LESSON-KAJIAN-SABTU"
+      ],
+      "subjectId": "MPL-GEMA-KAJIAN",
+      "gender": "mixed"
+    },
+    "subjects/MPL-GEMA-KAJIAN": {
+      "name": "Kajian GEMA — TGH. Hudhori",
+      "status": "active"
+    },
+    "programs/PRG-GEMA-LESSON-KAJIAN": {
+      "name": "Kajian GEMA — TGH. Hudhori",
+      "status": "active"
+    },
+    "schedules/recurring/REC-2026-04/name": "Kajian GEMA — TGH. Hudhori",
+    "schedules/recurring/REC-2026-04/startTime": "08:30",
+    "schedules/recurring/REC-2026-04/endTime": "09:30",
+    "schedules/recurring/REC-2026-04/timeLabel": "Sabtu 08:30–09:30",
+    "schedules/recurring/REC-2026-04/teacherStaffId": "AMD-SDM-0089",
+    "schedules/recurring/REC-2026-04/lessonGroupId": "GRP-GEMA-LESSON-KAJIAN",
+    "schedules/recurring/REC-2026-04/attendanceRole": "guru_mapel",
+    "schedules/daily/DS-GEMA-LESSON-NAHWU-JUMAT": {
+      "academicYearId": "TA-2026-2027-GANJIL",
+      "programId": "PRG-GEMA-LESSON-NAHWU",
+      "status": "active",
+      "day": "Jumat",
+      "startTime": "14:00",
+      "endTime": "15:30",
+      "participantScope": "group",
+      "targetId": "GRP-GEMA-LESSON-NAHWU",
+      "attendanceRole": "guru_mapel",
+      "genderScope": "mixed"
+    },
+    "groups/GRP-GEMA-LESSON-NAHWU": {
+      "name": "Nahwu — Syaikh Anwar",
+      "status": "active",
+      "programType": "lesson",
+      "gemaAudience": "mutqin",
+      "teachingEnabled": true,
+      "mentorStaffId": "AMD-SDM-0009",
+      "mentorStaffIds": [
+        "AMD-SDM-0009"
+      ],
+      "dailyScheduleIds": [
+        "DS-GEMA-LESSON-NAHWU-JUMAT"
+      ],
+      "subjectId": "MPL-GEMA-NAHWU",
+      "gender": "mixed"
+    },
+    "subjects/MPL-GEMA-NAHWU": {
+      "name": "Nahwu — Syaikh Anwar",
+      "status": "active"
+    },
+    "programs/PRG-GEMA-LESSON-NAHWU": {
+      "name": "Nahwu — Syaikh Anwar",
+      "status": "active"
+    },
+    "schedules/recurring/REC-2026-11/name": "Nahwu — Syaikh Anwar",
+    "schedules/recurring/REC-2026-11/startTime": "14:00",
+    "schedules/recurring/REC-2026-11/endTime": "15:30",
+    "schedules/recurring/REC-2026-11/timeLabel": "Jumat 14:00–15:30",
+    "schedules/recurring/REC-2026-11/teacherStaffId": "AMD-SDM-0009",
+    "schedules/recurring/REC-2026-11/lessonGroupId": "GRP-GEMA-LESSON-NAHWU",
+    "schedules/recurring/REC-2026-11/attendanceRole": "guru_mapel",
+    "schedules/daily/DS-GEMA-LESSON-ARAB-SENIN": {
+      "academicYearId": "TA-2026-2027-GANJIL",
+      "programId": "PRG-GEMA-LESSON-ARAB",
+      "status": "active",
+      "day": "Senin",
+      "startTime": "14:00",
+      "endTime": "15:30",
+      "participantScope": "group",
+      "targetId": "GRP-GEMA-LESSON-ARAB",
+      "attendanceRole": "guru_mapel",
+      "genderScope": "mixed"
+    },
+    "schedules/daily/DS-GEMA-LESSON-ARAB-SELASA": {
+      "academicYearId": "TA-2026-2027-GANJIL",
+      "programId": "PRG-GEMA-LESSON-ARAB",
+      "status": "active",
+      "day": "Selasa",
+      "startTime": "14:00",
+      "endTime": "15:30",
+      "participantScope": "group",
+      "targetId": "GRP-GEMA-LESSON-ARAB",
+      "attendanceRole": "guru_mapel",
+      "genderScope": "mixed"
+    },
+    "groups/GRP-GEMA-LESSON-ARAB": {
+      "name": "Bahasa Arab Durusulugoh — Ustadz Bahtiar",
+      "status": "active",
+      "programType": "lesson",
+      "gemaAudience": "mutqin",
+      "teachingEnabled": true,
+      "mentorStaffId": "AMD-SDM-0012",
+      "mentorStaffIds": [
+        "AMD-SDM-0012"
+      ],
+      "dailyScheduleIds": [
+        "DS-GEMA-LESSON-ARAB-SENIN",
+        "DS-GEMA-LESSON-ARAB-SELASA"
+      ],
+      "subjectId": "MPL-GEMA-ARAB",
+      "gender": "mixed"
+    },
+    "subjects/MPL-GEMA-ARAB": {
+      "name": "Bahasa Arab Durusulugoh — Ustadz Bahtiar",
+      "status": "active"
+    },
+    "programs/PRG-GEMA-LESSON-ARAB": {
+      "name": "Bahasa Arab Durusulugoh — Ustadz Bahtiar",
+      "status": "active"
+    },
+    "schedules/recurring/REC-2026-10/name": "Bahasa Arab Durusulugoh — Ustadz Bahtiar",
+    "schedules/recurring/REC-2026-10/startTime": "14:00",
+    "schedules/recurring/REC-2026-10/endTime": "15:30",
+    "schedules/recurring/REC-2026-10/timeLabel": "Senin, Selasa 14:00–15:30",
+    "schedules/recurring/REC-2026-10/teacherStaffId": "AMD-SDM-0012",
+    "schedules/recurring/REC-2026-10/lessonGroupId": "GRP-GEMA-LESSON-ARAB",
+    "schedules/recurring/REC-2026-10/attendanceRole": "guru_mapel",
+    "schedules/daily/DS-APEL-TRANSISI": {
+      "academicYearId": "TA-2026-2027-GANJIL",
+      "programId": "PRG-APEL-TRANSISI",
+      "status": "active",
+      "day": "Setiap Hari",
+      "startTime": "07:50",
+      "endTime": "08:00",
+      "participantScope": "units",
+      "targetUnitIds": [
+        "UNIT-SMP",
+        "UNIT-SMK"
+      ],
+      "genderScope": "mixed",
+      "naqibProgramKind": "apel_transisi"
+    },
+    "programs/PRG-APEL-TRANSISI": {
+      "name": "Apel transisi pondok–formal",
+      "status": "active"
+    }
+  }
+}

@@ -1,4 +1,4 @@
-import {isActiveGemaStudent} from '../teacher/gema-attendance.js';
+import {isActiveGemaStudent,GEMA_ATTENDANCE_NOTE} from '../teacher/gema-attendance.js';
 import {loadDuty,checkDutyWrite} from '../naqib-duty-access.js';
 import {dutyProgramDate} from '../naqib-duty.js';
 import {schoolCaseRoute,isSdStudent} from '../school-case-routing.js';
@@ -61,12 +61,13 @@ export async function renderNaqibAttendance(ctx) {
     const programId=document.getElementById("programPick").value,date=document.getElementById("programDate").value;
     if(!programId||!date) return toast("Pilih program dan tanggal.","warning");
     try{await checkDutyWrite(ctx,programId,date);}catch(e){return toast(e.message,"error");}
-    const students=programStudents(programId,ctx.master).filter(s=>genderMatches(gender,s.gender)&&!isActiveGemaStudent(s,ctx.master,ctx.yearId));
+    const students=programStudents(programId,ctx.master).filter(s=>genderMatches(gender,s.gender));
+    const delegated=s=>access.schedules.some(r=>r.programId===programId&&r.naqibProgramKind==='apel_transisi')&&isActiveGemaStudent(s,ctx.master,ctx.yearId);
     const saved=await getNode(`boarding/program_attendance/${ctx.yearId}/${date}/${programId}`)||{};
     const ws=document.getElementById("programAttWork");
-    ws.innerHTML=pageHeader("Daftar Santri",`${students.length} santri`,`<button class="btn btn-primary" id="saveProgramAtt">Simpan Presensi</button>`)+table(["Santri","Status","Catatan"],students.map(s=>`<tr data-student="${s.id}"><td><strong>${escapeHtml(s.name)}</strong></td><td><select class="pstatus"><option ${saved[s.id]?.status==="Hadir"?"selected":""}>Hadir</option><option ${saved[s.id]?.status==="Terlambat"?"selected":""}>Terlambat</option><option ${saved[s.id]?.status==="Sakit"?"selected":""}>Sakit</option><option ${saved[s.id]?.status==="Izin"?"selected":""}>Izin</option><option ${saved[s.id]?.status==="Alfa"?"selected":""}>Alfa</option></select></td><td><input class="pnote table-input" value="${escapeHtml(saved[s.id]?.note||"")}"></td></tr>`).join(""));
+    ws.innerHTML=pageHeader("Daftar Santri",`${students.length} santri`,`<button class="btn btn-primary" id="saveProgramAtt">Simpan Presensi</button>`)+table(["Santri","Status","Catatan"],students.map(s=>`<tr data-student="${s.id}"><td><strong>${escapeHtml(s.name)}</strong></td><td>${delegated(s)?GEMA_ATTENDANCE_NOTE:`<select class="pstatus"><option ${saved[s.id]?.status==="Hadir"?"selected":""}>Hadir</option><option ${saved[s.id]?.status==="Terlambat"?"selected":""}>Terlambat</option><option ${saved[s.id]?.status==="Sakit"?"selected":""}>Sakit</option><option ${saved[s.id]?.status==="Izin"?"selected":""}>Izin</option><option ${saved[s.id]?.status==="Alfa"?"selected":""}>Alfa</option></select>`}</td><td><input class="pnote table-input" value="${escapeHtml(saved[s.id]?.note||"")}"></td></tr>`).join(""));
     document.getElementById("saveProgramAtt")?.addEventListener("click",async()=>{
-      try{const duty=await checkDutyWrite(ctx,programId,date);await ctx.refreshMaster?.();for(const tr of ws.querySelectorAll("tr[data-student]")){if(isActiveGemaStudent({id:tr.dataset.student},ctx.master,ctx.yearId))throw Error("Peserta GEMA ditangani pembina. Muat ulang daftar santri.");}const payload={};ws.querySelectorAll("tr[data-student]").forEach(tr=>payload[tr.dataset.student]={...duty,date,programId,studentId:tr.dataset.student,status:tr.querySelector(".pstatus").value,note:tr.querySelector(".pnote").value,recordedBy:ctx.session.user.uid,updatedAt:Date.now()});
+      try{const duty=await checkDutyWrite(ctx,programId,date);const payload={};ws.querySelectorAll("tr[data-student]").forEach(tr=>payload[tr.dataset.student]={...duty,date,programId,studentId:tr.dataset.student,status:delegated({id:tr.dataset.student})?null:tr.querySelector(".pstatus").value,...(delegated({id:tr.dataset.student})?{attendanceManagedBy:"GEMA",attendanceNote:GEMA_ATTENDANCE_NOTE}:{}),note:tr.querySelector(".pnote").value,recordedBy:ctx.session.user.uid,updatedAt:Date.now()});
       await patchNode(`boarding/program_attendance/${ctx.yearId}/${date}/${programId}`,payload);toast("Presensi program tersimpan.");}catch(e){toast(e.message,"error");}
     });
   });

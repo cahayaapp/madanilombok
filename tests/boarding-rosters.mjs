@@ -20,7 +20,7 @@ test('new Arabic groups are distinct from Quran and contain the morning period p
 });
 test('recurring schedules retain approximate source times and confirmed period without duplicating Saturday GEMA',()=>{
  const rows=Object.values(d.schedules.recurring).filter(s=>s.importId===p.id);
- assert.equal(rows.filter(s=>s.timeLabel==='Pagi Sabtu').length,1);
+ assert.equal(rows.filter(s=>s.lessonGroupId==='GRP-GEMA-LESSON-KAJIAN').length,1);
  assert.equal(rows.filter(s=>s.frequency==='monthly').length,1);
- assert.ok(rows.every(s=>s.sourcePeriod==='Oktober 2025'&&s.confirmedCurrentPeriod&&!s.startTime));
+ assert.ok(rows.every(s=>s.sourcePeriod==='Oktober 2025'&&s.confirmedCurrentPeriod&&(!s.startTime||s.lessonGroupId)));
 });

@@ -13,6 +13,7 @@ export function dailyForStudent(s,student,master){
   case 'boarding_gema':return boarding&&gema;
   case 'boarding_general':return Boolean(roomId)&&!gema;
   case 'all_boarding':return boarding;
+  case 'units':return (s.targetUnitIds||[]).includes(student.unitId);
   case 'unit':return student.unitId===s.targetId;
   case 'class':return master.classAssignments?.[student.id]?.classId===s.targetId;
   case 'group':return Boolean(master.groupAssignments?.[s.targetId]?.[student.id]);

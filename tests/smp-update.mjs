@@ -7,10 +7,11 @@ import {teacherSchedules} from '../assets/js/teacher/model.js';
 const d=JSON.parse(fs.readFileSync('seed/master-data.json')),pack=JSON.parse(fs.readFileSync('seed/imports/smp-2026-2027-update.json')),checks=JSON.parse(fs.readFileSync('seed/imports/smp-preservation-checks.json'));
 const canonical=v=>Array.isArray(v)?v.map(canonical):v&&typeof v==='object'?Object.fromEntries(Object.keys(v).sort().map(k=>[k,canonical(v[k])])):v;
 const hash=v=>createHash('sha256').update(JSON.stringify(canonical(v))).digest('hex');
+const corrections=JSON.parse(fs.readFileSync('seed/imports/student-class-corrections.json')),added=corrections.students.filter(r=>!r.existing).map(r=>r.id);
 const year='TA-2026-2027-GANJIL',rows=o=>Object.entries(o||{}).map(([id,r])=>({id,...r}));
 test('SMP update preserves student identities, other school schedules and finance',()=>{
- assert.equal(hash(Object.fromEntries(Object.entries(d.students).filter(([id])=>!['AMD-SMP-0101','AMD-SMP-0102'].includes(id)))),checks.students);assert.equal(hash(d.finance),checks.finance);
- assert.equal(Object.keys(d.students).length,354);
+ assert.equal(hash(Object.fromEntries(Object.entries(d.students).filter(([id])=>!['AMD-SMP-0101','AMD-SMP-0102',...added].includes(id)))),checks.students);assert.equal(hash(d.finance),checks.finance);
+ assert.equal(Object.keys(d.students).length,354+added.length);
  // Undo only the explicitly scoped, later boarding update before checking SMP preservation.
  const prior=structuredClone(d.assignments),boarding=JSON.parse(fs.readFileSync('seed/imports/boarding-2026-update.json'));
  for(const [path,value] of Object.entries(boarding.changes))if(path.startsWith('assignments/')){
@@ -18,6 +19,7 @@ test('SMP update preserves student identities, other school schedules and financ
   const expected=boarding.expected[path];if(expected==null)delete node[parts.at(-1)];else node[parts.at(-1)]=expected;
  }
  for(const [gid,members] of Object.entries(prior.groups[year]))if(gid.startsWith('GRP-2026-')&&!Object.keys(members).length)delete prior.groups[year][gid];
+ for(const [id,value]of Object.entries(corrections.expectedClasses)){if(value)prior.classes[year][id]=value;else delete prior.classes[year][id];}
  for(const kind of ['classes','rooms','groups'])assert.equal(hash(prior[kind]),checks[kind]);
  assert.equal(hash(Object.fromEntries(Object.entries(d.schedules.academic).filter(([id,s])=>s.unitId!=='UNIT-SMP'&&!id.startsWith('JSD-2627G-')&&!id.startsWith('JSMK-2627G-')).map(([id,s])=>{const old={...s};if(old.supersededBy==='sd-2026-2027-20261004'){old.status='active';delete old.supersededBy;}return [id,old];}))),checks.schedules);
  assert.equal(pack.report.scheduleCount,252);assert.equal(pack.report.homerooms,6);assert.equal(pack.report.matchedStudents,80);
