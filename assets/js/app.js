@@ -155,7 +155,7 @@ async function renderRoute() {
   try {
     if(currentRoute==='dashboard')await renderDashboard(ctx);
     else if(activeRole==='mentor_tahsin_tahfiz'&&currentRoute==='quran')await renderTeacherQuran(ctx);
-    else if(activeRole==='guru_mapel'&&TEACHER_ROUTES[currentRoute])await TEACHER_ROUTES[currentRoute](ctx);
+    else if((activeRole==='guru_mapel'||activeRole==='mentor_tahsin_tahfiz'&&['teacher-attendance','student-attendance'].includes(currentRoute))&&TEACHER_ROUTES[currentRoute])await TEACHER_ROUTES[currentRoute](ctx);
     else await routes[currentRoute](ctx);
     if(currentRoute.startsWith('management-'))decorateManagement(ctx);
   } catch(error) {

@@ -4,7 +4,7 @@ const mod=new vm.SourceTextModule(fs.readFileSync('assets/js/daily-schedules.js'
 const rows=Object.values(seed.schedules.daily).filter(s=>s.importId===pack.id);
 test('both source schedules cover exactly 24 hours including overnight sleep',()=>{
  for(const [scope,count]of [['boarding_general',14],['boarding_gema',17]]){
-  const a=rows.filter(s=>s.participantScope===scope).sort((a,b)=>a.order-b.order);assert.equal(a.length,count);
+  const a=Object.entries(pack.changes).filter(([p])=>p.startsWith('schedules/daily/')&&p.split('/').length===3).map(([,s])=>s).filter(s=>s.participantScope===scope).sort((a,b)=>a.order-b.order);assert.equal(a.length,count);
   const minutes=t=>t.split(':').reduce((h,m)=>Number(h)*60+Number(m));
   assert.equal(a.reduce((n,s)=>n+(minutes(s.endTime)-minutes(s.startTime)+1440)%1440,0),1440);
   a.forEach((s,i)=>assert.equal(s.endTime,a[(i+1)%a.length].startTime));assert.equal(a.at(-1).endsNextDay,true);

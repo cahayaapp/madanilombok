@@ -120,26 +120,29 @@ function prepareDuty(ctx){
  context.Date=class extends Date {static now(){return Date.parse('2026-10-06T10:00:00+08:00')}};
  database.set('settings/naqibDuty',{staff:{staff1:{shiftId:'shift1',gender:'L',active:true}}});
  ctx.master.dailySchedules=ctx.master.dailySchedules.map((s,i)=>({id:'daily'+i,academicYearId:ctx.yearId,day:'Setiap Hari',startTime:'08:00',...s}));
+ database.set('programs',Object.fromEntries(ctx.master.programs.map(p=>[p.id,p])));
  database.set('schedules/daily',Object.fromEntries(ctx.master.dailySchedules.map(s=>[s.id,s])));
 }
-test('daily schedule filters GEMA and saves only the selected gender roster without replacing other attendance',async()=>{
+test('Naqib excludes GEMA students and saves only general boarding roster without replacing other attendance',async()=>{
  const boarding=await load(new URL('assets/js/modules/boarding.js',base).href);if(boarding.status!=='evaluated')await boarding.evaluate();
  const ctx=ctxFor('naqib');ctx.session.profile.scopeGender='L';
- ctx.master={...master,students:[...master.students,{id:'s3',name:'Umum',gender:'L'}],roomAssignments:{s1:{roomId:'ROOM-PTR-GEMA'},s2:{roomId:'ROOM-PTRI-GEMA'},s3:{roomId:'ROOM-PTR-C1'}},programs:[{id:'g',name:'GEMA',genderScope:'mixed'},{id:'u',name:'Umum',genderScope:'mixed'}],dailySchedules:[{programId:'g',participantScope:'boarding_gema',audience:'Asrama GEMA',genderScope:'mixed'},{programId:'u',participantScope:'boarding_general',audience:'Asrama Umum',genderScope:'mixed'}]};
+ ctx.master={...master,students:[...master.students,{id:'s3',name:'Umum',gender:'L'}],roomAssignments:{s1:{roomId:'ROOM-PTR-GEMA'},s2:{roomId:'ROOM-PTRI-GEMA'},s3:{roomId:'ROOM-PTR-C1'}},programs:[{id:'g',name:'GEMA',genderScope:'mixed'},{id:'u',name:'Umum',genderScope:'mixed'}],dailySchedules:[{naqibProgramKind:'subuh',programId:'g',participantScope:'boarding_gema',audience:'Asrama GEMA',genderScope:'mixed'},{naqibProgramKind:'subuh',programId:'u',participantScope:'boarding_general',audience:'Asrama Umum',genderScope:'mixed'}]};
  await boarding.namespace.renderNaqibPrograms(ctx);const filter=ctx.root.querySelector('#dailyAudience');filter.value='boarding_gema';filter.onchange({target:filter});assert.equal(ctx.root.querySelectorAll('[data-daily-scope]:not([hidden])').length,1);
- prepareDuty(ctx);await boarding.namespace.renderNaqibAttendance(ctx);ctx.root.querySelector('#programPick').value='g';ctx.root.querySelector('#loadProgramAtt').click();await settle();
- assert.deepEqual([...ctx.root.querySelectorAll('[data-student]')].map(x=>x.dataset.student),['s1']);
+ prepareDuty(ctx);await boarding.namespace.renderNaqibAttendance(ctx);ctx.root.querySelector('#programPick').value='u';ctx.root.querySelector('#loadProgramAtt').click();await settle();
+ assert.deepEqual([...ctx.root.querySelectorAll('[data-student]')].map(x=>x.dataset.student),['s3']);
  let patch;mock.setExport('patchNode',async(path,data)=>{patch={path,data}});
- ctx.root.querySelector('#saveProgramAtt').click();await settle();assert.deepEqual(Object.keys(patch.data),['s1']);assert.match(patch.path,/\/g$/);
+ ctx.root.querySelector('#saveProgramAtt').click();await settle();assert.deepEqual(Object.keys(patch.data),['s3']);assert.match(patch.path,/\/u$/);
+ patch=null;const liveSchedules=database.get('schedules/daily');const originalKind=liveSchedules.daily1.naqibProgramKind;liveSchedules.daily1.naqibProgramKind='arabic';ctx.root.querySelector('#saveProgramAtt').click();await settle();assert.equal(patch,null,'program removed from permitted list must not save from an open form');liveSchedules.daily1.naqibProgramKind=originalKind;
  patch=null;context.Date=class extends Date {static now(){return Date.parse('2026-10-06T12:00:00+08:00')}};ctx.root.querySelector('#saveProgramAtt').click();await settle();assert.equal(patch,null,'form opened earlier must not save after shift ends');
  mock.setExport('patchNode',repository.patchNode);
  const parent=await load(new URL('assets/js/modules/parent.js',base).href);if(parent.status!=='evaluated')await parent.evaluate();ctx.session.profile.studentIds=['s1'];await parent.namespace.renderParentPrograms(ctx);assert.match(ctx.root.textContent,/GEMA/);assert.doesNotMatch(ctx.root.textContent,/Umum/);
 });
 
-test('morning Arabic selector narrows attendance and parent sees only their child group',async()=>{
+test('morning Arabic is excluded from Naqib attendance while parent still sees child group',async()=>{
  const boarding=await load(new URL('assets/js/modules/boarding.js',base).href);if(boarding.status!=='evaluated')await boarding.evaluate();
  const ctx=ctxFor('naqib');ctx.master={...master,students:[...master.students,{id:'s3',name:'Other boy',gender:'L'}],roomAssignments:{s1:{roomId:'ROOM-PTR-C2'},s3:{roomId:'ROOM-PTR-C3'}},programs:[{id:'m',name:'Mufrodat',genderScope:'mixed'}],dailySchedules:[{programId:'m',participantScope:'boarding_general',startTime:'05:40',genderScope:'mixed'}],groups:[{id:'a',name:'Arab Cordova 2',programType:'arabic',gender:'L'},{id:'b',name:'Arab Cordova 3',programType:'arabic',gender:'L'}],groupAssignments:{a:{s1:{studentId:'s1'}},b:{s3:{studentId:'s3'}}}};
- prepareDuty(ctx);await boarding.namespace.renderNaqibAttendance(ctx);const program=ctx.root.querySelector('#programPick');program.value='m';program.onchange();const pick=ctx.root.querySelector('#arabicGroupPick');assert.equal(pick.hidden,false);pick.value='a';ctx.root.querySelector('#loadProgramAtt').click();await settle();assert.deepEqual([...ctx.root.querySelectorAll('[data-student]')].map(x=>x.dataset.student),['s1']);
+ prepareDuty(ctx);await boarding.namespace.renderNaqibAttendance(ctx);assert.equal(ctx.root.querySelector('option[value="m"]'),null);
+ await boarding.namespace.renderNaqibReport(ctx);assert.equal(ctx.root.querySelector('option[value="m"]'),null);
  const parent=await load(new URL('assets/js/modules/parent.js',base).href);if(parent.status!=='evaluated')await parent.evaluate();await parent.namespace.renderParentPrograms(ctx);assert.match(ctx.root.textContent,/Arab Cordova 2/);assert.doesNotMatch(ctx.root.textContent,/Arab Cordova 3|Other boy/);
 });
 

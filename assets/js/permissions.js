@@ -154,7 +154,7 @@ const healthAll=["health.journal","health.examination","health.permits","health.
 export const ROLE_FEATURES = {
   kesehatan:healthAll,
   guru_mapel: ["academic.teacher_attendance","academic.student_attendance","academic.grades","academic.schedule","academic.lesson_plans"],
-  mentor_tahsin_tahfiz: ["academic.quran"],
+  mentor_tahsin_tahfiz: ["academic.quran","academic.teacher_attendance","academic.student_attendance"],
   naqib: naqibAll,
   guru_wali: mentorAll,
   konselor: counselorAll,

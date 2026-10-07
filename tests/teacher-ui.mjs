@@ -86,10 +86,10 @@ test('Quran form takes activity from the home card without a program selector',a
  db={};await renderQuran(ctx);assert.equal($('#quranProgram'),null);assert.match(ctx.root.textContent,/Setoran Ziyadah/);assert.equal($('#murojaahField').hidden,true);await quranModule.namespace.renderTeacherQuran({...ctx,session:{...ctx.session,activeRole:'mentor_tahsin_tahfiz'}},'Murojaah');assert.equal($('#quranProgram'),null);assert.match(ctx.root.textContent,/Setoran Muroja’ah/);assert.equal($('#murojaahField').hidden,false);assert.ok($('[data-student="s1"] [data-lines]'));
 });
 
-test('Tahfiz home has two cards that open the matching Quran activity',async()=>{
+test('Tahfiz home has setoran and attendance cards that open the matching Quran activity',async()=>{
  const homeModule=await load(new URL('assets/js/tahfiz-home.js',base).href);await homeModule.evaluate();const visited=[];await homeModule.namespace.renderTahfizHome({...ctx,navigate:r=>visited.push(r)});
- assert.deepEqual([...ctx.root.querySelectorAll('[data-quran-route] b')].map(b=>b.textContent),['Ziyadah','Muroja’ah']);
- ctx.root.querySelectorAll('[data-quran-route]').forEach(b=>b.click());assert.deepEqual(visited,['quran-ziyadah','quran-murojaah']);
+ assert.deepEqual([...ctx.root.querySelectorAll('[data-quran-route] b')].map(b=>b.textContent),['Ziyadah','Muroja’ah','Presensi Guru','Presensi Santri']);
+ ctx.root.querySelectorAll('[data-quran-route]').forEach(b=>b.click());assert.deepEqual(visited,['quran-ziyadah','quran-murojaah','teacher-attendance','student-attendance']);
  await quranModule.namespace.renderTeacherQuran({...ctx,session:{...ctx.session,activeRole:'mentor_tahsin_tahfiz'}},'Murojaah');assert.equal($('#quranProgram'),null);assert.equal($('#murojaahField').hidden,false);
 });
 test('mixed-unit incident sends SD to its Wali Kelas and SMP to counselor atomically',async()=>{
@@ -115,4 +115,15 @@ test('Arabic morning groups use GPS, group-only two-stage attendance, materials 
 
 test('final attendance success dialog appears only after save and returns to dashboard',async()=>{
  db={};let destination='';const c={...ctx,navigate:route=>destination=route};await routes['student-attendance'](c);await click('[data-schedule="j1"]');$('[data-student="s2"] input[value="Belum Hadir"]').checked=true;await click('#saveLearning');assert.equal($('.attendance-success'),null);await click('#saveLearning');assert.equal($('.attendance-success'),null);$('[data-student="s2"] input[value="Terlambat"]').checked=true;await click('#saveLearning');const dialog=$('.attendance-success');assert.ok(dialog.hasAttribute('open'));assert.match(dialog.textContent,/Presensi berhasil disimpan/);assert.equal(read(prefix).stage,'FINAL');await click('[data-attendance-home]');assert.equal(destination,'dashboard');assert.equal($('.attendance-success'),null);
+});
+
+test('GEMA stays visible in formal class without attendance controls and saves delegated marker through finalization',async()=>{
+ db={};writes=[];
+ const c={...ctx,master:{...ctx.master,students:ctx.master.students.map(s=>({...s,unitId:'UNIT-SMP'})),roomAssignments:{s1:{roomId:'ROOM-PTR-GEMA',status:'active',academicYearId:ctx.yearId}}}};
+ await routes['student-attendance'](c);await click('[data-schedule]');
+ assert.match($('[data-student="s1"]').textContent,/Presensi oleh Pembina GEMA/);
+ assert.equal($('[data-student="s1"] input[type=radio]'),null);assert.ok($('[data-student="s2"] input[type=radio]'));
+ await click('#allPresent');await click('#saveLearning');
+ const path=writes.find(p=>p.includes('learning_sessions'));assert.ok(path);assert.equal(read(path).students.s1.status,null);assert.equal(read(path).students.s2.status,'Hadir');
+ await click('#saveLearning');assert.equal(read(path).stage,'FINAL');assert.equal(read(path).students.s1.attendanceManagedBy,'GEMA');
 });

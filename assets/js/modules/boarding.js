@@ -1,3 +1,4 @@
+import {isActiveGemaStudent} from '../teacher/gema-attendance.js';
 import {loadDuty,checkDutyWrite} from '../naqib-duty-access.js';
 import {dutyProgramDate} from '../naqib-duty.js';
 import {schoolCaseRoute,isSdStudent} from '../school-case-routing.js';
@@ -52,20 +53,20 @@ export async function renderNaqibAttendance(ctx) {
   let access;try{await ctx.refreshMaster?.();access=await loadDuty(ctx);}catch(error){ctx.root.innerHTML=pageHeader("Piket Naqib / Naqibah",error.message);return;}
   const gender=access.duty.gender,programs=(ctx.master.programs||[]).filter(p=>p.status!=="inactive"&&access.schedules.some(s=>s.programId===p.id));
   ctx.root.innerHTML=pageHeader("Presensi Program Asrama",`${access.duty.label} · ${access.duty.time} WITA. Program mengikuti jam mulai; penyimpanan ditutup saat shift selesai.`)+`
-    ${panel("Pilih Program",`<div class="filter-row wrap"><select id="programPick">${selectOptions(programs)}</select><select id="arabicGroupPick" hidden><option value="">Semua kelompok bahasa</option>${selectOptions((ctx.master.groups||[]).filter(g=>g.programType==="arabic"&&g.status!=="inactive"&&genderMatches(g.gender,gender)))}</select><input type="date" id="programDate" value="${access.schedules[0]?dutyProgramDate(access.schedules[0],access.duty):today()}"><button class="btn btn-primary" id="loadProgramAtt">Tampilkan</button></div>`)}<div id="programAttWork" style="margin-top:18px"></div>`;
-  const programPick=ctx.root.querySelector('#programPick'),arabicPick=ctx.root.querySelector('#arabicGroupPick');
-  const updateArabic=()=>{arabicPick.hidden=!(ctx.master.dailySchedules||[]).some(s=>s.programId===programPick.value&&s.startTime==='05:40');if(arabicPick.hidden)arabicPick.value='';};
-  programPick.onchange=()=>{updateArabic();const s=access.schedules.find(s=>s.programId===programPick.value);if(s)ctx.root.querySelector('#programDate').value=dutyProgramDate(s,access.duty);};programPick.onchange();
+    ${panel("Pilih Program",`<div class="filter-row wrap"><select id="programPick">${selectOptions(programs)}</select><input type="date" id="programDate" value="${access.schedules[0]?dutyProgramDate(access.schedules[0],access.duty):today()}"><button class="btn btn-primary" id="loadProgramAtt">Tampilkan</button></div>`)}<div id="programAttWork" style="margin-top:18px"></div>`;
+  const programPick=ctx.root.querySelector('#programPick');
+  programPick.onchange=()=>{const s=access.schedules.find(s=>s.programId===programPick.value);if(s)ctx.root.querySelector('#programDate').value=dutyProgramDate(s,access.duty);};programPick.onchange();
+  if(!programs.length)ctx.root.querySelector('#programAttWork').innerHTML='<div class="empty-state">Belum ada program presensi yang sudah dimulai dalam shift Anda. Program yang tersedia: Tahajjud, salat wajib, piket kebersihan, dan apel transisi pondok–formal sesuai jadwal yang telah ditetapkan.</div>';
   document.getElementById("loadProgramAtt")?.addEventListener("click",async()=>{
     const programId=document.getElementById("programPick").value,date=document.getElementById("programDate").value;
     if(!programId||!date) return toast("Pilih program dan tanggal.","warning");
     try{await checkDutyWrite(ctx,programId,date);}catch(e){return toast(e.message,"error");}
-    const students=programStudents(programId,ctx.master).filter(s=>genderMatches(gender,s.gender)&&(!arabicPick.value||arabicPick.hidden||ctx.master.groupAssignments?.[arabicPick.value]?.[s.id]));
+    const students=programStudents(programId,ctx.master).filter(s=>genderMatches(gender,s.gender)&&!isActiveGemaStudent(s,ctx.master,ctx.yearId));
     const saved=await getNode(`boarding/program_attendance/${ctx.yearId}/${date}/${programId}`)||{};
     const ws=document.getElementById("programAttWork");
     ws.innerHTML=pageHeader("Daftar Santri",`${students.length} santri`,`<button class="btn btn-primary" id="saveProgramAtt">Simpan Presensi</button>`)+table(["Santri","Status","Catatan"],students.map(s=>`<tr data-student="${s.id}"><td><strong>${escapeHtml(s.name)}</strong></td><td><select class="pstatus"><option ${saved[s.id]?.status==="Hadir"?"selected":""}>Hadir</option><option ${saved[s.id]?.status==="Terlambat"?"selected":""}>Terlambat</option><option ${saved[s.id]?.status==="Sakit"?"selected":""}>Sakit</option><option ${saved[s.id]?.status==="Izin"?"selected":""}>Izin</option><option ${saved[s.id]?.status==="Alfa"?"selected":""}>Alfa</option></select></td><td><input class="pnote table-input" value="${escapeHtml(saved[s.id]?.note||"")}"></td></tr>`).join(""));
     document.getElementById("saveProgramAtt")?.addEventListener("click",async()=>{
-      try{const duty=await checkDutyWrite(ctx,programId,date);const payload={};ws.querySelectorAll("tr[data-student]").forEach(tr=>payload[tr.dataset.student]={...duty,date,programId,studentId:tr.dataset.student,status:tr.querySelector(".pstatus").value,note:tr.querySelector(".pnote").value,recordedBy:ctx.session.user.uid,updatedAt:Date.now()});
+      try{const duty=await checkDutyWrite(ctx,programId,date);await ctx.refreshMaster?.();for(const tr of ws.querySelectorAll("tr[data-student]")){if(isActiveGemaStudent({id:tr.dataset.student},ctx.master,ctx.yearId))throw Error("Peserta GEMA ditangani pembina. Muat ulang daftar santri.");}const payload={};ws.querySelectorAll("tr[data-student]").forEach(tr=>payload[tr.dataset.student]={...duty,date,programId,studentId:tr.dataset.student,status:tr.querySelector(".pstatus").value,note:tr.querySelector(".pnote").value,recordedBy:ctx.session.user.uid,updatedAt:Date.now()});
       await patchNode(`boarding/program_attendance/${ctx.yearId}/${date}/${programId}`,payload);toast("Presensi program tersimpan.");}catch(e){toast(e.message,"error");}
     });
   });

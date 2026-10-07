@@ -12493,7 +12493,8 @@
       "rosterStatus": "needs_review",
       "sourceMemberCount": 6,
       "mentorStaffId": "AMD-SDM-0030",
-      "sourceMentorName": "Usth. Hikmah"
+      "sourceMentorName": "Usth. Hikmah",
+      "gemaProgram": true
     },
     "GRP-2026-quran-P-7": {
       "name": "Gema Mutqin",
@@ -12511,7 +12512,8 @@
       "rosterStatus": "needs_review",
       "sourceMemberCount": 6,
       "mentorStaffId": "AMD-SDM-0024",
-      "sourceMentorName": "Ust. Fathul Uyun"
+      "sourceMentorName": "Ust. Fathul Uyun",
+      "gemaProgram": true
     },
     "GRP-2026-quran-P-8": {
       "name": "Kelompok Umum I — Usth. Alfi NH & Rokyal  A",
@@ -12727,7 +12729,8 @@
       "rosterStatus": "needs_review",
       "sourceMemberCount": 10,
       "mentorStaffId": "AMD-SDM-0055",
-      "sourceMentorName": "Muhasim"
+      "sourceMentorName": "Muhasim",
+      "gemaProgram": true
     },
     "GRP-2026-quran-L-ziyadah": {
       "name": "GEMA Ziyadah — Ahmad Budiawan Alkhair",
@@ -12741,7 +12744,8 @@
       "source": "WhatsApp Image 2026-10-02 at 14.25.02.jpeg",
       "importId": "boarding-rosters-2026",
       "rosterStatus": "needs_review",
-      "sourceMemberCount": 12
+      "sourceMemberCount": 12,
+      "gemaProgram": true
     },
     "GRP-2026-arabic-L-c2": {
       "name": "Bahasa Arab Pagi — Cordova 2",
@@ -13793,6 +13797,10 @@
       "unitId": "UNIT-PONDOK",
       "status": "active",
       "source": "Kelompok Bahasa Arab dan jadwal 24 jam 2026; instruksi pengguna 6 Oktober 2026"
+    },
+    "MPL-PONDOK-QURAN": {
+      "name": "Tahsin / Tahfiz",
+      "status": "active"
     }
   },
   "programs": {
@@ -15164,6 +15172,24 @@
       "category": "Program 24 Jam",
       "sourceCategory": "program_24_jam",
       "defaultScope": "boarding_gema"
+    },
+    "PRG-PAGI-TAHFIZ": {
+      "name": "Tahsin / Tahfiz Pagi",
+      "status": "active",
+      "genderScope": "mixed",
+      "source": "Konfirmasi pengguna 8 Oktober 2026"
+    },
+    "PRG-PAGI-APEL": {
+      "name": "Apel Pagi",
+      "status": "active",
+      "genderScope": "mixed",
+      "source": "Konfirmasi pengguna 8 Oktober 2026"
+    },
+    "PRG-PAGI-SENAM": {
+      "name": "Senam",
+      "status": "active",
+      "genderScope": "mixed",
+      "source": "Konfirmasi pengguna 8 Oktober 2026"
     }
   },
   "assignments": {
@@ -47864,7 +47890,7 @@
         "notes": "Menyesuaikan dengan tugas khidmat masing-masing."
       },
       "DS-2026-UMUM-06": {
-        "status": "active",
+        "status": "inactive",
         "source": "kegiatan santriwan santriwati umum 2026.docx",
         "sourceRow": 8,
         "importId": "daily-2026-docx",
@@ -47878,7 +47904,8 @@
         "order": 6,
         "participantScope": "boarding_general",
         "audience": "Asrama Umum",
-        "notes": "Semua santri sudah menggunakan seragam sekolah, membawa al-quran dan buku mata pelajaran di hari itu"
+        "notes": "Semua santri sudah menggunakan seragam sekolah, membawa al-quran dan buku mata pelajaran di hari itu",
+        "supersededBy": "morning-halaqah-20261008"
       },
       "DS-2026-UMUM-07": {
         "status": "active",
@@ -48031,7 +48058,8 @@
         "order": 1,
         "participantScope": "boarding_gema",
         "audience": "Asrama GEMA",
-        "notes": "Bagi yang tidak bangun/belum mau bangun setelah dibangunkan dengan kalimat atau gerakan maka disemprot/diguyur air. Setelah itu semua kamar dikunci hingga selesai Halqah subuh bagi gema dan selesai mufrodat bagi anak umum."
+        "notes": "Bagi yang tidak bangun/belum mau bangun setelah dibangunkan dengan kalimat atau gerakan maka disemprot/diguyur air. Setelah itu semua kamar dikunci hingga selesai Halqah subuh bagi gema dan selesai mufrodat bagi anak umum.",
+        "attendanceRole": "pembina_gema"
       },
       "DS-2026-GEMA-02": {
         "status": "active",
@@ -48048,7 +48076,8 @@
         "order": 2,
         "participantScope": "boarding_gema",
         "audience": "Asrama GEMA",
-        "notes": "Menggunakan pakaian sholat seperti, koko, gamis, kemeja (untuk putra) dan mukenah putih (untuk putri)"
+        "notes": "Menggunakan pakaian sholat seperti, koko, gamis, kemeja (untuk putra) dan mukenah putih (untuk putri)",
+        "attendanceRole": "pembina_gema"
       },
       "DS-2026-GEMA-03": {
         "status": "active",
@@ -48065,7 +48094,8 @@
         "order": 3,
         "participantScope": "boarding_gema",
         "audience": "Asrama GEMA",
-        "notes": "Saat dzikir dan tilawah, serta proses mengambil atau meletakkan mushaf, tidak boleh ada yang ngobrol satu sama lain, santri membawa maksurat saat pembacaan ma’surot"
+        "notes": "Saat dzikir dan tilawah, serta proses mengambil atau meletakkan mushaf, tidak boleh ada yang ngobrol satu sama lain, santri membawa maksurat saat pembacaan ma’surot",
+        "attendanceRole": "pembina_gema"
       },
       "DS-2026-GEMA-04": {
         "status": "active",
@@ -48082,7 +48112,8 @@
         "order": 4,
         "participantScope": "boarding_gema",
         "audience": "Asrama GEMA",
-        "notes": "Setelah musyafahah lanjut program mufrodat dengan bagian bahasa, semua santri membawa buku dan polpen"
+        "notes": "Setelah musyafahah lanjut program mufrodat dengan bagian bahasa, semua santri membawa buku dan polpen",
+        "attendanceRole": "guru_mapel"
       },
       "DS-2026-GEMA-05": {
         "status": "active",
@@ -48099,7 +48130,8 @@
         "order": 5,
         "participantScope": "boarding_gema",
         "audience": "Asrama GEMA",
-        "notes": "DI AWALI DENGAN DOA BERSAMA PEMBUKA HALAQOH QUR’AN"
+        "notes": "DI AWALI DENGAN DOA BERSAMA PEMBUKA HALAQOH QUR’AN",
+        "attendanceRole": "mentor_tahsin_tahfiz"
       },
       "DS-2026-GEMA-06": {
         "status": "active",
@@ -48110,13 +48142,14 @@
         "programId": "PRG-2026-GEMA-06",
         "academicYearId": "TA-2026-2027-GANJIL",
         "day": "Setiap Hari",
-        "startTime": "07:00",
+        "startTime": "07:50",
         "endTime": "09:00",
         "endsNextDay": false,
         "order": 6,
         "participantScope": "boarding_gema",
         "audience": "Asrama GEMA",
-        "notes": "IMAM SHOLAT DUHA SESUAI JADWAL DAN BERSIH-BERSIH SESUAI TEMPAT KHIDMAH"
+        "notes": "IMAM SHOLAT DUHA SESUAI JADWAL DAN BERSIH-BERSIH SESUAI TEMPAT KHIDMAH",
+        "attendanceRole": "pembina_gema"
       },
       "DS-2026-GEMA-07": {
         "status": "active",
@@ -48133,7 +48166,8 @@
         "order": 7,
         "participantScope": "boarding_gema",
         "audience": "Asrama GEMA",
-        "notes": "Diawali dengan doa bersama PEMBUKA HALAQOH"
+        "notes": "Diawali dengan doa bersama PEMBUKA HALAQOH",
+        "attendanceRole": "mentor_tahsin_tahfiz"
       },
       "DS-2026-GEMA-08": {
         "status": "active",
@@ -48150,7 +48184,8 @@
         "order": 8,
         "participantScope": "boarding_gema",
         "audience": "Asrama GEMA",
-        "notes": "Santri gema istirahat di kamar, boleh belanja"
+        "notes": "Santri gema istirahat di kamar, boleh belanja",
+        "attendanceRole": "pembina_gema"
       },
       "DS-2026-GEMA-09": {
         "status": "active",
@@ -48167,7 +48202,8 @@
         "order": 9,
         "participantScope": "boarding_gema",
         "audience": "Asrama GEMA",
-        "notes": ""
+        "notes": "",
+        "attendanceRole": "pembina_gema"
       },
       "DS-2026-GEMA-10": {
         "status": "active",
@@ -48184,7 +48220,8 @@
         "order": 10,
         "participantScope": "boarding_gema",
         "audience": "Asrama GEMA",
-        "notes": ""
+        "notes": "",
+        "attendanceRole": "mentor_tahsin_tahfiz"
       },
       "DS-2026-GEMA-11": {
         "status": "active",
@@ -48201,7 +48238,8 @@
         "order": 11,
         "participantScope": "boarding_gema",
         "audience": "Asrama GEMA",
-        "notes": "Setelah baca maksurot santri langsung murojaah zaujiyyah durasi waktu sama-sama 10 menit, santri boleh keluar dari masjid setelah melaporkan capaian murojaah  zaujiyyahnya ke pembina."
+        "notes": "Setelah baca maksurot santri langsung murojaah zaujiyyah durasi waktu sama-sama 10 menit, santri boleh keluar dari masjid setelah melaporkan capaian murojaah  zaujiyyahnya ke pembina.",
+        "attendanceRole": "pembina_gema"
       },
       "DS-2026-GEMA-12": {
         "status": "active",
@@ -48218,7 +48256,8 @@
         "order": 12,
         "participantScope": "boarding_gema",
         "audience": "Asrama GEMA",
-        "notes": "Santri bisa ikut olahraga, belanja"
+        "notes": "Santri bisa ikut olahraga, belanja",
+        "attendanceRole": "pembina_gema"
       },
       "DS-2026-GEMA-13": {
         "status": "active",
@@ -48235,7 +48274,8 @@
         "order": 13,
         "participantScope": "boarding_gema",
         "audience": "Asrama GEMA",
-        "notes": "Santri berada di masjid paling lambat 5 menit sebelum azan magrib di kumandangkan, menggunakan pakain yang rapi sesuai pakain yg di tetapkan oleh pondok"
+        "notes": "Santri berada di masjid paling lambat 5 menit sebelum azan magrib di kumandangkan, menggunakan pakain yang rapi sesuai pakain yg di tetapkan oleh pondok",
+        "attendanceRole": "pembina_gema"
       },
       "DS-2026-GEMA-14": {
         "status": "active",
@@ -48252,7 +48292,8 @@
         "order": 14,
         "participantScope": "boarding_gema",
         "audience": "Asrama GEMA",
-        "notes": ""
+        "notes": "",
+        "attendanceRole": "pembina_gema"
       },
       "DS-2026-GEMA-15": {
         "status": "active",
@@ -48269,7 +48310,8 @@
         "order": 15,
         "participantScope": "boarding_gema",
         "audience": "Asrama GEMA",
-        "notes": "Santri menyetorkan hafalan mufrodatnya ke osma atau bagian bahasa"
+        "notes": "Santri menyetorkan hafalan mufrodatnya ke osma atau bagian bahasa",
+        "attendanceRole": "guru_mapel"
       },
       "DS-2026-GEMA-16": {
         "status": "active",
@@ -48286,7 +48328,8 @@
         "order": 16,
         "participantScope": "boarding_gema",
         "audience": "Asrama GEMA",
-        "notes": "Santri yang tidak ada pelanggaran boleh break"
+        "notes": "Santri yang tidak ada pelanggaran boleh break",
+        "attendanceRole": "pembina_gema"
       },
       "DS-2026-GEMA-17": {
         "status": "active",
@@ -48303,7 +48346,101 @@
         "order": 17,
         "participantScope": "boarding_gema",
         "audience": "Asrama GEMA",
-        "notes": "Semua santri tidur di kamar masing-masing"
+        "notes": "Semua santri tidur di kamar masing-masing",
+        "attendanceRole": "pembina_gema"
+      },
+      "DS-PAGI-TAHFIZ-MINGGU": {
+        "programId": "PRG-PAGI-TAHFIZ",
+        "academicYearId": "TA-2026-2027-GANJIL",
+        "status": "active",
+        "day": "Minggu",
+        "startTime": "07:00",
+        "endTime": "07:50",
+        "genderScope": "mixed",
+        "participantScope": "all_boarding",
+        "audience": "Seluruh halaqah putra/putri termasuk GEMA",
+        "quranMorning": true,
+        "source": "Konfirmasi pengguna 8 Oktober 2026"
+      },
+      "DS-PAGI-TAHFIZ-SELASA": {
+        "programId": "PRG-PAGI-TAHFIZ",
+        "academicYearId": "TA-2026-2027-GANJIL",
+        "status": "active",
+        "day": "Selasa",
+        "startTime": "07:00",
+        "endTime": "07:50",
+        "genderScope": "mixed",
+        "participantScope": "all_boarding",
+        "audience": "Seluruh halaqah putra/putri termasuk GEMA",
+        "quranMorning": true,
+        "source": "Konfirmasi pengguna 8 Oktober 2026"
+      },
+      "DS-PAGI-TAHFIZ-RABU": {
+        "programId": "PRG-PAGI-TAHFIZ",
+        "academicYearId": "TA-2026-2027-GANJIL",
+        "status": "active",
+        "day": "Rabu",
+        "startTime": "07:00",
+        "endTime": "07:50",
+        "genderScope": "mixed",
+        "participantScope": "all_boarding",
+        "audience": "Seluruh halaqah putra/putri termasuk GEMA",
+        "quranMorning": true,
+        "source": "Konfirmasi pengguna 8 Oktober 2026"
+      },
+      "DS-PAGI-TAHFIZ-KAMIS": {
+        "programId": "PRG-PAGI-TAHFIZ",
+        "academicYearId": "TA-2026-2027-GANJIL",
+        "status": "active",
+        "day": "Kamis",
+        "startTime": "07:00",
+        "endTime": "07:50",
+        "genderScope": "mixed",
+        "participantScope": "all_boarding",
+        "audience": "Seluruh halaqah putra/putri termasuk GEMA",
+        "quranMorning": true,
+        "source": "Konfirmasi pengguna 8 Oktober 2026"
+      },
+      "DS-PAGI-TAHFIZ-JUMAT": {
+        "programId": "PRG-PAGI-TAHFIZ",
+        "academicYearId": "TA-2026-2027-GANJIL",
+        "status": "active",
+        "day": "Jumat",
+        "startTime": "07:00",
+        "endTime": "07:50",
+        "genderScope": "mixed",
+        "participantScope": "all_boarding",
+        "audience": "Seluruh halaqah putra/putri termasuk GEMA",
+        "quranMorning": true,
+        "source": "Konfirmasi pengguna 8 Oktober 2026"
+      },
+      "DS-PAGI-APEL-SENIN": {
+        "programId": "PRG-PAGI-APEL",
+        "academicYearId": "TA-2026-2027-GANJIL",
+        "status": "active",
+        "day": "Senin",
+        "startTime": "07:00",
+        "endTime": "07:50",
+        "genderScope": "mixed",
+        "participantScope": "all_boarding",
+        "audience": "Seluruh halaqah putra/putri termasuk GEMA",
+        "quranMorning": false,
+        "source": "Konfirmasi pengguna 8 Oktober 2026",
+        "naqibProgramKind": "apel_pagi"
+      },
+      "DS-PAGI-SENAM-SABTU": {
+        "programId": "PRG-PAGI-SENAM",
+        "academicYearId": "TA-2026-2027-GANJIL",
+        "status": "active",
+        "day": "Sabtu",
+        "startTime": "07:00",
+        "endTime": "07:50",
+        "genderScope": "mixed",
+        "participantScope": "all_boarding",
+        "audience": "Seluruh halaqah putra/putri termasuk GEMA",
+        "quranMorning": false,
+        "source": "Konfirmasi pengguna 8 Oktober 2026",
+        "naqibProgramKind": "senam"
       }
     },
     "recurring": {
@@ -48361,7 +48498,8 @@
         "sourcePeriod": "Oktober 2025",
         "confirmedCurrentPeriod": "Konfirmasi pengguna: berlaku 2026/2027",
         "importId": "boarding-rosters-2026",
-        "order": 4
+        "order": 4,
+        "attendanceRole": "guru_mapel"
       },
       "REC-2026-05": {
         "name": "Pramuka",
@@ -48445,7 +48583,8 @@
         "sourcePeriod": "Oktober 2025",
         "confirmedCurrentPeriod": "Konfirmasi pengguna: berlaku 2026/2027",
         "importId": "boarding-rosters-2026",
-        "order": 10
+        "order": 10,
+        "attendanceRole": "guru_mapel"
       },
       "REC-2026-11": {
         "name": "Belajar Nahwu bersama Kyai Anwar Syafi’i, Lc",
@@ -48459,7 +48598,8 @@
         "sourcePeriod": "Oktober 2025",
         "confirmedCurrentPeriod": "Konfirmasi pengguna: berlaku 2026/2027",
         "importId": "boarding-rosters-2026",
-        "order": 11
+        "order": 11,
+        "attendanceRole": "guru_mapel"
       }
     }
   },

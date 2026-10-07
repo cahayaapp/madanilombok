@@ -1,4 +1,4 @@
-import {groupTeacherIds} from '../group-teachers.js';
+import {teachingGroups,groupTeacherIds} from '../group-teachers.js';
 const days=['Minggu','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'];
 export function groupLessonSchedules(ctx){
  if(ctx.session.activeRole!=='guru_mapel'||!ctx.session.profile.staffId)return [];
@@ -11,3 +11,8 @@ export function groupLessonSchedules(ctx){
  });
 }
 export function teachingTargetFields(s){return s.groupId?{groupId:s.groupId,teachingTarget:'group',classId:null,classIds:[]}:{classId:s.classId,classIds:s.classIds||[s.classId]};}
+
+export function quranLessonSchedules(ctx){
+ if(ctx.session.activeRole!=='mentor_tahsin_tahfiz')return [];
+ return teachingGroups(ctx.master,ctx.session.profile,'quran').flatMap(g=>(ctx.master.dailySchedules||[]).filter(s=>(s.quranMorning===true||g.gemaProgram===true&&s.participantScope==='boarding_gema'&&s.attendanceRole==='mentor_tahsin_tahfiz')&&s.status!=='inactive'&&s.academicYearId===ctx.yearId).flatMap(s=>(s.day==='Setiap Hari'?days:[s.day==='Ahad'?'Minggu':s.day]).map(day=>({id:`quran-${g.id}-${s.id}-${days.indexOf(day)}`,groupId:g.id,classId:null,classIds:[],subjectId:'MPL-PONDOK-QURAN',day,startTime:s.startTime,endTime:s.endTime,academicYearId:ctx.yearId,teacherStaffId:ctx.session.profile.staffId,assignmentConfirmed:true,sourceDailyScheduleId:s.id,activityName:'Tahsin / Tahfiz',teachingTarget:'group'}))));
+}

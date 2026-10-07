@@ -29,9 +29,11 @@ test('roster update preserves unrelated roles and retires duplicate Naqib-only a
  const vm=await import('node:vm');const ctx=vm.createContext({});
  const repo=new vm.SyntheticModule(['getNode','bulkPatchRoot'],function(){this.setExport('getNode',()=>{});this.setExport('bulkPatchRoot',()=>{});},{context:ctx});
  const model=new vm.SyntheticModule(['minutes'],function(){this.setExport('minutes',v=>{const [h,m]=v.split(':').map(Number);return h*60+m;});},{context:ctx});
- const mod=new vm.SourceTextModule(fs.readFileSync(new URL('../assets/js/naqib-duty-update.js',import.meta.url),'utf8'),{context:ctx});await mod.link(s=>s.includes('repository')?repo:model);await mod.evaluate();
+ const policy=new vm.SourceTextModule(fs.readFileSync(new URL('../assets/js/naqib-program-policy.js',import.meta.url),'utf8'),{context:ctx});
+ const mod=new vm.SourceTextModule(fs.readFileSync(new URL('../assets/js/naqib-duty-update.js',import.meta.url),'utf8'),{context:ctx});await mod.link(s=>s.includes('repository')?repo:s.includes('naqib-program-policy')?policy:model);await mod.evaluate();
  const pkg=JSON.parse(fs.readFileSync(new URL('../seed/imports/naqib-duty.json',import.meta.url)));
  const staff=Object.fromEntries(Object.entries(pkg.staff).filter(([id])=>id!=='AMD-SDM-0088').map(([id,a])=>[id,{name:a.name,appRoles:['guru_mapel']}]));staff.old={appRoles:['naqib','guru_mapel']};
- const patch=mod.namespace.dutyUpdatePatch(pkg,staff,{old:{staffId:'old',role:'naqib',roles:['naqib','guru_mapel']},pilot:{staffId:'old',role:'naqib'}},{});
+ const patch=mod.namespace.dutyUpdatePatch(pkg,staff,{old:{staffId:'old',role:'naqib',roles:['naqib','guru_mapel']},pilot:{staffId:'old',role:'naqib'}},{allowed:{programId:'prayer',startTime:'12:00',day:'Setiap Hari',academicYearId:'y'},excluded:{programId:'arabic',startTime:'05:40',day:'Setiap Hari',academicYearId:'y'}},{prayer:{name:'Sholat zuhur'},arabic:{name:'Bahasa Arab'}});
+ assert.deepEqual(Object.keys(patch['settings/naqibDuty'].programs),['allowed']);
  assert.equal(patch['users/old/role'],'guru_mapel');assert.equal(patch['users/pilot/active'],false);assert.equal(patch['users/old/roleFlags/naqib'],false);assert.equal(patch['staff/AMD-SDM-0088'].name,'Fitriani');assert.ok(!Object.keys(patch).some(k=>k.startsWith('finance/')));
 });

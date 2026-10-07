@@ -1,4 +1,5 @@
-import {groupLessonSchedules,teachingTargetFields} from './group-schedules.js';
+import {GEMA_ATTENDANCE_NOTE} from './gema-attendance.js';
+import {quranLessonSchedules,groupLessonSchedules,teachingTargetFields} from './group-schedules.js';
 // Rules adapted from fajrulislam Guru v204/v197/v53; all references are Madani IDs.
 export const TIMEZONE='Asia/Makassar';
 export const DAYS=['Minggu','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'];
@@ -10,6 +11,7 @@ export function localClock(now=new Date()) {
 export const minutes=v=>{const m=String(v||'').match(/^(\d{1,2})[:.](\d{2})$/);return m&&+m[1]<24&&+m[2]<60?+m[1]*60+(+m[2]):NaN;};
 export const staffId=ctx=>ctx.session.profile.staffId||ctx.session.user.uid;
 export function teacherSchedules(ctx) {
+  if(ctx.session.activeRole==='mentor_tahsin_tahfiz')return quranLessonSchedules(ctx);
   const p=ctx.session.profile,master=ctx.master;
   const classes=(master.classes||[]).filter(c=>(!p.classIds?.length||p.classIds.includes(c.id))&&(!p.unitIds?.length||p.unitIds.includes(c.unitId)));
   const allowed=new Set(classes.map(c=>c.id));
@@ -70,7 +72,9 @@ export function learningTransition(previous,input,{roster,schedule,date,actor,su
   if(!isQuran(subjectName)&&targets.length&&!input.materialIds?.length)throw Error('Target materi tersedia. Pilih materi yang diajarkan.');
   if((input.materialIds||[]).some(id=>!targets.some(t=>t.id===id)))throw Error('Materi bukan milik pelajaran ini.');
   const students={};
-  for(const s of roster){const row=rows[s.id];if(!row)throw Error('Lengkapi kehadiran seluruh santri.');const statusAwal=old[s.id]?.statusAwal||row.status;
+  for(const s of roster){
+    if(s.attendanceManagedBy==='GEMA'){students[s.id]={studentId:s.id,attendanceManagedBy:'GEMA',attendanceNote:GEMA_ATTENDANCE_NOTE,status:null,statusAwal:null,score:null,points:0};continue;}
+    const row=rows[s.id];if(!row)throw Error('Lengkapi kehadiran seluruh santri.');const statusAwal=old[s.id]?.statusAwal||row.status;
     let status=locked?old[s.id]?.status:final&&statusAwal!=='Belum Hadir'?statusAwal:row.status;
     const allowed=final?['Hadir','Terlambat','Alfa','Izin','Sakit']:['Hadir','Belum Hadir','Izin','Sakit'];
     if(!allowed.includes(status)||(final&&statusAwal==='Belum Hadir'&&status==='Hadir'))throw Error('Tentukan status akhir santri yang belum hadir: Terlambat, Alfa, Izin, atau Sakit.');
