@@ -1,0 +1,72 @@
+{
+  "source": "Permintaan pengguna dan tabel permasalahan 8 Oktober 2026",
+  "wisnu": {
+    "name": "Wisnu Nusantara",
+    "masterStatus": "created_live_via_admin",
+    "accountStatus": "pending",
+    "replacementArabicGroup": "GRP-2026-arabic-L-gema",
+    "previousArabicTeacher": "AMD-SDM-0055",
+    "replacementCounselorLevel": "pemula",
+    "previousCounselorIdentity": "AMD-SDM-0023 Fahri Aldian Effendi",
+    "quranGroup": "GRP-2026-quran-L-yusuf"
+  },
+  "pendingAccounts": [
+    {
+      "name": "Wanda Saputri",
+      "task": "Naqib",
+      "pending": "gender/shift"
+    },
+    {
+      "name": "Fitrah",
+      "task": "Naqib",
+      "pending": "gender/shift"
+    },
+    {
+      "name": "Riska Aulia Balqis",
+      "task": "Santri Preneur",
+      "pending": "role/access definition"
+    },
+    {
+      "name": "Nanda Rahmawati",
+      "task": "Santri Preneur",
+      "pending": "role/access definition"
+    }
+  ],
+  "otherRequests": [
+    "Periksa tugas Novan Maulana",
+    "Konfirmasi Muhammad Yusuf dengan master YUSUF dan shift Naqib",
+    "Nuril Azmi: Konselor dan Pembina Usroh perlu scope",
+    "Lukmanul Hakim: periksa identitas dan penempatan Cordova 2",
+    "Muammar: pastikan akun guru SMK vs pembina halaqah sebelum menggabungkan tugas"
+  ],
+  "status": "partial_master_only_no_account_or_assignment_changes",
+  "confirmedIdentities": {
+    "Muhammad Yusuf": "AMD-SDM-0084 YUSUF; sama dengan M. Yusuf",
+    "Muammar": {
+      "canonicalStaffId": "AMD-SDM-0051",
+      "duplicateStaffId": "AMD-SDM-0052",
+      "confirmedSamePerson": true
+    },
+    "Nuril Azmi": {
+      "staffId": "AMD-SDM-0062",
+      "counselorLevel": "madya"
+    }
+  },
+  "lukmanulReview": {
+    "result": "Tidak ditemukan sebagai nama santri pada master lokal dan pencarian admin produksi; Luqman tidak ditemukan. Lukmanul muncul sebagai fatherName/guardianName, bukan siswa.",
+    "pending": "Butuh kelas/unit atau NISN siswa untuk penempatan Cordova 2."
+  },
+  "nightArabic": {
+    "confirmedByUser": "Bahasa Arab malam sama dengan pagi, termasuk Fahri Effendi",
+    "groupsParticipantsTeachers": "same_as_morning",
+    "scheduleIds": [
+      "DS-2026-UMUM-12",
+      "DS-2026-GEMA-15"
+    ],
+    "day": "Setiap Hari",
+    "startTime": "21:00",
+    "endTime": "21:30",
+    "timeSource": "Jadwal program bahasa malam yang sudah ada",
+    "status": "confirmed_not_applied"
+  }
+}

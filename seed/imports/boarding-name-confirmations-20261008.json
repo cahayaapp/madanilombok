@@ -1,0 +1,34 @@
+{
+  "source": "Konfirmasi langsung pengguna 8 Oktober 2026",
+  "identities": [
+    {
+      "sourceName": "QOYYIM",
+      "confirmedName": "ZHAFRAN DHIYA'UL QOYYIM",
+      "studentId": "AMD-SD-0132",
+      "appliedGroupId": "GRP-2026-quran-L-zakaria"
+    },
+    {
+      "sourceName": "AL",
+      "confirmedName": "YAHYA ALMAWARIS",
+      "masterName": "YAHYA AL MAWARIS",
+      "studentId": "AMD-SD-0102",
+      "appliedGroupId": "GRP-2026-quran-L-zakaria"
+    },
+    {
+      "sourceName": "BAIN",
+      "confirmedName": "BAIN AZZIQRA",
+      "masterName": "BAIN AZIQRA",
+      "studentId": "AMD-SMK-0018",
+      "confirmedProgram": "ziyadah",
+      "excludedPrograms": [
+        "mutqin"
+      ],
+      "appliedGroupId": "GRP-2026-quran-L-ziyadah"
+    }
+  ],
+  "pending": [],
+  "status": "group_memberships_applied_live",
+  "appliedVia": "Safari Administrator > Anggota Kelompok, 8 Oktober 2026",
+  "academicYearId": "TA-2026-2027-GANJIL",
+  "verification": "Keanggotaan dimuat ulang: Qoyyim/Yahya tercentang pada Zakaria; Bain tercentang Ziyadah dan tidak tercentang Mutqin. Nama master tidak diubah."
+}
