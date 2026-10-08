@@ -82,6 +82,7 @@ test('legacy role pages still render through the same registered handlers',async
   const mod=await load(new URL(`assets/js/modules/${name}.js`,base).href);await mod.evaluate();Object.assign(handlers,mod.namespace);
  }
  const mentor=await load(new URL('assets/js/mentoring.js',base).href);await mentor.evaluate();Object.assign(handlers,mentor.namespace);
+ const leave=await load(new URL('assets/js/teacher/leave.js',base).href);await leave.evaluate();Object.assign(handlers,leave.namespace);
  const registry=source('assets/js/app.js').split('export const routes = {')[1].split('\n};')[0];
  const mapped=[...registry.matchAll(/^\s*(?:"([\w-]+)"|(\w+)):\s*(render\w+)/gm)].map(m=>[m[1]||m[2],handlers[m[3]]]);
  let count=0;

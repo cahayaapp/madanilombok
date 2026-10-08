@@ -27,6 +27,7 @@ const ALL_MENU_GROUPS = [
   {
     label: "Akademik",
     items: [
+      { id: "teacher-leave", label: "Izin Guru", icon: "▤", feature: "academic.teacher_leave" },
       { id: "teacher-attendance", label: "Presensi Guru", icon: "✓", feature: "academic.teacher_attendance" },
       { id: "student-attendance", label: "Presensi Santri", icon: "◎", feature: "academic.student_attendance" },
       { id: "quran", label: "Tahsin Tahfiz", icon: "◫", feature: "academic.quran" },
@@ -129,7 +130,7 @@ const ALL_MENU_GROUPS = [
 export const MENU_GROUPS=ALL_MENU_GROUPS.map(g=>({...g,items:g.items.filter(i=>!i.id.includes('kpi'))})).filter(g=>g.items.length);
 
 const academicAll = [
-  "academic.teacher_attendance","academic.student_attendance","academic.quran","academic.grades","academic.schedule","academic.lesson_plans"
+  "academic.teacher_leave","academic.teacher_attendance","academic.student_attendance","academic.quran","academic.grades","academic.schedule","academic.lesson_plans"
 ];
 const naqibAll = [
   "boarding.naqib.programs","boarding.naqib.attendance","boarding.naqib.reports","boarding.naqib.initiatives",
@@ -153,7 +154,7 @@ const financeAll = [
 const healthAll=["health.journal","health.examination","health.permits","health.stock"];
 export const ROLE_FEATURES = {
   kesehatan:healthAll,
-  guru_mapel: ["academic.teacher_attendance","academic.student_attendance","academic.grades","academic.schedule","academic.lesson_plans"],
+  guru_mapel: ["academic.teacher_leave","academic.teacher_attendance","academic.student_attendance","academic.grades","academic.schedule","academic.lesson_plans"],
   mentor_tahsin_tahfiz: ["academic.quran","academic.teacher_attendance","academic.student_attendance"],
   naqib: naqibAll,
   guru_wali: mentorAll,
@@ -163,8 +164,8 @@ export const ROLE_FEATURES = {
   head_formal_school: ["academic.schedule"],
   head_boys_dorm: [],
   head_girls_dorm: [],
-  deputy_director: [...financeAll,"health.review"],
-  director: [...financeAll,"health.review"],
+  deputy_director: [...financeAll,"health.review","academic.teacher_leave"],
+  director: [...financeAll,"health.review","academic.teacher_leave"],
   admin: [...academicAll,...naqibAll,...mentorAll,...counselorAll,...financeAll,...healthAll],
   super_admin: [...academicAll,...naqibAll,...mentorAll,...counselorAll,...financeAll,...healthAll]
 };

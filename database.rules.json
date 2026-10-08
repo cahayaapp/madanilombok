@@ -213,6 +213,50 @@
               }
             }
           }
+        },
+        "teacher_leaves": {
+          "$yearId": {
+            "$uid": {
+              "$requestId": {
+                ".write": "auth != null && root.child('madani_app/users').child(auth.uid).exists() && root.child('madani_app/users').child(auth.uid).child('active').val() !== false && root.child('madani_app/users').child(auth.uid).child('accessRevoked').val() !== true && auth.uid === $uid && (root.child('madani_app/users').child(auth.uid).child('role').val() === 'guru_mapel' || root.child('madani_app/users').child(auth.uid).child('roleFlags/guru_mapel').val() === true) && !data.exists() && newData.exists() && !newData.child('decision').exists() && newData.child('staffId').val() === (root.child('madani_app/users').child(auth.uid).child('staffId').exists() ? root.child('madani_app/users').child(auth.uid).child('staffId').val() : auth.uid)",
+                ".validate": "newData.hasChildren(['teacherUid','teacherName','staffId','academicYearId','type','startDate','endDate','startTime','endTime','reason','contact','handover','createdAt']) && newData.child('teacherUid').val() === $uid && newData.child('academicYearId').val() === $yearId",
+                "teacherName": {
+                  ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 160"
+                },
+                "reason": {
+                  ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 2000"
+                },
+                "handover": {
+                  ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 2000"
+                },
+                "contact": {
+                  ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 100"
+                },
+                "type": {
+                  ".validate": "newData.val() === 'Sakit' || newData.val() === 'Keperluan keluarga' || newData.val() === 'Keperluan pribadi' || newData.val() === 'Tugas dinas' || newData.val() === 'Lainnya'"
+                },
+                "startDate": {
+                  ".validate": "newData.isString() && newData.val().matches(/^\\d{4}-\\d{2}-\\d{2}$/)"
+                },
+                "endDate": {
+                  ".validate": "newData.isString() && newData.val().matches(/^\\d{4}-\\d{2}-\\d{2}$/)"
+                },
+                "startTime": {
+                  ".validate": "newData.isString() && newData.val().matches(/^([01]\\d|2[0-3]):[0-5]\\d$/)"
+                },
+                "endTime": {
+                  ".validate": "newData.isString() && newData.val().matches(/^([01]\\d|2[0-3]):[0-5]\\d$/)"
+                },
+                "decision": {
+                  ".write": "auth != null && root.child('madani_app/users').child(auth.uid).exists() && root.child('madani_app/users').child(auth.uid).child('active').val() !== false && root.child('madani_app/users').child(auth.uid).child('accessRevoked').val() !== true && data.parent().exists() && !data.exists() && newData.exists() && ((auth.uid === $uid && newData.child('status').val() === 'cancelled') || (auth.uid !== $uid && ((root.child('madani_app/users').child(auth.uid).child('role').val() === 'admin' || root.child('madani_app/users').child(auth.uid).child('roleFlags/admin').val() === true) || (root.child('madani_app/users').child(auth.uid).child('role').val() === 'super_admin' || root.child('madani_app/users').child(auth.uid).child('roleFlags/super_admin').val() === true) || (root.child('madani_app/users').child(auth.uid).child('role').val() === 'director' || root.child('madani_app/users').child(auth.uid).child('roleFlags/director').val() === true) || (root.child('madani_app/users').child(auth.uid).child('role').val() === 'deputy_director' || root.child('madani_app/users').child(auth.uid).child('roleFlags/deputy_director').val() === true)) && (newData.child('status').val() === 'approved' || newData.child('status').val() === 'rejected')))",
+                  ".validate": "newData.hasChildren(['status','note','actorUid','decidedAt']) && newData.child('actorUid').val() === auth.uid && newData.child('note').isString() && newData.child('note').val().length > 0 && newData.child('note').val().length <= 1000 && newData.child('decidedAt').isNumber()"
+                },
+                "createdAt": {
+                  ".validate": "newData.isNumber() && newData.val() > 0 && newData.val() <= now"
+                }
+              }
+            }
+          }
         }
       },
       "boarding": {
