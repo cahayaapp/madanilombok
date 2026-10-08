@@ -1,5 +1,6 @@
 export const LEAVE_TYPES=['Sakit','Keperluan keluarga','Keperluan pribadi','Tugas dinas','Lainnya'];
-export const LEAVE_REVIEWERS=['admin','super_admin','director','deputy_director'];
+export const LEAVE_REVIEWERS=['head_formal_school'];
+export function leaveUnits(profile,role){return profile.roleScopes?.[role]?.unitIds ?? profile.unitIds ?? [];}
 export function validateLeave(d){
  for(const k of ['startDate','endDate'])if(!/^\d{4}-\d{2}-\d{2}$/.test(d[k]||'')||!Number.isFinite(Date.parse(d[k]+'T00:00:00Z'))||new Date(d[k]+'T00:00:00Z').toISOString().slice(0,10)!==d[k])throw Error('Tanggal izin tidak valid.');
  for(const k of ['startTime','endTime'])if(!/^([01]\d|2[0-3]):[0-5]\d$/.test(d[k]||''))throw Error('Jam izin tidak valid.');
@@ -18,7 +19,7 @@ export function leaveDecision(request,existing,actor,status,note){
  if(existing)throw Error('Pengajuan sudah diproses. Muat ulang halaman.');
  const own=request.teacherUid===actor.uid;
  if(status==='cancelled'){if(!own)throw Error('Hanya pengaju yang dapat membatalkan.');}
- else if(!['approved','rejected'].includes(status)||own||!LEAVE_REVIEWERS.includes(actor.role))throw Error('Anda tidak berwenang memutuskan pengajuan ini.');
+ else if(!['approved','rejected'].includes(status)||own||(!LEAVE_REVIEWERS.includes(actor.role)||!request.unitId||!actor.unitIds?.includes(request.unitId)))throw Error('Anda tidak berwenang memutuskan pengajuan ini.');
  if(!note?.trim()||note.length>1000)throw Error('Catatan keputusan wajib diisi (maksimal 1.000 karakter).');
- return {status,note:note.trim(),actorUid:actor.uid,actorName:actor.name||'',decidedAt:Date.now()};
+ return {scopeIndex:status==='cancelled'?'':String(actor.unitIds.indexOf(request.unitId)),status,note:note.trim(),actorUid:actor.uid,actorName:actor.name||'',decidedAt:Date.now()};
 }

@@ -130,7 +130,7 @@ const ALL_MENU_GROUPS = [
 export const MENU_GROUPS=ALL_MENU_GROUPS.map(g=>({...g,items:g.items.filter(i=>!i.id.includes('kpi'))})).filter(g=>g.items.length);
 
 const academicAll = [
-  "academic.teacher_leave","academic.teacher_attendance","academic.student_attendance","academic.quran","academic.grades","academic.schedule","academic.lesson_plans"
+  "academic.teacher_attendance","academic.student_attendance","academic.quran","academic.grades","academic.schedule","academic.lesson_plans"
 ];
 const naqibAll = [
   "boarding.naqib.programs","boarding.naqib.attendance","boarding.naqib.reports","boarding.naqib.initiatives",
@@ -161,11 +161,11 @@ export const ROLE_FEATURES = {
   konselor: counselorAll,
   kasir: ["finance.dashboard","finance.cashier","finance.products","finance.history"],
   wali_santri: parentAll,
-  head_formal_school: ["academic.schedule"],
+  head_formal_school: ["academic.schedule","academic.teacher_leave"],
   head_boys_dorm: [],
   head_girls_dorm: [],
-  deputy_director: [...financeAll,"health.review","academic.teacher_leave"],
-  director: [...financeAll,"health.review","academic.teacher_leave"],
+  deputy_director: [...financeAll,"health.review"],
+  director: [...financeAll,"health.review"],
   admin: [...academicAll,...naqibAll,...mentorAll,...counselorAll,...financeAll,...healthAll],
   super_admin: [...academicAll,...naqibAll,...mentorAll,...counselorAll,...financeAll,...healthAll]
 };
