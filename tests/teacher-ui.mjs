@@ -136,3 +136,14 @@ test('teacher leave submits once, supervisor decides, and teacher sees the final
  await render({...ctx,session:{...ctx.session,user:{uid:'reviewer'},activeRole:'head_formal_school',profile:{name:'Kepala Sekolah',unitIds:['u1']}}});await click('[data-request]');$('#leaveDecisionNote').value='Penanganan kelas disetujui';await click('[data-decision="approved"]');assert.equal(read(path+'/'+id+'/decision').status,'approved');assert.equal(read(path+'/'+id+'/decision').actorUid,'reviewer');
  await render(ctx);assert.match(ctx.root.textContent,/Disetujui/);assert.equal($('[data-request]'),null);
 });
+
+test('parent permit reaches correct dorm head and decision appears to guardian',async()=>{
+ db={};const mod=await load(new URL('assets/js/student-permits.js',base).href);await mod.evaluate();const render=mod.namespace.renderStudentPermits;
+ const parent={...ctx,session:{user:{uid:'parent'},activeRole:'wali_santri',profile:{studentIds:['s1']}},master:{...ctx.master,rooms:[{id:'room',dormitoryId:'DORM-PUTRI'}],roomAssignments:{s1:{roomId:'room'}}}};
+ await render(parent);const f=$('#studentPermitForm');assert.equal(f.elements.studentId.options.length,1);
+ for(const [k,v] of Object.entries({studentId:'s1',type:'Kontrol / Medical Check Up',startDate:'2026-10-08T08:00',endDate:'2026-10-08T12:00',reason:'Kontrol',destination:'Klinik',pickup:'Ibu',relation:'Ibu',phone:'08000'}))f.elements[k].value=v;
+ await f.onsubmit({preventDefault(){}});const p=`parent/permissions/${ctx.yearId}/s1`,id=Object.keys(read(p))[0];assert.equal(read(p+'/'+id).dormitoryId,'DORM-PUTRI');
+ await render({...parent,session:{user:{uid:'head'},activeRole:'head_boys_dorm',profile:{}}});assert.equal($('[data-permit]'),null);
+ await render({...parent,session:{user:{uid:'head'},activeRole:'head_girls_dorm',profile:{name:'Kepala Putri'}}});await click('[data-permit]');const review=$('.teacher-sheet form');review.elements.note.value='Dijemput ibu';await review.onsubmit({preventDefault(){},submitter:review.querySelector('[value=approved]')});assert.equal(read(p+'/'+id+'/decision').status,'approved');
+ await render(parent);assert.match(ctx.root.textContent,/Disetujui/);assert.equal(read('academic/student_attendance'),null);
+});

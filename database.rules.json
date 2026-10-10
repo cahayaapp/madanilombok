@@ -286,7 +286,42 @@
         ".write": "(auth != null && root.child('madani_app/users').child(auth.uid).exists() && root.child('madani_app/users').child(auth.uid).child('active').val() !== false && root.child('madani_app/users').child(auth.uid).child('accessRevoked').val() !== true) && (auth != null && root.child('madani_app/users').child(auth.uid).child('role').val() !== 'wali_santri')"
       },
       "parent": {
-        ".write": "(auth != null && root.child('madani_app/users').child(auth.uid).exists() && root.child('madani_app/users').child(auth.uid).child('active').val() !== false && root.child('madani_app/users').child(auth.uid).child('accessRevoked').val() !== true) && (auth != null)"
+        "$other": {
+          ".write": "$other !== 'permissions' && ((auth != null && root.child('madani_app/users').child(auth.uid).exists() && root.child('madani_app/users').child(auth.uid).child('active').val() !== false && root.child('madani_app/users').child(auth.uid).child('accessRevoked').val() !== true) && (auth != null))"
+        },
+        "permissions": {
+          "$yearId": {
+            "$studentId": {
+              "$requestId": {
+                ".write": "auth != null && root.child('madani_app/users').child(auth.uid).exists() && root.child('madani_app/users').child(auth.uid).child('active').val() !== false && root.child('madani_app/users').child(auth.uid).child('accessRevoked').val() !== true && (root.child('madani_app/users').child(auth.uid).child('role').val() === 'wali_santri' || root.child('madani_app/users').child(auth.uid).child('roleFlags/wali_santri').val() === true) && (root.child('madani_app/users').child(auth.uid).child('studentId').val() === $studentId || (newData.child('studentIndex').isString() && root.child('madani_app/users').child(auth.uid).child('studentIds').child(newData.child('studentIndex').val()).val() === $studentId)) && !data.exists() && newData.exists() && !newData.child('decision').exists() && !newData.child('returned').exists() && newData.child('dormitoryId').val() === root.child('madani_app/rooms').child(root.child('madani_app/assignments/rooms').child($yearId).child($studentId).child('roomId').val()).child('dormitoryId').val() && (newData.child('dormitoryId').val() === 'DORM-PUTRA' || newData.child('dormitoryId').val() === 'DORM-PUTRI') && newData.child('parentUid').val() === auth.uid",
+                ".validate": "newData.hasChildren(['studentId','parentUid','dormitoryId','startAt','endAt','type','pickup','relation','phone','destination','reason','createdAt']) && newData.child('studentId').val() === $studentId && newData.child('parentUid').isString() && newData.child('startAt').isNumber() && newData.child('endAt').isNumber() && newData.child('endAt').val() > newData.child('startAt').val() && newData.child('endAt').val() - newData.child('startAt').val() <= 259200000 && ((newData.child('type').val() === 'Orang Tua Meninggal Dunia' && newData.child('endAt').val() - newData.child('startAt').val() <= 259200000) || (newData.child('type').val() === 'Kakek/Nenek, Paman/Bibi, atau Saudara Kandung Meninggal' && newData.child('endAt').val() - newData.child('startAt').val() <= 86400000) || (newData.child('type').val() === 'Menjenguk Orang Tua Sakit Keras' && newData.child('endAt').val() - newData.child('startAt').val() <= 86400000) || (newData.child('type').val() === 'Menjenguk Kakek/Nenek, Paman/Bibi, atau Saudara Kandung Sakit Keras' && newData.child('endAt').val() - newData.child('startAt').val() <= 43200000) || (newData.child('type').val() === 'Kontrol / Medical Check Up' && newData.child('endAt').val() - newData.child('startAt').val() <= 86400000) || (newData.child('type').val() === 'Walimatul Ursy Orang Tua atau Saudara Kandung' && newData.child('endAt').val() - newData.child('startAt').val() <= 86400000) || (newData.child('type').val() === 'Pengantaran Haji / Umrah Keluarga Inti' && newData.child('endAt').val() - newData.child('startAt').val() <= 86400000) || (newData.child('type').val() === 'Kelahiran / Aqiqah Saudara Kandung' && newData.child('endAt').val() - newData.child('startAt').val() <= 86400000)) && (newData.child('type').val() !== 'Kontrol / Medical Check Up' || ((newData.child('startAt').val() + 28800000) - (newData.child('startAt').val() + 28800000) % 86400000) === ((newData.child('endAt').val() + 28800000) - (newData.child('endAt').val() + 28800000) % 86400000))",
+                "pickup": {
+                  ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 2000"
+                },
+                "relation": {
+                  ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 2000"
+                },
+                "phone": {
+                  ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 2000"
+                },
+                "destination": {
+                  ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 2000"
+                },
+                "reason": {
+                  ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 2000"
+                },
+                "decision": {
+                  ".write": "auth != null && root.child('madani_app/users').child(auth.uid).exists() && root.child('madani_app/users').child(auth.uid).child('active').val() !== false && root.child('madani_app/users').child(auth.uid).child('accessRevoked').val() !== true && data.parent().exists() && !data.exists() && newData.exists() && data.parent().child('parentUid').val() !== auth.uid && (((root.child('madani_app/users').child(auth.uid).child('role').val() === 'head_boys_dorm' || root.child('madani_app/users').child(auth.uid).child('roleFlags/head_boys_dorm').val() === true) && data.parent().child('dormitoryId').val() === 'DORM-PUTRA') || ((root.child('madani_app/users').child(auth.uid).child('role').val() === 'head_girls_dorm' || root.child('madani_app/users').child(auth.uid).child('roleFlags/head_girls_dorm').val() === true) && data.parent().child('dormitoryId').val() === 'DORM-PUTRI'))",
+                  ".validate": "newData.child('actorUid').val() === auth.uid && newData.child('note').isString() && newData.child('note').val().length > 0 && newData.child('note').val().length <= 2000 && newData.child('createdAt').isNumber() && (newData.child('status').val() === 'approved' || newData.child('status').val() === 'rejected')"
+                },
+                "returned": {
+                  ".write": "auth != null && root.child('madani_app/users').child(auth.uid).exists() && root.child('madani_app/users').child(auth.uid).child('active').val() !== false && root.child('madani_app/users').child(auth.uid).child('accessRevoked').val() !== true && data.parent().exists() && !data.exists() && newData.exists() && data.parent().child('parentUid').val() !== auth.uid && (((root.child('madani_app/users').child(auth.uid).child('role').val() === 'head_boys_dorm' || root.child('madani_app/users').child(auth.uid).child('roleFlags/head_boys_dorm').val() === true) && data.parent().child('dormitoryId').val() === 'DORM-PUTRA') || ((root.child('madani_app/users').child(auth.uid).child('role').val() === 'head_girls_dorm' || root.child('madani_app/users').child(auth.uid).child('roleFlags/head_girls_dorm').val() === true) && data.parent().child('dormitoryId').val() === 'DORM-PUTRI')) && data.parent().child('decision/status').val() === 'approved'",
+                  ".validate": "newData.child('actorUid').val() === auth.uid && newData.child('note').isString() && newData.child('note').val().length > 0 && newData.child('note').val().length <= 2000 && newData.child('createdAt').isNumber() && newData.child('actualAt').isNumber() && newData.child('actualAt').val() >= data.parent().child('startAt').val() && newData.child('actualAt').val() <= now"
+                }
+              }
+            }
+          }
+        }
       },
       "messages": {
         ".write": "(auth != null && root.child('madani_app/users').child(auth.uid).exists() && root.child('madani_app/users').child(auth.uid).child('active').val() !== false && root.child('madani_app/users').child(auth.uid).child('accessRevoked').val() !== true) && (auth != null)"

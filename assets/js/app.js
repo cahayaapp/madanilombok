@@ -1,3 +1,4 @@
+import {renderStudentPermits} from './student-permits.js';
 import {renderTeacherLeave} from './teacher/leave.js';
 import {decorateManagement} from './management-layout.js';
 import {HEALTH_ROUTES} from './health.js';
@@ -35,6 +36,7 @@ let activeRole = "";
 const root = document.getElementById("content");
 
 export const routes = {
+  "student-permit-review": renderStudentPermits,
   "teacher-leave": renderTeacherLeave,
   ...WORKSPACE_ROUTES,
   ...HEALTH_ROUTES,

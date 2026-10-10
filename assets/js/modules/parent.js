@@ -1,3 +1,4 @@
+import {renderStudentPermits} from '../student-permits.js';
 import {recurringView,arabicRosterView} from '../boarding-roster-view.js';
 import {dailyForStudent} from '../daily-schedules.js';
 import {learningForStudent,examsForStudent} from '../teacher/read-model.js';
@@ -115,11 +116,7 @@ export async function renderParentBoarding(ctx) {
   ctx.root.innerHTML=pageHeader("Asrama & Pembinaan",`Ringkasan pembinaan ${child.name}.`,childSwitch(children,child.id))+`<div class="portal-grid two">${panel("Mentoring Terbaru",mentoring.length?`<div class="stack-list">${mentoring.slice(-10).reverse().map(m=>`<article class="list-card"><div><span>${escapeHtml(m.date||"—")}</span><strong>${escapeHtml(m.focus||"Mentoring")}</strong><small>${escapeHtml(m.target||m.topic||"")}</small></div></article>`).join("")}</div>`:`<div class="empty-state">Belum ada ringkasan mentoring.</div>`)}${panel("Pembinaan & Poin",`<div class="portal-metrics compact">${metric("Transaksi Poin",String(points.length),"","blue")}${metric("Kasus Dibagikan",String(childCases.length),"hanya yang ditandai terlihat wali","coral")}</div>`)} </div>`;bindSwitch(ctx);
 }
 
-export async function renderParentPermission(ctx) {
-  const {children,child}=pickChild(ctx);if(!child)return renderParentHome(ctx);const rows=await listNode(`parent/permissions/${ctx.yearId}/${child.id}`);
-  ctx.root.innerHTML=pageHeader("Izin Santri",`Pengajuan izin untuk ${child.name}.`,childSwitch(children,child.id))+`<div class="portal-grid two">${panel("Ajukan Izin",`<form id="permissionForm" class="portal-form">${formRow("Mulai",input("startDate",today(),"date","required"))}${formRow("Sampai",input("endDate",today(),"date","required"))}${formRow("Jenis",select("type","<option>Pulang</option><option>Keluar Pesantren</option><option>Keluarga</option><option>Kesehatan</option><option>Lainnya</option>"))}${formRow("Alasan",textarea("reason","","required"),true)}<div class="form-actions"><button class="btn btn-primary">Kirim Pengajuan</button></div></form>`)}${panel("Riwayat",rows.length?`<div class="stack-list">${rows.slice(-15).reverse().map(r=>`<article class="list-card"><div><span>${escapeHtml(r.startDate||"—")} s.d. ${escapeHtml(r.endDate||"—")}</span><strong>${escapeHtml(r.type||"Izin")}</strong><small>${escapeHtml(r.reason||"")}</small></div>${badge(r.status||"diajukan")}</article>`).join("")}</div>`:`<div class="empty-state">Belum ada pengajuan.</div>`)}</div>`;
-  bindSwitch(ctx);attachAsync(document.getElementById("permissionForm"),async data=>{await pushRecord(`parent/permissions/${ctx.yearId}/${child.id}`,{...data,status:"diajukan",parentUid:ctx.session.user.uid},ctx.session.user.uid);ctx.rerender();},"Pengajuan izin dikirim.");
-}
+export async function renderParentPermission(ctx){return renderStudentPermits(ctx);}
 
 export async function renderParentMessages(ctx) {
   const {children,child}=pickChild(ctx);if(!child)return renderParentHome(ctx);const threadId=`parent-${ctx.session.user.uid}-${child.id}`;const rows=await listNode(`messages/${threadId}`);

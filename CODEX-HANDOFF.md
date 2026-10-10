@@ -333,3 +333,11 @@ User replaces the old roster: girls 06–14 Alfi/Wanda, 14–22 Anggi/Fitrah, 22
 
 ## 10 October — revised female duty pairs (local)
 Latest user instruction supersedes 8 October pairs: shift1 Alfi/Wanda 06–14 WITA; shift2 Anggi/Nurul Asri Ramdhani 14–22; shift3 Roqyal/Fitrah 22–06. Existing staff IDs preserved; boys unchanged. Updated import package to naqib-duty-20261010-v3 and Import Data description. Midnight regression fixture now uses Fitrah. Not pushed or applied live.
+
+## 10 October — guardian permits / dorm-head review (local)
+- Replaced generic parent-permission form with shared student-permits workflow. Reference read: fajrulislam/wali/dashboard/perizinan.html and pimpinan/perizinan-santri.html.
+- Eight guardian categories with 12/24/72-hour limits; medical control same day, WITA datetimes; destination, reason, trusted pickup name/relation/WhatsApp. Existing room placement determines DORM-PUTRA/DORM-PUTRI; missing placement blocks creation.
+- Head Boys/Girls Dorm gets Persetujuan Izin Santri menu, corresponding dorm queue, immutable approve/reject note, approved return recording and late indicator. Guardian sees own linked students and decision/return history. No automatic absence or finance changes.
+- Preserves parent/permissions/{year}/{student}/{request} history. Replaced broad parent write with wildcard for other branches plus scoped guardian creation / dorm-head decision / return rules. Existing broad root read unchanged, so do not claim record confidentiality isolation. Legacy forms without required metadata remain history, not upgraded automatically.
+- Verified full suite 200 passed plus new server-rule-expression isolation test (3 permit model/rule tests passed). Simulated DOM submit→correct-head approval→guardian visibility passed. Not Firebase emulator or production QA.
+- Not full Cahaya parity: linked UKS referral/home-recovery category and doctor's file attachment are not included; eight non-referral categories supported. Deployment (frontend + Firebase rules) pending; no live permits created.
