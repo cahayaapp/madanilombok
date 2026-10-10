@@ -23,6 +23,11 @@ test('server expressions reject forged shift, outside duty time and cross-gender
  const run=(r,t=now)=>Function('auth','root','data','newData','now','$year','$date','$program','$student',`return ${expr}`)({uid:'u'},snap(data),snap(null),snap(r),t,'y','2026-10-06','p','student');
  assert.equal(run(record),true);assert.equal(run(record,at('12:00')),false);assert.equal(run({...record,dutyShiftId:'shift2'}),false);assert.equal(run({...record,genderScope:'P'}),false);assert.equal(run(null),false);
  const report=rules.boarding.program_reports.$year.$report['.write'];const rr=(t)=>Function('auth','root','newData','now','$year',`return ${report}`)({uid:'u'},snap(data),snap({...record,naqibUid:'u'}),t,'y');assert.equal(rr(now),true);assert.equal(rr(at('12:00')),false);
+ // New configuration overrides the old global shift times on the server as well.
+ data.madani_app.settings.naqibDuty.staff.a={shiftId:'shift3',gender:'L',active:true,startMinute:1020,endMinute:1500};
+ data.madani_app.schedules.daily.s.startTime='23:00';data.madani_app.settings.naqibDuty.programs.s={shiftId:'shift1',startTime:'23:00',startMinute:1380};
+ const updated={...record,...assertDutyProgram({config:{staff:{a:data.madani_app.settings.naqibDuty.staff.a}},staffId:'a',schedule:{...schedule,startTime:'23:00'},date:'2026-10-05',yearId:'y',now:at('00:30')})};
+ assert.equal(run(updated,at('00:30')),true);assert.equal(run(updated,at('01:00')),false);
  assert.equal(rules.boarding['.write'],undefined);
 });
 test('roster update preserves unrelated roles and retires duplicate Naqib-only access',async()=>{
@@ -32,8 +37,21 @@ test('roster update preserves unrelated roles and retires duplicate Naqib-only a
  const policy=new vm.SourceTextModule(fs.readFileSync(new URL('../assets/js/naqib-program-policy.js',import.meta.url),'utf8'),{context:ctx});
  const mod=new vm.SourceTextModule(fs.readFileSync(new URL('../assets/js/naqib-duty-update.js',import.meta.url),'utf8'),{context:ctx});await mod.link(s=>s.includes('repository')?repo:s.includes('naqib-program-policy')?policy:model);await mod.evaluate();
  const pkg=JSON.parse(fs.readFileSync(new URL('../seed/imports/naqib-duty.json',import.meta.url)));
- const staff=Object.fromEntries(Object.entries(pkg.staff).filter(([id])=>id!=='AMD-SDM-0088').map(([id,a])=>[id,{name:a.name,appRoles:['guru_mapel']}]));staff.old={appRoles:['naqib','guru_mapel']};
+ const staff=Object.fromEntries(Object.entries(pkg.staff).filter(([id])=>id!=='AMD-SDM-WANDA').map(([id,a])=>[id,{name:a.name,appRoles:['guru_mapel']}]));staff.old={appRoles:['naqib','guru_mapel']};
  const patch=mod.namespace.dutyUpdatePatch(pkg,staff,{old:{staffId:'old',role:'naqib',roles:['naqib','guru_mapel']},pilot:{staffId:'old',role:'naqib'}},{allowed:{programId:'prayer',startTime:'12:00',day:'Setiap Hari',academicYearId:'y'},excluded:{programId:'arabic',startTime:'05:40',day:'Setiap Hari',academicYearId:'y'}},{prayer:{name:'Sholat zuhur'},arabic:{name:'Bahasa Arab'}});
  assert.deepEqual(Object.keys(patch['settings/naqibDuty'].programs),['allowed']);
- assert.equal(patch['users/old/role'],'guru_mapel');assert.equal(patch['users/pilot/active'],false);assert.equal(patch['users/old/roleFlags/naqib'],false);assert.equal(patch['staff/AMD-SDM-0088'].name,'Fitriani');assert.ok(!Object.keys(patch).some(k=>k.startsWith('finance/')));
+ assert.equal(patch['users/old/role'],'guru_mapel');assert.equal(patch['users/pilot/active'],false);assert.equal(patch['users/old/roleFlags/naqib'],false);assert.equal(patch['staff/AMD-SDM-WANDA'].name,'Wanda Saputri');assert.ok(!Object.keys(patch).some(k=>k.startsWith('finance/')));
+});
+
+
+test('new male and female shifts cover every minute exactly once with correct midnight dates',()=>{
+ const config=JSON.parse(fs.readFileSync(new URL('../seed/imports/naqib-duty.json',import.meta.url)));
+ for(const gender of ['L','P'])for(let m=0;m<1440;m++){
+  const now=at('00:00')+m*60000,active=Object.keys(config.staff).filter(id=>config.staff[id].gender===gender&&dutyWindow(config,id,now).activeNow);
+  assert.equal(active.length,gender==='L'?1:2,`${gender} ${m}`);
+ }
+ for(const [id,time,program,date] of [['AMD-SDM-0084','00:30','23:00','2026-10-05'],['AMD-SDM-FITRAH','05:59','23:00','2026-10-05'],['AMD-SDM-0016','01:00','01:00','2026-10-06']]){
+  const schedule={id:'s',academicYearId:'y',day:'Setiap Hari',startTime:program,genderScope:config.staff[id].gender};
+  assert.ok(assertDutyProgram({config,staffId:id,schedule,date,yearId:'y',now:at(time)}));
+ }
 });
