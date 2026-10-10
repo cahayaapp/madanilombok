@@ -1,7 +1,7 @@
 import {localClock,minutes} from './teacher/model.js';
 export const DUTY_SHIFTS={shift1:{label:'Shift 1',start:240,end:720,time:'04.00–12.00'},shift2:{label:'Shift 2',start:720,end:1200,time:'12.00–20.00'},shift3:{label:'Shift 3',start:1200,end:1680,time:'20.00–04.00'}};
 export function dutyWindow(config,staffId,now=Date.now()){
- const assignment=config?.staff?.[staffId],legacy=DUTY_SHIFTS[assignment?.shiftId],shift=assignment?.startMinute!=null?{label:legacy?.label,start:assignment.startMinute,end:assignment.endMinute,time:[assignment.startMinute,assignment.endMinute].map(m=>`${String(Math.floor(m/60)%24).padStart(2,'0')}.${String(m%60).padStart(2,'0')}`).join('–')}:legacy;
+ const assignment=config?.staff?.[staffId],legacy=DUTY_SHIFTS[assignment?.shiftId],shift=assignment?.startMinute!=null?{label:legacy?.label,start:assignment.startMinute,end:assignment.endMinute,time:[assignment.startMinute,assignment.endMinute].map(m=>`${String(m===1440?24:Math.floor(m/60)%24).padStart(2,'0')}.${String(m%60).padStart(2,'0')}`).join('–')}:legacy;
  if(!assignment||assignment.active===false||!shift||!['L','P'].includes(assignment.gender))throw Error('Jadwal piket Anda belum ditetapkan. Hubungi administrator.');
  const dayStart=Math.floor((now+28800000)/86400000)*86400000-28800000;
  let start=dayStart+shift.start*60000,end=dayStart+shift.end*60000;
@@ -14,7 +14,7 @@ export function assertDutyProgram({config,staffId,schedule,date,yearId,now=Date.
  if(!duty.activeNow)throw Error(`Di luar jam piket Anda (${duty.time} WITA).`);
  if(!schedule||schedule.status==='inactive'||schedule.academicYearId!==yearId||!['mixed',duty.gender,undefined,''].includes(schedule.genderScope))throw Error('Program tidak termasuk jadwal asrama Anda.');
  const start=minutes(schedule.startTime),end=duty.end%1440;
- const belongs=duty.end>1440?(start>=duty.start||start<end):start>=duty.start&&start<end;
+ const belongs=duty.end>1440?(start>=duty.start||start<end):start>=duty.start&&start<duty.end;
  if(!belongs)throw Error('Program ini di luar shift piket Anda.');
  if(date!==dutyProgramDate(schedule,duty))throw Error('Tanggal program tidak sesuai shift piket yang sedang berjalan.');
  const programAt=Date.parse(`${date}T00:00:00+08:00`)+start*60000;

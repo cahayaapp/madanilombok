@@ -341,3 +341,6 @@ Latest user instruction supersedes 8 October pairs: shift1 Alfi/Wanda 06–14 WI
 - Preserves parent/permissions/{year}/{student}/{request} history. Replaced broad parent write with wildcard for other branches plus scoped guardian creation / dorm-head decision / return rules. Existing broad root read unchanged, so do not claim record confidentiality isolation. Legacy forms without required metadata remain history, not upgraded automatically.
 - Verified full suite 200 passed plus new server-rule-expression isolation test (3 permit model/rule tests passed). Simulated DOM submit→correct-head approval→guardian visibility passed. Not Firebase emulator or production QA.
 - Not full Cahaya parity: linked UKS referral/home-recovery category and doctor's file attachment are not included; eight non-referral categories supported. Deployment (frontend + Firebase rules) pending; no live permits created.
+
+## 10 October — unified shift hours, v4 (local)
+Latest user replaces shift times with 00–08, 08–16, 16–24 WITA. Applied to both genders, retaining latest people/shift pairs. Updated naqib-duty package id to naqib-duty-20261010-v4 and Import Data summary. Fixed membership check for shift ending exactly 1440 (midnight), displayed as 24.00. Legacy config without explicit times retains old compatibility until import. No live settings written or push in this turn.

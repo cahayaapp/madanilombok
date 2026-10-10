@@ -1,76 +1,76 @@
 {
-  "id": "naqib-duty-20261010-v3",
+  "id": "naqib-duty-20261010-v4",
   "staff": {
     "AMD-SDM-0006": {
       "name": "Alfi Nur Hafizoh",
       "gender": "P",
       "shiftId": "shift1",
-      "startMinute": 360,
-      "endMinute": 840,
+      "startMinute": 0,
+      "endMinute": 480,
       "active": true
     },
     "AMD-SDM-WANDA": {
       "name": "Wanda Saputri",
       "gender": "P",
       "shiftId": "shift1",
-      "startMinute": 360,
-      "endMinute": 840,
+      "startMinute": 0,
+      "endMinute": 480,
       "active": true
     },
     "AMD-SDM-0008": {
       "name": "Anggi Aprilia",
       "gender": "P",
       "shiftId": "shift2",
-      "startMinute": 840,
-      "endMinute": 1320,
+      "startMinute": 480,
+      "endMinute": 960,
       "active": true
     },
     "AMD-SDM-FITRAH": {
       "name": "Fitrah",
       "gender": "P",
       "shiftId": "shift3",
-      "startMinute": 1320,
-      "endMinute": 1800,
+      "startMinute": 960,
+      "endMinute": 1440,
       "active": true
     },
     "AMD-SDM-0068": {
       "name": "Roqyal Aini",
       "gender": "P",
       "shiftId": "shift3",
-      "startMinute": 1320,
-      "endMinute": 1800,
+      "startMinute": 960,
+      "endMinute": 1440,
       "active": true
     },
     "AMD-SDM-0064": {
       "name": "Nurul Asri Ramdhani",
       "gender": "P",
       "shiftId": "shift2",
-      "startMinute": 840,
-      "endMinute": 1320,
+      "startMinute": 480,
+      "endMinute": 960,
       "active": true
     },
     "AMD-SDM-0016": {
       "name": "DA’I ROBBANI",
       "gender": "L",
       "shiftId": "shift1",
-      "startMinute": 60,
-      "endMinute": 540,
+      "startMinute": 0,
+      "endMinute": 480,
       "active": true
     },
     "AMD-SDM-0060": {
       "name": "MUH. NOPAN MAULANA",
       "gender": "L",
       "shiftId": "shift2",
-      "startMinute": 540,
-      "endMinute": 1020,
+      "startMinute": 480,
+      "endMinute": 960,
       "active": true
     },
     "AMD-SDM-0084": {
       "name": "M. YUSUF",
       "gender": "L",
       "shiftId": "shift3",
-      "startMinute": 1020,
-      "endMinute": 1500,
+      "startMinute": 960,
+      "endMinute": 1440,
       "active": true
     }
   },

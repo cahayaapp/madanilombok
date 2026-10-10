@@ -33,13 +33,13 @@ export function dutyUpdatePatch(pkg,staff,users,schedules,programMaster={}){
  for(const [id,p]of Object.entries(staff)){if(pkg.staff[id])patch[`staff/${id}/disabledAppRoles`]=(p.disabledAppRoles||[]).filter(r=>r!=='naqib');else if(p.appRoles?.includes('naqib')){patch[`staff/${id}/appRoles`]=p.appRoles.filter(r=>r!=='naqib');patch[`staff/${id}/roleScopes/naqib`]=null;patch[`staff/${id}/disabledAppRoles`]=[...new Set([...(p.disabledAppRoles||[]),'naqib'])];}}
  const programs={};for(const [id,s]of Object.entries(schedules)){
   if(s.status==='inactive'||!naqibProgramKind(s,programMaster[s.programId]))continue;const m=minutes(s.startTime);if(!Number.isFinite(m)||!s.academicYearId||!s.programId||!s.day)continue;
-  programs[id]={programId:s.programId,startMinute:m,startTime:s.startTime,shiftId:m>=240&&m<720?'shift1':m>=720&&m<1200?'shift2':'shift3',academicYearId:s.academicYearId,day:s.day};
+  programs[id]={programId:s.programId,startMinute:m,startTime:s.startTime,shiftId:m<480?'shift1':m<960?'shift2':'shift3',academicYearId:s.academicYearId,day:s.day};
  }
  patch['settings/naqibDuty']={staff:pkg.staff,programs,timezone:'Asia/Makassar',version:pkg.id};
  return patch;
 }
 export async function renderNaqibDutyUpdate(host,session){
- host.innerHTML='<h3>Piket Naqib & Naqibah</h3><p>Putri: 06.00–14.00 Alfi & Wanda; 14.00–22.00 Anggi & Nurul; 22.00–06.00 Roqyal & Fitrah. Putra: 01.00–09.00 Dai; 09.00–17.00 Nopan; 17.00–01.00 Yusuf. Semua waktu WITA. Presensi/laporan dibatasi pada Tahajjud, salat wajib, piket kebersihan, dan apel transisi pondok–formal yang sudah memiliki jadwal. Program mengikuti jam mulai. Role Naqib putra lainnya dinonaktifkan; role lainnya dipertahankan.</p><button class="btn btn-primary">Terapkan Piket Naqib / Naqibah</button><p role="status"></p><a href="accounts.html">Periksa akun Wanda & Fitrah di Manajemen Akun</a>';
+ host.innerHTML='<h3>Piket Naqib & Naqibah</h3><p>Putri: 00.00–08.00 Alfi & Wanda; 08.00–16.00 Anggi & Nurul; 16.00–24.00 Roqyal & Fitrah. Putra: 00.00–08.00 Dai; 08.00–16.00 Nopan; 16.00–24.00 Yusuf. Semua waktu WITA. Presensi/laporan dibatasi pada Tahajjud, salat wajib, piket kebersihan, dan apel transisi pondok–formal yang sudah memiliki jadwal. Program mengikuti jam mulai. Role Naqib putra lainnya dinonaktifkan; role lainnya dipertahankan.</p><button class="btn btn-primary">Terapkan Piket Naqib / Naqibah</button><p role="status"></p><a href="accounts.html">Periksa akun Wanda & Fitrah di Manajemen Akun</a>';
  const b=host.querySelector('button'),status=host.querySelector('[role=status]');b.onclick=async()=>{b.disabled=true;try{
  const response=await fetch('../seed/imports/naqib-duty.json');if(!response.ok)throw Error('Paket piket tidak tersedia.');const pkg=await response.json();
  const [staff,users,schedules,programs]=await Promise.all(['staff','users','schedules/daily','programs'].map(getNode));

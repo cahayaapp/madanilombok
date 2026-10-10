@@ -50,8 +50,21 @@ test('new male and female shifts cover every minute exactly once with correct mi
   const now=at('00:00')+m*60000,active=Object.keys(config.staff).filter(id=>config.staff[id].gender===gender&&dutyWindow(config,id,now).activeNow);
   assert.equal(active.length,gender==='L'?1:2,`${gender} ${m}`);
  }
- for(const [id,time,program,date] of [['AMD-SDM-0084','00:30','23:00','2026-10-05'],['AMD-SDM-FITRAH','05:59','23:00','2026-10-05'],['AMD-SDM-0016','01:00','01:00','2026-10-06']]){
+ for(const [id,time,program,date] of [['AMD-SDM-0084','23:59','23:00','2026-10-06'],['AMD-SDM-FITRAH','16:00','16:00','2026-10-06'],['AMD-SDM-0016','00:00','00:00','2026-10-06']]){
   const schedule={id:'s',academicYearId:'y',day:'Setiap Hari',startTime:program,genderScope:config.staff[id].gender};
   assert.ok(assertDutyProgram({config,staffId:id,schedule,date,yearId:'y',now:at(time)}));
  }
+});
+
+
+test('latest shifts own 00:00, 08:00, 16:00 boundaries and close at midnight',()=>{
+ const config=JSON.parse(fs.readFileSync(new URL('../seed/imports/naqib-duty.json',import.meta.url)));
+ for(const [time,shiftId] of [['00:00','shift1'],['07:59','shift1'],['08:00','shift2'],['15:59','shift2'],['16:00','shift3'],['23:59','shift3']]){
+  for(const [id,a] of Object.entries(config.staff)){
+   assert.equal(dutyWindow(config,id,at(time)).activeNow,a.shiftId===shiftId);
+   const args={config,staffId:id,schedule:{id:'s',academicYearId:'y',startTime:time,day:'Setiap Hari',genderScope:a.gender},date:'2026-10-06',yearId:'y',now:at(time)};
+   if(a.shiftId===shiftId)assert.ok(assertDutyProgram(args));else assert.throws(()=>assertDutyProgram(args));
+  }
+ }
+ assert.equal(dutyWindow(config,'AMD-SDM-0084',at('23:59')).time,'16.00–24.00');
 });
