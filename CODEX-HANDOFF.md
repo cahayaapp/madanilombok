@@ -344,3 +344,9 @@ Latest user instruction supersedes 8 October pairs: shift1 Alfi/Wanda 06–14 WI
 
 ## 10 October — unified shift hours, v4 (local)
 Latest user replaces shift times with 00–08, 08–16, 16–24 WITA. Applied to both genders, retaining latest people/shift pairs. Updated naqib-duty package id to naqib-duty-20261010-v4 and Import Data summary. Fixed membership check for shift ending exactly 1440 (midnight), displayed as 24.00. Legacy config without explicit times retains old compatibility until import. No live settings written or push in this turn.
+
+## 10 October — Naqib concept audit
+See docs/NAQIB-AUDIT-2026-10-10.md. Implemented shift/day program cards + contextual attendance/report actions, home initiative quick action, prayer initial/final UI with late notes, six report indicators with four-condition scale, stable report key and existing record refill, detailed own report history. New regression checks for prayer finalization and report validation. Changes local only; not pushed/deployed. Outstanding gaps explicitly documented (usrah/gamification/configured initiative points/evidence verification, concurrency/server finalization lock, physical browser QA).
+
+## 10 October — actual deployment diagnosis from screenshots
+Screenshots show NEW program UI but OLD database duty config (20–04), plus generic Naqib home omitted workspace cards. Fixed home to render six workspace cards (assessment/self/case/discipline/history/guide), distinct from quick actions. Added regression assertion. Safari production Admin Import Data already serves v4 new shift package. User explicitly confirmed applying roster/access at action time; clicked Terapkan Piket Naqib/Naqibah, UI confirmed success. Proof /tmp/madani-piket-applied.png. Live duties/role sync applied, accounts still not provisioned. No fabricated attendance. Rules deployment/real Naqib save remains unverified.
