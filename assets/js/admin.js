@@ -1,3 +1,4 @@
+import {renderNaqibProgramUpdate} from './naqib-program-update.js';
 import {renderConfirmedUpdates} from './confirmed-updates.js';
 import {renderMorningHalaqahUpdate} from './morning-halaqah-update.js';
 import {renderWardaniTransfer} from './wardani-account-transfer.js';
@@ -377,7 +378,7 @@ async function savePlacement(kind){
 
 function renderImport(){
   $("#content").innerHTML=`<div class="section-head"><div><h2>Import Data</h2><p>Import massal untuk migrasi data awal Al-Madani. Sistem menampilkan preview sebelum data masuk Firebase.</p></div></div><div id="preparedUpdates" class="stack-list"></div><div class="import-grid"><div class="panel"><div class="panel-head"><h3>Import Santri</h3><a class="btn btn-secondary" href="../templates/template-import-santri.csv" download>Template CSV</a></div><div class="dropzone"><strong>Upload CSV Santri</strong><p class="muted" style="font-size:11px">ID kosong akan dibuat otomatis. unitId harus sesuai master Unit.</p><input type="file" id="studentImportFile" accept=".csv,text/csv"></div><div id="studentImportPreview" class="preview-box"></div></div><div class="panel"><div class="panel-head"><h3>Import SDM</h3><a class="btn btn-secondary" href="../templates/template-import-sdm.csv" download>Template CSV</a></div><div class="dropzone"><strong>Upload CSV SDM</strong><p class="muted" style="font-size:11px">roles dan unitIds dapat dipisahkan dengan tanda |.</p><input type="file" id="staffImportFile" accept=".csv,text/csv"></div><div id="staffImportPreview" class="preview-box"></div></div></div>`;
-  for(const renderUpdate of [renderConfirmedUpdates,renderMorningHalaqahUpdate,renderWardaniTransfer,renderSdMentorUpdate,renderNaqibDutyUpdate,renderArabicIdentityUpdate,renderArabicLessonsUpdate,renderStudentIdentityUpdate,renderMentorUpdate,renderGroupTeacherUpdate,renderRoomMetadataUpdate,renderBoardingUpdate,renderDailyUpdate,renderSmkUpdate,renderSdUpdate,renderSmpUpdate]){
+  for(const renderUpdate of [renderNaqibProgramUpdate,renderConfirmedUpdates,renderMorningHalaqahUpdate,renderWardaniTransfer,renderSdMentorUpdate,renderNaqibDutyUpdate,renderArabicIdentityUpdate,renderArabicLessonsUpdate,renderStudentIdentityUpdate,renderMentorUpdate,renderGroupTeacherUpdate,renderRoomMetadataUpdate,renderBoardingUpdate,renderDailyUpdate,renderSmkUpdate,renderSdUpdate,renderSmpUpdate]){
     const section=document.createElement("section");section.className="panel";$("#preparedUpdates").append(section);renderUpdate(section,session);
   }
   $("#studentImportFile").addEventListener("change",e=>prepareImport("students",e.target.files[0],"studentImportPreview")); $("#staffImportFile").addEventListener("change",e=>prepareImport("staff",e.target.files[0],"staffImportPreview"));

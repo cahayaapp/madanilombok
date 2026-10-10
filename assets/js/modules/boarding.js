@@ -52,31 +52,7 @@ export async function renderNaqibPrograms(ctx) {
  }catch(ex){ctx.root.innerHTML=pageHeader('Program Hari Ini',ex.message);}
 }
 
-export async function renderNaqibAttendance(ctx) {
-  let access;try{await ctx.refreshMaster?.();access=await loadDuty(ctx);}catch(error){ctx.root.innerHTML=pageHeader("Piket Naqib / Naqibah",error.message);return;}
-  const gender=access.duty.gender,programs=(ctx.master.programs||[]).filter(p=>p.status!=="inactive"&&access.schedules.some(s=>s.programId===p.id));
-  ctx.root.innerHTML=pageHeader("Presensi Program Asrama",`${access.duty.label} · ${access.duty.time} WITA. Program mengikuti jam mulai; penyimpanan ditutup saat shift selesai.`)+`
-    ${panel("Pilih Program",`<div class="filter-row wrap"><select id="programPick">${selectOptions(programs)}</select><input type="date" id="programDate" value="${access.schedules[0]?dutyProgramDate(access.schedules[0],access.duty):today()}"><button class="btn btn-primary" id="loadProgramAtt">Tampilkan</button></div>`)}<div id="programAttWork" style="margin-top:18px"></div>`;
-  const programPick=ctx.root.querySelector('#programPick');const selected=sessionStorage.getItem('madaniNaqibProgram');if(programs.some(p=>p.id===selected))programPick.value=selected;
-  programPick.onchange=()=>{const s=access.schedules.find(s=>s.programId===programPick.value);if(s)ctx.root.querySelector('#programDate').value=dutyProgramDate(s,access.duty);};programPick.onchange();
-  if(!programs.length)ctx.root.querySelector('#programAttWork').innerHTML='<div class="empty-state">Belum ada program presensi yang sudah dimulai dalam shift Anda. Program yang tersedia: Tahajjud, salat wajib, piket kebersihan, dan apel transisi pondok–formal sesuai jadwal yang telah ditetapkan.</div>';
-  document.getElementById("loadProgramAtt")?.addEventListener("click",async()=>{
-    const programId=document.getElementById("programPick").value,date=document.getElementById("programDate").value;
-    if(!programId||!date) return toast("Pilih program dan tanggal.","warning");
-    try{await checkDutyWrite(ctx,programId,date);}catch(e){return toast(e.message,"error");}
-    const students=programStudents(programId,ctx.master).filter(s=>genderMatches(gender,s.gender));
-    const delegated=s=>access.schedules.some(r=>r.programId===programId&&r.naqibProgramKind==='apel_transisi')&&isActiveGemaStudent(s,ctx.master,ctx.yearId);
-    const saved=await getNode(`boarding/program_attendance/${ctx.yearId}/${date}/${programId}`)||{};
-    const kind=naqibProgramKind(access.schedules.find(r=>r.programId===programId),programs.find(p=>p.id===programId));
-    const prayer=['subuh','zuhur','ashar','magrib','isya'].includes(kind),initial=prayer&&!students.some(s=>saved[s.id]),finalized=prayer&&students.length>0&&students.every(s=>saved[s.id]?.stage==='FINAL');
-    const ws=document.getElementById("programAttWork");
-    ws.innerHTML=pageHeader("Daftar Santri",`${students.length} santri${prayer?initial?' · Absensi Awal':finalized?' · Absensi Selesai':' · Absensi Akhir — lengkapi catatan keterlambatan':''}`,`<button class="btn btn-primary" id="saveProgramAtt" ${finalized?'disabled':''}>${prayer?initial?'Simpan Absensi Awal':'Simpan Absensi Akhir':'Simpan Presensi'}</button>`)+table(["Santri","Status","Catatan"],students.map(s=>`<tr data-student="${s.id}"><td><strong>${escapeHtml(s.name)}</strong></td><td>${delegated(s)?GEMA_ATTENDANCE_NOTE:`<select class="pstatus" ${prayer&&!initial?'disabled':''}><option ${saved[s.id]?.status==="Hadir"?"selected":""}>Hadir</option><option ${saved[s.id]?.status==="Terlambat"?"selected":""}>Terlambat</option><option ${saved[s.id]?.status==="Sakit"?"selected":""}>Sakit</option><option ${saved[s.id]?.status==="Izin"?"selected":""}>Izin</option><option ${saved[s.id]?.status==="Alfa"?"selected":""}>Alfa</option></select>`}</td><td><input class="pnote table-input" value="${escapeHtml(saved[s.id]?.note||"")}"></td></tr>`).join(""));
-    document.getElementById("saveProgramAtt")?.addEventListener("click",async()=>{
-      try{const duty=await checkDutyWrite(ctx,programId,date);if(prayer&&!initial&&[...ws.querySelectorAll('tr[data-student]')].some(tr=>tr.querySelector('.pstatus')?.value==='Terlambat'&&!tr.querySelector('.pnote').value.trim()))throw Error('Isi catatan untuk santri yang terlambat sebelum finalisasi.');const payload={};ws.querySelectorAll("tr[data-student]").forEach(tr=>payload[tr.dataset.student]={...duty,date,programId,studentId:tr.dataset.student,stage:prayer&&initial?'AWAL':'FINAL',status:delegated({id:tr.dataset.student})?null:tr.querySelector(".pstatus").value,...(delegated({id:tr.dataset.student})?{attendanceManagedBy:"GEMA",attendanceNote:GEMA_ATTENDANCE_NOTE}:{}),note:tr.querySelector(".pnote").value,recordedBy:ctx.session.user.uid,updatedAt:Date.now()});
-      await patchNode(`boarding/program_attendance/${ctx.yearId}/${date}/${programId}`,payload);toast("Presensi program tersimpan.");document.getElementById("loadProgramAtt").click();}catch(e){toast(e.message,"error");}
-    });
-  });
-}
+export {renderNaqibAttendance} from '../naqib-attendance.js';
 
 export async function renderNaqibReport(ctx) {
   let access;try{await ctx.refreshMaster?.();access=await loadDuty(ctx);}catch(error){ctx.root.innerHTML=pageHeader("Piket Naqib / Naqibah",error.message);return;}

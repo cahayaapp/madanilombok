@@ -1,6 +1,6 @@
-// Only the programs explicitly requested on 8 October are attendance/report items.
+// Only the programs explicitly requested on 10 October are attendance/report items.
 // The complete 24-hour timetable remains available as a guidance schedule.
-export const NAQIB_PROGRAM_KINDS=['tahajjud','subuh','zuhur','ashar','magrib','isya','kebersihan','apel_transisi','apel_pagi','senam'];
+export const NAQIB_PROGRAM_KINDS=['tahajjud','subuh','zuhur','ashar','magrib','isya','makan_pagi','makan_siang','makan_malam','pengecekan_tidur','apel_transisi','apel_pagi','senam'];
 export function naqibProgramKind(schedule,program){
  if(schedule?.naqibAttendance===false||program?.status==='inactive')return null;
 
@@ -14,7 +14,6 @@ export function naqibProgramKind(schedule,program){
   'sholat asar':'ashar','sholat ashar':'ashar','salat asar':'ashar',
   'sholat magrib':'magrib','salat magrib':'magrib','sholat maghrib':'magrib',
   'sholat isya':'isya','salat isya':'isya',
-  'piket kebersihan':'kebersihan',
   'apel transisi pondok-formal':'apel_transisi','apel transisi pondok–formal':'apel_transisi'
  };
  return names[name]||null;

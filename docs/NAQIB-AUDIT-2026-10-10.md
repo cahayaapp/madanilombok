@@ -19,3 +19,8 @@ Acuan lokal: fajrulislam/js/naqib-home-hub.js, naqib-report-v2.js, naqib-report-
 - Riwayat laporan ditingkatkan; belum menyediakan ekspor/cetak laporan.
 - Belum uji visual perangkat fisik atau Firebase produksi. Pengujian memakai model, ekspresi rules dan DOM tiruan; bukan bukti kesetaraan visual 100%.
 - Tidak ada write produksi, perubahan keuangan atau migrasi histori dalam audit ini.
+
+## Koreksi daftar 10 Oktober malam
+Presensi kini mengikuti daftar terbaru pengguna: 11 kegiatan + Apel Senin/Senam Sabtu; kebersihan dikeluarkan. Isya dipisahkan 20.00–20.30 WITA. Tombol Import Data **Terapkan Program Presensi Naqib** menyiapkan 13 jadwal beserta indeks server; mempertahankan riwayat dan jadwal 24 jam asal. Paket memerlukan penerapan produksi setelah publikasi.
+
+Alur antarmuka presensi mengacu `fajrulislam/naqib/absensi.html`, `js/naqib-absensi-v2.js`, `css/naqib-absensi-v2.css`: kartu program, pilihan kamar/Seluruh Asrama, kartu nama santri dengan pilihan status, pencarian, Hadir Semua dan ringkasan jumlah. Scope Madani memakai penempatan kamar dan gender piket; seluruh asrama tidak membuka unit lawan gender. Skor/gamifikasi Cahaya tidak disalin.

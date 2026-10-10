@@ -11,7 +11,7 @@ test('Naqib attendance includes only the requested kinds and confirmed Monday/Sa
  assert.equal(naqibProgramKind({naqibProgramKind:'subuh'},{status:'inactive'}),null);
 });
 
-test('GEMA prayer/assembly/sport/cleaning are shared Naqib duties; Quran and lessons are not',()=>{
- for(const kind of ['tahajjud','subuh','zuhur','ashar','magrib','isya','apel_pagi','senam','kebersihan'])assert.equal(naqibProgramKind({participantScope:'boarding_gema',naqibProgramKind:kind}),kind);
+test('GEMA prayer/assembly/sport/meals/sleep are shared Naqib duties; Quran and lessons are not',()=>{
+ for(const kind of ['tahajjud','subuh','zuhur','ashar','magrib','isya','apel_pagi','senam','makan_pagi','makan_siang','makan_malam','pengecekan_tidur'])assert.equal(naqibProgramKind({participantScope:'boarding_gema',naqibProgramKind:kind}),kind);
  for(const name of ['HALAQOH QURAN','Program bahasa','Kajian','Istirahat Malam'])assert.equal(naqibProgramKind({participantScope:'boarding_gema'},{name}),null);
 });

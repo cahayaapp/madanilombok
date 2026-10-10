@@ -1,11 +1,11 @@
 import {naqibProgramKind} from './naqib-program-policy.js';
 import {getNode} from './repository.js';
 import {dutyWindow,assertDutyProgram,dutyProgramDate} from './naqib-duty.js';
-export async function loadDuty(ctx){
+export async function loadDuty(ctx,{includeUpcoming=false}={}){
  const config=await getNode('settings/naqibDuty'),staffId=ctx.session.profile.staffId,now=Date.now();
  const duty=dutyWindow(config,staffId,now);
  if(!duty.activeNow)throw Error(`Di luar jam piket Anda: ${duty.label}, ${duty.time} WITA.`);
- const schedules=(ctx.master.dailySchedules||[]).filter(s=>{if(!naqibProgramKind(s,(ctx.master.programs||[]).find(p=>p.id===s.programId)))return false;try{assertDutyProgram({config,staffId,schedule:s,date:dutyProgramDate(s,duty),yearId:ctx.yearId,now});return true;}catch{return false;}});
+ const schedules=(ctx.master.dailySchedules||[]).filter(s=>{if(!naqibProgramKind(s,(ctx.master.programs||[]).find(p=>p.id===s.programId)))return false;try{assertDutyProgram({config,staffId,schedule:s,date:dutyProgramDate(s,duty),yearId:ctx.yearId,now:includeUpcoming?Math.max(now,Date.parse(`${dutyProgramDate(s,duty)}T${s.startTime}:00+08:00`)):now});return true;}catch{return false;}});
  return {config,staffId,duty,schedules};
 }
 export async function checkDutyWrite(ctx,programId,date){

@@ -39,7 +39,7 @@ export function dutyUpdatePatch(pkg,staff,users,schedules,programMaster={}){
  return patch;
 }
 export async function renderNaqibDutyUpdate(host,session){
- host.innerHTML='<h3>Piket Naqib & Naqibah</h3><p>Putri: 00.00–08.00 Alfi & Wanda; 08.00–16.00 Anggi & Nurul; 16.00–24.00 Roqyal & Fitrah. Putra: 00.00–08.00 Dai; 08.00–16.00 Nopan; 16.00–24.00 Yusuf. Semua waktu WITA. Presensi/laporan dibatasi pada Tahajjud, salat wajib, piket kebersihan, dan apel transisi pondok–formal yang sudah memiliki jadwal. Program mengikuti jam mulai. Role Naqib putra lainnya dinonaktifkan; role lainnya dipertahankan.</p><button class="btn btn-primary">Terapkan Piket Naqib / Naqibah</button><p role="status"></p><a href="accounts.html">Periksa akun Wanda & Fitrah di Manajemen Akun</a>';
+ host.innerHTML='<h3>Piket Naqib & Naqibah</h3><p>Putri: 00.00–08.00 Alfi & Wanda; 08.00–16.00 Anggi & Nurul; 16.00–24.00 Roqyal & Fitrah. Putra: 00.00–08.00 Dai; 08.00–16.00 Nopan; 16.00–24.00 Yusuf. Semua waktu WITA. Presensi/laporan mengikuti program yang telah diterapkan melalui paket Program Presensi Naqib. Program mengikuti jam mulai. Role Naqib putra lainnya dinonaktifkan; role lainnya dipertahankan.</p><button class="btn btn-primary">Terapkan Piket Naqib / Naqibah</button><p role="status"></p><a href="accounts.html">Periksa akun Wanda & Fitrah di Manajemen Akun</a>';
  const b=host.querySelector('button'),status=host.querySelector('[role=status]');b.onclick=async()=>{b.disabled=true;try{
  const response=await fetch('../seed/imports/naqib-duty.json');if(!response.ok)throw Error('Paket piket tidak tersedia.');const pkg=await response.json();
  const [staff,users,schedules,programs]=await Promise.all(['staff','users','schedules/daily','programs'].map(getNode));
