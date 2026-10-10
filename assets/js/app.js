@@ -1,3 +1,4 @@
+import {decorateNaqibPage} from './naqib-home.js';
 import {renderStudentPermits} from './student-permits.js';
 import {renderTeacherLeave} from './teacher/leave.js';
 import {decorateManagement} from './management-layout.js';
@@ -161,6 +162,7 @@ async function renderRoute() {
     else if(activeRole==='mentor_tahsin_tahfiz'&&currentRoute==='quran')await renderTeacherQuran(ctx);
     else if((activeRole==='guru_mapel'||activeRole==='mentor_tahsin_tahfiz'&&['teacher-attendance','student-attendance'].includes(currentRoute))&&TEACHER_ROUTES[currentRoute])await TEACHER_ROUTES[currentRoute](ctx);
     else await routes[currentRoute](ctx);
+    if(activeRole==='naqib'&&currentRoute.startsWith('naqib-'))decorateNaqibPage(ctx);
     if(currentRoute.startsWith('management-'))decorateManagement(ctx);
   } catch(error) {
     if(version===renderVersion)mount.innerHTML=`<div class="empty-state error-state"><strong>Gagal memuat halaman</strong><p>${escapeHtml(error.message||String(error))}</p><button type="button" class="btn btn-secondary" id="retryRoute">Coba Lagi</button></div>`;

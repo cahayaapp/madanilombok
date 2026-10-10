@@ -1,3 +1,4 @@
+import {renderNaqibHome} from '../naqib-home.js';
 import {mountHomeRoleSwitcher} from '../home-role-switcher.js';
 import {renderManagementHome} from '../management-layout.js';
 import {renderHealthHome} from '../health.js';
@@ -21,6 +22,7 @@ async function renderHomeContent(ctx,items) {
   if(role==='guru_wali')return renderMentorHome(ctx);
   if(role==='mentor_tahsin_tahfiz')return renderTahfizHome(ctx);
   if(role==='guru_mapel')return renderTeacherHome(ctx);
+  if(role==='naqib')return renderNaqibHome(ctx,items);
   if(role==='wali_santri') return renderParentHome(ctx);
   if(role==='kasir') return renderFinanceDashboard(ctx);
   const name=ctx.session.profile.displayName||ctx.session.profile.name||'Pengguna';
