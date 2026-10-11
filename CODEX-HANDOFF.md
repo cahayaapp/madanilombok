@@ -404,3 +404,9 @@ Pilihan program dan asrama memakai dua kolom dengan tinggi sisa viewport sampai 
 - Checkbox role membaca role/roles/roleFlags lama, bukan roleFlags saja. Edit mempertahankan role utama yang masih dipilih dan scope penugasan role yang dipertahankan.
 - Akun lama milik Administrator tetap memerlukan delegasi managementOwnerUid; akses pimpinan/keuangan tidak dapat diambil alih. Ini bukan perluasan rules produksi.
 - 19 targeted model/repository/UI tests passed, syntax checks passed. SW v86. Publikasi kode masih perlu push; Git terminal sebelumnya belum memiliki kredensial.
+
+## 11 Oktober — kepala unit mengelola akun unit sendiri
+- Pengguna menegaskan hak pengelolaan dalam unit masing-masing. Akun operasional tertaut SDM dalam scope tidak lagi memerlukan delegasi managementOwnerUid sebelumnya. UID/SDM/email akun lama tidak dapat diganti untuk mengambil alih akun unit lain.
+- Akun lintas unit dan role Admin/pimpinan/keuangan tetap dilindungi. SDM sekolah harus memiliki satu unit eksplisit; SDM asrama mengikuti gender. Tidak memberikan role Admin global kepada kepala unit.
+- Referensi scope penugasan lama dipertahankan; referensi baru melalui payload akun ditolak, gunakan menu penempatan.
+- 45 tes terkait lulus; syntax/diff bersih. Firebase dry-run valid dan deployment users/$uid berhasil. Cabang produksi lain dipertahankan dari snapshot terbaru. Paket /tmp/madani-unit-account.rules.json; backup /tmp/madani-unit-account-before.json. Belum uji perubahan role akun nyata melalui UI. SW v87; perubahan antarmuka perlu publikasi Git.

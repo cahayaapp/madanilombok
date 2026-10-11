@@ -1,11 +1,11 @@
-import {staffRoles} from './leadership-data-model.js';
+import {staffRoles,inDataScope} from './leadership-data-model.js';
 import {ROLE_LABELS} from './permissions.js';
 import {escapeHtml as e} from './utils.js';
 export async function editLeadershipAccount({root,scope,staff,users,commit,refresh}){
  const accounts=users.filter(u=>u.staffId===staff.id);
  if(accounts.length>1)throw Error('Personil memiliki beberapa akun. Administrator perlu memastikan akun yang dipakai.');
  const current=accounts[0];
- if(current&&current.managementOwnerUid!==scope.uid)throw Error('Akun personil ini dikelola Administrator. Administrator perlu menyerahkan pengelolaan akun ini kepada Anda sebelum role-nya dapat diubah.');
+ if(!inDataScope('staff',staff,scope))throw Error('Personil berada di luar unit kewenangan Anda.');
  const allowed=staffRoles(scope);const priorRoles=current?[...new Set([current.role,...(Array.isArray(current.roles)?current.roles:[]),...Object.keys(current.roleFlags||{}).filter(k=>current.roleFlags[k])].filter(Boolean))]:[];if(priorRoles.some(r=>!allowed.includes(r)))throw Error('Akun ini memiliki role di luar kewenangan unit. Pengelolaannya tetap melalui Administrator.');
  const dialog=root.querySelector('dialog'),form=dialog.querySelector('form');form.querySelector('[type=submit]').textContent=current?'Simpan Akun & Role':'Buat Akun';
  dialog.querySelector('[data-title]').textContent=`Akun & Role · ${staff.name}`;

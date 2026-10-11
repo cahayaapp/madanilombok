@@ -39,6 +39,10 @@ test('delegated role scopes accept only the assigned unit, known fields and oper
  const rule=rules.users.$uid.roleScopes.$role['.validate'];
  assert.equal(at(rule,'roleScopes/guru_mapel'),true);
  profile.roleScopes.guru_mapel.unitIds=['SMP'];assert.equal(at(rule,'roleScopes/guru_mapel'),false);
- profile.roleScopes.guru_mapel.unitIds=['SD'];profile.roleScopes.guru_mapel.classIds=['foreign'];assert.equal(at(rule,'roleScopes/guru_mapel'),false);
+ profile.roleScopes.guru_mapel.unitIds=['SD'];profile.roleScopes.guru_mapel.classIds=['foreign'];assert.equal(at(rule,'roleScopes/guru_mapel'),true); // Child validators reject newly introduced references.
+ assert.equal(run(rules.users.$uid.roleScopes.$role.classIds.$index['.validate'],{old:'existing',next:'foreign'}),false);
+ assert.equal(run(rules.users.$uid.roleScopes.$role.classIds.$index['.validate'],{old:'existing',next:'existing'}),true);
  assert.equal(at(rules.users.$uid.roleScopes.$role.$field['.validate'],'roleScopes/guru_mapel','guru_mapel','studentAccess'),false);
 });
+
+test('own-unit existing operational account needs no owner handoff; staff swapping and privileged takeover fail',()=>{const p={managementOwnerUid:'a',managementUnitId:'SD',managementGender:'',staffId:'t',email:'t@example.test',role:'guru_mapel',roleFlags:{guru_mapel:true},roles:['guru_mapel']}; const rule=rules.users.$uid['.write']; assert.equal(run(rule,{old:{...p,managementOwnerUid:'admin'},next:p}),true);assert.equal(run(rule,{old:{...p,staffId:'foreign'},next:p}),false);assert.equal(run(rule,{old:{...p,role:'director',roleFlags:{director:true}},next:p}),false);});
