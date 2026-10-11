@@ -68,3 +68,7 @@ test('latest shifts own 00:00, 08:00, 16:00 boundaries and close at midnight',()
  }
  assert.equal(dutyWindow(config,'AMD-SDM-0084',at('23:59')).time,'16.00–24.00');
 });
+test('upcoming attendance can be opened within own shift, while writes and other shifts remain restricted',()=>{
+ const args={config:cfg,staffId:'a',schedule:{id:'p',academicYearId:'y',startTime:'07:00',day:'Setiap Hari',genderScope:'L'},date:'2026-10-06',yearId:'y',now:at('06:00')};
+ assert.ok(assertDutyProgram({...args,allowUpcoming:true}));assert.throws(()=>assertDutyProgram(args),/belum dimulai/);assert.throws(()=>assertDutyProgram({...args,allowUpcoming:true,now:at('12:00')}),/luar jam/);assert.throws(()=>assertDutyProgram({...args,allowUpcoming:true,schedule:{...args.schedule,genderScope:'P'}}));
+});

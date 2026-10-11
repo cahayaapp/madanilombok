@@ -9,7 +9,7 @@ export function dutyWindow(config,staffId,now=Date.now()){
  return {...assignment,...shift,startAt:start,endAt:end,activeNow:now>=start&&now<end};
 }
 export function dutyProgramDate(schedule,window){return new Date(window.startAt+(minutes(schedule.startTime)<window.start?86400000:0)+28800000).toISOString().slice(0,10);}
-export function assertDutyProgram({config,staffId,schedule,date,yearId,now=Date.now()}){
+export function assertDutyProgram({config,staffId,schedule,date,yearId,now=Date.now(),allowUpcoming=false}){
  const duty=dutyWindow(config,staffId,now);
  if(!duty.activeNow)throw Error(`Di luar jam piket Anda (${duty.time} WITA).`);
  if(!schedule||schedule.status==='inactive'||schedule.academicYearId!==yearId||!['mixed',duty.gender,undefined,''].includes(schedule.genderScope))throw Error('Program tidak termasuk jadwal asrama Anda.');
@@ -20,6 +20,6 @@ export function assertDutyProgram({config,staffId,schedule,date,yearId,now=Date.
  const programAt=Date.parse(`${date}T00:00:00+08:00`)+start*60000;
  const day=localClock(new Date(programAt)).day;
  if(schedule.day!=='Setiap Hari'&&(schedule.day==='Ahad'?'Minggu':schedule.day)!==day)throw Error('Program tidak dijadwalkan pada hari ini.');
- if(programAt>now)throw Error('Program belum dimulai.');
+ if(programAt>now&&!allowUpcoming)throw Error('Program belum dimulai.');
  return {dutyShiftId:duty.shiftId,dutyStartAt:duty.startAt,dutyEndAt:duty.endAt,genderScope:duty.gender,staffId,dailyScheduleId:schedule.id,programStartAt:programAt};
 }

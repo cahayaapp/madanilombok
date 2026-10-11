@@ -8,10 +8,10 @@ export async function loadDuty(ctx,{includeUpcoming=false}={}){
  const schedules=(ctx.master.dailySchedules||[]).filter(s=>{if(!naqibProgramKind(s,(ctx.master.programs||[]).find(p=>p.id===s.programId)))return false;try{assertDutyProgram({config,staffId,schedule:s,date:dutyProgramDate(s,duty),yearId:ctx.yearId,now:includeUpcoming?Math.max(now,Date.parse(`${dutyProgramDate(s,duty)}T${s.startTime}:00+08:00`)):now});return true;}catch{return false;}});
  return {config,staffId,duty,schedules};
 }
-export async function checkDutyWrite(ctx,programId,date){
+export async function checkDutyWrite(ctx,programId,date,{allowUpcoming=false}={}){
  // Re-read assignment and schedule when saving, so an open form cannot extend a shift.
  const config=await getNode('settings/naqibDuty'),staffId=ctx.session.profile.staffId;
  const [schedules,programs]=await Promise.all([getNode('schedules/daily'),getNode('programs')]);
- for(const [id,s]of Object.entries(schedules||{}))if(s.programId===programId&&naqibProgramKind(s,programs?.[programId])){try{return assertDutyProgram({config,staffId,schedule:{id,...s},date,yearId:ctx.yearId});}catch{}}
+ for(const [id,s]of Object.entries(schedules||{}))if(s.programId===programId&&naqibProgramKind(s,programs?.[programId])){try{return assertDutyProgram({config,staffId,schedule:{id,...s},date,yearId:ctx.yearId,allowUpcoming});}catch{}}
  throw Error('Presensi/laporan ditolak: program, tanggal, atau waktu tidak sesuai piket aktif Anda. Muat ulang jadwal piket.');
 }
