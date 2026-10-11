@@ -1,3 +1,4 @@
+import {renderLeadershipData} from '../leadership-data.js';
 import {renderHomeroomCases} from '../homeroom-cases.js';
 import {schoolCaseRoute} from '../school-case-routing.js';
 import {renderAccountProfile} from '../profile.js';
@@ -162,6 +163,7 @@ export async function renderManagementKpi(ctx){
  ctx.root.innerHTML=pageHeader('KPI & Evidence Manajemen','Rekap siklus temuan dalam scope; tidak mengubah penilaian personel secara otomatis.')+`<div class="portal-metrics">${metric('Temuan',String(rows.length),'Evidence tercatat')}${metric('Selesai',String(rows.filter(r=>r.status==='RESOLVED').length),'Setelah evaluasi','cyan')}${metric('Menunggu Evaluasi',String(rows.filter(r=>r.status==='EVALUATION').length),'Perlu verifikasi','coral')}${metric('Dieskalasi',String(rows.filter(r=>r.status==='ESCALATED').length),'Memerlukan keputusan')}</div>`+panel('Penilaian',`<p class="role-hint">Rekap belum menjadi skor KPI berbobot. Target dan pembobotan mengikuti standar kerja yang disetujui pesantren.</p>`);
 }
 export const WORKSPACE_ROUTES={
+ 'management-data':renderLeadershipData,
  "homeroom-cases":renderHomeroomCases,
  'management-reports':renderManagementReports,'work-followups':renderWorkFollowups,
  'management-residents':renderResidentStaff,'management-worship':renderStaffWorship,

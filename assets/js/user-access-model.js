@@ -46,7 +46,7 @@ export function applyUserDraft(current,d,master,actorUid,targetUid,eventId){
   return [role,s];
  }));
  const children=scopes.wali_santri?.studentIds||[];
- const next={...current,name:d.name.trim(),staffId:d.staffId||'',roles:[...new Set(d.roles)],role:d.defaultRole,defaultRole:d.defaultRole,roleFlags:Object.fromEntries(d.roles.map(r=>[r,true])),roleScopes:scopes,studentIds:children,studentId:children[0]||'',studentAccess:Object.fromEntries(children.map(id=>[id,true])),active:d.active,accessRevoked:false,accessVersion:(current.accessVersion||0)+1};
+ const next={...current,managementOwnerUid:d.managementOwnerUid??current.managementOwnerUid??'',name:d.name.trim(),staffId:d.staffId||'',roles:[...new Set(d.roles)],role:d.defaultRole,defaultRole:d.defaultRole,roleFlags:Object.fromEntries(d.roles.map(r=>[r,true])),roleScopes:scopes,studentIds:children,studentId:children[0]||'',studentAccess:Object.fromEntries(children.map(id=>[id,true])),active:d.active,accessRevoked:false,accessVersion:(current.accessVersion||0)+1};
  if(!current.accessManagedAt)next.legacyRoleData={role:current.role||'',roles:current.roles||[],roleFlags:current.roleFlags||{},roleScopes:current.roleScopes||{}};
  next.accessManagedAt={'.sv':'timestamp'};
  next.accessHistory={...current.accessHistory,[eventId]:{action:'save_access',actorUid,at:{'.sv':'timestamp'},roles:next.roles,defaultRole:next.defaultRole,active:next.active}};
