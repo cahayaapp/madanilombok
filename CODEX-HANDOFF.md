@@ -398,3 +398,9 @@ Pilihan program dan asrama memakai dua kolom dengan tinggi sisa viewport sampai 
 - Form mempertahankan pembina/Wali Kelas lama meski SDM lintas unit di luar CRUD personil; relasi tidak diam-diam berubah menjadi kosong. Guru Wali dengan siswa binaan dalam scope tetap tampil beserta jumlah binaan. Penambahan penugasan baru tetap memakai pemeriksaan scope.
 - Transaksi menggunakan listener aktif hingga selesai, memperbaiki konflik palsu akibat cache kosong. Penyimpanan kelas 7 Putra melalui sesi Tuzri di pratinjau VS Code berhasil ke Firebase produksi (nama, Wali Kelas, dan anggota dipertahankan). Bukti `/tmp/madani-tuzri-save-success.png`. Bukan klaim semua operasi CRUD sudah diuji produksi.
 - 51 tes lokal lulus: leadership model/UI/repository, role contracts/rendering, access rules; JS syntax dan diff whitespace bersih. SW v85.
+
+## 11 Oktober — pintu masuk akun personil
+- Data Personil/Pengurus menampilkan Tambah Personil dan Tambah Akun secara terpisah. Tambah Akun memilih SDM aktif dalam scope yang belum punya login; baris membedakan Buat Akun / Atur Akun & Role. Pembuatan memakai alur secondary Auth yang sudah ada; tidak membuat akun produksi selama pengujian.
+- Checkbox role membaca role/roles/roleFlags lama, bukan roleFlags saja. Edit mempertahankan role utama yang masih dipilih dan scope penugasan role yang dipertahankan.
+- Akun lama milik Administrator tetap memerlukan delegasi managementOwnerUid; akses pimpinan/keuangan tidak dapat diambil alih. Ini bukan perluasan rules produksi.
+- 19 targeted model/repository/UI tests passed, syntax checks passed. SW v86. Publikasi kode masih perlu push; Git terminal sebelumnya belum memiliki kredensial.
