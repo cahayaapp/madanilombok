@@ -1,0 +1,8 @@
+import test from 'node:test';import assert from 'node:assert/strict';import vm from 'node:vm';import {readFileSync} from 'node:fs';
+test('saving a searched room preserves occupants hidden by the search',async()=>{
+ const source=readFileSync(new URL('../assets/js/admin.js',import.meta.url),'utf8');const code=source.slice(source.indexOf('async function renderStudentPicker('),source.indexOf('\nfunction renderImport('));
+ const nodes=Object.fromEntries(['placementYear','placementTarget','pickerSearch','savePlacement','pickerTitle','pickerMeta','studentCheckList'].map(k=>['#'+k,{value:k==='placementYear'?'year':k==='placementTarget'?'room':k==='pickerSearch'?'alice':'',addEventListener(){}}]));
+ const students=[{id:'a',name:'Alice',gender:'P',boardingStatus:'boarding',status:'active'},{id:'b',name:'Bobbi',gender:'P',boardingStatus:'boarding',status:'active'}],assigned=[],removed=[];
+ const c=vm.createContext({cache:{students,rooms:[{id:'room',dormitoryId:'d'}],dormitories:[{id:'d',gender:'P'}]},session:{user:{uid:'admin'}},$:k=>nodes[k],$$:()=>[],getRoomAssignments:async()=>({a:{studentId:'a',roomId:'room'},b:{studentId:'b',roomId:'room'}}),relationLabel:()=>'',escapeHtml:x=>x,assignRoom:async(y,id)=>assigned.push(id),unassignRoom:async(y,id)=>removed.push(id),toast:()=>{}});
+ vm.runInContext('let placementSelection=null,placementRequest=0;'+code,c);await c.renderStudentPicker('room',students);assert.match(nodes['#studentCheckList'].innerHTML,/Alice/);assert.doesNotMatch(nodes['#studentCheckList'].innerHTML,/Bobbi/);await c.savePlacement('room');assert.deepEqual(assigned.sort(),['a','b']);assert.deepEqual(removed,[]);
+});

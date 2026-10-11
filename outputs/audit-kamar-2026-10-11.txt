@@ -1,0 +1,28 @@
+AUDIT PENEMPATAN KAMAR — 11 OKTOBER 2026
+Acuan: data santri perkamar.xlsx, gambar kamar putra, tabel kamar putri terbaru, dan konfirmasi identitas pengguna.
+
+DITERAPKAN LIVE
+16 penghuni Makkah I dari daftar sumber dipulihkan dan dibaca ulang dari server. Penghuni yang sudah tercatat, Lulu' Amelina, tetap dipertahankan (tidak tercantum pada tabel terbaru; perlu penegasan jika harus dipindahkan).
+
+TEMUAN
+- Pembaruan identitas/kelas siswa tidak otomatis mengisi penempatan kamar.
+- Dinda Cahyati aktif di master tetapi jenis kelamin dan status asrama kosong, sehingga tidak masuk pilihan penghuni kamar.
+- Tombol simpan penempatan lama mengambil centang yang sedang terlihat saja. Penggunaan pencarian dapat melepas penghuni yang tersembunyi. Perbaikan kode sudah disiapkan, belum dipublikasikan.
+
+NAMA PUTRI BERSTATUS ASRAMA YANG TERBACA BELUM TERHUBUNG KE KAMAR AKTIF
+SD: Faradiba Satria Nugraha; Hafiza Fadila Zahra; Syaima Atqiya; Aisyah Nuha Zahira; Feby Efrillia; Hilya Nurul Azkia; Najiha Amalina; Hanifa Humaera Salsabila; Sabila Azizah; Salwa Salsabila.
+SMP: Haiba Fitri Tufaila; Hanna Syakira.
+SMK: Asry Ayu Arditha; Hidayatul Nazura; Ria Qistina; Syarfana Ifa Adriana.
+Catatan: Feby Efrillia belum disamakan dengan Feby Aprilia; Hidayatul Nazura belum disamakan dengan Huriatun Nazura tanpa konfirmasi identitas. Ini hasil pembacaan daftar penempatan, bukan pernyataan bahwa seluruh siswa tanpa metadata asrama sudah tercakup.
+
+PERBAIKAN TERKONFIRMASI YANG DISIAPKAN DALAM PAKET AUDIT
+- Dinda Cahyati → Makkah I (lengkapi metadata yang kosong).
+- Fazia Fitri, Restu Indira Apridarsi, Lukiana Jannatul Makwa → Makkah III.
+- Tazia Olivia → Pustaka I.
+- Azka Nabila → GEMA I Putri.
+- Irwan Taufiq Azhar, Muh. Razaq Afrianto → Cordova 2.
+- Bain Azziqra (master Bain Aziqra) → GEMA Gedung Cairo.
+Paket memeriksa ulang 139 nama terkonfirmasi, mencocokkan identitas dengan master aktif, mengisi yang kosong/nonaktif, dan tidak menimpa kamar aktif yang berbeda. Belum dijalankan live; menunggu publikasi.
+
+NAMA SUMBER YANG TETAP PERLU PENC0COKAN/PEMERIKSAAN
+Feby Aprilia; Huriatun Nazura; Allamul Muhlisah; Aliyah Afifah Farzana; Aaliyah Afifah. Haya Sofia tercantum pada sumber Makkah III tetapi tidak terlihat pada daftar penghuni aktif yang dibaca; perlu periksa status master, bukan membuat siswa baru.

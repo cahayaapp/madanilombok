@@ -1,0 +1,1396 @@
+{
+  "id": "room-reconciliation-20261011",
+  "academicYearId": "TA-2026-2027-GANJIL",
+  "rows": [
+    {
+      "studentId": "AMD-SMP-0009",
+      "name": "ANNISA",
+      "nisn": "0136864257",
+      "unitId": "UNIT-SMP",
+      "gender": "P",
+      "roomId": "ROOM-PTRI-M1",
+      "source": "data santri perkamar.xlsx",
+      "sourceName": "Annisa"
+    },
+    {
+      "studentId": "AMD-SMP-0008",
+      "name": "ANINDYA PRAMUSITA",
+      "nisn": "0132952914",
+      "unitId": "UNIT-SMP",
+      "gender": "P",
+      "roomId": "ROOM-PTRI-M1",
+      "source": "data santri perkamar.xlsx",
+      "sourceName": "Anindya pramusita"
+    },
+    {
+      "studentId": "AMD-SMP-0007",
+      "name": "ANINDITA SALSABILA",
+      "nisn": "0138883888",
+      "unitId": "UNIT-SMP",
+      "gender": "P",
+      "roomId": "ROOM-PTRI-M1",
+      "source": "data santri perkamar.xlsx",
+      "sourceName": "Anindita salsabila"
+    },
+    {
+      "studentId": "AMD-SMP-0037",
+      "name": "Husnul khotimah",
+      "nisn": "3149126132",
+      "unitId": "UNIT-SMP",
+      "gender": "P",
+      "roomId": "ROOM-PTRI-M1",
+      "source": "data santri perkamar.xlsx",
+      "sourceName": "Khusnul khotimah"
+    },
+    {
+      "studentId": "AMD-SMP-0086",
+      "name": "SALSABILA",
+      "nisn": "0145383398",
+      "unitId": "UNIT-SMP",
+      "gender": "P",
+      "roomId": "ROOM-PTRI-M1",
+      "source": "data santri perkamar.xlsx",
+      "sourceName": "Salsabila"
+    },
+    {
+      "studentId": "AMD-SMP-0043",
+      "name": "KHAZANA RIDHA NAILA",
+      "nisn": "0141022520",
+      "unitId": "UNIT-SMP",
+      "gender": "P",
+      "roomId": "ROOM-PTRI-M1",
+      "source": "data santri perkamar.xlsx",
+      "sourceName": "Khazzana ridha naila"
+    },
+    {
+      "studentId": "AMD-SMP-0098",
+      "name": "ZEZEE AQILLA MOUZA",
+      "nisn": "0142118725",
+      "unitId": "UNIT-SMP",
+      "gender": "P",
+      "roomId": "ROOM-PTRI-M1",
+      "source": "data santri perkamar.xlsx",
+      "sourceName": "Zezee aqilla mouza"
+    },
+    {
+      "studentId": "AMD-SMP-0017",
+      "name": "BAIQ FAIQA SALWA WIRADARMA",
+      "nisn": "0141086783",
+      "unitId": "UNIT-SMP",
+      "gender": "P",
+      "roomId": "ROOM-PTRI-M1",
+      "source": "data santri perkamar.xlsx",
+      "sourceName": "Bq.faiqa salwa wiradarma"
+    },
+    {
+      "studentId": "AMD-SMP-0070",
+      "name": "NAHERA DINDA SALINA",
+      "nisn": "3148467033",
+      "unitId": "UNIT-SMP",
+      "gender": "P",
+      "roomId": "ROOM-PTRI-M1",
+      "source": "data santri perkamar.xlsx",
+      "sourceName": "Nahera dinda Salina"
+    },
+    {
+      "studentId": "AMD-SMP-0016",
+      "name": "BAIQ ATIKA ZAHRA RATIFA",
+      "nisn": "3135519594",
+      "unitId": "UNIT-SMP",
+      "gender": "P",
+      "roomId": "ROOM-PTRI-M1",
+      "source": "data santri perkamar.xlsx",
+      "sourceName": "Bq.Atika zahra ratifa"
+    },
+    {
+      "studentId": "AMD-SMP-0081",
+      "name": "RABIATUL AINI",
+      "nisn": "0131414832",
+      "unitId": "UNIT-SMP",
+      "gender": "P",
+      "roomId": "ROOM-PTRI-M1",
+      "source": "data santri perkamar.xlsx",
+      "sourceName": "Rabiatul Aini"
+    },
+    {
+      "studentId": "AMD-SMP-0101",
+      "name": "DINDA CAHYATI",
+      "nisn": "",
+      "unitId": "UNIT-SMP",
+      "gender": "P",
+      "roomId": "ROOM-PTRI-M1",
+      "source": "data santri perkamar.xlsx",
+      "sourceName": "Dinda cahyati"
+    },
+    {
+      "studentId": "AMD-SMP-0011",
+      "name": "AQILA MEDINA AZZAHRA",
+      "nisn": "3146402753",
+      "unitId": "UNIT-SMP",
+      "gender": "P",
+      "roomId": "ROOM-PTRI-M1",
+      "source": "data santri perkamar.xlsx",
+      "sourceName": "Aiilla Medina azzahra"
+    },
+    {
+      "studentId": "AMD-SMK-0069",
+      "name": "Sulistiana",
+      "nisn": "3088343526",
+      "unitId": "UNIT-SMK",
+      "gender": "P",
+      "roomId": "ROOM-PTRI-M1",
+      "source": "data santri perkamar.xlsx",
+      "sourceName": "Sulistiana"
+    },
+    {
+      "studentId": "AMD-SMK-0058",
+      "name": "NURI MAOLIYA MARTA",
+      "nisn": "0094109881",
+      "unitId": "UNIT-SMK",
+      "gender": "P",
+      "roomId": "ROOM-PTRI-M1",
+      "source": "data santri perkamar.xlsx",
+      "sourceName": "Nuri Maulida Marta"
+    },
+    {
+      "studentId": "AMD-SMK-0056",
+      "name": "NISA ULHUSNA",
+      "nisn": "0103419068",
+      "unitId": "UNIT-SMK",
+      "gender": "P",
+      "roomId": "ROOM-PTRI-M1",
+      "source": "data santri perkamar.xlsx",
+      "sourceName": "Nisa'ul Husna"
+    },
+    {
+      "studentId": "AMD-SMK-0004",
+      "name": "Aira Juliarti",
+      "nisn": "0094154172",
+      "unitId": "UNIT-SMK",
+      "gender": "P",
+      "roomId": "ROOM-PTRI-M1",
+      "source": "data santri perkamar.xlsx",
+      "sourceName": "Aira juliarti"
+    },
+    {
+      "studentId": "AMD-SMP-0027",
+      "name": "FAYELA SYAHHADATIN KULUBA",
+      "nisn": "3132448341",
+      "unitId": "UNIT-SMP",
+      "gender": "P",
+      "roomId": "ROOM-PTRI-M3",
+      "source": "data santri perkamar.xlsx",
+      "sourceName": "Fayela sahdatin kuluba"
+    },
+    {
+      "studentId": "AMD-SMP-0084",
+      "name": "RIRIN EKAWATI",
+      "nisn": "3134555530",
+      "unitId": "UNIT-SMP",
+      "gender": "P",
+      "roomId": "ROOM-PTRI-M3",
+      "source": "data santri perkamar.xlsx",
+      "sourceName": "Ririn Ekawati"
+    },
+    {
+      "studentId": "AMD-SMP-0099",
+      "name": "Zulfani royya",
+      "nisn": "0133710762",
+      "unitId": "UNIT-SMP",
+      "gender": "P",
+      "roomId": "ROOM-PTRI-M3",
+      "source": "data santri perkamar.xlsx",
+      "sourceName": "Zulfani royal"
+    },
+    {
+      "studentId": "AMD-SMP-0033",
+      "name": "HAYA SHOFIA",
+      "nisn": "0133504091",
+      "unitId": "UNIT-SMP",
+      "gender": "P",
+      "roomId": "ROOM-PTRI-M3",
+      "source": "data santri perkamar.xlsx",
+      "sourceName": "Haya Sofia"
+    },
+    {
+      "studentId": "AMD-SMP-0089",
+      "name": "Septia azira",
+      "nisn": "3137848482",
+      "unitId": "UNIT-SMP",
+      "gender": "P",
+      "roomId": "ROOM-PTRI-M3",
+      "source": "data santri perkamar.xlsx",
+      "sourceName": "Septia azira"
+    },
+    {
+      "studentId": "AMD-SMP-0075",
+      "name": "NUROH",
+      "nisn": "0133833053",
+      "unitId": "UNIT-SMP",
+      "gender": "P",
+      "roomId": "ROOM-PTRI-M3",
+      "source": "data santri perkamar.xlsx",
+      "sourceName": "Nuroh"
+    },
+    {
+      "studentId": "AMD-SMP-0094",
+      "name": "TYAS MAULIA LATIF",
+      "nisn": "0122842857",
+      "unitId": "UNIT-SMP",
+      "gender": "P",
+      "roomId": "ROOM-PTRI-M3",
+      "source": "data santri perkamar.xlsx",
+      "sourceName": "Tyas Maulia Latif"
+    },
+    {
+      "studentId": "AMD-SMP-0091",
+      "name": "SITI MALIKAH",
+      "nisn": "0125817440",
+      "unitId": "UNIT-SMP",
+      "gender": "P",
+      "roomId": "ROOM-PTRI-M3",
+      "source": "data santri perkamar.xlsx",
+      "sourceName": "Siti Malikah"
+    },
+    {
+      "studentId": "AMD-SMP-0079",
+      "name": "PURNAMA NISFATUL LAIL",
+      "nisn": "3125960289",
+      "unitId": "UNIT-SMP",
+      "gender": "P",
+      "roomId": "ROOM-PTRI-M3",
+      "source": "data santri perkamar.xlsx",
+      "sourceName": "Purnama nisfatullail"
+    },
+    {
+      "studentId": "AMD-SMP-0019",
+      "name": "BAIQ LAITANI KUNTU",
+      "nisn": "0129027570",
+      "unitId": "UNIT-SMP",
+      "gender": "P",
+      "roomId": "ROOM-PTRI-M3",
+      "source": "data santri perkamar.xlsx",
+      "sourceName": "Bq. Laitani kuntu"
+    },
+    {
+      "studentId": "AMD-SMP-0090",
+      "name": "SILMI AFIFAH",
+      "nisn": "3121556459",
+      "unitId": "UNIT-SMP",
+      "gender": "P",
+      "roomId": "ROOM-PTRI-M3",
+      "source": "data santri perkamar.xlsx",
+      "sourceName": "Silmi Afifah"
+    },
+    {
+      "studentId": "AMD-SMK-0030",
+      "name": "Herwisda Pratiwi",
+      "nisn": "0119609597",
+      "unitId": "UNIT-SMK",
+      "gender": "P",
+      "roomId": "ROOM-PTRI-M3",
+      "source": "data santri perkamar.xlsx",
+      "sourceName": "Herwisda peratiwi"
+    },
+    {
+      "studentId": "AMD-SMK-0077",
+      "name": "ZAHRA NANDATUL AENI",
+      "nisn": "0099077705",
+      "unitId": "UNIT-SMK",
+      "gender": "P",
+      "roomId": "ROOM-PTRI-M3",
+      "source": "data santri perkamar.xlsx",
+      "sourceName": "Zahra Nahdlatul Aini"
+    },
+    {
+      "studentId": "AMD-SMK-0033",
+      "name": "KAELA KUSNIA",
+      "nisn": "0089270382",
+      "unitId": "UNIT-SMK",
+      "gender": "P",
+      "roomId": "ROOM-PTRI-M3",
+      "source": "data santri perkamar.xlsx",
+      "sourceName": "Kayla kusnia"
+    },
+    {
+      "studentId": "AMD-SMK-0010",
+      "name": "ALENA",
+      "nisn": "0093828455",
+      "unitId": "UNIT-SMK",
+      "gender": "P",
+      "roomId": "ROOM-PTRI-M3",
+      "source": "data santri perkamar.xlsx",
+      "sourceName": "Alena"
+    },
+    {
+      "studentId": "AMD-SMK-0070",
+      "name": "SYAFIRA JULIANANDA KURNIA",
+      "nisn": "0098470213",
+      "unitId": "UNIT-SMK",
+      "gender": "P",
+      "roomId": "ROOM-PTRI-P1",
+      "source": "data santri perkamar.xlsx",
+      "sourceName": "afira julia nanda"
+    },
+    {
+      "studentId": "AMD-SMK-0024",
+      "name": "EVI ELVIA",
+      "nisn": "3097827862",
+      "unitId": "UNIT-SMK",
+      "gender": "P",
+      "roomId": "ROOM-PTRI-P1",
+      "source": "data santri perkamar.xlsx",
+      "sourceName": "Evi Elvia"
+    },
+    {
+      "studentId": "AMD-SMK-0068",
+      "name": "Silvy Wahdiyatun Elena",
+      "nisn": "0104317758",
+      "unitId": "UNIT-SMK",
+      "gender": "P",
+      "roomId": "ROOM-PTRI-P1",
+      "source": "data santri perkamar.xlsx",
+      "sourceName": "Silvi wahdiatun elena"
+    },
+    {
+      "studentId": "AMD-SMP-0040",
+      "name": "KHAERUN NISAQ",
+      "nisn": "0111675128",
+      "unitId": "UNIT-SMP",
+      "gender": "P",
+      "roomId": "ROOM-PTRI-P1",
+      "source": "data santri perkamar.xlsx",
+      "sourceName": "Khairunnisa"
+    },
+    {
+      "studentId": "AMD-SMP-0080",
+      "name": "QYLA ROSADA",
+      "nisn": "0129270920",
+      "unitId": "UNIT-SMP",
+      "gender": "P",
+      "roomId": "ROOM-PTRI-P1",
+      "source": "data santri perkamar.xlsx",
+      "sourceName": "Qila Rosyada"
+    },
+    {
+      "studentId": "AMD-SMP-0068",
+      "name": "MUTAMI FITRI SEVIA",
+      "nisn": "0124685380",
+      "unitId": "UNIT-SMP",
+      "gender": "P",
+      "roomId": "ROOM-PTRI-P1",
+      "source": "data santri perkamar.xlsx",
+      "sourceName": "Mutami Fitri Sephia"
+    },
+    {
+      "studentId": "AMD-SMK-0021",
+      "name": "DEWI SULASTRI",
+      "nisn": "0119373506",
+      "unitId": "UNIT-SMK",
+      "gender": "P",
+      "roomId": "ROOM-PTRI-P1",
+      "source": "data santri perkamar.xlsx",
+      "sourceName": "Dewi Sulastri"
+    },
+    {
+      "studentId": "AMD-SMP-0069",
+      "name": "NADIVA HASNA FADHILA",
+      "nisn": "3114383067",
+      "unitId": "UNIT-SMP",
+      "gender": "P",
+      "roomId": "ROOM-PTRI-P1",
+      "source": "data santri perkamar.xlsx",
+      "sourceName": "Nadhifa Husna Fadila"
+    },
+    {
+      "studentId": "AMD-SMP-0036",
+      "name": "HURIATUN AENA",
+      "nisn": "0113120682",
+      "unitId": "UNIT-SMP",
+      "gender": "P",
+      "roomId": "ROOM-PTRI-P1",
+      "source": "data santri perkamar.xlsx",
+      "sourceName": "Huryatul Aina"
+    },
+    {
+      "studentId": "AMD-SMK-0009",
+      "name": "AKVINA KURNIATIN NAFIS",
+      "nisn": "0081882211",
+      "unitId": "UNIT-SMK",
+      "gender": "P",
+      "roomId": "ROOM-PTRI-P1",
+      "source": "data santri perkamar.xlsx",
+      "sourceName": "akfina kurniatunafis"
+    },
+    {
+      "studentId": "AMD-SMK-0008",
+      "name": "Ajeng Putri Rizki",
+      "nisn": "0106507752",
+      "unitId": "UNIT-SMK",
+      "gender": "P",
+      "roomId": "ROOM-PTRI-P1",
+      "source": "data santri perkamar.xlsx",
+      "sourceName": "Ajeng putri rizky"
+    },
+    {
+      "studentId": "AMD-SMK-0015",
+      "name": "ARIFA MONICA EKARIANTI. J",
+      "nisn": "0085990970",
+      "unitId": "UNIT-SMK",
+      "gender": "P",
+      "roomId": "ROOM-PTRI-P1",
+      "source": "data santri perkamar.xlsx",
+      "sourceName": "Arifah Monica"
+    },
+    {
+      "studentId": "AMD-SMK-0006",
+      "name": "AISYA RAYANIA",
+      "nisn": "0106199310",
+      "unitId": "UNIT-SMK",
+      "gender": "P",
+      "roomId": "ROOM-PTRI-P1",
+      "source": "data santri perkamar.xlsx",
+      "sourceName": "Aisyah Rayania"
+    },
+    {
+      "studentId": "AMD-SMK-0005",
+      "name": "AIRA SANZABILA",
+      "nisn": "0091776947",
+      "unitId": "UNIT-SMK",
+      "gender": "P",
+      "roomId": "ROOM-PTRI-P1",
+      "source": "data santri perkamar.xlsx",
+      "sourceName": "Aira Sanzabila"
+    },
+    {
+      "studentId": "AMD-SMP-0032",
+      "name": "HAURA ZIDNI",
+      "nisn": "0111817406",
+      "unitId": "UNIT-SMP",
+      "gender": "P",
+      "roomId": "ROOM-PTRI-P1",
+      "source": "data santri perkamar.xlsx",
+      "sourceName": "Haura zidni"
+    },
+    {
+      "studentId": "AMD-SMK-0038",
+      "name": "LAYLATUN NUBUAH",
+      "nisn": "0125926997",
+      "unitId": "UNIT-SMK",
+      "gender": "P",
+      "roomId": "ROOM-PTRI-P2",
+      "source": "data santri perkamar.xlsx",
+      "sourceName": "ailatun nubuwwah"
+    },
+    {
+      "studentId": "AMD-SMK-0059",
+      "name": "OLIVIA RAMADANI",
+      "nisn": "0105958509",
+      "unitId": "UNIT-SMK",
+      "gender": "P",
+      "roomId": "ROOM-PTRI-P2",
+      "source": "data santri perkamar.xlsx",
+      "sourceName": "Olivia Ramdani"
+    },
+    {
+      "studentId": "AMD-SMK-0073",
+      "name": "TITIN AGUSTINA",
+      "nisn": "0104057115",
+      "unitId": "UNIT-SMK",
+      "gender": "P",
+      "roomId": "ROOM-PTRI-P2",
+      "source": "data santri perkamar.xlsx",
+      "sourceName": "Titin Agustina"
+    },
+    {
+      "studentId": "AMD-SMK-0055",
+      "name": "NIRMALA",
+      "nisn": "3113149027",
+      "unitId": "UNIT-SMK",
+      "gender": "P",
+      "roomId": "ROOM-PTRI-P2",
+      "source": "data santri perkamar.xlsx",
+      "sourceName": "Nirmala"
+    },
+    {
+      "studentId": "AMD-SMK-0072",
+      "name": "Syifa Ula Sophia",
+      "nisn": "0111822053",
+      "unitId": "UNIT-SMK",
+      "gender": "P",
+      "roomId": "ROOM-PTRI-P2",
+      "source": "data santri perkamar.xlsx",
+      "sourceName": "Syifa ula Sofia"
+    },
+    {
+      "studentId": "AMD-SMP-0018",
+      "name": "BAIQ LAILA SUCI RAMDANI",
+      "nisn": "0119973806",
+      "unitId": "UNIT-SMP",
+      "gender": "P",
+      "roomId": "ROOM-PTRI-P2",
+      "source": "data santri perkamar.xlsx",
+      "sourceName": "Bq. Laila suci Ramdani"
+    },
+    {
+      "studentId": "AMD-SMP-0074",
+      "name": "Nisa Hadana",
+      "nisn": "0116995890",
+      "unitId": "UNIT-SMP",
+      "gender": "P",
+      "roomId": "ROOM-PTRI-P2",
+      "source": "data santri perkamar.xlsx",
+      "sourceName": "Nisa hadana"
+    },
+    {
+      "studentId": "AMD-SMP-0057",
+      "name": "Mona zahira",
+      "nisn": "0113065090",
+      "unitId": "UNIT-SMP",
+      "gender": "P",
+      "roomId": "ROOM-PTRI-P2",
+      "source": "data santri perkamar.xlsx",
+      "sourceName": "Mona Zahira"
+    },
+    {
+      "studentId": "AMD-SMP-0010",
+      "name": "AOLIA",
+      "nisn": "0128649279",
+      "unitId": "UNIT-SMP",
+      "gender": "P",
+      "roomId": "ROOM-PTRI-P2",
+      "source": "data santri perkamar.xlsx",
+      "sourceName": "Aolia"
+    },
+    {
+      "studentId": "AMD-SMK-0065",
+      "name": "Sakina Ulwiya Warahma",
+      "nisn": "0114719131",
+      "unitId": "UNIT-SMK",
+      "gender": "P",
+      "roomId": "ROOM-PTRI-P2",
+      "source": "data santri perkamar.xlsx",
+      "sourceName": "Sakina Aulia"
+    },
+    {
+      "studentId": "AMD-SMP-0067",
+      "name": "MUSDALIFAH",
+      "nisn": "0132635486",
+      "unitId": "UNIT-SMP",
+      "gender": "P",
+      "roomId": "ROOM-PTRI-P2",
+      "source": "data santri perkamar.xlsx",
+      "sourceName": "Muzdalifa"
+    },
+    {
+      "studentId": "AMD-SMK-0022",
+      "name": "Dini Apriani",
+      "nisn": "0088973121",
+      "unitId": "UNIT-SMK",
+      "gender": "P",
+      "roomId": "ROOM-PTRI-P2",
+      "source": "data santri perkamar.xlsx",
+      "sourceName": "Dini Apriani"
+    },
+    {
+      "studentId": "AMD-SMK-0063",
+      "name": "RIDHATUL NAJWI",
+      "nisn": "0086525449",
+      "unitId": "UNIT-SMK",
+      "gender": "P",
+      "roomId": "ROOM-PTRI-P2",
+      "source": "data santri perkamar.xlsx",
+      "sourceName": "Ridatun najwi"
+    },
+    {
+      "studentId": "AMD-SMK-0060",
+      "name": "PUJI SUSANA PUTRI",
+      "nisn": "0098008561",
+      "unitId": "UNIT-SMK",
+      "gender": "P",
+      "roomId": "ROOM-PTRI-P2",
+      "source": "data santri perkamar.xlsx",
+      "sourceName": "Puji Susana Putri"
+    },
+    {
+      "studentId": "AMD-SMK-0054",
+      "name": "Nian Napsani Yunita Nastari",
+      "nisn": "0092082008",
+      "unitId": "UNIT-SMK",
+      "gender": "P",
+      "roomId": "ROOM-PTRI-P2",
+      "source": "data santri perkamar.xlsx",
+      "sourceName": "Nian Nafsani"
+    },
+    {
+      "studentId": "AMD-SMK-0066",
+      "name": "SARTINI",
+      "nisn": "3074852319",
+      "unitId": "UNIT-SMK",
+      "gender": "P",
+      "roomId": "ROOM-PTRI-P2",
+      "source": "data santri perkamar.xlsx",
+      "sourceName": "Sartini"
+    },
+    {
+      "studentId": "AMD-SMP-0005",
+      "name": "Aliyatin Ashri Amanatillah",
+      "nisn": "0119376372",
+      "unitId": "UNIT-SMP",
+      "gender": "P",
+      "roomId": "ROOM-PTRI-GEMA",
+      "source": "data santri perkamar.xlsx",
+      "sourceName": "Aliyatin astri amanatillah"
+    },
+    {
+      "studentId": "AMD-SMK-0020",
+      "name": "BAIQ BELLA KAFFA SYAUMI",
+      "nisn": "0101624841",
+      "unitId": "UNIT-SMK",
+      "gender": "P",
+      "roomId": "ROOM-PTRI-GEMA",
+      "source": "data santri perkamar.xlsx",
+      "sourceName": "Baiq bella Kaffa syaumi"
+    },
+    {
+      "studentId": "AMD-SMP-0034",
+      "name": "HELGA ELVINA IRAWAN",
+      "nisn": "3123491677",
+      "unitId": "UNIT-SMP",
+      "gender": "P",
+      "roomId": "ROOM-PTRI-GEMA",
+      "source": "data santri perkamar.xlsx",
+      "sourceName": "Helga Elvina irawan"
+    },
+    {
+      "studentId": "AMD-SMP-0092",
+      "name": "SITTI BAHIRAH ASHILAH",
+      "nisn": "0121437492",
+      "unitId": "UNIT-SMP",
+      "gender": "P",
+      "roomId": "ROOM-PTRI-GEMA",
+      "source": "data santri perkamar.xlsx",
+      "sourceName": "Sitti bahirah ashilah"
+    },
+    {
+      "studentId": "AMD-SMP-0088",
+      "name": "Sashabila",
+      "nisn": "0123609413",
+      "unitId": "UNIT-SMP",
+      "gender": "P",
+      "roomId": "ROOM-PTRI-GEMA",
+      "source": "data santri perkamar.xlsx",
+      "sourceName": "Sashabila"
+    },
+    {
+      "studentId": "AMD-SMP-0015",
+      "name": "Azkiya Althafunnisa",
+      "nisn": "0128905328",
+      "unitId": "UNIT-SMP",
+      "gender": "P",
+      "roomId": "ROOM-PTRI-GEMA",
+      "source": "data santri perkamar.xlsx",
+      "sourceName": "Azkiya althafunnisa"
+    },
+    {
+      "studentId": "AMD-SMP-0093",
+      "name": "SUJIYANA",
+      "nisn": "0139623167",
+      "unitId": "UNIT-SMP",
+      "gender": "P",
+      "roomId": "ROOM-PTRI-GEMA",
+      "source": "data santri perkamar.xlsx",
+      "sourceName": "Sujiyana"
+    },
+    {
+      "studentId": "AMD-SMP-0100",
+      "name": "Zuraida ulya hazani",
+      "nisn": "0114241957",
+      "unitId": "UNIT-SMP",
+      "gender": "P",
+      "roomId": "ROOM-PTRI-GEMA",
+      "source": "data santri perkamar.xlsx",
+      "sourceName": "Zuraida ulya hazani"
+    },
+    {
+      "studentId": "AMD-SMK-0074",
+      "name": "VIA FAEZATUL HUSNA",
+      "nisn": "0102126246",
+      "unitId": "UNIT-SMK",
+      "gender": "P",
+      "roomId": "ROOM-PTRI-GEMA",
+      "source": "data santri perkamar.xlsx",
+      "sourceName": "Via faezatul husna"
+    },
+    {
+      "studentId": "AMD-SD-0098",
+      "name": "MANGGAR ATHARRAZKA PUTRI SUTRISNO",
+      "nisn": "3165404727",
+      "unitId": "UNIT-SD",
+      "gender": "P",
+      "roomId": "ROOM-PTRI-GEMA",
+      "source": "data santri perkamar.xlsx",
+      "sourceName": "Manggar atharrazka putri sutrisno"
+    },
+    {
+      "studentId": "AMD-SMK-0025",
+      "name": "FIRDATUL ARDILAH",
+      "nisn": "0086448605",
+      "unitId": "UNIT-SMK",
+      "gender": "P",
+      "roomId": "ROOM-PTRI-GEMA",
+      "source": "data santri perkamar.xlsx",
+      "sourceName": "Firdatul ardilah"
+    },
+    {
+      "studentId": "AMD-SMK-0052",
+      "name": "NABIL AL AKBAR ANANDATA",
+      "nisn": "0099128183",
+      "unitId": "UNIT-SMK",
+      "gender": "L",
+      "roomId": "ROOM-PTR-C2",
+      "source": "WhatsApp Image 2026-10-02 at 14.28.36.jpeg",
+      "sourceName": "Nabil Akbar anandata"
+    },
+    {
+      "studentId": "AMD-SMK-0039",
+      "name": "M. NABIL WANNAJIB",
+      "nisn": "0098591397",
+      "unitId": "UNIT-SMK",
+      "gender": "L",
+      "roomId": "ROOM-PTR-C2",
+      "source": "WhatsApp Image 2026-10-02 at 14.28.36.jpeg",
+      "sourceName": "Nabil Wanajib"
+    },
+    {
+      "studentId": "AMD-SMK-0013",
+      "name": "ANAM ABQORI",
+      "nisn": "0093176877",
+      "unitId": "UNIT-SMK",
+      "gender": "L",
+      "roomId": "ROOM-PTR-C2",
+      "source": "WhatsApp Image 2026-10-02 at 14.28.36.jpeg",
+      "sourceName": "Anam Abqori"
+    },
+    {
+      "studentId": "AMD-SMK-0016",
+      "name": "ARMAN MAOLANA",
+      "nisn": "0093279544",
+      "unitId": "UNIT-SMK",
+      "gender": "L",
+      "roomId": "ROOM-PTR-C2",
+      "source": "WhatsApp Image 2026-10-02 at 14.28.36.jpeg",
+      "sourceName": "Arman Maolana"
+    },
+    {
+      "studentId": "AMD-SMK-0023",
+      "name": "DYLAN FAJAR FADLILLAH",
+      "nisn": "0099593788",
+      "unitId": "UNIT-SMK",
+      "gender": "L",
+      "roomId": "ROOM-PTR-C2",
+      "source": "WhatsApp Image 2026-10-02 at 14.28.36.jpeg",
+      "sourceName": "Dilan fajar fadlillah"
+    },
+    {
+      "studentId": "AMD-SMP-0035",
+      "name": "HIZASH NABIL AKBAR",
+      "nisn": "0132621611",
+      "unitId": "UNIT-SMP",
+      "gender": "L",
+      "roomId": "ROOM-PTR-C2",
+      "source": "WhatsApp Image 2026-10-02 at 14.28.36.jpeg",
+      "sourceName": "Hizash Nabil"
+    },
+    {
+      "studentId": "AMD-SMP-0045",
+      "name": "LALU KHALIKURRAHMAN",
+      "nisn": "0149059861",
+      "unitId": "UNIT-SMP",
+      "gender": "L",
+      "roomId": "ROOM-PTR-C2",
+      "source": "WhatsApp Image 2026-10-02 at 14.28.36.jpeg",
+      "sourceName": "L. Khalilurrahman"
+    },
+    {
+      "studentId": "AMD-SMP-0003",
+      "name": "Ahmad Bilal Febrian",
+      "nisn": "0145985513",
+      "unitId": "UNIT-SMP",
+      "gender": "L",
+      "roomId": "ROOM-PTR-C2",
+      "source": "WhatsApp Image 2026-10-02 at 14.28.36.jpeg",
+      "sourceName": "Ahmad Bilal Febrian"
+    },
+    {
+      "studentId": "AMD-SMP-0001",
+      "name": "AFRIZAL PUTRA",
+      "nisn": "0144021721",
+      "unitId": "UNIT-SMP",
+      "gender": "L",
+      "roomId": "ROOM-PTR-C2",
+      "source": "WhatsApp Image 2026-10-02 at 14.28.36.jpeg",
+      "sourceName": "Afrizal putra"
+    },
+    {
+      "studentId": "AMD-SMP-0083",
+      "name": "RIDO HIDAYAT",
+      "nisn": "0144760276",
+      "unitId": "UNIT-SMP",
+      "gender": "L",
+      "roomId": "ROOM-PTR-C2",
+      "source": "WhatsApp Image 2026-10-02 at 14.28.36.jpeg",
+      "sourceName": "Ridho Hidayat"
+    },
+    {
+      "studentId": "AMD-SMP-0062",
+      "name": "MUHAMMAD LATIFUL QOLBI",
+      "nisn": "0148678616",
+      "unitId": "UNIT-SMP",
+      "gender": "L",
+      "roomId": "ROOM-PTR-C2",
+      "source": "WhatsApp Image 2026-10-02 at 14.28.36.jpeg",
+      "sourceName": "Muhammad Latiful qolbi"
+    },
+    {
+      "studentId": "AMD-SMP-0051",
+      "name": "M. JAYADI",
+      "nisn": "0146773962",
+      "unitId": "UNIT-SMP",
+      "gender": "L",
+      "roomId": "ROOM-PTR-C2",
+      "source": "WhatsApp Image 2026-10-02 at 14.28.36.jpeg",
+      "sourceName": "M. Jayadi"
+    },
+    {
+      "studentId": "AMD-SMP-0028",
+      "name": "GILANG AGIF GUNAWAN",
+      "nisn": "3127368999",
+      "unitId": "UNIT-SMP",
+      "gender": "L",
+      "roomId": "ROOM-PTR-C2",
+      "source": "WhatsApp Image 2026-10-02 at 14.28.36.jpeg",
+      "sourceName": "Gilang agif Gunawan"
+    },
+    {
+      "studentId": "AMD-SMP-0059",
+      "name": "MUHAMMAD ASYRAF DANIAL",
+      "nisn": "0141678346",
+      "unitId": "UNIT-SMP",
+      "gender": "L",
+      "roomId": "ROOM-PTR-C2",
+      "source": "WhatsApp Image 2026-10-02 at 14.28.36.jpeg",
+      "sourceName": "M. Asyraf Danyal"
+    },
+    {
+      "studentId": "AMD-SMP-0050",
+      "name": "M. FHERDI HADITYA",
+      "nisn": "0148024633",
+      "unitId": "UNIT-SMP",
+      "gender": "L",
+      "roomId": "ROOM-PTR-C2",
+      "source": "WhatsApp Image 2026-10-02 at 14.28.36.jpeg",
+      "sourceName": "Muhammad Ferdi aditia"
+    },
+    {
+      "studentId": "AMD-SMK-0079",
+      "name": "ZIAD UBAIDILLAH SYARIF",
+      "nisn": "3112435990",
+      "unitId": "UNIT-SMK",
+      "gender": "L",
+      "roomId": "ROOM-PTR-C2",
+      "source": "WhatsApp Image 2026-10-02 at 14.28.36.jpeg",
+      "sourceName": "Ziad Ubaidillah syarif"
+    },
+    {
+      "studentId": "AMD-SMK-0041",
+      "name": "M. PATONI AKBAR",
+      "nisn": "0094566597",
+      "unitId": "UNIT-SMK",
+      "gender": "L",
+      "roomId": "ROOM-PTR-C2",
+      "source": "WhatsApp Image 2026-10-02 at 14.28.36.jpeg",
+      "sourceName": "M. Toni akbar"
+    },
+    {
+      "studentId": "AMD-SMK-0080",
+      "name": "ZUMIROH FASTAWA",
+      "nisn": "0086041232",
+      "unitId": "UNIT-SMK",
+      "gender": "L",
+      "roomId": "ROOM-PTR-C3",
+      "source": "WhatsApp Image 2026-10-02 at 14.28.36.jpeg",
+      "sourceName": "Zumirah Fastawa"
+    },
+    {
+      "studentId": "AMD-SMK-0051",
+      "name": "MUHAMMAD RIDHO",
+      "nisn": "3092778107",
+      "unitId": "UNIT-SMK",
+      "gender": "L",
+      "roomId": "ROOM-PTR-C3",
+      "source": "WhatsApp Image 2026-10-02 at 14.28.36.jpeg",
+      "sourceName": "M. Ridho"
+    },
+    {
+      "studentId": "AMD-SMK-0011",
+      "name": "Alvin Azra Wardana",
+      "nisn": "3092206238",
+      "unitId": "UNIT-SMK",
+      "gender": "L",
+      "roomId": "ROOM-PTR-C3",
+      "source": "WhatsApp Image 2026-10-02 at 14.28.36.jpeg",
+      "sourceName": "Alvin Azra Wardani"
+    },
+    {
+      "studentId": "AMD-SMK-0046",
+      "name": "MUH. HABIB AWALUDDIN",
+      "nisn": "0093552019",
+      "unitId": "UNIT-SMK",
+      "gender": "L",
+      "roomId": "ROOM-PTR-C3",
+      "source": "WhatsApp Image 2026-10-02 at 14.28.36.jpeg",
+      "sourceName": "Habib Awaluddin"
+    },
+    {
+      "studentId": "AMD-SMK-0002",
+      "name": "Adhes Soedirat",
+      "nisn": "0092206161",
+      "unitId": "UNIT-SMK",
+      "gender": "L",
+      "roomId": "ROOM-PTR-C3",
+      "source": "WhatsApp Image 2026-10-02 at 14.28.36.jpeg",
+      "sourceName": "Ades suderat"
+    },
+    {
+      "studentId": "AMD-SMK-0032",
+      "name": "Joni Saputra",
+      "nisn": "0097425357",
+      "unitId": "UNIT-SMK",
+      "gender": "L",
+      "roomId": "ROOM-PTR-C3",
+      "source": "WhatsApp Image 2026-10-02 at 14.28.36.jpeg",
+      "sourceName": "Joni Saputra"
+    },
+    {
+      "studentId": "AMD-SMP-0029",
+      "name": "HABIBURRAHMAN",
+      "nisn": "0079486281",
+      "unitId": "UNIT-SMP",
+      "gender": "L",
+      "roomId": "ROOM-PTR-C3",
+      "source": "WhatsApp Image 2026-10-02 at 14.28.36.jpeg",
+      "sourceName": "Habiburrahman"
+    },
+    {
+      "studentId": "AMD-SMP-0002",
+      "name": "Ahmad Al Bukhori",
+      "nisn": "0122685651",
+      "unitId": "UNIT-SMP",
+      "gender": "L",
+      "roomId": "ROOM-PTR-C3",
+      "source": "WhatsApp Image 2026-10-02 at 14.28.36.jpeg",
+      "sourceName": "Ahmad Bukhori"
+    },
+    {
+      "studentId": "AMD-SMP-0049",
+      "name": "M. FAQIH IQRO",
+      "nisn": "3101995122",
+      "unitId": "UNIT-SMP",
+      "gender": "L",
+      "roomId": "ROOM-PTR-C3",
+      "source": "WhatsApp Image 2026-10-02 at 14.28.36.jpeg",
+      "sourceName": "M. Faqih iqro'"
+    },
+    {
+      "studentId": "AMD-SMP-0038",
+      "name": "Irwan Maulana",
+      "nisn": "0117927844",
+      "unitId": "UNIT-SMP",
+      "gender": "L",
+      "roomId": "ROOM-PTR-C3",
+      "source": "WhatsApp Image 2026-10-02 at 14.28.36.jpeg",
+      "sourceName": "Irwan Maulana"
+    },
+    {
+      "studentId": "AMD-SMP-0026",
+      "name": "FAUZI ABDULLAH",
+      "nisn": "0124351392",
+      "unitId": "UNIT-SMP",
+      "gender": "L",
+      "roomId": "ROOM-PTR-C3",
+      "source": "WhatsApp Image 2026-10-02 at 14.28.36.jpeg",
+      "sourceName": "Fauzi Abdullah"
+    },
+    {
+      "studentId": "AMD-SMK-0043",
+      "name": "M. ZAINUL HAMDI SUMAR",
+      "nisn": "0103911906",
+      "unitId": "UNIT-SMK",
+      "gender": "L",
+      "roomId": "ROOM-PTR-C3",
+      "source": "WhatsApp Image 2026-10-02 at 14.28.36.jpeg",
+      "sourceName": "M. Hamdi sumar"
+    },
+    {
+      "studentId": "AMD-SMP-0077",
+      "name": "OKASHYA MUHAWILUR ROYYAN",
+      "nisn": "0137032595",
+      "unitId": "UNIT-SMP",
+      "gender": "L",
+      "roomId": "ROOM-PTR-C3",
+      "source": "WhatsApp Image 2026-10-02 at 14.28.36.jpeg",
+      "sourceName": "OKASHYA MUHAWILUR ROYYAN"
+    },
+    {
+      "studentId": "AMD-SMP-0021",
+      "name": "DIRZA ADRIYAN PRATAMA",
+      "nisn": "0128241569",
+      "unitId": "UNIT-SMP",
+      "gender": "L",
+      "roomId": "ROOM-PTR-C3",
+      "source": "WhatsApp Image 2026-10-02 at 14.28.36.jpeg",
+      "sourceName": "Dirza Ardiyan Pratama"
+    },
+    {
+      "studentId": "AMD-SMP-0064",
+      "name": "MUHAMMAD NAUFAL ALFIARASYIDI",
+      "nisn": "0128163009",
+      "unitId": "UNIT-SMP",
+      "gender": "L",
+      "roomId": "ROOM-PTR-C3",
+      "source": "WhatsApp Image 2026-10-02 at 14.28.36.jpeg",
+      "sourceName": "MUHAMMAD NAUFAL ALFIARASYIDI"
+    },
+    {
+      "studentId": "AMD-SMP-0085",
+      "name": "Rizki Anugrah",
+      "nisn": "0116598970",
+      "unitId": "UNIT-SMP",
+      "gender": "L",
+      "roomId": "ROOM-PTR-C3",
+      "source": "WhatsApp Image 2026-10-02 at 14.28.36.jpeg",
+      "sourceName": "Rizki anugrah"
+    },
+    {
+      "studentId": "AMD-SMP-0065",
+      "name": "MUHAMMAD RIPKI HADI",
+      "nisn": "3126572204",
+      "unitId": "UNIT-SMP",
+      "gender": "L",
+      "roomId": "ROOM-PTR-C3",
+      "source": "WhatsApp Image 2026-10-02 at 14.28.36.jpeg",
+      "sourceName": "MUHAMMAD RIPKI HADI"
+    },
+    {
+      "studentId": "AMD-SMP-0095",
+      "name": "YANDI SATRIA",
+      "nisn": "3126882999",
+      "unitId": "UNIT-SMP",
+      "gender": "L",
+      "roomId": "ROOM-PTR-C3",
+      "source": "WhatsApp Image 2026-10-02 at 14.28.36.jpeg",
+      "sourceName": "Yandi Satria"
+    },
+    {
+      "studentId": "AMD-SMP-0087",
+      "name": "SANDIYAT PRATAMA",
+      "nisn": "0117487677",
+      "unitId": "UNIT-SMP",
+      "gender": "L",
+      "roomId": "ROOM-PTR-C3",
+      "source": "WhatsApp Image 2026-10-02 at 14.28.36.jpeg",
+      "sourceName": "Sandiyat Pratama"
+    },
+    {
+      "studentId": "AMD-SMK-0053",
+      "name": "NAJIH PADIL",
+      "nisn": "0098488155",
+      "unitId": "UNIT-SMK",
+      "gender": "L",
+      "roomId": "ROOM-PTR-GEMA",
+      "source": "WhatsApp Image 2026-10-02 at 14.28.36.jpeg",
+      "sourceName": "Najih Fadil"
+    },
+    {
+      "studentId": "AMD-SMK-0014",
+      "name": "Andreas Dwi Santoso",
+      "nisn": "0103441566",
+      "unitId": "UNIT-SMK",
+      "gender": "L",
+      "roomId": "ROOM-PTR-GEMA",
+      "source": "WhatsApp Image 2026-10-02 at 14.28.36.jpeg",
+      "sourceName": "Andreas Dwi santoso"
+    },
+    {
+      "studentId": "AMD-SMK-0047",
+      "name": "Muh. Nafaz Adil",
+      "nisn": "0101345892",
+      "unitId": "UNIT-SMK",
+      "gender": "L",
+      "roomId": "ROOM-PTR-GEMA",
+      "source": "WhatsApp Image 2026-10-02 at 14.28.36.jpeg",
+      "sourceName": "M. Nafaz Adil"
+    },
+    {
+      "studentId": "AMD-SMK-0049",
+      "name": "MUHAMMAD BASTIAN FAIZ RAMZI",
+      "nisn": "0104822516",
+      "unitId": "UNIT-SMK",
+      "gender": "L",
+      "roomId": "ROOM-PTR-GEMA",
+      "source": "WhatsApp Image 2026-10-02 at 14.28.36.jpeg",
+      "sourceName": "M. Bastian Faiz Ramzi"
+    },
+    {
+      "studentId": "AMD-SMP-0039",
+      "name": "IZZUDDIN DA'I",
+      "nisn": "0116140970",
+      "unitId": "UNIT-SMP",
+      "gender": "L",
+      "roomId": "ROOM-PTR-GEMA",
+      "source": "WhatsApp Image 2026-10-02 at 14.28.36.jpeg",
+      "sourceName": "Izzuddin dai"
+    },
+    {
+      "studentId": "AMD-SMK-0027",
+      "name": "GIBRAN HABIL",
+      "nisn": "0116419375",
+      "unitId": "UNIT-SMK",
+      "gender": "L",
+      "roomId": "ROOM-PTR-GEMA",
+      "source": "WhatsApp Image 2026-10-02 at 14.28.36.jpeg",
+      "sourceName": "Gibran Habil"
+    },
+    {
+      "studentId": "AMD-SMP-0066",
+      "name": "MUHAMMAD ZAKA ROPIQI",
+      "nisn": "0124128547",
+      "unitId": "UNIT-SMP",
+      "gender": "L",
+      "roomId": "ROOM-PTR-GEMA",
+      "source": "WhatsApp Image 2026-10-02 at 14.28.36.jpeg",
+      "sourceName": "Muhammad Zaka ropiqi"
+    },
+    {
+      "studentId": "AMD-SMP-0025",
+      "name": "Fasya Setiawan",
+      "nisn": "0111703487",
+      "unitId": "UNIT-SMP",
+      "gender": "L",
+      "roomId": "ROOM-PTR-GEMA",
+      "source": "WhatsApp Image 2026-10-02 at 14.28.36.jpeg",
+      "sourceName": "Fasya Setiawan"
+    },
+    {
+      "studentId": "AMD-SMP-0078",
+      "name": "PANDI HASANI IBRAHIM",
+      "nisn": "0117215761",
+      "unitId": "UNIT-SMP",
+      "gender": "L",
+      "roomId": "ROOM-PTR-GEMA",
+      "source": "WhatsApp Image 2026-10-02 at 14.28.36.jpeg",
+      "sourceName": "Pandi HASANI IBROHIM"
+    },
+    {
+      "studentId": "AMD-SMP-0044",
+      "name": "LALU ALVIN YULISTIAWAN",
+      "nisn": "0123827203",
+      "unitId": "UNIT-SMP",
+      "gender": "L",
+      "roomId": "ROOM-PTR-GEMA",
+      "source": "WhatsApp Image 2026-10-02 at 14.28.36.jpeg",
+      "sourceName": "Lalu Alvin Yulistiawan"
+    },
+    {
+      "studentId": "AMD-SMP-0082",
+      "name": "Rahmad Ramdani",
+      "nisn": "0119244500",
+      "unitId": "UNIT-SMP",
+      "gender": "L",
+      "roomId": "ROOM-PTR-GEMA",
+      "source": "WhatsApp Image 2026-10-02 at 14.28.36.jpeg",
+      "sourceName": "Rahmad Ramdani"
+    },
+    {
+      "studentId": "AMD-SMP-0054",
+      "name": "M. Sahrul Khori",
+      "nisn": "0123786791",
+      "unitId": "UNIT-SMP",
+      "gender": "L",
+      "roomId": "ROOM-PTR-GEMA",
+      "source": "WhatsApp Image 2026-10-02 at 14.28.36.jpeg",
+      "sourceName": "M. SAHRUL KHORI"
+    },
+    {
+      "studentId": "AMD-SMP-0053",
+      "name": "M. RIDHO RAZALI",
+      "nisn": "3117479236",
+      "unitId": "UNIT-SMP",
+      "gender": "L",
+      "roomId": "ROOM-PTR-GEMA",
+      "source": "WhatsApp Image 2026-10-02 at 14.28.36.jpeg",
+      "sourceName": "M. Ridho Razali"
+    },
+    {
+      "studentId": "AMD-SMP-0046",
+      "name": "LALU MAZID AFANDI",
+      "nisn": "0123535795",
+      "unitId": "UNIT-SMP",
+      "gender": "L",
+      "roomId": "ROOM-PTR-GEMA",
+      "source": "WhatsApp Image 2026-10-02 at 14.28.36.jpeg",
+      "sourceName": "Lalu Mazid APANDI"
+    },
+    {
+      "studentId": "AMD-SMP-0060",
+      "name": "MUHAMMAD HABIB RAHMAN",
+      "nisn": "3127958193",
+      "unitId": "UNIT-SMP",
+      "gender": "L",
+      "roomId": "ROOM-PTR-GEMA",
+      "source": "WhatsApp Image 2026-10-02 at 14.28.36.jpeg",
+      "sourceName": "M. Habib Rahman"
+    },
+    {
+      "studentId": "AMD-SMP-0102",
+      "name": "MUHAMMAD AKBAR",
+      "nisn": "",
+      "unitId": "UNIT-SMP",
+      "gender": "L",
+      "roomId": "ROOM-PTR-GEMA",
+      "source": "WhatsApp Image 2026-10-02 at 14.28.36.jpeg",
+      "sourceName": "M. Akbar"
+    },
+    {
+      "studentId": "AMD-SMK-0076",
+      "name": "ZACKY PRAYOGA FEBRIANSYAH",
+      "nisn": "0119826686",
+      "unitId": "UNIT-SMK",
+      "gender": "L",
+      "roomId": "ROOM-PTR-GEMA",
+      "source": "WhatsApp Image 2026-10-02 at 14.28.36.jpeg",
+      "sourceName": "Zacky Prayoga Febriansyah"
+    },
+    {
+      "studentId": "AMD-SMP-0012",
+      "name": "Asyroruddin",
+      "nisn": "0128737626",
+      "unitId": "UNIT-SMP",
+      "gender": "L",
+      "roomId": "ROOM-PTR-GEMA",
+      "source": "WhatsApp Image 2026-10-02 at 14.28.36.jpeg",
+      "sourceName": "Asroruddin"
+    },
+    {
+      "studentId": "AMD-SMP-0020",
+      "name": "DINUL RIZQIAN ABIFARRIZ",
+      "nisn": "0129890832",
+      "unitId": "UNIT-SMP",
+      "gender": "L",
+      "roomId": "ROOM-PTR-GEMA",
+      "source": "WhatsApp Image 2026-10-02 at 14.28.36.jpeg",
+      "sourceName": "DINUL RIZQIAN ABIFARRIZ"
+    },
+    {
+      "studentId": "AMD-SMP-0041",
+      "name": "Khairil Arfan",
+      "nisn": "0121717069",
+      "unitId": "UNIT-SMP",
+      "gender": "L",
+      "roomId": "ROOM-PTR-GEMA",
+      "source": "WhatsApp Image 2026-10-02 at 14.28.36.jpeg",
+      "sourceName": "Khairil Arfan"
+    },
+    {
+      "studentId": "AMD-SMP-0061",
+      "name": "MUHAMMAD KHOIRUL ANAM",
+      "nisn": "0133916319",
+      "unitId": "UNIT-SMP",
+      "gender": "L",
+      "roomId": "ROOM-PTR-GEMA",
+      "source": "WhatsApp Image 2026-10-02 at 14.28.36.jpeg",
+      "sourceName": "Khairul Anam"
+    },
+    {
+      "studentId": "AMD-SMK-0081",
+      "name": "Tazia Olivia",
+      "nisn": "0093048209",
+      "unitId": "UNIT-SMK",
+      "gender": "P",
+      "roomId": "ROOM-PTRI-P1",
+      "source": "Daftar kamar + konfirmasi identitas pengguna Oktober 2026",
+      "sourceName": "Tazia Olivia"
+    },
+    {
+      "studentId": "AMD-SMK-0082",
+      "name": "Fazia Fitri",
+      "nisn": "",
+      "unitId": "UNIT-SMK",
+      "gender": "P",
+      "roomId": "ROOM-PTRI-M3",
+      "source": "Daftar kamar + konfirmasi identitas pengguna Oktober 2026",
+      "sourceName": "Fazia Fitri"
+    },
+    {
+      "studentId": "AMD-SMK-0083",
+      "name": "Lukiana Jannatul Makwa",
+      "nisn": "",
+      "unitId": "UNIT-SMK",
+      "gender": "P",
+      "roomId": "ROOM-PTRI-M3",
+      "source": "Daftar kamar + konfirmasi identitas pengguna Oktober 2026",
+      "sourceName": "Lukiana Jannatul Makwa"
+    },
+    {
+      "studentId": "AMD-SMK-0084",
+      "name": "Restu Indira Apridarsi",
+      "nisn": "0115794446",
+      "unitId": "UNIT-SMK",
+      "gender": "P",
+      "roomId": "ROOM-PTRI-M3",
+      "source": "Daftar kamar + konfirmasi identitas pengguna Oktober 2026",
+      "sourceName": "Restu Indira Apridarsi"
+    },
+    {
+      "studentId": "AMD-SMK-0085",
+      "name": "Azka Nabila",
+      "nisn": "3117225258",
+      "unitId": "UNIT-SMK",
+      "gender": "P",
+      "roomId": "ROOM-PTRI-GEMA",
+      "source": "Daftar kamar + konfirmasi identitas pengguna Oktober 2026",
+      "sourceName": "Azka Nabila"
+    },
+    {
+      "studentId": "AMD-SMK-0086",
+      "name": "Irwan Taufiq Azhar",
+      "nisn": "0109944256",
+      "unitId": "UNIT-SMK",
+      "gender": "L",
+      "roomId": "ROOM-PTR-C2",
+      "source": "Daftar kamar + konfirmasi identitas pengguna Oktober 2026",
+      "sourceName": "Irwan Taufiq Azhar"
+    },
+    {
+      "studentId": "AMD-SMK-0087",
+      "name": "Muh. Razaq Afrianto",
+      "nisn": "3113920236",
+      "unitId": "UNIT-SMK",
+      "gender": "L",
+      "roomId": "ROOM-PTR-C2",
+      "source": "Daftar kamar + konfirmasi identitas pengguna Oktober 2026",
+      "sourceName": "Muh. Razaq Afrianto"
+    },
+    {
+      "studentId": "AMD-SMK-0018",
+      "name": "BAIN AZIQRA",
+      "nisn": "0103752769",
+      "unitId": "UNIT-SMK",
+      "gender": "L",
+      "roomId": "ROOM-PTR-GEMA",
+      "source": "Gambar kamar GEMA + konfirmasi BAIN AZZIQRA",
+      "sourceName": "Bain azziqra"
+    }
+  ]
+}

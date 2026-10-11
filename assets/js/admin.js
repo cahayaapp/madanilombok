@@ -1,3 +1,4 @@
+import {renderRoomReconciliation} from './room-reconciliation.js';
 import {renderNaqibProgramUpdate} from './naqib-program-update.js';
 import {renderConfirmedUpdates} from './confirmed-updates.js';
 import {renderMorningHalaqahUpdate} from './morning-halaqah-update.js';
@@ -24,6 +25,7 @@ let session;
 let cache = {};
 let currentSection = "dashboard";
 let editState = null;
+let placementSelection=null, placementRequest=0;
 
 const pathMap = {
   "academic-years": "academic_years",
@@ -339,6 +341,7 @@ function exportSection(section){
 }
 
 async function renderPlacement(kind){
+  placementSelection=null;placementRequest++;
   const activeYear=await getCurrentAcademicYearId();
   const years=cache["academic-years"]||[]; const students=(cache.students||[]).filter(s=>s.status==="active");
   const targetSection=kind==="class"?"classes":kind==="room"?"rooms":"groups";
@@ -350,18 +353,23 @@ async function renderPlacement(kind){
 
 async function renderStudentPicker(kind,students){
   const yearId=$("#placementYear").value,targetId=$("#placementTarget").value,search=$("#pickerSearch").value.toLowerCase(); if(!yearId||!targetId){$("#savePlacement").disabled=true;return;}
+  const request=++placementRequest;$("#savePlacement").disabled=true;
   let assignments={}; if(kind==="class")assignments=await getClassAssignments(yearId); else if(kind==="room")assignments=await getRoomAssignments(yearId); else assignments=await getGroupAssignments(yearId,targetId);
+  if(request!==placementRequest)return;
+  const selectionKey=`${kind}/${yearId}/${targetId}`;
+  if(placementSelection?.key!==selectionKey)placementSelection={key:selectionKey,ids:new Set(kind==="group"?Object.keys(assignments):Object.entries(assignments).filter(([,a])=>(kind==="class"?a.classId:a.roomId)===targetId).map(([id])=>id))};
   let filtered=students;
   if(kind==="class"){const cls=(cache.classes||[]).find(x=>x.id===targetId);if(cls?.unitId)filtered=filtered.filter(s=>s.unitId===cls.unitId);}
   if(kind==="room"){const room=(cache.rooms||[]).find(x=>x.id===targetId);const dorm=(cache.dormitories||[]).find(x=>x.id===room?.dormitoryId);if(dorm?.gender)filtered=filtered.filter(s=>s.gender===dorm.gender);filtered=filtered.filter(s=>s.boardingStatus==="boarding");}
   if(search)filtered=filtered.filter(s=>(`${s.name} ${s.studentNo||""}`).toLowerCase().includes(search));
-  const isChecked=s=>kind==="group"?Boolean(assignments[s.id]):kind==="class"?assignments[s.id]?.classId===targetId:assignments[s.id]?.roomId===targetId;
+  const isChecked=s=>placementSelection.ids.has(s.id);
   $("#pickerTitle").textContent=relationLabel(kind==="class"?"classes":kind==="room"?"rooms":"groups",targetId); $("#pickerMeta").textContent=`${filtered.length} santri tersedia`; $("#savePlacement").disabled=false;
   $("#studentCheckList").innerHTML=filtered.length?filtered.map(s=>`<label class="check-card"><input type="checkbox" data-student="${s.id}" ${isChecked(s)?"checked":""}><span><strong>${escapeHtml(s.name)}</strong><small>${escapeHtml(s.studentNo||s.id)} · ${escapeHtml(relationLabel("units",s.unitId))}</small></span></label>`).join(""):`<div class="empty-state" style="grid-column:1/-1">Tidak ada santri sesuai filter.</div>`;
+  $$("#studentCheckList [data-student]").forEach(input=>input.addEventListener("change",()=>{if(input.checked)placementSelection.ids.add(input.dataset.student);else placementSelection.ids.delete(input.dataset.student);}));
 }
 
 async function savePlacement(kind){
-  const yearId=$("#placementYear").value,targetId=$("#placementTarget").value; const checked=new Set($$("[data-student]:checked").map(x=>x.dataset.student));
+  const yearId=$("#placementYear").value,targetId=$("#placementTarget").value; if(placementSelection?.key!==`${kind}/${yearId}/${targetId}`)return; const checked=new Set(placementSelection.ids);
   try{$("#savePlacement").disabled=true; $("#savePlacement").textContent="Menyimpan…";
     if(kind==="class"){
       const existing=await getClassAssignments(yearId); const inTarget=Object.values(existing).filter(a=>a.classId===targetId).map(a=>a.studentId);
@@ -378,7 +386,7 @@ async function savePlacement(kind){
 
 function renderImport(){
   $("#content").innerHTML=`<div class="section-head"><div><h2>Import Data</h2><p>Import massal untuk migrasi data awal Al-Madani. Sistem menampilkan preview sebelum data masuk Firebase.</p></div></div><div id="preparedUpdates" class="stack-list"></div><div class="import-grid"><div class="panel"><div class="panel-head"><h3>Import Santri</h3><a class="btn btn-secondary" href="../templates/template-import-santri.csv" download>Template CSV</a></div><div class="dropzone"><strong>Upload CSV Santri</strong><p class="muted" style="font-size:11px">ID kosong akan dibuat otomatis. unitId harus sesuai master Unit.</p><input type="file" id="studentImportFile" accept=".csv,text/csv"></div><div id="studentImportPreview" class="preview-box"></div></div><div class="panel"><div class="panel-head"><h3>Import SDM</h3><a class="btn btn-secondary" href="../templates/template-import-sdm.csv" download>Template CSV</a></div><div class="dropzone"><strong>Upload CSV SDM</strong><p class="muted" style="font-size:11px">roles dan unitIds dapat dipisahkan dengan tanda |.</p><input type="file" id="staffImportFile" accept=".csv,text/csv"></div><div id="staffImportPreview" class="preview-box"></div></div></div>`;
-  for(const renderUpdate of [renderNaqibProgramUpdate,renderConfirmedUpdates,renderMorningHalaqahUpdate,renderWardaniTransfer,renderSdMentorUpdate,renderNaqibDutyUpdate,renderArabicIdentityUpdate,renderArabicLessonsUpdate,renderStudentIdentityUpdate,renderMentorUpdate,renderGroupTeacherUpdate,renderRoomMetadataUpdate,renderBoardingUpdate,renderDailyUpdate,renderSmkUpdate,renderSdUpdate,renderSmpUpdate]){
+  for(const renderUpdate of [renderRoomReconciliation,renderNaqibProgramUpdate,renderConfirmedUpdates,renderMorningHalaqahUpdate,renderWardaniTransfer,renderSdMentorUpdate,renderNaqibDutyUpdate,renderArabicIdentityUpdate,renderArabicLessonsUpdate,renderStudentIdentityUpdate,renderMentorUpdate,renderGroupTeacherUpdate,renderRoomMetadataUpdate,renderBoardingUpdate,renderDailyUpdate,renderSmkUpdate,renderSdUpdate,renderSmpUpdate]){
     const section=document.createElement("section");section.className="panel";$("#preparedUpdates").append(section);renderUpdate(section,session);
   }
   $("#studentImportFile").addEventListener("change",e=>prepareImport("students",e.target.files[0],"studentImportPreview")); $("#staffImportFile").addEventListener("change",e=>prepareImport("staff",e.target.files[0],"staffImportPreview"));
