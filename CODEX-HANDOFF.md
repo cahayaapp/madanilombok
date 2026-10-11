@@ -372,3 +372,6 @@ User confirms SMP HABIBURRAHMAN AMD-SMP-0029 is incorrect duplicate of SMK Habib
 
 ## 11 October — early Naqib attendance access
 User asks access attendance before program time. Own-shift program cards now open upcoming program/room/student scenes via explicit allowUpcoming read mode. Save still uses strict real-time check and unchanged server rules; notice explains saving starts at scheduled time. Gender/day/shift guards unchanged. Added regression for upcoming read versus write and wrong shift/gender. Pending publication.
+
+## 11 Oktober 2026 — Referensi desain presensi Naqib
+Pilihan program, pilihan kamar (Seluruh Asrama sebagai kartu penuh), dan lembar kehadiran diperbarui sesuai tiga gambar pengguna: tosca/emas, ornamen masjid, ikon SVG, ringkasan enam kategori serta tombol status berwarna. Data/jam, scope GEMA, tahapan salat dan batas penyimpanan tetap memakai logika sebelumnya. Cache v81. 42 tes role/rendering/piket/program lulus dengan repository simulasi; pratinjau roster diperiksa pada desktop dan 390px. Belum diterapkan ke produksi. Sinkronisasi kamar live sebelumnya masih menunggu tombol manual pengguna; jangan anggap selesai hanya karena desain diperbarui.
