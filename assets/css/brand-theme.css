@@ -165,3 +165,27 @@ body:has(.quran-page){scroll-padding-top:90px;scroll-padding-bottom:110px}
 @media(max-width:540px){.naqib-attendance .nq-grid{gap:12px}.naqib-attendance .nq-card{padding:17px;gap:12px;border-radius:23px}.naqib-attendance .nq-card small{font-size:12px}.nq-card-action{font-size:12px}.naqib-attendance .nq-symbol{width:45px;height:45px;border-radius:15px}.naqib-attendance .nq-summary{gap:8px}.naqib-attendance .nq-count{padding:11px 8px;gap:7px}.nq-count>span{width:29px;height:32px}.naqib-attendance .nq-count svg{width:20px}.nq-count b{font-size:22px}.naqib-attendance .nq-count small{font-size:11px}.naqib-attendance .nq-student{padding:15px}.naqib-attendance .nq-status{gap:5px}.naqib-attendance .nq-status span{flex-direction:column;font-size:10px;gap:4px}.nq-student-head strong{font-size:18px}.naqib-attendance .nq-all-rooms{grid-template-columns:48px 1fr}}
 @media(prefers-reduced-motion:reduce){.naqib-attendance .nq-card{transition:none;transform:none}}
 .naqib-attendance .portal-section-head{display:block}.naqib-attendance .portal-section-head .section-actions:empty{display:none}
+
+/* Fit the two selection steps above the persistent navigation. The roster scrolls normally. */
+.naqib-attendance.nq-picker-mode{height:var(--nq-picker-height,calc(100dvh - 190px));padding:0;min-height:0}
+.nq-picker-mode>section:not([hidden]){height:100%;display:flex;flex-direction:column;min-height:0;gap:8px}
+.nq-picker-mode .portal-section-head{flex:none;margin:0;padding:12px 10px;border-radius:20px;min-height:0}
+.nq-picker-mode .portal-section-head h2{font-size:clamp(21px,3vw,29px);margin:3px 0;line-height:1.15}
+.nq-picker-mode .portal-section-head p{font-size:12px;margin:3px 0;line-height:1.35}
+.nq-picker-mode .portal-section-head .eyebrow{font-size:10px;letter-spacing:1.6px}
+.nq-picker-mode .portal-section-head:after{margin-top:8px;height:3px;width:30px}
+.nq-picker-mode .naqib-home-back{width:32px;height:32px;min-height:32px;margin:0;padding:3px}
+.nq-picker-mode>section>p{font-size:12px;line-height:1.35;margin:0 6px}
+.nq-picker-mode [data-back]{align-self:flex-start;min-height:32px;padding:6px 13px;font-size:12px}
+.naqib-attendance.nq-picker-mode .nq-grid{flex:1;min-height:0;grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:repeat(var(--nq-rows),minmax(0,1fr));gap:10px;margin:0}
+.naqib-attendance.nq-picker-mode .nq-card{display:grid;grid-template-columns:34px minmax(0,1fr);grid-template-rows:auto auto;align-content:center;gap:6px 9px;padding:12px;min-height:0;border-radius:19px}
+.naqib-attendance.nq-picker-mode .nq-card>.nq-symbol{width:32px;height:32px;border-radius:11px;grid-column:1;grid-row:1/3}
+.naqib-attendance.nq-picker-mode .nq-symbol svg{width:22px;height:22px}
+.naqib-attendance.nq-picker-mode .nq-card strong{font-size:clamp(13px,1.7vw,19px);line-height:1.2;grid-column:2}
+.naqib-attendance.nq-picker-mode .nq-card small{font-size:11px;line-height:1.3;grid-column:2}
+.naqib-attendance.nq-picker-mode .nq-card .nq-time{gap:4px}.nq-picker-mode .nq-time svg{width:13px;height:13px}
+.naqib-attendance.nq-picker-mode .nq-card-action{grid-column:1/-1;padding-top:6px;font-size:11px;line-height:1.2;margin-top:2px}
+.naqib-attendance.nq-picker-mode .nq-card-action i{width:24px;height:24px}.nq-picker-mode .nq-card-action svg{width:16px;height:16px}
+.naqib-attendance.nq-picker-mode .nq-all-rooms{grid-column:auto;background:linear-gradient(130deg,#dcf8f0,#bce9df);border-color:#72cfc2}
+.nq-picker-mode .nq-room-hint{display:none}
+@media(max-height:700px){.nq-picker-mode .portal-section-head{padding:6px 9px}.nq-picker-mode .portal-section-head:after,.nq-picker-mode .eyebrow,.nq-picker-mode>section>p{display:none}.naqib-attendance.nq-picker-mode .nq-card{padding:9px;gap:4px 6px}.naqib-attendance.nq-picker-mode .nq-grid{gap:7px}.naqib-attendance.nq-picker-mode .nq-card-action{padding-top:3px}.nq-picker-mode>section:not([hidden]){gap:6px}}
