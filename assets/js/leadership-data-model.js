@@ -26,7 +26,7 @@ export function validateMaster(kind,next,old,scope,master){
   for(const key of ['nisn','studentNo'])if(next[key]&&(master.students||[]).some(s=>s.id!==old?.id&&s[key]===next[key]&&active(s)))throw Error(`${key.toUpperCase()} sudah dipakai santri lain. Periksa identitas sebelum menambah.`);
  }
  if(next.capacity!==undefined&&(!Number.isInteger(Number(next.capacity))||Number(next.capacity)<0))throw Error('Kapasitas harus bilangan bulat minimal 0.');
- for(const key of ['homeroomStaffId','staffId','mentorStaffId'])if(next[key]&&!master.staff.some(s=>s.id===next[key]&&active(s)&&inDataScope('staff',s,scope,master)))throw Error('Personil harus aktif dan berada dalam unit Anda.');
+ for(const key of ['homeroomStaffId','staffId','mentorStaffId'])if(next[key]&&next[key]!==old?.[key]&&!master.staff.some(s=>s.id===next[key]&&active(s)&&inDataScope('staff',s,scope,master)))throw Error('Personil harus aktif dan berada dalam unit Anda.');
  return next;
 }
 export function placementChange({kind,student,target,scope,master,yearId,current}){
