@@ -431,3 +431,6 @@ User rejected plain inner panels. V91 adds structured leadership report visuals 
 
 ### Mobile quick-card spacing (v92)
 Increased mobile quick-grid gaps to 14px (12px on short screens), balanced inner padding, removed subtitle clutter on mobile, moved arrows above title. Shared by all homes. Teacher home visually verified at 360×640 and 390×844: no label clipping or bottom-nav overlap. 33 rendering/role tests passed. No workflow changes.
+
+### Corrected actual quick-card overlap (v93)
+Reproduced head_boys_dorm at 400×800: CSS gap14 but actual gap -3.5px because 90px card minimum exceeded 72.5px grid tracks. Expanded compact viewport breakpoint and assigned a separate middle-height row budget. Browser measured 20 combinations (5 roles × 360×640/400×800/390×844/414×896): actual gap12–14px, no label clipping or bottom-nav overlap. This was a sizing defect, not a publication/cache issue.
