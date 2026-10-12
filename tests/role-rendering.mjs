@@ -44,10 +44,17 @@ const routes={...work.namespace.WORKSPACE_ROUTES,...extras.namespace.PARENT_EXTR
 function ctxFor(role){return {session:{activeRole:role,roles:[role],user:{uid:'teacher',email:'test@example.invalid'},profile:{name:'Pengguna Uji',staffId:'staff1',studentIds:['s1'],classIds:['c1'],menteeStudentIds:['s1'],scopeGender:role==='head_girls_dorm'?'P':role==='head_boys_dorm'?'L':undefined}},master,yearId:'year',year:{name:'Tahun Uji'},root:win.document.getElementById('content'),roleName:ROLE_LABELS[role],navigate:()=>{},rerender:async()=>{}};}
 async function settle(){for(let i=0;i<15;i++)await Promise.resolve();}
 function submit(form){form.dispatchEvent(new win.Event('submit',{cancelable:true,bubbles:true}));}
+// Opt-in visual fixtures use the same real renderers and never connect to Firebase.
+function exportVisual(ctx,role,route){
+ const dir=process.env.MADANI_VISUAL_DIR;if(!dir)return;mkdirSync(dir,{recursive:true});
+ const shell=source('app/index.html'),css=[...shell.matchAll(/<link[^>]+rel="stylesheet"[^>]*>/g)].map(m=>m[0].replaceAll('../assets/','/assets/')).join('');
+ const nav=shell.match(/<nav class="mobile-bottom-nav"[\s\S]*?<\/nav>/)[0];
+ writeFileSync(`${dir}/${role}--${route}.html`,`<!doctype html><html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">${css}<title>${role} · ${route}</title></head><body class="app-body portal-body" data-home="${route==='home'}" data-active-role="${role}"><main class="main-area"><section class="content-area portal-content"><div id="content" class="${ctx.root.className}">${ctx.root.innerHTML.replaceAll('../assets/','/assets/')}</div></section></main>${nav}</body></html>`);
+}
 test('every permitted new workspace renders for each assigned role using an isolated fake repository',async()=>{
  let count=0;
  for(const role of Object.keys(ROLE_LABELS))for(const [id,handler] of Object.entries(routes))if(canAccess(`workspace.${id}`,[role])){
- const ctx=ctxFor(role);ctx.root.innerHTML='';await handler(ctx);assert.ok(ctx.root.textContent.trim(),`${role}/${id} empty`);assert.equal(ctx.root.querySelectorAll('script').length,0);count++;
+ const ctx=ctxFor(role);ctx.root.innerHTML='';await handler(ctx);assert.ok(ctx.root.textContent.trim(),`${role}/${id} empty`);assert.equal(ctx.root.querySelectorAll('script').length,0);exportVisual(ctx,role,id);count++;
  }
  assert.ok(count>100);console.log(`Rendered ${count} role/workspace combinations without Firebase.`);
 });
@@ -58,6 +65,12 @@ test('all 15 homes render and non-finance roles do not request finance collectio
  mock.setExport('getNode',repository.getNode);
  const ctx=ctxFor(role);ctx.root.innerHTML='';const items=MENU_GROUPS.flatMap(g=>g.items).filter(i=>canAccess(i.feature||'dashboard',[role]));await homes.namespace.renderRoleHome(ctx,items);
  assert.ok(ctx.root.querySelector('.home-role-button'),role);
+ assert.ok(ctx.root.querySelector('.premium-home'),role);
+ assert.ok(ctx.root.querySelectorAll('.premium-quick').length<=4,role);
+ assert.ok(ctx.root.querySelectorAll('.premium-menu-grid>.premium-menu').length<=8,role);
+ const quickLabels=new Set([...ctx.root.querySelectorAll('.premium-quick>b')].map(b=>b.textContent));
+ assert.ok([...ctx.root.querySelectorAll('.premium-menu-grid>.premium-menu>b')].every(b=>!quickLabels.has(b.textContent)),role);
+ exportVisual(ctx,role,'home');
  if(role==='naqib'){assert.equal(ctx.root.querySelectorAll('.naqib-workspace-menu [data-home-route]').length,8);const quick=new Set([...ctx.root.querySelectorAll('.hub-quick-card')].map(b=>b.dataset.homeRoute));assert.ok([...ctx.root.querySelectorAll('.naqib-workspace-menu [data-home-route]')].every(b=>!quick.has(b.dataset.homeRoute)));}
  if(process.env.MADANI_HOME_PREVIEW){mkdirSync('outputs/home-preview',{recursive:true});const shell=source('app/index.html');const css=[...shell.matchAll(/<link[^>]+rel="stylesheet"[^>]*>/g)].map(m=>m[0].replaceAll('../assets/','/assets/')).join('');const nav=shell.match(/<nav class="mobile-bottom-nav"[\s\S]*?<\/nav>/)[0];writeFileSync(`outputs/home-preview/${role}.html`,`<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">${css}</head><body class="app-body portal-body" data-home="true"><main class="main-area"><section class="content-area portal-content"><div class="${ctx.root.className}">${ctx.root.innerHTML.replaceAll('../assets/','/assets/')}</div></section></main>${nav}</body></html>`);}
  assert.ok(ctx.root.textContent.trim(),role);if(!['kasir','wali_santri'].includes(role))assert.ok(reads.every(p=>!p.startsWith('finance/')),role);
@@ -91,7 +104,7 @@ test('legacy role pages still render through the same registered handlers',async
  for(const role of Object.keys(ROLE_LABELS))for(const [id,handler] of mapped){
   const menu=MENU_GROUPS.flatMap(g=>g.items).find(i=>i.id===id);
   if(!menu||!canAccess(menu.feature,[role]))continue;
-  assert.equal(typeof handler,'function',id);const ctx=ctxFor(role);ctx.root.innerHTML='';await handler(ctx);assert.ok(ctx.root.textContent.trim(),`${role}/${id}`);count++;
+  assert.equal(typeof handler,'function',id);const ctx=ctxFor(role);ctx.root.innerHTML='';await handler(ctx);assert.ok(ctx.root.textContent.trim(),`${role}/${id}`);exportVisual(ctx,role,id);count++;
  }
  console.log(`Rendered ${count} legacy role/page combinations without Firebase.`);
 });

@@ -421,3 +421,7 @@ Pilihan program dan asrama memakai dua kolom dengan tinggi sisa viewport sampai 
 Implementasi dan batasan: `docs/LEADERSHIP-MONITOR-2026-10-12.md`. Menu tujuh/enam fitur, laporan presensi kanonis, mentoring mingguan, konselor, izin Naqib per gender, piket dan mukim. Isolasi baca server lama belum tuntas; filter tampilan bukan pengganti aturan baca. Paket aturan terbatas disiapkan di `/tmp/madani-leadership-monitor.rules.json` dari backup `/tmp/madani-leadership-monitor-before.json`. Status publikasi harus diverifikasi, jangan asumsikan aturan sudah diterapkan dari file lokal.
 
 Paket aturan terbatas tersebut akhirnya berhasil dirilis (Firebase CLI Deploy complete, 12 Oktober). 68 pengujian lokal lolos. Frontend tetap memerlukan push; isolasi baca server menyeluruh dan uji akun produksi belum selesai.
+
+## 12 October — premium shared UI and latest home reference
+
+See `docs/PREMIUM-UI-2026-10-12.md`. Shared operational design system plus a single home composition across 15 roles, preserving Madani colors. Complete permitted menu and prior summaries accessible through Semua Menu. Responsive full user name via `home-name.js`, shrinking/wrapping after font load and resize. SW v90. Local tests/viewport checks pass; no live data/rule writes. Verify Git publication separately.

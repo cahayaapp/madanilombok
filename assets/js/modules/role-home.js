@@ -12,7 +12,7 @@ import {pageHeader,panel,metric,escapeHtml,empty,badge} from './common.js';
 import {renderParentHome} from './parent.js';
 import {renderFinanceDashboard} from './finance.js';
 export async function renderRoleHome(ctx,items) {
-  try { await renderHomeContent(ctx,items); } finally { mountHomeRoleSwitcher(ctx); }
+  try { await renderHomeContent(ctx,items); } finally { mountHomeRoleSwitcher(ctx,items); }
 }
 async function renderHomeContent(ctx,items) {
   const role=ctx.session.activeRole,exp=ROLE_EXPERIENCE[role];
