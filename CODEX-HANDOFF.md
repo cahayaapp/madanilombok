@@ -415,3 +415,9 @@ Pilihan program dan asrama memakai dua kolom dengan tinggi sisa viewport sampai 
 - Screenshot menunjukkan dynamic import auth.js gagal sebelum kredensial diperiksa. Jangan menyimpulkan password/akun salah atau mengulang kredensial dari screenshot. Pemeriksaan HTTP publik: auth.js, repository.js, firebase.js mengembalikan 200 JavaScript, unduh Firebase Auth SDK gstatic berhasil dari mesin ini. Penyebab jaringan/cache pada HP belum terkonfirmasi.
 - Service worker v88 hanya menyimpan respons sukses aset aplikasi/SDK Firebase; 4xx/5xx memakai cache valid bila tersedia dan tidak merusaknya. Endpoint Auth/RTDB eksternal tidak di-cache. Install gagal tidak dianggap berhasil, sehingga cache lama tidak dihapus oleh instalasi tidak lengkap.
 - Pesan gagal impor modul dibedakan dari gagal autentikasi, dengan tombol Muat Ulang Halaman; tidak memuat ulang otomatis atau menyimpan kata sandi. Entry v44. Tujuh tes entry/worker lulus, syntax/diff bersih. Perbaikan belum dibuktikan pada HP pengguna dan perlu push untuk produksi.
+
+## 12 Oktober 2026 — fitur utama Kepala Sekolah / Kepala Asrama
+
+Implementasi dan batasan: `docs/LEADERSHIP-MONITOR-2026-10-12.md`. Menu tujuh/enam fitur, laporan presensi kanonis, mentoring mingguan, konselor, izin Naqib per gender, piket dan mukim. Isolasi baca server lama belum tuntas; filter tampilan bukan pengganti aturan baca. Paket aturan terbatas disiapkan di `/tmp/madani-leadership-monitor.rules.json` dari backup `/tmp/madani-leadership-monitor-before.json`. Status publikasi harus diverifikasi, jangan asumsikan aturan sudah diterapkan dari file lokal.
+
+Paket aturan terbatas tersebut akhirnya berhasil dirilis (Firebase CLI Deploy complete, 12 Oktober). 68 pengujian lokal lolos. Frontend tetap memerlukan push; isolasi baca server menyeluruh dan uji akun produksi belum selesai.

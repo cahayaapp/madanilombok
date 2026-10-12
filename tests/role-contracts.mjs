@@ -60,7 +60,7 @@ test('holiday forms require complete activity and submitted report answers',()=>
 });
 test('brand remains BSI tosca and all menus have registered handlers',()=>{
  assert.match(readFileSync(new URL('../assets/css/brand-theme.css',import.meta.url),'utf8'),/#00a39d/i);
- const source=['app.js','modules/workspaces.js','modules/parent-extras.js','health.js','management-operations.js','management-registry.js'].map(f=>readFileSync(new URL(`../assets/js/${f}`,import.meta.url),'utf8')).join('\n');
+ const source=['app.js','modules/workspaces.js','modules/parent-extras.js','health.js','management-operations.js','management-registry.js','leadership-monitor-model.js'].map(f=>readFileSync(new URL(`../assets/js/${f}`,import.meta.url),'utf8')).join('\n');
  for(const id of ids)if(id!=='dashboard')assert.ok(source.includes(`"${id}"`)||source.includes(`'${id}'`)||source.includes(`${id}:`),`route ${id} missing`);
 });
 

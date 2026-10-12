@@ -1,3 +1,6 @@
+import {renderLeadershipDuty} from '../leadership-duty.js';
+import {renderNaqibLeave} from '../naqib-leave.js';
+import {MONITOR_VIEWS,renderLeadershipMonitor} from '../leadership-monitor.js';
 import {renderLeadershipData} from '../leadership-data.js';
 import {renderHomeroomCases} from '../homeroom-cases.js';
 import {schoolCaseRoute} from '../school-case-routing.js';
@@ -163,6 +166,8 @@ export async function renderManagementKpi(ctx){
  ctx.root.innerHTML=pageHeader('KPI & Evidence Manajemen','Rekap siklus temuan dalam scope; tidak mengubah penilaian personel secara otomatis.')+`<div class="portal-metrics">${metric('Temuan',String(rows.length),'Evidence tercatat')}${metric('Selesai',String(rows.filter(r=>r.status==='RESOLVED').length),'Setelah evaluasi','cyan')}${metric('Menunggu Evaluasi',String(rows.filter(r=>r.status==='EVALUATION').length),'Perlu verifikasi','coral')}${metric('Dieskalasi',String(rows.filter(r=>r.status==='ESCALATED').length),'Memerlukan keputusan')}</div>`+panel('Penilaian',`<p class="role-hint">Rekap belum menjadi skor KPI berbobot. Target dan pembobotan mengikuti standar kerja yang disetujui pesantren.</p>`);
 }
 export const WORKSPACE_ROUTES={
+ 'naqib-leave':renderNaqibLeave,'management-duty':renderLeadershipDuty,
+ ...Object.fromEntries(Object.keys(MONITOR_VIEWS).map(route=>[route,ctx=>renderLeadershipMonitor(ctx,route)])),
  'management-data':renderLeadershipData,
  "homeroom-cases":renderHomeroomCases,
  'management-reports':renderManagementReports,'work-followups':renderWorkFollowups,
