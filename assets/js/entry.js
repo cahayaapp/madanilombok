@@ -89,6 +89,11 @@ function loadAuth() {
   });
   return authModules;
 }
+const reloadLoginButton = document.getElementById('reloadLoginButton');
+reloadLoginButton.onclick = () => location.reload();
+function isModuleLoadError(error) {
+  return /dynamically imported module|module script|Importing a module script failed|error loading dynamically imported module/i.test(error?.message || '');
+}
 document.getElementById('loginForm').addEventListener('submit', async event => {
   event.preventDefault();
   const button = document.getElementById('loginButton');
@@ -96,6 +101,7 @@ document.getElementById('loginForm').addEventListener('submit', async event => {
   button.disabled = true;
   button.textContent = 'Memeriksa…';
   errorBox.classList.add('hidden');
+  reloadLoginButton.hidden = true;
   try {
     const [{ login }, { getNode }] = await loadAuth();
     const credential = await login(document.getElementById('email').value.trim(), document.getElementById('password').value);
@@ -103,7 +109,11 @@ document.getElementById('loginForm').addEventListener('submit', async event => {
     if (!profile || profile.active === false) throw new Error('Akun belum terdaftar/aktif pada MadaniApp.');
     location.href = './app/index.html';
   } catch (error) {
-    errorBox.textContent = error.message || 'Login gagal. Periksa koneksi dan coba kembali.';
+    const moduleFailure = isModuleLoadError(error);
+    errorBox.textContent = moduleFailure
+      ? 'Komponen login belum berhasil dimuat. Periksa koneksi internet, lalu tekan Muat Ulang Halaman. Email dan kata sandi belum diperiksa.'
+      : error.message || 'Login gagal. Periksa koneksi dan coba kembali.';
+    reloadLoginButton.hidden = !moduleFailure;
     errorBox.classList.remove('hidden');
   } finally {
     button.disabled = false;

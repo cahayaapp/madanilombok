@@ -29,3 +29,11 @@ test('unsupported, insecure, offline and failed prompts provide actionable guida
  for(const [opts,pattern] of [[{ios:true},/Bagikan/],[{secure:false},/Pasang MadaniApp/],[{online:false},/internet/],[{},/menu browser/]]){const w=page(opts);await w.document.getElementById('installMainBtn').onclick();assert.match(w.document.getElementById('installHint').textContent,pattern);w.close();}
  const w=page(),ev=new w.Event('beforeinstallprompt');ev.prompt=async()=>{throw Error('unavailable');};w.dispatchEvent(ev);await w.document.getElementById('installMainBtn').onclick();assert.equal(w.document.getElementById('installMainBtn').disabled,false);assert.match(w.document.getElementById('installHint').textContent,/menu browser/);w.close();
 });
+test('module download failure offers reload without treating credentials as rejected',async()=>{
+ const w=page(),full=readFileSync(new URL('../assets/js/entry.js',import.meta.url),'utf8');
+ const loginSource=full.slice(full.indexOf('// Load authentication'),full.indexOf('loadAuth().then(async'))
+  .replace("Promise.all([import('./auth.js'), import('./repository.js')])", "Promise.reject(new Error('Failed to fetch dynamically imported module: auth.js'))");
+ w.eval(loginSource);w.document.getElementById('email').value='teacher@example.test';w.document.getElementById('password').value='example-input';
+ w.document.getElementById('loginForm').dispatchEvent(new w.Event('submit',{cancelable:true}));await new Promise(r=>setImmediate(r));
+ assert.equal(w.document.getElementById('reloadLoginButton').hidden,false);assert.match(w.document.getElementById('errorMsg').textContent,/belum diperiksa/);assert.equal(w.document.getElementById('password').value,'example-input');assert.equal(w.document.getElementById('loginButton').disabled,false);w.close();
+});

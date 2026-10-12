@@ -410,3 +410,8 @@ Pilihan program dan asrama memakai dua kolom dengan tinggi sisa viewport sampai 
 - Akun lintas unit dan role Admin/pimpinan/keuangan tetap dilindungi. SDM sekolah harus memiliki satu unit eksplisit; SDM asrama mengikuti gender. Tidak memberikan role Admin global kepada kepala unit.
 - Referensi scope penugasan lama dipertahankan; referensi baru melalui payload akun ditolak, gunakan menu penempatan.
 - 45 tes terkait lulus; syntax/diff bersih. Firebase dry-run valid dan deployment users/$uid berhasil. Cabang produksi lain dipertahankan dari snapshot terbaru. Paket /tmp/madani-unit-account.rules.json; backup /tmp/madani-unit-account-before.json. Belum uji perubahan role akun nyata melalui UI. SW v87; perubahan antarmuka perlu publikasi Git.
+
+## 12 Oktober — kegagalan unduh modul login pada perangkat guru
+- Screenshot menunjukkan dynamic import auth.js gagal sebelum kredensial diperiksa. Jangan menyimpulkan password/akun salah atau mengulang kredensial dari screenshot. Pemeriksaan HTTP publik: auth.js, repository.js, firebase.js mengembalikan 200 JavaScript, unduh Firebase Auth SDK gstatic berhasil dari mesin ini. Penyebab jaringan/cache pada HP belum terkonfirmasi.
+- Service worker v88 hanya menyimpan respons sukses aset aplikasi/SDK Firebase; 4xx/5xx memakai cache valid bila tersedia dan tidak merusaknya. Endpoint Auth/RTDB eksternal tidak di-cache. Install gagal tidak dianggap berhasil, sehingga cache lama tidak dihapus oleh instalasi tidak lengkap.
+- Pesan gagal impor modul dibedakan dari gagal autentikasi, dengan tombol Muat Ulang Halaman; tidak memuat ulang otomatis atau menyimpan kata sandi. Entry v44. Tujuh tes entry/worker lulus, syntax/diff bersih. Perbaikan belum dibuktikan pada HP pengguna dan perlu push untuk produksi.
