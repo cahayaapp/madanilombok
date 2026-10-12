@@ -434,3 +434,6 @@ Increased mobile quick-grid gaps to 14px (12px on short screens), balanced inner
 
 ### Corrected actual quick-card overlap (v93)
 Reproduced head_boys_dorm at 400×800: CSS gap14 but actual gap -3.5px because 90px card minimum exceeded 72.5px grid tracks. Expanded compact viewport breakpoint and assigned a separate middle-height row budget. Browser measured 20 combinations (5 roles × 360×640/400×800/390×844/414×896): actual gap12–14px, no label clipping or bottom-nav overlap. This was a sizing defect, not a publication/cache issue.
+
+### Quick-card functional subtitles (v94)
+Every quick card displays a concise functional subtitle, with route-specific descriptions for leadership, counselor, finance, parent, Naqib, health and Quran shortcuts. Mobile card layout places icon beside title and subtitle below, keeping existing row gaps. All 15 homes checked at 360×640: subtitle visible and title/subtitle within card bounds. 33 tests pass.

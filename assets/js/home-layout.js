@@ -2,6 +2,25 @@ import {icon} from './teacher/ui.js';
 import {escapeHtml as e} from './utils.js';
 import {ROLE_EXPERIENCE} from './role-experience.js';
 
+const QUICK_DESCRIPTIONS={
+ 'school-teacher-attendance':'Pantau kehadiran guru', 'school-teacher-punctuality':'Pantau ketepatan waktu guru',
+ 'school-student-attendance':'Pantau kehadiran siswa', 'school-student-punctuality':'Lihat keterlambatan siswa',
+ 'dorm-student-attendance':'Pantau kehadiran program', 'dorm-student-punctuality':'Lihat keterlambatan santri',
+ 'dorm-counselor':'Pantau penanganan kasus', 'management-worship':'Catat ibadah personil',
+ 'management-control':'Tinjau kondisi tiap unit', 'management-escalations':'Tindak lanjuti eskalasi',
+ 'management-standards':'Kelola standar kerja', 'management-coaching':'Pantau pembinaan personil',
+ 'management-targets':'Pantau capaian target', 'management-systemic':'Tinjau masalah lintas unit',
+ 'work-messages':'Baca dan kirim pesan', 'work-profile':'Kelola profil dan sandi', 'work-guide':'Baca panduan penggunaan',
+ 'cashier':'Catat transaksi penjualan', 'finance-products':'Kelola produk dan stok', 'finance-history':'Telusuri riwayat transaksi', 'finance-dashboard':'Lihat ringkasan keuangan',
+ 'parent-news':'Ikuti kabar Ananda', 'parent-attendance':'Lihat kehadiran Ananda', 'parent-permission':'Ajukan izin untuk Ananda', 'parent-finance':'Lihat tagihan dan pembayaran',
+ 'case-inbox':'Tinjau kasus masuk', 'case-active':'Lanjutkan penanganan kasus', 'counseling':'Catat sesi konseling', 'case-escalation':'Kelola eskalasi kasus',
+ 'health-journal':'Lihat riwayat kesehatan', 'health-examination':'Catat pemeriksaan santri', 'health-permits':'Kelola izin kesehatan', 'health-stock':'Pantau persediaan obat',
+ 'naqib-programs':'Lihat kegiatan dalam piket', 'naqib-attendance':'Catat kehadiran program', 'naqib-report':'Catat pelaksanaan kegiatan', 'naqib-initiative':'Catat inisiatif santri',
+ 'quran-ziyadah':'Catat tambahan hafalan', 'quran-murojaah':'Catat pengulangan hafalan',
+ 'teacher-attendance':'Catat kehadiran mengajar', 'student-attendance':'Catat kehadiran santri',
+ 'mentoring':'Catat pembinaan santri', 'mentoring-history':'Tinjau riwayat pembinaan',
+};
+
 // Move existing action nodes so quick actions retain their original handlers.
 export function arrangeHome(ctx,items=[]){
  const root=ctx.root;
@@ -20,7 +39,7 @@ export function arrangeHome(ctx,items=[]){
  for(const i of available)if(!used.has(i.id)&&!labels.has(i.label.trim().toLowerCase())){rest.push(make(i));used.add(i.id);labels.add(i.label.trim().toLowerCase());}
  const styleCard=(b,index,primary)=>{
   const title=b.querySelector('strong,b')?.textContent.trim()||b.textContent.trim();
-  const sub=b.querySelector('small')?.textContent.trim()||'Buka ruang kerja Anda';
+  const sub=QUICK_DESCRIPTIONS[route(b)]||b.querySelector('small')?.textContent.trim()||'Buka ruang kerja Anda';
   const symbol=b.querySelector('svg')?.outerHTML||icon(/izin|sakit/i.test(title)?'cross':/presensi|hadir/i.test(title)?'check':/jadwal/i.test(title)?'calendar':/nilai|hasil/i.test(title)?'chart':/guru|santri|personil/i.test(title)?'user':'book');
   b.classList.add(primary?'premium-quick':'premium-menu');
   b.style.setProperty('--tile-index',index%4);
