@@ -482,3 +482,25 @@ body[data-home=true] #content .premium-quick>b{max-width:calc(100% - 25px)!impor
 .app-body:not([data-home=true]) .ld-toolbar h2{flex-basis:100%;font-size:18px;margin:0 0 4px}
 .app-body:not([data-home=true]) .ld-toolbar label{font-size:11px;color:#55766f;display:grid;gap:7px}
 .app-body:not([data-home=true]) .ld-record{border-radius:16px;padding:18px;border-color:#e0eae4;box-shadow:0 3px 14px #17494206}.app-body:not([data-home=true]) .ld-record h3{font-size:16px}.app-body:not([data-home=true]) .ld-record p{font-size:12px}
+
+/* Mobile shortcuts: more breathing room, fewer competing details. */
+@media(max-width:900px){
+ body[data-home=true] #content .premium-quick-grid{gap:14px;margin-bottom:16px}
+ body[data-home=true] #content .premium-quick{padding:14px!important;gap:8px!important;justify-content:flex-start!important;border-radius:20px!important;box-shadow:0 5px 15px #006b6410}
+ body[data-home=true] #content .premium-quick>b{max-width:100%!important;font-size:14px!important;line-height:1.25!important;font-weight:650;letter-spacing:0}
+ body[data-home=true] #content .premium-quick>small{display:none!important}
+ body[data-home=true] #content .premium-quick>.premium-icon{width:28px!important;height:28px!important;border-radius:9px!important}
+ body[data-home=true] #content .premium-quick>.premium-icon svg{width:21px;height:21px}
+ body[data-home=true] #content .premium-quick>.premium-arrow{top:14px;right:14px;bottom:auto;width:22px;height:22px;background:#ffffff20;color:white;font-size:17px}
+ body[data-home=true] #content .premium-quick:before{background:#ffffff09}
+ body[data-home=true] .premium-section-head{margin-bottom:12px}
+}
+@media(max-width:900px) and (max-height:740px){
+ body[data-home=true] #content .premium-quick-grid{gap:12px;margin-bottom:12px}
+ body[data-home=true] #content .premium-quick{padding:10px 12px!important;gap:6px!important;border-radius:17px!important}
+ body[data-home=true] #content .premium-quick>b{font-size:12px!important;line-height:1.2!important}
+ body[data-home=true] #content .premium-quick>.premium-icon{width:22px!important;height:22px!important}
+ body[data-home=true] #content .premium-quick>.premium-icon svg{width:18px;height:18px}
+ body[data-home=true] #content .premium-quick>.premium-arrow{top:10px;right:12px;width:20px;height:20px;font-size:16px}
+ body[data-home=true] .premium-section-head{margin-bottom:8px}
+}

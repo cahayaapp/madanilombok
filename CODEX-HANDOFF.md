@@ -428,3 +428,6 @@ See `docs/PREMIUM-UI-2026-10-12.md`. Shared operational design system plus a sin
 
 ### Interior design correction
 User rejected plain inner panels. V91 adds structured leadership report visuals (ring/stats/filter/status rows), shared page component iconography and premium specialized headers/forms. 37 tests pass, including period filtering and scoped report counts. See premium UI doc. Production still requires Git publication verification.
+
+### Mobile quick-card spacing (v92)
+Increased mobile quick-grid gaps to 14px (12px on short screens), balanced inner padding, removed subtitle clutter on mobile, moved arrows above title. Shared by all homes. Teacher home visually verified at 360×640 and 390×844: no label clipping or bottom-nav overlap. 33 rendering/role tests passed. No workflow changes.
