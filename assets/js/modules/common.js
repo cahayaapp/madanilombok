@@ -1,3 +1,4 @@
+import {icon} from '../teacher/ui.js';
 import { escapeHtml, formatDate, formatDateTime, toast } from "../utils.js";
 import { byId } from "../app-store.js";
 
@@ -5,15 +6,15 @@ export const rupiah = value => new Intl.NumberFormat("id-ID", { style: "currency
 export const today = () => new Date().toISOString().slice(0,10);
 
 export function pageHeader(title, subtitle = "", actions = "") {
-  return `<div class="section-head portal-section-head"><div><p class="eyebrow">MadaniApp</p><h2>${escapeHtml(title)}</h2><p>${escapeHtml(subtitle)}</p></div><div class="section-actions">${actions}</div></div>`;
+  return `<div class="section-head portal-section-head"><span class="page-heading-icon" aria-hidden="true">${icon(/hadir|presensi/i.test(title)?'check':/jadwal|kalender/i.test(title)?'calendar':/guru|santri|personil/i.test(title)?'user':'book')}</span><div><p class="eyebrow">Ruang Kerja · MadaniApp</p><h2>${escapeHtml(title)}</h2><p>${escapeHtml(subtitle)}</p></div><div class="section-actions">${actions}</div></div>`;
 }
 
 export function empty(message = "Belum ada data.") {
-  return `<div class="empty-state">${escapeHtml(message)}</div>`;
+  return `<div class="empty-state"><span class="empty-visual" aria-hidden="true">${icon('book')}</span><p>${escapeHtml(message)}</p></div>`;
 }
 
 export function panel(title, body, extraClass = "") {
-  return `<section class="panel ${extraClass}"><div class="panel-head"><h3>${escapeHtml(title)}</h3></div>${body}</section>`;
+  return `<section class="panel ${extraClass}"><div class="panel-head"><span class="panel-marker" aria-hidden="true"></span><h3>${escapeHtml(title)}</h3></div>${body}</section>`;
 }
 
 export function badge(text, tone = "") {
@@ -21,7 +22,7 @@ export function badge(text, tone = "") {
 }
 
 export function metric(label, value, detail = "", tone = "blue") {
-  return `<div class="portal-metric ${tone}"><span>${escapeHtml(label)}</span><strong>${escapeHtml(value)}</strong>${detail ? `<small>${escapeHtml(detail)}</small>` : ""}</div>`;
+  return `<div class="portal-metric ${tone}"><i class="metric-visual" aria-hidden="true">${icon(/hadir|selesai/i.test(label)?'check':/izin|sakit/i.test(label)?'cross':'chart')}</i><span>${escapeHtml(label)}</span><strong>${escapeHtml(value)}</strong>${detail ? `<small>${escapeHtml(detail)}</small>` : ""}</div>`;
 }
 
 export function selectOptions(rows, selected = "", labelKey = "name", emptyLabel = "Pilih...") {

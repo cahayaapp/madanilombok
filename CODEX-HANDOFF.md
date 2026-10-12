@@ -425,3 +425,6 @@ Paket aturan terbatas tersebut akhirnya berhasil dirilis (Firebase CLI Deploy co
 ## 12 October — premium shared UI and latest home reference
 
 See `docs/PREMIUM-UI-2026-10-12.md`. Shared operational design system plus a single home composition across 15 roles, preserving Madani colors. Complete permitted menu and prior summaries accessible through Semua Menu. Responsive full user name via `home-name.js`, shrinking/wrapping after font load and resize. SW v90. Local tests/viewport checks pass; no live data/rule writes. Verify Git publication separately.
+
+### Interior design correction
+User rejected plain inner panels. V91 adds structured leadership report visuals (ring/stats/filter/status rows), shared page component iconography and premium specialized headers/forms. 37 tests pass, including period filtering and scoped report counts. See premium UI doc. Production still requires Git publication verification.

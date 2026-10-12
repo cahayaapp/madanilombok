@@ -203,3 +203,25 @@ test('Naqib scope cards show names per room or entire gender unit, include GEMA 
 });
 
 test.after(()=>{if(process.env.MADANI_NAQIB_PREVIEW){writeFileSync('/tmp/madani-naqib-preview.html',`<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><style>${source('assets/css/app.css')}${source('assets/css/portal.css')}${source('assets/css/brand-theme.css')}body{margin:0;padding:18px;font-family:system-ui;background:#fffdf6}main{max-width:900px;margin:auto}</style></head><body><main>${win.document.getElementById('content').innerHTML}</main></body></html>`);}});
+
+test('leadership report visual summary preserves counts, scope, and period filter',async()=>{
+ const module=await load(new URL('assets/js/leadership-monitor.js',base).href);if(module.status!=='evaluated')await module.evaluate();
+ const ctx=ctxFor('head_formal_school');ctx.session.profile.unitIds=['u1'];
+ ctx.master={...master,classes:[{id:'c1',name:'Kelas Uji',unitId:'u1'}],staff:[{id:'staff1',name:'Guru Contoh'}]};
+ const date=new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Makassar',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date());
+ const path='academic/teaching_attendance/year',before=database.get(path);
+ database.set(path,{one:{staffId:'staff1',scheduleId:'one',classId:'c1',date,status:'Hadir'},two:{staffId:'staff1',scheduleId:'two',classId:'c1',date,status:'TERLAMBAT',lateMinutes:12},outside:{staffId:'other',scheduleId:'other',classId:'outside',date,status:'Alfa'}});
+ try{
+  await module.namespace.renderLeadershipMonitor(ctx,'school-teacher-attendance');
+  assert.match(ctx.root.querySelector('.monitor-ring').getAttribute('aria-label'),/100 persen/);
+  assert.equal(ctx.root.querySelectorAll('.monitor-stats .portal-metric').length,4);
+  assert.equal(ctx.root.querySelector('.monitor-stats .portal-metric strong').textContent,'2');
+  assert.equal(ctx.root.querySelectorAll('.monitor-person').length,0);
+  ctx.root.querySelector('[data-period=week]').click();assert.ok(ctx.root.querySelector('[name=from]').value<date);
+  exportVisual(ctx,'head_formal_school','report-populated');
+  await module.namespace.renderLeadershipMonitor(ctx,'school-teacher-punctuality');
+  assert.match(ctx.root.querySelector('.monitor-ring').getAttribute('aria-label'),/50 persen/);
+  assert.equal(ctx.root.querySelectorAll('.monitor-person').length,1);
+  assert.match(ctx.root.querySelector('.monitor-person').textContent,/Guru Contoh/);
+ }finally{before===undefined?database.delete(path):database.set(path,before);}
+});
