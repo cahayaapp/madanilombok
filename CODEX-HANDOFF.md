@@ -455,3 +455,10 @@ User confirms Ahmad Budiawan Alkhair = Budiawan Khaer and retains existing after
 
 ## 13 October — Kepala Asrama daily Quran report card
 Added dorm-quran-daily to both dorm leader homes and menus. Reads canonical academic/quran_records for active year, filters canonical boarding students by gender and dates (default today, seven-day shortcut), shows unique pupils, submission count, recording mentors, halaqah/room, activity/type, portions, quality/result, score and notes. Includes Ziyadah, Murojaah and Tahsin with explicit labels; counts records, not inferred absence. No writes or rules changes. 40 model/route/rendering tests pass including populated Quran report, gender exclusion, historical date filtering, no writes and visible home card. Syntax/JSON checks passed. SW v97. Frontend publication and real-account production verification pending.
+
+
+## 13 Oktober — Kartu Pantau Operasional Harian
+- Beranda Kepala Sekolah: kelima pemantauan guru/siswa dan mentoring tampil di kartu cepat.
+- Beranda Kepala Asrama putra/putri: tujuh kartu untuk kehadiran/kedisiplinan santri dan pembina, setoran tahfiz harian, konselor, serta ibadah personil.
+- Judul bagian menjadi “Pantau Operasional Harian”; role lain tetap memakai empat kartu dan judul sebelumnya. Tata letak pimpinan memakai tinggi alami dan jarak kartu, bukan batas empat kartu.
+- Tidak mengubah sumber laporan atau cakupan akses unit. Cache v98. Validasi lokal: syntax JavaScript, JSON, role/route dan rendering/monitoring; belum dipublikasikan atau diuji di produksi.

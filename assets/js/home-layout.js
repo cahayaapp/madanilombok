@@ -3,6 +3,9 @@ import {escapeHtml as e} from './utils.js';
 import {ROLE_EXPERIENCE} from './role-experience.js';
 
 const QUICK_DESCRIPTIONS={
+ 'school-mentoring':'Pantau pembinaan guru wali sepekan terakhir',
+ 'dorm-teacher-attendance':'Pantau kehadiran pembina dan guru pondok',
+ 'dorm-teacher-punctuality':'Pantau ketepatan waktu pembina dan guru',
  'dorm-quran-daily':'Pantau setoran dan hasil hafalan harian',
  'admin-data':'Kelola database dan penempatan', 'admin-accounts':'Kelola pengguna dan hak akses', 'admin-import':'Masukkan dan sinkronkan data', 'admin-validation':'Periksa kelengkapan dan relasi data',
  'school-teacher-attendance':'Pantau kehadiran guru', 'school-teacher-punctuality':'Pantau ketepatan waktu guru',
@@ -30,8 +33,10 @@ export function arrangeHome(ctx,items=[]){
  const route=b=>b.dataset.homeRoute||b.dataset.quick||b.dataset.route||b.dataset.quranRoute||b.dataset.go;
  const available=items.filter(i=>!['dashboard','parent-home'].includes(i.id));
  const make=i=>{const b=document.createElement('button');b.type='button';b.dataset.homeRoute=i.id;b.innerHTML=`<b>${e(i.label)}</b>`;b.onclick=()=>ctx.navigate(i.id);return b;};
- const quick=candidates.slice(0,4);
- if(!quick.length)for(const id of ROLE_EXPERIENCE[ctx.session.activeRole]?.quick||[]){const item=available.find(i=>i.id===id);if(item&&quick.length<4)quick.push(make(item));}
+ const monitorHome=['head_formal_school','head_boys_dorm','head_girls_dorm'].includes(ctx.session.activeRole);
+ const limit=monitorHome?Infinity:4;
+ const quick=candidates.slice(0,limit);
+ if(!quick.length)for(const id of ROLE_EXPERIENCE[ctx.session.activeRole]?.quick||[]){const item=available.find(i=>i.id===id);if(item&&quick.length<limit)quick.push(make(item));}
  if(!quick.length)quick.push(...available.slice(0,4).map(make));
  const used=new Set(quick.map(route));
  const label=b=>(b.querySelector('strong,b')?.textContent||b.textContent).trim().toLowerCase();
@@ -53,6 +58,7 @@ export function arrangeHome(ctx,items=[]){
  while(root.firstChild)preserved.append(root.firstChild);
  root.innerHTML='<main class="premium-home"><section class="premium-section"><div class="premium-section-head"><h2>Akses Cepat Hari Ini</h2><button type="button" data-all-menus>Lihat Semua →</button></div><div class="premium-quick-grid"></div></section><section class="premium-section premium-workspace naqib-workspace-menu"><div class="premium-section-head"><h2>Menu Lainnya</h2><button type="button" data-all-menus>Semua menu →</button></div><div class="premium-menu-grid"></div></section></main>';
  const holder=root.querySelector('.premium-home');
+ if(monitorHome){holder.classList.add('premium-monitor-home');holder.querySelector('.premium-section-head h2').textContent='Pantau Operasional Harian';}
  quick.forEach(b=>holder.querySelector('.premium-quick-grid').append(b));
  const menuGrid=holder.querySelector('.premium-menu-grid');
  // Eight compact shortcuts; the complete role menu remains reachable in the dialog.

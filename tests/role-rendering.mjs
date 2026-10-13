@@ -66,7 +66,7 @@ test('all 15 homes render and non-finance roles do not request finance collectio
  const ctx=ctxFor(role);ctx.root.innerHTML='';const items=MENU_GROUPS.flatMap(g=>g.items).filter(i=>canAccess(i.feature||'dashboard',[role]));await homes.namespace.renderRoleHome(ctx,items);
  assert.ok(ctx.root.querySelector('.home-role-button'),role);
  assert.ok(ctx.root.querySelector('.premium-home'),role);
- assert.ok(ctx.root.querySelectorAll('.premium-quick').length<=4,role);
+ assert.ok(ctx.root.querySelectorAll('.premium-quick').length<=({head_formal_school:5,head_boys_dorm:7,head_girls_dorm:7}[role]||4),role);
  assert.ok(ctx.root.querySelectorAll('.premium-menu-grid>.premium-menu').length<=8,role);
  const quickLabels=new Set([...ctx.root.querySelectorAll('.premium-quick>b')].map(b=>b.textContent));
  assert.ok([...ctx.root.querySelectorAll('.premium-menu-grid>.premium-menu>b')].every(b=>!quickLabels.has(b.textContent)),role);
@@ -238,6 +238,22 @@ test('dorm daily Quran card reads saved portions and filters gender and dates',a
   assert.match(ctx.root.textContent,/Al-Baqarah 1–5/);assert.match(ctx.root.textContent,/Pembina Uji/);assert.match(ctx.root.textContent,/Lancar/);
   assert.doesNotMatch(ctx.root.textContent,/PUTRA|LAMA/);assert.equal(writes.length,writeCount);
   ctx.root.querySelector('[name=from]').value='2020-01-01';ctx.root.querySelector('[name=to]').value='2020-01-01';ctx.root.querySelector('[name=from]').onchange();assert.match(ctx.root.textContent,/LAMA/);assert.doesNotMatch(ctx.root.textContent,/Al-Baqarah/);
-  const items=MENU_GROUPS.flatMap(g=>g.items).filter(i=>canAccess(i.feature||'dashboard',['head_girls_dorm']));await homes.namespace.renderRoleHome(ctx,items);assert.ok(ctx.root.querySelector('.premium-menu-grid [data-home-route="dorm-quran-daily"]'));
+  const items=MENU_GROUPS.flatMap(g=>g.items).filter(i=>canAccess(i.feature||'dashboard',['head_girls_dorm']));await homes.namespace.renderRoleHome(ctx,items);assert.ok(ctx.root.querySelector('.premium-quick-grid [data-home-route="dorm-quran-daily"]'));
  }finally{before===undefined?database.delete(path):database.set(path,before);}
+});
+
+
+test('unit leadership homes expose all daily monitors as quick cards',async()=>{
+ for(const role of ['head_formal_school','head_boys_dorm','head_girls_dorm']){
+  const ctx=ctxFor(role),items=MENU_GROUPS.flatMap(g=>g.items).filter(i=>canAccess(i.feature||'dashboard',[role]));
+  await homes.namespace.renderRoleHome(ctx,items);
+  assert.equal(ctx.root.querySelector('.premium-section-head h2').textContent,'Pantau Operasional Harian');
+  assert.ok(ctx.root.querySelector('.premium-monitor-home'));
+  const expected=role==='head_formal_school'?['school-teacher-attendance','school-teacher-punctuality','school-student-attendance','school-student-punctuality','school-mentoring']:['dorm-student-attendance','dorm-student-punctuality','dorm-teacher-attendance','dorm-teacher-punctuality','dorm-quran-daily','dorm-counselor','management-worship'];
+  assert.deepEqual([...ctx.root.querySelectorAll('.premium-quick')].map(b=>b.dataset.homeRoute),expected);
+  for(const id of expected){const b=ctx.root.querySelector(`.premium-quick-grid [data-home-route="${id}"]`);assert.ok(b.querySelector('small').textContent);assert.equal(ctx.root.querySelector(`.premium-menu-grid [data-home-route="${id}"]`),null);}
+ }
+ const ctx=ctxFor('admin'),items=MENU_GROUPS.flatMap(g=>g.items).filter(i=>canAccess(i.feature||'dashboard',['admin']));await homes.namespace.renderRoleHome(ctx,items);
+ assert.equal(ctx.root.querySelector('.premium-section-head h2').textContent,'Akses Cepat Hari Ini');
+ assert.equal(ctx.root.querySelectorAll('.premium-quick').length,4);
 });
