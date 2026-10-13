@@ -6,7 +6,7 @@ export const GIRLS_PAIRS=[
  {id:'AMD-SMK-0081',name:'Tazia Olivia',unit:'UNIT-SMK',aliases:['Tazzia Olipia'],room:'ROOM-PTRI-P1'},
  {id:'AMD-SD-0114',name:'FEBY EFRILLIA',unit:'UNIT-SD',aliases:['Feby Aprilia'],room:'ROOM-PTRI-P1'},
  {id:'AMD-SMK-0031',name:'HIDAYATUL NAZURA',unit:'UNIT-SMK',aliases:['Huriatun Nazura','Hidayatul Naura'],room:'ROOM-PTRI-P2'},
- {id:'AMD-SMP-0086',name:'SALSABILA',unit:'UNIT-SMP',aliases:['SALWA SALSABILA'],room:'ROOM-PTRI-M1',sourceUnit:'UNIT-SD'}
+ {id:'AMD-SMP-0086',name:'SALSABILA',unit:'UNIT-SMP',aliases:[],room:'ROOM-PTRI-M1'}
 ];
 export const NON_BOARDING_SD={
  'AMD-SD-0111':'AISYAH NUHA ZAHIRA','AMD-SD-0036':'FARADIBA SATRIA NUGRAHA','AMD-SD-0096':'HAFIZA FADILA ZAHRA','AMD-SD-0124':'HANIFA HUMAERA SALSABILA','AMD-SD-0115':'HILYA NURUL AZKIA','AMD-SD-0118':'NAJIHA AMALINA','AMD-SD-0128':'SABILA AZIZAH','AMD-SD-0101':'SYAIMA ATQIYA'
