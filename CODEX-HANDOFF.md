@@ -498,3 +498,9 @@ Added dorm-quran-daily to both dorm leader homes and menus. Reads canonical acad
 - Satu filter personil untuk pembinaan, daftar personil, pengaturan mukim dan ibadah: SDM aktif dengan gender sesuai kepala asrama dan akun naqib/pembina tahfiz/konselor atau guru mapel tertaut kelompok Arabic aktif. Guru formal murni/guru wali murni tidak termasuk. Riwayat pembinaan juga disaring berdasarkan personil yang berhak.
 - Uji 41 existing + 2 scope tests lulus. Cache v104. Tidak mengubah akun/data/rules produksi.
 - PENTING BELUM TUNTAS: database.rules.json masih memiliki .read pada root madani_app untuk semua akun aktif. Pembatasan UI/repository bukan isolasi database. Pengamanan penuh perlu migrasi pembacaan per scope beserta aturan baca granular; jangan mengklaim akses Firebase lintas unit sudah tertutup.
+
+
+## 13 Oktober — Mobile tanpa geser horizontal
+- CSS bersama: tabel berlebar tetap menjadi rekam vertikal di bawah 700px; formulir, filter dan tombol membungkus; media dan input mengikuti lebar kontainer.
+- mobile-layout.js menambah label kolom pada tabel dinamis tanpa mengganti kontrol/event handler. Dipasang pada 13 entry HTML ber-brand-theme; dicache SW v105.
+- Validasi: 41 role/route/render tests + 1 test label tabel lulus. Chrome headless profil terpisah memeriksa 400 fixture halaman/role pada 320px dan 390px (800 pemeriksaan), tanpa area horizontal-scroll maupun elemen terlihat melampaui viewport. Fixture memakai data uji, bukan audit seluruh kondisi data produksi/modal terbuka.
