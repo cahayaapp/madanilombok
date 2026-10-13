@@ -3,6 +3,7 @@ import {escapeHtml as e} from './utils.js';
 import {ROLE_EXPERIENCE} from './role-experience.js';
 
 const QUICK_DESCRIPTIONS={
+ 'dorm-quran-daily':'Pantau setoran dan hasil hafalan harian',
  'admin-data':'Kelola database dan penempatan', 'admin-accounts':'Kelola pengguna dan hak akses', 'admin-import':'Masukkan dan sinkronkan data', 'admin-validation':'Periksa kelengkapan dan relasi data',
  'school-teacher-attendance':'Pantau kehadiran guru', 'school-teacher-punctuality':'Pantau ketepatan waktu guru',
  'school-student-attendance':'Pantau kehadiran siswa', 'school-student-punctuality':'Lihat keterlambatan siswa',

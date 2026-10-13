@@ -225,3 +225,19 @@ test('leadership report visual summary preserves counts, scope, and period filte
   assert.match(ctx.root.querySelector('.monitor-person').textContent,/Guru Contoh/);
  }finally{before===undefined?database.delete(path):database.set(path,before);}
 });
+
+test('dorm daily Quran card reads saved portions and filters gender and dates',async()=>{
+ const module=await load(new URL('assets/js/leadership-monitor.js',base).href);if(module.status!=='evaluated')await module.evaluate();
+ const ctx=ctxFor('head_girls_dorm');ctx.master={...master,staff:[{id:'mentor',name:'Pembina Uji'}],groups:[{id:'g',name:'GEMA Putri'}]};
+ const date=new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Makassar',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date());
+ const path='academic/quran_records/year',before=database.get(path),writeCount=writes.length;
+ database.set(path,{g:{s2:{a:{studentId:'s2',groupId:'g',staffId:'mentor',date,type:'Tahfiz',activity:'Ziyadah',portion:'Al-Baqarah 1–5',quality:'Lancar',note:'Lanjutkan'},b:{studentId:'s2',date:'2020-01-01',type:'Murojaah',portion:'LAMA'}},s1:{c:{studentId:'s1',date,type:'Tahfiz',portion:'PUTRA'}}}});
+ try{
+  await module.namespace.renderLeadershipMonitor(ctx,'dorm-quran-daily');
+  assert.equal(ctx.root.querySelectorAll('.monitor-person').length,1);
+  assert.match(ctx.root.textContent,/Al-Baqarah 1–5/);assert.match(ctx.root.textContent,/Pembina Uji/);assert.match(ctx.root.textContent,/Lancar/);
+  assert.doesNotMatch(ctx.root.textContent,/PUTRA|LAMA/);assert.equal(writes.length,writeCount);
+  ctx.root.querySelector('[name=from]').value='2020-01-01';ctx.root.querySelector('[name=to]').value='2020-01-01';ctx.root.querySelector('[name=from]').onchange();assert.match(ctx.root.textContent,/LAMA/);assert.doesNotMatch(ctx.root.textContent,/Al-Baqarah/);
+  const items=MENU_GROUPS.flatMap(g=>g.items).filter(i=>canAccess(i.feature||'dashboard',['head_girls_dorm']));await homes.namespace.renderRoleHome(ctx,items);assert.ok(ctx.root.querySelector('.premium-menu-grid [data-home-route="dorm-quran-daily"]'));
+ }finally{before===undefined?database.delete(path):database.set(path,before);}
+});
