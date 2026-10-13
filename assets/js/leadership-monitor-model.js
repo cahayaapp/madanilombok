@@ -1,3 +1,19 @@
+// Ownership follows the teaching group/program, never the pupil's formal school.
+export function boardingLearning(record,master={}){
+ const schedules=master.academicSchedules||[];
+ const schedule=schedules.find(s=>s.id===record.scheduleId)||{};
+ const groupId=record.groupId||schedule.groupId;
+ const group=(master.groups||[]).find(g=>g.id===groupId||(record.scheduleId||'').startsWith(`group-${g.id}-`)||(record.scheduleId||'').startsWith(`quran-${g.id}-`));
+ return !!group||record.teachingTarget==='group'||schedule.teachingTarget==='group'||record.subjectId==='MPL-PONDOK-QURAN'||record.subjectId==='MPL-PONDOK-ARAB-PAGI';
+}
+export function teachingReportInScope(record,scope,master){
+ const boarding=boardingLearning(record,master);
+ if(scope.school)return !boarding&&(scope.classIds.has(record.classId)||(record.classIds||[]).some(id=>scope.classIds.has(id)));
+ if(!boarding)return false;
+ const group=(master.groups||[]).find(g=>g.id===record.groupId||(record.scheduleId||'').startsWith(`group-${g.id}-`)||(record.scheduleId||'').startsWith(`quran-${g.id}-`));
+ if(group?.gender)return group.gender===scope.gender||['Campuran','mixed'].includes(group.gender);
+ return Object.keys(master.groupAssignments?.[group?.id]||{}).some(id=>scope.studentIds.has(id));
+}
 // Reports use canonical identities and fail closed when the leader has no scope.
 export function monitorScope(session,master){
  const role=session.activeRole,school=role==='head_formal_school';
@@ -23,7 +39,8 @@ export const MONITOR_VIEWS={
  'school-teacher-attendance':['Kehadiran Guru','teacher'], 'school-teacher-punctuality':['Kedisiplinan Guru','teacher'],
  'school-student-attendance':['Kehadiran Siswa','student'], 'school-student-punctuality':['Kedisiplinan Siswa','student'],
  'school-mentoring':['Mentoring Guru Wali','mentoring'], 'dorm-student-attendance':['Kehadiran Santri','boarding'],
- 'dorm-student-punctuality':['Kedisiplinan Santri','boarding'], 'dorm-counselor':['Konselor','cases']
+ 'dorm-student-punctuality':['Kedisiplinan Santri','boarding'],
+ 'dorm-teacher-attendance':['Kehadiran Pembina & Guru Pondok','pondokTeacher'], 'dorm-teacher-punctuality':['Kedisiplinan Pembina & Guru Pondok','pondokTeacher'], 'dorm-counselor':['Konselor','cases']
 };
 export function teacherMissing(schedules,records,from,to,now=Date.now()){
  const missing=[],days=['Minggu','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'];

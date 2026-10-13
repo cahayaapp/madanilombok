@@ -1,5 +1,18 @@
 import test from 'node:test';import assert from 'node:assert/strict';
 import {monitorScope,learningRows,attendanceSummary,teacherMissing,caseHandled} from '../assets/js/leadership-monitor-model.js';
+import {boardingLearning,teachingReportInScope} from '../assets/js/leadership-monitor-model.js';
+test('pondok group evidence belongs to dorm leaders, not the students formal school',()=>{
+ const m={...master,groups:[{id:'arabic',gender:'P',programType:'arabic'},{id:'quran',gender:'L'}],groupAssignments:{arabic:{b:{status:'active'}}}};
+ const school=monitorScope(session('head_formal_school',{unitIds:['smp']}),m),girls=monitorScope(session('head_girls_dorm'),m),boys=monitorScope(session('head_boys_dorm'),m);
+ const arabic={groupId:'arabic',classId:'smp1',students:{b:{status:'Alfa'}}};
+ assert.equal(boardingLearning(arabic,m),true);
+ assert.equal(teachingReportInScope(arabic,school,m),false);
+ assert.equal(teachingReportInScope(arabic,girls,m),true);
+ assert.equal(teachingReportInScope(arabic,boys,m),false);
+ assert.equal(teachingReportInScope({scheduleId:'quran-quran-day-1'},boys,m),true);
+ assert.equal(teachingReportInScope({classId:'smp1',subjectId:'formal-arabic'},school,m),true);
+ assert.equal(teachingReportInScope({classId:'smp1'},girls,m),false);
+});
 const master={students:[{id:'a',unitId:'sd',gender:'L',boardingStatus:'boarding'},{id:'b',unitId:'smp',gender:'P',boardingStatus:'boarding'},{id:'c',unitId:'sd',gender:'P',boardingStatus:'non_boarding'},{id:'old',unitId:'sd',mergedInto:'a'}],classes:[{id:'sd1',unitId:'sd'},{id:'smp1',unitId:'smp'}]};
 const session=(activeRole,profile={})=>({activeRole,profile});
 test('school scope is explicit, role-specific, and closed if unassigned',()=>{
