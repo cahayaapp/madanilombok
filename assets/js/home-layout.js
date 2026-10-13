@@ -29,9 +29,10 @@ const QUICK_DESCRIPTIONS={
 // Move existing action nodes so quick actions retain their original handlers.
 export function arrangeHome(ctx,items=[]){
  const root=ctx.root;
+ const combinedLabels={'school-teacher-attendance':'Kehadiran & Kedisiplinan Guru','school-student-attendance':'Kehadiran & Kedisiplinan Siswa','dorm-student-attendance':'Kehadiran & Kedisiplinan Santri','dorm-teacher-attendance':'Kehadiran & Kedisiplinan Pembina'};
  const candidates=[...root.querySelectorAll('.hub-quick-card,.role-quick-card,.me-card.primary,.mu-feature')];
  const route=b=>b.dataset.homeRoute||b.dataset.quick||b.dataset.route||b.dataset.quranRoute||b.dataset.go;
- const available=items.filter(i=>!['dashboard','parent-home'].includes(i.id));
+ const available=items.filter(i=>!['dashboard','parent-home'].includes(i.id)&&!i.id.endsWith('-punctuality'));
  const make=i=>{const b=document.createElement('button');b.type='button';b.dataset.homeRoute=i.id;b.innerHTML=`<b>${e(i.label)}</b>`;b.onclick=()=>ctx.navigate(i.id);return b;};
  const monitorHome=['head_formal_school','head_boys_dorm','head_girls_dorm'].includes(ctx.session.activeRole);
  const limit=monitorHome?Infinity:4;
@@ -45,8 +46,8 @@ export function arrangeHome(ctx,items=[]){
  for(const b of rest){used.add(route(b));labels.add(label(b));}
  for(const i of available)if(!used.has(i.id)&&!labels.has(i.label.trim().toLowerCase())){rest.push(make(i));used.add(i.id);labels.add(i.label.trim().toLowerCase());}
  const styleCard=(b,index,primary)=>{
-  const title=b.querySelector('strong,b')?.textContent.trim()||b.textContent.trim();
-  const sub=QUICK_DESCRIPTIONS[route(b)]||b.querySelector('small')?.textContent.trim()||'Buka ruang kerja Anda';
+  const title=combinedLabels[route(b)]||b.querySelector('strong,b')?.textContent.trim()||b.textContent.trim();
+  const sub=combinedLabels[route(b)]?'Pantau kehadiran dan ketepatan waktu':QUICK_DESCRIPTIONS[route(b)]||b.querySelector('small')?.textContent.trim()||'Buka ruang kerja Anda';
   const symbol=b.querySelector('svg')?.outerHTML||icon(/izin|sakit/i.test(title)?'cross':/presensi|hadir/i.test(title)?'check':/jadwal/i.test(title)?'calendar':/nilai|hasil/i.test(title)?'chart':/guru|santri|personil/i.test(title)?'user':'book');
   b.classList.add(primary?'premium-quick':'premium-menu');
   b.style.setProperty('--tile-index',index%4);

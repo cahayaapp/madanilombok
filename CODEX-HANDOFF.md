@@ -468,3 +468,9 @@ Added dorm-quran-daily to both dorm leader homes and menus. Reads canonical acad
 - Kartu pimpinan diperkecil dari minimum 130px ke 108px, padding 13px, jarak 12px, judul 13px dan ikon mobile 24px.
 - Layar sempit memakai judul 12px dan jarak 10px. Teks tetap utuh, tinggi kartu dapat berkembang; tidak dipotong untuk memaksakan satu layar.
 - Cache v99; perubahan tampilan lokal, tanpa perubahan data atau akses.
+
+
+## 13 Oktober — Gabungan kehadiran dan kedisiplinan
+- Kartu cepat kehadiran/kedisiplinan digabung per sasaran: guru, siswa, santri, pembina/guru pondok. Kepala Sekolah kini 3 kartu; Kepala Asrama 5 kartu.
+- Halaman laporan memiliki pemilih Kehadiran/Kedisiplinan dengan periode tanggal tetap saat berpindah. Route kedisiplinan lama tetap berfungsi.
+- Tidak mengubah perhitungan, rekam, atau cakupan unit. Cache v100. Uji rendering mencakup pergantian mode dan tanggal.

@@ -66,7 +66,7 @@ test('all 15 homes render and non-finance roles do not request finance collectio
  const ctx=ctxFor(role);ctx.root.innerHTML='';const items=MENU_GROUPS.flatMap(g=>g.items).filter(i=>canAccess(i.feature||'dashboard',[role]));await homes.namespace.renderRoleHome(ctx,items);
  assert.ok(ctx.root.querySelector('.home-role-button'),role);
  assert.ok(ctx.root.querySelector('.premium-home'),role);
- assert.ok(ctx.root.querySelectorAll('.premium-quick').length<=({head_formal_school:5,head_boys_dorm:7,head_girls_dorm:7}[role]||4),role);
+ assert.ok(ctx.root.querySelectorAll('.premium-quick').length<=({head_formal_school:3,head_boys_dorm:5,head_girls_dorm:5}[role]||4),role);
  assert.ok(ctx.root.querySelectorAll('.premium-menu-grid>.premium-menu').length<=8,role);
  const quickLabels=new Set([...ctx.root.querySelectorAll('.premium-quick>b')].map(b=>b.textContent));
  assert.ok([...ctx.root.querySelectorAll('.premium-menu-grid>.premium-menu>b')].every(b=>!quickLabels.has(b.textContent)),role);
@@ -218,6 +218,12 @@ test('leadership report visual summary preserves counts, scope, and period filte
   assert.equal(ctx.root.querySelector('.monitor-stats .portal-metric strong').textContent,'2');
   assert.equal(ctx.root.querySelectorAll('.monitor-person').length,0);
   ctx.root.querySelector('[data-period=week]').click();assert.ok(ctx.root.querySelector('[name=from]').value<date);
+  ctx.root.querySelector('[data-monitor-view=punctuality]').click();
+  assert.match(ctx.root.querySelector('.monitor-ring').getAttribute('aria-label'),/50 persen/);
+  assert.equal(ctx.root.querySelectorAll('.monitor-person').length,1);
+  assert.equal(ctx.root.querySelector('[name=from]').value<date,true);
+  ctx.root.querySelector('[data-monitor-view=attendance]').click();
+  assert.match(ctx.root.querySelector('.monitor-ring').getAttribute('aria-label'),/100 persen/);
   exportVisual(ctx,'head_formal_school','report-populated');
   await module.namespace.renderLeadershipMonitor(ctx,'school-teacher-punctuality');
   assert.match(ctx.root.querySelector('.monitor-ring').getAttribute('aria-label'),/50 persen/);
@@ -249,7 +255,7 @@ test('unit leadership homes expose all daily monitors as quick cards',async()=>{
   await homes.namespace.renderRoleHome(ctx,items);
   assert.equal(ctx.root.querySelector('.premium-section-head h2').textContent,'Pantau Operasional Harian');
   assert.ok(ctx.root.querySelector('.premium-monitor-home'));
-  const expected=role==='head_formal_school'?['school-teacher-attendance','school-teacher-punctuality','school-student-attendance','school-student-punctuality','school-mentoring']:['dorm-student-attendance','dorm-student-punctuality','dorm-teacher-attendance','dorm-teacher-punctuality','dorm-quran-daily','dorm-counselor','management-worship'];
+  const expected=role==='head_formal_school'?['school-teacher-attendance','school-student-attendance','school-mentoring']:['dorm-student-attendance','dorm-teacher-attendance','dorm-quran-daily','dorm-counselor','management-worship'];
   assert.deepEqual([...ctx.root.querySelectorAll('.premium-quick')].map(b=>b.dataset.homeRoute),expected);
   for(const id of expected){const b=ctx.root.querySelector(`.premium-quick-grid [data-home-route="${id}"]`);assert.ok(b.querySelector('small').textContent);assert.equal(ctx.root.querySelector(`.premium-menu-grid [data-home-route="${id}"]`),null);}
  }
