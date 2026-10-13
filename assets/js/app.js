@@ -1,3 +1,4 @@
+import {visibleRoleMenu} from './role-workspace-catalog.js';
 import {decorateNaqibPage} from './naqib-home.js';
 import {renderStudentPermits} from './student-permits.js';
 import {renderTeacherLeave} from './teacher/leave.js';
@@ -107,6 +108,13 @@ export const routes = {
   "parent-finance": renderParentFinance
 };
 
+Object.assign(routes,{
+ 'admin-data':()=>{location.href='../admin/index.html';},
+ 'admin-accounts':()=>{location.href='../admin/accounts.html';},
+ 'admin-import':()=>{location.href='../admin/index.html#import';},
+ 'admin-validation':()=>{location.href='../admin/validation.html';}
+});
+
 const routeFeature = Object.fromEntries(MENU_GROUPS.flatMap(g => g.items.map(i => [i.id, i.feature || "dashboard"])));
 const routeLabel = Object.fromEntries(MENU_GROUPS.flatMap(g => g.items.map(i => [i.id, i.label])));
 Object.assign(routeFeature,{'quran-ziyadah':'academic.quran','quran-murojaah':'academic.quran'});
@@ -115,7 +123,7 @@ Object.assign(routeLabel,{'quran-ziyadah':'Ziyadah','quran-murojaah':'Muroja’a
 function visibleGroups() {
   return MENU_GROUPS.map(group => ({
     ...group,
-    items: group.items.filter(item => item.id === "dashboard" || canAccess(item.feature, [activeRole]))
+    items: visibleRoleMenu(activeRole,group.items).filter(item => item.id === "dashboard" || canAccess(item.feature, [activeRole]))
   })).filter(group => group.items.length);
 }
 
@@ -137,6 +145,7 @@ function syncBottomNav() {
   const targets=bottomRoutes(activeRole,canRoute);
   document.querySelectorAll('[data-shell-nav]').forEach(button=>{
     const key=button.dataset.shellNav;
+    if(key==='schedule'){const label=button.querySelector('span:last-child');if(label)label.textContent=['admin','super_admin'].includes(activeRole)?'Data':'Jadwal';}
     button.disabled=key!=='more'&&!targets[key];
     const active=key!=='more'&&targets[key]===currentRoute;
     button.classList.toggle('active',active);

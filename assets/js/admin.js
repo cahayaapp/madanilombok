@@ -416,9 +416,9 @@ function renderSection(section){
 }
 
 async function boot(){
-  try{session=await requireAdmin(); $("#adminName").textContent=session.profile.name||session.user.email||"Administrator"; await loadCache(); await refreshActiveYear(); renderDashboard();}
+  try{session=await requireAdmin(); $("#adminName").textContent=session.profile.name||session.user.email||"Administrator"; await loadCache(); await refreshActiveYear(); await navigate(location.hash==='#import'?'import':'dashboard');}
   catch(e){console.error(e)}
 }
 
-$("#logoutButton").addEventListener("click",async()=>{await logout();window.location.href="../index.html"}); $("#menuButton").addEventListener("click",()=>$("#sidebar").classList.toggle("open")); $("#modalClose").addEventListener("click",closeForm); $("#modalBackdrop").addEventListener("click",e=>{if(e.target.id==="modalBackdrop")closeForm()}); $("#entityForm").addEventListener("submit",submitForm); $$('.nav-item').forEach(btn=>btn.addEventListener("click",()=>navigate(btn.dataset.section)));
+$("#logoutButton").addEventListener("click",async()=>{await logout();window.location.href="../index.html"}); $("#menuButton").addEventListener("click",()=>$("#sidebar").classList.toggle("open")); $("#modalClose").addEventListener("click",closeForm); $("#modalBackdrop").addEventListener("click",e=>{if(e.target.id==="modalBackdrop")closeForm()}); $("#entityForm").addEventListener("submit",submitForm); $$('.nav-item').forEach(btn=>btn.addEventListener("click",()=>{if(btn.dataset.section)navigate(btn.dataset.section);}));
 boot();

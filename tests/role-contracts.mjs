@@ -2,11 +2,22 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import {ROLE_LABELS,MENU_GROUPS,ROLE_FEATURES,canAccess} from '../assets/js/permissions.js';
+import {visibleRoleMenu} from '../assets/js/role-workspace-catalog.js';
 import {ROLE_EXPERIENCE,sessionForRole,bottomRoutes,localDate,filterScopedStudents} from '../assets/js/role-experience.js';
 import {validateTransition} from '../assets/js/workflow-model.js';
 import {validateActivity,validateReport,HOLIDAY_ACTIVITIES,DEPOSIT_TRANSITIONS} from '../assets/js/holiday-model.js';
 const all=MENU_GROUPS.flatMap(g=>g.items),ids=new Set(all.map(i=>i.id));
 const session=(activeRole)=>({activeRole,roles:[activeRole],profile:{},user:{uid:'reviewer'}});
+test('admin navigation exposes administration only while preserving operational permissions',()=>{
+ const expected=['dashboard','admin-data','admin-accounts','admin-import','admin-validation','deposit-admin','work-messages','work-profile','work-guide'].sort();
+ for(const role of ['admin','super_admin']){
+  const visible=visibleRoleMenu(role,all).filter(i=>canAccess(i.feature||'dashboard',[role]));
+  assert.deepEqual(visible.map(i=>i.id).sort(),expected);
+  assert.ok(canAccess('finance.cashier',[role]));
+ }
+ assert.deepEqual(visibleRoleMenu('guru_mapel',all),all);
+ assert.equal(canAccess('workspace.admin-accounts',['guru_mapel']),false);
+});
 test('every assigned role has real schedule/message destinations',()=>{
  assert.equal(ids.size,all.length,'duplicate menu IDs');
  for(const role of Object.keys(ROLE_LABELS)){

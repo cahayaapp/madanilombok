@@ -1,4 +1,5 @@
 import {renderNaqibHome} from '../naqib-home.js';
+import {visibleRoleMenu} from '../role-workspace-catalog.js';
 import {mountHomeRoleSwitcher} from '../home-role-switcher.js';
 import {renderManagementHome} from '../management-layout.js';
 import {renderHealthHome} from '../health.js';
@@ -12,11 +13,18 @@ import {pageHeader,panel,metric,escapeHtml,empty,badge} from './common.js';
 import {renderParentHome} from './parent.js';
 import {renderFinanceDashboard} from './finance.js';
 export async function renderRoleHome(ctx,items) {
+  items=visibleRoleMenu(ctx.session.activeRole,items);
   try { await renderHomeContent(ctx,items); } finally { mountHomeRoleSwitcher(ctx,items); }
 }
 async function renderHomeContent(ctx,items) {
   const role=ctx.session.activeRole,exp=ROLE_EXPERIENCE[role];
   if(!exp){ctx.root.innerHTML=empty('Belum ada role aktif. Hubungi administrator.');return;}
+  if(['admin','super_admin'].includes(role)){
+    const quick=exp.quick.map(id=>items.find(i=>i.id===id)).filter(Boolean);
+    ctx.root.innerHTML=`<section class="role-quick-grid">${quick.map(i=>`<button type="button" class="role-quick-card" data-home-route="${i.id}"><strong>${escapeHtml(i.label)}</strong></button>`).join('')}</section>${panel('Administrasi Sistem','<p>Kelola database santri, SDM, struktur, penempatan, jadwal, dan akses pengguna melalui Master Data. Untuk menjalankan tugas operasional, pilih role yang ditugaskan pada akun Anda.</p>')}`;
+    ctx.root.querySelectorAll('[data-home-route]').forEach(b=>b.onclick=()=>ctx.navigate(b.dataset.homeRoute));
+    return;
+  }
   if(['director','deputy_director','head_formal_school','head_boys_dorm','head_girls_dorm'].includes(role))return renderManagementHome(ctx,items);
   if(role==='kesehatan')return renderHealthHome(ctx);
   if(role==='guru_wali')return renderMentorHome(ctx);
