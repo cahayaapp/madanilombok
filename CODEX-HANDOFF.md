@@ -479,3 +479,8 @@ Added dorm-quran-daily to both dorm leader homes and menus. Reads canonical acad
 ## 13 Oktober — Ibadah personil di Menu Lainnya
 - Absensi Ibadah Personil dipindahkan dari kartu cepat ke Menu Lainnya Kepala Asrama putra/putri. Empat kartu cepat khusus pemantauan tetap tersedia.
 - Fitur dan hak akses tetap aktif; cache v101.
+
+
+## 13 Oktober — Kartu tidak tertutup navigasi
+- Perbaikan akar clipping: portal-content beranda pimpinan sebelumnya overflow:hidden meskipun isi tinggi otomatis. Kini konten dapat digulir dengan area viewport berakhir di atas navigasi bawah.
+- Header, greeting, kartu cepat dan menu mobile dipadatkan proporsional. Layar kecil atau teks besar tetap dapat menjangkau semua kartu. Cache v102.

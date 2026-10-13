@@ -561,3 +561,21 @@ body[data-home=true] #content .premium-monitor-home .premium-section-head h2{fon
 }
 
 .monitor-view-switch{display:flex;gap:6px;background:#e8f5f1;padding:5px;border-radius:15px;margin:0 0 18px;max-width:440px}.monitor-view-switch button{flex:1;border:0;border-radius:11px;padding:12px 16px;background:transparent;color:#356b69;font:inherit;font-weight:700;cursor:pointer}.monitor-view-switch button[aria-pressed=true]{background:#008d86;color:white;box-shadow:0 3px 10px #007c731c}.monitor-view-switch button:focus-visible{outline:3px solid #e4aa42;outline-offset:2px}
+
+/* Reserve real viewport space for the bottom bar; overflow stays reachable. */
+body[data-home=true]:has(.premium-monitor-home) .portal-content{overflow-y:auto!important;overflow-x:hidden!important;overscroll-behavior-y:contain;scroll-padding-bottom:16px}
+body[data-home=true] #content .premium-home.premium-monitor-home{padding-bottom:18px!important;margin-bottom:0}
+@media(max-width:900px){
+ body[data-home=true]:has(.premium-monitor-home) .main-area{height:calc(100dvh - 82px - env(safe-area-inset-bottom))!important}
+ body[data-home=true]:has(.premium-monitor-home) .portal-content{padding:10px 12px 16px!important}
+ body[data-home=true] #content .premium-monitor-home .official-home-header{padding:9px 18px!important}
+ body[data-home=true] #content .premium-monitor-home .official-greeting{height:112px!important;min-height:112px!important;padding:8px 18px 12px!important;margin-bottom:36px!important}
+ body[data-home=true] #content .premium-monitor-home .official-quote{top:12px;font-size:10px!important;line-height:1.4!important}
+ body[data-home=true] #content .premium-monitor-home .premium-quick-grid{gap:10px;margin-bottom:14px}
+ body[data-home=true] #content .premium-monitor-home .premium-quick{min-height:92px!important;padding:10px!important;row-gap:6px!important}
+ body[data-home=true] #content .premium-monitor-home .premium-quick>b{font-size:12px!important}
+ body[data-home=true] #content .premium-monitor-home .premium-quick>small{font-size:10px!important}
+ body[data-home=true] #content .premium-monitor-home .premium-section-head{margin-bottom:10px}
+ body[data-home=true] #content .premium-monitor-home .premium-menu-grid{gap:8px}
+ body[data-home=true] #content .premium-monitor-home .premium-menu{min-height:64px!important;padding:6px 4px!important}
+}
