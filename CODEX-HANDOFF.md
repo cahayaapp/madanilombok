@@ -484,3 +484,10 @@ Added dorm-quran-daily to both dorm leader homes and menus. Reads canonical acad
 ## 13 Oktober — Kartu tidak tertutup navigasi
 - Perbaikan akar clipping: portal-content beranda pimpinan sebelumnya overflow:hidden meskipun isi tinggi otomatis. Kini konten dapat digulir dengan area viewport berakhir di atas navigasi bawah.
 - Header, greeting, kartu cepat dan menu mobile dipadatkan proporsional. Layar kecil atau teks besar tetap dapat menjangkau semua kartu. Cache v102.
+
+
+## 13 Oktober — Status absen akhir shalat Naqib
+- Penyebab: semua rekam tersimpan termasuk AWAL mengunci radio status. Kini hanya FINAL mengunci pilihan.
+- Absen akhir dapat mengganti Hadir/Terlambat/Sakit/Izin/Alfa; catatan terlambat tetap wajib saat finalisasi.
+- Snapshot initialAttendance mempertahankan status/catatan/petugas/waktu awal, termasuk fallback dari rekam AWAL lama. Tidak mengubah data produksi. Cache v103.
+- Uji alur AWAL Hadir ke FINAL Terlambat, semua pilihan bisa diklik, validasi catatan, snapshot awal dan kunci FINAL.
