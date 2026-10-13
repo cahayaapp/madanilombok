@@ -462,3 +462,9 @@ Added dorm-quran-daily to both dorm leader homes and menus. Reads canonical acad
 - Beranda Kepala Asrama putra/putri: tujuh kartu untuk kehadiran/kedisiplinan santri dan pembina, setoran tahfiz harian, konselor, serta ibadah personil.
 - Judul bagian menjadi “Pantau Operasional Harian”; role lain tetap memakai empat kartu dan judul sebelumnya. Tata letak pimpinan memakai tinggi alami dan jarak kartu, bukan batas empat kartu.
 - Tidak mengubah sumber laporan atau cakupan akses unit. Cache v98. Validasi lokal: syntax JavaScript, JSON, role/route dan rendering/monitoring; belum dipublikasikan atau diuji di produksi.
+
+
+## 13 Oktober — Proporsi kartu pemantauan
+- Kartu pimpinan diperkecil dari minimum 130px ke 108px, padding 13px, jarak 12px, judul 13px dan ikon mobile 24px.
+- Layar sempit memakai judul 12px dan jarak 10px. Teks tetap utuh, tinggi kartu dapat berkembang; tidak dipotong untuk memaksakan satu layar.
+- Cache v99; perubahan tampilan lokal, tanpa perubahan data atau akses.
