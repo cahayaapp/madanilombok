@@ -474,3 +474,8 @@ Added dorm-quran-daily to both dorm leader homes and menus. Reads canonical acad
 - Kartu cepat kehadiran/kedisiplinan digabung per sasaran: guru, siswa, santri, pembina/guru pondok. Kepala Sekolah kini 3 kartu; Kepala Asrama 5 kartu.
 - Halaman laporan memiliki pemilih Kehadiran/Kedisiplinan dengan periode tanggal tetap saat berpindah. Route kedisiplinan lama tetap berfungsi.
 - Tidak mengubah perhitungan, rekam, atau cakupan unit. Cache v100. Uji rendering mencakup pergantian mode dan tanggal.
+
+
+## 13 Oktober — Ibadah personil di Menu Lainnya
+- Absensi Ibadah Personil dipindahkan dari kartu cepat ke Menu Lainnya Kepala Asrama putra/putri. Empat kartu cepat khusus pemantauan tetap tersedia.
+- Fitur dan hak akses tetap aktif; cache v101.
