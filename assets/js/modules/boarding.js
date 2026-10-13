@@ -1,3 +1,4 @@
+import {counselorGender} from '../boarding-personnel-scope.js';
 import {reportIndicators,reportObservation} from '../naqib-report-model.js';
 import {dutyWindow,assertDutyProgram} from '../naqib-duty.js';
 import {naqibProgramKind} from '../naqib-program-policy.js';
@@ -28,14 +29,14 @@ function boardingStudents(ctx) {
 }
 
 function profileGender(ctx) {
-  const value = ctx.session.profile.scopeGender || ctx.session.profile.genderScope;
+  const value = ctx.session.activeRole==='konselor'?counselorGender(ctx.session.profile):ctx.session.profile.scopeGender || ctx.session.profile.genderScope;
   return value === "L" || value === "P" ? value : "";
 }
 
 function scopedCases(ctx, cases = []) {
   cases=cases.filter(c=>c.handlingRole!=="wali_kelas"&&!isSdStudent(ctx.master,c.studentId));
   const gender = profileGender(ctx);
-  if (!gender) return cases;
+  if (!gender) return ctx.session.activeRole==='konselor'?[]:cases;
   const studentMap = byId(ctx.master.students || []);
   return cases.filter(c => studentMap[c.studentId]?.gender === gender);
 }

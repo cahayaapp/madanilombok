@@ -1,3 +1,4 @@
+import {counselorGender} from './boarding-personnel-scope.js';
 import {teachingGroups} from './group-teachers.js';
 // Navigation and role composition are data-only; no Firebase reads or writes here.
 export const ROLE_EXPERIENCE = {
@@ -39,7 +40,8 @@ export function filterScopedStudents(master,profile,role) {
   if(role==='mentor_tahsin_tahfiz'){const groups=teachingGroups(master,profile,'quran');return rows.filter(s=>groups.some(g=>master.groupAssignments?.[g.id]?.[s.id]));}
   if(role==='wali_santri') return rows.filter(s=>(profile.studentIds||[profile.studentId]).includes(s.id));
   if(role==='guru_wali')return rows.filter(s=>{if(s.unitId==='UNIT-SD'){const assignment=master.classAssignments?.[s.id];const room=(master.classes||[]).find(c=>c.id===assignment?.classId);return s.status!=='inactive'&&assignment?.status!=='inactive'&&room?.status!=='inactive'&&room?.unitId==='UNIT-SD'&&!!profile.staffId&&room.homeroomStaffId===profile.staffId;}const a=master.mentorAssignments?.[s.id];return a?!!profile.staffId&&a.status==='active'&&a.mentorStaffId===profile.staffId:!!profile.menteeStudentIds?.includes(s.id);});
-  const gender=profile.scopeGender||profile.genderScope;
+  const gender=role==='konselor'?counselorGender(profile):profile.scopeGender||profile.genderScope;
+  if(role==='konselor'&&!gender)return [];
   if(gender) rows=rows.filter(s=>s.gender===gender);
   if(profile.unitIds?.length) rows=rows.filter(s=>profile.unitIds.includes(s.unitId));
   if(profile.classIds?.length) rows=rows.filter(s=>profile.classIds.includes(master.classAssignments?.[s.id]?.classId));

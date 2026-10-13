@@ -491,3 +491,10 @@ Added dorm-quran-daily to both dorm leader homes and menus. Reads canonical acad
 - Absen akhir dapat mengganti Hadir/Terlambat/Sakit/Izin/Alfa; catatan terlambat tetap wajib saat finalisasi.
 - Snapshot initialAttendance mempertahankan status/catatan/petugas/waktu awal, termasuk fallback dari rekam AWAL lama. Tidak mengubah data produksi. Cache v103.
 - Uji alur AWAL Hadir ke FINAL Terlambat, semua pilihan bisa diklik, validasi catatan, snapshot awal dan kunci FINAL.
+
+
+## 13 Oktober — Lingkup konselor dan personil asrama
+- Konselor memakai roleScopes.konselor (fallback scope akun) untuk gender; scope kosong menampilkan nol santri/kasus. Repository memeriksa gender sebelum operasi penanganan.
+- Satu filter personil untuk pembinaan, daftar personil, pengaturan mukim dan ibadah: SDM aktif dengan gender sesuai kepala asrama dan akun naqib/pembina tahfiz/konselor atau guru mapel tertaut kelompok Arabic aktif. Guru formal murni/guru wali murni tidak termasuk. Riwayat pembinaan juga disaring berdasarkan personil yang berhak.
+- Uji 41 existing + 2 scope tests lulus. Cache v104. Tidak mengubah akun/data/rules produksi.
+- PENTING BELUM TUNTAS: database.rules.json masih memiliki .read pada root madani_app untuk semua akun aktif. Pembatasan UI/repository bukan isolasi database. Pengamanan penuh perlu migrasi pembacaan per scope beserta aturan baca granular; jangan mengklaim akses Firebase lintas unit sudah tertutup.

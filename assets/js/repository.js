@@ -1,3 +1,4 @@
+import {counselorGender} from './boarding-personnel-scope.js';
 import {
   ref,
   get,
@@ -269,7 +270,7 @@ export async function commitHealthOperation(yearId,operation,actorUid){
 export async function commitCaseOperation(yearId,caseId,operation,session){
  const {applyCaseOperation}=await import('./counselor-model.js');
  const existing=await getNode(`boarding/cases/${yearId}/${caseId}`);
- if(existing?.studentId){const student=await getNode(`students/${existing.studentId}`);if(student?.unitId==='UNIT-SD')throw Error('Kasus SD ditangani Wali Kelas.');}
+ if(existing?.studentId){const student=await getNode(`students/${existing.studentId}`);if(session.activeRole==='konselor'&&(!counselorGender(session.profile)||student?.gender!==counselorGender(session.profile)))throw Error('Kasus di luar unit putra/putri Konselor.');if(student?.unitId==='UNIT-SD')throw Error('Kasus SD ditangani Wali Kelas.');}
  const record=await transitionWorkspaceRecord(`boarding/cases/${yearId}`,caseId,current=>applyCaseOperation(current,operation,session,Date.now()),session.user.uid);
  const projections={};
  if(operation.type==='session')projections[`boarding/counseling/${yearId}/${caseId}/${operation.id}`]=record.sessions[operation.id];
