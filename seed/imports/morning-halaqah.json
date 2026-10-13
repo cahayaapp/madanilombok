@@ -133,15 +133,20 @@
     "schedules/daily/DS-2026-GEMA-08/attendanceRole": "pembina_gema",
     "schedules/daily/DS-2026-GEMA-09/attendanceRole": "pembina_gema",
     "schedules/daily/DS-2026-GEMA-10/attendanceRole": "mentor_tahsin_tahfiz",
-    "schedules/daily/DS-2026-GEMA-11/attendanceRole": "pembina_gema",
+    "schedules/daily/DS-2026-GEMA-11/attendanceRole": "mentor_tahsin_tahfiz",
     "schedules/daily/DS-2026-GEMA-12/attendanceRole": "pembina_gema",
-    "schedules/daily/DS-2026-GEMA-13/attendanceRole": "pembina_gema",
+    "schedules/daily/DS-2026-GEMA-13/attendanceRole": "mentor_tahsin_tahfiz",
     "schedules/daily/DS-2026-GEMA-14/attendanceRole": "pembina_gema",
     "schedules/daily/DS-2026-GEMA-15/attendanceRole": "guru_mapel",
     "schedules/daily/DS-2026-GEMA-16/attendanceRole": "pembina_gema",
     "schedules/daily/DS-2026-GEMA-17/attendanceRole": "pembina_gema",
     "schedules/recurring/REC-2026-04/attendanceRole": "guru_mapel",
     "schedules/recurring/REC-2026-10/attendanceRole": "guru_mapel",
-    "schedules/recurring/REC-2026-11/attendanceRole": "guru_mapel"
+    "schedules/recurring/REC-2026-11/attendanceRole": "guru_mapel",
+    "groups/GRP-2026-quran-L-ziyadah/mentorStaffId": "AMD-SDM-0014",
+    "groups/GRP-2026-quran-L-ziyadah/mentorStaffIds": [
+      "AMD-SDM-0014"
+    ],
+    "groups/GRP-2026-quran-L-ziyadah/mentorName": "Budiawan Khaer"
   }
 }

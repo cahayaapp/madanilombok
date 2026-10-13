@@ -3,6 +3,15 @@ import {teacherSchedules} from '../assets/js/teacher/model.js';
 import {naqibProgramKind} from '../assets/js/naqib-program-policy.js';
 import {canAccess} from '../assets/js/permissions.js';
 const m=JSON.parse(fs.readFileSync('seed/master-data.json')),pack=JSON.parse(fs.readFileSync('seed/imports/morning-halaqah.json')),rows=o=>Object.entries(o).map(([id,r])=>({id,...r}));
+test('confirmed GEMA afternoon and night slots reach the linked Quran mentor every day',()=>{
+ const g='GRP-2026-quran-L-ziyadah',staff=pack.changes[`groups/${g}/mentorStaffId`];assert.equal(staff,'AMD-SDM-0014');
+ const daily=rows(m.schedules.daily).filter(s=>['DS-2026-GEMA-11','DS-2026-GEMA-13'].includes(s.id)).map(s=>({...s,attendanceRole:pack.changes[`schedules/daily/${s.id}/attendanceRole`]}));
+ const ctx={yearId:'TA-2026-2027-GANJIL',session:{activeRole:'mentor_tahsin_tahfiz',profile:{staffId:staff}},master:{dailySchedules:daily,groups:[{id:g,gemaProgram:true,programType:'quran',mentorStaffId:staff}]}};
+ const schedules=teacherSchedules(ctx);assert.equal(schedules.length,14);
+ assert.equal(schedules.filter(s=>s.startTime==='15:30'&&s.endTime==='17:00').length,7);
+ assert.equal(schedules.filter(s=>s.startTime==='18:00'&&s.endTime==='20:30').length,7);
+ assert.equal(teacherSchedules({...ctx,session:{...ctx.session,profile:{staffId:'other'}}}).length,0);
+});
 test('every day has one confirmed morning block; Monday/Saturday belong to Naqib',()=>{
  const daily=rows(m.schedules.daily).filter(s=>s.id.startsWith('DS-PAGI-'));assert.equal(daily.length,7);
  for(const day of ['Minggu','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu']){
