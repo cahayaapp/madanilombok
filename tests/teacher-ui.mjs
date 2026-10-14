@@ -147,3 +147,16 @@ test('parent permit reaches correct dorm head and decision appears to guardian',
  await render({...parent,session:{user:{uid:'head'},activeRole:'head_girls_dorm',profile:{name:'Kepala Putri'}}});await click('[data-permit]');const review=$('.teacher-sheet form');review.elements.note.value='Dijemput ibu';await review.onsubmit({preventDefault(){},submitter:review.querySelector('[value=approved]')});assert.equal(read(p+'/'+id+'/decision').status,'approved');
  await render(parent);assert.match(ctx.root.textContent,/Disetujui/);assert.equal(read('academic/student_attendance'),null);
 });
+
+test('all six murojaah types persist and appear in history',async()=>{
+ const types=["Muroja'ah 1","Muroja'ah 2","Muroja'ah mahir","Muroja'ah 40 kali","Muroja'ah mutqin","Tasmi'"];
+ for(const type of types){
+  db={};await quranModule.namespace.renderTeacherQuran({...ctx,session:{...ctx.session,activeRole:'mentor_tahsin_tahfiz'}},'Murojaah');
+  assert.deepEqual([...$('#murojaahType').options].map(o=>o.value),types);
+  change('#murojaahType',type);await click('[data-student="s1"] [data-portion-mode="range"]');
+  change('[data-student="s1"] [data-first]','112');change('[data-student="s1"] [data-last]','113');
+  $('[data-student="s1"] [data-last-verse]').value='6';$('[data-student="s1"] [data-lines]').value='2';
+  await click('[data-student="s1"] [data-save]');const record=Object.values(read(`academic/quran_records/${ctx.yearId}/g1/s1`))[0];
+  assert.equal(record.subtype,type);assert.equal(record.type,'Murojaah');await click('[data-student="s1"] [data-history]');assert.ok($('[data-student="s1"] [data-history-list]').textContent.includes(type),$('.teacher-errors').textContent+' / '+$('[data-student="s1"] [data-history-list]').textContent);
+ }
+});

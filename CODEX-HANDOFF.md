@@ -504,3 +504,9 @@ Added dorm-quran-daily to both dorm leader homes and menus. Reads canonical acad
 - CSS bersama: tabel berlebar tetap menjadi rekam vertikal di bawah 700px; formulir, filter dan tombol membungkus; media dan input mengikuti lebar kontainer.
 - mobile-layout.js menambah label kolom pada tabel dinamis tanpa mengganti kontrol/event handler. Dipasang pada 13 entry HTML ber-brand-theme; dicache SW v105.
 - Validasi: 41 role/route/render tests + 1 test label tabel lulus. Chrome headless profil terpisah memeriksa 400 fixture halaman/role pada 320px dan 390px (800 pemeriksaan), tanpa area horizontal-scroll maupun elemen terlihat melampaui viewport. Fixture memakai data uji, bukan audit seluruh kondisi data produksi/modal terbuka.
+
+
+## 14 Oktober — Jenis setoran Muroja’ah
+- Pilihan jenis setoran: Muroja’ah 1, Muroja’ah 2, Muroja’ah mahir, Muroja’ah 40 kali, Muroja’ah mutqin, Tasmi’.
+- Pilihan disimpan di subtype dan ditampilkan pada riwayat; laporan harian Kepala Asrama sudah membaca subtype. Rekam lama tidak diubah.
+- 29 pengujian teacher UI lulus, termasuk simpan/baca keenam jenis. Cache v106.
