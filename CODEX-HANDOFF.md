@@ -510,3 +510,9 @@ Added dorm-quran-daily to both dorm leader homes and menus. Reads canonical acad
 - Pilihan jenis setoran: Muroja’ah 1, Muroja’ah 2, Muroja’ah mahir, Muroja’ah 40 kali, Muroja’ah mutqin, Tasmi’.
 - Pilihan disimpan di subtype dan ditampilkan pada riwayat; laporan harian Kepala Asrama sudah membaca subtype. Rekam lama tidak diubah.
 - 29 pengujian teacher UI lulus, termasuk simpan/baca keenam jenis. Cache v106.
+
+
+## 14 Oktober — Kelengkapan daftar personil asrama
+- Jadwal, pengaturan mukim, dan presensi ibadah mengenali role array/map/roleFlags serta gender dari SDM atau penugasan akun/piket saat SDM belum mengisi gender. Konflik scope tetap tidak dimasukkan; gender SDM eksplisit menjadi acuan utama.
+- Pengaturan mukim juga mencakup SDM tim asrama tanpa akun berdasarkan appRoles/piket aktif, tanpa membuat akun baru. Guru formal murni tetap dikecualikan.
+- 25 uji lulus: tiga Naqib putra tampil pada ketiga halaman meski dua SDM belum memiliki gender; Naqib putri tidak ikut. Ini verifikasi fixture, bukan verifikasi kelengkapan akun produksi. Cache v107.

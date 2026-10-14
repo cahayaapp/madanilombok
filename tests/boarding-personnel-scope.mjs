@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {dormPersonnel,counselorGender} from '../assets/js/boarding-personnel-scope.js';
+import {dormPersonnel,counselorGender,personnelGender,personnelRoles} from '../assets/js/boarding-personnel-scope.js';
 import {filterScopedStudents} from '../assets/js/role-experience.js';
 test('counselor scope fails closed and uses counselor-specific assignment',()=>{
  const master={students:[{id:'l',gender:'L'},{id:'p',gender:'P'}]};
@@ -16,4 +16,14 @@ test('dorm roster excludes formal-only staff and includes dual-role and Arabic t
  assert.deepEqual(dormPersonnel(users,'head_girls_dorm',master).map(u=>u.id),['girl']);
  assert.deepEqual(dormPersonnel(users,'head_boys_dorm',{}),[]);
  master.groups[0].status='inactive';assert.ok(!dormPersonnel(users,'head_boys_dorm',master).some(u=>u.id==='arabic'));
+});
+
+test('legacy role maps and confirmed duty gender keep assigned personnel visible',()=>{
+ const users=[{staffId:'dai',roles:{naqib:true},roleScopes:{naqib:{scopeGender:'L'}}},{staffId:'novan',roleFlags:{naqib:true}},{staffId:'yusuf',role:'naqib'},{staffId:'alfi',roles:{naqib:true},scopeGender:'P'}];
+ const master={staff:[{id:'dai'},{id:'novan'},{id:'yusuf',gender:'L'},{id:'alfi'}],naqibDuty:{novan:{active:true,gender:'L'}}};
+ assert.deepEqual(dormPersonnel(users,'head_boys_dorm',master).map(u=>u.staffId),['dai','novan','yusuf']);
+ assert.deepEqual(dormPersonnel(users,'head_girls_dorm',master).map(u=>u.staffId),['alfi']);
+ assert.ok(personnelRoles(users[0]).has('naqib'));
+ assert.equal(personnelGender({}, {scopeGender:'P'}, {active:true,gender:'L'}),'');
+ assert.equal(personnelGender({gender:'P'},{scopeGender:'L'}),'P');
 });

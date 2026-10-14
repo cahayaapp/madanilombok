@@ -266,3 +266,15 @@ test('unit leadership homes expose all daily monitors as quick cards',async()=>{
  assert.equal(ctx.root.querySelector('.premium-section-head h2').textContent,'Akses Cepat Hari Ini');
  assert.equal(ctx.root.querySelectorAll('.premium-quick').length,4);
 });
+
+test('dorm duty, resident settings and worship include all three assigned male naqibs',async()=>{
+ const ctx=ctxFor('head_boys_dorm');ctx.master={...master,staff:[{id:'dai',name:'Dai'},{id:'novan',name:'Novan'},{id:'yusuf',name:'Yusuf',gender:'L'},{id:'alfi',name:'Alfi',gender:'P'}]};
+ const beforeUsers=database.get('users'),beforeDuty=database.get('settings/naqibDuty/staff');
+ database.set('users',{a:{staffId:'dai',roles:{naqib:true},roleScopes:{naqib:{scopeGender:'L'}}},b:{staffId:'novan',roleFlags:{naqib:true}},c:{staffId:'yusuf',role:'naqib'},d:{staffId:'alfi',role:'naqib'}});
+ database.set('settings/naqibDuty/staff',{novan:{active:true,gender:'L',shiftId:'shift2'}});
+ try{
+  for(const [route,selector]of [['management-duty','[data-staff]'],['management-residents','[data-resident]'],['management-worship','[data-person]']]){
+   await routes[route](ctx);assert.equal(ctx.root.querySelectorAll(selector).length,3,route);assert.match(ctx.root.textContent,/Dai/);assert.match(ctx.root.textContent,/Novan/);assert.match(ctx.root.textContent,/Yusuf/);assert.doesNotMatch(ctx.root.textContent,/Alfi/);
+  }
+ }finally{database.set('users',beforeUsers);beforeDuty===undefined?database.delete('settings/naqibDuty/staff'):database.set('settings/naqibDuty/staff',beforeDuty);}
+});
