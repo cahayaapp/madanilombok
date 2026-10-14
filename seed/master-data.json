@@ -10690,27 +10690,14 @@
       "seeded": true,
       "roles": "Guru; Wakil Kepala Sekolah Kesiswaan; Kode Guru SMK 4",
       "unitIds": [
+        "UNIT-SMP",
         "UNIT-SMK",
-        "UNIT-SMP"
-      ],
-      "appRoles": [
-        "guru_mapel"
-      ]
-    },
-    "AMD-SDM-0052": {
-      "name": "Muammar",
-      "unitTask": "Pondok/Al-Qur’an",
-      "roleSummary": "PJ Halaqah Tahfiz Putra",
-      "dataStatus": "Placeholder - perlu verifikasi identitas",
-      "source": "Data asrama/halaqah / keterangan pengguna",
-      "status": "active",
-      "seeded": true,
-      "roles": "PJ Halaqah Tahfiz Putra",
-      "unitIds": [
         "UNIT-PONDOK"
       ],
       "appRoles": [
-        "mentor_tahsin_tahfiz"
+        "guru_mapel",
+        "mentor_tahsin_tahfiz",
+        "guru_wali"
       ],
       "roleScopes": {
         "mentor_tahsin_tahfiz": {
@@ -10719,6 +10706,28 @@
           ]
         }
       }
+    },
+    "AMD-SDM-0052": {
+      "name": "Muammar",
+      "unitTask": "Pondok/Al-Qur’an",
+      "roleSummary": "PJ Halaqah Tahfiz Putra",
+      "dataStatus": "Placeholder - perlu verifikasi identitas",
+      "source": "Data asrama/halaqah / keterangan pengguna",
+      "status": "inactive",
+      "seeded": true,
+      "roles": "PJ Halaqah Tahfiz Putra",
+      "unitIds": [
+        "UNIT-PONDOK"
+      ],
+      "appRoles": [],
+      "roleScopes": {
+        "mentor_tahsin_tahfiz": {
+          "groupIds": [
+            "GRP-2026-quran-L-muammar"
+          ]
+        }
+      },
+      "mergedInto": "AMD-SDM-0051"
     },
     "AMD-SDM-0053": {
       "name": "Muhammad Haikal",
@@ -12444,7 +12453,7 @@
       "type": "Tahfiz",
       "unitId": "UNIT-PONDOK",
       "capacity": "",
-      "mentorStaffId": "AMD-SDM-0052",
+      "mentorStaffId": "AMD-SDM-0051",
       "supersededBy": "boarding-rosters-2026"
     },
     "HLQ-PTR-02": {
@@ -12717,14 +12726,14 @@
       "unitId": "UNIT-PONDOK",
       "mentorName": "Muammar",
       "mentorStaffIds": [
-        "AMD-SDM-0052"
+        "AMD-SDM-0051"
       ],
       "status": "active",
       "source": "WhatsApp Image 2026-10-02 at 14.25.02.jpeg",
       "importId": "boarding-rosters-2026",
       "rosterStatus": "linked",
       "sourceMemberCount": 11,
-      "mentorStaffId": "AMD-SDM-0052",
+      "mentorStaffId": "AMD-SDM-0051",
       "sourceMentorName": "Muammar"
     },
     "GRP-2026-quran-L-zakaria": {

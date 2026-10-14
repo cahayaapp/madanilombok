@@ -8,8 +8,12 @@
       "email": "admin@almadani.app",
       "role": "super_admin",
       "profile": {
-        "roles": ["super_admin"],
-        "roleFlags": {"super_admin": true},
+        "roles": [
+          "super_admin"
+        ],
+        "roleFlags": {
+          "super_admin": true
+        },
         "active": true
       }
     },
@@ -20,23 +24,15 @@
       "role": "guru_mapel",
       "profile": {
         "staffId": "AMD-SDM-0002",
-        "roles": ["guru_mapel"],
-        "roleFlags": {"guru_mapel": true},
-        "classIds": ["CLS-SD-1"],
-        "active": true
-      }
-    },
-    {
-      "key": "mentor_tahsin_tahfiz",
-      "name": "Muammar · Pilot Tahfiz",
-      "email": "tahfiz@almadani.app",
-      "role": "mentor_tahsin_tahfiz",
-      "profile": {
-        "staffId": "AMD-SDM-0052",
-        "roles": ["mentor_tahsin_tahfiz"],
-        "roleFlags": {"mentor_tahsin_tahfiz": true},
-        "groupIds": ["HLQ-PTR-01"],
-        "genderScope": "L",
+        "roles": [
+          "guru_mapel"
+        ],
+        "roleFlags": {
+          "guru_mapel": true
+        },
+        "classIds": [
+          "CLS-SD-1"
+        ],
         "active": true
       }
     },
@@ -47,10 +43,16 @@
       "role": "naqib",
       "profile": {
         "staffId": "AMD-SDM-0059",
-        "roles": ["naqib"],
-        "roleFlags": {"naqib": true},
+        "roles": [
+          "naqib"
+        ],
+        "roleFlags": {
+          "naqib": true
+        },
         "genderScope": "L",
-        "dormitoryIds": ["DORM-PUTRA"],
+        "dormitoryIds": [
+          "DORM-PUTRA"
+        ],
         "active": true
       }
     },
@@ -61,8 +63,12 @@
       "role": "konselor",
       "profile": {
         "staffId": "AMD-SDM-0055",
-        "roles": ["konselor"],
-        "roleFlags": {"konselor": true},
+        "roles": [
+          "konselor"
+        ],
+        "roleFlags": {
+          "konselor": true
+        },
         "genderScope": "L",
         "active": true
       }
@@ -74,9 +80,15 @@
       "role": "guru_wali",
       "profile": {
         "staffId": "AMD-SDM-0040",
-        "roles": ["guru_wali"],
-        "roleFlags": {"guru_wali": true},
-        "classIds": ["CLS-SMP-7-PUTRA"],
+        "roles": [
+          "guru_wali"
+        ],
+        "roleFlags": {
+          "guru_wali": true
+        },
+        "classIds": [
+          "CLS-SMP-7-PUTRA"
+        ],
         "active": true
       }
     },
@@ -86,8 +98,12 @@
       "email": "kasir@almadani.app",
       "role": "kasir",
       "profile": {
-        "roles": ["kasir"],
-        "roleFlags": {"kasir": true},
+        "roles": [
+          "kasir"
+        ],
+        "roleFlags": {
+          "kasir": true
+        },
         "financeUnit": "PUTRA",
         "active": true
       }
@@ -98,9 +114,15 @@
       "email": "walisantri@almadani.app",
       "role": "wali_santri",
       "profile": {
-        "roles": ["wali_santri"],
-        "roleFlags": {"wali_santri": true},
-        "studentIds": ["AMD-SD-0001"],
+        "roles": [
+          "wali_santri"
+        ],
+        "roleFlags": {
+          "wali_santri": true
+        },
+        "studentIds": [
+          "AMD-SD-0001"
+        ],
         "active": true
       }
     }

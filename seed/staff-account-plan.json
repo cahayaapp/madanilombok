@@ -1581,13 +1581,20 @@
     },
     {
       "staffId": "AMD-SDM-0051",
-      "name": "MU'AMMAR",
-      "email": "ammar@madaniapp",
+      "name": "Muammar",
+      "email": "muammar@madaniapp",
       "roles": [
-        "guru_mapel"
+        "guru_mapel",
+        "mentor_tahsin_tahfiz",
+        "guru_wali"
       ],
-      "role": "guru_mapel",
+      "role": "mentor_tahsin_tahfiz",
       "roleScopes": {
+        "mentor_tahsin_tahfiz": {
+          "groupIds": [
+            "GRP-2026-quran-L-muammar"
+          ]
+        },
         "guru_mapel": {
           "unitIds": [
             "UNIT-SMP",
@@ -1612,27 +1619,7 @@
       },
       "unitIds": [
         "UNIT-SMP",
-        "UNIT-SMK"
-      ],
-      "existingUid": null,
-      "status": "ready"
-    },
-    {
-      "staffId": "AMD-SDM-0052",
-      "name": "Muammar",
-      "email": "muammar@madaniapp",
-      "roles": [
-        "mentor_tahsin_tahfiz"
-      ],
-      "role": "mentor_tahsin_tahfiz",
-      "roleScopes": {
-        "mentor_tahsin_tahfiz": {
-          "groupIds": [
-            "GRP-2026-quran-L-muammar"
-          ]
-        }
-      },
-      "unitIds": [
+        "UNIT-SMK",
         "UNIT-PONDOK"
       ],
       "existingUid": null,

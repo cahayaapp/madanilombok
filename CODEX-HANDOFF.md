@@ -516,3 +516,10 @@ Added dorm-quran-daily to both dorm leader homes and menus. Reads canonical acad
 - Jadwal, pengaturan mukim, dan presensi ibadah mengenali role array/map/roleFlags serta gender dari SDM atau penugasan akun/piket saat SDM belum mengisi gender. Konflik scope tetap tidak dimasukkan; gender SDM eksplisit menjadi acuan utama.
 - Pengaturan mukim juga mencakup SDM tim asrama tanpa akun berdasarkan appRoles/piket aktif, tanpa membuat akun baru. Guru formal murni tetap dikecualikan.
 - 25 uji lulus: tiga Naqib putra tampil pada ketiga halaman meski dua SDM belum memiliki gender; Naqib putri tidak ikut. Ini verifikasi fixture, bukan verifikasi kelengkapan akun produksi. Cache v107.
+
+
+## 14 Oktober — Penggabungan Mu’ammar / Muammar (produksi)
+- Pengguna memastikan satu orang dan memilih muammar@madani.app sebagai akun utama. UID F2a6JMPHypUmSbXo5E23pwTcYvM2 kini tertaut AMD-SDM-0051 dengan role guru_mapel, mentor_tahsin_tahfiz, guru_wali serta gabungan penugasan.
+- Akses profil ammar@madani.app dan tahfiz@almadani.app dinonaktifkan (active:false/accessRevoked:true/replacedByUid). Firebase Auth tidak dihapus.
+- SDM placeholder AMD-SDM-0052 ditandai inactive/mergedInto AMD-SDM-0051. Identitas lengkap sekolah menjadi kanonik. 18 referensi penugasan/rekam ditautkan; riwayat tidak dihapus. Patch 44 path berhasil; baca ulang memverifikasi akun, SDM, halaqah dan siswa binaan. Tidak mengubah keuangan.
+- Sumber master/impor dan rencana akun lokal diselaraskan agar tidak membuat duplikat lagi. Backup scoped dan patch berada /tmp/muammar-merge; jangan commit berkas tersebut karena berisi profil personil.
