@@ -27,12 +27,14 @@ test('every day has one confirmed morning block; Monday/Saturday belong to Naqib
 });
 test('Tahfiz attendance uses assigned halaqah only, never formal classes or Arabic, and excludes Monday/Saturday',()=>{
  const ctx={yearId:'TA-2026-2027-GANJIL',session:{activeRole:'mentor_tahsin_tahfiz',profile:{staffId:'teacher'},user:{uid:'u'}},master:{dailySchedules:rows(m.schedules.daily),groups:[{id:'own',mentorStaffId:'teacher',programType:'tahfiz'},{id:'other',mentorStaffId:'other'},{id:'arab',mentorStaffId:'teacher',programType:'arabic'}]}};
- const a=teacherSchedules(ctx);assert.equal(a.length,5);assert.ok(a.every(s=>s.groupId==='own'&&s.classId===null&&!['Senin','Sabtu'].includes(s.day)));
+ const a=teacherSchedules(ctx);assert.equal(a.length,19);assert.ok(a.every(s=>s.groupId==='own'&&s.classId===null));assert.ok(a.filter(s=>s.startTime==='07:00').every(s=>!['Senin','Sabtu'].includes(s.day)));for(const day of ['Senin','Sabtu'])assert.deepEqual(a.filter(s=>s.day===day).map(s=>s.startTime),['15:30','18:00']);
  assert.equal(teacherSchedules({...ctx,yearId:'other'}).length,0);
  assert.ok(canAccess('academic.teacher_attendance',['mentor_tahsin_tahfiz']));assert.ok(canAccess('academic.student_attendance',['mentor_tahsin_tahfiz']));
 });
 test('GEMA Quran groups get all three additional daily halaqah sessions while other halaqah do not',()=>{
  const ctx={yearId:'TA-2026-2027-GANJIL',session:{activeRole:'mentor_tahsin_tahfiz',profile:{staffId:'t'},user:{uid:'u'}},master:{dailySchedules:rows(m.schedules.daily),groups:[{id:'gema',mentorStaffId:'t',gemaProgram:true}]}};
- const schedules=teacherSchedules(ctx);assert.equal(schedules.length,26);
- for(const day of ['Senin','Sabtu'])assert.deepEqual(schedules.filter(s=>s.day===day).map(s=>s.startTime),['06:10','09:00','14:00']);
+ const schedules=teacherSchedules(ctx);assert.equal(schedules.length,40);
+ for(const day of ['Senin','Sabtu'])assert.deepEqual(schedules.filter(s=>s.day===day).map(s=>s.startTime),['06:10','09:00','14:00','15:30','18:00']);
 });
+
+test('all halaqah afternoon/night retains existing GEMA IDs without duplicates',()=>{const master={dailySchedules:rows(m.schedules.daily),groups:[{id:'general',mentorStaffId:'t',programType:'quran'},{id:'gema',mentorStaffId:'t',gemaProgram:true}]};const ctx={yearId:'TA-2026-2027-GANJIL',master,session:{activeRole:'mentor_tahsin_tahfiz',profile:{staffId:'t'}}};const a=teacherSchedules(ctx);assert.equal(new Set(a.map(s=>s.id)).size,a.length);for(const groupId of ['general','gema']){const sessions=a.filter(s=>s.groupId===groupId&&['15:30','18:00'].includes(s.startTime));assert.equal(sessions.length,14);}assert.equal(teacherSchedules({...ctx,yearId:'other'}).length,0);});

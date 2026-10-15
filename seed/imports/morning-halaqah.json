@@ -147,6 +147,8 @@
     "groups/GRP-2026-quran-L-ziyadah/mentorStaffIds": [
       "AMD-SDM-0014"
     ],
-    "groups/GRP-2026-quran-L-ziyadah/mentorName": "Budiawan Khaer"
+    "groups/GRP-2026-quran-L-ziyadah/mentorName": "Budiawan Khaer",
+    "schedules/daily/DS-2026-GEMA-11/quranAllGroups": true,
+    "schedules/daily/DS-2026-GEMA-13/quranAllGroups": true
   }
 }

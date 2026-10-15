@@ -48442,7 +48442,8 @@
         "participantScope": "boarding_gema",
         "audience": "Asrama GEMA",
         "notes": "Setelah baca maksurot santri langsung murojaah zaujiyyah durasi waktu sama-sama 10 menit, santri boleh keluar dari masjid setelah melaporkan capaian murojaah  zaujiyyahnya ke pembina.",
-        "attendanceRole": "pembina_gema"
+        "attendanceRole": "mentor_tahsin_tahfiz",
+        "quranAllGroups": true
       },
       "DS-2026-GEMA-12": {
         "status": "active",
@@ -48478,7 +48479,8 @@
         "participantScope": "boarding_gema",
         "audience": "Asrama GEMA",
         "notes": "Santri berada di masjid paling lambat 5 menit sebelum azan magrib di kumandangkan, menggunakan pakain yang rapi sesuai pakain yg di tetapkan oleh pondok",
-        "attendanceRole": "pembina_gema"
+        "attendanceRole": "mentor_tahsin_tahfiz",
+        "quranAllGroups": true
       },
       "DS-2026-GEMA-14": {
         "status": "active",

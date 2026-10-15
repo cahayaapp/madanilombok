@@ -3,12 +3,20 @@
   "wisnu": {
     "name": "Wisnu Nusantara",
     "masterStatus": "created_live_via_admin",
-    "accountStatus": "pending",
+    "accountStatus": "created_live_verified_20261014",
     "replacementArabicGroup": "GRP-2026-arabic-L-gema",
     "previousArabicTeacher": "AMD-SDM-0055",
     "replacementCounselorLevel": "pemula",
     "previousCounselorIdentity": "AMD-SDM-0023 Fahri Aldian Effendi",
-    "quranGroup": "GRP-2026-quran-L-yusuf"
+    "quranGroup": "GRP-2026-quran-L-yusuf",
+    "accountEmail": "wisnu@madani.app",
+    "staffId": "SDM-20261008073805-3WHP",
+    "roles": [
+      "konselor",
+      "mentor_tahsin_tahfiz",
+      "guru_mapel"
+    ],
+    "assignmentStatus": "applied_live_20261014"
   },
   "pendingAccounts": [
     {

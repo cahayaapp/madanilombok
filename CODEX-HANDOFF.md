@@ -523,3 +523,9 @@ Added dorm-quran-daily to both dorm leader homes and menus. Reads canonical acad
 - Akses profil ammar@madani.app dan tahfiz@almadani.app dinonaktifkan (active:false/accessRevoked:true/replacedByUid). Firebase Auth tidak dihapus.
 - SDM placeholder AMD-SDM-0052 ditandai inactive/mergedInto AMD-SDM-0051. Identitas lengkap sekolah menjadi kanonik. 18 referensi penugasan/rekam ditautkan; riwayat tidak dihapus. Patch 44 path berhasil; baca ulang memverifikasi akun, SDM, halaqah dan siswa binaan. Tidak mengubah keuangan.
 - Sumber master/impor dan rencana akun lokal diselaraskan agar tidak membuat duplikat lagi. Backup scoped dan patch berada /tmp/muammar-merge; jangan commit berkas tersebut karena berisi profil personil.
+
+### 14 Oktober — akun Wisnu aktif
+Dibuat wisnu@madani.app untuk SDM-20261008073805-3WHP, role Konselor Pemula putra, mentor_tahsin_tahfiz kelompok GRP-2026-quran-L-yusuf, guru_mapel kelompok GRP-2026-arabic-L-gema. Mentor kedua kelompok dialihkan ke Wisnu; scope kelompok Bahasa Arab tersebut dicabut dari akun Muhasim, tugas lainnya dipertahankan. Login Auth dan readback profil berhasil. Password tidak disimpan di repository.
+
+### 15 Oktober — sesi sore/malam seluruh halaqah
+User confirms all halaqah including Wisnu/Tuzri use 15:30–17:00 and 18:00–20:30 WITA. Live DS-2026-GEMA-11 and -13 now quranAllGroups=true. quranLessonSchedules honors flag for all assigned Quran groups; unchanged IDs preserve GEMA history, no duplicate sessions, early GEMA sessions remain exclusive. Seed and import aligned; SW v108. 26 targeted schedule/route tests pass with --experimental-vm-modules, syntax and changed JSON validated. Code must be published before new flag is recognized in production.
