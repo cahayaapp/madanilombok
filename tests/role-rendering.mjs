@@ -307,3 +307,25 @@ test('feature manager loads role flags and saves a role-scoped patch',async()=>{
  assert.equal(ctx.root.querySelector('[data-feature="dashboard"]').disabled,true);
  }finally{mock.setExport('patchNode',oldPatch);const switches=await load(new URL('assets/js/feature-switches.js',base).href);switches.namespace.setFeatureSwitches({});}
 });
+
+test('counselor attendance review creates shared clarification cases and rejects corrected records',async()=>{
+ const mod=await load(new URL('assets/js/counselor-attendance.js',base).href);await mod.evaluate();
+ const ctx=ctxFor('konselor');ctx.session.profile.scopeGender='L';ctx.root.innerHTML='';
+ const day=new Date().toLocaleDateString('en-CA',{timeZone:'Asia/Makassar'});
+ const record={stage:'FINAL',status:'Alfa'};
+ database.set('boarding/program_attendance/year',{[day]:{p:{s1:record,s2:record}}});
+ database.set('boarding/program_attendance/year/'+day+'/p/s1',record);
+ const original=repository.saveTeacherSession;let created=[];
+ mock.setExport('saveTeacherSession',async(path,payload,options)=>{created.push({path,payload,options});return payload;});
+ try{
+ mod.namespace.mountAttendanceReferrals(ctx,[]);
+ ctx.root.querySelector('#loadReferrals').click();await settle();
+ assert.equal(ctx.root.querySelectorAll('[data-referral]').length,1);
+ ctx.root.querySelector('[data-referral]').click();await settle();
+ assert.equal(created.length,1);assert.ok(created[0].path.startsWith('boarding/cases/year/'));assert.equal(created[0].payload.status,'menunggu_konselor');assert.equal(created[0].options.createOnly,true);assert.equal(created[0].payload.finalPoints,undefined);
+ ctx.root.querySelector('#loadReferrals').click();await settle();
+ database.set('boarding/program_attendance/year/'+day+'/p/s1',{...record,status:'Hadir'});
+ ctx.root.querySelector('[data-referral]').click();await settle();
+ assert.equal(created.length,1);assert.match(ctx.root.textContent,/Presensi sudah berubah/);
+ }finally{mock.setExport('saveTeacherSession',original);database.delete('boarding/program_attendance/year');database.delete('boarding/program_attendance/year/'+day+'/p/s1');}
+});

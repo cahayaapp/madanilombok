@@ -1,3 +1,4 @@
+import {withReadDeadline} from './read-deadline.js';
 import {counselorGender} from './boarding-personnel-scope.js';
 import {
   ref,
@@ -17,7 +18,7 @@ const root = appConfig.databaseRoot;
 const pathFor = path => `${root}/${path || ""}`.replace(/\/{2,}/g, "/").replace(/\/$/, "");
 
 export async function getNode(path) {
-  const snap = await get(ref(db, pathFor(path)));
+  const snap = await withReadDeadline(get(ref(db, pathFor(path))));
   return snap.exists() ? snap.val() : null;
 }
 

@@ -1,3 +1,4 @@
+import {mountAttendanceReferrals} from '../counselor-attendance.js';
 import {counselorGender} from '../boarding-personnel-scope.js';
 import {reportIndicators,reportObservation} from '../naqib-report-model.js';
 import {dutyWindow,assertDutyProgram} from '../naqib-duty.js';
@@ -168,6 +169,7 @@ export async function renderCaseInbox(ctx) {
   const incoming=cases.filter(c=>routeCounselorCase(c,cases).level===counselorLevel(ctx.session.profile)&&!c.assignedCounselorUid && !["selesai","tidak_terbukti"].includes(c.status));
   incoming.sort((a,b)=>(b.createdAt||0)-(a.createdAt||0));
   ctx.root.innerHTML=pageHeader("Kasus Masuk","Konselor memeriksa laporan dan mengambil/claim kasus sesuai scope sebelum penanganan.")+table(["Tanggal","Santri","Kategori","Tingkat","Status","Aksi"],incoming.map(r=>`<tr><td>${escapeHtml(r.date||"—")}</td><td><strong>${escapeHtml(students[r.studentId]?.name||r.studentId||"—")}</strong></td><td>${escapeHtml(r.category||"—")}</td><td>${badge(r.severity||"—",r.severity==="berat"||r.severity==="kritis"?"red":"")}</td><td>${badge(r.status||"menunggu_konselor")}</td><td>${ctx.session.activeRole==='konselor'?`<button class="mini-btn case-claim" data-id="${r.id}">Claim Kasus</button>`:'Tinjauan administrator'}</td></tr>`).join(""));
+  if(ctx.session.activeRole==='konselor')mountAttendanceReferrals(ctx,cases);
   document.querySelectorAll(".case-claim").forEach(btn=>btn.addEventListener("click",async()=>{
     btn.disabled=true;
     try {

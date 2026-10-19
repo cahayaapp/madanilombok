@@ -163,11 +163,11 @@ async function renderRoute() {
   const mount=document.createElement('div');
   mount.innerHTML='<div class="loading-card">Memuat ruang kerja…</div>';
   root.replaceChildren(mount);
+  try {
   const scopedSession=sessionForRole(session,activeRole);
   const ctx={session:scopedSession,master,yearId:currentAcademicYearId(),year:currentAcademicYear(),root:mount,navigate,rerender:renderRoute,roleName:roleLabel([activeRole])};
   ctx.updateProfile=changes=>{Object.assign(session.profile,changes);document.getElementById('userName').textContent=session.profile.displayName||session.profile.name;};
   ctx.refreshMaster=async()=>{const fresh=await loadMaster(true);master=fresh;ctx.master=fresh;ctx.yearId=currentAcademicYearId();ctx.year=currentAcademicYear();};
-  try {
     if(currentRoute==='dashboard')await renderDashboard(ctx);
     else if(activeRole==='mentor_tahsin_tahfiz'&&currentRoute==='quran')await renderTeacherQuran(ctx);
     else if((activeRole==='guru_mapel'||activeRole==='mentor_tahsin_tahfiz'&&['teacher-attendance','student-attendance'].includes(currentRoute))&&TEACHER_ROUTES[currentRoute])await TEACHER_ROUTES[currentRoute](ctx);
