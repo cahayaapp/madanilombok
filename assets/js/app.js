@@ -111,10 +111,7 @@ export const routes = {
 
 Object.assign(routes,{
  ...Object.fromEntries(Object.entries(ADMIN_HOME_ROUTES).map(([id,{href}])=>[id,()=>{location.href=href;}])),
- 'admin-data':()=>{location.href='../admin/index.html';},
- 'admin-accounts':()=>{location.href='../admin/accounts.html';},
- 'admin-import':()=>{location.href='../admin/index.html#import';},
- 'admin-validation':()=>{location.href='../admin/validation.html';}
+
 });
 
 const routeFeature = Object.fromEntries(MENU_GROUPS.flatMap(g => g.items.map(i => [i.id, i.feature || "dashboard"])));

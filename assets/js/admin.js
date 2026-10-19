@@ -1,28 +1,11 @@
 import {ADMIN_WORKSPACES,workspaceFor,normalizeAdminRecord} from './admin-workspaces.js';
-import {renderConfirmedGirlsRooms} from './confirmed-girls-rooms.js';
-import {renderHabibIdentity} from './habiburrohman-identity.js';
-import {renderRoomReconciliation} from './room-reconciliation.js';
-import {renderNaqibProgramUpdate} from './naqib-program-update.js';
-import {renderConfirmedUpdates} from './confirmed-updates.js';
-import {renderMorningHalaqahUpdate} from './morning-halaqah-update.js';
-import {renderWardaniTransfer} from './wardani-account-transfer.js';
-import {renderSdMentorUpdate} from './sd-mentor-update.js';
-import {renderNaqibDutyUpdate} from './naqib-duty-update.js';
-import {renderArabicLessonsUpdate} from './arabic-lessons-update.js';
-import {renderArabicIdentityUpdate} from './arabic-identity-update.js';
-import {renderStudentIdentityUpdate} from './student-identity-update.js';
-import {renderMentorUpdate} from './mentor-update.js';
-import {renderGroupTeacherUpdate} from './group-teacher-update.js';
-import {renderBoardingUpdate,renderRoomMetadataUpdate} from './boarding-update.js';
-import {renderDailyUpdate} from './daily-update.js';
-import {renderSmpUpdate,renderSdUpdate,renderSmkUpdate} from './smp-update.js';
 import { requireAdmin, logout } from "./auth.js";
 import {
   getNode, patchNode, listNode, saveRecord, deleteRecord, getCurrentAcademicYearId, setCurrentAcademicYear,
   getClassAssignments, getRoomAssignments, getGroupAssignments,
-  assignClass, unassignClass, assignRoom, unassignRoom, setGroupMembership, bulkSave
+  assignClass, unassignClass, assignRoom, unassignRoom, setGroupMembership
 } from "./repository.js";
-import { $, $$, escapeHtml, makeId, toast, confirmDialog, parseCSV, toCSV, downloadText } from "./utils.js";
+import { $, $$, escapeHtml, makeId, toast, confirmDialog, toCSV, downloadText } from "./utils.js";
 
 let session;
 let cache = {};
@@ -253,19 +236,6 @@ async function refreshActiveYear() {
   return id;
 }
 
-function renderDashboard() {
-  const counts = {
-    students:(cache.students||[]).filter(x=>x.status==="active").length,
-    staff:(cache.staff||[]).filter(x=>x.status==="active").length,
-    units:(cache.units||[]).filter(x=>x.status==="active").length,
-    classes:(cache.classes||[]).filter(x=>x.status==="active").length,
-    rooms:(cache.rooms||[]).filter(x=>x.status==="active").length
-  };
-  $("#content").innerHTML=`<section class="hero-card"><div><p class="eyebrow">MADANIAPP · ADMINISTRATOR</p><h2>Pusat Data Pesantren</h2><p>Kelola data pokok, penempatan, jadwal dan akses pengguna dari satu tempat.</p></div></section><div class="stats-grid">${Object.entries(counts).map(([k,v])=>`<div class="stat-card"><span>${({students:'Santri Aktif',staff:'SDM Aktif',units:'Unit',classes:'Kelas',rooms:'Kamar'})[k]}</span><strong>${v}</strong></div>`).join('')}</div><div class="admin-workspace-grid">${Object.entries(ADMIN_WORKSPACES).map(([key,w],i)=>`<button class="admin-workspace-card" data-open-workspace="${key}"><span class="badge">${i+1}</span><h3>${w.title}</h3><p>${w.description}</p><strong>Kelola →</strong></button>`).join('')}</div><div class="panel"><h3>Alat Data</h3><button class="btn btn-secondary" data-import>Import / Penyelarasan Data</button> <a class="btn btn-secondary" href="./validation.html">Validasi Data</a></div>`;
-  $$('[data-open-workspace]').forEach(b=>b.onclick=()=>renderWorkspace(b.dataset.openWorkspace));
-  $('[data-import]').onclick=()=>navigate('import');
-}
-
 function getFilteredRows(section) {
   const search = ($("#tableSearch")?.value || "").trim().toLowerCase();
   const rows = (cache[section] || []).filter(r=>section==="quran-schedules"?(r.quranMorning||r.quranAllGroups||r.attendanceRole==="mentor_tahsin_tahfiz"):section==="arabic-schedules"?r.attendanceRole==="guru_mapel":true);
@@ -419,37 +389,16 @@ async function savePlacement(kind){
   }catch(e){toast(e.message||"Gagal menyimpan penempatan.","error")}finally{$("#savePlacement").disabled=false;$("#savePlacement").textContent="Simpan Penempatan";}
 }
 
-function renderImport(){
-  $("#content").innerHTML=`<div class="section-head"><div><h2>Import Data</h2><p>Import massal untuk migrasi data awal Al-Madani. Sistem menampilkan preview sebelum data masuk Firebase.</p></div></div><div id="preparedUpdates" class="stack-list"></div><div class="import-grid"><div class="panel"><div class="panel-head"><h3>Import Santri</h3><a class="btn btn-secondary" href="../templates/template-import-santri.csv" download>Template CSV</a></div><div class="dropzone"><strong>Upload CSV Santri</strong><p class="muted" style="font-size:11px">ID kosong akan dibuat otomatis. unitId harus sesuai master Unit.</p><input type="file" id="studentImportFile" accept=".csv,text/csv"></div><div id="studentImportPreview" class="preview-box"></div></div><div class="panel"><div class="panel-head"><h3>Import SDM</h3><a class="btn btn-secondary" href="../templates/template-import-sdm.csv" download>Template CSV</a></div><div class="dropzone"><strong>Upload CSV SDM</strong><p class="muted" style="font-size:11px">roles dan unitIds dapat dipisahkan dengan tanda |.</p><input type="file" id="staffImportFile" accept=".csv,text/csv"></div><div id="staffImportPreview" class="preview-box"></div></div></div>`;
-  for(const renderUpdate of [renderConfirmedGirlsRooms,renderHabibIdentity,renderRoomReconciliation,renderNaqibProgramUpdate,renderConfirmedUpdates,renderMorningHalaqahUpdate,renderWardaniTransfer,renderSdMentorUpdate,renderNaqibDutyUpdate,renderArabicIdentityUpdate,renderArabicLessonsUpdate,renderStudentIdentityUpdate,renderMentorUpdate,renderGroupTeacherUpdate,renderRoomMetadataUpdate,renderBoardingUpdate,renderDailyUpdate,renderSmkUpdate,renderSdUpdate,renderSmpUpdate]){
-    const section=document.createElement("section");section.className="panel";$("#preparedUpdates").append(section);renderUpdate(section,session);
-  }
-  $("#studentImportFile").addEventListener("change",e=>prepareImport("students",e.target.files[0],"studentImportPreview")); $("#staffImportFile").addEventListener("change",e=>prepareImport("staff",e.target.files[0],"staffImportPreview"));
-}
-
-async function prepareImport(type,file,previewId){
-  if(!file)return; const text=await file.text(); const raw=parseCSV(text); const units=new Set((cache.units||[]).map(x=>x.id)); const errors=[];
-  const rows=raw.map((r,i)=>{
-    if(type==="students"){
-      const row={id:r.studentId||makeId("STD"),studentNo:r.studentNo||r.nisn||"",name:r.name||"",nickname:r.nickname||"",gender:r.gender||"",birthPlace:r.birthPlace||"",birthDate:r.birthDate||"",guardianName:r.guardianName||"",guardianPhone:r.guardianPhone||"",address:r.address||"",unitId:r.unitId||"",boardingStatus:r.boardingStatus||"boarding",status:r.status||"active"}; if(!row.name)errors.push(`Baris ${i+2}: nama wajib.`); if(row.unitId&&!units.has(row.unitId))errors.push(`Baris ${i+2}: unitId ${row.unitId} tidak ditemukan.`); return row;
-    }
-    return {id:r.staffId||makeId("SDM"),name:r.name||"",gender:r.gender||"",phone:r.phone||"",email:r.email||"",employmentStatus:r.employmentStatus||"",roles:(r.roles||"").split("|").filter(Boolean),unitIds:(r.unitIds||"").split("|").filter(Boolean),status:r.status||"active"};
-  });
-  if(type==="staff")rows.forEach((r,i)=>{if(!r.name)errors.push(`Baris ${i+2}: nama wajib.`)});
-  const host=document.getElementById(previewId); host.innerHTML=`<div class="notice">${rows.length} baris terbaca. ${errors.length?`<strong>${errors.length} masalah ditemukan.</strong>`:"Validasi dasar lolos."}</div>${errors.length?`<div style="font-size:10px;color:#a33;line-height:1.6;margin:10px 0">${errors.slice(0,12).map(escapeHtml).join("<br>")}</div>`:""}<div class="table-card" style="margin-top:10px"><div class="table-scroll"><table class="data-table"><thead><tr><th>ID</th><th>Nama</th><th>Status</th></tr></thead><tbody>${rows.slice(0,12).map(r=>`<tr><td>${escapeHtml(r.id)}</td><td>${escapeHtml(r.name)}</td><td>${escapeHtml(r.status)}</td></tr>`).join("")}</tbody></table></div></div><button class="btn btn-primary" id="commit-${type}" style="margin-top:12px" ${errors.length?"disabled":""}>Import ${rows.length} Data</button>`;
-  host.querySelector(`#commit-${type}`)?.addEventListener("click",async()=>{try{const btn=host.querySelector(`#commit-${type}`);btn.disabled=true;btn.textContent="Mengimpor…";await bulkSave(pathMap[type],rows,r=>r.id,session.user.uid);toast(`${rows.length} data berhasil diimport.`);await loadCache();renderImport();}catch(e){toast(e.message||"Import gagal.","error")}});
-}
-
 async function reloadAndRender(section){await loadCache();await refreshActiveYear();await renderSection(section);workspaceTabs(section);}
 
-async function navigate(section){currentSection=section; $$('.nav-item').forEach(b=>b.classList.toggle('active',b.dataset.section===section||b.dataset.workspace===workspaceFor(section))); $("#pageTitle").textContent= section==="dashboard"?"Beranda Admin": entityConfig[section]?.title || ({"class-placements":"Penempatan Kelas","room-placements":"Penempatan Kamar","group-placements":"Anggota Kelompok",import:"Import Data"}[section]||section); await renderSection(section); workspaceTabs(section); $("#sidebar").classList.remove("open");}
+async function navigate(section){if(!entityConfig[section]&&!['class-placements','room-placements','group-placements'].includes(section))section='students';currentSection=section; $$('.nav-item').forEach(b=>b.classList.toggle('active',b.dataset.section===section||b.dataset.workspace===workspaceFor(section))); $("#pageTitle").textContent= section==="dashboard"?"Beranda Admin": entityConfig[section]?.title || ({"class-placements":"Penempatan Kelas","room-placements":"Penempatan Kamar","group-placements":"Anggota Kelompok"}[section]||section); await renderSection(section); workspaceTabs(section); $("#sidebar").classList.remove("open");}
 
 function renderSection(section){
-  if(section==="dashboard")return renderDashboard(); if(entityConfig[section])return renderEntity(section); if(section==="class-placements")return renderPlacement("class"); if(section==="room-placements")return renderPlacement("room"); if(section==="group-placements")return renderPlacement("group"); if(section==="import")return renderImport();
+  if(entityConfig[section])return renderEntity(section); if(section==="class-placements")return renderPlacement("class"); if(section==="room-placements")return renderPlacement("room"); if(section==="group-placements")return renderPlacement("group");
 }
 
 async function boot(){
-  try{session=await requireAdmin(); $("#adminName").textContent=session.profile.name||session.user.email||"Administrator"; await loadCache(); await refreshActiveYear(); await navigate(entityConfig[location.hash.slice(1)]||location.hash==='#import'?location.hash.slice(1):'dashboard');}
+  try{session=await requireAdmin(); $("#adminName").textContent=session.profile.name||session.user.email||"Administrator"; await loadCache(); await refreshActiveYear(); await navigate(entityConfig[location.hash.slice(1)]?location.hash.slice(1):'students');}
   catch(e){console.error(e)}
 }
 
@@ -457,4 +406,3 @@ $("#logoutButton").addEventListener("click",async()=>{await logout();window.loca
 boot();
 
 $$("[data-workspace]").forEach(b=>b.onclick=()=>renderWorkspace(b.dataset.workspace));
-$("#adminImport").onclick=()=>navigate("import");

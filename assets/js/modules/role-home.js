@@ -21,7 +21,7 @@ async function renderHomeContent(ctx,items) {
   if(!exp){ctx.root.innerHTML=empty('Belum ada role aktif. Hubungi administrator.');return;}
   if(['admin','super_admin'].includes(role)){
     const quick=exp.quick.map(id=>items.find(i=>i.id===id)).filter(Boolean);
-    ctx.root.innerHTML=`<section class="role-quick-grid">${quick.map(i=>`<button type="button" class="role-quick-card" data-home-route="${i.id}"><strong>${escapeHtml(i.label)}</strong></button>`).join('')}</section>${panel('Administrasi Sistem','<p>Kelola database santri, SDM, struktur, penempatan, jadwal, dan akses pengguna melalui Master Data. Untuk menjalankan tugas operasional, pilih role yang ditugaskan pada akun Anda.</p>')}`;
+    ctx.root.innerHTML=`<section class="role-quick-grid">${quick.map(i=>`<button type="button" class="role-quick-card" data-home-route="${i.id}"><strong>${escapeHtml(i.label)}</strong></button>`).join('')}</section>${panel('Administrasi Sistem','<p>Kelola database santri, SDM, struktur, penempatan, jadwal, dan akses pengguna melalui tujuh menu Admin. Untuk menjalankan tugas operasional, pilih role yang ditugaskan pada akun Anda.</p>')}`;
     ctx.root.querySelectorAll('[data-home-route]').forEach(b=>b.onclick=()=>ctx.navigate(b.dataset.homeRoute));
     return;
   }
@@ -43,7 +43,7 @@ async function renderHomeContent(ctx,items) {
     <div class="role-quick-grid">${quick.map(i=>`<button type="button" class="role-quick-card" data-home-route="${i.id}"><span class="role-quick-icon">${i.icon}</span><span><strong>${escapeHtml(i.label)}</strong><small>${escapeHtml(exp.focus)}</small></span><b aria-hidden="true">›</b></button>`).join('')}</div>
     ${role==='naqib'?`<section class="me-menu"><h2>Ruang Kerja Naqib</h2><div class="me-grid">${['naqib-assessment','naqib-self','naqib-case','naqib-discipline','naqib-history','naqib-guide'].map(id=>available.get(id)).filter(Boolean).map(i=>`<button type="button" class="me-card" data-home-route="${i.id}"><span class="me-icon">${i.icon}</span><b>${escapeHtml(i.label)}</b></button>`).join('')}</div></section>`:''}
     <div id="homeEvidence" class="role-evidence">${panel('Fokus Kerja',empty('Memuat ringkasan sesuai role…'))}</div>
-    ${['admin','super_admin'].includes(role)?panel('Administrasi Master',`<div class="section-actions"><a class="btn btn-primary" href="../admin/index.html">Master Data</a><a class="btn btn-secondary" href="../admin/accounts.html">Akun & Role</a><a class="btn btn-secondary" href="../admin/validation.html">Validasi Data</a></div>`):''}`;
+`;
   ctx.root.querySelectorAll('[data-home-route]').forEach(btn=>btn.onclick=()=>ctx.navigate(btn.dataset.homeRoute));
   const mount=ctx.root.querySelector('#homeEvidence');
   try {

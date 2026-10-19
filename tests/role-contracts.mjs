@@ -9,7 +9,7 @@ import {validateActivity,validateReport,HOLIDAY_ACTIVITIES,DEPOSIT_TRANSITIONS} 
 const all=MENU_GROUPS.flatMap(g=>g.items),ids=new Set(all.map(i=>i.id));
 const session=(activeRole)=>({activeRole,roles:[activeRole],profile:{},user:{uid:'reviewer'}});
 test('admin navigation exposes administration only while preserving operational permissions',()=>{
- const expected=['dashboard','admin-students','admin-staff','admin-school','admin-boarding','admin-lessons','admin-programs','admin-accounts','admin-import','admin-validation','work-messages','work-profile','work-guide'].sort();
+ const expected=['dashboard','admin-students','admin-staff','admin-school','admin-boarding','admin-lessons','admin-programs','admin-accounts','work-messages','work-profile','work-guide'].sort();
  for(const role of ['admin','super_admin']){
   const visible=visibleRoleMenu(role,all).filter(i=>canAccess(i.feature||'dashboard',[role]));
   assert.deepEqual(visible.map(i=>i.id).sort(),expected);

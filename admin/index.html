@@ -18,9 +18,9 @@
     <aside class="sidebar" id="sidebar">
       <div class="sidebar-brand">
         <div class="brand-mark small"><img src="../assets/brand/logo.svg" alt="Logo MadaniApp" width="74" height="74"></div>
-        <div><strong class="brand-wordmark">MADANI<span>APP</span></strong><small>Master Data</small></div>
+        <div><strong class="brand-wordmark">MADANI<span>APP</span></strong><small>Administrasi Pesantren</small></div>
       </div>
-<nav id="navMenu" class="nav-menu"><button data-section="dashboard" class="nav-item active">⌂ <span>Beranda Admin</span></button><button data-workspace="students" class="nav-item">▦ <span>Data Santri</span></button><button data-workspace="staff" class="nav-item">▦ <span>Data SDM</span></button><button data-workspace="school" class="nav-item">▦ <span>Data Sekolah</span></button><button data-workspace="boarding" class="nav-item">▦ <span>Data Asrama</span></button><button data-workspace="lessons" class="nav-item">▦ <span>Jadwal Pelajaran</span></button><button data-workspace="programs" class="nav-item">▦ <span>Jadwal Program Keasramaan</span></button><a href="./accounts.html" class="nav-item">⚿ <span>Manajemen User</span></a></nav>
+<nav id="navMenu" class="nav-menu"><a href="../app/index.html" class="nav-item">⌂ <span>Beranda</span></a><button data-workspace="students" class="nav-item">▦ <span>Data Santri</span></button><button data-workspace="staff" class="nav-item">▦ <span>Data SDM</span></button><button data-workspace="school" class="nav-item">▦ <span>Data Sekolah</span></button><button data-workspace="boarding" class="nav-item">▦ <span>Data Asrama</span></button><button data-workspace="lessons" class="nav-item">▦ <span>Jadwal Pelajaran</span></button><button data-workspace="programs" class="nav-item">▦ <span>Jadwal Program Keasramaan</span></button><a href="./accounts.html" class="nav-item">⚿ <span>Manajemen User</span></a></nav>
       <div class="sidebar-footer">
         <span id="adminName">Administrator</span>
         <button id="logoutButton" class="link-button">Keluar</button>
@@ -35,9 +35,7 @@
           <h1 id="pageTitle">Dashboard</h1>
         </div>
         <div class="top-actions">
-          <a class="btn btn-primary" href="./validation.html">Validasi Data</a>
           <a class="btn btn-secondary" href="../app/index.html">Portal</a>
-          <button class="btn btn-secondary" id="adminImport">Import Data</button>
           <div class="year-chip"><span>Tahun aktif</span><strong id="activeYearLabel">Belum diatur</strong></div>
         </div>
       </header>
@@ -50,7 +48,7 @@
   <div id="modalBackdrop" class="modal-backdrop hidden">
     <div class="modal-card">
       <div class="modal-head">
-        <div><p class="eyebrow">Master Data</p><h3 id="modalTitle">Tambah Data</h3></div>
+        <div><p class="eyebrow">Administrasi Pesantren</p><h3 id="modalTitle">Tambah Data</h3></div>
         <button id="modalClose" class="icon-button">×</button>
       </div>
       <form id="entityForm" class="modal-form"></form>

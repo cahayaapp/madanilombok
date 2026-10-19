@@ -9,7 +9,6 @@ const QUICK_DESCRIPTIONS={
  'dorm-teacher-attendance':'Pantau kehadiran pembina dan guru pondok',
  'dorm-teacher-punctuality':'Pantau ketepatan waktu pembina dan guru',
  'dorm-quran-daily':'Pantau setoran dan hasil hafalan harian',
- 'admin-data':'Kelola database dan penempatan', 'admin-accounts':'Kelola pengguna dan hak akses', 'admin-import':'Masukkan dan sinkronkan data', 'admin-validation':'Periksa kelengkapan dan relasi data',
  'school-teacher-attendance':'Pantau kehadiran guru', 'school-teacher-punctuality':'Pantau ketepatan waktu guru',
  'school-student-attendance':'Pantau kehadiran siswa', 'school-student-punctuality':'Lihat keterlambatan siswa',
  'dorm-student-attendance':'Pantau kehadiran program', 'dorm-student-punctuality':'Lihat keterlambatan santri',
@@ -62,7 +61,7 @@ export function arrangeHome(ctx,items=[]){
  while(root.firstChild)preserved.append(root.firstChild);
  root.innerHTML='<main class="premium-home"><section class="premium-section"><div class="premium-section-head"><h2>Akses Cepat Hari Ini</h2><button type="button" data-all-menus>Lihat Semua →</button></div><div class="premium-quick-grid"></div></section><section class="premium-section premium-workspace naqib-workspace-menu"><div class="premium-section-head"><h2>Menu Lainnya</h2><button type="button" data-all-menus>Semua menu →</button></div><div class="premium-menu-grid"></div></section></main>';
  const holder=root.querySelector('.premium-home');
- if(adminHome){holder.classList.add('premium-admin-home');holder.querySelector('.premium-section-head h2').textContent='Data Pokok & Pengguna';holder.querySelector('.premium-workspace h2').textContent='Alat Administrasi';}
+ if(adminHome){holder.classList.add('premium-admin-home');holder.querySelector('.premium-section-head h2').textContent='Data Pokok & Pengguna';holder.querySelector('.premium-workspace h2').textContent='Akun Saya';}
  if(monitorHome){holder.classList.add('premium-monitor-home');holder.querySelector('.premium-section-head h2').textContent='Pantau Operasional Harian';}
  quick.forEach(b=>holder.querySelector('.premium-quick-grid').append(b));
  const menuGrid=holder.querySelector('.premium-menu-grid');
