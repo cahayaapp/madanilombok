@@ -66,7 +66,7 @@ test('all 15 homes render and non-finance roles do not request finance collectio
  const ctx=ctxFor(role);ctx.root.innerHTML='';const items=MENU_GROUPS.flatMap(g=>g.items).filter(i=>canAccess(i.feature||'dashboard',[role]));await homes.namespace.renderRoleHome(ctx,items);
  assert.ok(ctx.root.querySelector('.home-role-button'),role);
  assert.ok(ctx.root.querySelector('.premium-home'),role);
- assert.ok(ctx.root.querySelectorAll('.premium-quick').length<=({admin:7,super_admin:7,head_formal_school:3,head_boys_dorm:4,head_girls_dorm:4}[role]||4),role);
+ assert.ok(ctx.root.querySelectorAll('.premium-quick').length<=({admin:8,super_admin:8,head_formal_school:3,head_boys_dorm:4,head_girls_dorm:4}[role]||4),role);
  assert.ok(ctx.root.querySelectorAll('.premium-menu-grid>.premium-menu').length<=8,role);
  const quickLabels=new Set([...ctx.root.querySelectorAll('.premium-quick>b')].map(b=>b.textContent));
  assert.ok([...ctx.root.querySelectorAll('.premium-menu-grid>.premium-menu>b')].every(b=>!quickLabels.has(b.textContent)),role);
@@ -264,7 +264,7 @@ test('unit leadership homes expose all daily monitors as quick cards',async()=>{
  }
  const ctx=ctxFor('admin'),items=MENU_GROUPS.flatMap(g=>g.items).filter(i=>canAccess(i.feature||'dashboard',['admin']));await homes.namespace.renderRoleHome(ctx,items);
  assert.equal(ctx.root.querySelector('.premium-section-head h2').textContent,'Menu Utama');
- assert.equal(ctx.root.querySelectorAll('.premium-quick').length,7);
+ assert.equal(ctx.root.querySelectorAll('.premium-quick').length,8);
 });
 
 test('dorm duty, resident settings and worship include all three assigned male naqibs',async()=>{
@@ -280,7 +280,7 @@ test('dorm duty, resident settings and worship include all three assigned male n
 });
 
 test('both admin homes expose seven actionable data workspaces',async()=>{
- const expected=['Data Santri','Data SDM','Data Sekolah','Data Asrama','Jadwal Pelajaran','Jadwal Program Keasramaan','Manajemen User'];
+ const expected=['Data Santri','Data SDM','Data Sekolah','Data Asrama','Jadwal Pelajaran','Jadwal Program Keasramaan','Manajemen Fitur','Manajemen User'];
  for(const role of ['admin','super_admin']){
   const ctx=ctxFor(role),clicked=[];ctx.navigate=id=>clicked.push(id);
   const items=MENU_GROUPS.flatMap(g=>g.items).filter(i=>canAccess(i.feature||'dashboard',[role]));
@@ -291,4 +291,19 @@ test('both admin homes expose seven actionable data workspaces',async()=>{
   assert.deepEqual(clicked,cards.map(c=>c.dataset.homeRoute));
   assert.equal(ctx.root.querySelector('[data-home-route="deposit-admin"]'),null);
  }
+});
+
+test('feature manager loads role flags and saves a role-scoped patch',async()=>{
+ const mod=await load(new URL('assets/js/feature-management.js',base).href);await mod.evaluate();
+ const oldPatch=repository.patchNode;let captured;
+ mock.setExport('patchNode',async(path,patch)=>{captured={path,patch};});
+ try{
+ const ctx=ctxFor('admin');await mod.namespace.renderFeatureManagement({root:ctx.root,uid:'admin'});
+ const role=ctx.root.querySelector('#featureRole');role.value='naqib';role.dispatchEvent(new win.Event('change'));
+ const checkbox=ctx.root.querySelector('[data-feature="boarding.naqib.attendance"]');assert.equal(checkbox.checked,true);checkbox.checked=false;
+ submit(ctx.root.querySelector('#featureForm'));await new Promise(r=>setTimeout(r,0));
+ assert.equal(captured.path,'');assert.equal(captured.patch['settings/featureSwitches/naqib/boarding~naqib~attendance'],false);
+ assert.ok(Object.keys(captured.patch).every(k=>k.startsWith('settings/featureSwitches/naqib/')||k==='settings/featureSwitchAudit/naqib'));
+ assert.equal(ctx.root.querySelector('[data-feature="dashboard"]').disabled,true);
+ }finally{mock.setExport('patchNode',oldPatch);const switches=await load(new URL('assets/js/feature-switches.js',base).href);switches.namespace.setFeatureSwitches({});}
 });

@@ -1,3 +1,4 @@
+import {featureEnabled} from './feature-switches.js';
 import { WORKSPACE_GROUPS, workspaceFeatures } from "./role-workspace-catalog.js";
 export const ROLE_LABELS = {
   super_admin: "Super Admin",
@@ -180,7 +181,7 @@ export function featuresForRoles(roles = []) {
 export function canAccess(feature, roles = []) {
   if (!feature) return false;
   if (feature === "dashboard") return roles.some(role => Object.hasOwn(ROLE_LABELS,role));
-  return featuresForRoles(roles).has(feature);
+  return roles.some(role=>featuresForRoles([role]).has(feature)&&featureEnabled(feature,role));
 }
 
 export function roleLabel(roles = []) {

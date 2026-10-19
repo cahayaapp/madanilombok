@@ -1,3 +1,4 @@
+import {renderFeatureManagement} from './feature-management.js';
 import {naqibProgramEnabled} from './naqib-program-policy.js';
 import {ADMIN_WORKSPACES,workspaceFor,normalizeAdminRecord} from './admin-workspaces.js';
 import { requireAdmin, logout } from "./auth.js";
@@ -416,14 +417,15 @@ async function savePlacement(kind){
 
 async function reloadAndRender(section){await loadCache();await refreshActiveYear();await renderSection(section);workspaceTabs(section);}
 
-async function navigate(section){if(!entityConfig[section]&&!['class-placements','room-placements','group-placements'].includes(section))section='students';currentSection=section; $$('.nav-item').forEach(b=>b.classList.toggle('active',b.dataset.section===section||b.dataset.workspace===workspaceFor(section))); $("#pageTitle").textContent= section==="dashboard"?"Beranda Admin": entityConfig[section]?.title || ({"class-placements":"Penempatan Kelas","room-placements":"Penempatan Kamar","group-placements":"Anggota Kelompok"}[section]||section); await renderSection(section); workspaceTabs(section); $("#sidebar").classList.remove("open");}
+async function navigate(section){if(!entityConfig[section]&&!['features','class-placements','room-placements','group-placements'].includes(section))section='students';currentSection=section; $$('.nav-item').forEach(b=>b.classList.toggle('active',b.dataset.section===section||b.dataset.workspace===workspaceFor(section))); $("#pageTitle").textContent= section==="dashboard"?"Beranda Admin": entityConfig[section]?.title || (section==="features"?"Manajemen Fitur":null) || ({"class-placements":"Penempatan Kelas","room-placements":"Penempatan Kamar","group-placements":"Anggota Kelompok"}[section]||section); await renderSection(section); workspaceTabs(section); $("#sidebar").classList.remove("open");}
 
 function renderSection(section){
+  if(section==="features")return renderFeatureManagement({root:$("#content"),uid:session.user.uid});
   if(entityConfig[section])return renderEntity(section); if(section==="class-placements")return renderPlacement("class"); if(section==="room-placements")return renderPlacement("room"); if(section==="group-placements")return renderPlacement("group");
 }
 
 async function boot(){
-  try{session=await requireAdmin(); $("#adminName").textContent=session.profile.name||session.user.email||"Administrator"; await loadCache(); await refreshActiveYear(); await navigate(entityConfig[location.hash.slice(1)]?location.hash.slice(1):'students');}
+  try{session=await requireAdmin(); $("#adminName").textContent=session.profile.name||session.user.email||"Administrator"; await loadCache(); await refreshActiveYear(); await navigate((entityConfig[location.hash.slice(1)]||location.hash==='#features')?location.hash.slice(1):'students');}
   catch(e){console.error(e)}
 }
 

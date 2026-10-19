@@ -2,7 +2,7 @@ import test from 'node:test';import assert from 'node:assert/strict';
 import {ADMIN_WORKSPACES,normalizeAdminRecord,workspaceFor} from '../assets/js/admin-workspaces.js';
 import {teacherSchedules} from '../assets/js/teacher/model.js';
 import {naqibProgramEnabled} from '../assets/js/naqib-program-policy.js';
-test('seven admin workspaces keep placement and year workflows reachable',()=>{assert.equal(Object.keys(ADMIN_WORKSPACES).length,7);assert.equal(workspaceFor('class-placements'),'school');assert.equal(workspaceFor('group-placements'),'boarding');assert.equal(workspaceFor('quran-schedules'),'lessons');});
+test('seven admin workspaces keep placement and year workflows reachable',()=>{assert.equal(Object.keys(ADMIN_WORKSPACES).length,8);assert.equal(workspaceFor('class-placements'),'school');assert.equal(workspaceFor('group-placements'),'boarding');assert.equal(workspaceFor('quran-schedules'),'lessons');});
 test('new halaqah schedules feed only assigned teacher and intended group',()=>{
  const daily=['quran','arabic'].map((kind,i)=>({id:'s'+i,...normalizeAdminRecord(kind+'-schedules',{academicYearId:'y',day:'Senin',startTime:'08:00',endTime:'09:00',targetId:kind})}));
  const groups=['quran','arabic'].map(id=>({id,programType:id,mentorStaffId:'t',teachingEnabled:true,subjectId:'a'}));

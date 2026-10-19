@@ -1,3 +1,5 @@
+import {getNode} from './repository.js';
+import {setFeatureSwitches} from './feature-switches.js';
 import {ADMIN_HOME_ROUTES} from './admin-workspaces.js';
 import {visibleRoleMenu} from './role-workspace-catalog.js';
 import {decorateNaqibPage} from './naqib-home.js';
@@ -201,6 +203,7 @@ function bindMobileBottomNav() {
 
 async function init() {
   session=await requireSession();
+  setFeatureSwitches(await getNode("settings/featureSwitches"));
   master=await loadMaster();
   const year=currentAcademicYear();
   document.getElementById("activeYearLabel").textContent=year ? `${year.name} · ${year.semesterLabel||`Semester ${year.semester||""}`}` : "Belum diatur";
