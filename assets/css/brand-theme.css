@@ -610,3 +610,16 @@ body[data-home=true] #content .premium-home.premium-monitor-home{padding-bottom:
  .nq-status{flex-wrap:wrap!important;grid-template-columns:repeat(auto-fit,minmax(65px,1fr))!important}
  .toast{min-width:0!important;max-width:calc(100vw - 32px)!important}
 }
+
+/* Seven Admin data destinations remain reachable above the fixed bottom bar. */
+body[data-home=true]:has(.premium-admin-home) .portal-content{overflow-y:auto!important;overflow-x:hidden!important;scroll-padding-bottom:20px}
+body[data-home=true] #content .premium-admin-home{padding-bottom:24px!important}
+body[data-home=true] #content .premium-admin-home .premium-quick-grid{gap:14px!important}
+body[data-home=true] #content .premium-admin-home .premium-quick{height:auto!important;min-height:126px!important;padding:16px!important;text-align:left}
+body[data-home=true] #content .premium-admin-home .premium-quick b{overflow-wrap:anywhere;font-size:15px!important;line-height:1.35!important}
+body[data-home=true] #content .premium-admin-home .premium-quick small{font-size:12px!important;line-height:1.45!important}
+@media(max-width:900px){
+ body[data-home=true]:has(.premium-admin-home) .main-area{height:calc(100dvh - 82px - env(safe-area-inset-bottom))!important}
+}
+body[data-home=true] #content .premium-home.premium-admin-home{height:auto!important;max-height:none!important;grid-template-rows:auto auto auto auto!important}
+body[data-home=true] #content .premium-admin-home .premium-quick-grid{grid-auto-rows:auto!important;flex:none!important;margin-bottom:20px!important}

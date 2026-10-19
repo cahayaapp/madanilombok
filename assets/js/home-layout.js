@@ -1,8 +1,10 @@
+import {ADMIN_HOME_ROUTES, ADMIN_WORKSPACES} from './admin-workspaces.js';
 import {icon} from './teacher/ui.js';
 import {escapeHtml as e} from './utils.js';
 import {ROLE_EXPERIENCE} from './role-experience.js';
 
 const QUICK_DESCRIPTIONS={
+ ...Object.fromEntries(Object.entries(ADMIN_HOME_ROUTES).map(([id,{workspace}])=>[id,ADMIN_WORKSPACES[workspace].description])),
  'school-mentoring':'Pantau pembinaan guru wali sepekan terakhir',
  'dorm-teacher-attendance':'Pantau kehadiran pembina dan guru pondok',
  'dorm-teacher-punctuality':'Pantau ketepatan waktu pembina dan guru',
@@ -35,7 +37,8 @@ export function arrangeHome(ctx,items=[]){
  const available=items.filter(i=>!['dashboard','parent-home'].includes(i.id)&&!i.id.endsWith('-punctuality'));
  const make=i=>{const b=document.createElement('button');b.type='button';b.dataset.homeRoute=i.id;b.innerHTML=`<b>${e(i.label)}</b>`;b.onclick=()=>ctx.navigate(i.id);return b;};
  const monitorHome=['head_formal_school','head_boys_dorm','head_girls_dorm'].includes(ctx.session.activeRole);
- const limit=monitorHome?Infinity:4;
+ const adminHome=['admin','super_admin'].includes(ctx.session.activeRole);
+ const limit=(monitorHome||adminHome)?Infinity:4;
  const quick=candidates.slice(0,limit);
  if(!quick.length)for(const id of ROLE_EXPERIENCE[ctx.session.activeRole]?.quick||[]){const item=available.find(i=>i.id===id);if(item&&quick.length<limit)quick.push(make(item));}
  if(!quick.length)quick.push(...available.slice(0,4).map(make));
@@ -59,6 +62,7 @@ export function arrangeHome(ctx,items=[]){
  while(root.firstChild)preserved.append(root.firstChild);
  root.innerHTML='<main class="premium-home"><section class="premium-section"><div class="premium-section-head"><h2>Akses Cepat Hari Ini</h2><button type="button" data-all-menus>Lihat Semua →</button></div><div class="premium-quick-grid"></div></section><section class="premium-section premium-workspace naqib-workspace-menu"><div class="premium-section-head"><h2>Menu Lainnya</h2><button type="button" data-all-menus>Semua menu →</button></div><div class="premium-menu-grid"></div></section></main>';
  const holder=root.querySelector('.premium-home');
+ if(adminHome){holder.classList.add('premium-admin-home');holder.querySelector('.premium-section-head h2').textContent='Data Pokok & Pengguna';holder.querySelector('.premium-workspace h2').textContent='Alat Administrasi';}
  if(monitorHome){holder.classList.add('premium-monitor-home');holder.querySelector('.premium-section-head h2').textContent='Pantau Operasional Harian';}
  quick.forEach(b=>holder.querySelector('.premium-quick-grid').append(b));
  const menuGrid=holder.querySelector('.premium-menu-grid');

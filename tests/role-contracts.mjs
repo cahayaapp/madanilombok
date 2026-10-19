@@ -9,7 +9,7 @@ import {validateActivity,validateReport,HOLIDAY_ACTIVITIES,DEPOSIT_TRANSITIONS} 
 const all=MENU_GROUPS.flatMap(g=>g.items),ids=new Set(all.map(i=>i.id));
 const session=(activeRole)=>({activeRole,roles:[activeRole],profile:{},user:{uid:'reviewer'}});
 test('admin navigation exposes administration only while preserving operational permissions',()=>{
- const expected=['dashboard','admin-data','admin-accounts','admin-import','admin-validation','deposit-admin','work-messages','work-profile','work-guide'].sort();
+ const expected=['dashboard','admin-students','admin-staff','admin-school','admin-boarding','admin-lessons','admin-programs','admin-accounts','admin-import','admin-validation','work-messages','work-profile','work-guide'].sort();
  for(const role of ['admin','super_admin']){
   const visible=visibleRoleMenu(role,all).filter(i=>canAccess(i.feature||'dashboard',[role]));
   assert.deepEqual(visible.map(i=>i.id).sort(),expected);
@@ -71,7 +71,7 @@ test('holiday forms require complete activity and submitted report answers',()=>
 });
 test('brand remains BSI tosca and all menus have registered handlers',()=>{
  assert.match(readFileSync(new URL('../assets/css/brand-theme.css',import.meta.url),'utf8'),/#00a39d/i);
- const source=['app.js','modules/workspaces.js','modules/parent-extras.js','health.js','management-operations.js','management-registry.js','leadership-monitor-model.js'].map(f=>readFileSync(new URL(`../assets/js/${f}`,import.meta.url),'utf8')).join('\n');
+ const source=['app.js','admin-workspaces.js','modules/workspaces.js','modules/parent-extras.js','health.js','management-operations.js','management-registry.js','leadership-monitor-model.js'].map(f=>readFileSync(new URL(`../assets/js/${f}`,import.meta.url),'utf8')).join('\n');
  for(const id of ids)if(id!=='dashboard')assert.ok(source.includes(`"${id}"`)||source.includes(`'${id}'`)||source.includes(`${id}:`),`route ${id} missing`);
 });
 

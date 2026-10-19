@@ -1,3 +1,4 @@
+import {ADMIN_HOME_ROUTES} from './admin-workspaces.js';
 import {counselorGender} from './boarding-personnel-scope.js';
 import {teachingGroups} from './group-teachers.js';
 // Navigation and role composition are data-only; no Firebase reads or writes here.
@@ -13,8 +14,8 @@ export const ROLE_EXPERIENCE = {
   head_girls_dorm: {title:'Kawal mutu program dan pembinaan asrama putri.', focus:'Kontrol asrama putri', primary:'dorm-student-attendance', quick:['dorm-student-attendance','dorm-teacher-attendance','dorm-quran-daily','dorm-counselor'], schedule:'work-schedule', kpi:'management-kpi'},
   deputy_director: {title:'Evaluasi kendali divisi dan tindak lanjuti eskalasi.', focus:'Supervisi', primary:'management-control', quick:['management-control','management-escalations','management-standards','management-coaching'], schedule:'work-schedule', kpi:'management-kpi'},
   director: {title:'Arahkan prioritas dan putuskan eskalasi pesantren.', focus:'Arah & keputusan', primary:'management-control', quick:['management-control','management-escalations','management-targets','management-systemic'], schedule:'work-schedule', kpi:'management-kpi'},
-  admin: {title:'Kelola master data dan layanan administrasi.', focus:'Administrasi', primary:'admin-data', quick:['admin-data','admin-accounts','admin-import','admin-validation'], schedule:'admin-data'},
-  super_admin: {title:'Jaga konfigurasi, akses, dan kualitas data pesantren.', focus:'Administrasi sistem', primary:'admin-data', quick:['admin-data','admin-accounts','admin-import','admin-validation'], schedule:'admin-data'},
+  admin: {title:'Kelola master data dan layanan administrasi.', focus:'Administrasi', primary:'admin-data', quick:Object.keys(ADMIN_HOME_ROUTES), schedule:'admin-data'},
+  super_admin: {title:'Jaga konfigurasi, akses, dan kualitas data pesantren.', focus:'Administrasi sistem', primary:'admin-data', quick:Object.keys(ADMIN_HOME_ROUTES), schedule:'admin-data'},
   kasir: {title:'Layani transaksi sesuai unit kasir Anda.', focus:'Kasir', primary:'cashier', quick:['cashier','finance-products','finance-history','finance-dashboard'], schedule:'work-schedule', kpi:'work-kpi'},
   wali_santri: {title:'Ikuti kabar dan perkembangan Ananda.', focus:'Ananda', primary:'parent-home', quick:['parent-news','parent-attendance','parent-permission','parent-finance'], schedule:'parent-calendar', kpi:'parent-monthly'}
 };

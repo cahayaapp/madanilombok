@@ -25,3 +25,14 @@ export function normalizeAdminRecord(section,data,previous={}){
  }
  return result;
 }
+
+// Shared portal destinations keep the Admin home aligned with its data workspaces.
+export const ADMIN_HOME_ROUTES = {
+ 'admin-students': {workspace:'students', href:'../admin/index.html#students'},
+ 'admin-staff': {workspace:'staff', href:'../admin/index.html#staff'},
+ 'admin-school': {workspace:'school', href:'../admin/index.html#units'},
+ 'admin-boarding': {workspace:'boarding', href:'../admin/index.html#rooms'},
+ 'admin-lessons': {workspace:'lessons', href:'../admin/index.html#academic-schedules'},
+ 'admin-programs': {workspace:'programs', href:'../admin/index.html#programs'},
+ 'admin-accounts': {workspace:'users', href:'../admin/accounts.html'}
+};

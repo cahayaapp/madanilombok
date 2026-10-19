@@ -1,3 +1,4 @@
+import {ADMIN_HOME_ROUTES} from './admin-workspaces.js';
 import {visibleRoleMenu} from './role-workspace-catalog.js';
 import {decorateNaqibPage} from './naqib-home.js';
 import {renderStudentPermits} from './student-permits.js';
@@ -109,6 +110,7 @@ export const routes = {
 };
 
 Object.assign(routes,{
+ ...Object.fromEntries(Object.entries(ADMIN_HOME_ROUTES).map(([id,{href}])=>[id,()=>{location.href=href;}])),
  'admin-data':()=>{location.href='../admin/index.html';},
  'admin-accounts':()=>{location.href='../admin/accounts.html';},
  'admin-import':()=>{location.href='../admin/index.html#import';},
