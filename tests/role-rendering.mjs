@@ -263,7 +263,7 @@ test('unit leadership homes expose all daily monitors as quick cards',async()=>{
   for(const id of expected){const b=ctx.root.querySelector(`.premium-quick-grid [data-home-route="${id}"]`);assert.ok(b.querySelector('small').textContent);assert.equal(ctx.root.querySelector(`.premium-menu-grid [data-home-route="${id}"]`),null);}
  }
  const ctx=ctxFor('admin'),items=MENU_GROUPS.flatMap(g=>g.items).filter(i=>canAccess(i.feature||'dashboard',['admin']));await homes.namespace.renderRoleHome(ctx,items);
- assert.equal(ctx.root.querySelector('.premium-section-head h2').textContent,'Data Pokok & Pengguna');
+ assert.equal(ctx.root.querySelector('.premium-section-head h2').textContent,'Menu Utama');
  assert.equal(ctx.root.querySelectorAll('.premium-quick').length,7);
 });
 

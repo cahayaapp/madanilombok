@@ -239,28 +239,35 @@ async function refreshActiveYear() {
 function getFilteredRows(section) {
   const search = ($("#tableSearch")?.value || "").trim().toLowerCase();
   const rows = (cache[section] || []).filter(r=>section==="quran-schedules"?(r.quranMorning||r.quranAllGroups||r.attendanceRole==="mentor_tahsin_tahfiz"):section==="arabic-schedules"?r.attendanceRole==="guru_mapel":true);
-  if (!search) return rows;
-  return rows.filter(row => JSON.stringify(row).toLowerCase().includes(search));
+  return rows.filter(row => (!search||JSON.stringify(row).toLowerCase().includes(search))&&(!$("#unitFilter")?.value||row.unitId===$("#unitFilter").value)&&(!$("#statusFilter")?.value||row.status===$("#statusFilter").value)&&(!$("#boardingFilter")?.value||row.boardingStatus===$("#boardingFilter").value));
 }
 
+function adminMetrics(section){
+ const rows=cache[section]||[],active=rows.filter(r=>r.status==='active').length;
+ const values=section==='students'?[['Total Santri',rows.length],['Santri Aktif',active],['Asrama',rows.filter(r=>r.boardingStatus==='boarding').length],['Nonasrama',rows.filter(r=>r.boardingStatus==='non_boarding').length]]:[['Total Data',rows.length],['Aktif',active],['Unit Sekolah',(cache.units||[]).length],['Tahun Ajaran',$('#activeYearLabel')?.textContent||'—']];
+ return '<div class="admin-metrics">'+values.map(([label,value],i)=>'<article><span class="admin-metric-icon" aria-hidden="true">'+['♙','✓','⌂','▦'][i]+'</span><div><small>'+escapeHtml(label)+'</small><strong>'+escapeHtml(String(value))+'</strong></div></article>').join('')+'</div>';
+}
 function renderEntity(section) {
   const cfg = entityConfig[section];
   const rows = getFilteredRows(section);
   $("#content").innerHTML = `
-    <div class="section-head"><div><h2>${cfg.title}</h2><p>${cfg.subtitle}</p></div><div class="section-actions"><button class="btn btn-secondary" id="exportButton">Export CSV</button><button class="btn btn-primary" id="addButton">+ Tambah ${cfg.title}</button></div></div>
-    <div class="toolbar"><input id="tableSearch" placeholder="Cari data…" /><span class="badge muted">${(cache[section]||[]).length} record</span></div>
+    <div class="section-head admin-page-hero"><div><p class="eyebrow">PONDOK PESANTREN AL-MADANI</p><h2>${cfg.title}</h2><p>${cfg.subtitle}</p></div><div class="section-actions"><button class="btn btn-secondary" id="exportButton">Export CSV</button><button class="btn btn-primary" id="addButton">+ Tambah ${cfg.title}</button></div></div>
+    ${adminMetrics(section)}
+    <div class="toolbar"><input id="tableSearch" type="search" placeholder="Cari nama, nomor, atau data…" />${section==='students'?'<select id="unitFilter" aria-label="Unit"><option value="">Semua Unit</option>'+(cache.units||[]).map(u=>'<option value="'+escapeHtml(u.id)+'">'+escapeHtml(u.name)+'</option>').join('')+'</select><select id="boardingFilter" aria-label="Status asrama"><option value="">Semua Status Asrama</option><option value="boarding">Asrama</option><option value="non_boarding">Nonasrama</option></select>':''}<select id="statusFilter" aria-label="Status"><option value="">Semua Status</option><option value="active">Aktif</option><option value="inactive">Nonaktif</option></select><span class="badge muted">${(cache[section]||[]).length} record</span></div>
     <div class="table-card"><div class="table-scroll"><table class="data-table"><thead><tr>${cfg.columns.map(c=>`<th>${c[1]}</th>`).join("")}<th>Aksi</th></tr></thead><tbody id="tableBody">${rowsMarkup(section, rows)}</tbody></table></div></div>`;
   $(".toolbar .badge").textContent=`${rows.length} record`;
   $("#addButton").addEventListener("click",()=>openForm(section));
   $("#exportButton").addEventListener("click",()=>exportSection(section));
-  $("#tableSearch").addEventListener("input",()=>{$("#tableBody").innerHTML=rowsMarkup(section,getFilteredRows(section));bindRowActions(section);});
+  const refreshRows=()=>{const filtered=getFilteredRows(section);$("#tableBody").innerHTML=rowsMarkup(section,filtered);$(".toolbar .badge").textContent=filtered.length+' record';bindRowActions(section);};
+  $("#tableSearch").addEventListener("input",refreshRows);
+  $$('.toolbar select').forEach(el=>el.addEventListener('change',refreshRows));
   bindRowActions(section);
 }
 
 function rowsMarkup(section, rows) {
   const cfg = entityConfig[section];
   if (!rows.length) return `<tr><td colspan="${cfg.columns.length+1}" style="text-align:center;color:#7b8a84;padding:30px">Belum ada data.</td></tr>`;
-  return rows.map(row => `<tr>${cfg.columns.map(([f])=>`<td>${formatCell(section,f,row[f])}</td>`).join("")}<td><div class="row-actions"><button class="mini-btn" data-edit="${row.id}">Edit</button>${["classes","rooms","groups"].includes(section)?`<button class="mini-btn" data-members="${row.id}">Atur Peserta</button>`:""}${section==="academic-years"?`<button class="mini-btn" data-activate="${row.id}">Aktifkan</button>`:""}${section==="quran-placements"?"":`<button class="mini-btn danger" data-delete="${row.id}">Hapus</button>`}</div></td></tr>`).join("");
+  return rows.map(row => `<tr>${cfg.columns.map(([f,label])=>`<td data-label="${escapeHtml(label)}">${formatCell(section,f,row[f])}</td>`).join("")}<td><div class="row-actions"><button class="mini-btn detail" data-detail="${row.id}">Detail</button><button class="mini-btn" data-edit="${row.id}">Edit</button>${["classes","rooms","groups"].includes(section)?`<button class="mini-btn" data-members="${row.id}">Atur Peserta</button>`:""}${section==="academic-years"?`<button class="mini-btn" data-activate="${row.id}">Aktifkan</button>`:""}${section==="quran-placements"?"":`<button class="mini-btn danger" data-delete="${row.id}">Hapus</button>`}</div></td></tr>`).join("");
 }
 
 function formatCell(section, field, value) {
@@ -272,6 +279,8 @@ function formatCell(section, field, value) {
 }
 
 function bindRowActions(section) {
+ $$('[data-detail]').forEach(b=>b.onclick=()=>{const cfg=entityConfig[section],row=(cache[section]||[]).find(r=>r.id===b.dataset.detail);if(!row)return;$("#modalTitle").textContent='Detail '+cfg.title;$("#entityForm").innerHTML='<dl class="admin-detail">'+cfg.columns.map(([f,label])=>'<div><dt>'+escapeHtml(label)+'</dt><dd>'+formatCell(section,f,row[f])+'</dd></div>').join('')+'</dl><button type="button" class="btn btn-secondary" id="closeDetail">Tutup</button>';$("#modalBackdrop").classList.remove("hidden");$("#closeDetail").onclick=closeForm;});
+
  $$('[data-members]').forEach(b=>b.onclick=async()=>{await renderPlacement(({classes:'class',rooms:'room',groups:'group'})[section],b.dataset.members);workspaceTabs(section);});
   $$('[data-edit]').forEach(b=>b.addEventListener("click",()=>openForm(section,b.dataset.edit)));
   $$('[data-delete]').forEach(b=>b.addEventListener("click",async()=>{
