@@ -329,3 +329,13 @@ test('counselor attendance review creates shared clarification cases and rejects
  assert.equal(created.length,1);assert.match(ctx.root.textContent,/Presensi sudah berubah/);
  }finally{mock.setExport('saveTeacherSession',original);database.delete('boarding/program_attendance/year');database.delete('boarding/program_attendance/year/'+day+'/p/s1');}
 });
+
+test('school quality dashboard exposes eight fields, filters and no finance reads',async()=>{
+ const ctx=ctxFor('head_formal_school');ctx.session.profile.unitIds=['u1'];ctx.master={...master,classes:[{id:'c1',unitId:'u1',name:'Kelas Uji'}]};ctx.root.innerHTML='';
+ const reads=[],original=repository.getNode;mock.setExport('getNode',async p=>{reads.push(p);return original(p);});
+ try{await routes['school-quality'](ctx);assert.match(ctx.root.textContent,/Kontrol Mutu Pendidikan/);assert.match(ctx.root.textContent,/8. Mutu Keuangan/);assert.match(ctx.root.textContent,/Belum tersedia/);assert.equal(ctx.root.querySelectorAll('select').length,3);assert.ok(reads.every(p=>!p.startsWith('finance')));
+ ctx.root.querySelector('[name=qualityGender]').value='P';ctx.root.querySelector('[name=qualityGender]').onchange();assert.match(ctx.root.textContent,/Mutu Santri/);
+ exportVisual(ctx,'head_formal_school','school-quality');
+ assert.equal(canAccess('workspace.school-quality',['naqib']),false);assert.equal(canAccess('workspace.school-quality',['head_formal_school']),true);
+ }finally{mock.setExport('getNode',original);}
+});

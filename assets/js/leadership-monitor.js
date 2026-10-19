@@ -1,3 +1,4 @@
+import {renderEducationQuality} from './education-quality.js';
 import {boardingLearning,teachingReportInScope} from './leadership-monitor-model.js';
 import {groupLessonSchedules,quranLessonSchedules} from './teacher/group-schedules.js';
 import {icon} from './teacher/ui.js';
@@ -10,6 +11,7 @@ import {localDate} from './role-experience.js';
 export {MONITOR_VIEWS} from './leadership-monitor-model.js';
 import {MONITOR_VIEWS} from './leadership-monitor-model.js';
 export async function renderLeadershipMonitor(ctx,route){
+ if(route==='school-quality')return renderEducationQuality(ctx);
  const scope=monitorScope(ctx.session,ctx.master),[title,kind]=MONITOR_VIEWS[route];
  if(scope.school!==route.startsWith('school-'))throw Error('Laporan di luar unit Anda.');
  const names=new Map(['students','staff','classes','subjects','rooms','programs','groups'].flatMap(k=>(ctx.master[k]||[]).map(r=>[r.id,r.name])));

@@ -36,6 +36,7 @@ export const isLate=r=>['Terlambat','TERLAMBAT'].includes(r.status)||Number(r.la
 export const isAbsent=r=>['Sakit','Izin','Alfa'].includes(r.status);
 export const caseHandled=r=>!!(r.tabayyun||r.counseling||r.action||r.evaluation||['ditangani','dalam_penanganan','selesai','tidak_terbukti'].includes(r.status));
 export const MONITOR_VIEWS={
+ 'school-quality':['Kontrol Mutu Pendidikan','quality'],
  'dorm-quran-daily':['Setoran Tahfiz Harian','quran'],
  'school-teacher-attendance':['Kehadiran Guru','teacher'], 'school-teacher-punctuality':['Kedisiplinan Guru','teacher'],
  'school-student-attendance':['Kehadiran Siswa','student'], 'school-student-punctuality':['Kedisiplinan Siswa','student'],

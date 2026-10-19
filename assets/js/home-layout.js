@@ -5,6 +5,7 @@ import {ROLE_EXPERIENCE} from './role-experience.js';
 
 const QUICK_DESCRIPTIONS={
  ...Object.fromEntries(Object.entries(ADMIN_HOME_ROUTES).map(([id,{workspace}])=>[id,ADMIN_WORKSPACES[workspace].description])),
+ 'school-quality':'Pantau delapan bidang mutu pendidikan',
  'school-mentoring':'Pantau pembinaan guru wali sepekan terakhir',
  'dorm-teacher-attendance':'Pantau kehadiran pembina dan guru pondok',
  'dorm-teacher-punctuality':'Pantau ketepatan waktu pembina dan guru',
