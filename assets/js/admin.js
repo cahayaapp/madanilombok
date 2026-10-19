@@ -1,3 +1,4 @@
+import {naqibProgramEnabled} from './naqib-program-policy.js';
 import {ADMIN_WORKSPACES,workspaceFor,normalizeAdminRecord} from './admin-workspaces.js';
 import { requireAdmin, logout } from "./auth.js";
 import {
@@ -247,7 +248,22 @@ function adminMetrics(section){
  const values=section==='students'?[['Total Santri',rows.length],['Santri Aktif',active],['Asrama',rows.filter(r=>r.boardingStatus==='boarding').length],['Nonasrama',rows.filter(r=>r.boardingStatus==='non_boarding').length]]:[['Total Data',rows.length],['Aktif',active],['Unit Sekolah',(cache.units||[]).length],['Tahun Ajaran',$('#activeYearLabel')?.textContent||'—']];
  return '<div class="admin-metrics">'+values.map(([label,value],i)=>'<article><span class="admin-metric-icon" aria-hidden="true">'+['♙','✓','⌂','▦'][i]+'</span><div><small>'+escapeHtml(label)+'</small><strong>'+escapeHtml(String(value))+'</strong></div></article>').join('')+'</div>';
 }
+function renderDailyPrograms(){
+ const rows=(cache['daily-schedules']||[]).slice().sort((a,b)=>String(a.startTime||'').localeCompare(String(b.startTime||'')));
+ const program=r=>(cache.programs||[]).find(p=>p.id===r.programId)||{};
+ const active=r=>r.status!=='inactive'&&program(r).status!=='inactive';
+ const metrics=[['Jadwal Aktif',rows.filter(active).length],['Wajib Presensi',rows.filter(r=>naqibProgramEnabled(r,program(r))).length],['Wajib Laporan',rows.filter(r=>naqibProgramEnabled(r,program(r),'report')).length],['Kategori',new Set(rows.map(r=>program(r).category).filter(Boolean)).size]];
+ $("#content").innerHTML='<section class="admin-page-hero"><div><p class="eyebrow">PROGRAM 24 JAM</p><h2>Jadwal Program Keasramaan</h2><p>Atur waktu, hari aktif, peserta, serta kewajiban presensi dan laporan pelaksanaan.</p></div><button class="btn btn-primary" id="addDaily">+ Tambah Jadwal</button></section><div class="admin-metrics">'+metrics.map(([label,value])=>'<article><div><small>'+escapeHtml(label)+'</small><strong>'+value+'</strong></div></article>').join('')+'</div><div class="toolbar"><input id="programSearch" type="search" placeholder="Cari program, kategori, atau waktu…"><select id="programDay" aria-label="Hari"><option value="">Semua Hari</option>'+dayOptions.map(d=>'<option>'+escapeHtml(d)+'</option>').join('')+'</select><select id="programStatus" aria-label="Status"><option value="">Semua Status</option><option value="active">Aktif</option><option value="inactive">Nonaktif</option></select><span id="programCount" class="badge"></span></div><div class="admin-program-grid" id="dailyProgramCards"></div>';
+ const render=()=>{const q=$("#programSearch").value.toLowerCase(),day=$("#programDay").value,status=$("#programStatus").value;
+ const filtered=rows.filter(r=>(!q||[program(r).name,program(r).category,r.startTime,r.endTime].join(' ').toLowerCase().includes(q))&&(!day||r.day==='Setiap Hari'||r.day===day)&&(!status||active(r)===(status==='active')));
+ $("#programCount").textContent=filtered.length+' dari '+rows.length+' jadwal';
+ $("#dailyProgramCards").innerHTML=filtered.map(r=>{const p=program(r);return '<article class="admin-program-card"><header><div><small>'+escapeHtml(p.category||'Program Asrama')+'</small><h3>'+escapeHtml(p.name||r.programId||'Program belum ditautkan')+'</h3></div></header><div class="admin-program-time">'+escapeHtml(r.startTime||'—')+' – '+escapeHtml(r.endTime||'—')+' <small>WITA</small></div><p>'+escapeHtml(r.day||'Hari belum diatur')+' · '+escapeHtml(({L:'Putra',P:'Putri'})[r.genderScope]||'Putra & Putri')+'</p><p>'+escapeHtml(valueLabel('daily-schedules','participantScope',r.participantScope))+(r.targetId?' · '+escapeHtml(valueLabel('daily-schedules','targetId',r.targetId)):'')+'</p><div class="program-flags"><span class="badge">'+(active(r)?'Aktif':'Nonaktif')+'</span><span class="badge">'+(naqibProgramEnabled(r,p)?'Wajib Presensi':'Tanpa Presensi')+'</span><span class="badge">'+(naqibProgramEnabled(r,p,'report')?'Wajib Laporan':'Tanpa Laporan')+'</span></div><div class="row-actions"><button class="mini-btn" data-edit="'+escapeHtml(r.id)+'">Edit Jadwal</button><button class="mini-btn danger" data-delete="'+escapeHtml(r.id)+'">Hapus</button></div></article>';}).join('')||'<div class="empty-state">Tidak ada jadwal yang cocok.</div>';
+ bindRowActions('daily-schedules');};
+ $("#addDaily").onclick=()=>openForm('daily-schedules');$("#programSearch").oninput=render;$("#programDay").onchange=render;$("#programStatus").onchange=render;render();
+}
+
 function renderEntity(section) {
+  if(section==="daily-schedules")return renderDailyPrograms();
   const cfg = entityConfig[section];
   const rows = getFilteredRows(section);
   $("#content").innerHTML = `
@@ -285,7 +301,7 @@ function bindRowActions(section) {
   $$('[data-edit]').forEach(b=>b.addEventListener("click",()=>openForm(section,b.dataset.edit)));
   $$('[data-delete]').forEach(b=>b.addEventListener("click",async()=>{
     const id=b.dataset.delete; if(!confirmDialog("Hapus record ini? Data penempatan yang merujuk ID ini tidak otomatis dihapus."))return;
-    try{await deleteRecord(pathMap[section],id,session.user.uid);toast("Data dihapus.");await reloadAndRender(section);}catch(e){toast(e.message,"error")}
+    try{if(section==="daily-schedules")await patchNode("",{[`schedules/daily/${id}`]:null,[`settings/naqibDuty/programs/${id}`]:null});else await deleteRecord(pathMap[section],id,session.user.uid);toast("Data dihapus.");await reloadAndRender(section);}catch(e){toast(e.message,"error")}
   }));
   $$('[data-activate]').forEach(b=>b.addEventListener("click",async()=>{
     try{await setCurrentAcademicYear(b.dataset.activate,session.user.uid);await refreshActiveYear();toast("Tahun ajaran aktif diperbarui.");}catch(e){toast(e.message,"error")}

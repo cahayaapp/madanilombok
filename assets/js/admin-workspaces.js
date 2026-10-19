@@ -4,7 +4,7 @@ export const ADMIN_WORKSPACES={
  school:{title:'Data Sekolah',description:'Jenjang, kelas, wali kelas, dan peserta kelas.',items:[['units','Jenjang / Unit'],['classes','Kelas & Wali Kelas'],['class-placements','Peserta Kelas'],['academic-years','Tahun Ajaran']]},
  boarding:{title:'Data Asrama',description:'Kamar serta halaqah Bahasa Arab dan Al-Qur’an beserta anggotanya.',items:[['dormitories','Gedung Asrama'],['rooms','Kamar'],['room-placements','Penghuni Kamar'],['groups','Halaqah & Pembina'],['group-placements','Peserta Halaqah'],['quran-placements','Program Al-Qur’an Santri']]},
  lessons:{title:'Jadwal Pelajaran',description:'Atur pembelajaran formal, Al-Qur’an, dan Bahasa Arab pagi.',items:[['academic-schedules','Formal'],['quran-schedules','Al-Qur’an'],['arabic-schedules','Bahasa Arab'],['subjects','Mata Pelajaran'],['attendance-locations','Lokasi Presensi']]},
- programs:{title:'Jadwal Program Keasramaan',description:'Waktu kegiatan, kewajiban presensi dan laporan pelaksanaan.',items:[['programs','Data Program'],['daily-schedules','Jadwal & Pencatatan']]},
+ programs:{title:'Jadwal Program Keasramaan',description:'Waktu kegiatan, kewajiban presensi dan laporan pelaksanaan.',items:[['daily-schedules','Jadwal 24 Jam'],['programs','Nama & Kategori Program']]},
  users:{title:'Manajemen User',description:'Buat akun, kelola role dan penugasan, serta nonaktifkan akses.',href:'./accounts.html'}
 };
 export function workspaceFor(section){return Object.entries(ADMIN_WORKSPACES).find(([key,w])=>w.items?.some(([id])=>id===section))?.[0];}
@@ -33,6 +33,6 @@ export const ADMIN_HOME_ROUTES = {
  'admin-school': {workspace:'school', href:'../admin/index.html#units'},
  'admin-boarding': {workspace:'boarding', href:'../admin/index.html#rooms'},
  'admin-lessons': {workspace:'lessons', href:'../admin/index.html#academic-schedules'},
- 'admin-programs': {workspace:'programs', href:'../admin/index.html#programs'},
+ 'admin-programs': {workspace:'programs', href:'../admin/index.html#daily-schedules'},
  'admin-accounts': {workspace:'users', href:'../admin/accounts.html'}
 };
