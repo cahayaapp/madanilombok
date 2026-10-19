@@ -16,3 +16,7 @@ Route `school-quality`, feature `workspace.school-quality`. Read-only; unit dari
 - Sarpras, manajemen, keuangan: kategori tersedia dengan status sumber/standar belum ditetapkan, bukan angka0. Keuangan tidak dibaca atau diubah.
 
 Tidak dibuat skor mutu total: bobot, standar dan sumber yang belum tersedia perlu ditetapkan lebih dahulu. Error pembacaan data menggagalkan pemuatan agar tidak disajikan sebagai nol. Denominator kosong ditampilkan “—”.
+
+## Mode hemat data
+
+Halaman awal hanya kartu delapan bidang; memilih bidang menampilkan kartu indikator tanpa pembacaan indikator. Sumber data baru diambil ketika indikator dipilih (contoh: Hasil Ujian hanya exam_sessions, Tahfiz hanya quran_records dan quran_targets). Cache promise per sumber berlaku selama satu halaman terbuka dan tidak dibagikan antar akun/tahun. Filter dan kunjungan ulang memakai data tersebut. Tombol Perbarui hanya menyegarkan sumber indikator aktif. Kegagalan dapat dicoba ulang; hasil permintaan lama tidak menimpa halaman setelah kembali. Pemilihan sumber belum mengubah struktur database: sumber yang dipilih masih dibaca per tahun, lalu disaring unit/periode. Tidak ada prefetch semua indikator.

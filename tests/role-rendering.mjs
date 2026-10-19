@@ -66,7 +66,7 @@ test('all 15 homes render and non-finance roles do not request finance collectio
  const ctx=ctxFor(role);ctx.root.innerHTML='';const items=MENU_GROUPS.flatMap(g=>g.items).filter(i=>canAccess(i.feature||'dashboard',[role]));await homes.namespace.renderRoleHome(ctx,items);
  assert.ok(ctx.root.querySelector('.home-role-button'),role);
  assert.ok(ctx.root.querySelector('.premium-home'),role);
- assert.ok(ctx.root.querySelectorAll('.premium-quick').length<=({admin:8,super_admin:8,head_formal_school:3,head_boys_dorm:4,head_girls_dorm:4}[role]||4),role);
+ assert.ok(ctx.root.querySelectorAll('.premium-quick').length<=({admin:8,super_admin:8,head_formal_school:4,head_boys_dorm:4,head_girls_dorm:4}[role]||4),role);
  assert.ok(ctx.root.querySelectorAll('.premium-menu-grid>.premium-menu').length<=8,role);
  const quickLabels=new Set([...ctx.root.querySelectorAll('.premium-quick>b')].map(b=>b.textContent));
  assert.ok([...ctx.root.querySelectorAll('.premium-menu-grid>.premium-menu>b')].every(b=>!quickLabels.has(b.textContent)),role);
@@ -257,7 +257,7 @@ test('unit leadership homes expose all daily monitors as quick cards',async()=>{
   await homes.namespace.renderRoleHome(ctx,items);
   assert.equal(ctx.root.querySelector('.premium-section-head h2').textContent,'Pantau Operasional Harian');
   assert.ok(ctx.root.querySelector('.premium-monitor-home'));
-  const expected=role==='head_formal_school'?['school-teacher-attendance','school-student-attendance','school-mentoring']:['dorm-student-attendance','dorm-teacher-attendance','dorm-quran-daily','dorm-counselor'];
+  const expected=role==='head_formal_school'?['school-quality','school-teacher-attendance','school-student-attendance','school-mentoring']:['dorm-student-attendance','dorm-teacher-attendance','dorm-quran-daily','dorm-counselor'];
   assert.deepEqual([...ctx.root.querySelectorAll('.premium-quick')].map(b=>b.dataset.homeRoute),expected);
   if(role!=='head_formal_school')assert.ok(ctx.root.querySelector('.premium-menu-grid [data-home-route="management-worship"]'));
   for(const id of expected){const b=ctx.root.querySelector(`.premium-quick-grid [data-home-route="${id}"]`);assert.ok(b.querySelector('small').textContent);assert.equal(ctx.root.querySelector(`.premium-menu-grid [data-home-route="${id}"]`),null);}
@@ -330,12 +330,28 @@ test('counselor attendance review creates shared clarification cases and rejects
  }finally{mock.setExport('saveTeacherSession',original);database.delete('boarding/program_attendance/year');database.delete('boarding/program_attendance/year/'+day+'/p/s1');}
 });
 
-test('school quality dashboard exposes eight fields, filters and no finance reads',async()=>{
+test('quality cards load only selected sources and reuse them across filters and indicators',async()=>{
  const ctx=ctxFor('head_formal_school');ctx.session.profile.unitIds=['u1'];ctx.master={...master,classes:[{id:'c1',unitId:'u1',name:'Kelas Uji'}]};ctx.root.innerHTML='';
  const reads=[],original=repository.getNode;mock.setExport('getNode',async p=>{reads.push(p);return original(p);});
- try{await routes['school-quality'](ctx);assert.match(ctx.root.textContent,/Kontrol Mutu Pendidikan/);assert.match(ctx.root.textContent,/8. Mutu Keuangan/);assert.match(ctx.root.textContent,/Belum tersedia/);assert.equal(ctx.root.querySelectorAll('select').length,3);assert.ok(reads.every(p=>!p.startsWith('finance')));
- ctx.root.querySelector('[name=qualityGender]').value='P';ctx.root.querySelector('[name=qualityGender]').onchange();assert.match(ctx.root.textContent,/Mutu Santri/);
+ const click=async selector=>{ctx.root.querySelector(selector).click();await settle();};
+ try{
+ await routes['school-quality'](ctx);assert.equal(reads.length,0);assert.equal(ctx.root.querySelectorAll('[data-quality-group]').length,8);
  exportVisual(ctx,'head_formal_school','school-quality');
+ await click('[data-quality-group="students"]');assert.equal(reads.length,0);
+ await click('[data-quality-indicator="student-exams"]');assert.deepEqual(reads,['academic/exam_sessions/year']);assert.match(ctx.root.textContent,/Memenuhi KKM/);
+ ctx.root.querySelector('[name=qualityGender]').value='P';ctx.root.querySelector('[name=qualityGender]').onchange();await settle();assert.equal(reads.length,1);
+ await click('#qualityBack');await click('[data-quality-indicator="student-exams"]');assert.equal(reads.length,1);
+ await click('#qualityReload');assert.equal(reads.length,2);
+ await click('#qualityBack');await click('[data-quality-indicator="student-character"]');assert.equal(reads.at(-1),'boarding/mentoring/year');assert.equal(reads.length,3);
+ await click('#qualityBack');await click('#qualityBack');await click('[data-quality-group="finance"]');await click('[data-quality-indicator="finance-status"]');assert.equal(reads.length,3);
  assert.equal(canAccess('workspace.school-quality',['naqib']),false);assert.equal(canAccess('workspace.school-quality',['head_formal_school']),true);
+ }finally{mock.setExport('getNode',original);}
+});
+
+test('quality request failures retry and late results cannot replace cards after back navigation',async()=>{
+ const ctx=ctxFor('head_formal_school');ctx.session.profile.unitIds=['u1'];ctx.root.innerHTML='';const original=repository.getNode;let resolve,attempts=0;
+ mock.setExport('getNode',()=>{attempts++;return attempts===1?Promise.reject(Error('Connection failed')):new Promise(r=>{resolve=r;});});
+ try{await routes['school-quality'](ctx);ctx.root.querySelector('[data-quality-group="students"]').click();ctx.root.querySelector('[data-quality-indicator="student-exams"]').click();await settle();assert.match(ctx.root.textContent,/Connection failed/);
+ ctx.root.querySelector('#qualityRetry').click();await settle();assert.equal(attempts,2);ctx.root.querySelector('#qualityBack').click();resolve(null);await settle();assert.equal(ctx.root.querySelectorAll('[data-quality-indicator]').length,7);assert.equal(ctx.root.querySelector('#qualityRetry'),null);
  }finally{mock.setExport('getNode',original);}
 });
