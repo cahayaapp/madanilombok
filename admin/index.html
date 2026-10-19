@@ -11,45 +11,16 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../assets/css/app.css" />
   <link rel="stylesheet" href="../assets/css/cahaya-clone.css">
-<meta name="theme-color" content="#00a39d"><link rel="icon" href="../assets/brand/logo.svg" type="image/svg+xml"><link rel="apple-touch-icon" href="../assets/icons/icon-192.png?v=25"><link rel="stylesheet" href="../assets/css/location-onboarding.css?v=59"><link rel="stylesheet" href="../assets/css/brand-theme.css?v=94">
+<meta name="theme-color" content="#00a39d"><link rel="icon" href="../assets/brand/logo.svg" type="image/svg+xml"><link rel="apple-touch-icon" href="../assets/icons/icon-192.png?v=25"><link rel="stylesheet" href="../assets/css/location-onboarding.css?v=59"><link rel="stylesheet" href="../assets/css/admin-workspaces.css"><link rel="stylesheet" href="../assets/css/brand-theme.css?v=94">
 <script type="module" src="../assets/js/mobile-layout.js"></script></head>
-<body class="app-body">
+<body class="app-body admin-console">
   <div class="app-shell">
     <aside class="sidebar" id="sidebar">
       <div class="sidebar-brand">
         <div class="brand-mark small"><img src="../assets/brand/logo.svg" alt="Logo MadaniApp" width="74" height="74"></div>
         <div><strong class="brand-wordmark">MADANI<span>APP</span></strong><small>Master Data</small></div>
       </div>
-      <nav id="navMenu" class="nav-menu">
-        <button data-section="dashboard" class="nav-item active">⌂ <span>Dashboard</span></button>
-        <div class="nav-caption">Fondasi</div>
-        <button data-section="academic-years" class="nav-item">◷ <span>Tahun Ajaran</span></button>
-        <button data-section="units" class="nav-item">▦ <span>Unit Pendidikan</span></button>
-        <button data-section="students" class="nav-item">♙ <span>Data Santri</span></button>
-        <button data-section="staff" class="nav-item">♟ <span>Data SDM</span></button>
-        <div class="nav-caption">Struktur</div>
-        <button data-section="classes" class="nav-item">▤ <span>Kelas & Rombel</span></button>
-        <button data-section="dormitories" class="nav-item">⌂ <span>Asrama</span></button>
-        <button data-section="rooms" class="nav-item">▣ <span>Kamar</span></button>
-        <button data-section="groups" class="nav-item">◉ <span>Kelompok / Halaqah</span></button>
-        <button data-section="subjects" class="nav-item">▥ <span>Mata Pelajaran</span></button>
-        <button data-section="programs" class="nav-item">✦ <span>Program 24 Jam</span></button>
-        <div class="nav-caption">Penempatan</div>
-        <button data-section="class-placements" class="nav-item">⇄ <span>Penempatan Kelas</span></button>
-        <button data-section="room-placements" class="nav-item">⇄ <span>Penempatan Kamar</span></button>
-        <button data-section="group-placements" class="nav-item">⇄ <span>Anggota Kelompok</span></button>
-        <div class="nav-caption">Jadwal</div>
-        <button data-section="quran-placements" class="nav-item">۞ <span>Program Al-Qur’an</span></button>
-        <button data-section="attendance-locations" class="nav-item">⌖ <span>Lokasi Absensi Guru</span></button>
-        <button data-section="academic-schedules" class="nav-item">▧ <span>Jadwal Pelajaran</span></button>
-        <button data-section="daily-schedules" class="nav-item">☷ <span>Jadwal 24 Jam</span></button>
-        <div class="nav-caption">Akun & Akses</div>
-        <a href="./accounts.html" class="nav-item">⚿ <span>Manajemen Akun</span></a>
-        <div class="nav-caption">Validasi</div>
-        <a href="./validation.html" class="nav-item">✓ <span>Validasi Data</span></a>
-        <div class="nav-caption">Data</div>
-        <button data-section="import" class="nav-item">⇧ <span>Import Data</span></button>
-      </nav>
+<nav id="navMenu" class="nav-menu"><button data-section="dashboard" class="nav-item active">⌂ <span>Beranda Admin</span></button><button data-workspace="students" class="nav-item">▦ <span>Data Santri</span></button><button data-workspace="staff" class="nav-item">▦ <span>Data SDM</span></button><button data-workspace="school" class="nav-item">▦ <span>Data Sekolah</span></button><button data-workspace="boarding" class="nav-item">▦ <span>Data Asrama</span></button><button data-workspace="lessons" class="nav-item">▦ <span>Jadwal Pelajaran</span></button><button data-workspace="programs" class="nav-item">▦ <span>Jadwal Program Keasramaan</span></button><a href="./accounts.html" class="nav-item">⚿ <span>Manajemen User</span></a></nav>
       <div class="sidebar-footer">
         <span id="adminName">Administrator</span>
         <button id="logoutButton" class="link-button">Keluar</button>
@@ -66,7 +37,7 @@
         <div class="top-actions">
           <a class="btn btn-primary" href="./validation.html">Validasi Data</a>
           <a class="btn btn-secondary" href="../app/index.html">Portal</a>
-          <a class="btn btn-secondary" href="../bootstrap/index.html">Inisialisasi Data</a>
+          <button class="btn btn-secondary" id="adminImport">Import Data</button>
           <div class="year-chip"><span>Tahun aktif</span><strong id="activeYearLabel">Belum diatur</strong></div>
         </div>
       </header>

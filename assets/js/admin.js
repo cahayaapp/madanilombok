@@ -1,3 +1,4 @@
+import {ADMIN_WORKSPACES,workspaceFor,normalizeAdminRecord} from './admin-workspaces.js';
 import {renderConfirmedGirlsRooms} from './confirmed-girls-rooms.js';
 import {renderHabibIdentity} from './habiburrohman-identity.js';
 import {renderRoomReconciliation} from './room-reconciliation.js';
@@ -17,7 +18,7 @@ import {renderDailyUpdate} from './daily-update.js';
 import {renderSmpUpdate,renderSdUpdate,renderSmkUpdate} from './smp-update.js';
 import { requireAdmin, logout } from "./auth.js";
 import {
-  listNode, saveRecord, deleteRecord, getCurrentAcademicYearId, setCurrentAcademicYear,
+  getNode, patchNode, listNode, saveRecord, deleteRecord, getCurrentAcademicYearId, setCurrentAcademicYear,
   getClassAssignments, getRoomAssignments, getGroupAssignments,
   assignClass, unassignClass, assignRoom, unassignRoom, setGroupMembership, bulkSave
 } from "./repository.js";
@@ -43,6 +44,8 @@ const pathMap = {
   "academic-schedules": "schedules/academic",
   "attendance-locations": "settings/teacherAttendance/locations",
   "quran-placements": "academic/quran_placements",
+  "quran-schedules": "schedules/daily",
+  "arabic-schedules": "schedules/daily",
   "daily-schedules": "schedules/daily"
 };
 
@@ -182,6 +185,34 @@ const entityConfig = {
   }
 };
 
+
+entityConfig.programs.title="Data Program Keasramaan";
+entityConfig.programs.subtitle="Kelola nama dan kategori program. Kewajiban presensi dan laporan ditentukan per jadwal pada tab Jadwal & Pencatatan.";
+entityConfig.programs.fields=entityConfig.programs.fields.filter(f=>f.name!=="attendanceRequired");
+entityConfig.programs.columns=entityConfig.programs.columns.filter(([f])=>f!=="attendanceRequired");
+const boolOptions=[{value:"true",label:"Ya"},{value:"false",label:"Tidak"}];
+entityConfig.groups.fields.push({name:"subjectId",label:"Mapel Bahasa Arab",type:"relation",relation:"subjects"},{name:"teachingEnabled",label:"Aktifkan Pembelajaran Bahasa Arab",type:"boolean",options:boolOptions,default:true});
+entityConfig["daily-schedules"].fields.push(
+ {name:"status",label:"Status",type:"select",options:activeOptions,default:"active"},
+ {name:"genderScope",label:"Unit Asrama",type:"select",options:[{value:"mixed",label:"Putra & Putri"},{value:"L",label:"Putra"},{value:"P",label:"Putri"}],default:"mixed"},
+ {name:"naqibAttendance",label:"Wajib Presensi Naqib",type:"boolean",options:boolOptions},
+ {name:"naqibReport",label:"Wajib Laporan Pelaksanaan",type:"boolean",options:boolOptions}
+);
+for(const [key,title] of [["quran-schedules","Jadwal Al-Qur’an"],["arabic-schedules","Jadwal Bahasa Arab"]]){
+ entityConfig[key]={title,subtitle:"Jadwal mengikuti pembina dan peserta halaqah yang dipilih. Cakupan jadwal bersama lama tetap dipertahankan.",prefix:"HAL",
+ columns:[["day","Hari"],["startTime","Mulai"],["endTime","Selesai"],["targetId","Halaqah"],["status","Status"]],
+ fields:entityConfig["daily-schedules"].fields.filter(f=>["academicYearId","day","startTime","endTime","status"].includes(f.name)).concat([
+ {name:"targetId",label:"Halaqah (jadwal bersama lama boleh kosong)",type:"relation",relation:"groups"},
+ {name:"notes",label:"Catatan",type:"textarea",full:true}
+ ])};
+}
+function renderWorkspace(key){const w=ADMIN_WORKSPACES[key];if(w.href){location.href=w.href;return;}navigate(w.items[0][0]);}
+function workspaceTabs(section){
+ const w=ADMIN_WORKSPACES[workspaceFor(section)];if(!w?.items)return;
+ const nav=document.createElement("nav");nav.className="admin-tabs";nav.setAttribute("aria-label",w.title);
+ nav.innerHTML=w.items.map(([id,label])=>`<button class="btn ${id===section?'btn-primary':'btn-secondary'}" data-admin-tab="${id}">${escapeHtml(label)}</button>`).join("");
+ $("#content").prepend(nav);nav.querySelectorAll("button").forEach(b=>b.onclick=()=>navigate(b.dataset.adminTab));
+}
 function relationLabel(type, id) {
   if (!id) return "—";
   const list = cache[type] || [];
@@ -230,24 +261,14 @@ function renderDashboard() {
     classes:(cache.classes||[]).filter(x=>x.status==="active").length,
     rooms:(cache.rooms||[]).filter(x=>x.status==="active").length
   };
-  const steps = [
-    ["Tahun Ajaran","academic-years",cache["academic-years"]?.length],["Unit Pendidikan","units",cache.units?.length],["Data Santri","students",cache.students?.length],
-    ["Data SDM","staff",cache.staff?.length],["Kelas & Rombel","classes",cache.classes?.length],["Asrama & Kamar","rooms",cache.rooms?.length],
-    ["Kelompok/Halaqah","groups",cache.groups?.length],["Mata Pelajaran","subjects",cache.subjects?.length],["Program 24 Jam","programs",cache.programs?.length],
-    ["Jadwal Pelajaran","academic-schedules",cache["academic-schedules"]?.length],["Jadwal 24 Jam","daily-schedules",cache["daily-schedules"]?.length]
-  ];
-  const units = (cache.units||[]).map(u => `<span class="badge">${escapeHtml(u.type || u.code || "Unit")}: ${(cache.students||[]).filter(s=>s.unitId===u.id&&s.status==="active").length}</span>`).join(" ");
-  $("#content").innerHTML = `
-    <div class="hero-card"><div><p class="eyebrow" style="color:#d8c587">Admin & Master Data Foundation</p><h2>Database Al-Madani yang data-driven</h2><p>Satu sumber data untuk TK sampai SMK, akademik, asrama, halaqah, dan program kehidupan santri. Perubahan tahun ajaran cukup melalui Admin—tanpa mengubah kode.</p></div><div class="hero-badge"><small>Status Fondasi</small><strong>V1 · Siap Diisi</strong></div></div>
-    <div class="stats-grid"><div class="stat-card"><span>Santri Aktif</span><strong>${counts.students}</strong></div><div class="stat-card"><span>SDM Aktif</span><strong>${counts.staff}</strong></div><div class="stat-card"><span>Unit</span><strong>${counts.units}</strong></div><div class="stat-card"><span>Rombel</span><strong>${counts.classes}</strong></div><div class="stat-card"><span>Kamar</span><strong>${counts.rooms}</strong></div></div>
-    <div class="grid-2"><div class="panel"><div class="panel-head"><h3>Setup Database</h3><span class="badge gold">${steps.filter(x=>x[2]).length}/${steps.length} terisi</span></div><div class="setup-list">${steps.map((s,i)=>`<button class="setup-item" data-go="${s[1]}" style="background:#fff;text-align:left"><span class="setup-index">${i+1}</span><span><strong>${s[0]}</strong><small>${s[2] ? `${s[2]} record tersedia` : "Belum ada data"}</small></span><span class="setup-state">${s[2] ? "Terisi" : "Mulai"}</span></button>`).join("")}</div></div>
-    <div class="panel"><div class="panel-head"><h3>Ringkasan Unit</h3></div><p class="muted" style="font-size:12px;line-height:1.7">Santri tetap memiliki satu profil induk. Kelas, kamar, dan halaqah dikelola melalui penempatan sehingga riwayat tidak hilang saat naik kelas atau pindah kamar.</p><div style="display:flex;gap:8px;flex-wrap:wrap;margin:18px 0">${units || '<span class="muted">Belum ada unit.</span>'}</div><div class="notice">Urutan pengisian yang disarankan: Tahun Ajaran → Unit → Santri & SDM → Kelas/Asrama/Kelompok → Penempatan → Jadwal.</div></div></div>`;
-  $$('[data-go]').forEach(btn => btn.addEventListener("click",()=>navigate(btn.dataset.go)));
+  $("#content").innerHTML=`<section class="hero-card"><div><p class="eyebrow">MADANIAPP · ADMINISTRATOR</p><h2>Pusat Data Pesantren</h2><p>Kelola data pokok, penempatan, jadwal dan akses pengguna dari satu tempat.</p></div></section><div class="stats-grid">${Object.entries(counts).map(([k,v])=>`<div class="stat-card"><span>${({students:'Santri Aktif',staff:'SDM Aktif',units:'Unit',classes:'Kelas',rooms:'Kamar'})[k]}</span><strong>${v}</strong></div>`).join('')}</div><div class="admin-workspace-grid">${Object.entries(ADMIN_WORKSPACES).map(([key,w],i)=>`<button class="admin-workspace-card" data-open-workspace="${key}"><span class="badge">${i+1}</span><h3>${w.title}</h3><p>${w.description}</p><strong>Kelola →</strong></button>`).join('')}</div><div class="panel"><h3>Alat Data</h3><button class="btn btn-secondary" data-import>Import / Penyelarasan Data</button> <a class="btn btn-secondary" href="./validation.html">Validasi Data</a></div>`;
+  $$('[data-open-workspace]').forEach(b=>b.onclick=()=>renderWorkspace(b.dataset.openWorkspace));
+  $('[data-import]').onclick=()=>navigate('import');
 }
 
 function getFilteredRows(section) {
   const search = ($("#tableSearch")?.value || "").trim().toLowerCase();
-  const rows = cache[section] || [];
+  const rows = (cache[section] || []).filter(r=>section==="quran-schedules"?(r.quranMorning||r.quranAllGroups||r.attendanceRole==="mentor_tahsin_tahfiz"):section==="arabic-schedules"?r.attendanceRole==="guru_mapel":true);
   if (!search) return rows;
   return rows.filter(row => JSON.stringify(row).toLowerCase().includes(search));
 }
@@ -259,6 +280,7 @@ function renderEntity(section) {
     <div class="section-head"><div><h2>${cfg.title}</h2><p>${cfg.subtitle}</p></div><div class="section-actions"><button class="btn btn-secondary" id="exportButton">Export CSV</button><button class="btn btn-primary" id="addButton">+ Tambah ${cfg.title}</button></div></div>
     <div class="toolbar"><input id="tableSearch" placeholder="Cari data…" /><span class="badge muted">${(cache[section]||[]).length} record</span></div>
     <div class="table-card"><div class="table-scroll"><table class="data-table"><thead><tr>${cfg.columns.map(c=>`<th>${c[1]}</th>`).join("")}<th>Aksi</th></tr></thead><tbody id="tableBody">${rowsMarkup(section, rows)}</tbody></table></div></div>`;
+  $(".toolbar .badge").textContent=`${rows.length} record`;
   $("#addButton").addEventListener("click",()=>openForm(section));
   $("#exportButton").addEventListener("click",()=>exportSection(section));
   $("#tableSearch").addEventListener("input",()=>{$("#tableBody").innerHTML=rowsMarkup(section,getFilteredRows(section));bindRowActions(section);});
@@ -268,7 +290,7 @@ function renderEntity(section) {
 function rowsMarkup(section, rows) {
   const cfg = entityConfig[section];
   if (!rows.length) return `<tr><td colspan="${cfg.columns.length+1}" style="text-align:center;color:#7b8a84;padding:30px">Belum ada data.</td></tr>`;
-  return rows.map(row => `<tr>${cfg.columns.map(([f])=>`<td>${formatCell(section,f,row[f])}</td>`).join("")}<td><div class="row-actions"><button class="mini-btn" data-edit="${row.id}">Edit</button>${section==="academic-years"?`<button class="mini-btn" data-activate="${row.id}">Aktifkan</button>`:""}${section==="quran-placements"?"":`<button class="mini-btn danger" data-delete="${row.id}">Hapus</button>`}</div></td></tr>`).join("");
+  return rows.map(row => `<tr>${cfg.columns.map(([f])=>`<td>${formatCell(section,f,row[f])}</td>`).join("")}<td><div class="row-actions"><button class="mini-btn" data-edit="${row.id}">Edit</button>${["classes","rooms","groups"].includes(section)?`<button class="mini-btn" data-members="${row.id}">Atur Peserta</button>`:""}${section==="academic-years"?`<button class="mini-btn" data-activate="${row.id}">Aktifkan</button>`:""}${section==="quran-placements"?"":`<button class="mini-btn danger" data-delete="${row.id}">Hapus</button>`}</div></td></tr>`).join("");
 }
 
 function formatCell(section, field, value) {
@@ -280,6 +302,7 @@ function formatCell(section, field, value) {
 }
 
 function bindRowActions(section) {
+ $$('[data-members]').forEach(b=>b.onclick=async()=>{await renderPlacement(({classes:'class',rooms:'room',groups:'group'})[section],b.dataset.members);workspaceTabs(section);});
   $$('[data-edit]').forEach(b=>b.addEventListener("click",()=>openForm(section,b.dataset.edit)));
   $$('[data-delete]').forEach(b=>b.addEventListener("click",async()=>{
     const id=b.dataset.delete; if(!confirmDialog("Hapus record ini? Data penempatan yang merujuk ID ini tidak otomatis dihapus."))return;
@@ -293,7 +316,7 @@ function bindRowActions(section) {
 function fieldOptions(field) {
   if (field.type === "relation" || field.type === "multirelation") {
     const list = cache[field.relation] || [];
-    return list.map(item=>({value:item.id,label:item.name || item.title || item.id}));
+    return list.filter(item=>!(field.name==="targetId"&&["quran-schedules","arabic-schedules"].includes(editState?.section))||(editState.section==="arabic-schedules"?item.programType==="arabic":!["arabic","lesson"].includes(item.programType))).map(item=>({value:item.id,label:item.name || item.title || item.id}));
   }
   if (field.type === "relationUnion") {
     const names = {units:"Unit",classes:"Kelas",groups:"Kelompok"};
@@ -315,8 +338,8 @@ function openForm(section, id = null) {
 function fieldMarkup(field,value) {
   const cls=`field ${field.full?"full":""}`; const required=field.required?"required":""; const safe=escapeHtml(value);
   let control;
-  if(field.type==="select"||field.type==="relation"||field.type==="relationUnion"){
-    const opts=fieldOptions(field); control=`<select name="${field.name}" ${required}><option value="">— Pilih —</option>${opts.map(o=>`<option value="${escapeHtml(o.value)}" ${String(o.value)===String(value)?"selected":""}>${escapeHtml(o.label)}</option>`).join("")}</select>`;
+  if(field.type==="boolean"||field.type==="select"||field.type==="relation"||field.type==="relationUnion"){
+    const opts=fieldOptions(field); if(value!==""&&value!==null&&!opts.some(o=>String(o.value)===String(value)))opts.push({value,label:String(value)}); control=`<select name="${field.name}" ${required}><option value="">— Pilih —</option>${opts.map(o=>`<option value="${escapeHtml(o.value)}" ${String(o.value)===String(value)?"selected":""}>${escapeHtml(o.label)}</option>`).join("")}</select>`;
   }else if(field.type==="multirelation"){
     const opts=fieldOptions(field); const selected=Array.isArray(value)?value:[]; control=`<select name="${field.name}" multiple size="5">${opts.map(o=>`<option value="${escapeHtml(o.value)}" ${selected.includes(o.value)?"selected":""}>${escapeHtml(o.label)}</option>`).join("")}</select>`;
   }else if(field.type==="textarea") control=`<textarea name="${field.name}" ${required} placeholder="${escapeHtml(field.placeholder||"")}">${safe}</textarea>`;
@@ -328,21 +351,30 @@ function closeForm(){ $("#modalBackdrop").classList.add("hidden"); editState=nul
 
 async function submitForm(event){
   event.preventDefault(); if(!editState)return; const {section,id}=editState; const cfg=entityConfig[section]; const fd=new FormData(event.currentTarget); const data={};
-  cfg.fields.forEach(f=>{let v=f.type==="multirelation"?fd.getAll(f.name):(fd.get(f.name)??""); if(f.type==="number"&&v!=="")v=Number(v); if(f.name==="roles")v=String(v).split(",").map(x=>x.trim()).filter(Boolean); data[f.name]=v;});
+  cfg.fields.forEach(f=>{let v=f.type==="multirelation"?fd.getAll(f.name):(fd.get(f.name)??""); if(f.type==="number"&&v!=="")v=Number(v); if(f.type==="boolean")v=v===""?null:v==="true"; if(f.name==="roles")v=String(v).split(",").map(x=>x.trim()).filter(Boolean); data[f.name]=v;});
   if(section==="quran-placements") {
     if(data.programQuran==="TAHSIN"&&!data.tahsinLevel){toast("Pilih level Tahsin.","error");return;}
     if(data.programQuran==="TAHFIZ")data.tahsinLevel="";
     if((cache[section]||[]).some(r=>r.id!==id&&r.studentId===data.studentId&&r.academicYearId===data.academicYearId&&r.effectiveFrom===data.effectiveFrom&&r.status!=="inactive"&&data.status!=="inactive")){toast("Penempatan aktif pada tanggal itu sudah ada. Edit rekam yang sama.","error");return;}
   }
-  const recordId=id||makeId(cfg.prefix); try{await saveRecord(pathMap[section],recordId,data,session.user.uid);toast(id?"Data diperbarui.":"Data ditambahkan.");closeForm();await reloadAndRender(section);}catch(e){toast(e.message||"Gagal menyimpan data.","error")}
+  const previous=(cache[section]||[]).find(r=>r.id===id)||{};
+  try{Object.assign(data,normalizeAdminRecord(section,data,previous));
+   if(["quran-schedules","arabic-schedules"].includes(section)&&!data.targetId)delete data.targetId;
+  }catch(e){toast(e.message,"error");return;}
+  const recordId=id||makeId(cfg.prefix); try{const latest=await getNode(`${pathMap[section]}/${recordId}`)||{};const payload={...latest,...data};delete payload.id;
+    if(section==='daily-schedules'){
+      const startMinute=Number(data.startTime.slice(0,2))*60+Number(data.startTime.slice(3));
+      await patchNode('',{[`schedules/daily/${recordId}`]:{...payload,updatedAt:Date.now(),updatedBy:session.user.uid},[`settings/naqibDuty/programs/${recordId}`]:data.status==='inactive'?null:{programId:data.programId,startTime:data.startTime,endTime:data.endTime,day:data.day,academicYearId:data.academicYearId,startMinute,shiftId:startMinute<480?'shift1':startMinute<960?'shift2':'shift3'}});
+    }else await saveRecord(pathMap[section],recordId,payload,session.user.uid);
+    toast(id?"Data diperbarui.":"Data ditambahkan.");closeForm();await reloadAndRender(section);}catch(e){toast(e.message||"Gagal menyimpan data.","error")}
 }
 
 function exportSection(section){
-  const rows=cache[section]||[]; if(!rows.length)return toast("Belum ada data untuk diekspor.","warning");
+  const rows=getFilteredRows(section); if(!rows.length)return toast("Belum ada data untuk diekspor.","warning");
   const headers=["id",...entityConfig[section].fields.map(f=>f.name)]; const normalized=rows.map(r=>Object.fromEntries(headers.map(h=>[h,Array.isArray(r[h])?r[h].join("|"):(r[h]??"")]))); downloadText(`${section}.csv`,toCSV(normalized,headers),"text/csv;charset=utf-8");
 }
 
-async function renderPlacement(kind){
+async function renderPlacement(kind,targetId=null){
   placementSelection=null;placementRequest++;
   const activeYear=await getCurrentAcademicYearId();
   const years=cache["academic-years"]||[]; const students=(cache.students||[]).filter(s=>s.status==="active");
@@ -351,6 +383,7 @@ async function renderPlacement(kind){
   $("#content").innerHTML=`<div class="section-head"><div><h2>${title}</h2><p>Penempatan disimpan per tahun ajaran sehingga perubahan tidak menghapus riwayat sebelumnya.</p></div></div>
   <div class="placement-layout"><div class="placement-control"><h3>Tujuan Penempatan</h3><label class="field">Tahun Ajaran<select id="placementYear">${years.map(y=>`<option value="${y.id}" ${y.id===activeYear?"selected":""}>${escapeHtml(y.name)} · S${escapeHtml(y.semester||"")}</option>`).join("")}</select></label><label class="field">${kind==="class"?"Kelas/Rombel":kind==="room"?"Kamar":"Kelompok"}<select id="placementTarget"><option value="">— Pilih —</option>${(cache[targetSection]||[]).filter(x=>x.status!=="inactive").map(x=>`<option value="${x.id}">${escapeHtml(x.name)}</option>`).join("")}</select></label><button class="btn btn-primary btn-block" id="savePlacement" disabled>Simpan Penempatan</button><div class="notice" style="margin-top:12px">Centang santri yang berada pada tujuan terpilih. Untuk kelas/kamar, santri yang sebelumnya berada pada tujuan ini tetapi dilepas centangnya akan dikeluarkan dari penempatan tersebut.</div></div><div class="student-picker"><div class="picker-head"><div><strong id="pickerTitle">Pilih tujuan dahulu</strong><div class="muted" id="pickerMeta" style="font-size:10px;margin-top:3px"></div></div><input id="pickerSearch" placeholder="Cari santri…" /></div><div id="studentCheckList" class="check-list"><div class="empty-state" style="grid-column:1/-1">Pilih tahun ajaran dan tujuan penempatan.</div></div></div></div>`;
   const refresh=()=>renderStudentPicker(kind,students); $("#placementYear").addEventListener("change",refresh); $("#placementTarget").addEventListener("change",refresh); $("#pickerSearch").addEventListener("input",refresh); $("#savePlacement").addEventListener("click",()=>savePlacement(kind));
+  if(targetId){$("#placementTarget").value=targetId;await refresh();}
 }
 
 async function renderStudentPicker(kind,students){
@@ -407,18 +440,21 @@ async function prepareImport(type,file,previewId){
   host.querySelector(`#commit-${type}`)?.addEventListener("click",async()=>{try{const btn=host.querySelector(`#commit-${type}`);btn.disabled=true;btn.textContent="Mengimpor…";await bulkSave(pathMap[type],rows,r=>r.id,session.user.uid);toast(`${rows.length} data berhasil diimport.`);await loadCache();renderImport();}catch(e){toast(e.message||"Import gagal.","error")}});
 }
 
-async function reloadAndRender(section){await loadCache();await refreshActiveYear();renderSection(section);}
+async function reloadAndRender(section){await loadCache();await refreshActiveYear();await renderSection(section);workspaceTabs(section);}
 
-async function navigate(section){currentSection=section; $$('.nav-item').forEach(b=>b.classList.toggle('active',b.dataset.section===section)); $("#pageTitle").textContent= section==="dashboard"?"Dashboard": entityConfig[section]?.title || ({"class-placements":"Penempatan Kelas","room-placements":"Penempatan Kamar","group-placements":"Anggota Kelompok",import:"Import Data"}[section]||section); renderSection(section); $("#sidebar").classList.remove("open");}
+async function navigate(section){currentSection=section; $$('.nav-item').forEach(b=>b.classList.toggle('active',b.dataset.section===section||b.dataset.workspace===workspaceFor(section))); $("#pageTitle").textContent= section==="dashboard"?"Beranda Admin": entityConfig[section]?.title || ({"class-placements":"Penempatan Kelas","room-placements":"Penempatan Kamar","group-placements":"Anggota Kelompok",import:"Import Data"}[section]||section); await renderSection(section); workspaceTabs(section); $("#sidebar").classList.remove("open");}
 
 function renderSection(section){
   if(section==="dashboard")return renderDashboard(); if(entityConfig[section])return renderEntity(section); if(section==="class-placements")return renderPlacement("class"); if(section==="room-placements")return renderPlacement("room"); if(section==="group-placements")return renderPlacement("group"); if(section==="import")return renderImport();
 }
 
 async function boot(){
-  try{session=await requireAdmin(); $("#adminName").textContent=session.profile.name||session.user.email||"Administrator"; await loadCache(); await refreshActiveYear(); await navigate(location.hash==='#import'?'import':'dashboard');}
+  try{session=await requireAdmin(); $("#adminName").textContent=session.profile.name||session.user.email||"Administrator"; await loadCache(); await refreshActiveYear(); await navigate(entityConfig[location.hash.slice(1)]||location.hash==='#import'?location.hash.slice(1):'dashboard');}
   catch(e){console.error(e)}
 }
 
 $("#logoutButton").addEventListener("click",async()=>{await logout();window.location.href="../index.html"}); $("#menuButton").addEventListener("click",()=>$("#sidebar").classList.toggle("open")); $("#modalClose").addEventListener("click",closeForm); $("#modalBackdrop").addEventListener("click",e=>{if(e.target.id==="modalBackdrop")closeForm()}); $("#entityForm").addEventListener("submit",submitForm); $$('.nav-item').forEach(btn=>btn.addEventListener("click",()=>{if(btn.dataset.section)navigate(btn.dataset.section);}));
 boot();
+
+$$("[data-workspace]").forEach(b=>b.onclick=()=>renderWorkspace(b.dataset.workspace));
+$("#adminImport").onclick=()=>navigate("import");

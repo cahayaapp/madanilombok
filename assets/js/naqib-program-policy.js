@@ -18,3 +18,10 @@ export function naqibProgramKind(schedule,program){
  };
  return names[name]||null;
 }
+
+export function naqibProgramEnabled(schedule,program,mode='attendance'){
+ if(schedule?.status==='inactive'||program?.status==='inactive')return false;
+ const explicit=mode==='report'?schedule?.naqibReport:schedule?.naqibAttendance;
+ if(typeof explicit==='boolean')return explicit;
+ return Boolean(naqibProgramKind(schedule,program));
+}
