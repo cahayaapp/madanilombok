@@ -160,3 +160,7 @@ test('all six murojaah types persist and appear in history',async()=>{
   assert.equal(record.subtype,type);assert.equal(record.type,'Murojaah');await click('[data-student="s1"] [data-history]');assert.ok($('[data-student="s1"] [data-history-list]').textContent.includes(type),$('.teacher-errors').textContent+' / '+$('[data-student="s1"] [data-history-list]').textContent);
  }
 });
+test('empty report source gives an actionable source error, preserving selected student',async()=>{
+ db={};await routes['teacher-case'](ctx);$('[data-student="s1"]').checked=true;$('#reportCategory').value='Kedisiplinan';$('#reportDescription').value='Kronologi';await click('#sendReport');assert.match($('.teacher-errors').textContent,/Pilih Sumber Laporan/);assert.doesNotMatch($('.teacher-errors').textContent,/Santri tidak tersedia/);assert.equal($('[data-student="s1"]').checked,true);assert.equal(read(`boarding/cases/${ctx.yearId}`),null);
+ $('#reportSource').value='langsung';await click('#sendReport');assert.equal(Object.values(read(`boarding/cases/${ctx.yearId}`)).length,1);
+});

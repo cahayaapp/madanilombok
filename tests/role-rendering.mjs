@@ -355,3 +355,12 @@ test('quality request failures retry and late results cannot replace cards after
  ctx.root.querySelector('#qualityRetry').click();await settle();assert.equal(attempts,2);ctx.root.querySelector('#qualityBack').click();resolve(null);await settle();assert.equal(ctx.root.querySelectorAll('[data-quality-indicator]').length,7);assert.equal(ctx.root.querySelector('#qualityRetry'),null);
  }finally{mock.setExport('getNode',original);}
 });
+test('resident and worship writes include the academic year required by database validation',async()=>{
+ const ctx=ctxFor('head_boys_dorm');ctx.master={...master,staff:[{id:'resident-test',name:'Petugas Uji',gender:'L'}]};const previous=database.get('users');database.set('users',{test:{staffId:'resident-test',role:'naqib',active:true}});
+ const start=writes.length;try{
+ await routes['management-residents'](ctx);ctx.root.querySelector('[data-resident]').checked=true;ctx.root.querySelector('#saveResidents').click();await settle();
+ const resident=writes.slice(start).find(w=>w.path.endsWith('/resident_staff'));assert.equal(resident.data.academicYearId,'year');assert.equal(resident.data.scope,'boarding-L');assert.equal(resident.data.staffId,'resident-test');
+ await routes['management-worship'](ctx);ctx.root.querySelector('[data-person]').value='Hadir';ctx.root.querySelector('#saveWorship').click();await settle();
+ const worship=writes.slice(start).find(w=>w.path.endsWith('/staff_worship'));assert.equal(worship.data.academicYearId,'year');assert.equal(worship.data.attendance['resident-test'],'Hadir');
+ }finally{database.set('users',previous);database.delete('workspaces/year/resident_staff/resident-test');}
+});

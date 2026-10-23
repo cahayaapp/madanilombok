@@ -16,3 +16,10 @@ test('server duty writes require canonical staff gender and own head role',()=>{
  assert.equal(run(rule,opts),true);assert.equal(run(rule,{...opts,actor:{role:'head_boys_dorm'}}),false);
  assert.equal(run(rule,{...opts,root:{staff:{s:{gender:'L'}}}}),false);assert.equal(run(rule,{...opts,old:{gender:'L'}}),false);
 });
+test('resident and worship validation reject missing year and accept complete year metadata',()=>{
+ for(const collection of ['resident_staff','staff_worship']){
+ const expr=rules.workspaces.$yearId[collection].$recordId['.validate'];
+ const check=next=>Function('auth','data','newData','$yearId',`return (${expr});`)({uid:'actor'},snap(null),snap(next),'y');
+ const payload={createdBy:'actor',createdAt:1,updatedBy:'actor',updatedAt:1};assert.equal(check(payload),false);assert.equal(check({...payload,academicYearId:'y'}),true);assert.equal(check({...payload,academicYearId:'wrong'}),false);
+ }
+});
