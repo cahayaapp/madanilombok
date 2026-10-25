@@ -1,3 +1,4 @@
+import {renderTeacherReport} from '../teacher/extras.js';
 import {mountAttendanceReferrals} from '../counselor-attendance.js';
 import {counselorGender} from '../boarding-personnel-scope.js';
 import {reportIndicators,reportObservation} from '../naqib-report-model.js';
@@ -6,7 +7,7 @@ import {naqibProgramKind} from '../naqib-program-policy.js';
 import {isActiveGemaStudent,GEMA_ATTENDANCE_NOTE} from '../teacher/gema-attendance.js';
 import {loadDuty,checkDutyWrite} from '../naqib-duty-access.js';
 import {dutyProgramDate} from '../naqib-duty.js';
-import {schoolCaseRoute,isSdStudent} from '../school-case-routing.js';
+import {isSdStudent} from '../school-case-routing.js';
 import {renderCounselorWorkspace,renderCounselorReflection} from '../counselor-workspace.js';
 import {renderNaqibStudentAssessment,renderNaqibReflection} from '../naqib-assessment.js';
 import {counselorLevel,routeCounselorCase} from '../counselor-model.js';
@@ -14,7 +15,7 @@ import {recurringView,arabicRosterView} from '../boarding-roster-view.js';
 import {dailyForStaff,programStudents,genderMatches} from '../daily-schedules.js';
 import { getNode, listNode, pushRecord, saveRecord, setNode, patchNode, transitionWorkspaceRecord, commitCaseOperation } from "../repository.js";
 import { byId, studentsForClass } from "../app-store.js";
-import {filterScopedStudents,reportableStudents,localDate} from '../role-experience.js';
+import {filterScopedStudents,localDate} from '../role-experience.js';
 import {
   pageHeader, panel, metric, table, formRow, input, textarea, select, selectOptions, studentOptions,
   attachAsync, escapeHtml, badge, toast
@@ -102,9 +103,7 @@ export async function renderNaqibGuide(ctx) {
 }
 
 export async function renderNaqibCase(ctx) {
-  const students=reportableStudents(ctx.master);
-  ctx.root.innerHTML=pageHeader("Lapor Kasus / Pelanggaran","Laporkan santri dari semua unit pendidikan. Penanganan formal dilakukan Konselor.")+panel("Form Laporan",`<form id="caseReportForm" class="portal-form max-760">${formRow("Tanggal",input("date",today(),"date","required"))}${formRow("Santri",select("studentId",studentOptions(students),"required"))}${formRow("Kategori",select("category","<option>Kedisiplinan</option><option>Akhlak</option><option>Ibadah</option><option>Relasi</option><option>Akademik</option><option>Keamanan</option><option>Lainnya</option>"))}${formRow("Tingkat",select("severity","<option value='ringan'>Ringan</option><option value='sedang'>Sedang</option><option value='berat'>Berat</option><option value='kritis'>Kritis</option>"))}${formRow("Kronologi",textarea("description","","required"),true)}${formRow("Saksi/Bukti Awal",textarea("evidence"),true)}<div class="notice info full">Laporan siswa SD masuk ke Wali Kelas; unit lainnya masuk ke Konselor. Naqib tidak memberikan konsekuensi formal dari halaman ini.</div><div class="form-actions"><button class="btn btn-primary">Kirim Laporan</button></div></form>`);
-  attachAsync(document.getElementById("caseReportForm"),async data=>{if(!students.some(s=>s.id===data.studentId))throw Error("Santri tidak tersedia dalam master aktif.");const destination=schoolCaseRoute(ctx.master,data.studentId,ctx.yearId);await pushRecord(destination.path,{...data,...destination.fields,reportedBy:ctx.session.user.uid,reportedByRole:"naqib"},ctx.session.user.uid);document.getElementById("caseReportForm").reset();},"Laporan SD dikirim ke Wali Kelas; unit lainnya ke Konselor.");
+  return renderTeacherReport(ctx);
 }
 
 export async function renderNaqibSelf(ctx) {return renderNaqibReflection(ctx);}

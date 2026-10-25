@@ -9,7 +9,7 @@ export const NAQIB_SLOTS=[
  ['zuhur','Sholat Zuhur Berjama’ah','12:00','14:00','Setiap Hari'],
  ['makan_siang','Makan Siang','12:00','14:00','Setiap Hari'],
  ['ashar','Shalat Ashar Berjama’ah','15:30','16:30','Setiap Hari'],
- ['magrib','Shalat Maghrib Berjama’ah','18:00','20:00','Setiap Hari'],
+ ['magrib','Shalat Maghrib Berjama’ah','19:00','20:00','Setiap Hari'],
  ['isya','Shalat Isya Berjama’ah','20:00','20:30','Setiap Hari'],
  ['makan_malam','Makan Malam','20:30','21:00','Setiap Hari'],
  ['pengecekan_tidur','Pengecekan Tidur','22:00','24:00','Setiap Hari']

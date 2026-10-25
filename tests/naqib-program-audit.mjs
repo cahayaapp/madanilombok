@@ -8,6 +8,7 @@ test('every approved program is assigned to exactly one latest shift; Isya belon
  for(let n=1;n<=3;n++){const config={staff:{rokyal:{gender:'P',shiftId:'shift'+n,startMinute:(n-1)*480,endMinute:n*480}}};try{assertDutyProgram({config,staffId:'rokyal',schedule:{id:kind,academicYearId:'year',startTime,endTime,day,genderScope:'mixed'},date,yearId:'year',now});owners.push(n);}catch{}}
  assert.deepEqual(owners,[expected[kind]],kind);
  }
+ assert.deepEqual(NAQIB_SLOTS.find(s=>s[0]==='magrib').slice(2,4),['19:00','20:00']);
  assert.deepEqual(NAQIB_SLOTS.find(s=>s[0]==='isya').slice(2,4),['20:00','20:30']);
 });
 

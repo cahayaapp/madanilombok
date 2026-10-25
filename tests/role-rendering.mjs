@@ -182,7 +182,7 @@ test('every internal reporting role can submit an active student outside its uni
   for(const [k,v]of Object.entries({studentId:'other-unit',date:'2026-10-06',category:'Kedisiplinan',description:'Kejadian uji lintas unit',evidence:'Saksi'}))form.elements[k].value=v;
   writes=[];submit(form);await settle();assert.equal(writes.length,1);assert.equal(writes[0].data.studentId,'other-unit');assert.equal(writes[0].data.reporterRole,role);assert.equal(writes[0].data.status,'menunggu_konselor');
  }
- const boarding=await load(new URL('assets/js/modules/boarding.js',base).href);await boarding.evaluate();const ctx=ctxFor('naqib');ctx.master={...master,students:[{id:'other-unit',name:'Lintas Unit',unitId:'u2',gender:'P',status:'active'}]};ctx.session.profile={unitIds:['u1'],scopeGender:'L'};await boarding.namespace.renderNaqibCase(ctx);assert.ok(ctx.root.querySelector('option[value="other-unit"]'));
+ const boarding=await load(new URL('assets/js/modules/boarding.js',base).href);await boarding.evaluate();const ctx=ctxFor('naqib');ctx.master={...master,students:[{id:'other-unit',name:'Lintas Unit',unitId:'u2',gender:'P',status:'active'}]};ctx.session.profile={unitIds:['u1'],scopeGender:'L'};await boarding.namespace.renderNaqibCase(ctx);assert.ok(ctx.root.querySelector('option[value="other-unit"]'));assert.ok(ctx.root.querySelector('[data-student="other-unit"]'));assert.ok(ctx.root.querySelector('#reportPhoto'));assert.ok(ctx.root.querySelector('#reportCritical'));assert.equal(ctx.root.querySelector('[name=severity]'),null);
 });
 
 test('Naqib prayer finalization requires late explanation and preserves initial attendance',async()=>{
@@ -363,4 +363,17 @@ test('resident and worship writes include the academic year required by database
  await routes['management-worship'](ctx);ctx.root.querySelector('[data-person]').value='Hadir';ctx.root.querySelector('#saveWorship').click();await settle();
  const worship=writes.slice(start).find(w=>w.path.endsWith('/staff_worship'));assert.equal(worship.data.academicYearId,'year');assert.equal(worship.data.attendance['resident-test'],'Hadir');
  }finally{database.set('users',previous);database.delete('workspaces/year/resident_staff/resident-test');}
+});
+
+test('resident preflight names incomplete canonical SDM and writes nothing',async()=>{
+ const ctx=ctxFor('head_boys_dorm'),previous=database.get('users');ctx.master={...master,staff:[{id:'missing-gender',name:'Petugas Belum Lengkap'}]};database.set('users',{u:{staffId:'missing-gender',role:'naqib',scopeGender:'L',active:true}});
+ try{await routes['management-residents'](ctx);const start=writes.length;ctx.root.querySelector('[data-resident]').checked=true;ctx.root.querySelector('#saveResidents').click();await settle();assert.equal(writes.length,start);assert.match(ctx.root.textContent,/Data SDM.*Petugas Belum Lengkap/);
+ }finally{database.set('users',previous);}
+});
+
+test('Naqib shared report saves selected students as one incident with reporter identity',async()=>{
+ const boarding=await load(new URL('assets/js/modules/boarding.js',base).href);if(boarding.status!=='evaluated')await boarding.evaluate();const ctx=ctxFor('naqib');let captured;const previous=repository.patchNode;
+ mock.setExport('patchNode',async(path,patch)=>{captured=patch;});
+ try{await boarding.namespace.renderNaqibCase(ctx);ctx.root.querySelectorAll('[data-student]').forEach(el=>el.checked=true);ctx.root.querySelector('#reportSource').value='langsung';ctx.root.querySelector('#reportCategory').value='Kedisiplinan';ctx.root.querySelector('#reportDescription').value='Kejadian uji';ctx.root.querySelector('#reportCritical').checked=true;ctx.root.querySelector('#sendReport').click();await settle();const records=Object.entries(captured).filter(([p])=>p.startsWith('boarding/cases/')).map(([,v])=>v);assert.equal(records.length,2);assert.equal(new Set(records.map(r=>r.groupId)).size,1);for(const r of records){assert.equal(r.reportedBy,ctx.session.user.uid);assert.equal(r.reportedByRole,'naqib');assert.equal(r.critical,true);assert.equal(r.parentVisible,false);assert.equal(r.finalPoints,undefined);}
+ }finally{mock.setExport('patchNode',previous);}
 });
