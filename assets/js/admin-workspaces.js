@@ -2,7 +2,7 @@ export const ADMIN_WORKSPACES={
  students:{title:'Data Santri',description:'Identitas, status, dan data wali santri.',items:[['students','Data Santri']]},
  staff:{title:'Data SDM',description:'Identitas dan penugasan personil pesantren.',items:[['staff','Data SDM']]},
  school:{title:'Data Sekolah',description:'Jenjang, kelas, wali kelas, dan peserta kelas.',items:[['units','Jenjang / Unit'],['classes','Kelas & Wali Kelas'],['class-placements','Peserta Kelas'],['academic-years','Tahun Ajaran']]},
- boarding:{title:'Data Asrama',description:'Kamar serta halaqah Bahasa Arab dan Al-Qur’an beserta anggotanya.',items:[['dormitories','Gedung Asrama'],['rooms','Kamar'],['room-placements','Penghuni Kamar'],['groups','Halaqah & Pembina'],['group-placements','Peserta Halaqah'],['quran-placements','Program Al-Qur’an Santri']]},
+ boarding:{title:'Data Asrama',description:'Kamar serta halaqah Bahasa Arab dan Al-Qur’an beserta anggotanya.',items:[['dormitories','Gedung Asrama'],['rooms','Kamar'],['room-placements','Penghuni Kamar'],['groups','Halaqah & Pembina'],['group-placements','Peserta Halaqah']]},
  lessons:{title:'Jadwal Pelajaran',description:'Atur pembelajaran formal, Al-Qur’an, dan Bahasa Arab pagi.',items:[['academic-schedules','Formal'],['quran-schedules','Al-Qur’an'],['arabic-schedules','Bahasa Arab'],['subjects','Mata Pelajaran'],['attendance-locations','Lokasi Presensi']]},
  programs:{title:'Jadwal Program Keasramaan',description:'Waktu kegiatan, kewajiban presensi dan laporan pelaksanaan.',items:[['daily-schedules','Jadwal 24 Jam'],['programs','Nama & Kategori Program']]},
  features:{title:'Manajemen Fitur',description:'Aktifkan atau nonaktifkan fitur yang tersedia per role.',items:[['features','Manajemen Fitur']]},

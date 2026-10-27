@@ -581,3 +581,12 @@ Added eighth Admin workspace Manajemen Fitur in portal and console navigation. L
 - Latest user instruction supersedes earlier opposite choice: retain nopan@madani.app, revoke maulana@madani.app. Safari Administrator updated retained account display name to Novan Maulana and linked SDM Novan Maulana; replaced erroneous Pembina Tahfiz role with Naqib, primary Naqib, gender scope L. Saved UI readback verified active Naqib Putra.
 - Revoked maulana@madani.app through recoverable Cabut Akses. Reloaded user list confirms Akses dicabut and active account count dropped93 to92. Auth account and operational history retained; no password changes. No application code changes or publication required.
 - Actual Novan login and duty/attendance write not tested. Existing duty seed links Novan AMD-SDM-0060 shift2 08:00–16:00; no live duty changes made. Old separate SDM Nopan remains; no master/operational record merge claimed.
+
+## 27 October — remove Quran program Admin tab
+- Removed Program Al-Qur’an Santri tab from Data Asrama as requested. Legacy quran-placements navigation opens Peserta Halaqah. Existing Quran placement records and academic workflows retained.
+- 23 admin/role tests pass; changed JS syntax and repository JSON validated. SWv120. Local change only; not published.
+
+## 27 October — location popup refresh loop
+- Startup/visibility checks no longer acquire GPS; granted permission or stored readiness silently skips onboarding. Nanti/Escape persists a deferred choice across refresh. Attendance location validation remains unchanged and explicit failure events still show recovery guidance.
+- Explicit request has a10s watchdog even if geolocation callbacks hang; failures show Coba Lagi instead of suggesting the app can enable device GPS. Late callbacks cannot change a settled request and dismissal suppresses a pending request error popup.
+- 23 location/role tests pass (including refresh, no startup GPS, timeout/retry and late callback), JS syntax and41JSON valid. SWv121. Not pushed/deployed; actual device OS-location failure not reproduced.
