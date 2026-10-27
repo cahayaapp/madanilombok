@@ -6,6 +6,6 @@ test('home fits overflowing menus without removing cards and restores size on ta
  let callback,disconnected=false;
  globalThis.ResizeObserver=class{constructor(cb){callback=cb;}observe(){}disconnect(){disconnected=true;}};
  globalThis.document={};globalThis.requestAnimationFrame=fn=>{fn();return 1;};globalThis.cancelAnimationFrame=()=>{};
- const root={clientHeight:600};const holder={parentElement:root,isConnected:true,style:{},scrollHeight:900,getBoundingClientRect:()=>({height:900}),classList:{toggle(){}},querySelectorAll:()=>Array(20)};
- try{fitHomeViewport(holder);assert.equal(holder.style.transform,'scale(0.6666666666666666)');root.clientHeight=1000;callback();assert.equal(holder.style.transform,'scale(1)');holder.isConnected=false;callback();assert.equal(disconnected,true);}finally{Object.assign(globalThis,previous);}
+ const root={clientHeight:600};const holder={parentElement:root,isConnected:true,style:{removeProperty(key){delete this[key]},setProperty(key,value){this[key]=value}},scrollHeight:900,getBoundingClientRect:()=>({height:900}),classList:{toggle(){}},querySelectorAll:()=>Array(20)};
+ try{fitHomeViewport(holder);assert.equal(holder.style.transform,undefined);assert.equal(holder.style.width,'100%');assert.ok(Number(holder.style['--home-density'])<1);root.clientHeight=1000;callback();assert.equal(holder.style['--home-density'],1);holder.isConnected=false;callback();assert.equal(disconnected,true);}finally{Object.assign(globalThis,previous);}
 });

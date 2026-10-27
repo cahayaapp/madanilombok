@@ -67,13 +67,13 @@ test('all 15 homes render and non-finance roles do not request finance collectio
  assert.ok(ctx.root.querySelector('.home-role-button'),role);
  assert.ok(ctx.root.querySelector('.premium-home'),role);
  assert.ok(ctx.root.querySelector('.official-greeting').nextElementSibling.matches('.official-date'),role+' date follows greeting');
- assert.ok(ctx.root.querySelectorAll('.premium-quick').length<=({admin:8,super_admin:8,head_formal_school:4,head_boys_dorm:4,head_girls_dorm:4}[role]||4),role);
+ assert.ok(ctx.root.querySelectorAll('.premium-quick').length<=4,role);
  assert.ok(ctx.root.querySelectorAll('.premium-menu-grid>.premium-menu').length>0,role);
- if(role==='director')assert.ok(ctx.root.querySelectorAll('.premium-menu-grid>.premium-menu').length>8,'All director menus must be visible');
+ assert.ok(ctx.root.querySelectorAll('.premium-menu-grid>.premium-menu').length<=6,role+' secondary limit');
  const quickLabels=new Set([...ctx.root.querySelectorAll('.premium-quick>b')].map(b=>b.textContent));
  assert.ok([...ctx.root.querySelectorAll('.premium-menu-grid>.premium-menu>b')].every(b=>!quickLabels.has(b.textContent)),role);
  exportVisual(ctx,role,'home');
- if(role==='naqib'){assert.ok(ctx.root.querySelectorAll('.naqib-workspace-menu [data-home-route]').length>=8);const quick=new Set([...ctx.root.querySelectorAll('.hub-quick-card')].map(b=>b.dataset.homeRoute));assert.ok([...ctx.root.querySelectorAll('.naqib-workspace-menu [data-home-route]')].every(b=>!quick.has(b.dataset.homeRoute)));}
+ if(role==='naqib'){assert.ok(ctx.root.querySelectorAll('.naqib-workspace-menu [data-home-route]').length<=6);const quick=new Set([...ctx.root.querySelectorAll('.hub-quick-card')].map(b=>b.dataset.homeRoute));assert.ok([...ctx.root.querySelectorAll('.naqib-workspace-menu [data-home-route]')].every(b=>!quick.has(b.dataset.homeRoute)));}
  if(process.env.MADANI_HOME_PREVIEW){mkdirSync('outputs/home-preview',{recursive:true});const shell=source('app/index.html');const css=[...shell.matchAll(/<link[^>]+rel="stylesheet"[^>]*>/g)].map(m=>m[0].replaceAll('../assets/','/assets/')).join('');const nav=shell.match(/<nav class="mobile-bottom-nav"[\s\S]*?<\/nav>/)[0];writeFileSync(`outputs/home-preview/${role}.html`,`<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">${css}</head><body class="app-body portal-body" data-home="true"><main class="main-area"><section id="content" class="content-area portal-content"><div class="${ctx.root.className}">${ctx.root.innerHTML.replaceAll('../assets/','/assets/')}</div></section></main>${nav}<script type="module">import {fitHomeViewport} from "/assets/js/home-viewport.js";fitHomeViewport(document.querySelector(".premium-home"));</script></body></html>`);}
  assert.ok(ctx.root.textContent.trim(),role);if(!['kasir','wali_santri'].includes(role))assert.ok(reads.every(p=>!p.startsWith('finance/')),role);
  repository.getNode=original;mock.setExport('getNode',original);
@@ -266,7 +266,7 @@ test('unit leadership homes expose all daily monitors as quick cards',async()=>{
  }
  const ctx=ctxFor('admin'),items=MENU_GROUPS.flatMap(g=>g.items).filter(i=>canAccess(i.feature||'dashboard',['admin']));await homes.namespace.renderRoleHome(ctx,items);
  assert.equal(ctx.root.querySelector('.premium-section-head h2').textContent,'Menu Utama');
- assert.equal(ctx.root.querySelectorAll('.premium-quick').length,8);
+ assert.equal(ctx.root.querySelectorAll('.premium-quick').length,4);
 });
 
 test('dorm duty, resident settings and worship include all three assigned male naqibs',async()=>{
@@ -281,14 +281,14 @@ test('dorm duty, resident settings and worship include all three assigned male n
  }finally{database.set('users',beforeUsers);beforeDuty===undefined?database.delete('settings/naqibDuty/staff'):database.set('settings/naqibDuty/staff',beforeDuty);}
 });
 
-test('both admin homes expose seven actionable data workspaces',async()=>{
+test('both admin homes show four primary workspaces and retain other administration routes',async()=>{
  const expected=['Data Santri','Data SDM','Data Sekolah','Data Asrama','Jadwal Pelajaran','Jadwal Program Keasramaan','Manajemen Fitur','Manajemen User'];
  for(const role of ['admin','super_admin']){
   const ctx=ctxFor(role),clicked=[];ctx.navigate=id=>clicked.push(id);
   const items=MENU_GROUPS.flatMap(g=>g.items).filter(i=>canAccess(i.feature||'dashboard',[role]));
   await homes.namespace.renderRoleHome(ctx,items);
   const cards=[...ctx.root.querySelectorAll('.premium-quick')];
-  assert.deepEqual(cards.map(c=>c.querySelector('b').textContent),expected);
+  assert.deepEqual(cards.map(c=>c.querySelector('b').textContent),expected.slice(0,4));
   for(const card of cards){assert.ok(card.querySelector('small').textContent);card.click();}
   assert.deepEqual(clicked,cards.map(c=>c.dataset.homeRoute));
   assert.equal(ctx.root.querySelector('[data-home-route="deposit-admin"]'),null);

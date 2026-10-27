@@ -652,3 +652,12 @@ Added eighth Admin workspace Manajemen Fitur in portal and console navigation. L
 - Shared <=900px home styling now uses light logo/bell/avatar header, deep tosca mosque greeting, gold-edged role pill, overlapping white date strip, two-column tosca/gold quick cards with supporting descriptions and arrows, and three-column white secondary cards. Existing Madani SVG assets reused; no people/content copied from reference.
 - Bottom navigation explicitly remains five equal slots with centered Beranda; existing role/menu configuration and disabled/hidden destination semantics unchanged. Desktop styling unchanged. Fixed home viewport fitter still scales dense role menus to preserve all enabled destinations; small screens with many cards will use smaller UI than the reference's nine secondary cards.
 - 30 home/menu/render/fit tests pass; diff check valid. Themev107/SWv135. Not pushed; no live data changes. Device visual verification remains unavailable because local browser is disabled.
+
+## 27 October — mobile home width/readability correction
+- User device screenshot exposed whole-page scale reducing home width and text, leaving broad empty side gutters. Mobile fitter now keeps100% width and adjusts vertical spacing through --home-density rather than transform scale; desktop fitting retained.
+- Quieter card ornament contrast, full-width hero/date, normal word boundaries, centered icon-above-title secondary tiles to give long Indonesian labels full card width, and five bottom slots with normal wrapping. No menu destinations removed.
+- 30 menu/render/viewport tests pass, syntax/diff valid. Themev108/SWv136. Local only, not pushed. Actual mobile visual verification still pending; exceptionally dense menus/small screens remain a readability-versus-fixed-viewport constraint.
+
+## 27 October — standardized home card limits (latest user instruction)
+- All roles, including Admin and configured menu overrides, now show at most4 quick cards and6 other cards. Mobile remains2-column quick/3-column other and5 bottom slots. Additional authorized routes remain accessible in Semua menu; feature permissions/configured enablement unchanged. This supersedes previous request to render every role menu directly on home.
+- Feature manager explains display caps and overflow behavior. 31 menu/render/viewport tests pass, including configured excess selections and actionable overflow route. Syntax/diff valid. Themev109/SWv137. Local only; not pushed or visually verified on device.

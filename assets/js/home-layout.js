@@ -41,7 +41,7 @@ export function arrangeHome(ctx,items=[]){
  const monitorHome=['head_formal_school','head_boys_dorm','head_girls_dorm'].includes(ctx.session.activeRole);
  const adminHome=['admin','super_admin'].includes(ctx.session.activeRole);
  const dormHome=['head_boys_dorm','head_girls_dorm'].includes(ctx.session.activeRole);
- const limit=(monitorHome||adminHome)?Infinity:4;
+ const limit=4;
  let quick=candidates.slice(0,limit);
  if(!quick.length)for(const id of ROLE_EXPERIENCE[ctx.session.activeRole]?.quick||[]){const item=available.find(i=>i.id===id);if(item&&quick.length<limit)quick.push(make(item));}
  if(!quick.length)quick.push(...available.slice(0,4).map(make));
@@ -54,7 +54,7 @@ export function arrangeHome(ctx,items=[]){
  const catalog=roleMenuItems(ctx.session.activeRole).filter(i=>canAccess(i.feature||'dashboard',[ctx.session.activeRole]));
  const selectedQuick=menuSelection(ctx.session.activeRole,'quick',null),selectedOther=menuSelection(ctx.session.activeRole,'other',null);
  const fromIds=ids=>ids.map(id=>catalog.find(i=>i.id===id)).filter(Boolean).map(make);
- if(selectedQuick!==null)quick=fromIds(selectedQuick);
+ if(selectedQuick!==null)quick=fromIds(selectedQuick).slice(0,4);
  if(selectedOther!==null)rest.splice(0,rest.length,...fromIds(selectedOther));
  const styleCard=(b,index,primary)=>{
   const title=combinedLabels[route(b)]||b.querySelector('strong,b')?.textContent.trim()||b.textContent.trim();
@@ -76,8 +76,8 @@ export function arrangeHome(ctx,items=[]){
  if(monitorHome){holder.classList.add('premium-monitor-home');holder.querySelector('.premium-section-head h2').textContent='Pantau Operasional Harian';}
  quick.forEach(b=>holder.querySelector('.premium-quick-grid').append(b));
  const menuGrid=holder.querySelector('.premium-menu-grid');
- // Keep every enabled home destination visible; viewport layout adapts to menu count.
- rest.forEach(b=>menuGrid.append(b));
+ // Shared home limits: four primary and six secondary cards; all routes stay in the menu dialog.
+ rest.slice(0,6).forEach(b=>menuGrid.append(b));
  const openDialog=(title,content)=>{const d=document.createElement('dialog');d.className='home-role-dialog premium-home-dialog';d.innerHTML=`<header><h2>${e(title)}</h2><button type="button" data-close aria-label="Tutup">×</button></header>`;d.append(content);root.append(d);d.querySelector('[data-close]').onclick=()=>d.close();d.addEventListener('close',()=>d.remove(),{once:true});d.showModal();};
  holder.querySelectorAll('[data-all-menus]').forEach(b=>b.onclick=()=>{const list=document.createElement('div');list.className='premium-all-menus';for(const item of available)list.append(styleCard(make(item),0,false));const summary=document.createElement('button');summary.type='button';summary.textContent='Ringkasan & Informasi';summary.onclick=()=>openDialog('Ringkasan & Informasi',preserved);list.append(summary);openDialog('Semua Menu',list);});
 }

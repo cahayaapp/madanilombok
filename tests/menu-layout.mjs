@@ -31,3 +31,17 @@ test('home uses configured quick and other menus and rejects injected unauthoriz
  assert.equal(root.querySelectorAll('.premium-menu-grid button').length,0);
  }finally{setFeatureSwitches({});globalThis.document=previous;dom.window.close();}
 });
+test('configured homes cap at four quick and six other cards; overflow routes remain in all menus',()=>{
+ const dom=new JSDOM('<div id="root"></div>');const previous=globalThis.document;globalThis.document=dom.window.document;
+ try{
+ const items=roleMenuItems('naqib').filter(i=>i.id!=='dashboard');
+ setFeatureSwitches({naqib:{_menus:{quick:Object.fromEntries(items.slice(0,5).map(i=>[i.id,true])),other:Object.fromEntries(items.slice(5).map(i=>[i.id,true]))}}});
+ const root=document.getElementById('root');let target;
+ dom.window.HTMLDialogElement.prototype.showModal=function(){this.open=true;};
+ arrangeHome({root,session:{activeRole:'naqib'},navigate:id=>target=id},items);
+ assert.equal(root.querySelectorAll('.premium-quick').length,4);
+ assert.equal(root.querySelectorAll('.premium-menu-grid button').length,Math.min(6,items.length-5));
+ root.querySelector('[data-all-menus]').click();
+ const overflow=root.querySelector(`dialog [data-home-route="${items[4].id}"]`);assert.ok(overflow);overflow.click();assert.equal(target,items[4].id);
+ }finally{setFeatureSwitches({});globalThis.document=previous;dom.window.close();}
+});

@@ -1087,3 +1087,34 @@ body[data-home=true] #content .home-dashboard .premium-home.home-compact>.offici
  body[data-home=true] #content .home-dashboard .premium-home .premium-section-head h2{font-size:16px!important}
  body[data-home=true] #content .home-dashboard .premium-home .official-date-note span{font-size:8px!important}
 }
+
+/* Full-width mobile home: compress vertical spacing, never scale the whole page. */
+@media(max-width:900px){
+ body[data-home=true] #content .home-dashboard{width:100%!important;max-width:none!important;margin:0!important}
+ body[data-home=true] #content .home-dashboard .premium-home{width:100%!important;max-width:none!important;transform:none!important;margin:0!important;padding:8px 12px!important;gap:calc(10px * var(--home-density,1))!important;min-height:100%!important}
+ body[data-home=true] #content .home-dashboard .premium-home .official-home-header{height:calc(54px * var(--home-density,1))!important;min-height:40px!important;padding:4px 2px!important}
+ body[data-home=true] #content .home-dashboard .premium-home .official-greeting,body[data-home=true] #content .home-dashboard .premium-home.home-compact>.official-greeting{min-height:0!important;padding:calc(15px * var(--home-density,1)) 16px 28px!important;background:linear-gradient(100deg,#00535df5,#007e80d9 65%,#77b7a887),url('../brand/home-mosque.svg') right bottom/auto 100% no-repeat!important}
+ body[data-home=true] #content .home-dashboard .premium-home .official-name-row h1{font-size:30px!important}
+ body[data-home=true] #content .home-dashboard .premium-home .official-quote{font-size:11px!important;line-height:1.4!important}
+ body[data-home=true] #content .home-dashboard .premium-home>.official-date{min-height:46px!important;padding:6px 10px!important;margin:-24px 4px 2px!important}
+ body[data-home=true] #content .home-dashboard .premium-home .official-date>svg{width:21px!important;height:21px!important;padding:6px!important}
+ body[data-home=true] #content .home-dashboard .premium-home .premium-section{flex:0 0 auto!important}
+ body[data-home=true] #content .home-dashboard .premium-home .premium-section-head{margin-bottom:calc(8px * var(--home-density,1))!important}
+ body[data-home=true] #content .home-dashboard .premium-home .premium-section-head h2{font-size:18px!important;letter-spacing:-.5px!important}
+ body[data-home=true] #content .home-dashboard .premium-home .premium-quick-grid{gap:calc(10px * var(--home-density,1))!important}
+ body[data-home=true] #content .home-dashboard .premium-home .premium-quick,body[data-home=true] #content .home-dashboard .premium-home.home-compact .premium-quick{grid-template-columns:28px minmax(0,1fr)!important;grid-template-rows:auto auto!important;min-height:0!important;padding:calc(12px * var(--home-density,1)) 11px!important;gap:calc(8px * var(--home-density,1)) 9px!important;align-content:center!important;border-radius:18px!important;background:linear-gradient(120deg,#00626b,#19ad9f)!important}
+ body[data-home=true] #content .home-dashboard .premium-home .premium-quick:nth-child(4n+3){background:linear-gradient(120deg,#a57116,#dcac43)!important}
+ body[data-home=true] #content .home-dashboard .premium-home .premium-quick:nth-child(4n+4){background:linear-gradient(120deg,#d38d23,#f1bf58)!important}
+ body[data-home=true] #content .home-dashboard .premium-home .premium-quick::before{opacity:.09!important}
+ body[data-home=true] #content .home-dashboard .premium-home .premium-quick::after{opacity:.08!important;background-position:130% bottom!important;background-size:auto 90%!important}
+ body[data-home=true] #content .home-dashboard .premium-home .premium-quick .premium-icon{width:28px!important;height:30px!important;flex-basis:28px!important}
+ body[data-home=true] #content .home-dashboard .premium-home .premium-quick b{font-size:13px!important;line-height:1.25!important;word-break:normal!important;overflow-wrap:normal!important;hyphens:none!important}
+ body[data-home=true] #content .home-dashboard .premium-home .premium-quick small{font-size:11px!important;line-height:1.35!important;padding-right:22px!important;word-break:normal!important;overflow-wrap:normal!important}
+ body[data-home=true] #content .home-dashboard .premium-home .premium-workspace{padding-top:calc(8px * var(--home-density,1))!important}
+ body[data-home=true] #content .home-dashboard .premium-home .premium-menu-grid{gap:calc(8px * var(--home-density,1))!important}
+ body[data-home=true] #content .home-dashboard .premium-home .premium-menu,body[data-home=true] #content .home-dashboard .premium-home.home-compact .premium-menu{display:grid!important;grid-template-columns:minmax(0,1fr)!important;justify-items:center!important;text-align:center!important;align-content:center!important;min-height:0!important;padding:calc(8px * var(--home-density,1)) 5px!important;gap:4px!important;border-radius:15px!important}
+ body[data-home=true] #content .home-dashboard .premium-home .premium-menu b{font-size:11px!important;line-height:1.2!important;word-break:normal!important;overflow-wrap:normal!important;hyphens:none!important;max-width:100%}
+ body[data-home=true] #content .home-dashboard .premium-home .premium-menu .premium-icon{width:24px!important;height:24px!important;flex-basis:24px!important}
+ body[data-home=true] .mobile-bottom-nav button,body[data-home=true] .mobile-bottom-nav button span{word-break:normal!important;overflow-wrap:normal!important;hyphens:none!important}
+ body[data-home=true] .mobile-bottom-nav button{font-size:9px!important;padding:4px 2px!important}
+}
