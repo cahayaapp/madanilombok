@@ -1118,3 +1118,15 @@ body[data-home=true] #content .home-dashboard .premium-home.home-compact>.offici
  body[data-home=true] .mobile-bottom-nav button,body[data-home=true] .mobile-bottom-nav button span{word-break:normal!important;overflow-wrap:normal!important;hyphens:none!important}
  body[data-home=true] .mobile-bottom-nav button{font-size:9px!important;padding:4px 2px!important}
 }
+
+/* Compact quick cards: reserve room for both rows of secondary menus. */
+@media(max-width:900px){
+ body[data-home=true] #content .home-dashboard .premium-home .premium-quick-grid{flex:0 0 auto!important;grid-auto-rows:auto!important;gap:8px!important}
+ body[data-home=true] #content .home-dashboard .premium-home .premium-quick,
+ body[data-home=true] #content .home-dashboard .premium-home.home-compact .premium-quick{height:100px!important;min-height:100px!important;max-height:100px!important;box-sizing:border-box!important;padding:8px 10px!important;grid-template-columns:24px minmax(0,1fr)!important;grid-template-rows:auto auto!important;gap:4px 7px!important;align-content:center!important;align-items:center!important;border-radius:17px!important}
+ body[data-home=true] #content .home-dashboard .premium-home .premium-quick .premium-icon{width:24px!important;height:26px!important;flex-basis:24px!important;border-radius:9px!important}
+ body[data-home=true] #content .home-dashboard .premium-home .premium-quick .premium-icon svg{width:18px!important;height:18px!important}
+ body[data-home=true] #content .home-dashboard .premium-home .premium-quick b{font-size:12px!important;line-height:1.15!important}
+ body[data-home=true] #content .home-dashboard .premium-home .premium-quick small{font-size:10px!important;line-height:1.2!important;padding-right:18px!important;margin:0!important}
+ body[data-home=true] #content .home-dashboard .premium-home .premium-arrow{width:20px!important;height:20px!important;right:7px!important;bottom:7px!important;font-size:14px!important}
+}

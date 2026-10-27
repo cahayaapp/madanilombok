@@ -661,3 +661,7 @@ Added eighth Admin workspace Manajemen Fitur in portal and console navigation. L
 ## 27 October — standardized home card limits (latest user instruction)
 - All roles, including Admin and configured menu overrides, now show at most4 quick cards and6 other cards. Mobile remains2-column quick/3-column other and5 bottom slots. Additional authorized routes remain accessible in Semua menu; feature permissions/configured enablement unchanged. This supersedes previous request to render every role menu directly on home.
 - Feature manager explains display caps and overflow behavior. 31 menu/render/viewport tests pass, including configured excess selections and actionable overflow route. Syntax/diff valid. Themev109/SWv137. Local only; not pushed or visually verified on device.
+
+## 27 October — reduce mobile quick-card height
+- Mobile quick cards set to100px border-box height with compact8px vertical padding,24px icons, tighter title/description line spacing and20px arrows. Grid no longer flex-grows rows; reserves more space for two rows of secondary cards. Applies across all roles, desktop untouched. Four/six/five navigation limits retained.
+- CSS/diff and service-worker syntax checked. Themev110/SWv138; local only, no push or device visual verification.
