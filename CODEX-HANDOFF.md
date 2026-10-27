@@ -647,3 +647,8 @@ Added eighth Admin workspace Manajemen Fitur in portal and console navigation. L
 ## 27 October — show all five bottom menu positions in feature manager
 - Editor now shows positions1–5 in order, including disabled labeled Beranda at3 and Lainnya at5. Only1,2,4 remain configurable, preserving existing stored settings and centered home behavior. Responsive grid and helper text explain fixed slots.
 - 29 role/render/menu tests pass incl five visible slots and unchanged three editable fields; syntax/diff valid. App/Admin themev106, SWv134. Local only, not pushed; no live settings changes.
+
+## 27 October — all-role mobile home visual reference
+- Shared <=900px home styling now uses light logo/bell/avatar header, deep tosca mosque greeting, gold-edged role pill, overlapping white date strip, two-column tosca/gold quick cards with supporting descriptions and arrows, and three-column white secondary cards. Existing Madani SVG assets reused; no people/content copied from reference.
+- Bottom navigation explicitly remains five equal slots with centered Beranda; existing role/menu configuration and disabled/hidden destination semantics unchanged. Desktop styling unchanged. Fixed home viewport fitter still scales dense role menus to preserve all enabled destinations; small screens with many cards will use smaller UI than the reference's nine secondary cards.
+- 30 home/menu/render/fit tests pass; diff check valid. Themev107/SWv135. Not pushed; no live data changes. Device visual verification remains unavailable because local browser is disabled.
