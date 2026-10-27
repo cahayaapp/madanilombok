@@ -1,3 +1,4 @@
+import {setSidebarOpen,toggleSidebar} from './sidebar-control.js';
 import {menuVisible,configuredBottom,roleMenuItems,menuSelection} from './menu-layout.js';
 import {getNode} from './repository.js';
 import {setFeatureSwitches,menuSettings} from './feature-switches.js';
@@ -190,15 +191,13 @@ function navigate(route) {
   currentRoute=route;
   history.pushState(null,'',`${location.pathname}${location.search}#${route}`);
   renderRoute();
-  document.getElementById('sidebar')?.classList.remove('open');
-  document.getElementById('sidebarOverlay')?.classList.add('hidden');
+  setSidebarOpen(false);
 }
 function bindMobileBottomNav() {
   document.querySelectorAll('[data-shell-nav]').forEach(button=>button.addEventListener('click',()=>{
     const key=button.dataset.shellNav;
     if(key==='more'){
-      document.getElementById('sidebar')?.classList.add('open');
-      document.getElementById('sidebarOverlay')?.classList.remove('hidden');
+      setSidebarOpen(true);
       return;
     }
     const target=configuredBottom(activeRole,bottomRoutes(activeRole,canRoute),canRoute)[key];
@@ -228,14 +227,11 @@ async function init() {
 }
 
 document.getElementById("logoutButton")?.addEventListener("click",async()=>{await logout();location.href="../index.html";});
-document.getElementById("menuButton")?.addEventListener("click",()=>{
- const open=document.getElementById("sidebar")?.classList.toggle("open");
- document.getElementById("sidebarOverlay")?.classList.toggle("hidden",!open);
-});
-document.getElementById('sidebarOverlay')?.addEventListener('click',()=>{
- document.getElementById('sidebar').classList.remove('open');document.getElementById('sidebarOverlay').classList.add('hidden');
-});
-document.addEventListener('keydown',event=>{if(event.key==='Escape'){document.getElementById('sidebar').classList.remove('open');document.getElementById('sidebarOverlay').classList.add('hidden');}});
+document.getElementById('menuButton')?.setAttribute('aria-controls','sidebar');
+document.getElementById('menuButton')?.setAttribute('aria-expanded','false');
+document.getElementById('menuButton')?.addEventListener('click',toggleSidebar);
+document.getElementById('sidebarOverlay')?.addEventListener('click',()=>setSidebarOpen(false));
+document.addEventListener('keydown',event=>{if(event.key==='Escape')setSidebarOpen(false);});
   bindMobileBottomNav();
 window.addEventListener("hashchange",()=>{const next=(location.hash||"#dashboard").slice(1);if(next!==currentRoute){currentRoute=next;renderRoute();}});
 init().catch(err=>{console.error(err);toast(err.message||"Gagal membuka MadaniApp","error");});

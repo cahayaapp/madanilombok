@@ -45,3 +45,16 @@ test('configured homes cap at four quick and six other cards; overflow routes re
  const overflow=root.querySelector(`dialog [data-home-route="${items[4].id}"]`);assert.ok(overflow);overflow.click();assert.equal(target,items[4].id);
  }finally{setFeatureSwitches({});globalThis.document=previous;dom.window.close();}
 });
+test('dorm head renders all six configured active other menus even when also in quick section',()=>{
+ const dom=new JSDOM('<div id="root"></div>');const previous=globalThis.document;globalThis.document=dom.window.document;
+ try{
+ const role='head_boys_dorm',ids=['management-coaching','management-data','management-duty','management-observation','management-residents','management-worship'];
+ // Use real catalog IDs, including overlaps with quick cards.
+ const items=roleMenuItems(role),selected=ids.filter(id=>items.some(i=>i.id===id));
+ for(const item of items)if(selected.length<6&&item.id!=='dashboard'&&!selected.includes(item.id))selected.push(item.id);
+ setFeatureSwitches({[role]:{_menus:{quick:Object.fromEntries(selected.slice(0,2).map(id=>[id,true])),other:Object.fromEntries(selected.map(id=>[id,true]))}}});
+ const root=document.getElementById('root');arrangeHome({root,session:{activeRole:role},navigate:()=>{}},items);
+ assert.equal(root.querySelectorAll('.premium-menu-grid button').length,6);
+ assert.deepEqual([...root.querySelectorAll('.premium-menu-grid button')].map(b=>b.dataset.homeRoute),selected);
+ }finally{setFeatureSwitches({});globalThis.document=previous;dom.window.close();}
+});

@@ -665,3 +665,18 @@ Added eighth Admin workspace Manajemen Fitur in portal and console navigation. L
 ## 27 October — reduce mobile quick-card height
 - Mobile quick cards set to100px border-box height with compact8px vertical padding,24px icons, tighter title/description line spacing and20px arrows. Grid no longer flex-grows rows; reserves more space for two rows of secondary cards. Applies across all roles, desktop untouched. Four/six/five navigation limits retained.
 - CSS/diff and service-worker syntax checked. Themev110/SWv138; local only, no push or device visual verification.
+
+## 27 October — clarify selected versus active home menus
+- Feature manager now labels disabled-feature placements as non-displaying and shows selected count versus effective visible count (respecting4/6 caps). No feature automatically enabled and no live settings writes.
+- User's18:02 screenshots confirm all six active secondary menus actually display: management data, Naqib duty, resident settings, staff worship, student leave approval and case reporting. Grey checked choices belong to disabled features.
+-31 role/render/menu tests passed including six configured active dorm-head menus and quick overlap. SWv139; local only, not pushed.
+
+## 27 October — desktop home reference and shared drawer
+- All portal roles now use full-width desktop home with visible logo/hamburger/bell/avatar/account header, pale tosca mosque greeting, overlapping date,4 quick cards in one row and6 secondary cards in3x2. Retains latest4/6/5 limits rather than copying reference's9 secondary cards. Existing mosque SVG reused, not identical raster artwork.
+- Portal sidebar is a hidden desktop drawer, opened from home hamburger or workspace menu button; backdrop/Escape/navigation close it. Shared sidebar-control synchronizes expanded state on both controls. Mobile design and bottom navigation retained. Standalone Admin data console shell remains separate; Admin role portal home receives this update.
+-33 home/menu/render/sidebar tests pass, JavaScript syntax/diff valid. Themev111/SWv140. Local only, no push/live data changes; browser visual verification unavailable in current Work settings.
+
+## 27 October — pastel mobile home and bottom-card protection
+- Latest mobile reference: pale greeting, pastel tosca/blue/gold/orange quick cards with colored icons,6 white secondary tiles and5 bottom items. Existing SVG illustration reused; not pixel-identical to supplied artwork.
+- After user screenshot of clipped final row, fitter now measures actual bottom-nav top and reserves12px clear space, observes nav resizing, and removes measured inline bounds when returning to desktop. Compact mode reduces header/greeting decoration before menu cards; removed fixed maximum heights to avoid clipping long labels. Stronger quick-card colors, borders and900-weight titles.
+- Extreme short/zoomed screens have a reachable internal vertical-scroll fallback instead of inaccessible clipping; normal4/6 layouts use compact spacing.34 tests pass including measured nav clearance; syntax/diff valid. Themev113/SWv142. Not pushed, no live writes; actual browser visual verification still unavailable.

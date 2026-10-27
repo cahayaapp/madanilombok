@@ -1,3 +1,4 @@
+import {toggleSidebar} from './sidebar-control.js';
 import {fitHomeViewport} from './home-viewport.js';
 import {fitHomeName} from './home-name.js';
 import {arrangeHome} from './home-layout.js';
@@ -12,7 +13,7 @@ export function mountHomeRoleSwitcher(ctx,items=[]){
  const holder=ctx.root.querySelector('.premium-home')||ctx.root;
  ctx.root.querySelectorAll('.brand-row,.hero-greeting,.me-hero,.role-hero,.mu-hero,.teacher-header').forEach(el=>el.remove());
  const now=new Date(),date=new Intl.DateTimeFormat('id-ID',{day:'numeric',month:'long',year:'numeric',timeZone:'Asia/Makassar'}).format(now),hijri=new Intl.DateTimeFormat('id-ID-u-ca-islamic-umalqura',{day:'numeric',month:'long',year:'numeric',timeZone:'Asia/Makassar'}).format(now);
- holder.insertAdjacentHTML('afterbegin',`<header class="official-home-header"><div class="official-brand"><img src="../assets/brand/logo.svg" alt="MadaniApp"><div><strong>MADANI<em>APP</em></strong><small>PONDOK PESANTREN AL-MADANI</small></div></div><div class="official-header-actions"><button type="button" class="official-bell" aria-label="Pesan dan pemberitahuan">${icon('bell')}</button><button type="button" class="official-avatar" aria-label="Profil Saya">${ctx.session.profile.photoURL?`<img src="${e(ctx.session.profile.photoURL)}" alt="Foto profil">`:`<span>${e(name[0])}</span>`}</button></div></header><section class="official-greeting"><div class="official-hello">Assalamu’alaikum,</div><div class="official-name-row"><h1>${e(name)}</h1><button type="button" data-role></button></div><p class="official-quote">Ilmu hari ini,<br>untuk generasi<br>esok yang lebih baik</p><div class="official-date">${icon('calendar')}<span><b>${e(date)}</b><small>${e(hijri)}</small></span><strong class="official-date-note">☀ <span>Terus<br>Menebar Manfaat</span></strong></div></section>`);
+ holder.insertAdjacentHTML('afterbegin',`<header class="official-home-header"><button type="button" class="desktop-home-menu" aria-label="Buka menu navigasi" aria-controls="sidebar" aria-expanded="false">☰</button><div class="official-brand"><img src="../assets/brand/logo.svg" alt="MadaniApp"><div><strong>MADANI<em>APP</em></strong><small>PONDOK PESANTREN AL-MADANI</small></div></div><div class="official-header-actions"><button type="button" class="official-bell" aria-label="Pesan dan pemberitahuan">${icon('bell')}</button><button type="button" class="official-avatar" aria-label="Profil Saya">${ctx.session.profile.photoURL?`<img src="${e(ctx.session.profile.photoURL)}" alt="Foto profil">`:`<span>${e(name[0])}</span>`}</button><button type="button" class="desktop-home-account" aria-label="Ganti role aktif"><b>${e(name)}</b><small>${e(ROLE_LABELS[ctx.session.activeRole]||ctx.roleName||'')}</small><span aria-hidden="true">⌄</span></button></div></header><section class="official-greeting"><div class="official-hello">Assalamu’alaikum,</div><div class="official-name-row"><h1>${e(name)}</h1><button type="button" data-role></button></div><p class="official-quote">Ilmu hari ini, <br>untuk generasi <br>esok yang lebih baik</p><div class="official-date">${icon('calendar')}<span><b>${e(date)}</b><small>${e(hijri)}</small></span><strong class="official-date-note">☀ <span>Terus<br>Menebar Manfaat</span></strong></div></section>`);
  {const greeting=holder.querySelector('.official-greeting');greeting.after(holder.querySelector('.official-date'));}
  fitHomeName(holder.querySelector('.official-name-row h1'));
  holder.querySelector('.official-avatar').onclick=()=>ctx.navigate('work-profile');
@@ -29,5 +30,7 @@ export function mountHomeRoleSwitcher(ctx,items=[]){
   dialog.querySelectorAll('[data-role-choice]').forEach(choice=>choice.onclick=()=>{const role=choice.dataset.roleChoice;if(!ctx.session.roles.includes(role))return;dialog.close();const picker=document.getElementById('rolePicker');if(picker&&role!==ctx.session.activeRole){picker.value=role;picker.dispatchEvent(new Event('change'));}});
   dialog.showModal();
  };
+ holder.querySelector('.desktop-home-menu').onclick=toggleSidebar;
+ holder.querySelector('.desktop-home-account').onclick=()=>button.click();
  fitHomeViewport(holder);
 }

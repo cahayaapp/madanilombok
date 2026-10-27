@@ -66,6 +66,8 @@ test('all 15 homes render and non-finance roles do not request finance collectio
  const ctx=ctxFor(role);ctx.root.innerHTML='';const items=MENU_GROUPS.flatMap(g=>g.items).filter(i=>canAccess(i.feature||'dashboard',[role]));await homes.namespace.renderRoleHome(ctx,items);
  assert.ok(ctx.root.querySelector('.home-role-button'),role);
  assert.ok(ctx.root.querySelector('.premium-home'),role);
+ assert.ok(ctx.root.querySelector('.desktop-home-menu[aria-controls="sidebar"]'),role);
+ assert.ok(ctx.root.querySelector('.desktop-home-account'),role);
  assert.ok(ctx.root.querySelector('.official-greeting').nextElementSibling.matches('.official-date'),role+' date follows greeting');
  assert.ok(ctx.root.querySelectorAll('.premium-quick').length<=4,role);
  assert.ok(ctx.root.querySelectorAll('.premium-menu-grid>.premium-menu').length>0,role);
