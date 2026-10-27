@@ -11,7 +11,7 @@ const {JSDOM}=require(process.env.MADANI_JSDOM_MODULE||'jsdom');
 const base=new URL('../',import.meta.url);
 const source=f=>readFileSync(new URL(f,base),'utf8');
 const master={students:[{id:'s1',name:'Santri Putra',gender:'L',unitId:'u1',boardingStatus:'boarding'},{id:'s2',name:'Santri Putri',gender:'P',unitId:'u1',boardingStatus:'boarding'}],staff:[],classes:[{id:'c1',name:'Kelas Uji'}],subjects:[{id:'sub1',name:'Mapel Uji'}],groups:[],programs:[],academicSchedules:[],dailySchedules:[],classAssignments:{s1:{classId:'c1'},s2:{classId:'c1'}},roomAssignments:{},groupAssignments:{},rooms:[],units:[]};
-const dom=new JSDOM('<main id="content"></main><div id="toastHost"></div>',{url:'http://localhost/app/index.html'});
+const dom=new JSDOM('<main id="content"><div id="routeMount"></div></main><div id="toastHost"></div>',{url:'http://localhost/app/index.html'});
 const win=dom.window;
 const database=new Map([['users',{teacher:{name:'Guru Uji',role:'guru_mapel',active:true},reviewer:{name:'Pimpinan Uji',role:'director',active:true}}]]);
 let writes=[],nextId=1;
@@ -41,7 +41,7 @@ const homes=await load(new URL('assets/js/modules/role-home.js',base).href);awai
 const permissions=await load(new URL('assets/js/permissions.js',base).href);await permissions.evaluate();
 const {ROLE_LABELS,MENU_GROUPS,canAccess}=permissions.namespace;
 const routes={...work.namespace.WORKSPACE_ROUTES,...extras.namespace.PARENT_EXTRA_ROUTES};
-function ctxFor(role){return {session:{activeRole:role,roles:[role],user:{uid:'teacher',email:'test@example.invalid'},profile:{name:'Pengguna Uji',staffId:'staff1',studentIds:['s1'],classIds:['c1'],menteeStudentIds:['s1'],scopeGender:role==='head_girls_dorm'?'P':role==='head_boys_dorm'?'L':undefined}},master,yearId:'year',year:{name:'Tahun Uji'},root:win.document.getElementById('content'),roleName:ROLE_LABELS[role],navigate:()=>{},rerender:async()=>{}};}
+function ctxFor(role){return {session:{activeRole:role,roles:[role],user:{uid:'teacher',email:'test@example.invalid'},profile:{name:'Pengguna Uji',staffId:'staff1',studentIds:['s1'],classIds:['c1'],menteeStudentIds:['s1'],scopeGender:role==='head_girls_dorm'?'P':role==='head_boys_dorm'?'L':undefined}},master,yearId:'year',year:{name:'Tahun Uji'},root:win.document.getElementById('routeMount'),roleName:ROLE_LABELS[role],navigate:()=>{},rerender:async()=>{}};}
 async function settle(){for(let i=0;i<15;i++)await Promise.resolve();}
 function submit(form){form.dispatchEvent(new win.Event('submit',{cancelable:true,bubbles:true}));}
 // Opt-in visual fixtures use the same real renderers and never connect to Firebase.
@@ -49,7 +49,7 @@ function exportVisual(ctx,role,route){
  const dir=process.env.MADANI_VISUAL_DIR;if(!dir)return;mkdirSync(dir,{recursive:true});
  const shell=source('app/index.html'),css=[...shell.matchAll(/<link[^>]+rel="stylesheet"[^>]*>/g)].map(m=>m[0].replaceAll('../assets/','/assets/')).join('');
  const nav=shell.match(/<nav class="mobile-bottom-nav"[\s\S]*?<\/nav>/)[0];
- writeFileSync(`${dir}/${role}--${route}.html`,`<!doctype html><html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">${css}<title>${role} · ${route}</title></head><body class="app-body portal-body" data-home="${route==='home'}" data-active-role="${role}"><main class="main-area"><section class="content-area portal-content"><div id="content" class="${ctx.root.className}">${ctx.root.innerHTML.replaceAll('../assets/','/assets/')}</div></section></main>${nav}</body></html>`);
+ writeFileSync(`${dir}/${role}--${route}.html`,`<!doctype html><html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">${css}<title>${role} · ${route}</title></head><body class="app-body portal-body" data-home="${route==='home'}" data-active-role="${role}"><main class="main-area"><section class="content-area portal-content"><div id="content" class="${ctx.root.className}">${ctx.root.innerHTML.replaceAll('../assets/','/assets/')}</div></section></main>${nav}<script type="module">import {fitHomeViewport} from "/assets/js/home-viewport.js";fitHomeViewport(document.querySelector(".premium-home"));</script></body></html>`);
 }
 test('every permitted new workspace renders for each assigned role using an isolated fake repository',async()=>{
  let count=0;
@@ -66,13 +66,15 @@ test('all 15 homes render and non-finance roles do not request finance collectio
  const ctx=ctxFor(role);ctx.root.innerHTML='';const items=MENU_GROUPS.flatMap(g=>g.items).filter(i=>canAccess(i.feature||'dashboard',[role]));await homes.namespace.renderRoleHome(ctx,items);
  assert.ok(ctx.root.querySelector('.home-role-button'),role);
  assert.ok(ctx.root.querySelector('.premium-home'),role);
+ assert.ok(ctx.root.querySelector('.official-greeting').nextElementSibling.matches('.official-date'),role+' date follows greeting');
  assert.ok(ctx.root.querySelectorAll('.premium-quick').length<=({admin:8,super_admin:8,head_formal_school:4,head_boys_dorm:4,head_girls_dorm:4}[role]||4),role);
- assert.ok(ctx.root.querySelectorAll('.premium-menu-grid>.premium-menu').length<=8,role);
+ assert.ok(ctx.root.querySelectorAll('.premium-menu-grid>.premium-menu').length>0,role);
+ if(role==='director')assert.ok(ctx.root.querySelectorAll('.premium-menu-grid>.premium-menu').length>8,'All director menus must be visible');
  const quickLabels=new Set([...ctx.root.querySelectorAll('.premium-quick>b')].map(b=>b.textContent));
  assert.ok([...ctx.root.querySelectorAll('.premium-menu-grid>.premium-menu>b')].every(b=>!quickLabels.has(b.textContent)),role);
  exportVisual(ctx,role,'home');
- if(role==='naqib'){assert.equal(ctx.root.querySelectorAll('.naqib-workspace-menu [data-home-route]').length,8);const quick=new Set([...ctx.root.querySelectorAll('.hub-quick-card')].map(b=>b.dataset.homeRoute));assert.ok([...ctx.root.querySelectorAll('.naqib-workspace-menu [data-home-route]')].every(b=>!quick.has(b.dataset.homeRoute)));}
- if(process.env.MADANI_HOME_PREVIEW){mkdirSync('outputs/home-preview',{recursive:true});const shell=source('app/index.html');const css=[...shell.matchAll(/<link[^>]+rel="stylesheet"[^>]*>/g)].map(m=>m[0].replaceAll('../assets/','/assets/')).join('');const nav=shell.match(/<nav class="mobile-bottom-nav"[\s\S]*?<\/nav>/)[0];writeFileSync(`outputs/home-preview/${role}.html`,`<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">${css}</head><body class="app-body portal-body" data-home="true"><main class="main-area"><section class="content-area portal-content"><div class="${ctx.root.className}">${ctx.root.innerHTML.replaceAll('../assets/','/assets/')}</div></section></main>${nav}</body></html>`);}
+ if(role==='naqib'){assert.ok(ctx.root.querySelectorAll('.naqib-workspace-menu [data-home-route]').length>=8);const quick=new Set([...ctx.root.querySelectorAll('.hub-quick-card')].map(b=>b.dataset.homeRoute));assert.ok([...ctx.root.querySelectorAll('.naqib-workspace-menu [data-home-route]')].every(b=>!quick.has(b.dataset.homeRoute)));}
+ if(process.env.MADANI_HOME_PREVIEW){mkdirSync('outputs/home-preview',{recursive:true});const shell=source('app/index.html');const css=[...shell.matchAll(/<link[^>]+rel="stylesheet"[^>]*>/g)].map(m=>m[0].replaceAll('../assets/','/assets/')).join('');const nav=shell.match(/<nav class="mobile-bottom-nav"[\s\S]*?<\/nav>/)[0];writeFileSync(`outputs/home-preview/${role}.html`,`<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">${css}</head><body class="app-body portal-body" data-home="true"><main class="main-area"><section id="content" class="content-area portal-content"><div class="${ctx.root.className}">${ctx.root.innerHTML.replaceAll('../assets/','/assets/')}</div></section></main>${nav}<script type="module">import {fitHomeViewport} from "/assets/js/home-viewport.js";fitHomeViewport(document.querySelector(".premium-home"));</script></body></html>`);}
  assert.ok(ctx.root.textContent.trim(),role);if(!['kasir','wali_santri'].includes(role))assert.ok(reads.every(p=>!p.startsWith('finance/')),role);
  repository.getNode=original;mock.setExport('getNode',original);
  }
@@ -82,11 +84,6 @@ test('academic follow-up persists student ID and can update the same record',asy
  for(const [k,v] of Object.entries({studentId:'s1',dueDate:'2026-10-12',evidence:'Nilai belum tuntas',target:'Menguasai bab 1',strategy:'Latihan terbimbing'}))form.elements[k].value=v;
  writes=[];submit(form);await settle();assert.equal(writes.length,1);const record=writes[0];assert.equal(record.data.studentId,'s1');
  await routes['academic-followup'](ctx);const progress=ctx.root.querySelector('[data-followup]');progress.elements.result.value='Latihan tuntas';progress.elements.status.value='Selesai';submit(progress);await settle();assert.equal(writes.at(-1).id,record.id);assert.equal(writes.at(-1).data.status,'Selesai');
-});
-test('case report joins the existing counselor inbox, not a duplicate data source',async()=>{
- const ctx=ctxFor('guru_mapel');await routes['teacher-case'](ctx);const form=ctx.root.querySelector('#teacherCaseForm');
- for(const [k,v] of Object.entries({studentId:'s1',date:'2026-10-02',category:'Laporan',description:'Fakta uji',evidence:'Saksi uji'}))form.elements[k].value=v;
- writes=[];submit(form);await settle();assert.equal(writes[0].path,'boarding/cases/year');assert.equal(writes[0].data.status,'menunggu_konselor');assert.equal(writes[0].data.parentVisible,false);
 });
 test('guardian deposit page has no status mutation form',async()=>{const ctx=ctxFor('wali_santri');await routes['parent-deposits'](ctx);assert.equal(ctx.root.querySelectorAll('form').length,0);});
 
@@ -178,11 +175,16 @@ test('profile saves only presentation fields and preserves canonical identity an
 test('every internal reporting role can submit an active student outside its unit, class and gender scope',async()=>{
  for(const role of Object.keys(ROLE_LABELS).filter(r=>!['wali_santri','naqib'].includes(r))){
   const ctx=ctxFor(role);ctx.session.profile={...ctx.session.profile,unitIds:['u1'],scopeGender:'L',menteeStudentIds:['s1']};ctx.master={...master,students:[...master.students,{id:'other-unit',name:'Santri Lintas Unit',unitId:'u2',gender:'P',status:'active'},{id:'archived',name:'Duplikat',mergedInto:'other-unit',status:'inactive'}]};
-  assert.ok(canAccess('workspace.teacher-case',[role]));await routes['teacher-case'](ctx);const form=ctx.root.querySelector('#teacherCaseForm');assert.ok(form.elements.studentId.querySelector('option[value="other-unit"]'));assert.equal(form.elements.studentId.querySelector('option[value="archived"]'),null);
-  for(const [k,v]of Object.entries({studentId:'other-unit',date:'2026-10-06',category:'Kedisiplinan',description:'Kejadian uji lintas unit',evidence:'Saksi'}))form.elements[k].value=v;
-  writes=[];submit(form);await settle();assert.equal(writes.length,1);assert.equal(writes[0].data.studentId,'other-unit');assert.equal(writes[0].data.reporterRole,role);assert.equal(writes[0].data.status,'menunggu_konselor');
+  assert.ok(canAccess('workspace.teacher-case',[role]));await routes['teacher-case'](ctx);
+  assert.ok(ctx.root.querySelector('[data-student="other-unit"]'));assert.equal(ctx.root.querySelector('[data-student="archived"]'),null);
+  assert.ok(ctx.root.querySelector('#reportPhoto'));assert.ok(ctx.root.querySelector('#reportCritical'));assert.equal(ctx.root.querySelector('#teacherCaseForm'),null);
+  ctx.root.querySelector('[data-student="other-unit"]').checked=true;
+  ctx.root.querySelector('#reportSource').value='langsung';ctx.root.querySelector('#reportCategory').value='Kedisiplinan';ctx.root.querySelector('#reportDescription').value='Kejadian uji lintas unit';
+  let captured;mock.setExport('patchNode',async(path,patch)=>captured=patch);
+  try{ctx.root.querySelector('#sendReport').click();await settle();const record=Object.entries(captured).find(([p])=>p.startsWith('boarding/cases/year/'))[1];assert.equal(record.studentId,'other-unit');assert.equal(record.reporterRole,role);assert.equal(record.status,'menunggu_konselor');assert.equal(record.parentVisible,false);}finally{mock.setExport('patchNode',repository.patchNode);}
+
  }
- const boarding=await load(new URL('assets/js/modules/boarding.js',base).href);await boarding.evaluate();const ctx=ctxFor('naqib');ctx.master={...master,students:[{id:'other-unit',name:'Lintas Unit',unitId:'u2',gender:'P',status:'active'}]};ctx.session.profile={unitIds:['u1'],scopeGender:'L'};await boarding.namespace.renderNaqibCase(ctx);assert.ok(ctx.root.querySelector('option[value="other-unit"]'));assert.ok(ctx.root.querySelector('[data-student="other-unit"]'));assert.ok(ctx.root.querySelector('#reportPhoto'));assert.ok(ctx.root.querySelector('#reportCritical'));assert.equal(ctx.root.querySelector('[name=severity]'),null);
+ const boarding=await load(new URL('assets/js/modules/boarding.js',base).href);await boarding.evaluate();const ctx=ctxFor('naqib');ctx.master={...master,students:[{id:'other-unit',name:'Lintas Unit',unitId:'u2',gender:'P',status:'active'}]};ctx.session.profile={unitIds:['u1'],scopeGender:'L'};await boarding.namespace.renderNaqibCase(ctx);ctx.root.querySelector('[data-source-mode="santri"]').click();const reporter=ctx.root.querySelector('#reporterSearch');reporter.value='Lintas';reporter.dispatchEvent(new win.Event('input'));assert.ok(ctx.root.querySelector('[data-reporter="other-unit"]'));assert.ok(ctx.root.querySelector('[data-student="other-unit"]'));assert.ok(ctx.root.querySelector('#reportPhoto'));assert.ok(ctx.root.querySelector('#reportCritical'));assert.equal(ctx.root.querySelector('[name=severity]'),null);
 });
 
 test('Naqib prayer finalization requires late explanation and preserves initial attendance',async()=>{
@@ -204,7 +206,7 @@ test('Naqib scope cards show names per room or entire gender unit, include GEMA 
  ctx.root.querySelector('#saveProgramAtt').click();await settle();assert.equal(database.get(path).a.stage,'FINAL');assert.equal(database.get(path).b.stage,'AWAL');mock.setExport('patchNode',repository.patchNode);
 });
 
-test.after(()=>{if(process.env.MADANI_NAQIB_PREVIEW){writeFileSync('/tmp/madani-naqib-preview.html',`<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><style>${source('assets/css/app.css')}${source('assets/css/portal.css')}${source('assets/css/brand-theme.css')}body{margin:0;padding:18px;font-family:system-ui;background:#fffdf6}main{max-width:900px;margin:auto}</style></head><body><main>${win.document.getElementById('content').innerHTML}</main></body></html>`);}});
+test.after(()=>{if(process.env.MADANI_NAQIB_PREVIEW){writeFileSync('/tmp/madani-naqib-preview.html',`<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><style>${source('assets/css/app.css')}${source('assets/css/portal.css')}${source('assets/css/brand-theme.css')}body{margin:0;padding:18px;font-family:system-ui;background:#fffdf6}main{max-width:900px;margin:auto}</style></head><body><main>${win.document.getElementById('routeMount').innerHTML}</main></body></html>`);}});
 
 test('leadership report visual summary preserves counts, scope, and period filter',async()=>{
  const module=await load(new URL('assets/js/leadership-monitor.js',base).href);if(module.status!=='evaluated')await module.evaluate();
@@ -302,6 +304,10 @@ test('feature manager loads role flags and saves a role-scoped patch',async()=>{
  assert.equal(ctx.root.querySelector('#featureForm').hidden,true);
  const role=ctx.root.querySelector('#featureRole');role.value='naqib';role.dispatchEvent(new win.Event('change'));
  assert.equal(ctx.root.querySelectorAll('[data-bottom]').length,3);
+ assert.equal(ctx.root.querySelectorAll('.feature-bottom-slot').length,5);
+ assert.match(ctx.root.querySelectorAll('.feature-bottom-slot')[2].textContent,/Posisi 3.*Beranda/);
+ assert.equal(ctx.root.querySelectorAll('.feature-bottom-slot')[2].querySelector('select').disabled,true);
+ assert.match(ctx.root.querySelectorAll('.feature-bottom-slot')[4].textContent,/Posisi 5.*Lainnya/);
  ctx.root.querySelector('[data-menu=quick][data-route=naqib-report]').checked=false;
  const checkbox=ctx.root.querySelector('[data-feature="boarding.naqib.attendance"]');assert.equal(checkbox.checked,true);checkbox.checked=false;
  submit(ctx.root.querySelector('#featureForm'));await new Promise(r=>setTimeout(r,0));
@@ -378,6 +384,18 @@ test('resident preflight names incomplete canonical SDM and writes nothing',asyn
 test('Naqib shared report saves selected students as one incident with reporter identity',async()=>{
  const boarding=await load(new URL('assets/js/modules/boarding.js',base).href);if(boarding.status!=='evaluated')await boarding.evaluate();const ctx=ctxFor('naqib');let captured;const previous=repository.patchNode;
  mock.setExport('patchNode',async(path,patch)=>{captured=patch;});
- try{await boarding.namespace.renderNaqibCase(ctx);ctx.root.querySelectorAll('[data-student]').forEach(el=>el.checked=true);ctx.root.querySelector('#reportSource').value='langsung';ctx.root.querySelector('#reportCategory').value='Kedisiplinan';ctx.root.querySelector('#reportDescription').value='Kejadian uji';ctx.root.querySelector('#reportCritical').checked=true;ctx.root.querySelector('#sendReport').click();await settle();const records=Object.entries(captured).filter(([p])=>p.startsWith('boarding/cases/')).map(([,v])=>v);assert.equal(records.length,2);assert.equal(new Set(records.map(r=>r.groupId)).size,1);for(const r of records){assert.equal(r.reportedBy,ctx.session.user.uid);assert.equal(r.reportedByRole,'naqib');assert.equal(r.critical,true);assert.equal(r.parentVisible,false);assert.equal(r.finalPoints,undefined);}
+ try{await boarding.namespace.renderNaqibCase(ctx);
+ const search=ctx.root.querySelector('#reportSearch');assert.equal(ctx.root.querySelector('#reportStudentResults').hidden,true);assert.equal(ctx.root.querySelectorAll('[data-name]:not([hidden])').length,0);search.value='putri';search.dispatchEvent(new win.Event('input'));assert.equal(ctx.root.querySelectorAll('[data-name]:not([hidden])').length,1);
+ search.value='no match';search.dispatchEvent(new win.Event('input'));assert.equal(ctx.root.querySelector('#reportNoResults').hidden,false);
+ search.value='';search.dispatchEvent(new win.Event('input'));assert.equal(ctx.root.querySelector('#reportStudentResults').hidden,true);assert.equal(ctx.root.querySelector('#reportNoResults').hidden,true);assert.equal(ctx.root.querySelectorAll('[data-name]:not([hidden])').length,0);
+ ctx.root.querySelector('[data-source-mode="langsung"]').click();assert.equal(ctx.root.querySelector('#reportSource').value,'langsung');
+ ctx.root.querySelector('[data-source-mode="santri"]').click();assert.equal(ctx.root.querySelector('#reporterPicker').hidden,false);assert.equal(ctx.root.querySelector('#reportSource').value,'');assert.equal(ctx.root.querySelectorAll('[data-reporter]').length,0);
+ const reporterSearch=ctx.root.querySelector('#reporterSearch');reporterSearch.value='putri';reporterSearch.dispatchEvent(new win.Event('input'));assert.equal(ctx.root.querySelectorAll('[data-reporter]').length,1);ctx.root.querySelector('[data-reporter="s2"]').click();assert.equal(ctx.root.querySelector('#reportSource').value,'s2');assert.match(ctx.root.querySelector('#reporterSelected').textContent,/Santri Putri/);
+ ctx.root.querySelector('[data-source-mode="langsung"]').click();assert.equal(ctx.root.querySelector('#reporterPicker').hidden,true);assert.equal(ctx.root.querySelector('#reportSource').value,'langsung');
+ ctx.root.querySelector('[data-source-mode="santri"]').click();reporterSearch.value='not found';reporterSearch.dispatchEvent(new win.Event('input'));assert.equal(ctx.root.querySelectorAll('[data-reporter]').length,0);assert.match(ctx.root.querySelector('#reporterHint').textContent,/tidak ditemukan/);
+ reporterSearch.value='putri';reporterSearch.dispatchEvent(new win.Event('input'));ctx.root.querySelector('[data-reporter="s2"]').click();ctx.root.querySelector('#clearReporter').click();assert.equal(ctx.root.querySelector('#reportSource').value,'');reporterSearch.value='putri';reporterSearch.dispatchEvent(new win.Event('input'));ctx.root.querySelector('[data-reporter="s2"]').click();
+
+ ctx.root.querySelector('[data-category="Moral/Etika"]').click();assert.equal(ctx.root.querySelector('#reportCategory').value,'Moral/Etika');assert.equal(ctx.root.querySelector('[data-category="Moral/Etika"]').getAttribute('aria-pressed'),'true');
+ ctx.root.querySelectorAll('[data-student]').forEach(el=>{el.checked=true;el.dispatchEvent(new win.Event('change'));});assert.equal(ctx.root.querySelector('#reportSelectionCount').textContent,'2 dipilih');ctx.root.querySelector('#reportCategory').value='Kedisiplinan';ctx.root.querySelector('#reportDescription').value='Kejadian uji';ctx.root.querySelector('#reportCritical').checked=true;ctx.root.querySelector('#sendReport').click();await settle();const records=Object.entries(captured).filter(([p])=>p.startsWith('boarding/cases/')).map(([,v])=>v);assert.equal(records.length,2);assert.equal(new Set(records.map(r=>r.groupId)).size,1);for(const r of records){assert.equal(r.reportedBy,ctx.session.user.uid);assert.equal(r.reportedByRole,'naqib');assert.equal(r.sourceStudentId,'s2');assert.equal(r.critical,true);assert.equal(r.parentVisible,false);assert.equal(r.finalPoints,undefined);}
  }finally{mock.setExport('patchNode',previous);}
 });

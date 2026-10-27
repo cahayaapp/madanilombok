@@ -607,3 +607,43 @@ Added eighth Admin workspace Manajemen Fitur in portal and console navigation. L
 
 ## 27 October — Admin mobile brand header restored
 - At widths<=900px, show existing shared Madani logo/bell/avatar header and reserve its own row in fixed Admin home grid. Desktop header remains hidden. Narrow320–360px styling reduces brand text/spacing. Existing actions unchanged. Themev98/SWv125; syntax/diff checks pass, browser visual verification pending; not published.
+
+## 27 October — unify violation reporting across internal roles
+- Replaced legacy teacher-case workspace form used by dorm heads and other internal roles with renderTeacherReport, the same form used by Naqib. Existing route authorization retained. Shared form supports multiple students, source, category, chronology, optional compressed photo and critical flag; preserves reporter identity and SD homeroom/non-SD counselor routing without formal point assignment.
+- Removed duplicate legacy form logic/imports. Tests now submit shared reports for every authorized internal role and verify role identity, active roster and counselor queue payload. 44 role/render tests passed plus school-case routing tests; syntax/JSON/diff checks valid. SWv126; local only, not published, no production report writes.
+
+## 27 October — Dorm head home reference UI
+- Dedicated premium-dorm-home class for both dorm heads; shared school/Admin styles unchanged. Desktop greeting without duplicate brand/topbar, mobile retains brand/bell/avatar, mosque greeting with quote and date strip. Four monitoring cards arranged2x2 with tosca/gold gradients, contextual icons, mosque overlays and arrow actions; other menus4-column desktop/mobile, compact vertical mobile tiles. Existing menu config, role scope and action handlers preserved.
+- Reuses original Madani mosque SVG, not exact raster reference artwork. 46 isolated menu/role/render tests pass; syntax/JSON/diff checks pass. Themev99/SWv127. No production data or push; actual browser visual verification pending.
+
+## 27 October — shared case report reference UI
+- Shared report form now has tosca mosque banner, numbered sections, two-column desktop and one-column mobile layout, student search cards/selection count, source and category buttons, chronology, photo evidence and critical flag, and clear submit footer. Uses existing Madani mosque SVG. Applies to Naqib and all roles routed to renderTeacherReport.
+- Kept canonical source/category values and existing report payload/routing; optional photo still image-only <=12MB compressed. No placeholder draft action or unsupported document upload added. Time/location remain part of chronology. No database writes during testing.
+- 46 role/render/routing tests pass including search/no results, source/category selection, selected count and multi-student submission. JavaScript syntax,41JSON and diff checks pass. Themev100/SWv128. Local only, not pushed; actual browser visual comparison pending.
+
+## 27 October — all-role fixed home viewport
+- Removed eight-card truncation from default other menus; all enabled home destinations now render (explicit menu settings still honored). Shared fixed viewport layout reserves bottom navigation on mobile, keeps mobile branding, uses adaptive compact cards across all roles and separates date strip consistently.
+- New home-viewport.js observes available size and proportionally fits overflowing home content without removing menu titles/actions; font loading and viewport resize recalculate fit. Very dense roles on small screens necessarily have smaller controls. Only home is fixed; workspace forms/lists retain scrolling.
+- 46 menu/role/render tests plus viewport resize/fit unit test pass, syntax/diff checks pass. Themev101/SWv129. No live data changes or push; browser/device visual verification pending.
+
+## 27 October — searchable student reporter and responsive categories
+- Choosing Santri report source reveals a search card instead of a long select. Two-character minimum, up to six matching result cards, refine/no-match guidance, persistent selected reporter card and clear action. Switching to direct source clears student selection; unchanged payload validates the chosen active student and saves sourceStudentId. Shared form applies across reporting roles.
+- Category cards use equal three-column desktop layout with consistent icon/title spacing and a container query switching to horizontal one-column choices when the form column is <=430px (including narrow desktop/mobile).
+- 46 role/render/routing tests pass, including reporter search/select/clear/source switch, cross-unit reporting and submitted sourceStudentId. Syntax/diff valid. Themev102/SWv130. Local only; not pushed, no production data writes; browser visual verification pending.
+
+## 27 October — search-first reported students
+- Santri Terlapor initially shows search guidance without names. Nonblank search shows matching students; clearing/whitespace search hides results and no-match message. Existing checkbox selections persist while searching other names; selected count remains visible.
+- 46 role/render/routing tests pass including initial/cleared search state; JS syntax/diff valid. Themev103/SWv131. Local only, not pushed; no live data changes.
+
+## 27 October — restore home date placement
+- Explicit home child order keeps brand, greeting, date and menu sections in sequence across roles. Date strip overlaps lower greeting edge again with reserved greeting padding, including compact/mobile mode; fixed viewport sizing retained.
+- 30 home/menu/render tests pass including date-after-greeting assertion across roles and fit tests; diff check valid. Themev104/SWv132. Local only, not pushed; actual browser visual verification pending.
+
+## 27 October — actual home route mount selector correction
+- User screenshot showed date still below cards: actual app renders an inner div.home-dashboard inside section#content, whereas new fixed-viewport/date CSS incorrectly used #content.home-dashboard. Corrected all such selectors to #content .home-dashboard; this activates both fixed-height root and date placement rules in the actual app.
+- Updated role render fixture to mirror real #content > routeMount, and optional preview generator to include #content plus viewport-fit initialization. 30 home/menu/render tests passed; subsequent27 render tests passed with generated preview. Generated tracked preview HTML restored to avoid unrelated artifact churn.
+- Themev105/SWv133. Browser visual check attempted but CUA reports local browser disabled in Work settings; no visual success claimed. Local only, not pushed.
+
+## 27 October — show all five bottom menu positions in feature manager
+- Editor now shows positions1–5 in order, including disabled labeled Beranda at3 and Lainnya at5. Only1,2,4 remain configurable, preserving existing stored settings and centered home behavior. Responsive grid and helper text explain fixed slots.
+- 29 role/render/menu tests pass incl five visible slots and unchanged three editable fields; syntax/diff valid. App/Admin themev106, SWv134. Local only, not pushed; no live settings changes.

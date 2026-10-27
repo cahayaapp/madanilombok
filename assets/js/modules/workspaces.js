@@ -3,7 +3,7 @@ import {renderNaqibLeave} from '../naqib-leave.js';
 import {MONITOR_VIEWS,renderLeadershipMonitor} from '../leadership-monitor.js';
 import {renderLeadershipData} from '../leadership-data.js';
 import {renderHomeroomCases} from '../homeroom-cases.js';
-import {schoolCaseRoute} from '../school-case-routing.js';
+import {renderTeacherReport} from '../teacher/extras.js';
 import {renderAccountProfile} from '../profile.js';
 import {renderWorkFollowups} from '../work-followups.js';
 import {renderManagementReports} from '../management-reports.js';
@@ -12,7 +12,7 @@ import {OPERATION_VIEWS,renderManagementOperations} from '../management-operatio
 import {renderRegistry,renderManagementPeople,renderCaseDecisions} from '../management-registry.js';
 import {getNode,listNode,createWorkspaceRecord,transitionWorkspaceRecord} from '../repository.js';
 import {canAccess,ROLE_LABELS} from '../permissions.js';
-import {ROLE_EXPERIENCE,filterScopedStudents,reportableStudents,localDate} from '../role-experience.js';
+import {ROLE_EXPERIENCE,filterScopedStudents,localDate} from '../role-experience.js';
 import {MANAGEMENT_ROLES,LEADERSHIP_ROLES} from '../role-workspace-catalog.js';
 import {managementScope,canSeeManagement,validateTransition,escalationTarget,FINDING_TRANSITIONS,FINDING_LABELS,requireAssignedId} from '../workflow-model.js';
 import {pageHeader,panel,metric,table,formRow,input,textarea,select,selectOptions,studentOptions,attachAsync,escapeHtml as e,badge,empty,toast} from './common.js';
@@ -87,9 +87,7 @@ export async function renderAcademicFollowup(ctx){
 }
 export async function renderTeacherCase(ctx){
  authorize(ctx,'teacher-case');
- const students=reportableStudents(ctx.master);
- ctx.root.innerHTML=pageHeader('Lapor Kasus / Pelanggaran','Laporkan santri dari semua unit pendidikan. Laporan SD ditangani Wali Kelas; unit lainnya ditangani Konselor.')+form(ctx,'teacherCaseForm','Laporan Pelanggaran',formRow('Santri',select('studentId',studentOptions(students),'required'))+formRow('Tanggal',input('date',localDate(),'date','required'))+formRow('Kategori',input('category','','text','required maxlength="120"'))+textField('Kronologi faktual','description')+textField('Evidence / saksi','evidence'));
- attachAsync(ctx.root.querySelector('#teacherCaseForm'),async data=>{requireAssignedId(data.studentId,students,'Santri');const destination=schoolCaseRoute(ctx.master,data.studentId,ctx.yearId);await createWorkspaceRecord(destination.path,{...payload(ctx,data),...destination.fields,reportedByUid:uid(ctx),reporterRole:role(ctx),parentVisible:false},uid(ctx));await ctx.rerender();},'Laporan diteruskan ke Wali Kelas untuk siswa SD, atau Konselor untuk unit lainnya.');
+ return renderTeacherReport(ctx);
 }
 export async function renderWorkKpi(ctx){
  const kinds=['schedules','writings','teacher_assessments','academic_followups','observations','coaching'];
