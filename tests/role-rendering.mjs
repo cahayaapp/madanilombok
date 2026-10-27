@@ -299,9 +299,13 @@ test('feature manager loads role flags and saves a role-scoped patch',async()=>{
  mock.setExport('patchNode',async(path,patch)=>{captured={path,patch};});
  try{
  const ctx=ctxFor('admin');await mod.namespace.renderFeatureManagement({root:ctx.root,uid:'admin'});
+ assert.equal(ctx.root.querySelector('#featureForm').hidden,true);
  const role=ctx.root.querySelector('#featureRole');role.value='naqib';role.dispatchEvent(new win.Event('change'));
+ assert.equal(ctx.root.querySelectorAll('[data-bottom]').length,3);
+ ctx.root.querySelector('[data-menu=quick][data-route=naqib-report]').checked=false;
  const checkbox=ctx.root.querySelector('[data-feature="boarding.naqib.attendance"]');assert.equal(checkbox.checked,true);checkbox.checked=false;
  submit(ctx.root.querySelector('#featureForm'));await new Promise(r=>setTimeout(r,0));
+ assert.equal(captured.patch['settings/featureSwitches/naqib/_menus'].quick['naqib-report'],false);
  assert.equal(captured.path,'');assert.equal(captured.patch['settings/featureSwitches/naqib/boarding~naqib~attendance'],false);
  assert.ok(Object.keys(captured.patch).every(k=>k.startsWith('settings/featureSwitches/naqib/')||k==='settings/featureSwitchAudit/naqib'));
  assert.equal(ctx.root.querySelector('[data-feature="dashboard"]').disabled,true);

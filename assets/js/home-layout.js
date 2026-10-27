@@ -1,3 +1,5 @@
+import {menuSelection,roleMenuItems} from './menu-layout.js';
+import {canAccess} from './permissions.js';
 import {ADMIN_HOME_ROUTES, ADMIN_WORKSPACES} from './admin-workspaces.js';
 import {icon} from './teacher/ui.js';
 import {escapeHtml as e} from './utils.js';
@@ -39,7 +41,7 @@ export function arrangeHome(ctx,items=[]){
  const monitorHome=['head_formal_school','head_boys_dorm','head_girls_dorm'].includes(ctx.session.activeRole);
  const adminHome=['admin','super_admin'].includes(ctx.session.activeRole);
  const limit=(monitorHome||adminHome)?Infinity:4;
- const quick=candidates.slice(0,limit);
+ let quick=candidates.slice(0,limit);
  if(!quick.length)for(const id of ROLE_EXPERIENCE[ctx.session.activeRole]?.quick||[]){const item=available.find(i=>i.id===id);if(item&&quick.length<limit)quick.push(make(item));}
  if(!quick.length)quick.push(...available.slice(0,4).map(make));
  const used=new Set(quick.map(route));
@@ -48,13 +50,19 @@ export function arrangeHome(ctx,items=[]){
  const rest=[...root.querySelectorAll('.hub-menu-card,.me-menu .me-card')].filter(b=>!used.has(route(b))&&!labels.has(label(b))); 
  for(const b of rest){used.add(route(b));labels.add(label(b));}
  for(const i of available)if(!used.has(i.id)&&!labels.has(i.label.trim().toLowerCase())){rest.push(make(i));used.add(i.id);labels.add(i.label.trim().toLowerCase());}
+ const catalog=roleMenuItems(ctx.session.activeRole).filter(i=>canAccess(i.feature||'dashboard',[ctx.session.activeRole]));
+ const selectedQuick=menuSelection(ctx.session.activeRole,'quick',null),selectedOther=menuSelection(ctx.session.activeRole,'other',null);
+ const fromIds=ids=>ids.map(id=>catalog.find(i=>i.id===id)).filter(Boolean).map(make);
+ if(selectedQuick!==null)quick=fromIds(selectedQuick);
+ if(selectedOther!==null)rest.splice(0,rest.length,...fromIds(selectedOther));
  const styleCard=(b,index,primary)=>{
   const title=combinedLabels[route(b)]||b.querySelector('strong,b')?.textContent.trim()||b.textContent.trim();
   const sub=combinedLabels[route(b)]?'Pantau kehadiran dan ketepatan waktu':QUICK_DESCRIPTIONS[route(b)]||b.querySelector('small')?.textContent.trim()||'Buka ruang kerja Anda';
-  const symbol=b.querySelector('svg')?.outerHTML||icon(/izin|sakit/i.test(title)?'cross':/presensi|hadir/i.test(title)?'check':/jadwal/i.test(title)?'calendar':/nilai|hasil/i.test(title)?'chart':/guru|santri|personil/i.test(title)?'user':'book');
+  const adminIcons={'admin-students':'user','admin-staff':'user','admin-school':'book','admin-boarding':'home','admin-lessons':'calendar','admin-programs':'check','admin-features':'settings','admin-accounts':'user'};
+  const symbol=adminIcons[route(b)]?icon(adminIcons[route(b)]):b.querySelector('svg')?.outerHTML||icon(/izin|sakit/i.test(title)?'cross':/presensi|hadir/i.test(title)?'check':/jadwal/i.test(title)?'calendar':/nilai|hasil/i.test(title)?'chart':/guru|santri|personil/i.test(title)?'user':'book');
   b.classList.add(primary?'premium-quick':'premium-menu');
   b.style.setProperty('--tile-index',index%4);
-  b.innerHTML=`<span class="premium-icon">${symbol}</span><b>${e(title)}</b>${primary?`<small>${e(sub)}</small><span class="premium-arrow" aria-hidden="true">→</span>`:''}`;
+  b.innerHTML=`<span class="premium-icon">${symbol}</span><b>${e(title)}</b>${adminHome&&primary?`<span class="admin-card-watermark" aria-hidden="true">${symbol}</span>`:''}${primary?`<small>${e(sub)}</small><span class="premium-arrow" aria-hidden="true">→</span>`:''}`;
   return b;
  };
  quick.forEach((b,i)=>styleCard(b,i,true));rest.forEach((b,i)=>styleCard(b,i,false));
@@ -67,7 +75,7 @@ export function arrangeHome(ctx,items=[]){
  quick.forEach(b=>holder.querySelector('.premium-quick-grid').append(b));
  const menuGrid=holder.querySelector('.premium-menu-grid');
  // Eight compact shortcuts; the complete role menu remains reachable in the dialog.
- rest.slice(0,8).forEach(b=>menuGrid.append(b));
+ (selectedOther===null?rest.slice(0,8):rest).forEach(b=>menuGrid.append(b));
  const openDialog=(title,content)=>{const d=document.createElement('dialog');d.className='home-role-dialog premium-home-dialog';d.innerHTML=`<header><h2>${e(title)}</h2><button type="button" data-close aria-label="Tutup">×</button></header>`;d.append(content);root.append(d);d.querySelector('[data-close]').onclick=()=>d.close();d.addEventListener('close',()=>d.remove(),{once:true});d.showModal();};
  holder.querySelectorAll('[data-all-menus]').forEach(b=>b.onclick=()=>{const list=document.createElement('div');list.className='premium-all-menus';for(const item of available)list.append(styleCard(make(item),0,false));const summary=document.createElement('button');summary.type='button';summary.textContent='Ringkasan & Informasi';summary.onclick=()=>openDialog('Ringkasan & Informasi',preserved);list.append(summary);openDialog('Semua Menu',list);});
 }

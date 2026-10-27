@@ -590,3 +590,20 @@ Added eighth Admin workspace Manajemen Fitur in portal and console navigation. L
 - Startup/visibility checks no longer acquire GPS; granted permission or stored readiness silently skips onboarding. Nanti/Escape persists a deferred choice across refresh. Attendance location validation remains unchanged and explicit failure events still show recovery guidance.
 - Explicit request has a10s watchdog even if geolocation callbacks hang; failures show Coba Lagi instead of suggesting the app can enable device GPS. Late callbacks cannot change a settled request and dismissal suppresses a pending request error popup.
 - 23 location/role tests pass (including refresh, no startup GPS, timeout/retry and late callback), JS syntax and41JSON valid. SWv121. Not pushed/deployed; actual device OS-location failure not reproduced.
+
+## 27 October — role menu placement editor
+- Feature manager requires explicit role selection before showing controls. Separates enabled feature gates from Akses Cepat, Menu Lainnya below quick cards, Sidebar and three configurable Bottom Menu slots. Beranda remains centered and Lainnya opens sidebar; unused slots retain spacing.
+- Role-scoped settings stored under existing settings/featureSwitches/<role>/_menus with audit in same patch; existing settings admin authorization reused. Portal home/sidebar/bottom rendering and bottom clicks consume settings, intersecting role grants and feature gates. Missing configuration retains existing UI; configured other menus are not silently truncated to eight. No live settings writes or role grant expansion. Admin standalone data-console navigation remains its dedicated administration navigation.
+- 48 isolated model/role/render tests passed incl role-first UI, per-role save, empty selection, forbidden route injection, quick/other click targets, disabled feature exclusion and bottom-route validation. Changed JS syntax, JSON and whitespace valid. SWv122; not pushed/deployed; production/browser visual verification pending.
+
+## 27 October — Admin home reference refresh
+- Admin/Super Admin home now uses a wide tosca mosque greeting without the duplicate home brand/top bar, overlapping date strip, eight main tiles in4x2 at wide desktop,2-column narrower layouts, and horizontal account cards (stacked on phone). Existing Madani mosque/logo assets retained rather than replacing branding.
+- Main tiles gain route-specific icons, decorative icon watermarks and white arrow actions; gold accents limited to school/dorm cards. Existing per-role menu placement and click handlers preserved. CSS scoped to Admin home; other role layouts unaffected. Themev96, SWv123.
+- 47 isolated home/menu/role tests pass, changed JavaScript syntax/JSON/whitespace valid. No live data writes or push. Actual browser visual comparison pending; illustration reuses existing SVG and is not pixel-identical to reference artwork.
+
+## 27 October — Admin fixed viewport refinement
+- Admin home uses bounded grid rows for greeting/date/main menus/account menus with bottom-navigation space reserved on mobile. Main titles use900weight, compact cards keep8 destinations visible in4x2 desktop or2x4 narrower layouts. Short narrow screens hide descriptions/arrows to prioritize full menu titles. Date moved outside greeting for reliable row sizing.
+- 30 isolated menu/home tests passed and syntax/diff checks valid. Themev97/SWv124. Local only; actual browser size/zoom verification pending.
+
+## 27 October — Admin mobile brand header restored
+- At widths<=900px, show existing shared Madani logo/bell/avatar header and reserve its own row in fixed Admin home grid. Desktop header remains hidden. Narrow320–360px styling reduces brand text/spacing. Existing actions unchanged. Themev98/SWv125; syntax/diff checks pass, browser visual verification pending; not published.

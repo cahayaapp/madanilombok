@@ -1,5 +1,6 @@
+import {menuVisible,configuredBottom,roleMenuItems,menuSelection} from './menu-layout.js';
 import {getNode} from './repository.js';
-import {setFeatureSwitches} from './feature-switches.js';
+import {setFeatureSwitches,menuSettings} from './feature-switches.js';
 import {ADMIN_HOME_ROUTES} from './admin-workspaces.js';
 import {visibleRoleMenu} from './role-workspace-catalog.js';
 import {decorateNaqibPage} from './naqib-home.js';
@@ -130,7 +131,10 @@ function visibleGroups() {
 
 function renderNav() {
   const nav=document.getElementById("navMenu");
-  nav.innerHTML=visibleGroups().map(group=>`<div class="nav-caption">${escapeHtml(group.label)}</div>${group.items.map(item=>`<button class="nav-item ${item.id===currentRoute?"active":""}" data-route="${item.id}"><span class="nav-icon">${item.id.includes("messages")?'<svg viewBox="0 0 24 24" class="chat-menu-icon" aria-hidden="true"><path d="M21 11a8 8 0 0 1-8 8H6l-4 3 1.5-6A8 8 0 1 1 21 11Z"/><path d="M7 10h9M7 14h6"/></svg>':item.icon}</span><span>${escapeHtml(item.label)}</span></button>`).join("")}`).join("");
+  const groups=visibleGroups(),known=new Set(groups.flatMap(g=>g.items.map(i=>i.id)));
+  const extras=roleMenuItems(activeRole).filter(i=>!known.has(i.id)&&menuSelection(activeRole,'sidebar',[]).includes(i.id)&&canRoute(i.id));
+  if(extras.length)groups.push({label:'Pilihan Role',items:extras.map(i=>({...i,icon:'◇'}))});
+  nav.innerHTML=groups.map(group=>({...group,items:group.items.filter(item=>menuVisible(activeRole,'sidebar',item.id))})).filter(group=>group.items.length).map(group=>`<div class="nav-caption">${escapeHtml(group.label)}</div>${group.items.map(item=>`<button class="nav-item ${item.id===currentRoute?"active":""}" data-route="${item.id}"><span class="nav-icon">${item.id.includes("messages")?'<svg viewBox="0 0 24 24" class="chat-menu-icon" aria-hidden="true"><path d="M21 11a8 8 0 0 1-8 8H6l-4 3 1.5-6A8 8 0 1 1 21 11Z"/><path d="M7 10h9M7 14h6"/></svg>':item.icon}</span><span>${escapeHtml(item.label)}</span></button>`).join("")}`).join("");
   nav.querySelectorAll("[data-route]").forEach(btn=>btn.addEventListener("click",()=>navigate(btn.dataset.route)));
 }
 
@@ -143,11 +147,12 @@ function canRoute(route) {
   return !!route && Object.hasOwn(routeFeature,route) && canAccess(routeFeature[route],[activeRole]);
 }
 function syncBottomNav() {
-  const targets=bottomRoutes(activeRole,canRoute);
+  const targets=configuredBottom(activeRole,bottomRoutes(activeRole,canRoute),canRoute);
   document.querySelectorAll('[data-shell-nav]').forEach(button=>{
     const key=button.dataset.shellNav;
     if(key==='schedule'){const label=button.querySelector('span:last-child');if(label)label.textContent=['admin','super_admin'].includes(activeRole)?'Data':'Jadwal';}
-    button.disabled=key!=='more'&&!targets[key];
+    button.style.visibility=key!=='more'&&!targets[key]?'hidden':'';button.disabled=key!=='more'&&!targets[key];
+    if(!['home','more'].includes(key)&&targets[key]){const label=button.querySelector('span:last-child');if(label)label.textContent=menuSettings(activeRole).bottom?(routeLabel[targets[key]]||key):({schedule:['admin','super_admin'].includes(activeRole)?'Data':'Jadwal',messages:'Pesan',profile:'Profil'}[key]||key);}
     const active=key!=='more'&&targets[key]===currentRoute;
     button.classList.toggle('active',active);
     if(active)button.setAttribute('aria-current','page');else button.removeAttribute('aria-current');
@@ -196,7 +201,7 @@ function bindMobileBottomNav() {
       document.getElementById('sidebarOverlay')?.classList.remove('hidden');
       return;
     }
-    const target=bottomRoutes(activeRole,canRoute)[key];
+    const target=configuredBottom(activeRole,bottomRoutes(activeRole,canRoute),canRoute)[key];
     if(target)navigate(target);
   }));
 }

@@ -735,3 +735,121 @@ body[data-home=true] #content .premium-admin-home .premium-quick:last-child{grid
 #qualityNavigation{margin-bottom:16px}#qualityContent .portal-metrics>p{grid-column:1/-1;line-height:1.6}
 @media(max-width:600px){.quality-card-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.quality-card{padding:16px;border-radius:20px;gap:10px}.quality-card strong{font-size:16px}.quality-card small{font-size:12px}.quality-card-action{font-size:12px}}
 .quality-card-icon svg{fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+
+/* Admin home: reference banner, eight data cards and a quiet account row. */
+body[data-home=true]:is([data-active-role=admin],[data-active-role=super_admin]) .portal-topbar{display:none!important}
+body[data-home=true] #content .premium-home.premium-admin-home{display:block!important;max-width:1440px!important;margin:0 auto!important;padding:24px 24px 32px!important;background:transparent!important;border-radius:0!important}
+body[data-home=true] #content .premium-admin-home .official-home-header{display:none!important}
+body[data-home=true] #content .premium-admin-home .official-greeting{height:auto!important;min-height:245px!important;margin:0 0 64px!important;padding:46px 44px 68px!important;border-radius:24px!important;background: url('../brand/home-mosque.svg') right center / auto 110% no-repeat,linear-gradient(115deg,#00686c,#00a39d 65%,#bfe8d4)!important;overflow:visible!important;color:white}
+body[data-home=true] #content .premium-admin-home .official-hello{font-size:17px!important;color:white!important;margin-bottom:12px}
+body[data-home=true] #content .premium-admin-home .official-name-row{display:flex!important;flex-direction:column!important;align-items:flex-start!important;gap:14px!important;width:78%!important}
+body[data-home=true] #content .premium-admin-home .official-name-row h1{font-size:clamp(26px,3.1vw,44px)!important;color:white!important;font-weight:850!important;letter-spacing:-.7px}
+body[data-home=true] #content .premium-admin-home .home-role-button{background:#fff!important;color:#064456!important;border:0!important;padding:10px 18px!important;font-size:14px!important}
+body[data-home=true] #content .premium-admin-home .official-quote{display:none!important}
+body[data-home=true] #content .premium-admin-home .official-date{position:absolute!important;left:20px!important;right:20px!important;bottom:-32px!important;min-height:76px!important;padding:16px 24px!important;border:1px solid #e0efeb!important;border-radius:20px!important;background:#fff!important;box-shadow:0 14px 35px #005c5010!important;font-size:15px!important}
+body[data-home=true] #content .premium-admin-home .official-date small{font-size:13px!important}
+body[data-home=true] #content .premium-admin-home .premium-section{margin:0!important;padding:0!important}
+body[data-home=true] #content .premium-admin-home .premium-section-head{margin:0 0 12px!important}
+body[data-home=true] #content .premium-admin-home .premium-section-head h2{font-size:23px!important;letter-spacing:-.5px}
+body[data-home=true] #content .premium-admin-home .premium-quick-grid{display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:14px!important;margin-bottom:22px!important}
+body[data-home=true] #content .premium-admin-home .premium-quick{display:flex!important;flex-direction:column!important;align-items:flex-start!important;justify-content:flex-start!important;grid-column:auto!important;min-height:190px!important;gap:9px!important;padding:20px!important;border-radius:23px!important;background:linear-gradient(120deg,#00868b,#17b7a7)!important;box-shadow:0 8px 22px #006b6410!important}
+body[data-home=true] #content .premium-admin-home .premium-quick:nth-child(3){background:linear-gradient(120deg,#9f6b05,#e7ac35)!important}
+body[data-home=true] #content .premium-admin-home .premium-quick:nth-child(4){background:linear-gradient(120deg,#f18b08,#ffbc52)!important}
+body[data-home=true] #content .premium-admin-home .premium-quick b{font-size:18px!important;line-height:1.3!important;position:relative;z-index:1;max-width:100%}
+body[data-home=true] #content .premium-admin-home .premium-quick small{font-size:13px!important;line-height:1.45!important;padding-right:36px;position:relative;z-index:1}
+body[data-home=true] #content .premium-admin-home .premium-icon{width:46px!important;height:46px!important;flex:0 0 46px;background:#ffffff22!important;border-radius:16px!important}
+body[data-home=true] #content .premium-admin-home .premium-arrow{display:grid!important;place-items:center;position:absolute;top:auto!important;right:15px;bottom:16px;width:34px;height:34px;border-radius:50%;background:white;color:#009a94;font-size:22px}
+body[data-home=true] #content .premium-admin-home .admin-card-watermark{position:absolute;right:12px;top:22px;width:90px;height:90px;opacity:.13;pointer-events:none}
+.admin-card-watermark svg{width:100%;height:100%;fill:none;stroke:currentColor;stroke-width:1.6}
+body[data-home=true] #content .premium-admin-home .premium-workspace{border-top:1px solid #deeee8!important;padding-top:16px!important}
+body[data-home=true] #content .premium-admin-home .premium-menu-grid{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:14px!important}
+body[data-home=true] #content .premium-admin-home .premium-menu{display:flex!important;flex-direction:row!important;gap:16px!important;align-items:center!important;min-height:84px!important;padding:16px!important;border:1px solid #e0efeb!important;border-radius:19px!important;background:#fff!important;text-align:left!important}
+body[data-home=true] #content .premium-admin-home .premium-menu .premium-icon{background:#def4ef!important;color:#009e98!important}
+body[data-home=true] #content .premium-admin-home .premium-menu b{font-size:14px!important}
+body[data-home=true] #content .premium-admin-home .premium-menu::after{content:'›';margin-left:auto;color:#59808d;font-size:25px}
+@media(max-width:1100px){
+ body[data-home=true] #content .premium-admin-home .premium-quick-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+ body[data-home=true] #content .premium-admin-home .official-name-row{width:90%!important}
+}
+@media(max-width:600px){
+ body[data-home=true] #content .premium-home.premium-admin-home{padding:12px 12px 28px!important}
+ body[data-home=true] #content .premium-admin-home .official-greeting{min-height:206px!important;padding:26px 20px 66px!important;border-radius:20px!important;background-size:auto 100%,auto!important}
+ body[data-home=true] #content .premium-admin-home .official-name-row{width:100%!important}
+ body[data-home=true] #content .premium-admin-home .official-date{left:8px!important;right:8px!important;padding:12px!important;font-size:12px!important;gap:8px!important}
+ body[data-home=true] #content .premium-admin-home .official-date small{font-size:10px!important}
+ body[data-home=true] #content .premium-admin-home .premium-quick-grid{gap:12px!important}
+ body[data-home=true] #content .premium-admin-home .premium-quick{padding:15px!important;min-height:185px!important;border-radius:19px!important}
+ body[data-home=true] #content .premium-admin-home .premium-quick b{font-size:15px!important}
+ body[data-home=true] #content .premium-admin-home .premium-quick small{font-size:12px!important;padding-right:0;padding-bottom:32px}
+ body[data-home=true] #content .premium-admin-home .premium-menu-grid{grid-template-columns:1fr!important}
+ body[data-home=true] #content .premium-admin-home .premium-menu{min-height:70px!important}
+}
+
+/* Keep the Admin dashboard inside its viewport, with space reserved for every row. */
+body[data-home=true]:has(.premium-admin-home){height:100dvh;overflow:hidden!important}
+body[data-home=true]:has(.premium-admin-home) .main-area{height:100dvh!important;min-height:0!important;overflow:hidden!important}
+body[data-home=true]:has(.premium-admin-home) .portal-content{height:100%!important;min-height:0!important;overflow:hidden!important;padding:0!important}
+body[data-home=true] #content.home-dashboard:has(.premium-admin-home){height:100%!important;width:100%;max-width:none!important;overflow:hidden!important}
+body[data-home=true] #content .premium-home.premium-admin-home{box-sizing:border-box;display:grid!important;grid-template-rows:minmax(100px,23fr) minmax(48px,9fr) minmax(0,51fr) minmax(65px,17fr)!important;gap:12px!important;height:100%!important;max-height:100%!important;min-height:0!important;padding:20px!important}
+body[data-home=true] #content .premium-admin-home .official-greeting{box-sizing:border-box;min-height:0!important;height:100%!important;margin:0!important;padding:clamp(16px,3vh,32px) 32px!important;display:flex;flex-direction:column;justify-content:center}
+body[data-home=true] #content .premium-admin-home .official-name-row{padding-right:0!important;gap:8px!important}
+body[data-home=true] #content .premium-admin-home .official-name-row h1{font-size:clamp(23px,3.8vh,40px)!important;font-weight:900!important}
+body[data-home=true] #content .premium-admin-home .official-date{box-sizing:border-box;position:static!important;min-height:0!important;height:100%;margin:0!important;padding:10px 20px!important;border-radius:16px!important}
+body[data-home=true] #content .premium-admin-home .premium-section{min-height:0!important;overflow:visible}
+body[data-home=true] #content .premium-admin-home .premium-section-head{flex:0 0 auto;margin:0 0 8px!important}
+body[data-home=true] #content .premium-admin-home .premium-section-head h2{font-weight:900!important;font-size:clamp(18px,2.7vh,25px)!important}
+body[data-home=true] #content .premium-admin-home .premium-quick-grid{flex:1!important;min-height:0!important;grid-template-rows:repeat(2,minmax(0,1fr))!important;grid-auto-rows:minmax(0,1fr)!important;margin:0!important;gap:12px!important}
+body[data-home=true] #content .premium-admin-home .premium-quick{box-sizing:border-box;min-height:0!important;height:100%!important;padding:clamp(10px,1.8vh,20px)!important;gap:6px!important;border:1px solid #ffffff40!important;box-shadow:inset 0 1px 0 #ffffff35,0 7px 15px #006b6415!important}
+body[data-home=true] #content .premium-admin-home .premium-quick b{font-weight:900!important;font-size:clamp(14px,2.1vh,20px)!important;line-height:1.2!important;letter-spacing:-.2px}
+body[data-home=true] #content .premium-admin-home .premium-quick small{font-size:clamp(11px,1.5vh,14px)!important;line-height:1.3!important;padding-bottom:0}
+body[data-home=true] #content .premium-admin-home .premium-icon{width:clamp(28px,4.5vh,44px)!important;height:clamp(28px,4.5vh,44px)!important;flex-basis:clamp(28px,4.5vh,44px)!important}
+body[data-home=true] #content .premium-admin-home .premium-workspace{padding-top:8px!important}
+body[data-home=true] #content .premium-admin-home .premium-menu-grid{flex:1;min-height:0;grid-template-columns:repeat(3,minmax(0,1fr))!important}
+body[data-home=true] #content .premium-admin-home .premium-menu{min-height:0!important;height:100%;box-sizing:border-box;padding:10px!important;gap:10px!important}
+@media(max-width:1100px){
+ body[data-home=true] #content .premium-admin-home .premium-quick-grid{grid-template-rows:repeat(4,minmax(0,1fr))!important}
+ body[data-home=true] #content .premium-admin-home .premium-quick{display:grid!important;grid-template-columns:32px minmax(0,1fr)!important;grid-template-rows:auto auto!important;align-content:center!important;column-gap:9px!important}
+ body[data-home=true] #content .premium-admin-home .premium-quick small{grid-column:1/-1;padding-right:20px!important}
+ body[data-home=true] #content .premium-admin-home .premium-quick .premium-icon{width:30px!important;height:30px!important}
+ body[data-home=true] #content .premium-admin-home .premium-arrow{width:22px;height:22px;right:9px;bottom:9px;font-size:17px}
+}
+@media(max-width:900px){
+ body[data-home=true]:has(.premium-admin-home) .main-area{height:calc(100dvh - 82px - env(safe-area-inset-bottom))!important}
+ body[data-home=true] #content .premium-home.premium-admin-home{padding:10px!important;gap:8px!important;grid-template-rows:minmax(82px,19fr) minmax(44px,9fr) minmax(0,55fr) minmax(66px,17fr)!important}
+ body[data-home=true] #content .premium-admin-home .official-greeting{padding:12px 18px!important}
+ body[data-home=true] #content .premium-admin-home .official-hello{font-size:12px!important;margin-bottom:3px}
+ body[data-home=true] #content .premium-admin-home .home-role-button{min-height:26px!important;padding:5px 10px!important;margin-top:0!important;font-size:11px!important}
+ body[data-home=true] #content .premium-admin-home .official-date{padding:7px 10px!important}
+ body[data-home=true] #content .premium-admin-home .premium-quick-grid{gap:8px!important}
+ body[data-home=true] #content .premium-admin-home .premium-quick{padding:9px!important;border-radius:16px!important}
+ body[data-home=true] #content .premium-admin-home .premium-menu{flex-direction:column!important;justify-content:center;gap:4px!important;text-align:center!important;padding:5px!important}
+ body[data-home=true] #content .premium-admin-home .premium-menu b{font-size:11px!important;font-weight:800!important;line-height:1.2!important}
+ body[data-home=true] #content .premium-admin-home .premium-menu::after{display:none}
+ body[data-home=true] #content .premium-admin-home .premium-menu .premium-icon{width:25px!important;height:25px!important;flex-basis:25px!important}
+}
+@media(max-height:760px) and (max-width:1100px){
+ body[data-home=true] #content .premium-admin-home .premium-quick small{display:none!important}
+ body[data-home=true] #content .premium-admin-home .premium-quick b{font-size:13px!important;padding-right:5px}
+ body[data-home=true] #content .premium-admin-home .premium-arrow{display:none!important}
+ body[data-home=true] #content .premium-admin-home .premium-section-head h2{font-size:17px!important}
+ body[data-home=true] #content .premium-admin-home .official-name-row h1{font-size:23px!important}
+}
+body[data-home=true]:has(.premium-admin-home) .portal-content>.home-dashboard{height:100%!important;min-height:0!important;overflow:hidden!important}
+
+/* Mobile Admin retains the shared Madani brand/bell/avatar header. */
+@media(max-width:900px){
+ body[data-home=true] #content .premium-home.premium-admin-home{grid-template-rows:minmax(48px,9fr) minmax(78px,17fr) minmax(42px,8fr) minmax(0,51fr) minmax(62px,15fr)!important}
+ body[data-home=true] #content .premium-admin-home .official-home-header{display:flex!important;align-items:center;justify-content:space-between;box-sizing:border-box;min-height:0!important;height:100%!important;margin:0!important;padding:6px 12px!important;border-radius:17px!important;background:linear-gradient(115deg,#00686c,#00a39d)!important}
+ body[data-home=true] #content .premium-admin-home .official-brand{min-width:0;gap:9px}
+ body[data-home=true] #content .premium-admin-home .official-brand>img{width:36px!important;height:36px!important;flex-shrink:0}
+ body[data-home=true] #content .premium-admin-home .official-brand strong{font-size:19px!important}
+ body[data-home=true] #content .premium-admin-home .official-brand small{font-size:7px!important;letter-spacing:.5px!important}
+ body[data-home=true] #content .premium-admin-home .official-header-actions{gap:8px;flex-shrink:0}
+ body[data-home=true] #content .premium-admin-home .official-bell{width:32px!important;height:32px!important}
+ body[data-home=true] #content .premium-admin-home .official-avatar{width:35px!important;height:35px!important}
+}
+@media(max-width:360px){
+ body[data-home=true] #content .premium-admin-home .official-brand strong{font-size:16px!important}
+ body[data-home=true] #content .premium-admin-home .official-brand small{font-size:6px!important}
+ body[data-home=true] #content .premium-admin-home .official-home-header{padding-inline:8px!important}
+}
