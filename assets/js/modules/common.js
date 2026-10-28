@@ -1,3 +1,4 @@
+import {loading} from '../loading-ui.js';
 import {icon} from '../teacher/ui.js';
 import { escapeHtml, formatDate, formatDateTime, toast } from "../utils.js";
 import { byId } from "../app-store.js";
@@ -10,6 +11,7 @@ export function pageHeader(title, subtitle = "", actions = "") {
 }
 
 export function empty(message = "Belum ada data.") {
+  if(/^Memuat\b/.test(message))return loading(message);
   return `<div class="empty-state"><span class="empty-visual" aria-hidden="true">${icon('book')}</span><p>${escapeHtml(message)}</p></div>`;
 }
 

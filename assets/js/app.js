@@ -1,3 +1,4 @@
+import {loading} from './loading-ui.js';
 import {setSidebarOpen,toggleSidebar} from './sidebar-control.js';
 import {menuVisible,configuredBottom,roleMenuItems,menuSelection} from './menu-layout.js';
 import {getNode} from './repository.js';
@@ -167,7 +168,7 @@ async function renderRoute() {
   renderNav();syncBottomNav();
   document.getElementById('pageTitle').textContent=routeLabel[currentRoute]||'Beranda';
   const mount=document.createElement('div');
-  mount.innerHTML='<div class="loading-card">Memuat ruang kerja…</div>';
+  mount.innerHTML=loading('Memuat ruang kerja…');
   root.replaceChildren(mount);
   try {
   const scopedSession=sessionForRole(session,activeRole);

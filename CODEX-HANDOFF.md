@@ -690,3 +690,8 @@ Added eighth Admin workspace Manajemen Fitur in portal and console navigation. L
 - Shared splash on entry, portal and admin: centered existing Madani logo/wordmark, slogan, three animated dots, ivory/tosca mosque/wave background. Uses existing vector artwork, not the reference raster mosque.
 - Portal/admin dismiss at boot completion (including caught failures); entry dismisses when its UI script is ready. No artificial delay. After 12 seconds a continue button prevents trapping users if module loading stalls. Reduced-motion styling and back/forward cache dismissal included.
 - JS syntax and diff checks passed; JSDOM checked initial display, three dots, readiness and error dismissal. Device visual verification pending. SW v144. No push or live data changes.
+
+## 28 October — shared three-dot data loading
+- Shared loading-ui helper renders three sequential tosca pulse dots with status text and polite live announcements. Applied to route loading across all roles, initial portal/admin placeholders, quality indicators, feature settings, counselor attendance review, update package loading, teacher sheets and role summary loaders. Existing result/error replacement removes the dots naturally.
+- Reduced-motion users get static dots. Native select option text remains plain text. No data or permission changes.
+- 27 role/workflow tests passed; syntax/diff checks passed. Theme v115, SW v145. Local changes, not pushed; device visual verification pending.

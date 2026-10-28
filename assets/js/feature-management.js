@@ -1,3 +1,4 @@
+import {loading} from './loading-ui.js';
 import {ROLE_LABELS} from './permissions.js';
 import {featureKey,protectedFeature,setFeatureSwitches} from './feature-switches.js';
 import {roleMenuItems,defaultQuick} from './menu-layout.js';
@@ -5,7 +6,7 @@ import {bottomRoutes} from './role-experience.js';
 import {getNode,patchNode} from './repository.js';
 import {escapeHtml as e} from './utils.js';
 export async function renderFeatureManagement({root,uid}){
- root.innerHTML='<p role="status">Memuat pengaturan fitur…</p>';
+ root.innerHTML=loading('Memuat pengaturan fitur…');
  try{
  const state=await getNode('settings/featureSwitches')||{};
  root.innerHTML='<section class="admin-page-hero"><div><p class="eyebrow">MENU PER ROLE</p><h2>Manajemen Fitur</h2><p>Pilih role, lalu atur fitur aktif dan tempat tampilnya di aplikasi.</p></div></section><div class="panel"><label>Role yang akan diatur<select id="featureRole"><option value="">Pilih role…</option>'+Object.entries(ROLE_LABELS).map(([id,label])=>'<option value="'+id+'">'+e(label)+'</option>').join('')+'</select></label></div><p id="featurePrompt">Pilih role untuk menampilkan pengaturan menunya.</p><form id="featureForm" hidden><div id="featureList"></div><button class="btn btn-primary" type="submit">Simpan Pengaturan</button><p id="featureStatus" role="status"></p></form>';

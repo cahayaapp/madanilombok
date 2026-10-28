@@ -1311,3 +1311,11 @@ body[data-home=true] #content .home-dashboard .premium-home.home-compact>.offici
  .portal-body .sidebar .role-picker{background:#0d5960!important;color:#effffa!important;border-color:#50888a!important;color-scheme:dark}
  .portal-body .sidebar #logoutButton{color:#ffb9b4!important}
 }
+
+/* Shared data-loading indicator, matching the splash pulse. */
+.data-loading-dots{display:flex;align-items:center;justify-content:center;gap:12px;margin:0 auto 18px;min-height:16px}
+.data-loading-dots>i{display:block;width:11px;height:11px;flex:0 0 11px;border-radius:50%;background:#00a39d;animation:madani-data-pulse 1.3s ease-in-out infinite}
+.data-loading-dots>i:nth-child(2){animation-delay:.18s}
+.data-loading-dots>i:nth-child(3){animation-delay:.36s}
+@keyframes madani-data-pulse{0%,80%,100%{opacity:.25;transform:scale(.8)}40%{opacity:1;transform:scale(1)}}
+@media(prefers-reduced-motion:reduce){.data-loading-dots>i{animation:none;opacity:.65}}

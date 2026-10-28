@@ -1,10 +1,11 @@
+import {loading} from './loading-ui.js';
 import {getNode,bulkPatchRoot} from './repository.js';
 import {escapeHtml as e} from './utils.js';
 
 // An incremental update only: bootstrap must never be rerun on an occupied database.
 export async function renderSmpUpdate(host,session,options={}){
  const unit=options.unit||'SMP';
- host.innerHTML=`<p>Memuat pembaruan ${unit}…</p>`;
+ host.innerHTML=loading(`Memuat pembaruan ${unit}…`);
  try{
   const response=await fetch(options.packageUrl||'../seed/imports/smp-2026-2027-update.json');if(!response.ok)throw Error('Paket pembaruan tidak tersedia.');
   const pack=await response.json(),r=pack.report;

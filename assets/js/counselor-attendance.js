@@ -1,3 +1,4 @@
+import {loading} from './loading-ui.js';
 import {attendanceReferrals} from './attendance-referrals.js';
 import {counselorGender} from './boarding-personnel-scope.js';
 import {getNode,saveTeacherSession} from './repository.js';
@@ -8,7 +9,7 @@ export function mountAttendanceReferrals(ctx,cases){
  const end=localDate(),start=new Date(Date.parse(end+'T12:00:00Z')-6*86400000).toISOString().slice(0,10);
  host.innerHTML='<h3>Pemeriksaan Presensi Santri</h3><p>Alfa dan terlambat dari presensi final. Catatan ini perlu diklarifikasi, bukan keputusan pelanggaran atau poin otomatis.</p><div class="section-actions"><label>Dari<input type="date" id="referralFrom" value="'+start+'"></label><label>Sampai<input type="date" id="referralTo" value="'+end+'"></label><button class="btn btn-secondary" id="loadReferrals">Periksa Presensi</button></div><div id="referralResults"></div>';
  const result=host.querySelector('#referralResults'),button=host.querySelector('#loadReferrals');
- button.onclick=async()=>{button.disabled=true;result.textContent='Memuat presensi…';
+ button.onclick=async()=>{button.disabled=true;result.innerHTML=loading('Memuat presensi…');
  try{
  const from=host.querySelector('#referralFrom').value,to=host.querySelector('#referralTo').value;
  if(!from||!to||from>to||to>end||Date.parse(to)-Date.parse(from)>30*86400000)throw Error('Pilih rentang maksimal 31 hari sampai hari ini.');

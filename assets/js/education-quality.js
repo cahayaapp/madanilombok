@@ -1,3 +1,4 @@
+import {loading} from './loading-ui.js';
 import {getNode} from './repository.js';
 import {educationQuality,qualityScope,percent} from './education-quality-model.js';
 import {pageHeader,panel,metric,escapeHtml as e} from './modules/common.js';
@@ -57,7 +58,7 @@ export async function renderEducationQuality(ctx){
   const value=n=>ctx.root.querySelector(`[name=${n}]`).value,from=value('qualityFrom'),to=value('qualityTo');ctx.root.querySelector('#qualityPeriod').textContent=from+' — '+to;
   try{
    if(!from||!to||from>to||to>today||Date.parse(to)-Date.parse(from)>366*86400000)throw Error('Pilih periode valid hingga hari ini, maksimal satu tahun.');
-   body.innerHTML=`<div class="loading-card">Memuat ${e(item.title)}…</div>`;
+   body.innerHTML=loading(`Memuat ${item.title}…`);
    const data={yearId:ctx.yearId};
    await Promise.all(item.keys.map(async key=>{
     if(force)cache.delete(key);
