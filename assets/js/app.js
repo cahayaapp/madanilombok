@@ -1,3 +1,4 @@
+import {decorateCounselorPage} from './counselor-layout.js';
 import {mountWorkspaceHeader} from './home-role-switcher.js';
 import {loading} from './loading-ui.js';
 import {setSidebarOpen,toggleSidebar} from './sidebar-control.js';
@@ -183,6 +184,7 @@ async function renderRoute() {
     else await routes[currentRoute](ctx);
     if(activeRole==='naqib'&&currentRoute.startsWith('naqib-'))decorateNaqibPage(ctx);
     if(currentRoute.startsWith('management-'))decorateManagement(ctx);
+    decorateCounselorPage(ctx,currentRoute);
   } catch(error) {
     if(version===renderVersion)mount.innerHTML=`<div class="empty-state error-state"><strong>Gagal memuat halaman</strong><p>${escapeHtml(error.message||String(error))}</p><button type="button" class="btn btn-secondary" id="retryRoute">Coba Lagi</button></div>`;
     mount.querySelector('#retryRoute')?.addEventListener('click',renderRoute);

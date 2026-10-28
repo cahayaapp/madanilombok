@@ -446,3 +446,21 @@ test('workspace header reuses home identity and profile/message actions',async()
   module.namespace.mountWorkspaceHeader(ctx);assert.equal(top.querySelectorAll('.official-home-header').length,1);
  }finally{top.remove();}
 });
+
+test('Counselor layout keeps case actions, moves attendance before table and decorates once',async()=>{
+ const mod=await load(new URL('assets/js/counselor-layout.js',base).href);await mod.evaluate();
+ const ctx=ctxFor('konselor');
+ ctx.root.innerHTML='<div class="portal-section-head"><div><h2>Kasus Masuk</h2><p>Deskripsi</p></div></div><div class="table-card"><table class="data-table"><thead><tr><th>Santri</th><th>Aksi</th></tr></thead><tbody><tr><td colspan="2">Belum ada data.</td></tr></tbody></table></div><section class="counselor-attendance-panel"><button id="checkTest">Periksa</button></section>';
+ let clicks=0;ctx.root.querySelector('#checkTest').onclick=()=>clicks++;
+ mod.namespace.decorateCounselorPage(ctx,'case-inbox');mod.namespace.decorateCounselorPage(ctx,'case-inbox');
+ assert.equal(ctx.root.querySelectorAll('.counselor-breadcrumb').length,1);
+ assert.equal(ctx.root.querySelectorAll('.page-heading-icon').length,1);
+ assert.ok(ctx.root.querySelector('.counselor-empty').textContent.includes('Belum ada data kasus masuk'));
+ assert.equal(ctx.root.querySelector('.counselor-attendance-panel').nextElementSibling.className,'table-card');
+ ctx.root.querySelector('#checkTest').click();assert.equal(clicks,1);
+ ctx.root.querySelector('tbody').innerHTML='<tr><td>Santri Uji</td><td><button id="claimTest">Claim Kasus</button></td></tr>';
+ ctx.root.querySelector('#claimTest').onclick=()=>clicks++;
+ mod.namespace.decorateCounselorPage(ctx,'case-inbox');
+ assert.equal(ctx.root.querySelector('td').dataset.label,'Santri');
+ ctx.root.querySelector('#claimTest').click();assert.equal(clicks,2);
+});

@@ -1,16 +1,25 @@
 // Workflow reference: fajrulislam/js/counselor-case-v2.js. Uses Madani IDs only.
 export const CASE_POINTS={BIMBINGAN:0,RINGAN:-25,SEDANG:-50,BERAT:-100,KRITIS:-200};
 export const FINAL_CASE_STATES=['selesai','tidak_terbukti'];
-const norm=v=>String(v||'').toUpperCase();
-export function counselorLevel(profile={}){return norm(profile.counselorLevel||profile.assignments?.konselor?.counselorLevel||'PEMULA')==='MADYA'?'MADYA':'PEMULA';}
+const norm=v=>String(v||'').trim().toUpperCase();
+export function counselorLevel(profile={}){return norm(profile.roleScopes?.konselor?.counselorLevel||profile.counselorLevel||profile.assignments?.konselor?.counselorLevel||'PEMULA')==='MADYA'?'MADYA':'PEMULA';}
+export function caseCategory(record={}){
+ const value=norm(record.category||record.violationCode);
+ if(/MORAL|ETIKA/.test(value))return 'MORAL';
+ if(/KEBERSIHAN|KERAPIAN/.test(value))return 'CLEANLINESS';
+ if(record.attendanceSourceId||/DISIPLIN|ALFA|TERLAMBAT/.test(value))return 'DISCIPLINE';
+ return value;
+}
 export function routeCounselorCase(record,nearby=[]){
- const category=norm(record.category),severity=norm(record.severity),code=norm(record.violationCode||record.category);
- if(category.includes('MORAL')||category.includes('ETIKA'))return {level:'MADYA',reason:'MORAL'};
+ const category=caseCategory(record),severity=norm(record.severity);
+ if(category==='MORAL')return {level:'MADYA',reason:'MORAL'};
  if(['BERAT','KRITIS'].includes(severity))return {level:'MADYA',reason:severity};
+ if(record.routeLevel==='MADYA'&&record.routeReason==='THREE_CONSECUTIVE_DAYS')return {level:'MADYA',reason:'THREE_CONSECUTIVE_DAYS'};
  if(record.escalationTarget==='konselor_madya')return {level:'MADYA',reason:'MANUAL_ESCALATION'};
- const dates=new Set(nearby.filter(r=>r.studentId===record.studentId&&norm(r.violationCode||r.category)===code).map(r=>r.date));
- const shift=n=>{const d=new Date(`${record.date}T12:00:00Z`);d.setUTCDate(d.getUTCDate()-n);return Number.isNaN(+d)?'':d.toISOString().slice(0,10);};
- if(record.date&&dates.has(record.date)&&dates.has(shift(1))&&dates.has(shift(2)))return {level:'MADYA',reason:'THREE_CONSECUTIVE_DAYS'};
+ const date=String(record.date||'').slice(0,10);
+ const dates=new Set([...nearby,record].filter(r=>r.studentId===record.studentId&&r.status!=='tidak_terbukti'&&caseCategory(r)===category).map(r=>String(r.date||'').slice(0,10)));
+ const shift=n=>{const d=new Date(`${date}T12:00:00Z`);d.setUTCDate(d.getUTCDate()-n);return Number.isNaN(+d)?'':d.toISOString().slice(0,10);};
+ if(['DISCIPLINE','CLEANLINESS'].includes(category)&&date&&dates.has(shift(1))&&dates.has(shift(2)))return {level:'MADYA',reason:'THREE_CONSECUTIVE_DAYS'};
  return {level:'PEMULA',reason:'ROUTINE'};
 }
 export function assertCaseOwner(record,session){

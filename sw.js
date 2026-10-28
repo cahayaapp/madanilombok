@@ -1,5 +1,5 @@
-const CACHE='madani-v154-persistent-header';
-const CORE=['./assets/js/splash.js?v=2','./assets/css/splash.css?v=1','./assets/js/mobile-layout.js','./','./index.html','./app/index.html','./assets/css/app.css','./assets/css/portal.css','./assets/css/teacher.css?v=29','./assets/css/cahaya-clone.css','./assets/css/mentoring.css?v=66','./assets/css/health.css?v=39','./assets/css/management.css?v=39','./assets/css/entry.css?v=44','./assets/css/brand-theme.css?v=122','./assets/js/entry.js?v=44','./assets/brand/logo.svg','./assets/brand/ornaments.svg','./assets/brand/home-mosque.svg','./assets/brand/home-waves.svg'];
+const CACHE='madani-v156-counselor-ui';
+const CORE=['./assets/js/splash.js?v=2','./assets/css/splash.css?v=1','./assets/js/mobile-layout.js','./','./index.html','./app/index.html','./assets/css/app.css','./assets/css/portal.css','./assets/css/teacher.css?v=29','./assets/css/cahaya-clone.css','./assets/css/mentoring.css?v=66','./assets/css/health.css?v=39','./assets/css/management.css?v=39','./assets/css/entry.css?v=44','./assets/css/brand-theme.css?v=123','./assets/js/entry.js?v=44','./assets/brand/logo.svg','./assets/brand/ornaments.svg','./assets/brand/home-mosque.svg','./assets/brand/home-waves.svg'];
 self.addEventListener('install',event=>event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(CORE))));
 self.addEventListener('activate',event=>event.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(key=>key.startsWith('madani-')&&key!==CACHE).map(key=>caches.delete(key))))));
 self.addEventListener('fetch',event=>{

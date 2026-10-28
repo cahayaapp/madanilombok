@@ -1,4 +1,4 @@
-import test from 'node:test';import assert from 'node:assert/strict';import {applyCaseOperation as apply,routeCounselorCase} from '../assets/js/counselor-model.js';
+import test from 'node:test';import assert from 'node:assert/strict';import {applyCaseOperation as apply,routeCounselorCase,counselorLevel} from '../assets/js/counselor-model.js';
 const session={activeRole:'konselor',user:{uid:'a'},profile:{counselorLevel:'PEMULA'}};
 const record={studentId:'s',status:'ditangani',assignedCounselorUid:'a'};
 const op=(type,id,data)=>({type,id,data});
@@ -7,3 +7,21 @@ test('case stages and ownership protected; final points repeat cannot duplicate'
 test('Pemula transfers to Madya; leadership responds only requested escalation and retains counselor ownership',()=>{let r=apply(record,op('escalation','e1',{targetLevel:'konselor_madya',summary:'Perlu Madya'}),session,1);assert.equal(r.assignedCounselorUid,null);const madya={...session,user:{uid:'m'},profile:{counselorLevel:'MADYA'}};r={...r,assignedCounselorUid:'m'};r=apply(r,op('escalation','e2',{targetLevel:'director',summary:'Kebutuhan keputusan',decisionNeeded:'Arahan'}),madya,2);const decision=op('response','resp',{decision:'Disetujui',instruction:'Lanjutkan pendampingan'});assert.throws(()=>apply(r,decision,{...session,activeRole:'deputy_director'},3),/permintaan/);r=apply(r,decision,{...session,activeRole:'director',user:{uid:'d'}},3);assert.equal(r.assignedCounselorUid,'m');assert.equal(r.status,'ditangani');assert.equal(r.higherEscalation.response.actorUid,'d');});
 
 test('Tabayyun records evidence and routes newly discovered serious cases to Madya',()=>{const d={date:'2026-10-04',studentStatement:'Pernyataan',facts:'Fakta',conclusion:'TERBUKTI',discoveredSeverity:'BERAT'};const r=apply(record,op('tabayyun','t',d),session,1);assert.equal(r.status,'eskalasi_diperlukan');assert.equal(r.tabayyunHistory.t.facts,'Fakta');assert.throws(()=>apply(r,op('session','s',{date:d.date,clarification:'Sesi',caseStatus:'konseling'}),session,2),/eskalasi/);const closed=apply(record,op('tabayyun','t2',{...d,conclusion:'TIDAK TERBUKTI'}),session,2);assert.equal(closed.status,'tidak_terbukti');assert.equal(closed.finalPoints,undefined);});
+
+
+test('role-specific counselor level overrides legacy default',()=>{
+ assert.equal(counselorLevel({counselorLevel:'PEMULA',roleScopes:{konselor:{counselorLevel:' madya '}}}),'MADYA');
+ assert.equal(counselorLevel({assignments:{konselor:{counselorLevel:'MADYA'}}}),'MADYA');
+});
+test('routine categories escalate on three distinct consecutive days, including attendance',()=>{
+ const rows=[{studentId:'s',date:'2026-10-26',category:'ALFA'},{studentId:'s',date:'2026-10-27',category:'Kedisiplinan',violationCode:'LATE'},{studentId:'s',date:'2026-10-28',category:'Kedisiplinan',attendanceSourceId:'a'}];
+ assert.equal(routeCounselorCase(rows[2],rows).level,'MADYA');
+ assert.equal(routeCounselorCase(rows[2],[rows[0]]).level,'PEMULA');
+ assert.equal(routeCounselorCase(rows[2],[rows[2],rows[2],rows[2]]).level,'PEMULA');
+ assert.equal(routeCounselorCase(rows[2],rows.map(r=>({...r,studentId:'other'}))).level,'PEMULA');
+ assert.equal(routeCounselorCase(rows[2],[rows[0],{...rows[1],status:'tidak_terbukti'}]).level,'PEMULA');
+ const clean=rows.map(r=>({...r,category:'Kebersihan dan Kerapian',attendanceSourceId:null}));
+ assert.equal(routeCounselorCase(clean[2],clean).level,'MADYA');
+ assert.equal(routeCounselorCase({category:'Moral/Etika'}).level,'MADYA');
+ assert.equal(routeCounselorCase({...rows[2],routeLevel:'MADYA',routeReason:'THREE_CONSECUTIVE_DAYS'}).level,'MADYA');
+});

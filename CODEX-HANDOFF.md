@@ -734,3 +734,14 @@ Added eighth Admin workspace Manajemen Fitur in portal and console navigation. L
 - Header beranda diekstrak menjadi markup bersama; semua route portal memasangnya sebelum pemuatan konten. Halaman internal memakai header sticky dengan identitas mobile dan pencarian/bell/profil/role desktop; judul halaman tetap pada banner konten.
 - Header lama disembunyikan secara visual pada route internal; ID shell dipertahankan untuk binding tahun/menu. Beranda mempertahankan header asli agar pengukuran fit viewport tetap stabil. Desktop tidak menggandakan logo sidebar.
 - 37 tes role/menu/layout dan shared header lulus. Tema v122/SW v154. Belum push atau QA visual langsung. Shell administrasi terpisah masih memakai header administrasi sendiri.
+
+### 28 Oktober — routing konselor
+- Level konselor membaca roleScopes.konselor terlebih dahulu, lalu field lama/assignments; trim/case dinormalisasi. Inbox menyebutkan level aktif agar penugasan keliru terlihat.
+- Moral/etika ke Madya; kedisiplinan (termasuk Alfa/Terlambat) dan kebersihan/kerapian dikelompokkan menurut bidang untuk pengulangan 3 tanggal berurutan pada santri yang sama. Banyak laporan pada sehari tidak dihitung 3 hari; tidak_terbukti dikecualikan. Perlindungan eskalasi berat/kritis dan eskalasi manual tetap berlaku.
+- Pemeriksaan presensi memisahkan temuan Pemula/Madya, memakai tambahan 2 hari sebelum periode untuk kontinuitas; laporan klarifikasi menyimpan hasil routing agar hari ketiga tetap diarahkan ke Madya walaupun hari sebelumnya hanya ada di presensi. Tidak membuat kasus/poin otomatis atau memindahkan kasus yang sudah diklaim.
+- 8 tes model/routing dan 30 tes render lulus; syntax/diff lulus. SW155. Belum push, belum memeriksa akun Muhasim/data laporan produksi; belum memastikan apakah penugasan live MADYA benar. Alur SD tetap Wali Kelas sesuai aturan sebelumnya.
+
+### 28 Oktober — UI ruang kerja Konselor
+- Dekorator bersama untuk Kasus Masuk/Aktif, Penanganan, tindakan, poin, Surat Peringatan, Eskalasi, Riwayat, asesmen dan panduan: breadcrumb, banner pale tosca dengan ikon, tabel dan empty state terstruktur. Memakai ilustrasi SVG Madani yang tersedia, belum salinan persis ilustrasi raster referensi.
+- Pemeriksaan Presensi dipindah sebelum tabel Kasus Masuk; panel tanggal/aksi responsif, penjelasan klarifikasi tetap dipertahankan. Data tabel mobile menjadi kartu berlabel; tidak mengubah scope, data, klaim maupun routing kasus.
+- 44 tes menu/role/layout/model lulus, termasuk idempotensi dekorator, urutan panel dan handler klik yang dipertahankan. JS syntax, 41 JSON dan diff check lulus. Tema123/SW156. Belum push dan belum uji visual di browser/perangkat.

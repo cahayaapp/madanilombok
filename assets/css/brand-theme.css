@@ -1491,3 +1491,56 @@ body.portal-body:not([data-home=true]) .persistent-home-header{display:block;wid
  .persistent-home-header .official-brand img{width:40px;height:40px}
  .persistent-home-header :is(.official-bell,.official-avatar){width:36px;height:36px;padding:6px;font-size:20px}
 }
+
+/* Counselor workspace: shared banner, filters and responsive case lists. */
+.counselor-workspace{min-width:0;color:#093f54}
+.counselor-breadcrumb{display:flex;align-items:center;flex-wrap:wrap;gap:12px;margin:0 0 18px;font-size:13px;color:#527a90}
+.counselor-breadcrumb button{border:0;background:none;padding:0;color:#009e9b;font:inherit;font-weight:800;cursor:pointer}
+.counselor-breadcrumb strong{color:#093f54}
+.counselor-workspace .counselor-hero{display:flex;align-items:center;gap:26px;min-height:210px;padding:32px;border:1px solid #dcefeb;border-radius:26px;background:linear-gradient(90deg,#e1f3efef,#f7faf0b0),url('../brand/home-mosque.svg') right center/auto 100% no-repeat;box-shadow:0 8px 25px #164c4b06;margin-bottom:18px}
+.counselor-workspace .counselor-hero .page-heading-icon{position:static;flex:0 0 82px;width:82px;height:82px;display:grid;place-items:center;border-radius:25px;background:linear-gradient(140deg,#00b7b0,#006371);color:white}
+.counselor-workspace .counselor-hero .page-heading-icon svg{width:36px;height:36px;fill:none;stroke:currentColor;stroke-width:1.7}
+.counselor-workspace .counselor-hero h1,.counselor-workspace .counselor-hero h2{color:#073f59;font-size:clamp(26px,3vw,40px);font-weight:900;line-height:1.15;margin:10px 0}
+.counselor-workspace .counselor-hero p{color:#396478;max-width:580px;line-height:1.6;margin:0}
+.counselor-workspace .counselor-hero .eyebrow{color:#007b80;font-size:12px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase}
+.counselor-workspace .teacher-back{display:none}
+.counselor-workspace .counselor-attendance-panel{padding:20px 22px;margin:0 0 18px;border:1px solid #e0eeed;border-radius:24px;box-shadow:0 8px 24px #075b5410;background:#fff}
+.counselor-attendance-toolbar{display:grid;grid-template-columns:minmax(240px,1.6fr) minmax(150px,1fr) minmax(150px,1fr) auto;gap:16px;align-items:center}
+.counselor-filter-heading{display:flex;align-items:center;gap:14px}
+.counselor-filter-heading>span{display:grid;place-items:center;width:54px;height:54px;flex:0 0 54px;border-radius:18px;background:#e3f5f1;color:#007c83}
+.counselor-filter-heading svg,.counselor-attendance-toolbar button svg{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:1.8}
+.counselor-filter-heading h3{font-size:16px;margin:0 0 5px;font-weight:800}
+.counselor-filter-heading p{font-size:12px;margin:0;color:#69899a}
+.counselor-attendance-toolbar label{display:grid;gap:7px;min-width:0;font-size:13px;font-weight:700}
+.counselor-attendance-toolbar input{width:100%;min-width:0;box-sizing:border-box;border:1px solid #dcebea;border-radius:13px;padding:12px;background:#f6fafa;color:#174b61}
+.counselor-attendance-toolbar button{display:flex;align-items:center;justify-content:center;gap:10px;background:#fff0c9;border:1px solid #ffd580;color:#925708;white-space:normal}
+.counselor-referral-note{font-size:12px;color:#698793;margin:12px 0 0;line-height:1.5}
+.counselor-workspace .table-card{border:1px solid #d5ebe8;border-radius:24px;overflow:hidden;box-shadow:0 10px 30px #124d4810;margin-bottom:20px;background:#fff}
+.counselor-workspace .data-table{width:100%;min-width:0!important;table-layout:fixed}
+.counselor-workspace .data-table th{background:#e5f4f1;color:#166365;font-size:12px;letter-spacing:.4px;padding:20px 16px}
+.counselor-workspace .data-table td{padding:18px 16px;overflow-wrap:anywhere}
+.counselor-workspace .counselor-empty-cell{padding:0!important}
+.counselor-empty{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;min-height:330px;padding:30px;background:radial-gradient(ellipse at bottom right,#dff3ef 0,transparent 45%),radial-gradient(ellipse at bottom left,#eff8f5 0,transparent 45%)}
+.counselor-empty-art{position:relative;display:grid;place-items:center;background:#eff8f5;border-radius:50%;width:94px;height:94px;color:#8bcec4;margin-bottom:20px}
+.counselor-empty-art svg{width:48px;height:48px;fill:none;stroke:currentColor;stroke-width:1.5}
+.counselor-empty-art svg+svg{position:absolute;right:0;bottom:0;width:36px;height:36px;color:#00858a}
+.counselor-empty h3{font-size:21px;margin:0 0 12px;color:#073f59;font-weight:800}
+.counselor-empty p{max-width:500px;line-height:1.6;color:#63869b;margin:0}
+@media(max-width:1150px){.counselor-attendance-toolbar{grid-template-columns:1fr 1fr}.counselor-filter-heading{grid-column:1/-1}.counselor-attendance-toolbar button{grid-column:1/-1}}
+@media(max-width:700px){
+.counselor-breadcrumb{font-size:10px;gap:7px;margin-bottom:12px}
+.counselor-workspace .counselor-hero{padding:20px 16px;gap:14px;min-height:160px;border-radius:22px}
+.counselor-workspace .counselor-hero .page-heading-icon{flex-basis:52px;width:52px;height:52px;border-radius:16px}
+.counselor-workspace .counselor-hero .page-heading-icon svg{width:27px;height:27px}
+.counselor-workspace .counselor-hero p{font-size:12px}.counselor-workspace .counselor-hero .eyebrow{font-size:9px;letter-spacing:1px}
+.counselor-workspace .counselor-attendance-panel{padding:16px}
+.counselor-attendance-toolbar{gap:12px}.counselor-filter-heading h3{font-size:15px}
+.counselor-workspace .data-table,.counselor-workspace .data-table tbody,.counselor-workspace .data-table tr{display:block;width:100%}
+.counselor-workspace .data-table thead{display:none}
+.counselor-workspace .data-table tr{padding:14px;box-sizing:border-box;border-bottom:1px solid #dcefeb}
+.counselor-workspace .data-table td{display:grid;grid-template-columns:85px minmax(0,1fr);gap:10px;padding:7px 0;border:0;white-space:normal}
+.counselor-workspace .data-table td:before{content:attr(data-label);font-size:11px;font-weight:800;color:#638292}
+.counselor-workspace .data-table td[colspan]{display:block}.counselor-workspace .data-table td[colspan]:before{display:none}
+.counselor-empty{min-height:260px;padding:25px 12px}.counselor-empty h3{font-size:18px}.counselor-empty p{font-size:13px}
+.counselor-workspace .table-scroll{overflow:visible}
+}
