@@ -234,4 +234,4 @@ document.getElementById('sidebarOverlay')?.addEventListener('click',()=>setSideb
 document.addEventListener('keydown',event=>{if(event.key==='Escape')setSidebarOpen(false);});
   bindMobileBottomNav();
 window.addEventListener("hashchange",()=>{const next=(location.hash||"#dashboard").slice(1);if(next!==currentRoute){currentRoute=next;renderRoute();}});
-init().catch(err=>{console.error(err);toast(err.message||"Gagal membuka MadaniApp","error");});
+init().catch(err=>{console.error(err);toast(err.message||"Gagal membuka MadaniApp","error");}).finally(()=>window.dispatchEvent(new Event("madani:ready")));

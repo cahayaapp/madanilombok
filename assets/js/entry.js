@@ -131,3 +131,5 @@ function registerWorker() {
 }
 if (document.readyState === 'complete') registerWorker();
 else window.addEventListener('load', registerWorker, { once: true });
+
+window.dispatchEvent(new Event("madani:ready"));

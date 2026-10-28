@@ -430,6 +430,6 @@ async function boot(){
 }
 
 $("#logoutButton").addEventListener("click",async()=>{await logout();window.location.href="../index.html"}); $("#menuButton").addEventListener("click",()=>$("#sidebar").classList.toggle("open")); $("#modalClose").addEventListener("click",closeForm); $("#modalBackdrop").addEventListener("click",e=>{if(e.target.id==="modalBackdrop")closeForm()}); $("#entityForm").addEventListener("submit",submitForm); $$('.nav-item').forEach(btn=>btn.addEventListener("click",()=>{if(btn.dataset.section)navigate(btn.dataset.section);}));
-boot();
+boot().finally(()=>window.dispatchEvent(new Event("madani:ready")));
 
 $$("[data-workspace]").forEach(b=>b.onclick=()=>renderWorkspace(b.dataset.workspace));

@@ -680,3 +680,13 @@ Added eighth Admin workspace Manajemen Fitur in portal and console navigation. L
 - Latest mobile reference: pale greeting, pastel tosca/blue/gold/orange quick cards with colored icons,6 white secondary tiles and5 bottom items. Existing SVG illustration reused; not pixel-identical to supplied artwork.
 - After user screenshot of clipped final row, fitter now measures actual bottom-nav top and reserves12px clear space, observes nav resizing, and removes measured inline bounds when returning to desktop. Compact mode reduces header/greeting decoration before menu cards; removed fixed maximum heights to avoid clipping long labels. Stronger quick-card colors, borders and900-weight titles.
 - Extreme short/zoomed screens have a reachable internal vertical-scroll fallback instead of inaccessible clipping; normal4/6 layouts use compact spacing.34 tests pass including measured nav clearance; syntax/diff valid. Themev113/SWv142. Not pushed, no live writes; actual browser visual verification still unavailable.
+
+## 28 October — desktop pastel cards and permanent contrasting sidebar
+- All portal roles now keep a 260px desktop sidebar visible. Dark tosca navigation contrasts with the light workspace; active items use tosca with a gold edge. Mobile drawer and home layout unchanged.
+- Desktop home hides the extra logo/account header, leaving sidebar branding and the single greeting. Quick cards use the mobile pastel tosca/blue/gold/orange palette, bold dark headings and colored icons; secondary icons share the mobile palette. Narrow desktop uses two quick-card columns to retain readable labels.
+- Theme v114 / SW v143. No live data changes or push. Browser visual verification still unavailable in this session.
+
+## 28 October — startup splash screen
+- Shared splash on entry, portal and admin: centered existing Madani logo/wordmark, slogan, three animated dots, ivory/tosca mosque/wave background. Uses existing vector artwork, not the reference raster mosque.
+- Portal/admin dismiss at boot completion (including caught failures); entry dismisses when its UI script is ready. No artificial delay. After 12 seconds a continue button prevents trapping users if module loading stalls. Reduced-motion styling and back/forward cache dismissal included.
+- JS syntax and diff checks passed; JSDOM checked initial display, three dots, readiness and error dismissal. Device visual verification pending. SW v144. No push or live data changes.
