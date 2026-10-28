@@ -604,6 +604,9 @@ body[data-home=true] #content .premium-home.premium-monitor-home{padding-bottom:
  .mobile-stack-table td{display:grid!important;grid-template-columns:minmax(0,1fr);gap:4px;min-width:0!important;width:100%!important;max-width:100%;white-space:normal!important;padding:8px 14px!important;border:0!important}
  .mobile-stack-table td::before{content:attr(data-mobile-label);font-size:11px;font-weight:700;color:#5e7e78}
  .mobile-stack-table td[data-mobile-label=""]::before{display:none}
+ /* Spanning empty/loading cells must never inherit the label/value grid. */
+ .mobile-stack-table td[colspan]{display:block!important;grid-template-columns:none;box-sizing:border-box}
+ .mobile-stack-table td[colspan]::before{display:none!important}
  .mobile-stack-table td>*{min-width:0;max-width:100%}
  .mu-tabs{display:flex!important;overflow:visible!important}
  .mu-tabs button{flex:1 1 110px}
@@ -1540,7 +1543,7 @@ body.portal-body:not([data-home=true]) .persistent-home-header{display:block;wid
 .counselor-workspace .data-table tr{padding:14px;box-sizing:border-box;border-bottom:1px solid #dcefeb}
 .counselor-workspace .data-table td{display:grid;grid-template-columns:85px minmax(0,1fr);gap:10px;padding:7px 0;border:0;white-space:normal}
 .counselor-workspace .data-table td:before{content:attr(data-label);font-size:11px;font-weight:800;color:#638292}
-.counselor-workspace .data-table td[colspan]{display:block}.counselor-workspace .data-table td[colspan]:before{display:none}
-.counselor-empty{min-height:260px;padding:25px 12px}.counselor-empty h3{font-size:18px}.counselor-empty p{font-size:13px}
+.counselor-workspace .data-table td[colspan]{display:block!important;grid-template-columns:none;padding:0!important}.counselor-workspace .data-table td[colspan]:before{display:none}
+.counselor-empty{width:100%;box-sizing:border-box;min-height:240px;padding:24px 16px;overflow-wrap:normal;word-break:normal}.counselor-empty h3,.counselor-empty p{width:100%;max-width:440px}.counselor-empty-art{flex-shrink:0}.counselor-empty h3{font-size:18px}.counselor-empty p{font-size:13px}
 .counselor-workspace .table-scroll{overflow:visible}
 }

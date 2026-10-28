@@ -754,3 +754,7 @@ Added eighth Admin workspace Manajemen Fitur in portal and console navigation. L
 ### 28 Oktober — angka pada pemilih role
 - normalizeRoles pada auth sebelumnya menerima seluruh key truthy dari roles/roleFlags, termasuk key numerik. Kini memakai roleIds bersama dari user-access-model yang hanya menerima ID dalam ROLE_LABELS, konsisten dengan Manajemen User dan refresh sesi Konselor. Tidak mengubah penugasan/database.
 - Regresi menguji kontaminasi angka 0–34 pada array/map roles dan roleFlags: hanya empat role valid tersisa. 43 tes menu/role/session/user-management lulus; syntax auth/app/SW dan diff check lulus. SW158. Belum push/deploy atau verifikasi visual sesi produksi.
+
+### 28 Oktober — empty state Konselor mobile
+- Memperbaiki benturan display:grid!important dari mobile-stack-table dengan grid label 85px pada tabel Konselor. Sel colspan kini block secara eksplisit, tanpa grid label; empty state memakai lebar penuh, wrapping normal dan ukuran ringkas. Aturan colspan umum juga melindungi pesan tabel serupa pada role lain.
+- Tema124/SW159. 31 tes render role lulus; pemeriksaan cascade CSS dengan fixture JSDOM memastikan sel kosong block dan grid-template-columns none; diff check lulus. Belum push/deploy dan belum verifikasi visual perangkat langsung.
