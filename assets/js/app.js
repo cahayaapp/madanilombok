@@ -1,4 +1,5 @@
 import {decorateCounselorPage} from './counselor-layout.js';
+import {refreshRoleSession} from './session-refresh.js';
 import {mountWorkspaceHeader} from './home-role-switcher.js';
 import {loading} from './loading-ui.js';
 import {setSidebarOpen,toggleSidebar} from './sidebar-control.js';
@@ -173,6 +174,10 @@ async function renderRoute() {
   mount.innerHTML=loading('Memuat ruang kerja…');
   root.replaceChildren(mount);
   try {
+  if(activeRole==='konselor') {
+    await refreshRoleSession(session,activeRole,getNode);
+    if(version!==renderVersion)return;
+  }
   const scopedSession=sessionForRole(session,activeRole);
   const ctx={session:scopedSession,master,yearId:currentAcademicYearId(),year:currentAcademicYear(),root:mount,navigate,rerender:renderRoute,roleName:roleLabel([activeRole])};
   mountWorkspaceHeader(ctx);

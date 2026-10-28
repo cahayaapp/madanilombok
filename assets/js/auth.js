@@ -52,7 +52,7 @@ export async function requireSession() {
     throw new Error("Akun belum aktif di MadaniApp");
   }
   stopProfileWatch?.();
-  const fingerprint=p=>JSON.stringify([p.active,p.accessRevoked,p.role,p.roles,p.roleFlags,p.defaultRole,p.roleScopes,p.studentIds,p.accessVersion]);
+  const fingerprint=p=>JSON.stringify([p.active,p.accessRevoked,p.role,p.roles,p.roleFlags,p.defaultRole,p.roleScopes,p.studentIds,p.accessVersion,p.counselorLevel,p.scopeGender,p.genderScope,p.assignments]);
   const initial=fingerprint(profile);
   stopProfileWatch=watchUserProfile(user.uid,current=>{
     if(!current||current.active===false||current.accessRevoked===true){logout().finally(()=>{window.location.href='../index.html?error=unauthorized';});return;}
