@@ -3,6 +3,7 @@ import {
   signInWithEmailAndPassword,
   signOut
 } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+import {roleIds as normalizeRoles} from './user-access-model.js';
 import { auth } from "./firebase.js";
 import { getNode, watchUserProfile } from "./repository.js";
 
@@ -26,18 +27,8 @@ export function waitForAuth() {
   });
 }
 
-export function normalizeRoles(profile = {}) {
-  const roles = new Set();
-  if (profile.role) roles.add(profile.role);
-  if (Array.isArray(profile.roles)) profile.roles.forEach(r => roles.add(r));
-  if (profile.roles && !Array.isArray(profile.roles) && typeof profile.roles === "object") {
-    Object.entries(profile.roles).forEach(([key, value]) => value && roles.add(key));
-  }
-  if (profile.roleFlags && typeof profile.roleFlags === "object") {
-    Object.entries(profile.roleFlags).forEach(([key, value]) => value && roles.add(key));
-  }
-  return [...roles];
-}
+// Use the same validated role list as account management and session refresh.
+export {roleIds as normalizeRoles} from './user-access-model.js';
 
 export async function requireSession() {
   const user = await waitForAuth();

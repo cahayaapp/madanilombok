@@ -17,3 +17,17 @@ test('missing, revoked, removed role or unreadable profile cannot reuse stale ac
  for(const value of [null,{active:false,roles:['konselor']},{accessRevoked:true,roles:['konselor']},{roles:['guru_mapel']}])await assert.rejects(refreshRoleSession(old(),'konselor',async()=>value));
  await assert.rejects(refreshRoleSession(old(),'konselor',async()=>{throw Error('offline');}),/offline/);
 });
+
+test('role normalization ignores numeric keys and unknown roles from legacy profiles',async()=>{
+ const {roleIds}=await import('../assets/js/user-access-model.js');
+ const valid=['head_boys_dorm','guru_mapel','konselor','mentor_tahsin_tahfiz'];
+ const numeric=Object.fromEntries(Array.from({length:35},(_,i)=>[String(i),true]));
+ for(const profile of [
+  {role:valid[0],roles:valid,roleFlags:{...numeric,konselor:true}},
+  {roles:{...numeric,...Object.fromEntries(valid.map(r=>[r,true])),admin:false,unknown:true}},
+  {roles:[...valid,'0','34','unknown'],roleFlags:numeric}
+ ])assert.deepEqual(roleIds(profile),valid);
+ const session=old();
+ await refreshRoleSession(session,'konselor',async()=>({roles:valid,roleFlags:numeric}));
+ assert.deepEqual(session.roles,valid);
+});
