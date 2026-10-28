@@ -401,3 +401,48 @@ test('Naqib shared report saves selected students as one incident with reporter 
  ctx.root.querySelectorAll('[data-student]').forEach(el=>{el.checked=true;el.dispatchEvent(new win.Event('change'));});assert.equal(ctx.root.querySelector('#reportSelectionCount').textContent,'2 dipilih');ctx.root.querySelector('#reportCategory').value='Kedisiplinan';ctx.root.querySelector('#reportDescription').value='Kejadian uji';ctx.root.querySelector('#reportCritical').checked=true;ctx.root.querySelector('#sendReport').click();await settle();const records=Object.entries(captured).filter(([p])=>p.startsWith('boarding/cases/')).map(([,v])=>v);assert.equal(records.length,2);assert.equal(new Set(records.map(r=>r.groupId)).size,1);for(const r of records){assert.equal(r.reportedBy,ctx.session.user.uid);assert.equal(r.reportedByRole,'naqib');assert.equal(r.sourceStudentId,'s2');assert.equal(r.critical,true);assert.equal(r.parentVisible,false);assert.equal(r.finalPoints,undefined);}
  }finally{mock.setExport('patchNode',previous);}
 });
+
+test('counseling report filters cached cases without exposing other dorm students',async()=>{
+ const module=await load(new URL('assets/js/leadership-monitor.js',base).href);if(module.status!=='evaluated')await module.evaluate();
+ const ctx=ctxFor('head_boys_dorm');
+ const date=new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Makassar',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date());
+ const path='boarding/cases/year',before=database.get(path),writeCount=writes.length;
+ database.set(path,{a:{studentId:'s1',date,status:'menunggu_konselor',category:'Kebersihan',description:'Kronologi uji'},b:{studentId:'s1',date,status:'selesai',category:'Kedisiplinan'},c:{studentId:'s2',date,status:'menunggu_konselor',category:'RAHASIA PUTRI'}});
+ try{
+  await module.namespace.renderLeadershipMonitor(ctx,'dorm-counselor');
+  assert.equal(ctx.root.querySelectorAll('.case-progress-record').length,2);
+  assert.doesNotMatch(ctx.root.textContent,/RAHASIA PUTRI/);
+  const filter=ctx.root.querySelector('.case-status-filter select');filter.value='waiting';filter.dispatchEvent(new win.Event('change'));
+  assert.equal(ctx.root.querySelectorAll('.case-progress-record').length,1);
+  assert.match(ctx.root.querySelector('.case-record-detail').textContent,/Kronologi uji/);
+  const search=ctx.root.querySelector('[type=search]');search.value='tidak cocok';search.dispatchEvent(new win.Event('input'));
+  assert.equal(ctx.root.querySelectorAll('.case-progress-record').length,0);
+  assert.equal(ctx.root.querySelector('.portal-metric strong').textContent,'2');
+  ctx.root.querySelector('[data-period=month]').click();assert.ok(ctx.root.querySelector('[name=from]').value<date);
+  assert.equal(writes.length,writeCount);
+ }finally{before===undefined?database.delete(path):database.set(path,before);}
+});
+
+test('shared personnel record keeps identity, content, and status in separate cells',async()=>{
+ const module=await load(new URL('assets/js/modules/common.js',base).href);if(module.status!=='evaluated')await module.evaluate();
+ const root=win.document.createElement('div');
+ root.innerHTML=module.namespace.recordCard('Wisnu <Nusantara>','<p>05:40–06:10 · Bahasa Arab Pagi</p><small>Verifikasi kehadiran atau izin.</small>','Belum presensi','waiting');
+ assert.equal(root.querySelector('.record-avatar').textContent,'W');
+ assert.equal(root.querySelector('.record-copy h3').textContent,'Wisnu <Nusantara>');
+ assert.equal(root.querySelector('.record-status').textContent,'Belum presensi');
+ assert.equal(root.querySelectorAll('nusantara').length,0);
+ assert.match(root.querySelector('.record-copy').textContent,/05:40–06:10/);
+});
+
+test('workspace header reuses home identity and profile/message actions',async()=>{
+ const module=await load(new URL('assets/js/home-role-switcher.js',base).href);if(module.status!=='evaluated')await module.evaluate();
+ const top=win.document.createElement('header');top.className='portal-topbar';win.document.body.append(top);
+ const ctx=ctxFor('head_boys_dorm'),visited=[];ctx.navigate=route=>visited.push(route);
+ try{
+  module.namespace.mountWorkspaceHeader(ctx);
+  const expected=win.document.createElement('div');expected.innerHTML=module.namespace.homeHeader(ctx);assert.equal(top.querySelector('.official-home-header').outerHTML,expected.innerHTML);
+  top.querySelector('.official-avatar').click();top.querySelector('.official-bell').click();
+  assert.deepEqual(visited,['work-profile','work-messages']);
+  module.namespace.mountWorkspaceHeader(ctx);assert.equal(top.querySelectorAll('.official-home-header').length,1);
+ }finally{top.remove();}
+});

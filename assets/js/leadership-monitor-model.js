@@ -42,7 +42,7 @@ export const MONITOR_VIEWS={
  'school-student-attendance':['Kehadiran Siswa','student'], 'school-student-punctuality':['Kedisiplinan Siswa','student'],
  'school-mentoring':['Mentoring Guru Wali','mentoring'], 'dorm-student-attendance':['Kehadiran Santri','boarding'],
  'dorm-student-punctuality':['Kedisiplinan Santri','boarding'],
- 'dorm-teacher-attendance':['Kehadiran Pembina & Guru Pondok','pondokTeacher'], 'dorm-teacher-punctuality':['Kedisiplinan Pembina & Guru Pondok','pondokTeacher'], 'dorm-counselor':['Konselor','cases']
+ 'dorm-teacher-attendance':['Kehadiran Pembina & Guru Pondok','pondokTeacher'], 'dorm-teacher-punctuality':['Kedisiplinan Pembina & Guru Pondok','pondokTeacher'], 'dorm-counselor':['Konseling','cases']
 };
 export function teacherMissing(schedules,records,from,to,now=Date.now()){
  const missing=[],days=['Minggu','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'];

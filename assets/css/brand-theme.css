@@ -1346,3 +1346,148 @@ body[data-home=true] #content .home-dashboard .premium-home.home-compact>.offici
  :is(.portal-body,.admin-console) .sidebar .nav-item:not(.active)::after{content:'›';margin-left:auto;color:#92c9c8;font-size:20px}
  :is(.portal-body,.admin-console) .sidebar .sidebar-footer{border:1px solid #ffffff16!important;border-radius:17px;padding:14px!important;margin:6px 8px 12px!important;background:#ffffff08!important}
 }
+
+/* Shared workspace surfaces: the same Madani theme on desktop and mobile. */
+.app-body:not([data-home=true]) .portal-section-head{
+ background:linear-gradient(90deg,#def2ef 0%,#eef8f2e8 48%,#e5f4eb22 100%),url('../brand/home-mosque.svg') right bottom/auto 145% no-repeat,#e6f4ef!important;
+ border:1px solid #d7eeea!important;min-height:148px!important;padding:26px 32px!important;color:#073f50!important;
+}
+.app-body:not([data-home=true]) .portal-section-head:after{display:none!important}
+.app-body:not([data-home=true]) .portal-section-head h2{color:#073f50!important;font-weight:900!important}
+.app-body:not([data-home=true]) .portal-section-head p{color:#3e7284!important}
+.app-body:not([data-home=true]) .portal-section-head .eyebrow{color:#168784!important}
+.app-body:not([data-home=true]) .page-heading-icon{width:68px;height:68px;flex:0 0 68px;background:linear-gradient(140deg,#00b9b0,#00636c);color:white;border-radius:22px;box-shadow:0 8px 22px #008a8220}
+.app-body:not([data-home=true]) :is(.panel,.monitor-toolbar,.monitor-overview){border-color:#e0edee!important;box-shadow:0 8px 25px #164f5606!important;background:linear-gradient(135deg,#fff,#fbfefe)!important}
+.app-body:not([data-home=true]) .portal-metric{background:linear-gradient(120deg,#effbf7,#e5f7f3)!important;border-color:#ccece7!important}
+.app-body:not([data-home=true]) .portal-metric.blue{background:linear-gradient(120deg,#eff9ff,#e5f3ff)!important;border-color:#cce7ff!important}
+.app-body:not([data-home=true]) .portal-metric.orange{background:linear-gradient(120deg,#fffdf3,#fff3d7)!important;border-color:#f6e7c3!important}
+.app-body:not([data-home=true]) .portal-metric.coral{background:linear-gradient(120deg,#fff8f7,#ffecea)!important}
+.monitor-toolbar{flex-wrap:wrap;gap:18px}
+.monitor-toolbar .filter-row{flex:1;min-width:0}
+.monitor-toolbar label{min-width:0}
+.monitor-presets{display:flex;flex-wrap:wrap;gap:8px}
+.monitor-presets button{min-height:40px;border:1px solid #c9e9e5;border-radius:13px;background:#eefafa;color:#087477;padding:10px 14px;font-weight:700;cursor:pointer}
+.counseling-dashboard .monitor-summary-strip{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin:20px 0}
+.counseling-dashboard .portal-metric{position:relative;padding:22px 22px 22px 88px!important;min-height:120px;overflow:hidden}
+.counseling-dashboard .metric-visual{position:absolute;left:22px;top:22px;width:50px;height:50px;border-radius:17px}
+.counseling-dashboard .portal-metric:after{content:'';position:absolute;right:-18px;bottom:-25px;width:100px;height:100px;border:12px solid #00a39d0a;border-radius:50%;pointer-events:none}
+.case-list-tools{display:flex;gap:14px;align-items:end;margin-bottom:12px;flex-wrap:wrap}
+.case-search{display:flex;align-items:center;gap:10px;flex:1;min-width:180px;border:1px solid #deebef;background:#f1f7fa;border-radius:14px;padding:0 14px}
+.case-search svg{width:20px;height:20px;flex-shrink:0;color:#42778a}
+.case-search input{width:100%;min-width:0;border:0!important;background:transparent!important;box-shadow:none!important;padding:13px 0!important}
+.case-status-filter{display:grid;gap:5px;color:#477685;font-size:12px}
+.case-status-filter select{max-width:100%;min-height:44px;border:1px solid #dbe9eb;border-radius:12px;padding:8px 12px;background:#f8fcfc;color:#114d60;font:inherit}
+.case-result-count{font-size:12px;color:#678895;margin:0 0 10px}
+.case-progress-record{border:1px solid #deebee;border-radius:16px;background:linear-gradient(110deg,#fff,#fbfefe);margin-top:9px;overflow:hidden}
+.case-progress-record summary{display:flex;align-items:center;gap:16px;padding:14px 18px;cursor:pointer;list-style:none}
+.case-progress-record summary::-webkit-details-marker{display:none}
+.case-person-copy{display:grid;gap:4px;min-width:0;flex:1;overflow-wrap:anywhere}
+.case-person-copy strong{color:#073f50;font-size:15px;font-weight:800}
+.case-person-copy small{font-size:12px;color:#64869d;line-height:1.4}
+.case-treatment{padding:9px 14px;border-radius:12px;font-size:12px;font-weight:700;flex-shrink:0}
+.case-treatment.waiting{background:#fff5dc;color:#a66606}.case-treatment.handled{background:#e3f8ef;color:#08775d}
+.case-chevron{font-size:26px;color:#366b83;transition:transform .2s}.case-progress-record[open] .case-chevron{transform:rotate(90deg)}
+.case-record-detail{padding:0 20px 16px 84px;color:#406b7c;overflow-wrap:anywhere}.case-record-detail p{margin:8px 0;white-space:pre-wrap}
+@media(max-width:700px){
+ .app-body:not([data-home=true]) .portal-section-head{min-height:124px!important;padding:20px!important;gap:14px;background-size:auto,auto 110%!important;flex-wrap:wrap}
+ .app-body:not([data-home=true]) .page-heading-icon{width:48px;height:48px;flex-basis:48px;border-radius:16px}
+ .app-body:not([data-home=true]) .portal-section-head>div{min-width:0;flex:1}
+ .app-body:not([data-home=true]) .portal-section-head h2{font-size:clamp(21px,5.5vw,28px)!important;overflow-wrap:anywhere}
+ .monitor-toolbar{display:grid!important;grid-template-columns:minmax(0,1fr);padding:16px!important}
+ .monitor-toolbar .filter-row{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+ .monitor-toolbar input{width:100%;min-width:0;box-sizing:border-box}
+ .monitor-presets{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}.monitor-presets button{font-size:11px;padding:9px 5px}
+ .counseling-dashboard .monitor-summary-strip{gap:8px;margin:14px 0}
+ .counseling-dashboard .portal-metric{min-height:0;padding:12px!important;gap:5px!important;border-radius:16px!important}
+ .counseling-dashboard .metric-visual{position:static;width:30px;height:30px;border-radius:10px}
+ .counseling-dashboard .portal-metric strong{font-size:25px!important}.counseling-dashboard .portal-metric span{font-size:11px}.counseling-dashboard .portal-metric small{font-size:10px;line-height:1.4}
+ .case-list-tools{display:grid;grid-template-columns:minmax(0,1fr);gap:10px}.case-search{min-width:0}
+ .case-progress-record summary{display:grid;grid-template-columns:40px minmax(0,1fr) 15px;gap:10px;padding:13px}
+ .case-progress-record .monitor-person-avatar{width:40px;height:40px;font-size:20px}.case-treatment{grid-column:2;padding:7px 10px;justify-self:start;font-size:11px}.case-chevron{grid-column:3;grid-row:1/3}.case-record-detail{padding:0 14px 14px}
+ .counseling-dashboard{padding-bottom:calc(110px + env(safe-area-inset-bottom))}
+}
+/* Keep metric icons in normal flow; legacy metric padding must not overlap them. */
+.app-body:not([data-home=true]) .counseling-dashboard .portal-metric{
+ display:grid!important;grid-template-columns:50px minmax(0,1fr)!important;grid-template-rows:auto auto 1fr;column-gap:18px!important;row-gap:6px!important;padding:22px!important;align-items:start!important;
+}
+.app-body:not([data-home=true]) .counseling-dashboard .portal-metric>.metric-visual{position:static!important;grid-column:1;grid-row:1/4;width:50px;height:50px;margin:0!important}
+.app-body:not([data-home=true]) .counseling-dashboard .portal-metric>:is(span,strong,small){grid-column:2;min-width:0;overflow-wrap:anywhere;position:relative;z-index:1}
+.app-body:not([data-home=true]) .portal-section-head>div>p:not(.eyebrow){color:#3e7284!important}
+.case-progress-panel>.panel-head{justify-content:flex-start!important}
+.case-progress-panel>.panel-head h3{margin-right:auto!important}
+.app-body:not([data-home=true]) :is(.teacher-page>.teacher-header,.mu-hero.compact,.me-hero){background:linear-gradient(90deg,#e0f3ef,#f2f8edda 60%,#ecf6e755),url('../brand/home-mosque.svg') right bottom/auto 135% no-repeat,#e7f4ef!important;border:1px solid #d7eeea!important;border-radius:22px!important;color:#073f50!important}
+.app-body:not([data-home=true]) :is(.teacher-page>.teacher-header,.mu-hero.compact,.me-hero) :is(h1,h2){color:#073f50!important}
+.app-body:not([data-home=true]) :is(.teacher-page>.teacher-header,.mu-hero.compact,.me-hero) p{color:#3e7284!important}
+@media(max-width:700px){
+ .app-body:not([data-home=true]) .counseling-dashboard .portal-metric{grid-template-columns:minmax(0,1fr)!important;grid-template-rows:auto!important;padding:12px!important;gap:6px!important}
+ .app-body:not([data-home=true]) .counseling-dashboard .portal-metric>.metric-visual{grid-column:1;grid-row:auto;width:30px;height:30px}
+ .app-body:not([data-home=true]) .counseling-dashboard .portal-metric>:is(span,strong,small){grid-column:1}
+}
+
+/* Shared record cards across role workspaces, including attendance lists. */
+.app-body:not([data-home=true]) .panel>.panel-head{justify-content:flex-start!important;gap:10px!important}
+.app-body:not([data-home=true]) .panel>.panel-head h3{margin:0 auto 0 0!important;text-align:left!important}
+.app-body:not([data-home=true]) .workspace-record{
+ border:1px solid #deebee!important;border-radius:16px!important;background:linear-gradient(110deg,#fff,#fbfefe)!important;box-shadow:none!important;padding:16px 18px!important;margin-top:9px!important;overflow-wrap:anywhere;
+}
+.app-body:not([data-home=true]) .workspace-record h3{font-size:15px!important;line-height:1.45!important;font-weight:800!important;color:#073f50!important;margin:0 0 4px!important}
+.app-body:not([data-home=true]) .workspace-record p{font-size:13px!important;line-height:1.5!important;color:#64869d!important;margin:4px 0!important}
+.app-body:not([data-home=true]) .workspace-record small{color:#64869d;font-size:12px;line-height:1.45}
+.app-body:not([data-home=true]) .identity-record{display:grid!important;grid-template-columns:44px minmax(0,1fr) auto;gap:16px;align-items:center}
+.record-avatar{width:44px;height:44px;display:grid;place-items:center;background:#e1f5ef;color:#187c70;border-radius:17px;font-size:22px;font-weight:800}
+.record-copy{min-width:0}
+.record-status{padding:9px 14px;border-radius:12px;font-size:12px;font-weight:700;max-width:100%;line-height:1.4}
+.record-status.waiting{background:#fff5dc;color:#a66606}
+.app-body:not([data-home=true]) .workspace-record>.badge{display:inline-flex;border-radius:12px;padding:7px 12px;margin:5px 0}
+.case-search svg{fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+@media(max-width:700px){
+ .app-body:not([data-home=true]) .workspace-record{padding:13px!important}
+ .app-body:not([data-home=true]) .identity-record{grid-template-columns:40px minmax(0,1fr);gap:10px}
+ .record-avatar{width:40px;height:40px;font-size:20px}
+ .identity-record>.record-status{grid-column:2;justify-self:start;padding:7px 10px;font-size:11px}
+ .app-body:not([data-home=true]) .workspace-record h3{font-size:14px!important}
+ .app-body:not([data-home=true]) .workspace-record p{font-size:12px!important}
+}
+
+/* Desktop brand lockup matches the bold mobile identity. */
+@media(min-width:901px){
+ :is(.portal-body,.admin-console) .sidebar .sidebar-brand{display:flex!important;align-items:center!important;gap:10px!important;padding:22px 16px!important}
+ :is(.portal-body,.admin-console) .sidebar .sidebar-brand>.brand-mark{width:48px!important;height:48px!important;min-width:48px!important;flex:0 0 48px!important;padding:0!important;background:transparent!important;box-shadow:none!important}
+ :is(.portal-body,.admin-console) .sidebar .sidebar-brand .brand-mark img{display:block;width:48px!important;height:48px!important;object-fit:contain}
+ :is(.portal-body,.admin-console) .sidebar .sidebar-brand>div:last-child{min-width:0;flex:1}
+ :is(.portal-body,.admin-console) .sidebar .sidebar-brand .brand-wordmark{display:block;font-family:'Inter','Nunito',system-ui,sans-serif!important;font-size:22px!important;font-weight:900!important;line-height:1.15!important;letter-spacing:-.8px!important;white-space:nowrap;color:#fff!important}
+ :is(.portal-body,.admin-console) .sidebar .sidebar-brand .brand-wordmark span{color:#dc981f!important;font:inherit!important;letter-spacing:inherit!important}
+ :is(.portal-body,.admin-console) .sidebar .sidebar-brand small{display:block;margin-top:5px!important;font-family:'Inter',system-ui,sans-serif!important;font-size:7px!important;font-weight:500!important;line-height:1.5!important;letter-spacing:.55px!important;text-transform:uppercase;white-space:nowrap;color:#d5ecea!important}
+}
+
+/* Interior routes retain the home header instead of replacing it with a page title. */
+.persistent-home-header{display:none}
+body.portal-body:not([data-home=true]) .portal-topbar{position:sticky!important;top:0;z-index:40;display:block!important;padding:16px 28px!important;background:#f5faf8f5!important;backdrop-filter:blur(16px);border-bottom:1px solid #e4efed}
+body.portal-body:not([data-home=true]) .portal-topbar>:not(.persistent-home-header){display:none!important}
+body.portal-body:not([data-home=true]) .persistent-home-header{display:block;width:100%}
+.persistent-home-header .official-home-header{display:flex;align-items:center;justify-content:space-between;gap:18px;min-height:52px}
+.persistent-home-header .official-brand{display:flex;align-items:center;gap:12px;min-width:0}
+.persistent-home-header .official-brand img{width:45px;height:45px}
+.persistent-home-header .official-brand strong{font-family:'Inter',sans-serif;font-size:23px;font-weight:900;letter-spacing:-.7px;color:#043d50;white-space:nowrap}
+.persistent-home-header .official-brand em{font-style:normal;color:#d99821}
+.persistent-home-header .official-brand small{display:block;font-size:7px;letter-spacing:.7px;color:#194f60;margin-top:5px}
+.persistent-home-header .official-header-actions{display:flex;align-items:center;gap:14px}
+.persistent-home-header :is(.official-bell,.official-avatar){width:44px;height:44px;display:grid;place-items:center;border-radius:50%;background:#f7fffc;border:1px solid #d5eee9;color:#008680;padding:9px;cursor:pointer;flex-shrink:0}
+.persistent-home-header .official-bell svg{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:1.8}
+.persistent-home-header .official-avatar{border:2px solid #f8d996;background:#e5f5ef;font-size:23px;font-weight:800;overflow:hidden}
+.persistent-home-header .official-avatar img{width:100%;height:100%;object-fit:cover;border-radius:50%}
+.persistent-home-header .desktop-home-account{display:grid;grid-template-columns:1fr auto;text-align:left;border:0;background:none;color:#164e61;gap:4px 18px;cursor:pointer}
+.persistent-home-header .desktop-home-account b{font-size:14px}.persistent-home-header .desktop-home-account small{grid-column:1;font-size:12px;color:#63879a}.persistent-home-header .desktop-home-account>span{grid-column:2;grid-row:1/3;align-self:center}
+@media(min-width:901px){
+ .persistent-home-header :is(.official-brand,.desktop-home-menu){display:none!important}
+ .persistent-home-header .desktop-home-search{display:flex;align-items:center;gap:12px;width:min(52%,580px);min-width:0;border:1px solid #e9f1f1;background:#edf4f5;border-radius:28px;padding:11px 20px;color:#316c85;text-align:left;font:inherit;font-size:25px;cursor:pointer}
+ .persistent-home-header .desktop-home-search span{font-size:13px;line-height:1.4}
+}
+@media(max-width:900px){
+ body.portal-body:not([data-home=true]) .portal-topbar{padding:12px 16px!important}
+ .persistent-home-header :is(.desktop-home-search,.desktop-home-account,.desktop-home-menu){display:none!important}
+ .persistent-home-header .official-home-header{gap:8px}.persistent-home-header .official-header-actions{gap:7px}
+ .persistent-home-header .official-brand{gap:8px}.persistent-home-header .official-brand strong{font-size:20px}.persistent-home-header .official-brand small{font-size:6px;letter-spacing:.4px}
+ .persistent-home-header .official-brand img{width:40px;height:40px}
+ .persistent-home-header :is(.official-bell,.official-avatar){width:36px;height:36px;padding:6px;font-size:20px}
+}

@@ -19,6 +19,11 @@ export function panel(title, body, extraClass = "") {
   return `<section class="panel ${extraClass}"><div class="panel-head"><span class="panel-marker" aria-hidden="true"></span><h3>${escapeHtml(title)}</h3></div>${body}</section>`;
 }
 
+// Shared identity row for read-only personnel/student lists.
+export function recordCard(title, content, status = '', tone = '') {
+  return `<article class="workspace-record identity-record"><span class="record-avatar" aria-hidden="true">${escapeHtml(Array.from(String(title || '—'))[0])}</span><div class="record-copy"><h3>${escapeHtml(title)}</h3>${content}</div>${status ? `<span class="record-status ${escapeHtml(tone)}">${escapeHtml(status)}</span>` : ''}</article>`;
+}
+
 export function badge(text, tone = "") {
   return `<span class="badge ${tone}">${escapeHtml(text ?? "—")}</span>`;
 }

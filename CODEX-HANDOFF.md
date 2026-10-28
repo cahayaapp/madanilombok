@@ -709,3 +709,28 @@ Added eighth Admin workspace Manajemen Fitur in portal and console navigation. L
 - Shared desktop home header now has an actionable menu search launcher, message bell, avatar and role/account control; sidebar owns the sole brand logo. Menu search filters only the existing permitted menu catalog in the all-menu dialog, not student/database records.
 - Larger pale greeting, overlapping date strip, pastel quick cards and white secondary rows follow latest reference. Four/six limits and all role permissions preserved. All new home layout rules >=901px; mobile home unchanged.
 - Existing vector mosque reused; not pixel-identical to raster reference. 34 role/menu/layout tests pass; syntax/diff valid. Theme117 / SW148. Not pushed; browser visual verification pending.
+
+## 28 October — shorter menu labels
+- Shared guide menu/page label is now Panduan (including configured bottom navigation). Dorm counselor monitoring menu/page is now Konseling. Staff role name Konselor and case assignee labels remain semantically unchanged.
+- Syntax/diff checks pass; SW149. Local only, not pushed.
+
+### 28 Oktober — tema ruang kerja dan Konseling responsif
+- Banner ruang kerja bersama, guru dan mentoring menggunakan tema terang tosca; ringkasan pastel dan panel putih. Beranda tetap menggunakan tema sendiri.
+- Konseling Kepala Asrama: tiga ringkasan, periode 1/7/30 hari, pencarian lokal, filter penanganan, dan rincian kasus baca-saja. Data tetap disaring menurut unit asrama sebelum ditampilkan; tidak ada write database.
+- Koreksi screenshot: ikon ringkasan memakai kolom grid dalam alur normal, bukan posisi absolut; mobile satu kolom internal per kartu. Perbaikan kontras subjudul banner dan perataan judul panel.
+- Tema aset v119, SW v151. 35 pengujian role/route/menu/layout lulus, syntax JS dan diff whitespace lulus. Belum push/deploy; pemeriksaan visual browser/perangkat seluruh halaman belum dilakukan. Ilustrasi memakai SVG Madani yang tersedia, bukan salinan persis gambar referensi.
+
+### 28 Oktober — konsistensi kartu daftar lintas role
+- Daftar pertemuan belum presensi pada laporan sekolah/asrama memakai komponen `recordCard`: avatar inisial, nama dan konteks jadwal, label “Belum presensi”; tetap membedakan belum tercatat dari ketidakhadiran.
+- Semua kartu `.workspace-record` memakai panel putih, border, tipografi dan spasi seragam dengan daftar Konseling. Semua judul panel bersama rata kiri di dekat aksen emas. Mobile memindahkan label status ke bawah informasi tanpa menumpuk teks.
+- Ikon pencarian Konseling diperbaiki stroke/fill-nya (sebelumnya tampak bulatan hitam). Tidak menambahkan tombol/chevron palsu pada kartu tanpa aksi.
+- 36 tes lulus, JS syntax dan diff check lulus; tema v120/SW v152. Belum dipush dan belum verifikasi visual browser langsung.
+
+### 28 Oktober — logo desktop disamakan dengan mobile
+- Lockup sidebar desktop portal/admin memakai wordmark sans-serif 900, APP emas, logo M 48px dan nama pesantren huruf kapital kecil satu baris. Tidak menambahkan logo/header kedua; aturan ukuran hanya >=901px.
+- Nama pesantren pada sidebar admin/accounts diseragamkan. Tema v121/SW v153. Diff check lulus; belum push dan belum visual QA browser.
+
+### 28 Oktober — header portal konsisten lintas menu
+- Header beranda diekstrak menjadi markup bersama; semua route portal memasangnya sebelum pemuatan konten. Halaman internal memakai header sticky dengan identitas mobile dan pencarian/bell/profil/role desktop; judul halaman tetap pada banner konten.
+- Header lama disembunyikan secara visual pada route internal; ID shell dipertahankan untuk binding tahun/menu. Beranda mempertahankan header asli agar pengukuran fit viewport tetap stabil. Desktop tidak menggandakan logo sidebar.
+- 37 tes role/menu/layout dan shared header lulus. Tema v122/SW v154. Belum push atau QA visual langsung. Shell administrasi terpisah masih memakai header administrasi sendiri.

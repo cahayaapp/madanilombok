@@ -5,6 +5,37 @@ import {arrangeHome} from './home-layout.js';
 import {icon} from './teacher/ui.js';
 import {ROLE_LABELS} from './permissions.js';
 import {escapeHtml as e} from './utils.js';
+export function homeHeader(ctx){
+ const name=ctx.session.profile.displayName||ctx.session.profile.name||'Pengguna';
+ return `<header class="official-home-header"><button type="button" class="desktop-home-search" aria-label="Cari menu">⌕ <span>Cari menu yang tersedia untuk Anda…</span></button><button type="button" class="desktop-home-menu" aria-label="Buka menu navigasi" aria-controls="sidebar" aria-expanded="false">☰</button><div class="official-brand"><img src="../assets/brand/logo.svg" alt="MadaniApp"><div><strong>MADANI<em>APP</em></strong><small>PONDOK PESANTREN AL-MADANI</small></div></div><div class="official-header-actions"><button type="button" class="official-bell" aria-label="Pesan dan pemberitahuan">${icon('bell')}</button><button type="button" class="official-avatar" aria-label="Profil Saya">${ctx.session.profile.photoURL?`<img src="${e(ctx.session.profile.photoURL)}" alt="Foto profil">`:`<span>${e(name[0])}</span>`}</button><button type="button" class="desktop-home-account" aria-label="Ganti role aktif"><b>${e(name)}</b><small>${e(ROLE_LABELS[ctx.session.activeRole]||ctx.roleName||'')}</small><span aria-hidden="true">⌄</span></button></div></header>`;
+}
+
+export function mountWorkspaceHeader(ctx){
+ const top=document.querySelector('.portal-topbar');if(!top)return;
+ let host=top.querySelector('.persistent-home-header');
+ if(!host){host=document.createElement('div');host.className='persistent-home-header';top.append(host);}
+ host.innerHTML=homeHeader(ctx);
+ host.querySelector('.official-avatar').onclick=()=>ctx.navigate('work-profile');
+ host.querySelector('.official-bell').onclick=()=>ctx.navigate(ctx.session.activeRole==='wali_santri'?'parent-messages':'work-messages');
+ host.querySelector('.desktop-home-menu').onclick=toggleSidebar;
+ host.querySelector('.desktop-home-account').onclick=()=>{
+  const picker=document.getElementById('rolePicker');
+  const d=document.createElement('dialog');d.className='home-role-dialog';d.setAttribute('aria-label','Pilih role aktif');
+  d.innerHTML=`<header><h2>Pilih Role</h2><button type="button" data-close aria-label="Tutup">×</button></header>${ctx.session.roles.map(role=>`<button type="button" data-choice="${e(role)}">${e(ROLE_LABELS[role]||role)}</button>`).join('')}`;
+  document.body.append(d);d.querySelector('[data-close]').onclick=()=>d.close();d.onclose=()=>d.remove();
+  d.querySelectorAll('[data-choice]').forEach(b=>b.onclick=()=>{if(picker&&ctx.session.roles.includes(b.dataset.choice)){picker.value=b.dataset.choice;picker.dispatchEvent(new Event('change'));}d.close();});d.showModal();
+ };
+ host.querySelector('.desktop-home-search').onclick=()=>{
+  const links=[...document.querySelectorAll('#navMenu [data-route]')];
+  const d=document.createElement('dialog');d.className='home-role-dialog';d.setAttribute('aria-label','Cari menu');
+  d.innerHTML='<header><h2>Cari Menu</h2><button type="button" data-close aria-label="Tutup">×</button></header><input class="home-menu-search" type="search" aria-label="Cari menu" placeholder="Cari menu…"><div class="header-menu-results"></div>';
+  document.body.append(d);const results=d.querySelector('.header-menu-results');
+  for(const link of links){const b=document.createElement('button');b.type='button';b.textContent=link.textContent.trim();b.onclick=()=>{d.close();ctx.navigate(link.dataset.route);};results.append(b);}
+  d.querySelector('input').oninput=ev=>results.querySelectorAll('button').forEach(b=>b.hidden=!b.textContent.toLowerCase().includes(ev.target.value.toLowerCase()));
+  d.querySelector('[data-close]').onclick=()=>d.close();d.onclose=()=>d.remove();d.showModal();d.querySelector('input').focus();
+ };
+}
+
 export function mountHomeRoleSwitcher(ctx,items=[]){
  arrangeHome(ctx,items);
  ctx.root.classList.add('home-dashboard');
@@ -13,7 +44,7 @@ export function mountHomeRoleSwitcher(ctx,items=[]){
  const holder=ctx.root.querySelector('.premium-home')||ctx.root;
  ctx.root.querySelectorAll('.brand-row,.hero-greeting,.me-hero,.role-hero,.mu-hero,.teacher-header').forEach(el=>el.remove());
  const now=new Date(),date=new Intl.DateTimeFormat('id-ID',{day:'numeric',month:'long',year:'numeric',timeZone:'Asia/Makassar'}).format(now),hijri=new Intl.DateTimeFormat('id-ID-u-ca-islamic-umalqura',{day:'numeric',month:'long',year:'numeric',timeZone:'Asia/Makassar'}).format(now);
- holder.insertAdjacentHTML('afterbegin',`<header class="official-home-header"><button type="button" class="desktop-home-search" aria-label="Cari menu">⌕ <span>Cari menu yang tersedia untuk Anda…</span></button><button type="button" class="desktop-home-menu" aria-label="Buka menu navigasi" aria-controls="sidebar" aria-expanded="false">☰</button><div class="official-brand"><img src="../assets/brand/logo.svg" alt="MadaniApp"><div><strong>MADANI<em>APP</em></strong><small>PONDOK PESANTREN AL-MADANI</small></div></div><div class="official-header-actions"><button type="button" class="official-bell" aria-label="Pesan dan pemberitahuan">${icon('bell')}</button><button type="button" class="official-avatar" aria-label="Profil Saya">${ctx.session.profile.photoURL?`<img src="${e(ctx.session.profile.photoURL)}" alt="Foto profil">`:`<span>${e(name[0])}</span>`}</button><button type="button" class="desktop-home-account" aria-label="Ganti role aktif"><b>${e(name)}</b><small>${e(ROLE_LABELS[ctx.session.activeRole]||ctx.roleName||'')}</small><span aria-hidden="true">⌄</span></button></div></header><section class="official-greeting"><div class="official-hello">Assalamu’alaikum,</div><div class="official-name-row"><h1>${e(name)}</h1><button type="button" data-role></button></div><p class="official-quote">Ilmu hari ini, <br>untuk generasi <br>esok yang lebih baik</p><div class="official-date">${icon('calendar')}<span><b>${e(date)}</b><small>${e(hijri)}</small></span><strong class="official-date-note">☀ <span>Terus<br>Menebar Manfaat</span></strong></div></section>`);
+ holder.insertAdjacentHTML('afterbegin',`${homeHeader(ctx)}<section class="official-greeting"><div class="official-hello">Assalamu’alaikum,</div><div class="official-name-row"><h1>${e(name)}</h1><button type="button" data-role></button></div><p class="official-quote">Ilmu hari ini, <br>untuk generasi <br>esok yang lebih baik</p><div class="official-date">${icon('calendar')}<span><b>${e(date)}</b><small>${e(hijri)}</small></span><strong class="official-date-note">☀ <span>Terus<br>Menebar Manfaat</span></strong></div></section>`);
  {const greeting=holder.querySelector('.official-greeting');greeting.after(holder.querySelector('.official-date'));}
  fitHomeName(holder.querySelector('.official-name-row h1'));
  holder.querySelector('.official-avatar').onclick=()=>ctx.navigate('work-profile');

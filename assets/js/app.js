@@ -1,3 +1,4 @@
+import {mountWorkspaceHeader} from './home-role-switcher.js';
 import {loading} from './loading-ui.js';
 import {setSidebarOpen,toggleSidebar} from './sidebar-control.js';
 import {menuVisible,configuredBottom,roleMenuItems,menuSelection} from './menu-layout.js';
@@ -173,6 +174,7 @@ async function renderRoute() {
   try {
   const scopedSession=sessionForRole(session,activeRole);
   const ctx={session:scopedSession,master,yearId:currentAcademicYearId(),year:currentAcademicYear(),root:mount,navigate,rerender:renderRoute,roleName:roleLabel([activeRole])};
+  mountWorkspaceHeader(ctx);
   ctx.updateProfile=changes=>{Object.assign(session.profile,changes);document.getElementById('userName').textContent=session.profile.displayName||session.profile.name;};
   ctx.refreshMaster=async()=>{const fresh=await loadMaster(true);master=fresh;ctx.master=fresh;ctx.yearId=currentAcademicYearId();ctx.year=currentAcademicYear();};
     if(currentRoute==='dashboard')await renderDashboard(ctx);
