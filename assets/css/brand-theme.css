@@ -1261,10 +1261,10 @@ body[data-home=true] #content .home-dashboard .premium-home.home-compact>.offici
 
 /* Desktop: permanent navigation and the same pastel card palette as mobile. */
 @media(min-width:901px){
- .portal-body .app-shell{display:grid!important;grid-template-columns:260px minmax(0,1fr)!important}
- .portal-body .sidebar,.portal-body .sidebar.open{position:sticky!important;top:0!important;width:260px!important;height:100dvh!important;grid-column:1!important;grid-row:1!important;transform:none!important;visibility:visible!important;transition:none!important;box-shadow:none!important;border-right:1px solid #dceee9;z-index:30!important}
- .portal-body .main-area{grid-column:2!important;grid-row:1!important;min-width:0!important;width:100%!important;margin:0!important}
- .portal-body .sidebar-overlay,.portal-body .sidebar-overlay:not(.hidden),.portal-body #menuButton{display:none!important}
+ :is(.portal-body,.admin-console) .app-shell{display:grid!important;grid-template-columns:260px minmax(0,1fr)!important}
+ :is(.portal-body,.admin-console) .sidebar,:is(.portal-body,.admin-console) .sidebar.open{position:sticky!important;top:0!important;width:260px!important;height:100dvh!important;grid-column:1!important;grid-row:1!important;transform:none!important;visibility:visible!important;transition:none!important;box-shadow:none!important;border-right:1px solid #dceee9;z-index:30!important}
+ :is(.portal-body,.admin-console) .main-area{grid-column:2!important;grid-row:1!important;min-width:0!important;width:100%!important;margin:0!important}
+ :is(.portal-body,.admin-console) .sidebar-overlay,:is(.portal-body,.admin-console) .sidebar-overlay:not(.hidden),:is(.portal-body,.admin-console) #menuButton{display:none!important}
  /* Branding belongs to the sidebar; the greeting is the only home heading. */
  body[data-home=true] #content .home-dashboard .premium-home>.official-home-header{display:none!important}
  body[data-home=true] #content .home-dashboard .premium-home{padding:20px 24px!important}
@@ -1295,21 +1295,21 @@ body[data-home=true] #content .home-dashboard .premium-home.home-compact>.offici
 
 /* A distinct dark navigation rail against the light desktop workspace. */
 @media(min-width:901px){
- .portal-body .sidebar{background:radial-gradient(ellipse at top left,#008c86aa,transparent 45%),linear-gradient(165deg,#064d55,#06373f)!important;color:#ecfffb!important;border-right:1px solid #125e63!important}
- .portal-body .sidebar .sidebar-brand,.portal-body .sidebar .sidebar-footer{background:transparent!important;border-color:#ffffff20!important}
- .portal-body .sidebar .brand-wordmark,.portal-body .sidebar #userName{color:#fff!important}
- .portal-body .sidebar .brand-wordmark span{color:#ffc568!important}
- .portal-body .sidebar .sidebar-brand small,.portal-body .sidebar .system-label small{color:#bbdedb!important}
- .portal-body .sidebar .system-label{background:#ffffff0c!important;border:1px solid #ffffff1c!important;color:#e5f8f5!important}
- .portal-body .sidebar .system-label strong{color:#e5f8f5!important}
- .portal-body .sidebar .nav-caption{color:#a2cec9!important;letter-spacing:.12em}
- .portal-body .sidebar .nav-item{background:transparent!important;color:#e1f3f1!important;border:1px solid transparent!important}
- .portal-body .sidebar .nav-icon{color:#9bdfd6!important}
- .portal-body .sidebar .nav-item:hover{background:#ffffff12!important;color:white!important}
- .portal-body .sidebar .nav-item.active{background:linear-gradient(100deg,#00a39d,#07827f)!important;color:white!important;border-color:#5ed4c84d!important;box-shadow:inset 3px 0 #ffc568,0 5px 14px #001e2422!important}
- .portal-body .sidebar .nav-item.active .nav-icon{color:white!important}
- .portal-body .sidebar .role-picker{background:#0d5960!important;color:#effffa!important;border-color:#50888a!important;color-scheme:dark}
- .portal-body .sidebar #logoutButton{color:#ffb9b4!important}
+ :is(.portal-body,.admin-console) .sidebar{background:radial-gradient(ellipse at top left,#008c86aa,transparent 45%),linear-gradient(165deg,#064d55,#06373f)!important;color:#ecfffb!important;border-right:1px solid #125e63!important}
+ :is(.portal-body,.admin-console) .sidebar .sidebar-brand,:is(.portal-body,.admin-console) .sidebar .sidebar-footer{background:transparent!important;border-color:#ffffff20!important}
+ :is(.portal-body,.admin-console) .sidebar .brand-wordmark,:is(.portal-body,.admin-console) .sidebar #userName{color:#fff!important}
+ :is(.portal-body,.admin-console) .sidebar .brand-wordmark span{color:#ffc568!important}
+ :is(.portal-body,.admin-console) .sidebar .sidebar-brand small,:is(.portal-body,.admin-console) .sidebar .system-label small{color:#bbdedb!important}
+ :is(.portal-body,.admin-console) .sidebar .system-label{background:#ffffff0c!important;border:1px solid #ffffff1c!important;color:#e5f8f5!important}
+ :is(.portal-body,.admin-console) .sidebar .system-label strong{color:#e5f8f5!important}
+ :is(.portal-body,.admin-console) .sidebar .nav-caption{color:#a2cec9!important;letter-spacing:.12em}
+ :is(.portal-body,.admin-console) .sidebar .nav-item{background:transparent!important;color:#e1f3f1!important;border:1px solid transparent!important}
+ :is(.portal-body,.admin-console) .sidebar .nav-icon{color:#9bdfd6!important}
+ :is(.portal-body,.admin-console) .sidebar .nav-item:hover{background:#ffffff12!important;color:white!important}
+ :is(.portal-body,.admin-console) .sidebar .nav-item.active{background:linear-gradient(100deg,#00a39d,#07827f)!important;color:white!important;border-color:#5ed4c84d!important;box-shadow:inset 3px 0 #ffc568,0 5px 14px #001e2422!important}
+ :is(.portal-body,.admin-console) .sidebar .nav-item.active .nav-icon{color:white!important}
+ :is(.portal-body,.admin-console) .sidebar .role-picker{background:#0d5960!important;color:#effffa!important;border-color:#50888a!important;color-scheme:dark}
+ :is(.portal-body,.admin-console) .sidebar #logoutButton{color:#ffb9b4!important}
 }
 
 /* Shared data-loading indicator, matching the splash pulse. */
@@ -1319,3 +1319,30 @@ body[data-home=true] #content .home-dashboard .premium-home.home-compact>.offici
 .data-loading-dots>i:nth-child(3){animation-delay:.36s}
 @keyframes madani-data-pulse{0%,80%,100%{opacity:.25;transform:scale(.8)}40%{opacity:1;transform:scale(1)}}
 @media(prefers-reduced-motion:reduce){.data-loading-dots>i{animation:none;opacity:.65}}
+
+.desktop-home-search{display:none}
+.home-menu-search{display:block;width:100%;box-sizing:border-box;padding:13px 16px;margin:0 0 16px;border:1px solid #cae5e2;border-radius:14px;background:#f4faf9;color:#06465a;font:inherit}
+@media(min-width:901px){
+ body[data-home=true] #content .home-dashboard .premium-home>.official-home-header{display:flex!important;justify-content:space-between;align-items:center;height:52px!important;min-height:52px!important;gap:20px!important;margin:0!important;padding:0!important;background:transparent!important}
+ body[data-home=true] #content .home-dashboard .premium-home .official-home-header>.official-brand,
+ body[data-home=true] #content .home-dashboard .premium-home .desktop-home-menu{display:none!important}
+ body[data-home=true] #content .home-dashboard .premium-home .desktop-home-search{display:flex;align-items:center;gap:12px;min-width:0;width:min(52%,580px);border:1px solid #e9f1f1;background:#edf4f5;border-radius:28px;padding:11px 20px;color:#316c85;text-align:left;font:inherit;font-size:25px;cursor:pointer}
+ body[data-home=true] #content .home-dashboard .premium-home .desktop-home-search span{font-size:13px;line-height:1.4}
+ body[data-home=true] #content .home-dashboard .premium-home .official-header-actions{display:flex!important;align-items:center;gap:18px!important}
+ body[data-home=true] #content .home-dashboard .premium-home{gap:18px!important;padding:18px 28px 24px!important;background:linear-gradient(135deg,#eff8f580,transparent 40%),linear-gradient(35deg,#f2f7f5,#fffdf7)!important}
+ body[data-home=true] #content .home-dashboard .premium-home>.official-greeting,
+ body[data-home=true] #content .home-dashboard .premium-home.home-compact>.official-greeting{min-height:190px!important;padding:30px 32px 42px!important;border-radius:20px!important;background:linear-gradient(90deg,#e1efeced,#f8f6e6a0 57%,#edf3de20),url('../brand/home-mosque.svg') right bottom/auto 120% no-repeat,linear-gradient(120deg,#e1f0ee,#fff7e0)!important}
+ body[data-home=true] #content .home-dashboard .premium-home .official-name-row h1{font-size:42px!important}
+ body[data-home=true] #content .home-dashboard .premium-home .official-quote{top:58px!important;left:43%!important;width:23%!important;font-size:15px!important;padding-left:24px!important}
+ body[data-home=true] #content .home-dashboard .premium-home>.official-date{margin:-22px 0 0!important;min-height:68px!important;border-radius:18px!important;box-shadow:0 5px 18px #07555208!important}
+ body[data-home=true] #content .home-dashboard .premium-home .premium-section-head h2{font-size:24px!important}
+ body[data-home=true] #content .home-dashboard .premium-home .premium-quick,
+ body[data-home=true] #content .home-dashboard .premium-home.home-compact .premium-quick{min-height:166px!important;gap:10px!important;padding:20px!important;border:1px solid #ffffff55!important;box-shadow:0 7px 20px #145b5a0a!important;border-radius:20px!important}
+ body[data-home=true] #content .home-dashboard .premium-home .premium-quick b{font-size:17px!important;line-height:1.25!important}
+ body[data-home=true] #content .home-dashboard .premium-home .premium-menu,
+ body[data-home=true] #content .home-dashboard .premium-home.home-compact .premium-menu{min-height:68px!important;gap:20px!important;padding:13px 20px!important;box-shadow:0 5px 15px #174e5710!important}
+ body[data-home=true] #content .home-dashboard .premium-home .premium-menu b{font-size:15px!important;font-weight:800!important}
+ :is(.portal-body,.admin-console) .sidebar .nav-item{padding:12px!important;margin:3px 0!important;font-size:13px!important}
+ :is(.portal-body,.admin-console) .sidebar .nav-item:not(.active)::after{content:'›';margin-left:auto;color:#92c9c8;font-size:20px}
+ :is(.portal-body,.admin-console) .sidebar .sidebar-footer{border:1px solid #ffffff16!important;border-radius:17px;padding:14px!important;margin:6px 8px 12px!important;background:#ffffff08!important}
+}

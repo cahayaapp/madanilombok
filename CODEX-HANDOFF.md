@@ -695,3 +695,17 @@ Added eighth Admin workspace Manajemen Fitur in portal and console navigation. L
 - Shared loading-ui helper renders three sequential tosca pulse dots with status text and polite live announcements. Applied to route loading across all roles, initial portal/admin placeholders, quality indicators, feature settings, counselor attendance review, update package loading, teacher sheets and role summary loaders. Existing result/error replacement removes the dots naturally.
 - Reduced-motion users get static dots. Native select option text remains plain text. No data or permission changes.
 - 27 role/workflow tests passed; syntax/diff checks passed. Theme v115, SW v145. Local changes, not pushed; device visual verification pending.
+
+## 28 October — consistent portal/admin shell and startup-only splash
+- Screenshots compare standalone Admin data console with portal role workspace. Admin menu routes intentionally navigate to separate documents; dark desktop shell previously scoped only to portal. Shared permanent 260px sidebar and contrasting palette now cover admin data/user consoles too, retaining role-specific menus and permissions.
+- Full splash now displays once per tab session; navigation between entry/portal/admin or reload does not replay it. Data loading remains three-dot inline indicator. When storage is unavailable, same-origin referrer suppresses internal splash replay.
+- Unified theme v116 on portal/admin/accounts; splash script v2; SW v146 with current theme cache URL. Syntax/diff and JSDOM first-entry versus subsequent-document splash checks pass. Production version and device visuals not verified; not pushed.
+
+## 28 October — desktop installation welcome
+- Installation screen only, >=901px: full-width light scenic background using existing Madani mosque/waves/ornaments, centered brand and official badge, larger bold headline, three white benefit cards, prominent gradient install CTA and helper panel. Short desktop windows compact spacing and can scroll rather than crop controls.
+- Mobile styles and login form untouched; installation/auth handlers unchanged. Existing vector art is reused rather than the reference's raster illustration. Entry CSS v44 / SW v147. Syntax/diff checks pass; browser visual verification pending. Not pushed.
+
+## 28 October — desktop home reference across roles
+- Shared desktop home header now has an actionable menu search launcher, message bell, avatar and role/account control; sidebar owns the sole brand logo. Menu search filters only the existing permitted menu catalog in the all-menu dialog, not student/database records.
+- Larger pale greeting, overlapping date strip, pastel quick cards and white secondary rows follow latest reference. Four/six limits and all role permissions preserved. All new home layout rules >=901px; mobile home unchanged.
+- Existing vector mosque reused; not pixel-identical to raster reference. 34 role/menu/layout tests pass; syntax/diff valid. Theme117 / SW148. Not pushed; browser visual verification pending.
