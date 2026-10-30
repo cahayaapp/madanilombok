@@ -59,10 +59,14 @@ export function applyCaseOperation(current,operation,session,now){
   }else if(operation.type==='action'){
    if(!['konseling','konsekuensi','evaluasi'].includes(r.status)||!d.actionType?.trim()||!d.description?.trim())throw Error('Selesaikan tabayyun dan konseling sebelum tindakan edukatif.');
    r.actions={...r.actions,[operation.id]:{...d,counselorUid:uid,createdAt:now}};r.status='konsekuensi';
+  }else if(operation.type==='batch'){
+   if(!d.date||!d.actionType?.trim()||!d.description?.trim())throw Error('Lengkapi tanggal, jenis dan catatan pembinaan.');
+   r.batchActions={...r.batchActions,[operation.id]:{...d,counselorUid:uid,createdAt:now}};
   }else if(operation.type==='points'){
    if(r.finalPointTransactionId)throw Error('Poin final kasus sudah tercatat.');
    if(!['konsekuensi','evaluasi'].includes(r.status))throw Error('Poin difinalisasi setelah konseling dan tindakan edukatif.');
    if(!Object.values(CASE_POINTS).includes(Number(d.points))||!d.description?.trim())throw Error('Pilih poin sesuai klasifikasi dan isi keterangan.');
+   if(Number(d.points)<0&&r.tabayyun?.conclusion!=='TERBUKTI')throw Error('Poin pelanggaran memerlukan tabayyun terbukti.');
    r.finalPointTransactionId=operation.id;r.finalPoints=Number(d.points);r.pointsFinalizedAt=now;r.pointsFinalizedBy=uid;
    r.pointRecord={...d,points:Number(d.points),studentId:r.studentId,counselorUid:uid,createdAt:now,type:'final_case'};r.status='evaluasi';
   }else if(operation.type==='escalation'){

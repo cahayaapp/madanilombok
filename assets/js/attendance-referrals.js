@@ -12,3 +12,12 @@ export function attendanceReferrals({master,gender,boarding={},learning={},from,
  for(const [staff,dates]of Object.entries(learning||{}))for(const [date,sessions]of Object.entries(dates||{}))for(const [session,r]of Object.entries(sessions||{}))for(const [id,student]of Object.entries(r.students||{}))add('learning/'+staff+'/'+date+'/'+session+'/'+id,date,id,student,(master.subjects||[]).find(s=>s.id===r.subjectId)?.name||'Pembelajaran',r.stage);
  return out.sort((a,b)=>b.date.localeCompare(a.date));
 }
+
+export function attendanceCase(r){
+ return {id:r.id,studentId:r.studentId,date:r.date,category:'Kedisiplinan',severity:'ringan',status:'menunggu_konselor',description:'Perlu klarifikasi presensi '+r.status+' pada '+r.context+'. '+r.note,attendanceSourceId:r.sourceId,attendanceSourcePath:r.sourcePath,attendanceStatus:r.status,virtualAttendance:true};
+}
+export function unrepresentedAttendance(candidates,cases){
+ const ids=new Set(cases.flatMap(c=>[c.id,c.attendanceSourceId]).filter(Boolean));
+ const paths=new Set(cases.map(c=>c.attendanceSourcePath).filter(Boolean));
+ return candidates.filter(c=>!ids.has(c.id)&&!ids.has(c.attendanceSourceId)&&!paths.has(c.attendanceSourcePath));
+}

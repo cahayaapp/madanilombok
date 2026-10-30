@@ -20,16 +20,25 @@ test('resident and worship validation reject missing year and accept complete ye
  for(const collection of ['resident_staff','staff_worship']){
  const expr=rules.workspaces.$yearId[collection].$recordId['.validate'];
  const check=next=>Function('auth','data','newData','$yearId',`return (${expr});`)({uid:'actor'},snap(null),snap(next),'y');
- const payload={createdBy:'actor',createdAt:1,updatedBy:'actor',updatedAt:1};assert.equal(check(payload),false);assert.equal(check({...payload,academicYearId:'y'}),true);assert.equal(check({...payload,academicYearId:'wrong'}),false);
+ const payload={staffId:'s',resident:true,createdBy:'actor',createdAt:1,updatedBy:'actor',updatedAt:1};assert.equal(check(payload),false);assert.equal(check({...payload,academicYearId:'y'}),true);assert.equal(check({...payload,academicYearId:'wrong'}),false);
  }
 });
 
 test('resident settings honor map-form leadership roles without crossing dorm boundaries',()=>{
  const expr=rules.workspaces.$yearId.resident_staff.$recordId['.write'];
- const check=(role,gender,scope,revoked=false)=>Function('auth','root','data','newData','$recordId',`return (${expr});`)({uid:'u'},snap({madani_app:{users:{u:{roles:{[role]:true},active:true,accessRevoked:revoked}},staff:{s:{gender}}}}),snap(null),snap({scope,updatedBy:'u'}),'s');
+ const check=(role,gender,scope,revoked=false)=>Function('auth','root','data','newData','$recordId',`return (${expr});`)({uid:'u'},snap({madani_app:{users:{u:{roles:{[role]:true},active:true,accessRevoked:revoked}},staff:{s:{gender}}}}),snap(null),snap({scope,staffId:'s',resident:true,updatedBy:'u'}),scope+'__s');
  assert.equal(check('head_boys_dorm','L','boarding-L'),true);
  assert.equal(check('head_girls_dorm','P','boarding-P'),true);
  assert.equal(check('head_boys_dorm','P','boarding-P'),false);
- assert.equal(check('head_boys_dorm','P','boarding-L'),false);
+ assert.equal(check('head_boys_dorm','P','boarding-L'),true);
  assert.equal(check('head_boys_dorm','L','boarding-L',true),false);
+});
+
+test('worship accepts selected SDM without gender and rejects unselected or other scope',()=>{
+ const expr=rules.workspaces.$yearId.staff_worship.$recordId.attendance.$staffId['.validate'];
+ const check=(settings)=>{const record=snap({scope:'boarding-L'}),attendance=snap({},record),value=snap('Hadir',attendance);return Function('newData','root','$yearId','$staffId',`return (${expr});`)(value,snap({madani_app:{workspaces:{y:{resident_staff:settings}}}}),'y','s');};
+ assert.equal(check({'boarding-L__s':{resident:true}}),true);
+ assert.equal(check({'boarding-P__s':{resident:true}}),false);
+ assert.equal(check({s:{scope:'boarding-L',resident:true}}),true);
+ assert.equal(check({s:{scope:'boarding-L',resident:true},'boarding-L__s':{resident:false}}),false);
 });

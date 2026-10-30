@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {attendanceReferrals} from '../assets/js/attendance-referrals.js';
+import {attendanceReferrals,attendanceCase,unrepresentedAttendance} from '../assets/js/attendance-referrals.js';
 import {withReadDeadline} from '../assets/js/read-deadline.js';
 const master={students:[{id:'boy',gender:'L',unitId:'UNIT-SMP'},{id:'girl',gender:'P'},{id:'sd',gender:'L',unitId:'UNIT-SD'},{id:'old',gender:'L',mergedInto:'boy'},{id:'inactive',gender:'L',status:'inactive'}],programs:[{id:'prayer',name:'Isya'}]};
 const args={master,gender:'L',from:'2026-10-01',to:'2026-10-20'};
@@ -21,4 +21,11 @@ test('read deadline preserves results/errors and ends a stalled read',async()=>{
  assert.equal(await withReadDeadline(Promise.resolve(42),50),42);
  await assert.rejects(withReadDeadline(Promise.reject(Error('permission denied')),50),/permission denied/);
  await assert.rejects(withReadDeadline(new Promise(()=>{}),5),/Data belum dapat dimuat/);
+});
+
+test('virtual intake deduplicates persisted cases including closed cases and legacy source paths',()=>{
+ const candidate=attendanceCase(attendanceReferrals({...args,boarding:{'2026-10-14':{prayer:{boy:row}}}})[0]);
+ assert.equal(candidate.status,'menunggu_konselor');assert.equal(candidate.attendanceStatus,'Alfa');assert.equal(candidate.finalPoints,undefined);
+ assert.equal(unrepresentedAttendance([candidate],[]).length,1);
+ for(const existing of [{id:candidate.id,status:'selesai'},{id:'old',attendanceSourceId:candidate.attendanceSourceId},{id:'old',attendanceSourcePath:candidate.attendanceSourcePath}])assert.equal(unrepresentedAttendance([candidate],[existing]).length,0);
 });

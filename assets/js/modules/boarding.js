@@ -1,5 +1,7 @@
+import {mountCaseQueue} from '../counselor-queue.js';
+import {decorateCounselorPage} from '../counselor-layout.js';
 import {renderTeacherReport} from '../teacher/extras.js';
-import {mountAttendanceReferrals} from '../counselor-attendance.js';
+import {mountAttendanceReferrals,materializeAttendanceCase} from '../counselor-attendance.js';
 import {counselorGender} from '../boarding-personnel-scope.js';
 import {reportIndicators,reportObservation} from '../naqib-report-model.js';
 import {dutyWindow,assertDutyProgram} from '../naqib-duty.js';
@@ -165,31 +167,42 @@ export async function renderMentoringHistory(ctx) {
 
 export async function renderCaseInbox(ctx) {
   const cases=scopedCases(ctx,await listNode(`boarding/cases/${ctx.yearId}`));const students=byId(ctx.master.students||[]);const uid=ctx.session.user.uid;
-  const incoming=cases.filter(c=>routeCounselorCase(c,cases).level===counselorLevel(ctx.session.profile)&&!c.assignedCounselorUid && !["selesai","tidak_terbukti"].includes(c.status));
-  incoming.sort((a,b)=>(b.createdAt||0)-(a.createdAt||0));
-  ctx.root.innerHTML=pageHeader("Kasus Masuk",`Konselor ${counselorLevel(ctx.session.profile)==='MADYA'?'Madya: moral/etika dan kejadian berulang tiga hari berturut-turut':'Pemula: kedisiplinan serta kebersihan dan kerapian'}. Ambil kasus sesuai unit sebelum penanganan.`)+table(["Tanggal","Santri","Kategori","Tingkat","Status","Aksi"],incoming.map(r=>`<tr><td>${escapeHtml(r.date||"—")}</td><td><strong>${escapeHtml(students[r.studentId]?.name||r.studentId||"—")}</strong></td><td>${escapeHtml(r.category||"—")}</td><td>${badge(r.severity||"—",r.severity==="berat"||r.severity==="kritis"?"red":"")}</td><td>${badge(r.status||"menunggu_konselor")}</td><td>${ctx.session.activeRole==='konselor'?`<button class="mini-btn case-claim" data-id="${r.id}">Claim Kasus</button>`:'Tinjauan administrator'}</td></tr>`).join(""));
-  if(ctx.session.activeRole==='konselor')mountAttendanceReferrals(ctx,cases);
-  document.querySelectorAll(".case-claim").forEach(btn=>btn.addEventListener("click",async()=>{
-    btn.disabled=true;
-    try {
-      const id=btn.dataset.id;
-      await transitionWorkspaceRecord(`boarding/cases/${ctx.yearId}`,id,current=>{
-        if(!scopedCases(ctx,[current]).length)throw new Error("Kasus di luar scope aktif.");
-        if(routeCounselorCase(current,cases).level!==counselorLevel(ctx.session.profile))throw new Error('Kasus memerlukan tingkatan Konselor yang berbeda.');
-        if(current.assignedCounselorUid && current.assignedCounselorUid!==uid)throw new Error("Kasus sudah diambil Konselor lain.");
-        if(["selesai","tidak_terbukti"].includes(current.status))throw new Error("Kasus sudah ditutup.");
-        return {...current,status:"ditangani",assignedCounselorUid:uid,routeLevel:routeCounselorCase(current,cases).level,claimedAt:{".sv":"timestamp"}};
-      },uid);
-      sessionStorage.setItem("madaniSelectedCase",id);toast("Kasus berhasil di-claim.");ctx.navigate("case-active");
-    } catch(error){toast(error.message,"error");}finally{btn.disabled=false;}
-
-  }));
+  let history=cases, candidates=[];
+  ctx.root.innerHTML=pageHeader("Kasus Masuk",`Konselor ${counselorLevel(ctx.session.profile)==='MADYA'?'Madya: moral/etika dan kejadian berulang tiga hari berturut-turut':'Pemula: kedisiplinan serta kebersihan dan kerapian'}. Ambil kasus sesuai unit sebelum penanganan.`)+'<div id="caseQueue"></div>';
+  const queue=ctx.root.querySelector('#caseQueue');
+  function draw(){
+   const incoming=[...cases,...candidates].filter(c=>routeCounselorCase(c,history).level===counselorLevel(ctx.session.profile)&&!c.assignedCounselorUid&&!['selesai','tidak_terbukti'].includes(c.status));
+   incoming.sort((a,b)=>String(b.date||'').localeCompare(String(a.date||'')));
+   mountCaseQueue(queue,incoming,students,ctx.session.activeRole==='konselor'?{claim:async r=>{
+     const id=r.id,candidate=candidates.find(c=>c.id===id);
+     if(candidate)await materializeAttendanceCase(ctx,candidate,history);
+     await transitionWorkspaceRecord(`boarding/cases/${ctx.yearId}`,id,current=>{
+      if(!scopedCases(ctx,[current]).length)throw Error('Kasus di luar scope aktif.');
+      if(routeCounselorCase(current,history).level!==counselorLevel(ctx.session.profile))throw Error('Kasus memerlukan tingkatan Konselor yang berbeda.');
+      if(current.assignedCounselorUid&&current.assignedCounselorUid!==uid)throw Error('Kasus sudah diambil Konselor lain.');
+      if(['selesai','tidak_terbukti'].includes(current.status))throw Error('Kasus sudah ditutup.');
+      if(current.assignedCounselorUid===uid)return current;
+      return {...current,status:'ditangani',assignedCounselorUid:uid,routeLevel:routeCounselorCase(current,history).level,claimedAt:{'.sv':'timestamp'}};
+     },uid);
+     r.assignedCounselorUid=uid;
+   }}:{});
+  }
+  draw();
+  if(ctx.session.activeRole==='konselor')mountAttendanceReferrals(ctx,cases,(rows,all)=>{candidates=rows;history=all;draw();decorateCounselorPage(ctx,'case-inbox');});
 }
 
 export async function renderCaseActive(ctx) {
   const uid=ctx.session.user.uid;const students=byId(ctx.master.students||[]);const cases=scopedCases(ctx,await listNode(`boarding/cases/${ctx.yearId}`)).filter(c=>c.assignedCounselorUid===uid && !["selesai","tidak_terbukti"].includes(c.status));
-  ctx.root.innerHTML=pageHeader("Kasus Aktif","Kasus yang sedang menjadi tanggung jawab Konselor ini.")+table(["Tanggal","Santri","Kategori","Tingkat","Tahap","Aksi"],cases.map(r=>`<tr><td>${escapeHtml(r.date||"—")}</td><td><strong>${escapeHtml(students[r.studentId]?.name||r.studentId||"—")}</strong></td><td>${escapeHtml(r.category||"—")}</td><td>${badge(r.severity||"—")}</td><td>${badge(r.status||"ditangani")}</td><td><button class="mini-btn active-case" data-id="${r.id}">Buka</button></td></tr>`).join(""));
-  document.querySelectorAll(".active-case").forEach(btn=>btn.addEventListener("click",()=>{sessionStorage.setItem("madaniSelectedCase",btn.dataset.id);ctx.navigate("counseling");}));
+  ctx.root.innerHTML=pageHeader("Kasus Aktif","Kasus yang sedang menjadi tanggung jawab Konselor ini.")+'<div id="caseQueue"></div>';
+  mountCaseQueue(ctx.root.querySelector('#caseQueue'),cases,students,{open:r=>{sessionStorage.setItem('madaniSelectedCase',r.id);ctx.navigate('counseling');},batch:(rows,feedback)=>{
+   let form=ctx.root.querySelector('#batchCounseling');if(form)form.remove();
+   form=document.createElement('form');form.id='batchCounseling';form.className='panel portal-form';form.innerHTML=`<h3>Pembinaan bersama · ${rows.length} kasus</h3><label>Tanggal<input name="date" type="date" value="${today()}" required></label><label>Jenis pembinaan<select name="actionType"><option>Konseling pembinaan</option><option>Teguran edukatif</option><option>Pemantauan</option><option>Koordinasi wali</option></select></label><label>Catatan<textarea name="description" required></textarea></label><label>Tindak lanjut<textarea name="followUp"></textarea></label><button class="btn btn-primary">Simpan Pembinaan</button><p role="status"></p>`;
+   feedback.after(form);const batchId=crypto.randomUUID();
+   form.onsubmit=async ev=>{ev.preventDefault();const button=form.querySelector('button');button.disabled=true;let success=0;const errors=[];const data=Object.fromEntries(new FormData(form));
+    for(const r of rows)try{await commitCaseOperation(ctx.yearId,r.id,{id:batchId+'_'+r.id,type:'batch',data:{...data,batchId}},ctx.session);success++;}catch(error){errors.push(`${students[r.studentId]?.name||r.studentId}: ${error.message}`);}
+    form.querySelector('[role=status]').textContent=`${success} kasus tercatat. ${errors.join(' · ')}`;button.disabled=false;
+   };
+  }});
 }
 
 export async function renderCounseling(ctx) {return renderCounselorWorkspace(ctx);}
@@ -260,5 +273,7 @@ export async function renderCounselorGuide(ctx) {
 
 export async function renderCaseHistory(ctx) {
   const cases=scopedCases(ctx,await listNode(`boarding/cases/${ctx.yearId}`));const students=byId(ctx.master.students||[]);
-  ctx.root.innerHTML=pageHeader("Riwayat Kasus","Seluruh kasus dan status penanganannya.")+table(["Tanggal","Santri","Kategori","Tingkat","Status","Konselor"],cases.sort((a,b)=>(b.createdAt||0)-(a.createdAt||0)).map(r=>`<tr><td>${escapeHtml(r.date||"—")}</td><td><strong>${escapeHtml(students[r.studentId]?.name||r.studentId||"—")}</strong></td><td>${escapeHtml(r.category||"—")}</td><td>${badge(r.severity||"—")}</td><td>${badge(r.status||"—")}</td><td>${escapeHtml(r.assignedCounselorUid||"—")}</td></tr>`).join(""));
+  const visible=cases.filter(c=>['selesai','tidak_terbukti'].includes(c.status)&&(ctx.session.activeRole!=='konselor'||c.assignedCounselorUid===ctx.session.user.uid||c.previousCounselorUid===ctx.session.user.uid));
+  ctx.root.innerHTML=pageHeader("Riwayat Kasus","Kasus yang telah selesai, beserta catatan penanganannya.")+'<div id="caseQueue"></div>';
+  mountCaseQueue(ctx.root.querySelector('#caseQueue'),visible,students,{open:r=>{sessionStorage.setItem('madaniSelectedCase',r.id);ctx.navigate('counseling');}});
 }

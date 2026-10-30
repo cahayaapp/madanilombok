@@ -23,7 +23,7 @@ export function decorateCounselorPage(ctx, route) {
     const visual=document.createElement('span'); visual.className='page-heading-icon'; visual.innerHTML=icon('book'); visual.setAttribute('aria-hidden','true'); header.prepend(visual);
   }
   const referral=root.querySelector('.counselor-attendance-panel'), table=root.querySelector('.table-card');
-  if (referral && table) table.before(referral);
+  if (referral && (table || root.querySelector('#caseQueue'))) (root.querySelector('#caseQueue') || table).before(referral);
   root.querySelectorAll('.data-table').forEach(table => {
     const headers=Array.from(table.querySelectorAll('thead th'),h=>h.textContent);
     table.querySelectorAll('tbody tr').forEach(row=>Array.from(row.cells).forEach((cell,i)=>{if(cell.colSpan===1)cell.dataset.label=headers[i]||'';}));

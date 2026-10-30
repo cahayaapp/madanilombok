@@ -758,3 +758,26 @@ Added eighth Admin workspace Manajemen Fitur in portal and console navigation. L
 ### 28 Oktober — empty state Konselor mobile
 - Memperbaiki benturan display:grid!important dari mobile-stack-table dengan grid label 85px pada tabel Konselor. Sel colspan kini block secara eksplisit, tanpa grid label; empty state memakai lebar penuh, wrapping normal dan ukuran ringkas. Aturan colspan umum juga melindungi pesan tabel serupa pada role lain.
 - Tema124/SW159. 31 tes render role lulus; pemeriksaan cascade CSS dengan fixture JSDOM memastikan sel kosong block dan grid-template-columns none; diff check lulus. Belum push/deploy dan belum verifikasi visual perangkat langsung.
+
+## 29 Oktober 2026 — intake konselor mengikuti Cahaya
+
+- Referensi diperiksa: `fajrulislam/js/counselor-app-v2.js`, `js/counselor-case-v2.js`, dan `tests/counselor-attendance-intake.cjs`. Cahaya menggabungkan laporan dan kandidat presensi final dalam antrean, lalu konselor mengambil kasus untuk penanganan.
+- Madani kini otomatis memeriksa tujuh hari terakhir saat Kasus Masuk dibuka; tanggal dapat diubah maksimal 31 hari. Alfa/Terlambat program dan pembelajaran digabung dengan laporan manual, sesuai unit dan level. Dua hari sebelum periode ikut dihitung untuk eskalasi tiga hari berturut-turut.
+- Membuka antrean tidak menulis database. Ambil Kasus memeriksa ulang presensi, membuat rekam klarifikasi ber-ID sumber deterministik (create-only), lalu melakukan klaim atomik. Kandidat tidak menjadi pelanggaran/poin otomatis. Kasus yang sudah tersimpan, termasuk selesai/tidak terbukti, tidak digandakan.
+- Tahap tabayyun, konseling, tindakan edukatif, evaluasi, finalisasi poin dan eskalasi memakai workflow Madani yang ada. Aturan pengguna moral/etika ke Madya, disiplin/kebersihan ke Pemula dan tiga hari berturut-turut ke Madya tetap berlaku; SD ke Wali Kelas.
+- Terverifikasi lokal: 46 pengujian intake/model/rendering/menu lulus. Belum diuji dengan write produksi, belum dipush. Tidak mengubah data produksi atau keuangan.
+- Belum setara penuh: pengelompokan antrean per santri dan klaim massal Cahaya belum disalin. Pembacaan presensi masih memakai node tahun Madani (filter periode di klien), belum query periode berindeks seperti Cahaya.
+
+## 29 October 2026 — counselor queue parity continuation
+- Shared `counselor-queue.js` groups incoming/active/closed history by student with text, source and status filtering; multi-select claim uses existing guarded transactions and reports partial failure without hiding failed rows. Refreshing attendance preserves the toolbar.
+- Active cases support shared guidance notes saved independently per case with stable operation IDs. Bulk guidance preserves the current stage, never assigns points or closes cases; ownership/closed/escalation guards apply. This intentionally preserves Madani's evidence-first stages rather than moving every case into consequences as Cahaya does.
+- Closed-case history now exposes recorded narrative details, and the previous counselor may read transferred cases within the same unit. Negative final points require TERBUKTI tabayyun.
+- Existing tabayyun, counseling, educational consequences, evaluation, escalation to Madya/leadership and weekly reflection remain in use. No Cahaya operational data copied, no live database writes, no push.
+- Validation: 48 targeted tests passed (role-rendering includes 228 workspace combinations and 15 homes); changed JS syntax and database/firebase/manifest JSON valid. Production permissions and actual Wisnu/Muhasim inbox visibility remain unverified. Attendance intake currently reads yearly source nodes before period filtering; bounded server queries are still a performance improvement to make, not claimed as implemented.
+- Service worker v161, portal/admin theme query v125.
+
+## 30 Oktober 2026 — penetapan muqim lintas SDM
+- Kepala asrama memilih dari seluruh master SDM, tanpa syarat gender, akun, role, atau lembaga. Absensi ibadah hanya memuat pilihan eksplisit pada scope aktif; Naqib tidak lagi otomatis masuk.
+- Penetapan baru memakai resident_staff/{scope}__{staffId}, sehingga pilihan Putra/Putri independen. Rekam lama per staffId tetap dibaca hanya jika scope cocok, sampai ada pilihan scoped yang menggantikannya. Tidak migrasi atau menghapus data produksi.
+- Rules resident_staff memeriksa role kepala asrama dan scope, identitas SDM, serta key scoped; gender tidak lagi menjadi syarat. Rules attendance memeriksa penetapan muqim yang aktif pada scope tersebut, termasuk fallback legacy. Rules jadwal Naqib dan batas akses fitur lain tidak diubah.
+- 64 tes role/render/workflow/access/rules lulus; sintaks JS, JSON dan diff valid. Fixture sekolah diperjelas dengan unit sekolah untuk menjaga cakupan lama. SW v162-resident-selection. Belum push/deploy; database.rules.json wajib dipublikasikan bersama perubahan frontend. Belum uji tulis produksi.

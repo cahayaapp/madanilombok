@@ -90,3 +90,17 @@ Pembagian harian dikonfirmasi pengguna: 04.00–12.00 Novan Maulana / Anggi & Al
 Paket Import Data `naqib-duty.json` mengatur roster, scope role dan menonaktifkan role Naqib di luar roster; role lainnya dan riwayat dipertahankan. Manajemen Akun memiliki tombol khusus Fitriani & Nurul, password acak diunduh melalui CSV setelah pembuatan. Aturan RTDB lokal memakai waktu server untuk kedua cabang presensi/laporan, dengan pengecualian administrator dan koreksi UKS. Cabang keuangan tidak berubah.
 
 Validasi lokal: model batas shift/malam, ekspresi aturan server, roster dan pemeliharaan role, serta formulir yang disimpan sesudah batas shift. Ini bukan pengujian Firebase Emulator (Java runtime belum tersedia). Penerapan data/akun, publikasi kode dan deployment rules produksi perlu diverifikasi terpisah; jangan menyatakan akun atau pembatasan server sudah aktif sebelum penerapan berhasil.
+
+## 29 Oktober 2026 — intake konselor mengikuti Cahaya
+
+- Referensi diperiksa: `fajrulislam/js/counselor-app-v2.js`, `js/counselor-case-v2.js`, dan `tests/counselor-attendance-intake.cjs`. Cahaya menggabungkan laporan dan kandidat presensi final dalam antrean, lalu konselor mengambil kasus untuk penanganan.
+- Madani kini otomatis memeriksa tujuh hari terakhir saat Kasus Masuk dibuka; tanggal dapat diubah maksimal 31 hari. Alfa/Terlambat program dan pembelajaran digabung dengan laporan manual, sesuai unit dan level. Dua hari sebelum periode ikut dihitung untuk eskalasi tiga hari berturut-turut.
+- Membuka antrean tidak menulis database. Ambil Kasus memeriksa ulang presensi, membuat rekam klarifikasi ber-ID sumber deterministik (create-only), lalu melakukan klaim atomik. Kandidat tidak menjadi pelanggaran/poin otomatis. Kasus yang sudah tersimpan, termasuk selesai/tidak terbukti, tidak digandakan.
+- Tahap tabayyun, konseling, tindakan edukatif, evaluasi, finalisasi poin dan eskalasi memakai workflow Madani yang ada. Aturan pengguna moral/etika ke Madya, disiplin/kebersihan ke Pemula dan tiga hari berturut-turut ke Madya tetap berlaku; SD ke Wali Kelas.
+- Terverifikasi lokal: 46 pengujian intake/model/rendering/menu lulus. Belum diuji dengan write produksi, belum dipush. Tidak mengubah data produksi atau keuangan.
+- Belum setara penuh: pengelompokan antrean per santri dan klaim massal Cahaya belum disalin. Pembacaan presensi masih memakai node tahun Madani (filter periode di klien), belum query periode berindeks seperti Cahaya.
+
+### 29 Oktober — kelanjutan antrean dan penanganan
+Pengelompokan santri, pencarian, filter sumber/status, pilihan beberapa kasus, klaim massal dengan hasil parsial, catatan pembinaan bersama per kasus, dan pembacaan narasi riwayat telah ditambahkan. Riwayat menampilkan kasus selesai/tidak terbukti milik petugas atau yang pernah dialihkannya; lingkup unit tetap berlaku. Alur tabayyun, konseling, konsekuensi, evaluasi, eskalasi, dan refleksi yang sudah ada dipertahankan.
+
+Perbedaan sengaja: pembinaan bersama tidak melompati tahap atau memberi poin, dan poin negatif wajib tabayyun terbukti. Routing moral/etika serta pengulangan tiga hari mengikuti ketentuan Madani. Uji lokal 48 lulus; ini bukan bukti pengujian produksi. Performa pembacaan presensi masih memakai node tahun sebelum penyaringan periode. Tidak ada migrasi data atau perubahan database langsung.

@@ -1547,3 +1547,15 @@ body.portal-body:not([data-home=true]) .persistent-home-header{display:block;wid
 .counselor-empty{width:100%;box-sizing:border-box;min-height:240px;padding:24px 16px;overflow-wrap:normal;word-break:normal}.counselor-empty h3,.counselor-empty p{width:100%;max-width:440px}.counselor-empty-art{flex-shrink:0}.counselor-empty h3{font-size:18px}.counselor-empty p{font-size:13px}
 .counselor-workspace .table-scroll{overflow:visible}
 }
+
+/* Shared counselor queues: grouped records keep long narratives within the viewport. */
+.cq-tools{display:flex;flex-wrap:wrap;gap:16px;align-items:end;margin-bottom:18px}
+.cq-tools label{display:flex;flex-direction:column;gap:8px;flex:1 1 180px;min-width:0}
+.cq-tools input[type=checkbox]{width:20px;height:20px;flex:none}
+.cq-student{border:1px solid #d4e9e6;border-radius:20px;margin:16px 0;overflow:hidden;background:#fff}
+.cq-student>header{display:flex;justify-content:space-between;gap:12px;padding:16px 20px;background:#e8f7f3;color:#064854}
+.cq-record{display:flex;align-items:start;gap:14px;padding:18px 20px;border-top:1px solid #e4eeec}
+.cq-record>div:first-of-type{flex:1;min-width:0;overflow-wrap:anywhere}
+.cq-record p{margin:6px 0;color:#527580;white-space:pre-wrap}
+.cq-actions{display:flex;flex-wrap:wrap;gap:8px}
+@media(max-width:600px){.cq-record{flex-wrap:wrap;padding:14px}.cq-actions{width:100%;justify-content:flex-end}.cq-tools{gap:10px}.cq-tools label{flex-basis:100%}}

@@ -277,7 +277,7 @@ test('dorm duty, resident settings and worship include all three assigned male n
  database.set('users',{a:{staffId:'dai',roles:{naqib:true},roleScopes:{naqib:{scopeGender:'L'}}},b:{staffId:'novan',roleFlags:{naqib:true}},c:{staffId:'yusuf',role:'naqib'},d:{staffId:'alfi',role:'naqib'}});
  database.set('settings/naqibDuty/staff',{novan:{active:true,gender:'L',shiftId:'shift2'}});
  try{
-  for(const [route,selector]of [['management-duty','[data-staff]'],['management-residents','[data-resident]'],['management-worship','[data-person]']]){
+  for(const [route,selector]of [['management-duty','[data-staff]']]){
    await routes[route](ctx);assert.equal(ctx.root.querySelectorAll(selector).length,3,route);assert.match(ctx.root.textContent,/Dai/);assert.match(ctx.root.textContent,/Novan/);assert.match(ctx.root.textContent,/Yusuf/);assert.doesNotMatch(ctx.root.textContent,/Alfi/);
   }
  }finally{database.set('users',beforeUsers);beforeDuty===undefined?database.delete('settings/naqibDuty/staff'):database.set('settings/naqibDuty/staff',beforeDuty);}
@@ -320,7 +320,7 @@ test('feature manager loads role flags and saves a role-scoped patch',async()=>{
  }finally{mock.setExport('patchNode',oldPatch);const switches=await load(new URL('assets/js/feature-switches.js',base).href);switches.namespace.setFeatureSwitches({});}
 });
 
-test('counselor attendance review creates shared clarification cases and rejects corrected records',async()=>{
+test('counselor inbox automatically loads candidates without writes and validates source on claim',async()=>{
  const mod=await load(new URL('assets/js/counselor-attendance.js',base).href);await mod.evaluate();
  const ctx=ctxFor('konselor');ctx.session.profile.scopeGender='L';ctx.root.innerHTML='';
  const day=new Date().toLocaleDateString('en-CA',{timeZone:'Asia/Makassar'});
@@ -330,15 +330,16 @@ test('counselor attendance review creates shared clarification cases and rejects
  const original=repository.saveTeacherSession;let created=[];
  mock.setExport('saveTeacherSession',async(path,payload,options)=>{created.push({path,payload,options});return payload;});
  try{
- mod.namespace.mountAttendanceReferrals(ctx,[]);
- ctx.root.querySelector('#loadReferrals').click();await settle();
- assert.equal(ctx.root.querySelectorAll('[data-referral]').length,1);
- ctx.root.querySelector('[data-referral]').click();await settle();
- assert.equal(created.length,1);assert.ok(created[0].path.startsWith('boarding/cases/year/'));assert.equal(created[0].payload.status,'menunggu_konselor');assert.equal(created[0].options.createOnly,true);assert.equal(created[0].payload.finalPoints,undefined);
- ctx.root.querySelector('#loadReferrals').click();await settle();
+ let candidates=[],history=[];
+ mod.namespace.mountAttendanceReferrals(ctx,[],(rows,all)=>{candidates=rows;history=all;});
+ await settle();
+ assert.equal(candidates.length,1);assert.equal(created.length,0);
+ assert.equal(candidates[0].attendanceStatus,'Alfa');
+ await mod.namespace.materializeAttendanceCase(ctx,candidates[0],history);
+ assert.equal(created.length,1);assert.ok(created[0].path.startsWith('boarding/cases/year/'));assert.equal(created[0].payload.status,'menunggu_konselor');assert.equal(created[0].options.createOnly,true);assert.equal(created[0].payload.finalPoints,undefined);assert.equal(created[0].payload.virtualAttendance,undefined);
  database.set('boarding/program_attendance/year/'+day+'/p/s1',{...record,status:'Hadir'});
- ctx.root.querySelector('[data-referral]').click();await settle();
- assert.equal(created.length,1);assert.match(ctx.root.textContent,/Presensi sudah berubah/);
+ await assert.rejects(mod.namespace.materializeAttendanceCase(ctx,candidates[0],history),/Presensi sudah berubah/);
+ assert.equal(created.length,1);
  }finally{mock.setExport('saveTeacherSession',original);database.delete('boarding/program_attendance/year');database.delete('boarding/program_attendance/year/'+day+'/p/s1');}
 });
 
@@ -372,15 +373,24 @@ test('resident and worship writes include the academic year required by database
  const start=writes.length;try{
  await routes['management-residents'](ctx);ctx.root.querySelector('[data-resident]').checked=true;ctx.root.querySelector('#saveResidents').click();await settle();
  const resident=writes.slice(start).find(w=>w.path.endsWith('/resident_staff'));assert.equal(resident.data.academicYearId,'year');assert.equal(resident.data.scope,'boarding-L');assert.equal(resident.data.staffId,'resident-test');
- await routes['management-worship'](ctx);ctx.root.querySelector('[data-person]').value='Hadir';ctx.root.querySelector('#saveWorship').click();await settle();
+ database.set('workspaces/year/resident_staff',{'boarding-L__resident-test':resident.data});await routes['management-worship'](ctx);ctx.root.querySelector('[data-person]').value='Hadir';ctx.root.querySelector('#saveWorship').click();await settle();
  const worship=writes.slice(start).find(w=>w.path.endsWith('/staff_worship'));assert.equal(worship.data.academicYearId,'year');assert.equal(worship.data.attendance['resident-test'],'Hadir');
- }finally{database.set('users',previous);database.delete('workspaces/year/resident_staff/resident-test');}
+ }finally{database.set('users',previous);database.delete('workspaces/year/resident_staff/boarding-L__resident-test');database.delete('workspaces/year/resident_staff');}
 });
 
-test('resident preflight names incomplete canonical SDM and writes nothing',async()=>{
- const ctx=ctxFor('head_boys_dorm'),previous=database.get('users');ctx.master={...master,staff:[{id:'missing-gender',name:'Petugas Belum Lengkap'}]};database.set('users',{u:{staffId:'missing-gender',role:'naqib',scopeGender:'L',active:true}});
- try{await routes['management-residents'](ctx);const start=writes.length;ctx.root.querySelector('[data-resident]').checked=true;ctx.root.querySelector('#saveResidents').click();await settle();assert.equal(writes.length,start);assert.match(ctx.root.textContent,/Data SDM.*Petugas Belum Lengkap/);
- }finally{database.set('users',previous);}
+test('resident selection includes all SDM without gender or accounts and isolates each dorm',async()=>{
+ const path='workspaces/year/resident_staff',previous=database.get(path),ctx=ctxFor('head_boys_dorm');
+ ctx.master={...master,staff:[{id:'unknown',name:'Tanpa Gender'},{id:'formal',name:'Guru Formal',gender:'P',unitIds:['sd']}]};
+ database.set(path,{'boarding-P__formal':{staffId:'formal',scope:'boarding-P',resident:true},unknown:{staffId:'unknown',scope:'boarding-L',resident:true}});
+ try{
+ await routes['management-residents'](ctx);assert.equal(ctx.root.querySelectorAll('[data-resident]').length,2);assert.equal(ctx.root.querySelector('[data-resident="formal"]').checked,false);
+ await routes['management-worship'](ctx);assert.deepEqual([...ctx.root.querySelectorAll('[data-person]')].map(el=>el.dataset.person),['unknown']);
+ await routes['management-residents'](ctx);ctx.root.querySelector('[data-resident="unknown"]').checked=false;ctx.root.querySelector('[data-resident="formal"]').checked=true;const start=writes.length;ctx.root.querySelector('#saveResidents').click();await settle();
+ const updates=writes.slice(start);assert.equal(updates.length,2);assert.ok(updates.every(w=>w.data.scope==='boarding-L'));
+ for(const w of updates)database.set(path,{...database.get(path),[w.id]:w.data});
+ await routes['management-worship'](ctx);assert.deepEqual([...ctx.root.querySelectorAll('[data-person]')].map(el=>el.dataset.person),['formal']);
+ ctx.session=ctxFor('head_girls_dorm').session;await routes['management-worship'](ctx);assert.deepEqual([...ctx.root.querySelectorAll('[data-person]')].map(el=>el.dataset.person),['formal']);
+ }finally{previous===undefined?database.delete(path):database.set(path,previous);}
 });
 
 test('Naqib shared report saves selected students as one incident with reporter identity',async()=>{
@@ -463,4 +473,36 @@ test('Counselor layout keeps case actions, moves attendance before table and dec
  mod.namespace.decorateCounselorPage(ctx,'case-inbox');
  assert.equal(ctx.root.querySelector('td').dataset.label,'Santri');
  ctx.root.querySelector('#claimTest').click();assert.equal(clicks,2);
+});
+
+test('common case inbox merges attendance and manual reports, claims once and keeps toolbar after redraw',async()=>{
+ const boarding=await load(new URL('assets/js/modules/boarding.js',base).href);if(boarding.status!=='evaluated')await boarding.evaluate();
+ const ctx=ctxFor('konselor');ctx.session.profile.scopeGender='L';const routes=[];ctx.navigate=r=>routes.push(r);
+ const day=new Date().toLocaleDateString('en-CA',{timeZone:'Asia/Makassar'}),record={stage:'FINAL',status:'Terlambat'};
+ const manual={studentId:'s1',category:'Kedisiplinan',date:day,status:'menunggu_konselor'};
+ const paths=['boarding/cases/year','boarding/cases/year/manual','boarding/program_attendance/year','boarding/program_attendance/year/'+day+'/p/s1'];
+ const saved=paths.map(p=>database.get(p));
+ database.set(paths[0],{manual});database.set(paths[1],manual);database.set(paths[2],{[day]:{p:{s1:record,s2:record}}});database.set(paths[3],record);
+ const original=repository.saveTeacherSession;let creations=0;
+ mock.setExport('saveTeacherSession',async(path,payload)=>{if(database.has(path))return database.get(path);creations++;database.set(path,payload);database.set(paths[0],{...database.get(paths[0]),[path.split('/').at(-1)]:payload});return payload;});
+ let candidateId;
+ try{
+  await boarding.namespace.renderCaseInbox(ctx);await settle();
+  assert.equal(ctx.root.querySelectorAll('.case-claim').length,2);assert.equal(creations,0);
+  assert.match(ctx.root.querySelector('#caseQueue').textContent,/Presensi Terlambat/);
+  ctx.root.querySelector('#loadReferrals').click();await settle();assert.ok(ctx.root.querySelector('#loadReferrals'));assert.equal(ctx.root.querySelectorAll('.case-claim').length,2);
+  const candidate=Array.from(ctx.root.querySelectorAll('.case-claim')).find(b=>b.dataset.id!=='manual');candidateId=candidate.dataset.id;candidate.click();await settle();
+  assert.equal(creations,1);assert.equal(database.get(paths[0])[candidateId].assignedCounselorUid,ctx.session.user.uid);assert.deepEqual(routes,[]);assert.match(ctx.root.querySelector('[data-feedback]').textContent,/1 kasus berhasil/);
+  await boarding.namespace.renderCaseInbox(ctx);await settle();assert.equal(ctx.root.querySelectorAll('.case-claim').length,1);assert.equal(creations,1);
+ }finally{mock.setExport('saveTeacherSession',original);paths.forEach((p,i)=>saved[i]===undefined?database.delete(p):database.set(p,saved[i]));if(candidateId)database.delete('boarding/cases/year/'+candidateId);}
+});
+
+test('grouped counselor queue filters and bulk claim reports partial failure without losing retry',async()=>{
+ const module=await load(new URL('assets/js/counselor-queue.js',base).href);if(module.status!=='evaluated')await module.evaluate();
+ const host=win.document.createElement('div');win.document.body.append(host);const claimed=[];
+ module.namespace.mountCaseQueue(host,[{id:'a',studentId:'s1',category:'Kedisiplinan',status:'menunggu_konselor'},{id:'b',studentId:'s1',category:'Kebersihan',attendanceSourceId:'source',status:'menunggu_konselor'}],{s1:{name:'Santri Uji'}},{claim:async r=>{if(r.id==='b')throw Error('Sudah diambil petugas lain');claimed.push(r.id);}});
+ assert.equal(host.querySelectorAll('.cq-student').length,1);assert.equal(host.querySelectorAll('.cq-record').length,2);
+ const all=host.querySelector('[data-all]');all.checked=true;all.dispatchEvent(new win.Event('change'));host.querySelector('[data-bulk]').click();await settle();
+ assert.deepEqual(claimed,['a']);assert.equal(host.querySelectorAll('.case-claim').length,1);assert.match(host.querySelector('[data-feedback]').textContent,/Sudah diambil/);
+ const source=host.querySelector('[data-source]');source.value='report';source.dispatchEvent(new win.Event('change'));assert.equal(host.querySelectorAll('.cq-record').length,0);assert.equal(host.querySelector('[data-bulk]').disabled,true);host.remove();
 });
