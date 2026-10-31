@@ -1689,3 +1689,83 @@ body.portal-body:not([data-home=true]) .persistent-home-header{display:block;wid
  .counselor-book .cb-record dl{grid-template-columns:minmax(0,1fr);gap:4px}
  .counselor-book .cb-record dd{margin-bottom:10px}
 }
+
+/* Counselor evaluation: shared period analytics, responsive without table overflow. */
+.counselor-evaluation{min-width:0;color:#073e50;--ce-border:#dceceb}
+.counselor-evaluation .ce-controls{display:flex;align-items:end;gap:18px;margin:22px 0 14px}
+.counselor-evaluation .ce-tabs{display:grid;grid-template-columns:1fr 1fr 1.45fr 1.45fr;flex:1;gap:4px;padding:6px;background:#fff;border:1px solid var(--ce-border);border-radius:16px}
+.counselor-evaluation .ce-tabs button{border:0;border-radius:11px;padding:14px 10px;background:transparent;color:#557b8c;font:inherit;font-size:13px;font-weight:800;cursor:pointer;line-height:1.4}
+.counselor-evaluation .ce-tabs button[aria-pressed=true]{background:linear-gradient(120deg,#007c82,#00a39d);color:white;box-shadow:0 4px 12px #008c831c}
+.counselor-evaluation .ce-controls label{display:grid;gap:6px;flex:0 0 180px;font-size:13px;font-weight:700}
+.counselor-evaluation input{box-sizing:border-box;min-width:0;width:100%;padding:13px;border:1px solid var(--ce-border);border-radius:13px;background:#fff;color:#073e50;font:inherit}
+.counselor-evaluation .ce-caption,.counselor-evaluation .ce-note{color:#648696;font-size:13px;line-height:1.6}
+.counselor-evaluation .ce-metrics{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;margin:18px 0}
+.counselor-evaluation .ce-metric{display:flex;align-items:flex-start;gap:14px;border:1px solid var(--ce-border);border-radius:20px;padding:22px 18px;background:linear-gradient(135deg,#fff,#edf9f7);box-shadow:0 6px 18px #005f6810;min-width:0}
+.counselor-evaluation .ce-metric>div{display:grid;gap:6px;min-width:0}
+.counselor-evaluation .ce-metric>div>span{font-size:13px;font-weight:700;color:#56798b}
+.counselor-evaluation .ce-metric strong{font-size:30px;line-height:1.1;font-weight:900}
+.counselor-evaluation .ce-metric small{font-size:11px;color:#688797;line-height:1.4}
+.counselor-evaluation .ce-metric-icon{display:grid;place-items:center;width:46px;height:46px;flex:0 0 46px;border-radius:15px;background:#d9f4ee;color:#00968f}
+.counselor-evaluation .ce-metric-icon svg{width:25px;height:25px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.counselor-evaluation .ce-tone-1{background:linear-gradient(135deg,#fff,#fff2f3)}
+.counselor-evaluation .ce-tone-1 .ce-metric-icon{background:#ffe6eb;color:#dd6280}
+.counselor-evaluation .ce-tone-2{background:linear-gradient(135deg,#fff,#f4f1ff)}
+.counselor-evaluation .ce-tone-2 .ce-metric-icon{background:#ede5ff;color:#8b64c9}
+.counselor-evaluation .ce-tone-3 .ce-metric-icon{background:#def7e7;color:#13a16a}
+.counselor-evaluation .ce-charts{display:grid;grid-template-columns:1.1fr 1.1fr 1fr;gap:16px;margin-bottom:18px}
+.counselor-evaluation .ce-panel{min-width:0;background:#fff;border:1px solid var(--ce-border);border-radius:20px;padding:22px;box-shadow:0 6px 20px #005f6809}
+.counselor-evaluation .ce-panel h3{font-size:16px;line-height:1.4;margin:0 0 20px;font-weight:800}
+.counselor-evaluation .ce-trend{display:block;width:100%;height:auto;min-height:180px;overflow:visible}
+.counselor-evaluation .ce-trend text{font:12px sans-serif;fill:#688797}
+.counselor-evaluation .ce-donut-layout{display:flex;align-items:center;gap:20px;flex-wrap:wrap;justify-content:center}
+.counselor-evaluation .ce-donut{width:140px;aspect-ratio:1;flex:0 0 140px;border-radius:50%;display:grid;place-items:center}
+.counselor-evaluation .ce-donut>div{width:94px;aspect-ratio:1;border-radius:50%;background:white;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:4px}
+.counselor-evaluation .ce-donut strong{font-size:28px;font-weight:900}
+.counselor-evaluation .ce-donut span{font-size:12px;color:#688797}
+.counselor-evaluation .ce-legend{list-style:none;padding:0;margin:0;flex:1;min-width:135px}
+.counselor-evaluation .ce-legend li{display:flex;gap:7px;align-items:center;margin:12px 0;font-size:12px;color:#54798b}
+.counselor-evaluation .ce-legend i{width:9px;height:9px;border-radius:50%;flex-shrink:0}
+.counselor-evaluation .ce-legend b{margin-left:auto;white-space:nowrap}
+.counselor-evaluation .ce-legend small{font-weight:400}
+.counselor-evaluation .ce-ranking{list-style:none;margin:0;padding:0}
+.counselor-evaluation .ce-ranking li{display:flex;align-items:center;gap:10px;margin:14px 0;font-size:12px;min-width:0}
+.counselor-evaluation .ce-ranking li>div{flex:1;min-width:0}
+.counselor-evaluation .ce-ranking strong{display:block;overflow-wrap:anywhere;line-height:1.4}
+.counselor-evaluation .ce-ranking small{display:block;color:#648696;margin-top:3px}
+.counselor-evaluation .ce-rank{display:grid;place-items:center;width:28px;height:28px;flex:0 0 28px;border-radius:50%;background:#e7f7f3;color:#008c85;font-weight:800}
+.counselor-evaluation .ce-bar{width:22%;height:8px;background:#ecf3f4;border-radius:5px;overflow:hidden}
+.counselor-evaluation .ce-bar i{display:block;height:100%;border-radius:inherit}
+.counselor-evaluation .ce-panel-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:18px}
+.counselor-evaluation .ce-panel-head h3{margin:0}
+.counselor-evaluation .ce-panel-head button{font-size:12px;padding:10px 14px}
+.counselor-evaluation table{width:100%;border-collapse:collapse;table-layout:fixed;font-size:12px}
+.counselor-evaluation th,.counselor-evaluation td{text-align:left;padding:12px 9px;border-bottom:1px solid #e7f0ef;overflow-wrap:anywhere;line-height:1.5}
+.counselor-evaluation th{background:#edf8f6;color:#527a87;font-weight:800}
+.counselor-evaluation td:first-child{font-weight:700}
+.counselor-evaluation .ce-note{margin:16px 0 0;font-size:11px}
+@media(max-width:1200px){
+ .counselor-evaluation .ce-charts{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .counselor-evaluation .ce-charts>.ce-panel:last-child{grid-column:1/-1}
+ .counselor-evaluation .ce-metrics{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .counselor-evaluation .ce-controls{flex-wrap:wrap}
+ .counselor-evaluation .ce-tabs{flex-basis:100%}
+}
+@media(max-width:700px){
+ .counselor-evaluation .ce-controls{gap:12px;margin-top:16px}
+ .counselor-evaluation .ce-tabs{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .counselor-evaluation .ce-tabs button{font-size:12px;padding:11px 7px}
+ .counselor-evaluation .ce-controls label{flex:1 1 100%}
+ .counselor-evaluation .ce-metrics{gap:10px}
+ .counselor-evaluation .ce-metric{padding:14px 12px;gap:9px;flex-direction:column;border-radius:16px}
+ .counselor-evaluation .ce-metric strong{font-size:26px}
+ .counselor-evaluation .ce-metric-icon{width:36px;height:36px;flex-basis:36px;border-radius:12px}
+ .counselor-evaluation .ce-metric-icon svg{width:22px;height:22px}
+ .counselor-evaluation .ce-charts{grid-template-columns:minmax(0,1fr);gap:12px}
+ .counselor-evaluation .ce-panel{padding:16px;border-radius:18px}
+ .counselor-evaluation .ce-panel-head{align-items:start;flex-direction:column}
+ .counselor-evaluation .ce-comparison table,.counselor-evaluation .ce-comparison tbody{display:block}
+ .counselor-evaluation .ce-comparison thead{display:none}
+ .counselor-evaluation .ce-comparison tr{display:block;padding:10px;border:1px solid var(--ce-border);border-radius:14px;margin:10px 0;background:#f9fcfb}
+ .counselor-evaluation .ce-comparison td{display:flex;justify-content:space-between;gap:14px;padding:8px 2px;border:0;text-align:right}
+ .counselor-evaluation .ce-comparison td:before{content:attr(data-label);text-align:left;color:#648696;font-weight:500}
+}

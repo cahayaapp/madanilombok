@@ -523,8 +523,18 @@ test('counselor book merges legacy records and evaluation renders all period mod
  const search=ctx.root.querySelector('[data-search]');search.value='Tidak ditemukan';search.dispatchEvent(new ctx.root.ownerDocument.defaultView.Event('input'));assert.equal(ctx.root.querySelectorAll('[data-book-student]').length,0);assert.equal(ctx.root.querySelectorAll('[data-case]').length,0);assert.match(ctx.root.textContent,/Tidak ada santri sesuai pencarian/);
  search.value='';search.dispatchEvent(new ctx.root.ownerDocument.defaultView.Event('input'));assert.equal(ctx.root.querySelectorAll('[data-book-student]').length,1);
 
- mod.namespace.renderCounselorEvaluation(ctx,cases);ctx.root.querySelector('[data-date]').value='2026-10-30';ctx.root.querySelector('[data-mode]').value='4months';ctx.root.querySelector('[data-mode]').onchange();
- assert.equal(ctx.root.querySelectorAll('[data-evaluation] > section').length,4);assert.match(ctx.root.textContent,/1 kasus terbukti/);exportVisual(ctx,'konselor','evaluation');
+ mod.namespace.renderCounselorEvaluation(ctx,cases);
+ ctx.root.querySelector('[data-ce-date]').value='2026-10-30';
+ ctx.root.querySelector('[data-ce-date]').onchange();
+ for(const mode of ['week','month','4weeks','4months']){
+  ctx.root.querySelector(`[data-ce-mode="${mode}"]`).click();
+  assert.equal(ctx.root.querySelectorAll('.ce-comparison tbody tr').length,mode.startsWith('4')?4:1);
+  assert.equal(ctx.root.querySelectorAll('.ce-metric').length,4);
+  assert.equal(ctx.root.querySelector(`[data-ce-mode="${mode}"]`).getAttribute('aria-pressed'),'true');
+  assert.match(ctx.root.textContent,/1 kasus terbukti/);
+ }
+ assert.ok(ctx.root.querySelector('.ce-trend'));assert.ok(ctx.root.querySelector('[data-ce-export]'));
+ exportVisual(ctx,'konselor','evaluation');
  mod.namespace.mountCaseTreatment(ctx,cases,Object.fromEntries(master.students.map(s=>[s.id,s])));
  assert.equal(ctx.root.querySelectorAll('[data-admission]').length,2);assert.equal(ctx.root.querySelector('[name=what]'),null);assert.ok(ctx.root.querySelector('[data-escalate]'));exportVisual(ctx,'konselor','treatment');
 });

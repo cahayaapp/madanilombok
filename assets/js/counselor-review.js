@@ -1,7 +1,7 @@
 import {escapeHtml as e} from './utils.js';
 import {pageHeader} from './modules/common.js';
 import {commitCaseOperation,getNode} from './repository.js';
-import {counselingEntries,evaluateCases,evaluationPeriods} from './counselor-review-model.js';
+import {counselingEntries} from './counselor-review-model.js';
 import {loading} from './loading-ui.js';
 import {localDate} from './role-experience.js';
 import {counselorLevel} from './counselor-model.js';
@@ -75,7 +75,4 @@ export async function renderCounselorBook(ctx,cases){
  };
  ctx.root.querySelector('[data-search]').oninput=draw;draw();
 }
-export function renderCounselorEvaluation(ctx,cases){
- ctx.root.innerHTML=pageHeader('Evaluasi Pelanggaran','Hanya kasus terbukti, berdasarkan tanggal kejadian. Kasus belum ditabayyun tidak dihitung.')+`<section class="panel portal-form"><label>Periode<select data-mode><option value="week">Pekanan</option><option value="month">Bulanan</option><option value="4weeks">Perbandingan 4 pekan terakhir</option><option value="4months">Perbandingan 4 bulan terakhir</option></select></label><label>Tanggal acuan<input type="date" data-date value="${today()}"></label></section><div data-evaluation></div>`;
- const draw=()=>{const anchor=ctx.root.querySelector('[data-date]').value;if(!anchor)return;const results=evaluateCases(cases,evaluationPeriods(ctx.root.querySelector('[data-mode]').value,anchor));ctx.root.querySelector('[data-evaluation]').innerHTML=results.map(r=>`<section class="panel"><h3>${e(r.from)} — ${e(r.to)}</h3><p><strong>${r.total}</strong> kasus terbukti · ${r.students} santri</p>${Object.entries(r.categories).map(([k,v])=>`<p>${e(k)}: <strong>${v}</strong></p>`).join('')||'<p>Belum ada kasus terbukti pada periode ini.</p>'}</section>`).join('');};ctx.root.querySelector('[data-mode]').onchange=draw;ctx.root.querySelector('[data-date]').onchange=draw;draw();
-}
+export {renderCounselorEvaluation} from './counselor-evaluation.js';
