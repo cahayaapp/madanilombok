@@ -1,3 +1,4 @@
+import { mountAdminSidebar } from './admin-sidebar.js';
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
 import {
   getAuth,
@@ -14,6 +15,9 @@ import {buildStaffAccountPlan} from "./staff-account-plan.js";
 import {mountUserManagement} from "./user-management.js";
 import {applyUserDraft,revokeUserAccess} from "./user-access-model.js";
 import { ROLE_LABELS } from "./permissions.js";
+
+mountAdminSidebar({ surface: 'accounts' });
+document.getElementById('menuButton').addEventListener('click', () => document.getElementById('sidebar').classList.toggle('open'));
 
 const provisioningApp = initializeApp(firebaseConfig, "madani-account-provisioning");
 const provisioningAuth = getAuth(provisioningApp);

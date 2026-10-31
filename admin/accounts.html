@@ -10,17 +10,18 @@
   <link rel="stylesheet" href="../assets/css/app.css">
   <link rel="stylesheet" href="../assets/css/user-management.css?v=28">
   <link rel="stylesheet" href="../assets/css/cahaya-clone.css">
-<meta name="theme-color" content="#00a39d"><link rel="icon" href="../assets/brand/logo.svg" type="image/svg+xml"><link rel="apple-touch-icon" href="../assets/icons/icon-192.png?v=25"><link rel="stylesheet" href="../assets/css/admin-workspaces.css"><link rel="stylesheet" href="../assets/css/brand-theme.css?v=124">
-<script type="module" src="../assets/js/mobile-layout.js"></script></head>
+<meta name="theme-color" content="#00a39d"><link rel="icon" href="../assets/brand/logo.svg" type="image/svg+xml"><link rel="apple-touch-icon" href="../assets/icons/icon-192.png?v=25"><link rel="stylesheet" href="../assets/css/admin-workspaces.css">
+<script type="module" src="../assets/js/mobile-layout.js"></script><link rel="stylesheet" href="../assets/css/brand-theme.css?v=130">
+</head>
 <body class="app-body admin-console">
   <div class="app-shell">
-    <aside class="sidebar">
+    <aside class="sidebar" id="sidebar">
       <div class="sidebar-brand"><div class="brand-mark small"><img src="../assets/brand/logo.svg" alt="Logo MadaniApp" width="74" height="74"></div><div><strong class="brand-wordmark">MADANI<span>APP</span></strong><small>Pondok Pesantren Al-Madani</small></div></div>
-<nav class="nav-menu"><a class="nav-item" href="../app/index.html"><span>Beranda</span></a><a class="nav-item" href="./index.html#students"><span>Data Santri</span></a><a class="nav-item" href="./index.html#staff"><span>Data SDM</span></a><a class="nav-item" href="./index.html#units"><span>Data Sekolah</span></a><a class="nav-item" href="./index.html#rooms"><span>Data Asrama</span></a><a class="nav-item" href="./index.html#academic-schedules"><span>Jadwal Pelajaran</span></a><a class="nav-item" href="./index.html#daily-schedules"><span>Jadwal Program Keasramaan</span></a><a class="nav-item" href="./index.html#features"><span>Manajemen Fitur</span></a><a class="nav-item active" href="./accounts.html"><span>Manajemen User</span></a></nav>
+<nav class="nav-menu" id="navMenu"><a class="nav-item" href="../app/index.html"><span>Beranda</span></a><a class="nav-item" href="./index.html#students"><span>Data Santri</span></a><a class="nav-item" href="./index.html#staff"><span>Data SDM</span></a><a class="nav-item" href="./index.html#units"><span>Data Sekolah</span></a><a class="nav-item" href="./index.html#rooms"><span>Data Asrama</span></a><a class="nav-item" href="./index.html#academic-schedules"><span>Jadwal Pelajaran</span></a><a class="nav-item" href="./index.html#daily-schedules"><span>Jadwal Program Keasramaan</span></a><a class="nav-item" href="./index.html#features"><span>Manajemen Fitur</span></a><a class="nav-item active" href="./accounts.html"><span>Manajemen User</span></a></nav>
       <div class="sidebar-footer"><span id="adminName">Administrator</span><button id="logoutButton" class="link-button">Keluar</button></div>
     </aside>
     <main class="main-area">
-      <header class="topbar"><div><p class="eyebrow">Pondok Pesantren Al-Madani</p><h1>Manajemen User</h1></div><div class="top-actions"><a class="btn btn-secondary" href="../app/index.html">Beranda</a></div></header>
+      <header class="topbar"><button id="menuButton" class="icon-button mobile-only" aria-label="Buka menu">☰</button><div><p class="eyebrow">Pondok Pesantren Al-Madani</p><h1>Manajemen User</h1></div><div class="top-actions"><a class="btn btn-secondary" href="../app/index.html">Beranda</a></div></header>
       <section id="accountContent" class="content-area">
         <div id="userManagement"></div>
 

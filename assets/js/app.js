@@ -1,3 +1,4 @@
+import { mountAdminSidebar } from './admin-sidebar.js';
 import {prefetchCounselorCases} from './counselor-data.js';
 import {decorateCounselorPage} from './counselor-layout.js';
 import {refreshRoleSession} from './session-refresh.js';
@@ -139,6 +140,12 @@ function visibleGroups() {
 
 function renderNav() {
   const nav=document.getElementById("navMenu");
+  if (['admin','super_admin'].includes(activeRole)) {
+    mountAdminSidebar({ route: currentRoute, visible: id => canRoute(id) && menuVisible(activeRole, 'sidebar', id) });
+    nav.querySelectorAll('[data-route]').forEach(btn => btn.addEventListener('click', () => navigate(btn.dataset.route)));
+    return;
+  }
+  document.getElementById('sidebar').classList.remove('admin-sidebar');
   const groups=visibleGroups(),known=new Set(groups.flatMap(g=>g.items.map(i=>i.id)));
   const extras=roleMenuItems(activeRole).filter(i=>!known.has(i.id)&&menuSelection(activeRole,'sidebar',[]).includes(i.id)&&canRoute(i.id));
   if(extras.length)groups.push({label:'Pilihan Role',items:extras.map(i=>({...i,icon:'◇'}))});

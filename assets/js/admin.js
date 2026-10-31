@@ -1,3 +1,4 @@
+import { mountAdminSidebar } from './admin-sidebar.js';
 import {renderFeatureManagement} from './feature-management.js';
 import {naqibProgramEnabled} from './naqib-program-policy.js';
 import {ADMIN_WORKSPACES,workspaceFor,normalizeAdminRecord} from './admin-workspaces.js';
@@ -429,6 +430,7 @@ async function boot(){
   catch(e){console.error(e)}
 }
 
+mountAdminSidebar({ surface: 'data', route: location.hash.slice(1) || 'students' });
 $("#logoutButton").addEventListener("click",async()=>{await logout();window.location.href="../index.html"}); $("#menuButton").addEventListener("click",()=>$("#sidebar").classList.toggle("open")); $("#modalClose").addEventListener("click",closeForm); $("#modalBackdrop").addEventListener("click",e=>{if(e.target.id==="modalBackdrop")closeForm()}); $("#entityForm").addEventListener("submit",submitForm); $$('.nav-item').forEach(btn=>btn.addEventListener("click",()=>{if(btn.dataset.section)navigate(btn.dataset.section);}));
 boot().finally(()=>window.dispatchEvent(new Event("madani:ready")));
 
