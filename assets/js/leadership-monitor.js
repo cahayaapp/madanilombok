@@ -3,7 +3,8 @@ import {boardingLearning,teachingReportInScope} from './leadership-monitor-model
 import {groupLessonSchedules,quranLessonSchedules} from './teacher/group-schedules.js';
 import {icon} from './teacher/ui.js';
 import {mergeConsecutiveSchedules} from './teacher/model.js';
-import {getNode} from './repository.js';
+import {getNode,getDateRange} from './repository.js';
+import {renderWorshipMonitor} from './leadership-worship.js';
 import {flattenEvidence} from './management-operations.js';
 import {monitorScope,attendanceSummary,learningRows,isLate,isAbsent,caseHandled,teacherMissing} from './leadership-monitor-model.js';
 import {pageHeader,panel,recordCard,escapeHtml as e,empty,metric} from './modules/common.js';
@@ -17,7 +18,7 @@ export async function renderLeadershipMonitor(ctx,route){
  const names=new Map(['students','staff','classes','subjects','rooms','programs','groups'].flatMap(k=>(ctx.master[k]||[]).map(r=>[r.id,r.name])));
  const teacher=kind==='teacher'||kind==='pondokTeacher';
  const attendanceView=['teacher','pondokTeacher','student','boarding'].includes(kind);
- let showPunctuality=route.endsWith('punctuality');
+ let showPunctuality=route.endsWith('punctuality'),selectedView=showPunctuality?'punctuality':'attendance';
  const combinedTitle=attendanceView?'Kehadiran & Kedisiplinan '+(kind==='teacher'?'Guru':kind==='pondokTeacher'?'Pembina & Guru Pondok':kind==='student'?'Siswa':'Santri'):title;
  const today=localDate(),week=new Date(Date.parse(today+'T12:00:00Z')-6*86400000).toISOString().slice(0,10);
  let records=[];
@@ -33,9 +34,10 @@ export async function renderLeadershipMonitor(ctx,route){
  const groupSchedules=teacher&&!scope.school?(ctx.master.staff||[]).flatMap(staff=>['guru_mapel','mentor_tahsin_tahfiz'].flatMap(activeRole=>{const c={...ctx,session:{activeRole,profile:{staffId:staff.id}}};return [...groupLessonSchedules(c),...quranLessonSchedules(c)];})):[];
  ctx.root.classList.add('leadership-dashboard');
  ctx.root.classList.toggle('counseling-dashboard',kind==='cases');
- ctx.root.innerHTML=pageHeader(combinedTitle,scope.school?'Data unit sekolah Anda.':'Data asrama '+(scope.gender==='L'?'putra.':'putri.'))+`<section class="monitor-toolbar"><div class="monitor-period-title">${icon('calendar')}<span>Periode laporan<small>Pilih tanggal pemantauan</small></span></div><div class="filter-row wrap"><label>Dari<input type="date" name="from" value="${kind==='mentoring'?week:today}"></label><label>Sampai<input type="date" name="to" value="${today}" max="${today}"></label></div><div class="monitor-presets"><button type="button" data-period="today">Hari ini</button><button type="button" data-period="week">7 hari terakhir</button><button type="button" data-period="month">30 hari terakhir</button></div></section>`+(attendanceView?`<div class="monitor-view-switch" role="group" aria-label="Jenis pemantauan"><button type="button" data-monitor-view="attendance">Kehadiran</button><button type="button" data-monitor-view="punctuality">Kedisiplinan</button></div>`:'')+'<div id="monitorContent" aria-live="polite"></div>';
+ ctx.root.innerHTML=pageHeader(combinedTitle,scope.school?'Data unit sekolah Anda.':'Data asrama '+(scope.gender==='L'?'putra.':'putri.'))+`<section class="monitor-toolbar"><div class="monitor-period-title">${icon('calendar')}<span>Periode laporan<small>Pilih tanggal pemantauan</small></span></div><div class="filter-row wrap"><label>Dari<input type="date" name="from" value="${kind==='mentoring'?week:today}"></label><label>Sampai<input type="date" name="to" value="${today}" max="${today}"></label></div><div class="monitor-presets"><button type="button" data-period="today">Hari ini</button><button type="button" data-period="week">7 hari terakhir</button><button type="button" data-period="month">30 hari terakhir</button></div></section>`+(attendanceView?`<div class="monitor-view-switch ${kind==='pondokTeacher'?'monitor-view-switch-worship':''}" role="group" aria-label="Jenis pemantauan"><button type="button" data-monitor-view="attendance">Kehadiran</button><button type="button" data-monitor-view="punctuality">Kedisiplinan</button>${kind==='pondokTeacher'?'<button type="button" data-monitor-view="worship">Ibadah Pengurus Muqim</button>':''}</div>`:'')+'<div id="monitorContent" aria-live="polite"></div>';
  const name=id=>names.get(id)||id||'—';
- function draw(){ctx.root.querySelectorAll('[data-monitor-view]').forEach(b=>b.setAttribute('aria-pressed',String((b.dataset.monitorView==='punctuality')===showPunctuality)));const from=ctx.root.querySelector('[name=from]').value,to=ctx.root.querySelector('[name=to]').value,body=ctx.root.querySelector('#monitorContent');if(!from||!to||from>to||Date.parse(to)-Date.parse(from)>366*86400000){body.textContent='Pilih rentang tanggal yang valid.';return;}
+ function draw(){ctx.root.querySelectorAll('[data-monitor-view]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.monitorView===selectedView)));const from=ctx.root.querySelector('[name=from]').value,to=ctx.root.querySelector('[name=to]').value,body=ctx.root.querySelector('#monitorContent');if(!from||!to||from>to||Date.parse(to)-Date.parse(from)>366*86400000){body.textContent='Pilih rentang tanggal yang valid.';return;}
+ if(kind==='pondokTeacher'&&selectedView==='worship'){void renderWorshipMonitor(body,{yearId:ctx.yearId,scope:'boarding-'+scope.gender,from,to,name,read:getDateRange});return;}
  const rows=records.filter(r=>{const date=r.date||new Date(r.createdAt||0).toISOString().slice(0,10);return date>=from&&date<=to;});
  if(kind==='quran'){
  const ordered=[...rows].sort((a,b)=>String(b.date).localeCompare(String(a.date))||name(a.studentId).localeCompare(name(b.studentId)));
@@ -65,7 +67,7 @@ export async function renderLeadershipMonitor(ctx,route){
  body.innerHTML+=panel(`${missing.length} pertemuan selesai belum ada presensi guru`,missing.map(r=>recordCard(name(r.staffId),`<p>${e(r.date)} · ${e(r.startTime)}–${e(r.endTime)}</p><p>${e(context(r))}</p><small>Verifikasi kehadiran atau izin.</small>`,'Belum presensi','waiting')).join('')||empty('Semua pertemuan selesai sudah memiliki presensi atau tidak ada jadwal.'));
  }
  }
- ctx.root.querySelectorAll('[data-monitor-view]').forEach(b=>b.onclick=()=>{showPunctuality=b.dataset.monitorView==='punctuality';draw();});
+ ctx.root.querySelectorAll('[data-monitor-view]').forEach(b=>b.onclick=()=>{selectedView=b.dataset.monitorView;showPunctuality=selectedView==='punctuality';draw();});
  ctx.root.querySelectorAll('input').forEach(i=>i.onchange=draw);
  ctx.root.querySelectorAll('[data-period]').forEach(b=>b.onclick=()=>{ctx.root.querySelector('[name=from]').value=b.dataset.period==='month'?new Date(Date.parse(today+'T12:00:00Z')-29*86400000).toISOString().slice(0,10):b.dataset.period==='week'?week:today;ctx.root.querySelector('[name=to]').value=today;draw();});draw();
 }

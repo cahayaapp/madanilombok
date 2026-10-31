@@ -1789,3 +1789,9 @@ body.portal-body:not([data-home=true]) .persistent-home-header{display:block;wid
 .app-body .admin-sidebar .sidebar-footer #adminName,.app-body .admin-sidebar .sidebar-footer #userName{color:#fff;font-size:13px;font-weight:800}
 .app-body .admin-sidebar .sidebar-footer .link-button{align-self:flex-start;color:#ff9696!important}
 .app-body .admin-sidebar .role-picker{width:100%;margin-top:7px;background:#0d5960;color:#e9f8f5;border:1px solid #ffffff35}
+
+/* Teaching and worship reports share period controls, with separate metrics. */
+.monitor-view-switch.monitor-view-switch-worship{max-width:720px;flex-wrap:wrap}
+.monitor-view-switch-worship button{min-width:0;flex:1 1 140px;white-space:normal}
+.monitor-worship .filter-row label{min-width:0;flex:1 1 160px}
+.monitor-worship .filter-row select{width:100%;max-width:100%}
