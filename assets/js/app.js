@@ -1,3 +1,4 @@
+import {prefetchCounselorCases} from './counselor-data.js';
 import {decorateCounselorPage} from './counselor-layout.js';
 import {refreshRoleSession} from './session-refresh.js';
 import {mountWorkspaceHeader} from './home-role-switcher.js';
@@ -30,7 +31,7 @@ import {
 import {
   renderNaqibPrograms, renderNaqibAttendance, renderNaqibReport, renderNaqibInitiative, renderNaqibExample, renderNaqibAssessment, renderNaqibCase, renderNaqibDiscipline, renderNaqibSelf, renderNaqibHistory, renderNaqibKpi, renderNaqibGuide,
   renderMenteeList, renderMentoring, renderMentoringTargets, renderMentoringHistory, renderMentoringKpi, renderMentoringGuide,
-  renderCaseInbox, renderCaseActive, renderCounseling, renderCaseActions, renderDisciplinePoints, renderWarningLetter, renderCaseEscalation, renderCaseHistory, renderCounselorSelf, renderCounselorKpi, renderCounselorGuide
+  renderCounselingBook, renderViolationEvaluation, renderCaseInbox, renderCaseActive, renderCounseling, renderCaseActions, renderDisciplinePoints, renderWarningLetter, renderCaseEscalation, renderCaseHistory, renderCounselorSelf, renderCounselorKpi, renderCounselorGuide
 } from "./modules/boarding.js";
 import {
   renderFinanceDashboard, renderBills, renderPayments, renderWallets, renderProducts, renderCashier, renderFinanceHistory, renderFinanceReports
@@ -78,6 +79,8 @@ export const routes = {
   "mentoring-history": renderMentorHistory,
   "mentoring-kpi": renderMentoringKpi,
   "mentoring-guide": renderMentoringGuide,
+  "counseling-book": renderCounselingBook,
+  "violation-evaluation": renderViolationEvaluation,
   "case-inbox": renderCaseInbox,
   "case-active": renderCaseActive,
   counseling: renderCounseling,
@@ -217,6 +220,7 @@ function bindMobileBottomNav() {
 
 async function init() {
   session=await requireSession();
+  if(session.roles.includes('konselor'))prefetchCounselorCases();
   setFeatureSwitches(await getNode("settings/featureSwitches"));
   master=await loadMaster();
   const year=currentAcademicYear();

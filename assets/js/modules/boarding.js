@@ -1,3 +1,5 @@
+import {readCounselorCases} from '../counselor-data.js';
+import {mountCaseTreatment,renderCounselorBook,renderCounselorEvaluation} from '../counselor-review.js';
 import {mountCaseQueue} from '../counselor-queue.js';
 import {decorateCounselorPage} from '../counselor-layout.js';
 import {renderTeacherReport} from '../teacher/extras.js';
@@ -166,14 +168,14 @@ export async function renderMentoringHistory(ctx) {
 }
 
 export async function renderCaseInbox(ctx) {
-  const cases=scopedCases(ctx,await listNode(`boarding/cases/${ctx.yearId}`));const students=byId(ctx.master.students||[]);const uid=ctx.session.user.uid;
+  const cases=scopedCases(ctx,await readCounselorCases(ctx.yearId));const students=byId(ctx.master.students||[]);const uid=ctx.session.user.uid;
   let history=cases, candidates=[];
-  ctx.root.innerHTML=pageHeader("Kasus Masuk",`Konselor ${counselorLevel(ctx.session.profile)==='MADYA'?'Madya: moral/etika dan kejadian berulang tiga hari berturut-turut':'Pemula: kedisiplinan serta kebersihan dan kerapian'}. Ambil kasus sesuai unit sebelum penanganan.`)+'<div id="caseQueue"></div>';
+  ctx.root.innerHTML=pageHeader("Kasus Masuk",`Konselor ${counselorLevel(ctx.session.profile)==='MADYA'?'Madya: moral/etika dan kejadian berulang tiga hari berturut-turut':'Pemula: kedisiplinan serta kebersihan dan kerapian'}. Pilih kasus untuk tabayyun dan penindakan.`)+'<div id="caseQueue"></div>';
   const queue=ctx.root.querySelector('#caseQueue');
   function draw(){
-   const incoming=[...cases,...candidates].filter(c=>routeCounselorCase(c,history).level===counselorLevel(ctx.session.profile)&&!c.assignedCounselorUid&&!['selesai','tidak_terbukti'].includes(c.status));
+   const incoming=[...cases,...candidates].filter(c=>routeCounselorCase(c,history).level===counselorLevel(ctx.session.profile)&&(!c.assignedCounselorUid||c.assignedCounselorUid===uid)&&!['selesai','tidak_terbukti','konsekuensi','evaluasi'].includes(c.status)&&!c.higherEscalation);
    incoming.sort((a,b)=>String(b.date||'').localeCompare(String(a.date||'')));
-   mountCaseQueue(queue,incoming,students,ctx.session.activeRole==='konselor'?{claim:async r=>{
+   mountCaseQueue(queue,incoming,students,ctx.session.activeRole==='konselor'?{process:rows=>mountCaseTreatment(ctx,rows,students,{prepare:async r=>{
      const id=r.id,candidate=candidates.find(c=>c.id===id);
      if(candidate)await materializeAttendanceCase(ctx,candidate,history);
      await transitionWorkspaceRecord(`boarding/cases/${ctx.yearId}`,id,current=>{
@@ -185,30 +187,24 @@ export async function renderCaseInbox(ctx) {
       return {...current,status:'ditangani',assignedCounselorUid:uid,routeLevel:routeCounselorCase(current,history).level,claimedAt:{'.sv':'timestamp'}};
      },uid);
      r.assignedCounselorUid=uid;
-   }}:{});
+   },onSaved:()=>renderCaseInbox(ctx).catch(error=>ctx.notify?.(error.message,'error'))})}:{});
   }
   draw();
-  if(ctx.session.activeRole==='konselor')mountAttendanceReferrals(ctx,cases,(rows,all)=>{candidates=rows;history=all;draw();decorateCounselorPage(ctx,'case-inbox');});
+  if(ctx.session.activeRole==='konselor')mountAttendanceReferrals(ctx,cases,(rows,all)=>{candidates=rows;history=all;draw();decorateCounselorPage(ctx,'case-inbox');},{compact:true});
 }
 
 export async function renderCaseActive(ctx) {
-  const uid=ctx.session.user.uid;const students=byId(ctx.master.students||[]);const cases=scopedCases(ctx,await listNode(`boarding/cases/${ctx.yearId}`)).filter(c=>c.assignedCounselorUid===uid && !["selesai","tidak_terbukti"].includes(c.status));
+  const uid=ctx.session.user.uid;const students=byId(ctx.master.students||[]);const cases=scopedCases(ctx,await readCounselorCases(ctx.yearId)).filter(c=>c.assignedCounselorUid===uid && !["selesai","tidak_terbukti"].includes(c.status));
   ctx.root.innerHTML=pageHeader("Kasus Aktif","Kasus yang sedang menjadi tanggung jawab Konselor ini.")+'<div id="caseQueue"></div>';
   mountCaseQueue(ctx.root.querySelector('#caseQueue'),cases,students,{open:r=>{sessionStorage.setItem('madaniSelectedCase',r.id);ctx.navigate('counseling');},batch:(rows,feedback)=>{
-   let form=ctx.root.querySelector('#batchCounseling');if(form)form.remove();
-   form=document.createElement('form');form.id='batchCounseling';form.className='panel portal-form';form.innerHTML=`<h3>Pembinaan bersama · ${rows.length} kasus</h3><label>Tanggal<input name="date" type="date" value="${today()}" required></label><label>Jenis pembinaan<select name="actionType"><option>Konseling pembinaan</option><option>Teguran edukatif</option><option>Pemantauan</option><option>Koordinasi wali</option></select></label><label>Catatan<textarea name="description" required></textarea></label><label>Tindak lanjut<textarea name="followUp"></textarea></label><button class="btn btn-primary">Simpan Pembinaan</button><p role="status"></p>`;
-   feedback.after(form);const batchId=crypto.randomUUID();
-   form.onsubmit=async ev=>{ev.preventDefault();const button=form.querySelector('button');button.disabled=true;let success=0;const errors=[];const data=Object.fromEntries(new FormData(form));
-    for(const r of rows)try{await commitCaseOperation(ctx.yearId,r.id,{id:batchId+'_'+r.id,type:'batch',data:{...data,batchId}},ctx.session);success++;}catch(error){errors.push(`${students[r.studentId]?.name||r.studentId}: ${error.message}`);}
-    form.querySelector('[role=status]').textContent=`${success} kasus tercatat. ${errors.join(' · ')}`;button.disabled=false;
-   };
+   mountCaseTreatment(ctx,rows,students);
   }});
 }
 
 export async function renderCounseling(ctx) {return renderCounselorWorkspace(ctx);}
 
 export async function renderCaseActions(ctx) {
-  const cases=scopedCases(ctx,await listNode(`boarding/cases/${ctx.yearId}`)).filter(c=>c.assignedCounselorUid===ctx.session.user.uid&&!["selesai","tidak_terbukti"].includes(c.status));const students=byId(ctx.master.students||[]);const allowed=new Set(cases.map(c=>c.id));const actions=(await listNode(`boarding/case_actions/${ctx.yearId}`)).filter(a=>!a.caseId||allowed.has(a.caseId));
+  const cases=scopedCases(ctx,await readCounselorCases(ctx.yearId)).filter(c=>c.assignedCounselorUid===ctx.session.user.uid&&!["selesai","tidak_terbukti"].includes(c.status));const students=byId(ctx.master.students||[]);const allowed=new Set(cases.map(c=>c.id));const actions=(await listNode(`boarding/case_actions/${ctx.yearId}`)).filter(a=>!a.caseId||allowed.has(a.caseId));
   ctx.root.innerHTML=pageHeader("Tindakan Edukatif","Konsekuensi/pembinaan formal dicatat oleh Konselor.")+`<div class="portal-grid two">${panel("Catat Tindakan",`<form id="actionForm" class="portal-form">${formRow("Kasus",select("caseId",`<option value=''>Pilih...</option>${cases.map(c=>`<option value='${c.id}'>${escapeHtml(students[c.studentId]?.name||c.studentId)} · ${escapeHtml(c.category||"")}</option>`).join("")}`,"required"))}${formRow("Tanggal",input("date",today(),"date","required"))}${formRow("Jenis Tindakan",input("actionType","","text","placeholder='Pembinaan, tugas edukatif, mediasi, dll' required"))}${formRow("Deskripsi",textarea("description","","required"),true)}${formRow("Evaluasi/Tindak Lanjut",textarea("followUp"),true)}<div class="form-actions"><button class="btn btn-primary">Simpan</button></div></form>`)}${panel("Riwayat",actions.length?`<div class="stack-list">${actions.slice(-20).reverse().map(a=>`<article class="list-card"><div><span>${escapeHtml(a.date||"—")}</span><strong>${escapeHtml(a.actionType||"Tindakan")}</strong><small>${escapeHtml(a.description||"")}</small></div></article>`).join("")}</div>`:`<div class="empty-state">Belum ada tindakan.</div>`)}</div>`;
   const actionOperationId=crypto.randomUUID();attachAsync(document.getElementById("actionForm"),async data=>{if(!allowed.has(data.caseId))throw Error("Kasus di luar penugasan.");await commitCaseOperation(ctx.yearId,data.caseId,{id:actionOperationId,type:'action',data},ctx.session);ctx.rerender();},"Tindakan edukatif tersimpan.");
 }
@@ -216,7 +212,7 @@ export async function renderCaseActions(ctx) {
 export async function renderDisciplinePoints(ctx) {
   const uid=ctx.session.user.uid;
   const studentMap=byId(ctx.master.students||[]);
-  const allCases=scopedCases(ctx,await listNode(`boarding/cases/${ctx.yearId}`));
+  const allCases=scopedCases(ctx,await readCounselorCases(ctx.yearId));
   const cases=(ctx.session.activeRole==="konselor"?allCases.filter(c=>c.assignedCounselorUid===uid):allCases)
     .filter(c=>!["selesai","tidak_terbukti"].includes(c.status));
   const eligible=cases.filter(c=>!c.finalPointTransactionId);
@@ -238,9 +234,9 @@ export async function renderDisciplinePoints(ctx) {
 }
 
 export async function renderWarningLetter(ctx) {
-  const students=boardingStudents(ctx);const allowed=new Set(students.map(s=>s.id));const letters=(await listNode(`boarding/warning_letters/${ctx.yearId}`)).filter(r=>allowed.has(r.studentId));
+  const students=boardingStudents(ctx).filter(s=>ctx.session.activeRole!=='konselor'||(s.gender===counselorGender(ctx.session.profile)&&!isSdStudent(ctx.master,s.id)));const allowed=new Set(students.map(s=>s.id));const letters=(await listNode(`boarding/warning_letters/${ctx.yearId}`)).filter(r=>allowed.has(r.studentId));
   ctx.root.innerHTML=pageHeader("Surat Peringatan","Pencatatan SP sebagai bagian eskalasi pembinaan formal.")+`<div class="portal-grid two">${panel("Buat SP",`<form id="spForm" class="portal-form">${formRow("Tanggal",input("date",today(),"date","required"))}${formRow("Santri",select("studentId",studentOptions(students),"required"))}${formRow("Tingkat",select("level","<option>SP1</option><option>SP2</option><option>SP3</option>"))}${formRow("Alasan",textarea("reason","","required"),true)}${formRow("Syarat Perbaikan",textarea("requirements"),true)}${formRow("Tampilkan ke Wali",select("parentVisible","<option value='false'>Tidak, internal dulu</option><option value='true'>Ya, tampilkan ke wali</option>"))}<div class="form-actions"><button class="btn btn-primary">Simpan SP</button></div></form>`)}${panel("Riwayat SP",letters.length?`<div class="stack-list">${letters.slice(-20).reverse().map(r=>`<article class="list-card"><div><span>${escapeHtml(r.date||"—")}</span><strong>${escapeHtml(byId(students)[r.studentId]?.name||r.studentId||"Santri")}</strong><small>${escapeHtml(r.reason||"")}</small></div>${badge(r.level||"SP")}</article>`).join("")}</div>`:`<div class="empty-state">Belum ada SP.</div>`)}</div>`;
-  attachAsync(document.getElementById("spForm"),async data=>{data.parentVisible=data.parentVisible==="true";await pushRecord(`boarding/warning_letters/${ctx.yearId}`,{...data,counselorUid:ctx.session.user.uid},ctx.session.user.uid);ctx.rerender();},"Surat peringatan tercatat.");
+  attachAsync(document.getElementById("spForm"),async data=>{if(!allowed.has(data.studentId))throw Error("Santri di luar lingkup Konselor.");data.parentVisible=data.parentVisible==="true";await pushRecord(`boarding/warning_letters/${ctx.yearId}`,{...data,counselorUid:ctx.session.user.uid},ctx.session.user.uid);ctx.rerender();},"Surat peringatan tercatat.");
 }
 
 export async function renderMentoringKpi(ctx) {
@@ -254,7 +250,7 @@ export async function renderMentoringGuide(ctx) {
 }
 
 export async function renderCaseEscalation(ctx) {
-  const uid=ctx.session.user.uid;const cases=scopedCases(ctx,await listNode(`boarding/cases/${ctx.yearId}`)).filter(c=>c.assignedCounselorUid===uid && !["selesai","tidak_terbukti"].includes(c.status));const students=byId(ctx.master.students||[]);const rows=await listNode(`boarding/escalations/${ctx.yearId}`);
+  const uid=ctx.session.user.uid;const cases=scopedCases(ctx,await readCounselorCases(ctx.yearId)).filter(c=>c.assignedCounselorUid===uid && !["selesai","tidak_terbukti"].includes(c.status));const students=byId(ctx.master.students||[]);const rows=await listNode(`boarding/escalations/${ctx.yearId}`);
   ctx.root.innerHTML=pageHeader("Eskalasi Kasus","Gunakan saat kasus melampaui kewenangan atau membutuhkan keputusan level lebih tinggi.")+`<div class="portal-grid two">${panel("Buat Eskalasi",`<form id="escalationForm" class="portal-form">${formRow("Kasus",select("caseId",`<option value=''>Pilih...</option>${cases.map(c=>`<option value='${c.id}'>${escapeHtml(students[c.studentId]?.name||c.studentId)} · ${escapeHtml(c.category||"")}</option>`).join("")}`,"required"))}${formRow("Tujuan",select("targetLevel","<option value='konselor_madya'>Konselor Madya (dari Pemula)</option><option value='deputy_director'>Wakil Direktur (dari Madya)</option><option value='director'>Direktur (dari Madya)</option>"))}${formRow("Ringkasan Kebutuhan Keputusan",textarea("summary","","required"),true)}${formRow("Keputusan yang Dibutuhkan dari Pimpinan",textarea("decisionNeeded"),true)}<div class="form-actions"><button class="btn btn-primary">Kirim Eskalasi</button></div></form>`)}${panel("Riwayat Eskalasi",rows.length?`<div class="stack-list">${rows.filter(r=>r.createdByUid===uid).slice(-20).reverse().map(r=>`<article class="list-card"><div><span>${escapeHtml(r.targetLevel||"—")}</span><strong>${escapeHtml(r.summary||"Eskalasi")}</strong><small>${escapeHtml(r.status||"menunggu_arahan")}</small></div></article>`).join("")}</div>`:`<div class="empty-state">Belum ada eskalasi.</div>`)}</div>`;
   const escalationOperationId=crypto.randomUUID();attachAsync(document.getElementById("escalationForm"),async data=>{if(!cases.some(c=>c.id===data.caseId))throw Error('Kasus di luar penugasan.');await commitCaseOperation(ctx.yearId,data.caseId,{id:escalationOperationId,type:'escalation',data},ctx.session);ctx.rerender();},"Eskalasi dikirim.");
 }
@@ -263,17 +259,20 @@ export async function renderCounselorSelf(ctx){return renderCounselorReflection(
 
 export async function renderCounselorKpi(ctx) {
   const uid=ctx.session.user.uid;const [cases,counselNode,actions,escalations,selfNode]=await Promise.all([listNode(`boarding/cases/${ctx.yearId}`),getNode(`boarding/counseling/${ctx.yearId}`),listNode(`boarding/case_actions/${ctx.yearId}`),listNode(`boarding/escalations/${ctx.yearId}`),getNode(`boarding/counselor_self_review/${ctx.yearId}/${uid}`)]);
-  const mine=cases.filter(c=>c.assignedCounselorUid===uid);let sessions=0;Object.entries(counselNode||{}).forEach(([caseId,node])=>{if(mine.some(c=>c.id===caseId))sessions+=Object.keys(node||{}).length;});
+  const mine=cases.filter(c=>c.assignedCounselorUid===uid&&c.status!=="tidak_terbukti"&&c.tabayyun?.conclusion!=="TIDAK TERBUKTI");let sessions=0;Object.entries(counselNode||{}).forEach(([caseId,node])=>{if(mine.some(c=>c.id===caseId))sessions+=Object.keys(node||{}).length;});
   ctx.root.innerHTML=pageHeader("KPI & Evidence Konselor","Ringkasan metadata workflow. Narasi konseling tidak ditampilkan pada dashboard KPI.")+`<div class="portal-metrics">${metric("Kasus Diambil",String(mine.length),"","blue")}${metric("Kasus Aktif",String(mine.filter(c=>!["selesai","tidak_terbukti"].includes(c.status)).length),"","coral")}${metric("Kasus Selesai",String(mine.filter(c=>["selesai","tidak_terbukti"].includes(c.status)).length),"","mint")}${metric("Sesi Konseling",String(sessions),"metadata","violet")}${metric("Eskalasi",String(escalations.filter(e=>e.createdByUid===uid).length),"","cyan")}</div>`;
 }
 
 export async function renderCounselorGuide(ctx) {
-  ctx.root.innerHTML=pageHeader("Panduan Kerja Konselor","Satu workflow kasus dari laporan sampai selesai.")+`<div class="portal-grid two">${panel("Alur Kasus",`<div class="guide-steps"><b>1.</b> Buka Kasus Masuk dan claim sesuai scope.<br><b>2.</b> Kasus berpindah ke Kasus Aktif.<br><b>3.</b> Lakukan tabayyun dan catat sesi konseling pada kasus yang sama.<br><b>4.</b> Catat tindakan edukatif terpisah dari narasi konseling.<br><b>5.</b> Finalisasi poin satu kali sesuai hasil proses.<br><b>6.</b> Evaluasi lalu tutup, atau eskalasi bila melampaui kewenangan.</div>`)}${panel("Kerahasiaan",`<div class="notice info">Narasi konseling bersifat sensitif. Jangan disebarkan ke role yang tidak membutuhkan. Dashboard KPI cukup menggunakan metadata workflow dan evidence proses.</div>`)}</div>`;
+  ctx.root.innerHTML=pageHeader("Panduan Kerja Konselor","Satu workflow kasus dari laporan sampai selesai.")+`<div class="portal-grid two">${panel("Alur Kasus",`<div class="guide-steps"><b>1.</b> Buka Kasus Masuk dan claim sesuai scope.<br><b>2.</b> Klik Lanjutkan Kasus yang Diambil, lalu pilih satu atau beberapa kasus.<br><b>3.</b> Isi pernyataan dan fakta per santri, lalu kesimpulan per kasus. Tidak terbukti dikeluarkan dari daftar operasional.<br><b>4.</b> Isi What–Why–How dan konsekuensi. Konseling kelompok disimpan sebagai riwayat individual di Buku Konseling.<br><b>5.</b> Buka detail kasus untuk tindakan, poin, dan evaluasi tindak lanjut. Poin tetap difinalisasi satu kali.<br><b>6.</b> Evaluasi Pelanggaran menghitung kasus terbukti berdasarkan tanggal kejadian; eskalasi memindahkan kasus yang sama.</div>`)}${panel("Kerahasiaan",`<div class="notice info">Narasi konseling bersifat sensitif. Jangan disebarkan ke role yang tidak membutuhkan. Dashboard KPI cukup menggunakan metadata workflow dan evidence proses.</div>`)}</div>`;
 }
 
 export async function renderCaseHistory(ctx) {
-  const cases=scopedCases(ctx,await listNode(`boarding/cases/${ctx.yearId}`));const students=byId(ctx.master.students||[]);
+  const cases=scopedCases(ctx,await readCounselorCases(ctx.yearId));const students=byId(ctx.master.students||[]);
   const visible=cases.filter(c=>['selesai','tidak_terbukti'].includes(c.status)&&(ctx.session.activeRole!=='konselor'||c.assignedCounselorUid===ctx.session.user.uid||c.previousCounselorUid===ctx.session.user.uid));
   ctx.root.innerHTML=pageHeader("Riwayat Kasus","Kasus yang telah selesai, beserta catatan penanganannya.")+'<div id="caseQueue"></div>';
   mountCaseQueue(ctx.root.querySelector('#caseQueue'),visible,students,{open:r=>{sessionStorage.setItem('madaniSelectedCase',r.id);ctx.navigate('counseling');}});
 }
+
+export async function renderCounselingBook(ctx){return renderCounselorBook(ctx,scopedCases(ctx,await readCounselorCases(ctx.yearId)).filter(c=>c.assignedCounselorUid===ctx.session.user.uid||c.previousCounselorUid===ctx.session.user.uid||Object.values(c.sessions||{}).some(s=>s.counselorUid===ctx.session.user.uid)));}
+export async function renderViolationEvaluation(ctx){return renderCounselorEvaluation(ctx,scopedCases(ctx,await readCounselorCases(ctx.yearId)));}

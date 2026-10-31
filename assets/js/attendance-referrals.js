@@ -14,7 +14,7 @@ export function attendanceReferrals({master,gender,boarding={},learning={},from,
 }
 
 export function attendanceCase(r){
- return {id:r.id,studentId:r.studentId,date:r.date,category:'Kedisiplinan',severity:'ringan',status:'menunggu_konselor',description:'Perlu klarifikasi presensi '+r.status+' pada '+r.context+'. '+r.note,attendanceSourceId:r.sourceId,attendanceSourcePath:r.sourcePath,attendanceStatus:r.status,virtualAttendance:true};
+ return {id:r.id,studentId:r.studentId,date:r.date,category:'Kedisiplinan',severity:'ringan',status:'menunggu_konselor',description:'Perlu klarifikasi presensi '+r.status+' pada '+r.context+'. '+r.note,attendanceSourceId:r.sourceId,attendanceSourcePath:r.sourcePath,attendanceStatus:r.status,attendanceContext:r.context,virtualAttendance:true};
 }
 export function unrepresentedAttendance(candidates,cases){
  const ids=new Set(cases.flatMap(c=>[c.id,c.attendanceSourceId]).filter(Boolean));

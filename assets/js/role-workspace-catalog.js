@@ -14,7 +14,7 @@ const managing=['management-control','management-people','management-history','m
 const leadership=[...managing,'management-learning','management-materials','management-scores','management-reports','management-programs','management-mentoring','management-escalations','management-standards','management-targets','management-systemic','management-changes'];
 export const WORKSPACE_GRANTS={
  kesehatan:utilities,
- guru_mapel:[...utilities,...teaching,'homeroom-cases'],mentor_tahsin_tahfiz:[...utilities],naqib:[...utilities,'naqib-leave'],guru_wali:[...utilities],konselor:utilities,kasir:utilities,
+ guru_mapel:[...utilities,...teaching,'homeroom-cases'],mentor_tahsin_tahfiz:[...utilities],naqib:[...utilities,'naqib-leave'],guru_wali:[...utilities],konselor:[...utilities,'education-calendar'],kasir:utilities,
  head_formal_school:[...Object.keys(MONITOR_VIEWS).filter(id=>id.startsWith('school-')),'management-data',...utilities,...managing,'management-residents','management-worship','management-learning','management-materials','management-scores','management-reports','education-calendar'],head_boys_dorm:[...Object.keys(MONITOR_VIEWS).filter(id=>id.startsWith('dorm-')),'naqib-leave','management-duty','management-residents','management-data',...utilities,...managing,'management-worship','management-programs','management-mentoring'],head_girls_dorm:[...Object.keys(MONITOR_VIEWS).filter(id=>id.startsWith('dorm-')),'naqib-leave','management-duty','management-residents','management-data',...utilities,...managing,'management-worship','management-programs','management-mentoring'],
  deputy_director:[...utilities,...leadership],director:[...utilities,...leadership],admin:[...utilities,...leadership,...teaching,'deposit-admin',...Object.keys(ADMIN_HOME_ROUTES)],super_admin:[...utilities,...leadership,...teaching,'deposit-admin',...Object.keys(ADMIN_HOME_ROUTES)],wali_santri:['work-profile','work-guide','parent-deposits']
 };
@@ -26,6 +26,7 @@ export const LEADERSHIP_ROLES=['deputy_director','director','admin','super_admin
 
 // Presentation only: retain existing authorization and operational records.
 export function visibleRoleMenu(role,items){
+ if(role==='konselor')return items.filter(item=>['dashboard','case-inbox','counseling-book','violation-evaluation','warning-letter','work-profile','counselor-guide','education-calendar'].includes(item.id));
  const adminMenus=new Set(['dashboard',...Object.keys(ADMIN_HOME_ROUTES),'work-profile','work-messages','work-guide']);
  return ['admin','super_admin'].includes(role)?items.filter(item=>adminMenus.has(item.id)):items;
 }

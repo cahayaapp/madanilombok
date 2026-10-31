@@ -1,6 +1,6 @@
 import {icon} from './teacher/ui.js';
 import {escapeHtml as e} from './utils.js';
-const pages = new Set(['case-inbox','case-active','counseling','case-actions','discipline-points','warning-letter','case-escalation','case-history','counselor-self','counselor-guide']);
+const pages = new Set(['counseling-book','violation-evaluation','case-inbox','case-active','counseling','case-actions','discipline-points','warning-letter','case-escalation','case-history','counselor-self','counselor-guide']);
 export function decorateCounselorPage(ctx, route) {
   if (!pages.has(route)) return;
   const root = ctx.root;

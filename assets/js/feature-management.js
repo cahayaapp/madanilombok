@@ -1,6 +1,6 @@
 import {loading} from './loading-ui.js';
 import {ROLE_LABELS} from './permissions.js';
-import {featureKey,protectedFeature,setFeatureSwitches} from './feature-switches.js';
+import {featureKey,protectedFeature,setFeatureSwitches,normalizeMenuSettings} from './feature-switches.js';
 import {roleMenuItems,defaultQuick} from './menu-layout.js';
 import {bottomRoutes} from './role-experience.js';
 import {getNode,patchNode} from './repository.js';
@@ -13,7 +13,7 @@ export async function renderFeatureManagement({root,uid}){
  const role=root.querySelector('#featureRole'),list=root.querySelector('#featureList'),status=root.querySelector('#featureStatus'),form=root.querySelector('#featureForm');
  const render=()=>{
  form.hidden=!role.value;root.querySelector('#featurePrompt').hidden=!!role.value;status.textContent='';if(!role.value){list.innerHTML='';return;}
- const items=roleMenuItems(role.value),config=state[role.value]?._menus||{},quick=defaultQuick(role.value),seen=new Set();
+ const items=roleMenuItems(role.value),config=normalizeMenuSettings(role.value,state[role.value]?._menus||{}),quick=defaultQuick(role.value),seen=new Set();
  const chosen=(section,id,fallback)=>Object.hasOwn(config,section)?Array.isArray(config[section])?config[section].includes(id):config[section]?.[id]===true:fallback;
  const choice=(item,section,checked,locked=false)=>'<label class="feature-choice"><input type="checkbox" '+(section?'data-menu="'+section+'" data-route="'+e(item.id)+'"':'data-feature="'+e(item.feature||'dashboard')+'"')+' '+(checked?'checked ':'')+(locked?'disabled ':'')+'><span><strong>'+e(item.label)+'</strong><small>'+(locked?'Fitur inti · selalu aktif':section?'Tampilkan di bagian ini':'Izinkan akses fitur untuk role ini')+'</small></span></label>';
  const features=items.filter(i=>{const f=i.feature||'dashboard';if(seen.has(f))return false;seen.add(f);return true;});
@@ -34,7 +34,7 @@ list.querySelectorAll('[data-bottom] option').forEach(option=>{option.disabled=o
  form.onsubmit=async event=>{
  event.preventDefault();if(!role.value)return;const button=form.querySelector('button[type=submit]'),selectedRole=role.value,patch={},next={};
  for(const input of list.querySelectorAll('input[data-feature]:not(:disabled)')){const key=featureKey(input.dataset.feature);next[key]=input.checked;patch['settings/featureSwitches/'+selectedRole+'/'+key]=input.checked;}
- const menus={quick:{},other:{},sidebar:{},bottom:{}};
+ const menus={quick:{},other:{},sidebar:{},bottom:{}};if(selectedRole==='konselor')menus.counselorVersion=2;
  for(const input of list.querySelectorAll('[data-menu]'))menus[input.dataset.menu][input.dataset.route]=input.checked;
  for(const select of list.querySelectorAll('[data-bottom]'))menus.bottom[select.dataset.bottom]=select.value;
  patch['settings/featureSwitches/'+selectedRole+'/_menus']=menus;

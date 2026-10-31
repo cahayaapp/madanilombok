@@ -17,6 +17,7 @@ const database=new Map([['users',{teacher:{name:'Guru Uji',role:'guru_mapel',act
 let writes=[],nextId=1;
 const repository={
  getNode:async path=>database.get(path)||null,
+ getDateRange:async(path,from,to)=>Object.fromEntries(Object.entries(database.get(path)||{}).filter(([date])=>date>=from&&date<=to)),
  listNode:async path=>Object.entries(database.get(path)||{}).map(([id,data])=>({id,...data})),
  createWorkspaceRecord:async(path,data,actor)=>{const id=`r${nextId++}`,payload={...data,createdBy:actor,updatedBy:actor,createdAt:Date.now()};database.set(path,{...database.get(path),[id]:payload});database.set(`${path}/${id}`,payload);writes.push({path,id,data:payload});return {id,...payload};},
  saveWorkspaceRecord:async(path,id,data,actor)=>{database.set(`${path}/${id}`,{...data,createdBy:actor});writes.push({path,id,data});},
@@ -475,7 +476,7 @@ test('Counselor layout keeps case actions, moves attendance before table and dec
  ctx.root.querySelector('#claimTest').click();assert.equal(clicks,2);
 });
 
-test('common case inbox merges attendance and manual reports, claims once and keeps toolbar after redraw',async()=>{
+test('common case inbox merges attendance and manual reports, opens direct treatment without writing until save',async()=>{
  const boarding=await load(new URL('assets/js/modules/boarding.js',base).href);if(boarding.status!=='evaluated')await boarding.evaluate();
  const ctx=ctxFor('konselor');ctx.session.profile.scopeGender='L';const routes=[];ctx.navigate=r=>routes.push(r);
  const day=new Date().toLocaleDateString('en-CA',{timeZone:'Asia/Makassar'}),record={stage:'FINAL',status:'Terlambat'};
@@ -488,12 +489,16 @@ test('common case inbox merges attendance and manual reports, claims once and ke
  let candidateId;
  try{
   await boarding.namespace.renderCaseInbox(ctx);await settle();
-  assert.equal(ctx.root.querySelectorAll('.case-claim').length,2);assert.equal(creations,0);
+  assert.equal(ctx.root.querySelectorAll('[data-process]').length,2);assert.equal(creations,0);
   assert.match(ctx.root.querySelector('#caseQueue').textContent,/Presensi Terlambat/);
-  ctx.root.querySelector('#loadReferrals').click();await settle();assert.ok(ctx.root.querySelector('#loadReferrals'));assert.equal(ctx.root.querySelectorAll('.case-claim').length,2);
-  const candidate=Array.from(ctx.root.querySelectorAll('.case-claim')).find(b=>b.dataset.id!=='manual');candidateId=candidate.dataset.id;candidate.click();await settle();
-  assert.equal(creations,1);assert.equal(database.get(paths[0])[candidateId].assignedCounselorUid,ctx.session.user.uid);assert.deepEqual(routes,[]);assert.match(ctx.root.querySelector('[data-feedback]').textContent,/1 kasus berhasil/);
-  await boarding.namespace.renderCaseInbox(ctx);await settle();assert.equal(ctx.root.querySelectorAll('.case-claim').length,1);assert.equal(creations,1);
+  ctx.root.querySelector('#loadReferrals').click();await settle();assert.ok(ctx.root.querySelector('#loadReferrals'));assert.equal(ctx.root.querySelectorAll('[data-process]').length,2);
+  const candidate=Array.from(ctx.root.querySelectorAll('[data-process]')).find(b=>b.dataset.process!=='manual');candidateId=candidate.dataset.process;candidate.click();await settle();
+  assert.equal(creations,0);assert.ok(ctx.root.querySelector('#caseTreatmentDialog[open]'));assert.deepEqual(routes,[]);
+  assert.ok(ctx.root.querySelector('.counselor-attendance-toolbar').hidden);
+  const form=ctx.root.querySelector('#caseTreatment');win.confirm=()=>true;form.querySelector('[data-admission=TIDAK_MENGAKUI]').click();form.elements.finding.value='Catatan tabayyun';form.querySelector('[data-outcome="TIDAK TERBUKTI"]').click();
+  await form.onsubmit({preventDefault(){}});
+  assert.equal(creations,1);assert.equal(database.get(paths[0])[candidateId].assignedCounselorUid,ctx.session.user.uid);
+
  }finally{mock.setExport('saveTeacherSession',original);paths.forEach((p,i)=>saved[i]===undefined?database.delete(p):database.set(p,saved[i]));if(candidateId)database.delete('boarding/cases/year/'+candidateId);}
 });
 
@@ -505,4 +510,83 @@ test('grouped counselor queue filters and bulk claim reports partial failure wit
  const all=host.querySelector('[data-all]');all.checked=true;all.dispatchEvent(new win.Event('change'));host.querySelector('[data-bulk]').click();await settle();
  assert.deepEqual(claimed,['a']);assert.equal(host.querySelectorAll('.case-claim').length,1);assert.match(host.querySelector('[data-feedback]').textContent,/Sudah diambil/);
  const source=host.querySelector('[data-source]');source.value='report';source.dispatchEvent(new win.Event('change'));assert.equal(host.querySelectorAll('.cq-record').length,0);assert.equal(host.querySelector('[data-bulk]').disabled,true);host.remove();
+});
+
+test('counselor book merges legacy records and evaluation renders all period modes',async()=>{
+ const mod=await load(new URL('assets/js/counselor-review.js',base).href);await mod.evaluate();
+ const ctx=ctxFor('konselor');ctx.session.profile.counselorLevel='MADYA';
+ const cases=[{id:'c',studentId:'s1',date:'2026-10-30',category:'Kedisiplinan',tabayyun:{conclusion:'TERBUKTI'},sessions:{one:{date:'2026-10-30',what:'Kejadian',why:'Alasan',how:'Perbaikan',consequence:'Pembinaan'}}}];
+ database.set('boarding/counseling/year',{c:{old:{date:'2026-10-29',clarification:'Riwayat lama'}}});
+ await mod.namespace.renderCounselorBook(ctx,cases);
+ assert.match(ctx.root.textContent,/Pilih santri untuk melihat riwayat/);assert.match(ctx.root.textContent,/2 catatan konseling/);assert.equal(ctx.root.querySelectorAll('[data-case]').length,0);ctx.root.querySelector('[data-book-student]').click();assert.match(ctx.root.textContent,/TERBUKTI/);assert.match(ctx.root.textContent,/Riwayat lama/);assert.match(ctx.root.textContent,/Perbaikan/);assert.equal(ctx.root.querySelectorAll('.cb-record').length,2);assert.equal(ctx.root.querySelectorAll('[data-case]').length,0);
+ exportVisual(ctx,'konselor','book');
+ const search=ctx.root.querySelector('[data-search]');search.value='Tidak ditemukan';search.dispatchEvent(new ctx.root.ownerDocument.defaultView.Event('input'));assert.equal(ctx.root.querySelectorAll('[data-book-student]').length,0);assert.equal(ctx.root.querySelectorAll('[data-case]').length,0);assert.match(ctx.root.textContent,/Tidak ada santri sesuai pencarian/);
+ search.value='';search.dispatchEvent(new ctx.root.ownerDocument.defaultView.Event('input'));assert.equal(ctx.root.querySelectorAll('[data-book-student]').length,1);
+
+ mod.namespace.renderCounselorEvaluation(ctx,cases);ctx.root.querySelector('[data-date]').value='2026-10-30';ctx.root.querySelector('[data-mode]').value='4months';ctx.root.querySelector('[data-mode]').onchange();
+ assert.equal(ctx.root.querySelectorAll('[data-evaluation] > section').length,4);assert.match(ctx.root.textContent,/1 kasus terbukti/);exportVisual(ctx,'konselor','evaluation');
+ mod.namespace.mountCaseTreatment(ctx,cases,Object.fromEntries(master.students.map(s=>[s.id,s])));
+ assert.equal(ctx.root.querySelectorAll('[data-admission]').length,2);assert.equal(ctx.root.querySelector('[name=what]'),null);assert.ok(ctx.root.querySelector('[data-escalate]'));exportVisual(ctx,'konselor','treatment');
+});
+
+test('group treatment retries partial failure without duplicate sessions and excludes unproven',async()=>{
+ const {applyCaseOperation}=await import('../assets/js/counselor-model.js');
+ const mod=await load(new URL('assets/js/counselor-review.js',base).href);
+ const ctx=ctxFor('konselor');ctx.root.innerHTML='';ctx.session.profile.counselorLevel='MADYA';
+ const rows=['s1','s2'].map((studentId,i)=>({id:'batch'+i,studentId,status:'ditangani',assignedCounselorUid:'teacher',date:'2026-10-30'}));
+ const stored=new Map(rows.map(c=>[c.id,c]));let fail=true;
+ mock.setExport('commitCaseOperation',async(y,id,op,session)=>{if(id==='batch1'&&fail){fail=false;throw Error('Koneksi uji terputus');}stored.set(id,applyCaseOperation(stored.get(id),op,session,1));});
+ mod.namespace.mountCaseTreatment(ctx,rows,Object.fromEntries(master.students.map(s=>[s.id,s])));
+ let form=ctx.root.querySelector('form');
+ form.querySelector('[data-admission=MENGAKUI]').click();await form.onsubmit({preventDefault(){}});
+ assert.equal(ctx.root.querySelector('[name=what]'),null);
+ form=ctx.root.querySelector('form');win.confirm=()=>true;form.querySelector('[data-admission=TIDAK_MENGAKUI]').click();form.elements.finding.value='Tidak terjadi';form.querySelector('[data-outcome="TIDAK TERBUKTI"]').click();
+ await form.onsubmit({preventDefault(){}});assert.match(form.textContent,/Koneksi uji/);
+ await form.onsubmit({preventDefault(){}});
+ form=ctx.root.querySelector('form');assert.ok(form.elements.what);assert.equal(ctx.root.querySelector('[data-admission]'),null);
+ for(const el of form.querySelectorAll('textarea'))el.value='Catatan uji';
+ await form.onsubmit({preventDefault(){}});assert.equal(ctx.root.querySelector('#caseTreatmentDialog'),null);
+ assert.equal(Object.keys(stored.get('batch0').sessions).length,1);assert.equal(stored.get('batch1').status,'tidak_terbukti');assert.equal(stored.get('batch1').sessions,undefined);
+ mock.setExport('commitCaseOperation',repository.commitCaseOperation);
+});
+
+test('counselor home upgrades legacy saved placements to four workflow cards',async()=>{
+ const switches=await load(new URL('assets/js/feature-switches.js',base).href);
+ try{
+ switches.namespace.setFeatureSwitches({konselor:{_menus:{quick:{'case-inbox':true,'case-active':true,counseling:true,'case-history':true},other:{'warning-letter':true},sidebar:{'case-inbox':true}}}});
+ const ctx=ctxFor('konselor');
+ const items=MENU_GROUPS.flatMap(g=>g.items).filter(i=>canAccess(i.feature||'dashboard',['konselor']));
+ await homes.namespace.renderRoleHome(ctx,items);
+ assert.deepEqual([...ctx.root.querySelectorAll('.premium-quick')].map(b=>b.dataset.homeRoute),['case-inbox','counseling-book','violation-evaluation','warning-letter']);
+ assert.deepEqual([...ctx.root.querySelectorAll('.premium-menu')].map(b=>b.dataset.homeRoute),['work-profile','counselor-guide','education-calendar']);
+ }finally{switches.namespace.setFeatureSwitches({});}
+});
+
+ test('counselor queue filters incident dates for all, today and current Monday week',async()=>{
+ const mod=await load(new URL('assets/js/counselor-queue.js',base).href);
+ const host=win.document.createElement('div');const day=new Date().toLocaleDateString('en-CA',{timeZone:'Asia/Makassar'});const old=new Date(Date.parse(day+'T12:00:00Z')-8*86400000).toISOString().slice(0,10);
+ let selected=[];mod.namespace.mountCaseQueue(host,[{id:'now',studentId:'s1',date:day},{id:'old',studentId:'s1',date:old}],{s1:{name:'Santri'}},{process:rows=>selected=rows});
+ assert.equal(host.querySelectorAll('.cq-record').length,2);
+ for(const period of ['today','week']){host.querySelector('[data-period='+period+']').click();assert.equal(host.querySelectorAll('.cq-record').length,1);assert.equal(host.querySelector('[data-process]').dataset.process,'now');}
+ host.querySelector('[data-period=all]').click();assert.equal(host.querySelectorAll('.cq-record').length,2);host.querySelector('[data-process=old]').click();assert.equal(selected[0].id,'old');
+ });
+
+test('tabayyun escalates same case without counseling and group counseling writes individual histories',async()=>{
+ const {applyCaseOperation}=await import('../assets/js/counselor-model.js');
+ const mod=await load(new URL('assets/js/counselor-review.js',base).href),ctx=ctxFor('konselor');ctx.root.innerHTML='';ctx.session.profile.counselorLevel='PEMULA';
+ const rows=['s1','s2'].map((studentId,i)=>({id:'flow'+i,studentId,status:'ditangani',assignedCounselorUid:'teacher',date:'2026-10-30'}));
+ const stored=new Map(rows.map(c=>[c.id,c]));let updates=0;
+ mock.setExport('commitCaseOperation',async(y,id,op,session)=>{const record=applyCaseOperation(stored.get(id),op,session,1);stored.set(id,record);return record;});
+ try{
+ mod.namespace.mountCaseTreatment(ctx,[rows[0]],{}, {onSaved:()=>updates++});
+ let form=ctx.root.querySelector('form');await form.onsubmit({preventDefault(){}});assert.match(form.textContent,/Pilih jawaban/);
+ form.elements.reason.value='Memerlukan penanganan Madya';await form.querySelector('[data-escalate]').onclick();
+ assert.equal(stored.size,2);assert.equal(stored.get('flow0').status,'dieskalasi');assert.equal(stored.get('flow0').routeLevel,'MADYA');assert.equal(stored.get('flow0').sessions,undefined);assert.equal(updates,1);
+ const fresh=rows.map((r,i)=>({...r,id:'group'+i,status:'ditangani',assignedCounselorUid:'teacher'}));fresh.forEach(c=>stored.set(c.id,c));
+ mod.namespace.mountCaseTreatment(ctx,fresh,{});
+ for(let i=0;i<2;i++){form=ctx.root.querySelector('form');form.querySelector('[data-admission=MENGAKUI]').click();await form.onsubmit({preventDefault(){}});}
+ form=ctx.root.querySelector('form');for(const k of ['what','why','how'])form.elements[k].value='Perbaikan bersama';form.elements.none.checked=true;form.elements.none.onchange();
+ exportVisual(ctx,'konselor','counseling');await form.onsubmit({preventDefault(){}});
+ const sessions=fresh.map(c=>Object.values(stored.get(c.id).sessions));assert.equal(sessions[0].length,1);assert.equal(sessions[1].length,1);assert.equal(sessions[0][0].groupSessionId,sessions[1][0].groupSessionId);assert.equal(stored.get('group0').pointRecord,undefined);
+ }finally{mock.setExport('commitCaseOperation',repository.commitCaseOperation);}
 });

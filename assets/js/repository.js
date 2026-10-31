@@ -9,7 +9,7 @@ import {
   push,
   serverTimestamp,
   runTransaction,
-  onValue
+  onValue, query, orderByKey, startAt, endAt
 } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 import { db } from "./firebase.js";
 import { appConfig } from "../../config/firebase-config.js";
@@ -20,6 +20,12 @@ const pathFor = path => `${root}/${path || ""}`.replace(/\/{2,}/g, "/").replace(
 export async function getNode(path) {
   const snap = await withReadDeadline(get(ref(db, pathFor(path))));
   return snap.exists() ? snap.val() : null;
+}
+
+// RTDB keys are indexed automatically (attendance is keyed by ISO incident date).
+export async function getDateRange(path,from,to){
+ const snap=await withReadDeadline(get(query(ref(db,pathFor(path)),orderByKey(),startAt(from),endAt(to))));
+ return snap.exists()?snap.val():null;
 }
 
 export async function listNode(path) {
@@ -274,7 +280,7 @@ export async function commitCaseOperation(yearId,caseId,operation,session){
  if(existing?.studentId){const student=await getNode(`students/${existing.studentId}`);if(session.activeRole==='konselor'&&(!counselorGender(session.profile)||student?.gender!==counselorGender(session.profile)))throw Error('Kasus di luar unit putra/putri Konselor.');if(student?.unitId==='UNIT-SD')throw Error('Kasus SD ditangani Wali Kelas.');}
  const record=await transitionWorkspaceRecord(`boarding/cases/${yearId}`,caseId,current=>applyCaseOperation(current,operation,session,Date.now()),session.user.uid);
  const projections={};
- if(operation.type==='session')projections[`boarding/counseling/${yearId}/${caseId}/${operation.id}`]=record.sessions[operation.id];
+ if(['session','counseling_complete'].includes(operation.type))projections[`boarding/counseling/${yearId}/${caseId}/${operation.id}`]=record.sessions[operation.id];
  if(operation.type==='action')projections[`boarding/case_actions/${yearId}/${operation.id}`]={...record.actions[operation.id],caseId,studentId:record.studentId};
  if(operation.type==='points')projections[`discipline/points/${yearId}/${record.studentId}/${operation.id}`]={...record.pointRecord,caseId};
  if(operation.type==='escalation')projections[`boarding/escalations/${yearId}/${operation.id}`]={...record.escalations[operation.id],caseId,studentId:record.studentId,createdByUid:session.user.uid,status:'menunggu_arahan'};

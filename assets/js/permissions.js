@@ -68,6 +68,8 @@ const ALL_MENU_GROUPS = [
   {
     label: "Asrama · Konselor",
     items: [
+      { id: "counseling-book", label: "Buku Konseling", icon: "◍", feature: "boarding.counselor.session" },
+      { id: "violation-evaluation", label: "Evaluasi Pelanggaran", icon: "◇", feature: "boarding.counselor.history" },
       { id: "case-inbox", label: "Kasus Masuk", icon: "!", feature: "boarding.counselor.cases" },
       { id: "case-active", label: "Kasus Aktif", icon: "◉", feature: "boarding.counselor.active" },
       { id: "counseling", label: "Catat Konseling", icon: "◍", feature: "boarding.counselor.session" },

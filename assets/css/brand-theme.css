@@ -1559,3 +1559,133 @@ body.portal-body:not([data-home=true]) .persistent-home-header{display:block;wid
 .cq-record p{margin:6px 0;color:#527580;white-space:pre-wrap}
 .cq-actions{display:flex;flex-wrap:wrap;gap:8px}
 @media(max-width:600px){.cq-record{flex-wrap:wrap;padding:14px}.cq-actions{width:100%;justify-content:flex-end}.cq-tools{gap:10px}.cq-tools label{flex-basis:100%}}
+
+/* Scoped worship attendance: desktop rows become mobile personnel cards. */
+.muqim-page svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.8;flex-shrink:0}
+.muqim-page .teacher-header{background:linear-gradient(100deg,#daf0ed,#fff9ed);background-image:url('../brand/home-mosque.svg'),linear-gradient(100deg,#daf0ed,#fff9ed);background-position:right center;background-size:auto 100%,cover;background-repeat:no-repeat}
+.muqim-page h2{display:flex;align-items:center;gap:12px;font-size:18px;margin:0;color:#073e50}
+.muqim-fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px;margin-top:18px}
+.muqim-fields .field,.muqim-fields input,.muqim-fields select{min-width:0;width:100%;box-sizing:border-box}
+.muqim-heading{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:22px}
+.muqim-heading p{font-size:14px;color:#58778b;margin:8px 0 0}
+.muqim-page button{display:inline-flex;align-items:center;justify-content:center;gap:8px}
+.muqim-table-head,.muqim-row{display:grid;grid-template-columns:minmax(150px,1fr) minmax(0,3fr);gap:16px;align-items:center}
+.muqim-table-head{padding:14px;background:#f4f8fa;border-radius:12px 12px 0 0;font-size:13px;color:#436476}
+.muqim-row{padding:12px;border-bottom:1px solid #e6f0ee}
+.muqim-person{display:flex;align-items:center;gap:12px;min-width:0;color:#103d50;font-size:14px}
+.muqim-person strong{overflow-wrap:anywhere}
+.muqim-avatar{display:grid;place-items:center;background:#d6efea;color:#008b89;border-radius:50%;width:36px;height:36px;flex-shrink:0}
+.muqim-options{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px;min-width:0}
+.muqim-status{border:1px solid transparent;border-radius:10px;padding:10px 4px;min-height:44px;font:inherit;font-size:12px;cursor:pointer;min-width:0;background:var(--muqim-bg);color:var(--muqim-color)}
+.muqim-status-0{--muqim-bg:#edf9f5;--muqim-color:#008575}.muqim-status-1{--muqim-bg:#f1f4f7;--muqim-color:#567185}.muqim-status-2{--muqim-bg:#fff7e8;--muqim-color:#9b6519}.muqim-status-3{--muqim-bg:#fff0f3;--muqim-color:#ca3a62}.muqim-status-4{--muqim-bg:#f4edff;--muqim-color:#7b41be}
+.muqim-status[aria-pressed=true]{border-color:var(--muqim-color);box-shadow:inset 0 0 0 1px var(--muqim-color);font-weight:800}
+.muqim-status:focus-visible{outline:3px solid #e3b456;outline-offset:2px}
+.muqim-status svg{width:17px;height:17px}
+.muqim-footer{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-top:20px}
+.muqim-feedback{color:#008575;font-size:14px;min-height:20px}
+@media(max-width:1100px){.muqim-table-head{display:none}.muqim-row{grid-template-columns:minmax(0,1fr);gap:10px;border:1px solid #dcece8;border-radius:14px;margin-bottom:10px}.muqim-heading{align-items:flex-start;flex-wrap:wrap}}
+@media(max-width:600px){.muqim-page .teacher-panel{padding:14px}.muqim-fields{gap:12px}.muqim-page h2{font-size:16px}.muqim-person{font-size:14px}.muqim-avatar{width:28px;height:28px}.muqim-status{flex-direction:column;gap:5px!important;font-size:10px;line-height:1.2;padding:8px 2px}.muqim-status span{overflow-wrap:normal}.muqim-options{gap:4px}.muqim-footer{flex-direction:column}.muqim-footer button{width:100%}.muqim-page{padding-bottom:24px}}
+
+.muqim-options select[hidden]{display:none!important}
+
+.muqim-page .teacher-back{color:#008b89;background:#fff;border-color:#cce5e2}
+@media(max-width:600px){.muqim-row{padding:10px;gap:8px}.muqim-status{min-height:48px;padding:6px 2px}.muqim-heading{margin-bottom:14px}}
+
+/* Counselor treatment: one responsive form, individual tabayyun and shared session. */
+.counselor-treatment{display:grid;gap:18px;max-width:1100px;margin:20px auto}
+.counselor-treatment fieldset{min-width:0;border:1px solid #cce9e5;border-radius:18px;padding:18px;display:grid;gap:14px;background:#f7fcfa}
+.counselor-treatment legend{font-weight:800;color:#07545c;padding:0 8px}
+.counselor-treatment label{display:grid;gap:7px;min-width:0}
+.counselor-treatment textarea,.counselor-treatment select,.counselor-treatment input{width:100%;max-width:100%;box-sizing:border-box}
+.counselor-workspace [data-entries] article{margin-top:16px;overflow-wrap:anywhere}
+.counselor-workspace [data-entries] dl{display:grid;grid-template-columns:110px minmax(0,1fr);gap:10px}
+.counselor-workspace [data-entries] dd{margin:0;white-space:pre-wrap}
+.counselor-workspace [data-evaluation]{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));gap:16px}
+@media(max-width:600px){.counselor-treatment{gap:12px}.counselor-treatment fieldset{padding:12px}.counselor-workspace [data-entries] dl{grid-template-columns:1fr}.counselor-workspace [data-entries] dt{font-weight:800}}
+.counselor-treatment.portal-form{grid-template-columns:minmax(0,1fr);align-items:start}
+.counselor-treatment button{justify-self:start;min-height:44px}
+.counselor-book-tools{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:18px}
+.counselor-book>label{display:grid;gap:8px}
+.counselor-workspace [data-evaluation]>.panel{margin:0}
+
+/* Unified counselor inbox and direct treatment dialog. */
+.cq-periods{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:16px}
+.cq-periods [aria-pressed="true"]{background:#008c87;color:white;border-color:#008c87}
+.counselor-attendance-inline.panel{padding:0!important;margin:0!important;border:0!important;box-shadow:none!important;background:transparent!important;min-height:0!important}
+.counselor-attendance-inline [hidden]{display:none!important}
+.counselor-treatment-dialog{box-sizing:border-box;width:min(960px,calc(100vw - 24px));max-width:calc(100vw - 24px);max-height:90dvh;overflow:auto;border:1px solid #cce5e2;border-radius:24px;padding:20px;background:#fffdf8;color:#093e49}
+.counselor-treatment-dialog::backdrop{background:#003a4280;backdrop-filter:blur(4px)}
+.counselor-treatment-dialog>.btn{display:block;margin-left:auto}
+.counselor-treatment-dialog .counselor-treatment{margin:12px 0 0;min-width:0;box-shadow:none}
+.counselor-treatment fieldset{min-width:0;border:1px solid #cce5e2;border-radius:16px;padding:16px;display:grid;gap:12px}
+.counselor-treatment label{min-width:0;display:grid;gap:8px;overflow-wrap:anywhere}
+.counselor-treatment textarea,.counselor-treatment select,.counselor-treatment input{box-sizing:border-box;min-width:0;max-width:100%;width:100%}
+@media(max-width:600px){.counselor-treatment-dialog{padding:12px}.counselor-treatment-dialog .counselor-treatment{padding:12px;grid-template-columns:minmax(0,1fr)}.cq-periods{gap:6px}.cq-periods .btn{padding:10px 12px}}
+
+/* Sequential case treatment: tabayyun first, counseling second. */
+.counselor-treatment-dialog{width:min(760px,calc(100vw - 24px));padding:28px;max-height:90dvh;overflow-y:auto}
+.counselor-treatment-dialog .ct-head{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:20px}
+.counselor-treatment-dialog .ct-head small{color:#008b88;font-weight:800;letter-spacing:.08em}
+.counselor-treatment-dialog .ct-head h2{margin:12px 0 8px;font-size:26px;color:#093e49}
+.counselor-treatment-dialog .ct-head p{margin:0;color:#648697;line-height:1.5}
+.counselor-treatment-dialog .ct-context{background:#f3fbfa;border:1px solid #d7eae7;border-radius:18px;padding:18px;margin-bottom:22px}
+.counselor-treatment-dialog .ct-context h3{margin:0 0 16px;padding-bottom:12px;border-bottom:1px solid #d7eae7}
+.counselor-treatment-dialog .ct-context dl{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:0}
+.counselor-treatment-dialog .ct-context dt{font-size:12px;color:#6b8c96;margin-bottom:5px}
+.counselor-treatment-dialog .ct-context dd{margin:0;font-weight:700;overflow-wrap:anywhere}
+.counselor-treatment-dialog .ct-form{display:flex;flex-direction:column;gap:18px}
+.counselor-treatment-dialog .ct-form label{display:flex;flex-direction:column;gap:8px;font-weight:700}
+.counselor-treatment-dialog .ct-form textarea{min-height:86px;resize:vertical;width:100%;box-sizing:border-box}
+.counselor-treatment-dialog .ct-choices{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.counselor-treatment-dialog .ct-choices button{padding:20px 16px;border:1px solid #cde4e1;border-radius:16px;background:white;color:#204f5d;text-align:left;cursor:pointer}
+.counselor-treatment-dialog .ct-choices small{display:block;margin-top:8px;line-height:1.5;color:#678794}
+.counselor-treatment-dialog .ct-choices [aria-pressed=true]{border-color:#00a39d;background:#e2f8f2;box-shadow:inset 0 0 0 1px #00a39d}
+.counselor-treatment-dialog [data-denial]:not([hidden]){display:grid;gap:14px}
+.counselor-treatment-dialog .ct-escalation summary{color:#bd4d58;cursor:pointer;font-weight:800;padding:10px 0}
+.counselor-treatment-dialog .ct-escalation[open]{display:grid;gap:12px}
+.counselor-treatment-dialog .ct-actions{display:flex;justify-content:flex-end;gap:12px;padding-top:10px}
+.counselor-treatment-dialog .ct-check{flex-direction:row!important;align-items:center}
+.counselor-treatment-dialog .ct-check input{width:20px;height:20px;flex:none}
+.counselor-treatment-dialog [role=status]:empty{display:none}
+@media(max-width:600px){
+ .counselor-treatment-dialog{padding:18px;max-height:92dvh;border-radius:20px}
+ .counselor-treatment-dialog .ct-head h2{font-size:22px}
+ .counselor-treatment-dialog .ct-context dl{grid-template-columns:1fr;gap:12px}
+ .counselor-treatment-dialog .ct-choices{gap:8px}
+ .counselor-treatment-dialog .ct-choices button{padding:14px 10px;min-width:0}
+ .counselor-treatment-dialog .ct-actions>*{flex:1;min-width:0}
+}
+
+/* Counseling book: student index and individual history, shared by counselor levels. */
+.counselor-book{min-width:0}
+.counselor-book .cb-count{color:var(--muted,#668493);font-weight:700;margin:0 0 16px}
+.counselor-book .cb-search{display:grid;gap:8px;margin-bottom:20px;font-weight:700}
+.counselor-book .cb-search input{width:100%;min-width:0}
+.counselor-book .cb-layout{display:grid;grid-template-columns:minmax(220px,30%) minmax(0,1fr);gap:20px;align-items:start}
+.counselor-book .cb-students,.counselor-book .cb-history{min-width:0;margin:0;padding:18px}
+.counselor-book .cb-students{display:grid;gap:10px}
+.counselor-book .cb-student{display:grid;gap:6px;width:100%;text-align:left;border:1px solid transparent;border-radius:16px;background:#f2f8f7;color:#124b58;padding:16px;cursor:pointer;overflow-wrap:anywhere;font:inherit}
+.counselor-book .cb-student strong{font-weight:800}
+.counselor-book .cb-student small{color:#668493}
+.counselor-book .cb-student.is-selected{border-color:#63c9c2;background:#e5f7f4}
+.counselor-book .cb-student:focus-visible{outline:3px solid #dfaa42;outline-offset:2px}
+.counselor-book .cb-history h2{font-size:22px;margin:4px 4px 20px}
+.counselor-book .cb-record{border:1px solid #d9eae8;border-radius:18px;background:#fbfefd;padding:20px;margin-bottom:14px;overflow-wrap:anywhere}
+.counselor-book .cb-record:last-child{margin-bottom:0}
+.counselor-book .cb-record h3{font-size:18px;line-height:1.45;margin:0 0 12px}
+.counselor-book .cb-meta{font-size:13px;color:#668493;margin:0 0 20px}
+.counselor-book .cb-record dl{display:grid;grid-template-columns:minmax(150px,35%) minmax(0,1fr);gap:10px 16px;margin:0 0 18px;font-size:14px;line-height:1.5}
+.counselor-book .cb-record dt{font-weight:750;color:#668493}
+.counselor-book .cb-record dd{margin:0;white-space:pre-wrap}
+.counselor-book .cb-placeholder{border:1px dashed #c9e2df;border-radius:18px;padding:30px 18px;text-align:center;color:#668493;margin:0}
+.portal-body .counselor-book .btn.cb-back{display:none}
+@media(max-width:700px){
+ .counselor-book .cb-layout{grid-template-columns:minmax(0,1fr);gap:12px}
+ .counselor-book .cb-history{display:none;padding:14px}
+ .counselor-book .cb-selected .cb-history{display:block}
+ .counselor-book .cb-selected .cb-students{display:none}
+ .portal-body .counselor-book .btn.cb-back{display:inline-flex;margin-bottom:16px}
+ .counselor-book .cb-record{padding:16px}
+ .counselor-book .cb-record dl{grid-template-columns:minmax(0,1fr);gap:4px}
+ .counselor-book .cb-record dd{margin-bottom:10px}
+}

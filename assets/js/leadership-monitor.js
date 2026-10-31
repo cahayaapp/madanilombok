@@ -28,7 +28,7 @@ export async function renderLeadershipMonitor(ctx,route){
  const [programs,learning]=await Promise.all([getNode(`boarding/program_attendance/${ctx.yearId}`),getNode(`academic/learning_sessions/${ctx.yearId}`)]);
  records=[...flattenEvidence(programs,r=>!!r.studentId&&!!r.date).filter(r=>scope.studentIds.has(r.studentId)&&r.stage==='FINAL'),...learningRows(flattenEvidence(learning,r=>!!r.students&&!!r.date).filter(r=>boardingLearning(r,ctx.master)),scope)];
  }
- else if(kind==='cases')records=flattenEvidence(await getNode(`boarding/cases/${ctx.yearId}`),r=>!!r.studentId&&!!r.status).filter(r=>scope.studentIds.has(r.studentId));
+ else if(kind==='cases')records=flattenEvidence(await getNode(`boarding/cases/${ctx.yearId}`),r=>!!r.studentId&&!!r.status).filter(r=>scope.studentIds.has(r.studentId)&&r.status!=="tidak_terbukti"&&r.tabayyun?.conclusion!=="TIDAK TERBUKTI");
  else records=flattenEvidence(await getNode(`academic/teaching_attendance/${ctx.yearId}`),r=>!!r.scheduleId&&!!r.date).filter(r=>teachingReportInScope(r,scope,ctx.master));
  const groupSchedules=teacher&&!scope.school?(ctx.master.staff||[]).flatMap(staff=>['guru_mapel','mentor_tahsin_tahfiz'].flatMap(activeRole=>{const c={...ctx,session:{activeRole,profile:{staffId:staff.id}}};return [...groupLessonSchedules(c),...quranLessonSchedules(c)];})):[];
  ctx.root.classList.add('leadership-dashboard');

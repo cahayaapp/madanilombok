@@ -22,7 +22,7 @@ const QUICK_DESCRIPTIONS={
  'work-messages':'Baca dan kirim pesan', 'work-profile':'Kelola profil dan sandi', 'work-guide':'Baca panduan penggunaan',
  'cashier':'Catat transaksi penjualan', 'finance-products':'Kelola produk dan stok', 'finance-history':'Telusuri riwayat transaksi', 'finance-dashboard':'Lihat ringkasan keuangan',
  'parent-news':'Ikuti kabar Ananda', 'parent-attendance':'Lihat kehadiran Ananda', 'parent-permission':'Ajukan izin untuk Ananda', 'parent-finance':'Lihat tagihan dan pembayaran',
- 'case-inbox':'Tinjau kasus masuk', 'case-active':'Lanjutkan penanganan kasus', 'counseling':'Catat sesi konseling', 'case-escalation':'Kelola eskalasi kasus',
+ 'case-inbox':'Tabayyun dan tangani laporan santri', 'counseling-book':'Baca riwayat konseling individual dan kelompok', 'violation-evaluation':'Evaluasi kasus terbukti per pekan dan bulan', 'warning-letter':'Kelola surat peringatan santri', 'case-active':'Lanjutkan penanganan kasus', 'counseling':'Catat sesi konseling', 'case-escalation':'Kelola eskalasi kasus',
  'health-journal':'Lihat riwayat kesehatan', 'health-examination':'Catat pemeriksaan santri', 'health-permits':'Kelola izin kesehatan', 'health-stock':'Pantau persediaan obat',
  'naqib-programs':'Lihat kegiatan dalam piket', 'naqib-attendance':'Catat kehadiran program', 'naqib-report':'Catat pelaksanaan kegiatan', 'naqib-initiative':'Catat inisiatif santri',
  'quran-ziyadah':'Catat tambahan hafalan', 'quran-murojaah':'Catat pengulangan hafalan',

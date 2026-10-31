@@ -47,6 +47,11 @@ export function applyCaseOperation(current,operation,session,now){
    r.tabayyun={...d,nfdk:{score,severity},counselorUid:uid,at:now};r.tabayyunHistory={...r.tabayyunHistory,[operation.id]:r.tabayyun};
    r.status=d.conclusion==='TIDAK TERBUKTI'?'tidak_terbukti':'tabayyun';
    if(r.status!=='tidak_terbukti'&&counselorLevel(session.profile)==='PEMULA'&&(['MORAL','BERAT','KRITIS'].includes(d.discoveredSeverity)||score>=5))r.status='eskalasi_diperlukan';
+  }else if(operation.type==='counseling_complete'){
+   if(r.tabayyun?.conclusion!=='TERBUKTI')throw Error('Konseling memerlukan tabayyun terbukti.');
+   if(!d.date||!['what','why','how','consequence'].every(k=>typeof d[k]==='string'&&d[k].trim()))throw Error('Lengkapi What, Why, How dan konsekuensi.');
+   r.sessions={...r.sessions,[operation.id]:{...d,clarification:d.what,insight:d.why,intervention:d.how,agreement:d.consequence,counselorUid:uid,createdAt:now}};
+   r.status='konsekuensi';
   }else if(operation.type==='evaluation'){
    if(!['evaluasi','konsekuensi','konseling'].includes(r.status)||!d.result?.trim()||!['LANJUTKAN','SELESAI'].includes(d.decision))throw Error('Lengkapi hasil evaluasi dan keputusan tindak lanjut.');
    r.evaluation={...d,counselorUid:uid,at:now};r.evaluationHistory={...r.evaluationHistory,[operation.id]:r.evaluation};r.status=d.decision==='SELESAI'?'selesai':'konseling';

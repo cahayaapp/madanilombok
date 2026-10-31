@@ -22,6 +22,12 @@ export async function renderTeacherHome(ctx){
  ctx.root.querySelector('[data-attention]').onclick=()=>{const d=sheet(ctx,'Notifikasi','Pesan dan pemberitahuan Anda.','<button class="teacher-schedule" data-messages><strong>Buka Pesan</strong><small>Lihat pesan dan pemberitahuan Anda.</small></button>');d.querySelector('[data-messages]').onclick=()=>{d.close();ctx.navigate('work-messages');};};
 }
 function materialMenu(ctx){const d=sheet(ctx,'Materi Pembelajaran','Pilih tindakan yang ingin Anda lakukan',`<div class="teacher-sheet-list">${[['target','Atur Target Materi','Buat dan kelola target materi dari setiap pelajaran Anda.'],['report','Lapor Capaian Materi','Laporkan materi yang sudah atau belum tercapai sesuai target.']].map(([id,title,sub])=>`<button class="teacher-schedule" data-mode="${id}"><strong>${title}</strong><small>${sub}</small></button>`).join('')}</div>`);d.querySelectorAll('[data-mode]').forEach(b=>b.onclick=()=>{sessionStorage.setItem('madani.materialMode',b.dataset.mode);d.close();ctx.navigate('lesson-plans');});}
+export async function renderTeacherAttendancePage(ctx){
+ const ws=mount(ctx,'Presensi Guru','Catat kehadiran mengajar pada jadwal hari ini.');
+ ws.innerHTML='<button class="teacher-primary" id="todayAttendance">Buka Presensi Hari Ini</button>';
+ ws.querySelector('#todayAttendance').onclick=()=>openSchedule(ctx);
+ await openSchedule(ctx);
+}
 export async function openSchedule(ctx){
  const now=localClock();
  const d=sheet(ctx,'Jadwal Hari Ini','Jadwal pengajaran Anda hari ini',empty('Memuat kehadiran…'));

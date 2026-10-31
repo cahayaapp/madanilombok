@@ -781,3 +781,28 @@ Added eighth Admin workspace Manajemen Fitur in portal and console navigation. L
 - Penetapan baru memakai resident_staff/{scope}__{staffId}, sehingga pilihan Putra/Putri independen. Rekam lama per staffId tetap dibaca hanya jika scope cocok, sampai ada pilihan scoped yang menggantikannya. Tidak migrasi atau menghapus data produksi.
 - Rules resident_staff memeriksa role kepala asrama dan scope, identitas SDM, serta key scoped; gender tidak lagi menjadi syarat. Rules attendance memeriksa penetapan muqim yang aktif pada scope tersebut, termasuk fallback legacy. Rules jadwal Naqib dan batas akses fitur lain tidak diubah.
 - 64 tes role/render/workflow/access/rules lulus; sintaks JS, JSON dan diff valid. Fixture sekolah diperjelas dengan unit sekolah untuk menjaga cakupan lama. SW v162-resident-selection. Belum push/deploy; database.rules.json wajib dipublikasikan bersama perubahan frontend. Belum uji tulis produksi.
+
+## 30 Oktober — perbaikan izin muqim dan UI absensi ibadah
+- Audit rules produksi menemukan resident_staff masih mensyaratkan gender dan key staffId lama; staff_worship juga memvalidasi gender. Dengan persetujuan eksplisit pengguna, hanya dua cabang tersebut diganti memakai rules lokal yang sudah diuji. Firebase CLI mengonfirmasi syntax valid/deploy sukses; pembacaan ulang memastikan kedua cabang sama dengan lokal dan semua cabang produksi lain tidak berubah. Tidak menulis presensi atau data SDM produksi.
+- UI absensi menjadi baris desktop/kartu mobile, lima tombol status berwarna dengan aria-pressed, Tandai Semua Hadir, tanggal/waktu salat, penetapan personil, dan pesan sukses. Penetapan ulang juga menampilkan sukses. Penyimpanan memeriksa roster terbaru dan menolak personil yang baru dicabut; request lama tidak menimpa tampilan pilihan salat baru.
+- 65 tes role/render/workflow/access/rules lulus. Syntax JS dan diff check lulus. Fixture Chrome headless 390/1440px tidak overflow horizontal, tujuh personil terlihat dan screenshot ditinjau. Ini fixture, belum uji simpan melalui akun produksi sebenarnya. Ilustrasi memakai SVG Madani yang tersedia.
+- Frontend UI lokal belum push/deploy. Portal theme126, SW163-muqim-attendance; aturan database sudah live. Jangan deploy seluruh rules lokal tanpa audit cabang lainnya karena terdapat perbedaan lama di luar muqim.
+
+## 30 Oktober 2026 — konselor empat fungsi utama
+- Audit dan implementasi lokal empat menu: Kasus Masuk, Buku Konseling, Evaluasi Pelanggaran, Surat Peringatan; akses pendukung Profil/Panduan/Kalender Pendidikan. Rute lama tetap untuk tindak lanjut.
+- Penanganan massal tabayyun per santri/kasus + What–Why–How/konsekuensi, retry idempoten, pengalihan satu ID kasus dan riwayat individual kelompok. Tidak terbukti dikeluarkan dari statistik/operasional, audit dipertahankan. Poin masih lewat tahap finalisasi Madani.
+- Buku membaca sesi lama/baru dan nama program penuh; evaluasi terbukti berdasarkan tanggal kejadian dengan empat pilihan periode. Prefetch kasus sebelum roster, query tanggal program dibatasi server; pembelajaran masih per tahun.
+- Rincian arsitektur, pengujian dan keterbatasan ada di docs/COUNSELOR-WORKFLOW-AUDIT.md. Rules boarding generik lama terlalu luas; tidak diubah atau diklaim aman di backend. Perlu tes staging/emulator dan penguatan rules terpisah.
+- Portal theme127, SW164-counselor-workflow. Tidak push/deploy atau menulis database produksi.
+
+## 30 Oktober — menu konselor tertutup konfigurasi lama
+- Screenshot beranda satu kartu direproduksi dengan _menus lama. Daftar tersimpan menjadi whitelist dan menghilangkan rute buku/evaluasi baru setelah rute lama disembunyikan.
+- Normalisasi in-memory khusus konfigurasi konselor sebelum versi2: empat akses cepat (Kasus Masuk, Buku Konseling, Evaluasi Pelanggaran, Surat Peringatan), pendukung Profil/Panduan Kerja/Kalender Pendidikan dan sidebar sesuai. Tidak menulis database atau mengaktifkan feature switch yang eksplisit false. Konfigurasi yang sudah mengenal rute baru serta pilihan versi2 tetap dihormati.
+- Manajemen Fitur menampilkan hasil normalisasi yang sama dan menyimpan versi2 saat admin menyimpan. Tambah deskripsi fungsi kartu. SW165-counselor-menus.
+- 55 tes menu/role/rendering lulus, termasuk reproduksi pengaturan lama melalui renderer beranda. Belum verifikasi akun produksi, tidak deploy.
+
+## 30 Oktober — popup proses kasus untuk Pemula dan Madya
+- Kasus Masuk menyatukan laporan dan kandidat presensi, dengan filter Semua/Hari Ini/Pekan Ini (Senin–hari ini). Semua mencakup kasus tersimpan; kandidat presensi otomatis tetap dibatasi tujuh hari, dijelaskan di UI.
+- Proses Kasus individual/massal membuka dialog tabayyun dan What–Why–How/konsekuensi. Tidak menulis saat membuka dialog; materialisasi presensi dan klaim transaksi dijalankan ketika menyimpan. Retry operasi stabil dipertahankan.
+- Kartu pemeriksaan presensi terpisah disembunyikan pada kedua tingkat; loading/error dan tombol retry tetap tersedia. Dialog responsif dengan batas tinggi dan scroll internal.
+- 51 tes model/menu/render/workflow lulus. Belum uji browser akun produksi; tidak deploy/push. SW166-counselor-process.

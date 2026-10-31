@@ -22,7 +22,7 @@ export function educationQuality({session,master,data={},from,to,gender='',staff
  const sessions=collect(data.learning,r=>!!r.students&&!!r.date).filter(r=>dated(r)&&teachingReportInScope(r,scope,master));
  const formal=learningRows(sessions,scope),boarding=collect(data.boarding,r=>!!r.studentId&&!!r.date).filter(r=>dated(r)&&scope.studentIds.has(r.studentId)&&r.stage==='FINAL');
  const students=attendanceSummary([...formal,...boarding]);
- const cases=collect(data.cases,r=>!!r.studentId&&!!r.status).filter(r=>scope.studentIds.has(r.studentId)&&dated(r));
+ const cases=collect(data.cases,r=>!!r.studentId&&!!r.status).filter(r=>scope.studentIds.has(r.studentId)&&dated(r)&&r.status!=="tidak_terbukti"&&r.tabayyun?.conclusion!=="TIDAK TERBUKTI");
  // Only proven/finally assessed cases are counted as violations; reports remain cases.
  const violations=cases.filter(r=>r.status!=='tidak_terbukti'&&(r.finalPoints!==undefined||Object.values(r.tabayyunHistory||{}).some(t=>t.conclusion==='TERBUKTI'))&&r.attendanceStatus!=='Terlambat'&&!/terlambat|ketepatan waktu/i.test(r.category||''));
  const categories={};violations.forEach(r=>categories[r.category||'Belum dikategorikan']=(categories[r.category||'Belum dikategorikan']||0)+1);
