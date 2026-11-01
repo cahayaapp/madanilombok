@@ -12,7 +12,7 @@
   <link rel="stylesheet" href="../assets/css/app.css" />
   <link rel="stylesheet" href="../assets/css/cahaya-clone.css">
 <meta name="theme-color" content="#00a39d"><link rel="icon" href="../assets/brand/logo.svg" type="image/svg+xml"><link rel="apple-touch-icon" href="../assets/icons/icon-192.png?v=25"><link rel="stylesheet" href="../assets/css/location-onboarding.css?v=59"><link rel="stylesheet" href="../assets/css/admin-workspaces.css">
-<script type="module" src="../assets/js/mobile-layout.js"></script><link rel="stylesheet" href="../assets/css/splash.css?v=1"><link rel="stylesheet" href="../assets/css/brand-theme.css?v=130">
+<script type="module" src="../assets/js/mobile-layout.js"></script><link rel="stylesheet" href="../assets/css/splash.css?v=1"><link rel="stylesheet" href="../assets/css/brand-theme.css?v=137">
 </head>
 <body class="app-body admin-console">
 <script src="../assets/js/splash.js?v=2"></script>
@@ -29,6 +29,7 @@
       </div>
     </aside>
 
+    <button id="sidebarOverlay" class="sidebar-overlay hidden" aria-label="Tutup menu"></button>
     <main class="main-area">
       <header class="topbar">
         <button id="menuButton" class="icon-button mobile-only">☰</button>
@@ -59,5 +60,5 @@
 
   <div id="toastHost" class="toast-host"></div>
   <script type="module" src="../assets/js/admin.js"></script>
-<script type="module" src="../assets/js/location-onboarding-boot.js?v=59"></script><nav class="admin-bottom-nav" aria-label="Navigasi utama"><a href="./index.html#students">▤<span>Data</span></a><a href="../app/index.html#work-messages">☏<span>Pesan</span></a><a href="../app/index.html">⌂<span>Beranda</span></a><a href="../app/index.html#work-profile">♙<span>Profil</span></a><button type="button" onclick="document.querySelector('.sidebar').classList.toggle('open')">☰<span>Lainnya</span></button></nav></body>
+<script type="module" src="../assets/js/location-onboarding-boot.js?v=59"></script><nav class="admin-bottom-nav" aria-label="Navigasi utama"><a href="./index.html#students">▤<span>Data</span></a><a href="../app/index.html#work-messages">☏<span>Pesan</span></a><a href="../app/index.html">⌂<span>Beranda</span></a><a href="../app/index.html#work-profile">♙<span>Profil</span></a><button type="button" data-admin-menu aria-controls="sidebar" aria-expanded="false">☰<span>Lainnya</span></button></nav></body>
 </html>

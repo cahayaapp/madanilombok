@@ -51,3 +51,5 @@ export function teacherMissing(schedules,records,from,to,now=Date.now()){
  for(const s of schedules){if((s.day==='Ahad'?'Minggu':s.day)!==day||!s.staffId&&!s.teacherStaffId||Date.parse(`${date}T${s.endTime}:00+08:00`)>now)continue;const ids=s.sourceScheduleIds||[s.id];if(!records.some(r=>r.date===date&&r.staffId===(s.staffId||s.teacherStaffId)&&(ids.includes(r.scheduleId)||(r.sourceScheduleIds||[]).some(id=>ids.includes(id)))))missing.push({...s,date,staffId:s.staffId||s.teacherStaffId,status:'Belum presensi'});}
  }return missing;
 }
+
+export const CONTROL_UNIT_ROUTES=Object.fromEntries([['boys','Asrama Putra'],['girls','Asrama Putri'],['SMK','SMK'],['SMP','SMP'],['SD','SD'],['TK','TK']].map(([unitId,label])=>[`management-control-${unitId}`,{unitId,label}]));

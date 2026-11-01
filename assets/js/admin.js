@@ -1,3 +1,8 @@
+import {mountBoardingRundown} from './boarding-rundown.js';
+import {mountFormalSchedules} from './formal-schedules.js';
+import {mountAdminHeader,bindAdminDrawer} from './admin-header.js';
+import {setSidebarOpen} from './sidebar-control.js';
+import {staffAccountCell,staffAccountAction,renderStaffAccountPrompt} from './staff-account-link.js';
 import { mountAdminSidebar } from './admin-sidebar.js';
 import {renderFeatureManagement} from './feature-management.js';
 import {naqibProgramEnabled} from './naqib-program-policy.js';
@@ -12,6 +17,7 @@ import { $, $$, escapeHtml, makeId, toast, confirmDialog, toCSV, downloadText } 
 
 let session;
 let cache = {};
+let staffAccountProfiles=null;
 let currentSection = "dashboard";
 let editState = null;
 let placementSelection=null, placementRequest=0;
@@ -85,7 +91,7 @@ const entityConfig = {
   },
   staff: {
     title:"Data SDM", subtitle:"Satu orang dapat memiliki banyak peran tanpa membuat akun atau identitas ganda.", prefix:"SDM",
-    columns:[["name","Nama"],["phone","No. HP"],["employmentStatus","Status"],["roles","Peran"],["status","Aktif"]],
+    columns:[["name","Nama"],["phone","No. HP"],["employmentStatus","Status"],["roles","Peran"],["status","Aktif"],["accountStatus","Akun Aplikasi"]],
     fields:[
       {name:"name",label:"Nama Lengkap",required:true},{name:"gender",label:"Jenis Kelamin",type:"select",options:genderOptions,required:true},{name:"phone",label:"No. HP"},{name:"email",label:"Email",type:"email"},
       {name:"employmentStatus",label:"Status Kepegawaian",type:"select",options:["Tetap","Kontrak","Khidmat","Part Time","Relawan"].map(v=>({value:v,label:v}))},
@@ -156,7 +162,7 @@ const entityConfig = {
     fields:[
       {name:"academicYearId",label:"Tahun Ajaran",type:"relation",relation:"academic-years",required:true},{name:"day",label:"Hari",type:"select",options:dayOptions.map(v=>({value:v,label:v})),required:true},
       {name:"startTime",label:"Jam Mulai",type:"time",required:true},{name:"endTime",label:"Jam Selesai",type:"time",required:true},{name:"classId",label:"Kelas / Rombel",type:"relation",relation:"classes",required:true},
-      {name:"subjectId",label:"Mata Pelajaran",type:"relation",relation:"subjects",required:true},{name:"teacherStaffId",label:"Guru",type:"relation",relation:"staff",required:true},{name:"roomText",label:"Ruangan"}
+      {name:"subjectId",label:"Mata Pelajaran",type:"relation",relation:"subjects",required:true},{name:"teacherStaffId",label:"Guru (Data SDM)",type:"relation",relation:"staff",required:true,help:"Pilih nama guru yang terdaftar di Data SDM."},{name:"roomText",label:"Ruangan"}
     ]
   },
   "daily-schedules": {
@@ -251,20 +257,11 @@ function adminMetrics(section){
  return '<div class="admin-metrics">'+values.map(([label,value],i)=>'<article><span class="admin-metric-icon" aria-hidden="true">'+['♙','✓','⌂','▦'][i]+'</span><div><small>'+escapeHtml(label)+'</small><strong>'+escapeHtml(String(value))+'</strong></div></article>').join('')+'</div>';
 }
 function renderDailyPrograms(){
- const rows=(cache['daily-schedules']||[]).slice().sort((a,b)=>String(a.startTime||'').localeCompare(String(b.startTime||'')));
- const program=r=>(cache.programs||[]).find(p=>p.id===r.programId)||{};
- const active=r=>r.status!=='inactive'&&program(r).status!=='inactive';
- const metrics=[['Jadwal Aktif',rows.filter(active).length],['Wajib Presensi',rows.filter(r=>naqibProgramEnabled(r,program(r))).length],['Wajib Laporan',rows.filter(r=>naqibProgramEnabled(r,program(r),'report')).length],['Kategori',new Set(rows.map(r=>program(r).category).filter(Boolean)).size]];
- $("#content").innerHTML='<section class="admin-page-hero"><div><p class="eyebrow">PROGRAM 24 JAM</p><h2>Jadwal Program Keasramaan</h2><p>Atur waktu, hari aktif, peserta, serta kewajiban presensi dan laporan pelaksanaan.</p></div><button class="btn btn-primary" id="addDaily">+ Tambah Jadwal</button></section><div class="admin-metrics">'+metrics.map(([label,value])=>'<article><div><small>'+escapeHtml(label)+'</small><strong>'+value+'</strong></div></article>').join('')+'</div><div class="toolbar"><input id="programSearch" type="search" placeholder="Cari program, kategori, atau waktu…"><select id="programDay" aria-label="Hari"><option value="">Semua Hari</option>'+dayOptions.map(d=>'<option>'+escapeHtml(d)+'</option>').join('')+'</select><select id="programStatus" aria-label="Status"><option value="">Semua Status</option><option value="active">Aktif</option><option value="inactive">Nonaktif</option></select><span id="programCount" class="badge"></span></div><div class="admin-program-grid" id="dailyProgramCards"></div>';
- const render=()=>{const q=$("#programSearch").value.toLowerCase(),day=$("#programDay").value,status=$("#programStatus").value;
- const filtered=rows.filter(r=>(!q||[program(r).name,program(r).category,r.startTime,r.endTime].join(' ').toLowerCase().includes(q))&&(!day||r.day==='Setiap Hari'||r.day===day)&&(!status||active(r)===(status==='active')));
- $("#programCount").textContent=filtered.length+' dari '+rows.length+' jadwal';
- $("#dailyProgramCards").innerHTML=filtered.map(r=>{const p=program(r);return '<article class="admin-program-card"><header><div><small>'+escapeHtml(p.category||'Program Asrama')+'</small><h3>'+escapeHtml(p.name||r.programId||'Program belum ditautkan')+'</h3></div></header><div class="admin-program-time">'+escapeHtml(r.startTime||'—')+' – '+escapeHtml(r.endTime||'—')+' <small>WITA</small></div><p>'+escapeHtml(r.day||'Hari belum diatur')+' · '+escapeHtml(({L:'Putra',P:'Putri'})[r.genderScope]||'Putra & Putri')+'</p><p>'+escapeHtml(valueLabel('daily-schedules','participantScope',r.participantScope))+(r.targetId?' · '+escapeHtml(valueLabel('daily-schedules','targetId',r.targetId)):'')+'</p><div class="program-flags"><span class="badge">'+(active(r)?'Aktif':'Nonaktif')+'</span><span class="badge">'+(naqibProgramEnabled(r,p)?'Wajib Presensi':'Tanpa Presensi')+'</span><span class="badge">'+(naqibProgramEnabled(r,p,'report')?'Wajib Laporan':'Tanpa Laporan')+'</span></div><div class="row-actions"><button class="mini-btn" data-edit="'+escapeHtml(r.id)+'">Edit Jadwal</button><button class="mini-btn danger" data-delete="'+escapeHtml(r.id)+'">Hapus</button></div></article>';}).join('')||'<div class="empty-state">Tidak ada jadwal yang cocok.</div>';
- bindRowActions('daily-schedules');};
- $("#addDaily").onclick=()=>openForm('daily-schedules');$("#programSearch").oninput=render;$("#programDay").onchange=render;$("#programStatus").onchange=render;render();
+ return mountBoardingRundown({root:$("#content"),cache,add:()=>openForm('daily-schedules'),bindActions:()=>bindRowActions('daily-schedules')});
 }
 
 function renderEntity(section) {
+  if(section==="academic-schedules")return mountFormalSchedules({root:$("#content"),cache,bindActions:()=>bindRowActions(section),add:()=>openForm(section),exportCsv:()=>exportSection(section)});
   if(section==="daily-schedules")return renderDailyPrograms();
   const cfg = entityConfig[section];
   const rows = getFilteredRows(section);
@@ -285,7 +282,7 @@ function renderEntity(section) {
 function rowsMarkup(section, rows) {
   const cfg = entityConfig[section];
   if (!rows.length) return `<tr><td colspan="${cfg.columns.length+1}" style="text-align:center;color:#7b8a84;padding:30px">Belum ada data.</td></tr>`;
-  return rows.map(row => `<tr>${cfg.columns.map(([f,label])=>`<td data-label="${escapeHtml(label)}">${formatCell(section,f,row[f])}</td>`).join("")}<td><div class="row-actions"><button class="mini-btn detail" data-detail="${row.id}">Detail</button><button class="mini-btn" data-edit="${row.id}">Edit</button>${["classes","rooms","groups"].includes(section)?`<button class="mini-btn" data-members="${row.id}">Atur Peserta</button>`:""}${section==="academic-years"?`<button class="mini-btn" data-activate="${row.id}">Aktifkan</button>`:""}${section==="quran-placements"?"":`<button class="mini-btn danger" data-delete="${row.id}">Hapus</button>`}</div></td></tr>`).join("");
+  return rows.map(row => `<tr>${cfg.columns.map(([f,label])=>`<td data-label="${escapeHtml(label)}">${f==='accountStatus'?staffAccountCell(row.id,staffAccountProfiles):formatCell(section,f,row[f])}</td>`).join("")}<td><div class="row-actions">${section==='staff'?staffAccountAction(row.id,staffAccountProfiles):''}<button class="mini-btn detail" data-detail="${row.id}">Detail</button><button class="mini-btn" data-edit="${row.id}">Edit</button>${["classes","rooms","groups"].includes(section)?`<button class="mini-btn" data-members="${row.id}">Atur Peserta</button>`:""}${section==="academic-years"?`<button class="mini-btn" data-activate="${row.id}">Aktifkan</button>`:""}${section==="quran-placements"?"":`<button class="mini-btn danger" data-delete="${row.id}">Hapus</button>`}</div></td></tr>`).join("");
 }
 
 function formatCell(section, field, value) {
@@ -297,7 +294,7 @@ function formatCell(section, field, value) {
 }
 
 function bindRowActions(section) {
- $$('[data-detail]').forEach(b=>b.onclick=()=>{const cfg=entityConfig[section],row=(cache[section]||[]).find(r=>r.id===b.dataset.detail);if(!row)return;$("#modalTitle").textContent='Detail '+cfg.title;$("#entityForm").innerHTML='<dl class="admin-detail">'+cfg.columns.map(([f,label])=>'<div><dt>'+escapeHtml(label)+'</dt><dd>'+formatCell(section,f,row[f])+'</dd></div>').join('')+'</dl><button type="button" class="btn btn-secondary" id="closeDetail">Tutup</button>';$("#modalBackdrop").classList.remove("hidden");$("#closeDetail").onclick=closeForm;});
+ $$('[data-detail]').forEach(b=>b.onclick=()=>{const cfg=entityConfig[section],row=(cache[section]||[]).find(r=>r.id===b.dataset.detail);if(!row)return;$("#modalTitle").textContent='Detail '+cfg.title;$("#entityForm").innerHTML='<dl class="admin-detail">'+cfg.columns.map(([f,label])=>'<div><dt>'+escapeHtml(label)+'</dt><dd>'+(f==='accountStatus'?staffAccountCell(row.id,staffAccountProfiles):formatCell(section,f,row[f]??(section==="academic-schedules"&&f==="teacherStaffId"?row.staffId:undefined)))+'</dd></div>').join('')+'</dl><button type="button" class="btn btn-secondary" id="closeDetail">Tutup</button>';$("#modalBackdrop").classList.remove("hidden");$("#closeDetail").onclick=closeForm;});
 
  $$('[data-members]').forEach(b=>b.onclick=async()=>{await renderPlacement(({classes:'class',rooms:'room',groups:'group'})[section],b.dataset.members);workspaceTabs(section);});
   $$('[data-edit]').forEach(b=>b.addEventListener("click",()=>openForm(section,b.dataset.edit)));
@@ -328,7 +325,7 @@ function fieldOptions(field) {
 function openForm(section, id = null) {
   const cfg=entityConfig[section]; const item=id?(cache[section]||[]).find(x=>x.id===id):null;
   editState={section,id}; $("#modalTitle").textContent=`${item?"Edit":"Tambah"} ${cfg.title}`;
-  $("#entityForm").innerHTML = cfg.fields.map(field=>fieldMarkup(field,item?.[field.name] ?? field.default ?? "")).join("") + `<div class="form-actions"><button type="button" class="btn btn-secondary" id="cancelForm">Batal</button><button class="btn btn-primary" type="submit">Simpan</button></div>`;
+  $("#entityForm").innerHTML = cfg.fields.map(field=>fieldMarkup(field,(item?.[field.name] ?? (section==="academic-schedules"&&field.name==="teacherStaffId"?item?.staffId:undefined)) ?? field.default ?? "")).join("") + `<div class="form-actions"><button type="button" class="btn btn-secondary" id="cancelForm">Batal</button><button class="btn btn-primary" type="submit">Simpan</button></div>`;
   $("#modalBackdrop").classList.remove("hidden"); $("#cancelForm").addEventListener("click",closeForm);
 }
 
@@ -363,7 +360,9 @@ async function submitForm(event){
       const startMinute=Number(data.startTime.slice(0,2))*60+Number(data.startTime.slice(3));
       await patchNode('',{[`schedules/daily/${recordId}`]:{...payload,updatedAt:Date.now(),updatedBy:session.user.uid},[`settings/naqibDuty/programs/${recordId}`]:data.status==='inactive'?null:{programId:data.programId,startTime:data.startTime,endTime:data.endTime,day:data.day,academicYearId:data.academicYearId,startMinute,shiftId:startMinute<480?'shift1':startMinute<960?'shift2':'shift3'}});
     }else await saveRecord(pathMap[section],recordId,payload,session.user.uid);
-    toast(id?"Data diperbarui.":"Data ditambahkan.");closeForm();await reloadAndRender(section);}catch(e){toast(e.message||"Gagal menyimpan data.","error")}
+    toast(id?"Data diperbarui.":"Data ditambahkan.");closeForm();await reloadAndRender(section);
+    if(section==='staff'&&!id){$("#modalTitle").textContent='Buat akun aplikasi?';renderStaffAccountPrompt($("#entityForm"),{id:recordId,name:data.name},closeForm);$("#modalBackdrop").classList.remove('hidden');}
+  }catch(e){toast(e.message||"Gagal menyimpan data.","error")}
 }
 
 function exportSection(section){
@@ -418,20 +417,21 @@ async function savePlacement(kind){
 
 async function reloadAndRender(section){await loadCache();await refreshActiveYear();await renderSection(section);workspaceTabs(section);}
 
-async function navigate(section){if(section==='quran-placements')section='group-placements';if(!entityConfig[section]&&!['features','class-placements','room-placements','group-placements'].includes(section))section='students';currentSection=section; $$('.nav-item').forEach(b=>b.classList.toggle('active',b.dataset.section===section||b.dataset.workspace===workspaceFor(section))); $("#pageTitle").textContent= section==="dashboard"?"Beranda Admin": entityConfig[section]?.title || (section==="features"?"Manajemen Fitur":null) || ({"class-placements":"Penempatan Kelas","room-placements":"Penempatan Kamar","group-placements":"Anggota Kelompok"}[section]||section); await renderSection(section); workspaceTabs(section); $("#sidebar").classList.remove("open");}
+async function navigate(section){if(section==='quran-placements')section='group-placements';if(!entityConfig[section]&&!['features','class-placements','room-placements','group-placements'].includes(section))section='students';currentSection=section; $$('.nav-item').forEach(b=>b.classList.toggle('active',b.dataset.section===section||b.dataset.workspace===workspaceFor(section))); $("#pageTitle").textContent= section==="dashboard"?"Beranda Admin": entityConfig[section]?.title || (section==="features"?"Manajemen Fitur":null) || ({"class-placements":"Penempatan Kelas","room-placements":"Penempatan Kamar","group-placements":"Anggota Kelompok"}[section]||section); await renderSection(section); workspaceTabs(section); setSidebarOpen(false);}
 
-function renderSection(section){
+async function renderSection(section){
+  if(section==='staff'){try{staffAccountProfiles=await listNode("users");}catch{staffAccountProfiles=null;}}
   if(section==="features")return renderFeatureManagement({root:$("#content"),uid:session.user.uid});
   if(entityConfig[section])return renderEntity(section); if(section==="class-placements")return renderPlacement("class"); if(section==="room-placements")return renderPlacement("room"); if(section==="group-placements")return renderPlacement("group");
 }
 
 async function boot(){
-  try{session=await requireAdmin(); $("#adminName").textContent=session.profile.name||session.user.email||"Administrator"; await loadCache(); await refreshActiveYear(); await navigate((entityConfig[location.hash.slice(1)]||location.hash==='#features')?location.hash.slice(1):'students');}
+  try{session=await requireAdmin(); mountAdminHeader(session); $("#adminName").textContent=session.profile.name||session.user.email||"Administrator"; await loadCache(); await refreshActiveYear(); await navigate((entityConfig[location.hash.slice(1)]||location.hash==='#features')?location.hash.slice(1):'students');}
   catch(e){console.error(e)}
 }
 
 mountAdminSidebar({ surface: 'data', route: location.hash.slice(1) || 'students' });
-$("#logoutButton").addEventListener("click",async()=>{await logout();window.location.href="../index.html"}); $("#menuButton").addEventListener("click",()=>$("#sidebar").classList.toggle("open")); $("#modalClose").addEventListener("click",closeForm); $("#modalBackdrop").addEventListener("click",e=>{if(e.target.id==="modalBackdrop")closeForm()}); $("#entityForm").addEventListener("submit",submitForm); $$('.nav-item').forEach(btn=>btn.addEventListener("click",()=>{if(btn.dataset.section)navigate(btn.dataset.section);}));
+$("#logoutButton").addEventListener("click",async()=>{await logout();window.location.href="../index.html"}); bindAdminDrawer(); $("#modalClose").addEventListener("click",closeForm); $("#modalBackdrop").addEventListener("click",e=>{if(e.target.id==="modalBackdrop")closeForm()}); $("#entityForm").addEventListener("submit",submitForm); $$('.nav-item').forEach(btn=>btn.addEventListener("click",()=>{if(btn.dataset.section)navigate(btn.dataset.section);}));
 boot().finally(()=>window.dispatchEvent(new Event("madani:ready")));
 
 $$("[data-workspace]").forEach(b=>b.onclick=()=>renderWorkspace(b.dataset.workspace));

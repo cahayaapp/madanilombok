@@ -108,3 +108,11 @@ test('SD mentoring follows current homeroom teacher, overriding stale individual
  m.classes[0].homeroomStaffId='replacement';assert.deepEqual(filterScopedStudents(m,{staffId:'new'},'guru_wali'),[]);
  m.classAssignments.sd.status='inactive';assert.deepEqual(filterScopedStudents(m,{staffId:'replacement'},'guru_wali'),[]);
 });
+
+test('unit control detail routes are restricted to director and deputy and stay out of menus',async()=>{
+ const {CONTROL_UNIT_ROUTES}=await import('../assets/js/leadership-monitor-model.js');
+ for(const route of Object.keys(CONTROL_UNIT_ROUTES)){
+  assert.equal(ids.has(route),false);
+  for(const role of Object.keys(ROLE_LABELS))assert.equal(canAccess(`workspace.${route}`,[role]),['director','deputy_director'].includes(role),`${role}/${route}`);
+ }
+});

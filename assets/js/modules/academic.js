@@ -1,3 +1,4 @@
+import {mountAcademicTimetable} from '../academic-timetable.js';
 import {teachingGroups} from '../group-teachers.js';
 import { getNode, listNode, saveRecord, pushRecord, setNode } from "../repository.js";
 import { studentsForClass, studentsForGroup, byId } from "../app-store.js";
@@ -157,10 +158,7 @@ export async function renderGrades(ctx) {
 }
 
 export async function renderSchedule(ctx) {
-  const classMap=byId(ctx.master.classes||[]), subjectMap=byId(ctx.master.subjects||[]);
-  let schedules=(ctx.master.academicSchedules||[]); const classIds=ctx.session.profile.classIds||[], subjectIds=ctx.session.profile.subjectIds||[]; if(Array.isArray(classIds)&&classIds.length){const allow=new Set(classIds);schedules=schedules.filter(x=>allow.has(x.classId));} if(Array.isArray(subjectIds)&&subjectIds.length){const allow=new Set(subjectIds);schedules=schedules.filter(x=>!x.subjectId||allow.has(x.subjectId));} schedules=schedules.sort((a,b)=>(a.day||"").localeCompare(b.day||"") || (a.startTime||"").localeCompare(b.startTime||""));
-  const issueNote = schedules.every(x=>x.unitId==="UNIT-SD") ? `<div class="notice info">Baseline jadwal terstruktur yang tersedia saat ini terutama SD. Jadwal SMP/SMK perlu dilengkapi dari sumber final sebelum produksi.</div>` : "";
-  ctx.root.innerHTML=pageHeader("Jadwal Pelajaran","Jadwal akademik dari master data Al-Madani.")+issueNote+`<div style="margin-top:14px">${table(["Hari","Waktu","Kelas","Mata Pelajaran/Kegiatan","Jenis"],schedules.map(r=>`<tr><td>${badge(r.day||"—")}</td><td><strong>${escapeHtml(`${r.startTime||""}${r.endTime?`–${r.endTime}`:""}`)}</strong></td><td>${escapeHtml(classMap[r.classId]?.name||"—")}</td><td>${escapeHtml(subjectMap[r.subjectId]?.name||r.activityName||"—")}</td><td>${escapeHtml(r.type||"—")}</td></tr>`).join(""),720)}</div>`;
+  mountAcademicTimetable(ctx);
 }
 
 export async function renderLessonPlans(ctx) {

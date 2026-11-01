@@ -806,3 +806,69 @@ Added eighth Admin workspace Manajemen Fitur in portal and console navigation. L
 - Proses Kasus individual/massal membuka dialog tabayyun dan What–Why–How/konsekuensi. Tidak menulis saat membuka dialog; materialisasi presensi dan klaim transaksi dijalankan ketika menyimpan. Retry operasi stabil dipertahankan.
 - Kartu pemeriksaan presensi terpisah disembunyikan pada kedua tingkat; loading/error dan tombol retry tetap tersedia. Dialog responsif dengan batas tinggi dan scroll internal.
 - 51 tes model/menu/render/workflow lulus. Belum uji browser akun produksi; tidak deploy/push. SW166-counselor-process.
+
+## 1 November 2026 — Kontrol & Kondisi Direktur / Wakil Direktur
+- Kontrol & Kondisi kini berisi enam kartu: Asrama Putra, Asrama Putri, SMK, SMP, SD, TK. Jumlah siswa/rombel memakai master unit; asrama memakai santri mukim sesuai gender.
+- Klik unit membuka renderer laporan yang sama dengan kepala sekolah/pembina asrama: mutu pendidikan, presensi guru/siswa dan mentoring untuk sekolah; presensi santri/pembina, setoran dan konseling untuk asrama. Periode/filter laporan sumber tetap tersedia. Konteks laporan lokal tidak mengubah role login atau penugasan akun.
+- 61 tes role/route/rendering/monitor lokal lulus, termasuk keenam unit pada kedua role dan tidak ada write. Ini bukan tambahan parity indikator yang belum tersedia pada laporan sumber. Belum deploy atau diuji akun produksi; finance dan database tidak diubah.
+
+- Penyegaran UI: hero tosca/ivory, ikon asrama/sekolah, kartu responsif 3 kolom desktop/2 kolom mobile, status terpilih, tab laporan dan empty state. 56 tes role/render lulus; preview desktop data simulasi diperiksa di browser. Belum deploy.
+- Detail keenam unit kini memakai route terpisah `management-control-{boys,girls,SMK,SMP,SD,TK}`; halaman utama hanya menampilkan kartu. Tombol Kembali ke Kontrol & Kondisi tersedia di atas setiap detail. Route terdaftar pada router/hash dan permission khusus Direktur/Wakil, tanpa menambah menu sidebar. 62 tes role/route/render/monitor lulus, termasuk navigasi kartu, laporan dan kembali; belum deploy/uji produksi.
+
+## 1 November 2026 — audit izin menu input
+- Lihat docs/INPUT-PERMISSIONS-AUDIT-2026-11-01.md. Rules live dibaca tanpa data operasional; 14 workspace input dan health belum tersedia di server. Kandidat terbatas menambah 15 cabang, menjaga seluruh cabang live yang sudah ada/finance/muqim; Firebase dry-run valid. BELUM deploy.
+- Lokal: perbaiki izin UKS jadwal/pesan, Pembina Tahfiz presensi staff sendiri, serta role map pada UKS dan pemeriksaan repository. 136 tes terarah lulus; baseline keseluruhan 337/350 (13 masalah lain dijelaskan dalam dokumen). JS/JSON/diff valid. Java tidak tersedia; tidak ada Emulator atau write produksi.
+- Kandidat /tmp/madani-input-permissions-deploy/rules.json disiapkan dari snapshot /tmp/madani-rules-audit-current.json. Baca ulang live sebelum deploy, regenerasi bila ada perubahan. Jangan deploy seluruh rules lokal. Aktivasi produksi masih memerlukan otorisasi pengguna.
+
+### Aktivasi izin input produksi — 1 November 2026
+- Setelah pengguna menyetujui, rules live dibaca ulang; kandidat terbatas 15 cabang diregenerasi dan 16 tes kontrak input/patch lulus. Firebase CLI deploy database berhasil.
+- Read-back live identik dengan kandidat; semua aturan lama termasuk finance tetap sama. Snapshot sebelum/kandidat/sesudah di /tmp/madani-input-permissions-deploy/{before,rules,after}.json. Tidak menulis rekam operasional atau deploy hosting/frontend.
+- Menggantikan status BELUM deploy untuk patch 15 cabang pada catatan sebelumnya. Pengujian simpan nyata tiap akun/menu dan Emulator belum dilakukan; jangan klaim seluruh menu sudah teruji produksi. Lihat docs/INPUT-PERMISSIONS-AUDIT-2026-11-01.md.
+
+## 1 November 2026 — Data SDM terhubung dengan Manajemen User
+- Setelah tambah SDM berhasil, dialog menawarkan Buat akun aplikasi / Nanti saja. Membuka dialog tidak membuat Auth/user. Link membawa staffId ke Manajemen User; nama/email SDM dan pilihan Hubungkan SDM terisi, role/password tetap ditentukan admin. Tersedia link kembali ke Data SDM.
+- Daftar/detail SDM memiliki kolom Akun Aplikasi (belum punya akun, aktif, nonaktif, akses dicabut, beberapa akun, atau status belum tersedia bila baca users gagal) beserta email dan aksi Buat/Kelola/Periksa akun. Relasi memakai staffId persis, bukan kecocokan nama/email. Data status dibaca ulang saat halaman SDM dibuka.
+- SDM dengan satu akun membuka editor akun lama; beberapa akun menampilkan daftar untuk diperiksa. Pemeriksaan duplikasi dilakukan di UI serta pembacaan users terbaru sebelum create Auth/perubahan tautan. Rencana provisioning massal kini mengenali semua akun yang tertaut staffId, termasuk akun manual/email khusus/nonaktif. Ini pemeriksaan aplikasi, bukan klaim unique constraint atomik lintas admin/perangkat.
+- 79 tes lokal role/route/rendering/user/SDM lulus. Syntax JS/JSON/diff diperiksa. Tidak membuat SDM/akun produksi dan tidak deploy hosting; rules/finance tidak diubah oleh fitur ini. SW174-staff-accounts.
+
+## 1 November 2026 — akses Admin penuh untuk kepala sekolah/asrama
+- Pengguna secara eksplisit menyetujui akses Admin lintas seluruh unit, termasuk membuat user dan mengubah role, bagi head_formal_school, head_boys_dorm, head_girls_dorm. Ini menggantikan batas Manajemen Data lama bagi ketiga role tersebut.
+- Kartu management-data sekarang membuka ../admin/index.html#students. requireAdmin menerima tiga role kepala unit selain admin/super_admin; sidebar Admin lengkap sama. Portal kepala unit tetap memakai home/laporan operasionalnya. Tidak menambahkan role admin ke profil, tidak membuat akun baru otomatis, dan tidak memperluas menu finance.
+- Admin-access.js menjadi daftar otoritas bersama; self-edit harus mempertahankan salah satu role yang dapat mengakses Admin, sementara cabut akses sendiri tetap diblok. Role arrays, roleFlags dan map didukung. Daftar route admin juga diizinkan bagi kepala unit.
+- Rules lokal memberi otoritas administratif pada master, penempatan, jadwal, settings, referensi, penempatan Quran, serta users. Seluruh validator role/roleFlags/roleScopes child users juga diselaraskan agar grant parent tidak tetap ditolak oleh validator lama. Validator tipe/panjang displayName/photoURL dipertahankan. Finance, boarding, parent, health, workspaces dan audit_logs tidak berubah dalam patch ini.
+- Generator patch produksi: scripts/prepare-unit-admin-rules.mjs. Snapshot live terbaru dan kandidat di /tmp/madani-unit-admin-deploy/{before,rules}.json; 35 rule expressions administratif berubah/ditambah. Firebase dry-run valid. BELUM deploy rules atau hosting untuk perubahan ini; pembacaan live/dry-run bukan aktivasi akses.
+- 91 tes lokal terkait lulus: guard requireAdmin aktual, redirect ketiga role, role/route/rendering, CRUD user/self-protection, aturan master lintas unit, validator child user, serta penolakan akun dicabut/nonaktif/role biasa. 155 JS syntax dan seluruh JSON valid, diff bersih. Tidak uji write akun/rekam produksi atau Emulator.
+
+## 1 November 2026 — header Admin mobile
+- Halaman data dan Manajemen User memakai `homeHeader` portal: logo/wordmark kiri, lonceng menuju pesan dan avatar pengguna menuju profil. Toolbar desktop dipertahankan.
+- Drawer Admin mobile memakai ivory/tosca dengan wordmark terbaca. Tombol Lainnya memakai pengendali sidebar bersama; backdrop dan Escape menutup drawer, status ARIA disinkronkan.
+- Validasi lokal: 62 tes header/sidebar, role/route, rendering dan SDM lulus; 156 berkas JavaScript lolos sintaks dan 41 JSON valid. Belum deployment atau uji browser produksi; database tidak diubah untuk perubahan tampilan ini.
+
+## 1 November 2026 — perbaikan SDM permission denied Kepala Sekolah
+- Error pengguna berasal dari rules live yang belum memberi hak administratif kepala unit. Instruksi admin penuh sebelumnya dan permintaan perbaikan ini diterapkan lewat patch terbatas generator unit-admin pada snapshot rules live terbaru.
+- Enam tes unit-admin lulus; Firebase dry-run dan deploy berhasil. Read-back identik dengan kandidat: 35 ekspresi administratif berubah, seluruh aturan lainnya termasuk keuangan tetap sama. Snapshot di /tmp/madani-unit-admin-deploy/{current,rules,after}.json.
+- Status ini menggantikan BELUM deploy rules unit-admin di atas. Tidak menulis SDM/akun atau data operasional untuk pengujian. Pengguna dapat mencoba Simpan kembali; penyimpanan lewat akun pengguna belum diuji langsung. Hosting tidak dideploy.
+
+## 1 November 2026 — desain empat workspace sesuai referensi
+- Guru Menulis memakai kartu Informasi Dasar, Format Tulisan, Isi Materi; format, impor dokumen, draft, preview dan simpan tetap memakai handler lama.
+- Refleksi 5 Dimensi memakai kartu berikon dan tombol skala 1–5 dengan aria-pressed; data objektif dan refleksi pembelajaran tetap tersedia. Nilai tersimpan dan validasi 12 indikator dipertahankan.
+- Izin Guru memakai form dua kolom desktop/satu kolom mobile, penekanan jadwal terdampak dan riwayat. Jadwal Piket Naqib memakai kartu personil, inisial berwarna dan pilihan shift; aturan shift/akses tidak diubah.
+- Perbaikan terkait pengujian: jadwal terdampak izin mengenali kedua nama hari Minggu/Ahad.
+- 55 tes UI/workflow/role/rules lulus; 159 JS lolos syntax, JSON/diff bersih. Preview fixture empat halaman diperiksa di browser desktop/mobile 390px, tanpa menulis data produksi. Tema132/SW182; belum deploy hosting.
+
+## 1 November 2026 — akses dan workflow Materi Guru
+- Referensi dibaca dari fajrulislam/guru/capaian-materi.html: daftar pelajaran/target, kalender semester, laporan capaian dan riwayat. Tidak mengambil data operasional Cahaya.
+- Handoff pilihan target/report kini memakai state modul, tanpa sessionStorage; diuji ketika API storage melempar error. Kegagalan refresh master menampilkan peringatan dan tetap membuka data jadwal sesi, bukan menghalangi workspace.
+- Target dibuka dari kartu pelajaran dengan jumlah target/progres; editor kalender pertemuan, tombol kembali, simpan dan hapus target semester secara soft-delete. Riwayat capaian dipertahankan. Report memiliki pencarian, seleksi target, tercapai/belum tercapai, analisa wajib dan tindak lanjut, lalu riwayat.
+- 64 tes lokal menu/workflow/model/rules/role lulus termasuk kedua tombol beranda, simpan target dan capaian, storage ditolak, refresh gagal dan soft-delete. Syntax 162 JS, JSON/diff valid. Belum uji akun pengguna di produksi atau deployment hosting; penyebab spesifik sesi pengguna belum diamati langsung. Tidak mengubah rules/database/keuangan.
+- Ini bukan klaim seluruh fitur kalender/ekspor/cetak Cahaya telah disalin. Tema138/SW189.
+
+## 1 November 2026 — penyebab pasti Materi Guru ditolak role aktif
+- Pembacaan terarah server membuktikan settings/featureSwitches/guru_mapel/academic~lesson_plans bernilai false. Ini penyebab pesan “Menu tidak tersedia untuk role aktif”, bukan handoff storage yang diperbaiki sebelumnya.
+- Sesuai permintaan pengguna untuk mengaktifkan akses, hanya nilai tersebut diubah menjadi true via Firebase CLI. Read-back server mengonfirmasi true. Tidak mengubah role, rules atau rekam materi.
+- Reproduksi canAccess dengan false menolak, true menerima Guru Mapel, Wali Santri tetap ditolak. Perlu refresh halaman karena feature switches dimuat saat boot.
+
+## 1 November 2026 — UI Persetujuan Izin Guru kepala unit
+- Daftar review memakai kartu identitas/inisial, badge status, alasan/kontak/penanganan kelas, rincian pertemuan collapsible dan catatan peninjau dengan waktu WITA. Filter Semua/Menunggu/Disetujui/Ditolak/Dibatalkan beserta hitungan dan empty state.
+- Pembatasan unit dan handler keputusan tetap memakai leave-model; tidak mengubah persetujuan atau data produksi. Identitas logo Madani dipertahankan, nama/foto contoh referensi tidak disalin.
+- 57 tes lokal UI/alur izin/role lulus, syntax modul dan diff bersih. Preview data simulasi desktop dan 390px diperiksa; lebar kartu mobile diperbaiki setelah inspeksi. Tema139/SW190, belum deployment hosting.

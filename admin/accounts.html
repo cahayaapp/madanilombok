@@ -11,7 +11,7 @@
   <link rel="stylesheet" href="../assets/css/user-management.css?v=28">
   <link rel="stylesheet" href="../assets/css/cahaya-clone.css">
 <meta name="theme-color" content="#00a39d"><link rel="icon" href="../assets/brand/logo.svg" type="image/svg+xml"><link rel="apple-touch-icon" href="../assets/icons/icon-192.png?v=25"><link rel="stylesheet" href="../assets/css/admin-workspaces.css">
-<script type="module" src="../assets/js/mobile-layout.js"></script><link rel="stylesheet" href="../assets/css/brand-theme.css?v=130">
+<script type="module" src="../assets/js/mobile-layout.js"></script><link rel="stylesheet" href="../assets/css/brand-theme.css?v=137">
 </head>
 <body class="app-body admin-console">
   <div class="app-shell">
@@ -20,25 +20,18 @@
 <nav class="nav-menu" id="navMenu"><a class="nav-item" href="../app/index.html"><span>Beranda</span></a><a class="nav-item" href="./index.html#students"><span>Data Santri</span></a><a class="nav-item" href="./index.html#staff"><span>Data SDM</span></a><a class="nav-item" href="./index.html#units"><span>Data Sekolah</span></a><a class="nav-item" href="./index.html#rooms"><span>Data Asrama</span></a><a class="nav-item" href="./index.html#academic-schedules"><span>Jadwal Pelajaran</span></a><a class="nav-item" href="./index.html#daily-schedules"><span>Jadwal Program Keasramaan</span></a><a class="nav-item" href="./index.html#features"><span>Manajemen Fitur</span></a><a class="nav-item active" href="./accounts.html"><span>Manajemen User</span></a></nav>
       <div class="sidebar-footer"><span id="adminName">Administrator</span><button id="logoutButton" class="link-button">Keluar</button></div>
     </aside>
+    <button id="sidebarOverlay" class="sidebar-overlay hidden" aria-label="Tutup menu"></button>
     <main class="main-area">
       <header class="topbar"><button id="menuButton" class="icon-button mobile-only" aria-label="Buka menu">☰</button><div><p class="eyebrow">Pondok Pesantren Al-Madani</p><h1>Manajemen User</h1></div><div class="top-actions"><a class="btn btn-secondary" href="../app/index.html">Beranda</a></div></header>
       <section id="accountContent" class="content-area">
         <div id="userManagement"></div>
 
-        <section class="panel" style="margin-top:20px">
-          <div class="panel-head"><h3>Akun Semua SDM</h3></div>
-          <label>Domain Email SDM<input id="staffEmailDomain" placeholder="Contoh: almadani.app" autocomplete="off"></label>
-          <p id="staffPlanSummary">Memuat rencana akun…</p>
-          <p>Password sementara dibuat unik per akun. Unduh daftar akun setelah proses selesai dan simpan sebelum menutup halaman. Firebase menolak @madaniapp tanpa akhiran domain. Pilih domain email sebelum membuat akun.</p>
-          <div class="section-actions"><button id="createStaffButton" class="btn btn-primary" disabled>Buat Semua Akun SDM yang Siap</button><button id="createNaqibahAccounts" class="btn btn-primary" disabled>Buat Akun Fitriani &amp; Nurul</button><button id="downloadStaffCredentials" class="btn btn-secondary" disabled>Unduh Daftar Akun & Password</button></div>
-          <div class="table-scroll"><table class="data-table"><thead><tr><th>Nama SDM</th><th>Email Login</th><th>Role</th><th>Status</th></tr></thead><tbody id="staffPlanBody"></tbody></table></div>
-          <pre id="staffProvisionResult" style="white-space:pre-wrap" role="status"></pre>
-        </section>
+
 
       </section>
     </main>
   </div>
   <div id="toastHost" class="toast-host"></div>
   <script type="module" src="../assets/js/accounts.js"></script>
-<nav class="admin-bottom-nav" aria-label="Navigasi utama"><a href="./index.html#students">▤<span>Data</span></a><a href="../app/index.html#work-messages">☏<span>Pesan</span></a><a href="../app/index.html">⌂<span>Beranda</span></a><a href="../app/index.html#work-profile">♙<span>Profil</span></a><button type="button" onclick="document.querySelector('.sidebar').classList.toggle('open')">☰<span>Lainnya</span></button></nav></body>
+<nav class="admin-bottom-nav" aria-label="Navigasi utama"><a href="./index.html#students">▤<span>Data</span></a><a href="../app/index.html#work-messages">☏<span>Pesan</span></a><a href="../app/index.html">⌂<span>Beranda</span></a><a href="../app/index.html#work-profile">♙<span>Profil</span></a><button type="button" data-admin-menu aria-controls="sidebar" aria-expanded="false">☰<span>Lainnya</span></button></nav></body>
 </html>

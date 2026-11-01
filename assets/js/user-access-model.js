@@ -1,3 +1,4 @@
+import {hasAdminAccess} from './admin-access.js';
 import {ROLE_LABELS} from './permissions.js';
 export const roleIds=p=>[...new Set([p.role,...(Array.isArray(p.roles)?p.roles:Object.keys(p.roles||{}).filter(k=>p.roles[k])),...Object.keys(p.roleFlags||{}).filter(k=>p.roleFlags[k])].filter(r=>Object.hasOwn(ROLE_LABELS,r)))];
 export const SCOPE_FIELDS={
@@ -34,7 +35,7 @@ export function validateUserDraft(d,master={}){
 }
 export function applyUserDraft(current,d,master,actorUid,targetUid,eventId){
  validateUserDraft(d,master);
- if(actorUid===targetUid&&(!d.active||!d.roles.some(r=>['admin','super_admin'].includes(r))))throw Error('Anda tidak dapat mencabut akses administrator akun sendiri.');
+ if(actorUid===targetUid&&(!d.active||!hasAdminAccess(d.roles)))throw Error('Anda tidak dapat mencabut akses administrator akun sendiri.');
  const scopes=Object.fromEntries(d.roles.map(role=>{
   // Explicit empty scope fields prevent legacy profile fields leaking between roles.
   const s={unitIds:[],classIds:[],subjectIds:[],groupIds:[],studentIds:[],menteeStudentIds:[],scopeGender:'',genderScope:'',financeUnit:'',cashierUnits:[],...copy(d.roleScopes[role]||{})};

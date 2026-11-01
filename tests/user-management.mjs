@@ -17,7 +17,8 @@ test('invalid main role and references are rejected before persistence',()=>{
 });
 test('self-lockout is blocked but another user can be revoked and restored',()=>{
  assert.throws(()=>revokeUserAccess({},'admin','admin','e'),/sendiri/);
- assert.throws(()=>applyUserDraft({},draft,master,'admin','admin','e'),/sendiri/);
+ assert.throws(()=>applyUserDraft({},{...draft,roles:['director'],defaultRole:'director',roleScopes:{}},master,'admin','admin','e'),/sendiri/);
+ assert.doesNotThrow(()=>applyUserDraft({},draft,master,'admin','admin','e'));
  const old={...applyUserDraft({},draft,master,'admin','user','e'),email:'x@example.test'};
  const removed=revokeUserAccess(old,'admin','user','r');assert.equal(removed.active,false);assert.equal(removed.accessRevoked,true);assert.equal(removed.email,old.email);assert.equal(Object.keys(removed.accessHistory).length,2);
  const restored=applyUserDraft(removed,{...draft,active:true},master,'admin','user','s');assert.equal(restored.accessRevoked,false);assert.equal(restored.active,true);assert.equal(Object.keys(restored.accessHistory).length,3);

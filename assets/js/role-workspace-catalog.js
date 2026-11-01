@@ -1,5 +1,6 @@
+import {UNIT_ADMIN_ROLES} from './admin-access.js';
 import {ADMIN_HOME_ROUTES, ADMIN_WORKSPACES} from './admin-workspaces.js';
-import {MONITOR_VIEWS} from './leadership-monitor-model.js';
+import {MONITOR_VIEWS,CONTROL_UNIT_ROUTES} from './leadership-monitor-model.js';
 const entry=(id,label,icon='◇')=>({id,label,icon,feature:`workspace.${id}`});
 export const WORKSPACE_GROUPS=[
  {label:'Administrasi',items:[...Object.entries(ADMIN_HOME_ROUTES).map(([id,{workspace}])=>entry(id,ADMIN_WORKSPACES[workspace].title))]},
@@ -16,8 +17,9 @@ export const WORKSPACE_GRANTS={
  kesehatan:utilities,
  guru_mapel:[...utilities,...teaching,'homeroom-cases'],mentor_tahsin_tahfiz:[...utilities],naqib:[...utilities,'naqib-leave'],guru_wali:[...utilities],konselor:[...utilities,'education-calendar'],kasir:utilities,
  head_formal_school:[...Object.keys(MONITOR_VIEWS).filter(id=>id.startsWith('school-')),'management-data',...utilities,...managing,'management-residents','management-worship','management-learning','management-materials','management-scores','management-reports','education-calendar'],head_boys_dorm:[...Object.keys(MONITOR_VIEWS).filter(id=>id.startsWith('dorm-')),'naqib-leave','management-duty','management-residents','management-data',...utilities,...managing,'management-worship','management-programs','management-mentoring'],head_girls_dorm:[...Object.keys(MONITOR_VIEWS).filter(id=>id.startsWith('dorm-')),'naqib-leave','management-duty','management-residents','management-data',...utilities,...managing,'management-worship','management-programs','management-mentoring'],
- deputy_director:[...utilities,...leadership],director:[...utilities,...leadership],admin:[...utilities,...leadership,...teaching,'deposit-admin',...Object.keys(ADMIN_HOME_ROUTES)],super_admin:[...utilities,...leadership,...teaching,'deposit-admin',...Object.keys(ADMIN_HOME_ROUTES)],wali_santri:['work-profile','work-guide','parent-deposits']
+ deputy_director:[...utilities,...leadership,...Object.keys(CONTROL_UNIT_ROUTES)],director:[...utilities,...leadership,...Object.keys(CONTROL_UNIT_ROUTES)],admin:[...utilities,...leadership,...teaching,'deposit-admin',...Object.keys(ADMIN_HOME_ROUTES)],super_admin:[...utilities,...leadership,...teaching,'deposit-admin',...Object.keys(ADMIN_HOME_ROUTES)],wali_santri:['work-profile','work-guide','parent-deposits']
 };
+for(const role of UNIT_ADMIN_ROLES)WORKSPACE_GRANTS[role].push(...Object.keys(ADMIN_HOME_ROUTES));
 // Naqib already has the dedicated naqib-case menu; avoid a duplicate reporting link.
 for(const role of Object.keys(WORKSPACE_GRANTS))if(!['wali_santri','naqib'].includes(role))WORKSPACE_GRANTS[role]=[...new Set([...WORKSPACE_GRANTS[role],'teacher-case'])];
 export function workspaceFeatures(role){return (WORKSPACE_GRANTS[role]||[]).map(id=>`workspace.${id}`);}

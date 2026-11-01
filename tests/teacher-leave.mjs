@@ -23,3 +23,4 @@ test('leave server write rules prevent impersonation, self approval and replacin
  assert.equal(check(decide,'guru_mapel','teacher',null,{status:'cancelled'},{}),true);
  assert.equal(check(decide,'head_formal_school','reviewer',{status:'approved'},{status:'rejected'},{}),false);
 });
+test('Sunday lessons accept both Minggu and Ahad names',()=>{const sunday={...d,startDate:'2026-11-01',endDate:'2026-11-01'};for(const day of ['Minggu','Ahad'])assert.equal(m.affectedLessons(sunday,[{id:'sunday',day,startTime:'09:00',endTime:'10:00'}]).length,1);});

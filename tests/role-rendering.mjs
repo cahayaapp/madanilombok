@@ -42,7 +42,7 @@ const homes=await load(new URL('assets/js/modules/role-home.js',base).href);awai
 const permissions=await load(new URL('assets/js/permissions.js',base).href);await permissions.evaluate();
 const {ROLE_LABELS,MENU_GROUPS,canAccess}=permissions.namespace;
 const routes={...work.namespace.WORKSPACE_ROUTES,...extras.namespace.PARENT_EXTRA_ROUTES};
-function ctxFor(role){return {session:{activeRole:role,roles:[role],user:{uid:'teacher',email:'test@example.invalid'},profile:{name:'Pengguna Uji',staffId:'staff1',studentIds:['s1'],classIds:['c1'],menteeStudentIds:['s1'],scopeGender:role==='head_girls_dorm'?'P':role==='head_boys_dorm'?'L':undefined}},master,yearId:'year',year:{name:'Tahun Uji'},root:win.document.getElementById('routeMount'),roleName:ROLE_LABELS[role],navigate:()=>{},rerender:async()=>{}};}
+function ctxFor(role){return {session:{activeRole:role,roles:[role],user:{uid:'teacher',email:'test@example.invalid'},profile:{name:'Pengguna Uji',staffId:'staff1',studentIds:['s1'],classIds:['c1'],menteeStudentIds:['s1'],scopeGender:role==='head_girls_dorm'?'P':role==='head_boys_dorm'?'L':undefined}},master,yearId:'year',year:{name:'Tahun Uji'},root:win.document.getElementById('routeMount'),roleName:ROLE_LABELS[role],navigate:()=>{},openPage:()=>{},rerender:async()=>{}};}
 async function settle(){for(let i=0;i<15;i++)await Promise.resolve();}
 function submit(form){form.dispatchEvent(new win.Event('submit',{cancelable:true,bubbles:true}));}
 // Opt-in visual fixtures use the same real renderers and never connect to Firebase.
@@ -599,4 +599,40 @@ test('tabayyun escalates same case without counseling and group counseling write
  exportVisual(ctx,'konselor','counseling');await form.onsubmit({preventDefault(){}});
  const sessions=fresh.map(c=>Object.values(stored.get(c.id).sessions));assert.equal(sessions[0].length,1);assert.equal(sessions[1].length,1);assert.equal(sessions[0][0].groupSessionId,sessions[1][0].groupSessionId);assert.equal(stored.get('group0').pointRecord,undefined);
  }finally{mock.setExport('commitCaseOperation',repository.commitCaseOperation);}
+});
+
+test('director and deputy control opens six scoped unit reports without changing roles or writing data',async()=>{
+ const before=writes.length;
+ for(const role of ['director','deputy_director']){
+  const ctx=ctxFor(role),session=JSON.stringify(ctx.session);
+  ctx.master={...master,units:[{id:'u1',type:'SMP'},{id:'u2',type:'SD'}],classes:[{id:'c1',unitId:'u1'},{id:'c2',unitId:'u2'}],students:[...master.students,{id:'s3',name:'Siswa SD',unitId:'u2',gender:'L',boardingStatus:'nonboarding'}]};
+  await routes['management-control'](ctx);
+  const cards=[...ctx.root.querySelectorAll('[data-control-unit]')];
+  assert.deepEqual(cards.map(b=>b.querySelector('b').textContent),['Asrama Putra','Asrama Putri','SMK','SMP','SD','TK']);
+  assert.match(cards[0].textContent,/1 santri mukim/);
+  assert.match(cards[1].textContent,/1 santri mukim/);
+  assert.match(cards[3].textContent,/2 siswa · 1 rombel/);
+  assert.match(cards[4].textContent,/1 siswa · 1 rombel/);
+  assert.equal(ctx.root.querySelector('#controlDetail'),null);
+  let destination;ctx.navigate=route=>{destination=route;};
+  for(const card of cards){
+   await card.onclick();
+   assert.equal(destination,`management-control-${card.dataset.controlUnit}`);
+   assert.ok(canAccess(`workspace.${destination}`,[role]));
+   await routes[destination](ctx);
+   assert.equal(ctx.root.querySelectorAll('[data-control-unit]').length,0);
+   assert.ok(ctx.root.querySelector('[data-control-back]'));
+   assert.ok(ctx.root.querySelector('[data-control-report]').textContent.trim());
+   for(const button of ctx.root.querySelectorAll('[data-control-view]')){
+    await button.onclick();
+    assert.doesNotMatch(ctx.root.querySelector('[data-control-report]').textContent,/Data belum tersedia:/);
+   }
+  }
+  await ctx.root.querySelector('[data-control-back]').onclick();
+  assert.equal(destination,'management-control');
+  await routes[destination](ctx);
+  assert.equal(ctx.root.querySelectorAll('[data-control-unit]').length,6);
+  assert.equal(JSON.stringify(ctx.session),session);
+ }
+ assert.equal(writes.length,before);
 });

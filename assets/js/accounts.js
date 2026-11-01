@@ -1,3 +1,5 @@
+import {mountAdminHeader,bindAdminDrawer} from './admin-header.js';
+import {assertStaffAccountAvailable} from './staff-account-link.js';
 import { mountAdminSidebar } from './admin-sidebar.js';
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
 import {
@@ -11,13 +13,11 @@ import { firebaseConfig } from "../../config/firebase-config.js";
 import { requireAdmin, logout } from "./auth.js";
 import { listNode, setNode, transitionWorkspaceRecord } from "./repository.js";
 import { escapeHtml, toast } from "./utils.js";
-import {buildStaffAccountPlan} from "./staff-account-plan.js";
 import {mountUserManagement} from "./user-management.js";
 import {applyUserDraft,revokeUserAccess} from "./user-access-model.js";
-import { ROLE_LABELS } from "./permissions.js";
 
 mountAdminSidebar({ surface: 'accounts' });
-document.getElementById('menuButton').addEventListener('click', () => document.getElementById('sidebar').classList.toggle('open'));
+bindAdminDrawer();
 
 const provisioningApp = initializeApp(firebaseConfig, "madani-account-provisioning");
 const provisioningAuth = getAuth(provisioningApp);
@@ -28,28 +28,7 @@ let students = [];
 let classes = [];
 let groups = [];
 let units=[],subjects=[],userManager;
-let staffPlan=[];
-let staffCredentials=[];
-let staffProvisioning=false;
-let staffCredentialsDownloaded=false;
-window.addEventListener("beforeunload",event=>{if(staffProvisioning||(staffCredentials.length&&!staffCredentialsDownloaded)){event.preventDefault();event.returnValue="";}});
-let staffSuggestions=[],confirmedLeadership=[];
-
 const $ = sel => document.querySelector(sel);
-
-function roleText(role) { return ROLE_LABELS[role] || role || "—"; }
-async function provision({name,email,password,role,profile={}}){
-  let credential=null,saved=false;
-  try{
-    credential=await createUserWithEmailAndPassword(provisioningAuth,email,password);
-    const uid=credential.user.uid,roles=Array.isArray(profile.roles)&&profile.roles.length?profile.roles:[role];
-    await setNode(`users/${uid}`,{...profile,name,email,role,roles,defaultRole:profile.defaultRole||role,roleFlags:Object.fromEntries(roles.map(r=>[r,true])),studentAccess:Object.fromEntries((profile.studentIds||(profile.studentId?[profile.studentId]:[])).map(id=>[id,true])),active:profile.active!==false,uid,updatedAt:Date.now(),updatedBy:session.user.uid,createdAt:Date.now()});
-    saved=true;return uid;
-  }catch(error){
-    if(credential&&!saved){try{await deleteUser(credential.user);}catch{throw new Error('Akun Auth terbentuk tetapi profil gagal disimpan. Periksa akun sebelum mencoba lagi.');}}
-    throw error;
-  }finally{await signOut(provisioningAuth);}
-}
 
 async function load() {
   [profiles, staff, students, classes, groups, units, subjects] = await Promise.all([
@@ -68,63 +47,9 @@ async function refresh() {
   renderProfiles();
 }
 
-function renderStaffPlan(){
-  const domain=$('#staffEmailDomain').value.trim().toLowerCase().replace(/^@/,'');
-  const validDomain=/^[a-z0-9](?:[a-z0-9-]*[a-z0-9])?(?:\.[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)+$/.test(domain);
-  staffPlan=buildStaffAccountPlan(staff,profiles,classes,staffSuggestions,confirmedLeadership,domain||'madaniapp');
-  const labels={ready:'Siap dibuat',existing:'Sudah ada',inactive:'SDM nonaktif',needs_role:'Menunggu role',identity_mismatch:'Identitas perlu diperiksa'};
-  $('#staffPlanBody').innerHTML=staffPlan.map(row=>`<tr><td>${escapeHtml(row.name)}</td><td>${escapeHtml(row.email)}</td><td>${escapeHtml(row.roles.map(roleText).join(', ')||'Belum ditetapkan')}</td><td>${escapeHtml(labels[row.status])}</td></tr>`).join('');
-  $('#staffPlanSummary').textContent=`${staffPlan.length} SDM · ${staffPlan.filter(x=>x.status==='ready').length} siap dibuat. Email menggunakan nama akhir; angka membedakan nama yang sama.`;
-  $('#createNaqibahAccounts').disabled=staffProvisioning||!validDomain||!staffPlan.some(x=>x.status==='ready'&&['AMD-SDM-0088','AMD-SDM-0064'].includes(x.staffId));
-  $('#createStaffButton').disabled=staffProvisioning||!validDomain||!staffPlan.some(x=>x.status==='ready');
-}
-function temporaryStaffPassword(){
- const values=crypto.getRandomValues(new Uint8Array(18));
- return 'M!'+Array.from(values,n=>n.toString(16).padStart(2,'0')).join('');
-}
-function downloadStaffCredentials(){
- if(!staffCredentials.length)return;
- const cell=value=>`"${String(value??'').replaceAll('"','""')}"`;
- const content='\uFEFF'+[['Nama','Email','Password sementara','Role'],...staffCredentials.map(r=>[r.name,r.email,r.password,r.roles.map(roleText).join(', ')])].map(row=>row.map(cell).join(',')).join('\r\n');
- const url=URL.createObjectURL(new Blob([content],{type:'text/csv;charset=utf-8'}));
- const a=document.createElement('a');a.href=url;a.download='akun-sdm-madani.csv';a.click();staffCredentialsDownloaded=true;setTimeout(()=>URL.revokeObjectURL(url),1000);
-}
-async function createAllStaff(onlyStaffIds=null){
- if(staffProvisioning||$('#createStaffButton').disabled)return;
- staffProvisioning=true;$('#createStaffButton').disabled=true;
- const results=[];
- try{
-  await load();renderStaffPlan();
-  for(const row of staffPlan.filter(x=>x.status==='ready'&&(!Array.isArray(onlyStaffIds)||onlyStaffIds.includes(x.staffId)))){
-   let credential=null,profileSaved=false;
-   const password=temporaryStaffPassword();
-   try{
-    credential=await createUserWithEmailAndPassword(provisioningAuth,row.email,password);
-    const now=Date.now(),uid=credential.user.uid;
-    await setNode(`users/${uid}`,{uid,name:row.name,email:row.email,staffId:row.staffId,role:row.role,roles:row.roles,roleFlags:Object.fromEntries(row.roles.map(r=>[r,true])),roleScopes:row.roleScopes,unitIds:row.unitIds,active:true,accountKind:'staff',createdAt:now,updatedAt:now,updatedBy:session.user.uid});
-    profileSaved=true;
-    staffCredentialsDownloaded=false;
-    staffCredentials.push({name:row.name,email:row.email,password,roles:row.roles});
-    $('#downloadStaffCredentials').disabled=false;
-    results.push(`${row.email}: dibuat`);
-   }catch(error){
-    let rollback='';
-    if(credential&&!profileSaved){try{await deleteUser(credential.user);rollback=' Akun baru dibatalkan karena profil gagal disimpan.';}catch{rollback=' Akun Auth terbentuk tetapi profil gagal; perlu diperbaiki admin.';}}
-    results.push(`${row.email}: ${error.code==='auth/email-already-in-use'?'Email sudah digunakan; akun lama tidak diubah.':error.message||'Gagal'}${rollback}`);
-    if(['auth/invalid-email','auth/operation-not-allowed','auth/too-many-requests','auth/network-request-failed'].includes(error.code))break;
-   }finally{try{await signOut(provisioningAuth);}catch{}}
-   $('#staffProvisionResult').textContent=results.join('\n');
-  }
-  await refresh();
- }catch(error){results.push(error.message||'Gagal memuat data SDM.');}
- finally{
-  staffProvisioning=false;renderStaffPlan();$('#staffProvisionResult').textContent=results.join('\n');
-  $('#downloadStaffCredentials').disabled=!staffCredentials.length;
- }
-}
-
 async function init() {
   session = await requireAdmin();
+  mountAdminHeader(session);
   $("#adminName").textContent = session.profile.name || session.user.email;
   await load();
   const master={staff,students,classes,groups,units,subjects};
@@ -137,17 +62,18 @@ async function init() {
     await refresh();
   };
   userManager=mountUserManagement({root:$('#userManagement'),getProfiles:()=>profiles,master,actorUid:session.user.uid,reload:refresh,
-    save:(p,d)=>updateAccess(p,(current,eventId)=>applyUserDraft(current,d,master,session.user.uid,p.id,eventId)),
+    save:async(p,d)=>{if(d.staffId!==p.staffId)assertStaffAccountAvailable(d.staffId,await listNode('users'),p.id);return updateAccess(p,(current,eventId)=>applyUserDraft(current,d,master,session.user.uid,p.id,eventId));},
     revoke:p=>updateAccess(p,(current,eventId)=>revokeUserAccess(current,session.user.uid,p.id,eventId)),
     reset:async p=>{await sendPasswordResetEmail(provisioningAuth,p.email);toast('Email reset password dikirim.');},
     create:async(d,password)=>{
       let credential=null,saved=false;
       try{
+        assertStaffAccountAvailable(d.staffId,await listNode('users'));
         const initial=applyUserDraft({},d,master,session.user.uid,'new-account',crypto.randomUUID());
         credential=await createUserWithEmailAndPassword(provisioningAuth,d.email.trim(),password);
         const uid=credential.user.uid;
         await setNode(`users/${uid}`,{...initial,uid,email:credential.user.email,createdAt:Date.now(),updatedAt:Date.now(),updatedBy:session.user.uid});saved=true;
-        await refresh();
+        try{await refresh();}catch{toast("User berhasil dibuat. Muat ulang daftar pengguna untuk melihat akun baru.");}
       }catch(error){
         if(credential&&!saved){try{await deleteUser(credential.user);}catch{throw new Error('Akun login terbentuk tetapi profil gagal disimpan. Periksa akun ini sebelum mencoba lagi.');}}
         throw error;
@@ -155,13 +81,11 @@ async function init() {
     }
   });
   renderProfiles();
-  const [suggestions,leadership]=await Promise.all([fetch('../seed/role-assignment-suggestions.json').then(r=>r.json()),fetch('../seed/leadership-assignments.json').then(r=>r.json())]);
-  staffSuggestions=suggestions.people||[];confirmedLeadership=leadership.assignments||[];
-  renderStaffPlan();
-  $('#staffEmailDomain').addEventListener('input',renderStaffPlan);
-  $('#createStaffButton').addEventListener('click',()=>createAllStaff());
-  $('#createNaqibahAccounts').addEventListener('click',()=>createAllStaff(['AMD-SDM-0088','AMD-SDM-0064']));
-  $('#downloadStaffCredentials').addEventListener('click',downloadStaffCredentials);
+  const linkedStaffId=new URLSearchParams(location.search).get('staffId');
+  if(linkedStaffId){
+    const back=document.createElement('a');back.href='./index.html#staff';back.className='btn btn-secondary';back.textContent='← Kembali ke Data SDM';$('#userManagement').before(back);
+    userManager.openForStaff(linkedStaffId);
+  }
   $("#logoutButton").addEventListener("click", async () => { await logout(); location.href = "../index.html"; });
 }
 

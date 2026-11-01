@@ -1,7 +1,8 @@
+import {renderLeadershipControl,CONTROL_ROUTES} from '../leadership-control.js';
 import {renderLeadershipDuty} from '../leadership-duty.js';
 import {renderNaqibLeave} from '../naqib-leave.js';
 import {MONITOR_VIEWS,renderLeadershipMonitor} from '../leadership-monitor.js';
-import {renderLeadershipData} from '../leadership-data.js';
+import {openAdminData} from '../admin-access.js';
 import {renderHomeroomCases} from '../homeroom-cases.js';
 import {renderTeacherReport} from '../teacher/extras.js';
 import {renderAccountProfile} from '../profile.js';
@@ -104,6 +105,7 @@ export async function renderTeacherKpi(ctx){
 
 export async function renderManagementControl(ctx){
  authorize(ctx,'management-control');
+ if(['director','deputy_director'].includes(role(ctx)))return renderLeadershipControl(ctx);
  const students=filterScopedStudents(ctx.master,ctx.session.profile,role(ctx));const ids=new Set(students.map(s=>s.id));
  const scope=managementScope(role(ctx),ctx.session.profile);
  const tasks=[listNode(pathFor(ctx,'findings')),listNode(`boarding/cases/${ctx.yearId}`),listNode(`boarding/program_reports/${ctx.yearId}`),getNode(`academic/lesson_plans/${ctx.yearId}`)];
@@ -164,9 +166,10 @@ export async function renderManagementKpi(ctx){
  ctx.root.innerHTML=pageHeader('KPI & Evidence Manajemen','Rekap siklus temuan dalam scope; tidak mengubah penilaian personel secara otomatis.')+`<div class="portal-metrics">${metric('Temuan',String(rows.length),'Evidence tercatat')}${metric('Selesai',String(rows.filter(r=>r.status==='RESOLVED').length),'Setelah evaluasi','cyan')}${metric('Menunggu Evaluasi',String(rows.filter(r=>r.status==='EVALUATION').length),'Perlu verifikasi','coral')}${metric('Dieskalasi',String(rows.filter(r=>r.status==='ESCALATED').length),'Memerlukan keputusan')}</div>`+panel('Penilaian',`<p class="role-hint">Rekap belum menjadi skor KPI berbobot. Target dan pembobotan mengikuti standar kerja yang disetujui pesantren.</p>`);
 }
 export const WORKSPACE_ROUTES={
+ ...CONTROL_ROUTES,
  'naqib-leave':renderNaqibLeave,'management-duty':renderLeadershipDuty,
  ...Object.fromEntries(Object.keys(MONITOR_VIEWS).map(route=>[route,ctx=>renderLeadershipMonitor(ctx,route)])),
- 'management-data':renderLeadershipData,
+ 'management-data':openAdminData,
  "homeroom-cases":renderHomeroomCases,
  'management-reports':renderManagementReports,'work-followups':renderWorkFollowups,
  'management-residents':renderResidentStaff,'management-worship':renderStaffWorship,

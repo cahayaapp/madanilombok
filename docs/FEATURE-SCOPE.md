@@ -166,3 +166,6 @@ Semua staf memiliki profil, pesan internal, panduan, jadwal pribadi dan evidence
 ### Koreksi 6 Oktober 2026 — Guru Wali SD
 
 Untuk SD, Guru Wali adalah Wali Kelas pada rombel siswa saat ini (`homeroomStaffId`). Daftar santri binaan dan mentoring mengikuti penempatan kelas aktif, termasuk ketika Wali Kelas berganti; penugasan mentor individu lama tidak mengalahkan aturan SD ini. SMP/SMK tetap memakai penugasan Guru Wali tersendiri. TK tidak mendapat role Guru Wali otomatis. Tombol **Terapkan Guru Wali SD** di Import Data menyinkronkan role pada akun Wali Kelas SD aktif, dan perencanaan akun baru otomatis menyertakan role tersebut. Perubahan lokal memerlukan penerapan akun pada database produksi.
+
+### 1 November 2026 — akses Admin kepala unit
+Atas persetujuan eksplisit pengguna, Kepala Sekolah Formal dan Kepala Asrama Putra/Putri memiliki akses administratif penuh lintas unit melalui kartu **Manajemen Data**, yang membuka halaman Admin bersama. Termasuk pengelolaan master, penempatan, jadwal, fitur, pembuatan user, dan perubahan role. Tidak memerlukan penambahan role Admin pada akun. Cakupan laporan operasional role tetap mengikuti penugasan; aturan/menu transaksi finance tetap seperti sebelumnya. Implementasi lokal dan kandidat rules telah diuji; belum dipublikasikan. Detail verifikasi terdapat pada catatan 1 November di CODEX-HANDOFF.md.

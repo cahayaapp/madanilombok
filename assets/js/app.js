@@ -1,3 +1,4 @@
+import {CONTROL_UNIT_ROUTES} from './leadership-monitor-model.js';
 import { mountAdminSidebar } from './admin-sidebar.js';
 import {prefetchCounselorCases} from './counselor-data.js';
 import {decorateCounselorPage} from './counselor-layout.js';
@@ -128,6 +129,7 @@ Object.assign(routes,{
 
 const routeFeature = Object.fromEntries(MENU_GROUPS.flatMap(g => g.items.map(i => [i.id, i.feature || "dashboard"])));
 const routeLabel = Object.fromEntries(MENU_GROUPS.flatMap(g => g.items.map(i => [i.id, i.label])));
+for(const [route,{label}] of Object.entries(CONTROL_UNIT_ROUTES)){routeFeature[route]=`workspace.${route}`;routeLabel[route]=`Kontrol & Kondisi · ${label}`;}
 Object.assign(routeFeature,{'quran-ziyadah':'academic.quran','quran-murojaah':'academic.quran'});
 Object.assign(routeLabel,{'quran-ziyadah':'Ziyadah','quran-murojaah':'Muroja’ah'});
 

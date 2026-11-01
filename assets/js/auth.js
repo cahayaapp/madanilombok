@@ -1,3 +1,4 @@
+import {hasAdminAccess} from './admin-access.js';
 import {
   onAuthStateChanged,
   signInWithEmailAndPassword,
@@ -54,7 +55,7 @@ export async function requireSession() {
 
 export async function requireAdmin() {
   const session = await requireSession();
-  if (!session.roles.some(r => ["admin", "super_admin"].includes(r))) {
+  if (!hasAdminAccess(session.roles)) {
     window.location.href = "../app/index.html";
     throw new Error("Akses admin tidak tersedia");
   }

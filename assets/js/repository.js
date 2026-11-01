@@ -255,7 +255,7 @@ export async function saveTeacherSession(path,payload,{expectedVersion=null,crea
 export async function commitHealthOperation(yearId,operation,actorUid){
  const {applyHealthOperation}=await import('./health-model.js');
  const profile=await getNode(`users/${actorUid}`);
- const roles=new Set([profile?.role,...(Array.isArray(profile?.roles)?profile.roles:[]),...Object.keys(profile?.roleFlags||{}).filter(r=>profile.roleFlags[r])]);
+ const roles=new Set([profile?.role,...(Array.isArray(profile?.roles)?profile.roles:Object.keys(profile?.roles||{}).filter(role=>profile.roles[role])),...Object.keys(profile?.roleFlags||{}).filter(r=>profile.roleFlags[r])]);
  if(!profile||profile.active===false||profile.accessRevoked===true)throw Error('Akun tidak aktif.');
  const decision=operation.type==='permit-decision',allowed=decision?['director','deputy_director','admin','super_admin']:['kesehatan','admin','super_admin'];
  if(!allowed.some(r=>roles.has(r)))throw Error('Role tidak berwenang menyimpan operasi UKS ini.');
@@ -307,7 +307,7 @@ export async function correctHealthAttendance(yearId,examId,studentId,actorUid){
 /** Reopen only status/revision metadata; the existing grades stay intact. */
 export async function requestExamRevision(yearId,staffId,recordId,reason,actorUid){
  const {examRevisionChanges}=await import('./academic-review.js');
- const profile=await getNode(`users/${actorUid}`),roles=new Set([profile?.role,...(Array.isArray(profile?.roles)?profile.roles:[]),...Object.keys(profile?.roleFlags||{}).filter(r=>profile.roleFlags[r])]);
+ const profile=await getNode(`users/${actorUid}`),roles=new Set([profile?.role,...(Array.isArray(profile?.roles)?profile.roles:Object.keys(profile?.roles||{}).filter(role=>profile.roles[role])),...Object.keys(profile?.roleFlags||{}).filter(r=>profile.roleFlags[r])]);
  if(profile?.active===false||profile?.accessRevoked||!['head_formal_school','admin','super_admin'].some(r=>roles.has(r)))throw Error('Revisi dibuka oleh Kepala Sekolah atau administrator.');
  const path=`academic/exam_sessions/${yearId}/${staffId}/${recordId}`,record=await getNode(path);
  if(!record||record.staffId!==staffId)throw Error('Sesi nilai tidak ditemukan.');
@@ -317,7 +317,7 @@ export async function requestExamRevision(yearId,staffId,recordId,reason,actorUi
 
 export async function commitReportPublication(yearId,request,actorUid){
  const {reportKey,reportReadiness,mutatePublication,rankClassReports}=await import('./report-publication.js');
- const profile=await getNode(`users/${actorUid}`),roles=new Set([profile?.role,...(Array.isArray(profile?.roles)?profile.roles:[]),...Object.keys(profile?.roleFlags||{}).filter(r=>profile.roleFlags[r])]);
+ const profile=await getNode(`users/${actorUid}`),roles=new Set([profile?.role,...(Array.isArray(profile?.roles)?profile.roles:Object.keys(profile?.roles||{}).filter(role=>profile.roles[role])),...Object.keys(profile?.roleFlags||{}).filter(r=>profile.roleFlags[r])]);
  if(!profile||profile.active===false||profile.accessRevoked||!roles.has(request.role))throw Error('Role peninjau tidak aktif.');
  const [assignment,student,schedules,tree]=await Promise.all([getNode(`assignments/classes/${yearId}/${request.studentId}`),getNode(`students/${request.studentId}`),listNode('schedules/academic'),getNode(`academic/exam_sessions/${yearId}`)]);
  if(assignment?.classId!==request.classId||!student)throw Error('Penempatan santri berubah.');

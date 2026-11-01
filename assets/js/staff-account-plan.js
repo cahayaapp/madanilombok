@@ -32,7 +32,7 @@ export function buildStaffAccountPlan(staff,profiles=[],classes=[],suggestions=[
   const mismatch=confirmed&&!confirmed.knownNames.some(n=>normalized(n)===normalized(person.name));
   if(confirmed&&!mismatch)person={...person,displayName:confirmed.displayName,appRoles:[...new Set([...(person.appRoles||[]),...confirmed.appRoles])],roleScopes:{...person.roleScopes,...confirmed.roleScopes}};
   const base=lastNameEmail(person.displayName||person.name,emailDomain),[local,domain]=base.split('@');let email=base,index=2;
-  const existing=profiles.find(p=>p.staffId===person.id&&(p.accountKind==='staff'||p.email?.toLowerCase()===base));
+  const existing=profiles.find(p=>p.staffId===person.id);
   if(existing)email=existing.email;
   else {while(reserved.has(email)&&reserved.get(email)!==person.id)email=`${local}${index++}@${domain}`;}
   reserved.set(email,person.id);

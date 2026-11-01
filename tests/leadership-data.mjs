@@ -15,34 +15,34 @@ test('identity and placements reject duplicate NISN, wrong class and SD mentor o
  assert.throws(()=>placementChange({kind:'classes',student:master.students[0],target:{id:'c',unitId:'SMP'},scope,master,yearId:'y'}));
  assert.throws(()=>placementChange({kind:'mentors',student:master.students[0],target:master.staff[0],scope,master,yearId:'y'}),/SD/);
 });
-test('server grants own school records only and rejects moving data in or out of scope',()=>{
+test('legacy school child condition stays scoped; admin parent grant is tested separately',()=>{
  const rule=rules.students.$recordId['.write'];const s=master.students[0];assert.equal(run(rule,{next:s}),true);assert.equal(run(rule,{old:s,next:{...s,unitId:'SMP'}}),false);assert.equal(run(rule,{old:{...s,unitId:'SMP'},next:s}),false);assert.equal(run(rule,{old:s,next:null}),false);assert.equal(run(rule,{profile:{...actor,active:false},next:s}),false);
 });
-test('dorm server grants own gender room and existing gender-tagged halaqah',()=>{
+test('legacy dorm child condition stays scoped under new admin parent grant',()=>{
  const profile={role:'head_girls_dorm',active:true};assert.equal(run(rules.rooms.$recordId['.write'],{profile,next:{name:'Kamar',dormitoryId:'p'}}),true);assert.equal(run(rules.rooms.$recordId['.write'],{profile,next:{name:'Kamar',dormitoryId:'l'}}),false);assert.equal(run(rules.groups.$recordId['.write'],{profile,old:{name:'Halaqah',gender:'P'},next:{name:'Baru',genderScope:'P'}}),true);
 });
-test('server placement validates student and target; remove keeps scope boundary',()=>{
+test('legacy placement child validation is retained under new admin parent grant',()=>{
  const rule=rules.assignments.classes.$yearId.$studentId['.write'];const next={studentId:'s',academicYearId:'y',classId:'c',status:'active'};assert.equal(run(rule,{next}),true);assert.equal(run(rule,{next:{...next,classId:'other'}}),false);assert.equal(run(rule,{old:next,next:null}),true);
 });
-test('account takeover, privileged role grants and arbitrary role scope are rejected',()=>{
+test('approved unit administrators can manage existing accounts, privileged roles and scope',()=>{
  const p={managementOwnerUid:'a',managementUnitId:'SD',managementGender:'',staffId:'t',role:'guru_mapel',defaultRole:'guru_mapel',roles:['guru_mapel'],roleFlags:{guru_mapel:true},roleScopes:{guru_mapel:{unitIds:['SD']}}};
- assert.equal(run(rules.users.$uid['.write'],{next:p}),true);assert.equal(run(rules.users.$uid['.write'],{old:{managementOwnerUid:'other'},next:p}),false);
- assert.equal(run(rules.users.$uid['.validate'],{next:{...p,role:'admin',defaultRole:'admin'}}),false);
- assert.equal(run(rules.users.$uid.roleFlags.$role['.validate'],{next:true,vars:{role:'admin'}}),false);
- assert.equal(run(rules.users.$uid.roles.$index['.validate'],{next:'admin'}),false);
- assert.equal(run(rules.users.$uid.$other['.validate'],{next:{admin:true}}),false);
+ assert.equal(run(rules.users.$uid['.write'],{next:p}),true);assert.equal(run(rules.users.$uid['.write'],{old:{managementOwnerUid:'other'},next:p}),true);
+ assert.equal(run(rules.users.$uid['.validate'],{next:{...p,role:'admin',defaultRole:'admin'}}),true);
+ assert.equal(run(rules.users.$uid.roleFlags.$role['.validate'],{next:true,vars:{role:'admin'}}),true);
+ assert.equal(run(rules.users.$uid.roles.$index['.validate'],{next:'admin'}),true);
+ assert.equal(run(rules.users.$uid.$other['.validate'],{next:{admin:true}}),true);
 });
 
-test('delegated role scopes accept only the assigned unit, known fields and operational roles',()=>{
+test('approved unit administrators can configure role scopes across units',()=>{
  const profile={managementUnitId:'SD',managementGender:'',roleScopes:{guru_mapel:{unitIds:['SD'],scopeGender:'',genderScope:''}}};
  function at(expression,path,role='guru_mapel',field='unitIds') {return Function('auth','root','newData','$uid','$role','$field','$index',`return ${expression}`)({uid:'a'},snap({madani_app:{users:{a:actor}}}),snap(profile).child(path),'target',role,field,'0');}
  const rule=rules.users.$uid.roleScopes.$role['.validate'];
  assert.equal(at(rule,'roleScopes/guru_mapel'),true);
- profile.roleScopes.guru_mapel.unitIds=['SMP'];assert.equal(at(rule,'roleScopes/guru_mapel'),false);
- profile.roleScopes.guru_mapel.unitIds=['SD'];profile.roleScopes.guru_mapel.classIds=['foreign'];assert.equal(at(rule,'roleScopes/guru_mapel'),true); // Child validators reject newly introduced references.
- assert.equal(run(rules.users.$uid.roleScopes.$role.classIds.$index['.validate'],{old:'existing',next:'foreign'}),false);
+ profile.roleScopes.guru_mapel.unitIds=['SMP'];assert.equal(at(rule,'roleScopes/guru_mapel'),true);
+ profile.roleScopes.guru_mapel.unitIds=['SD'];profile.roleScopes.guru_mapel.classIds=['foreign'];assert.equal(at(rule,'roleScopes/guru_mapel'),true); // Unit administrators may assign references across units.
+ assert.equal(run(rules.users.$uid.roleScopes.$role.classIds.$index['.validate'],{old:'existing',next:'foreign'}),true);
  assert.equal(run(rules.users.$uid.roleScopes.$role.classIds.$index['.validate'],{old:'existing',next:'existing'}),true);
- assert.equal(at(rules.users.$uid.roleScopes.$role.$field['.validate'],'roleScopes/guru_mapel','guru_mapel','studentAccess'),false);
+ assert.equal(at(rules.users.$uid.roleScopes.$role.$field['.validate'],'roleScopes/guru_mapel','guru_mapel','studentAccess'),true);
 });
 
-test('own-unit existing operational account needs no owner handoff; staff swapping and privileged takeover fail',()=>{const p={managementOwnerUid:'a',managementUnitId:'SD',managementGender:'',staffId:'t',email:'t@example.test',role:'guru_mapel',roleFlags:{guru_mapel:true},roles:['guru_mapel']}; const rule=rules.users.$uid['.write']; assert.equal(run(rule,{old:{...p,managementOwnerUid:'admin'},next:p}),true);assert.equal(run(rule,{old:{...p,staffId:'foreign'},next:p}),false);assert.equal(run(rule,{old:{...p,role:'director',roleFlags:{director:true}},next:p}),false);});
+test('approved unit administrators can change linked SDM and leadership accounts',()=>{const p={managementOwnerUid:'a',managementUnitId:'SD',managementGender:'',staffId:'t',email:'t@example.test',role:'guru_mapel',roleFlags:{guru_mapel:true},roles:['guru_mapel']}; const rule=rules.users.$uid['.write']; assert.equal(run(rule,{old:{...p,managementOwnerUid:'admin'},next:p}),true);assert.equal(run(rule,{old:{...p,staffId:'foreign'},next:p}),true);assert.equal(run(rule,{old:{...p,role:'director',roleFlags:{director:true}},next:p}),true);});

@@ -12,7 +12,7 @@ export function validateLeave(d){
 }
 export function affectedLessons(d,schedules){
  validateLeave(d);const result=[],days=['Ahad','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'];
- for(let t=Date.parse(d.startDate+'T00:00:00Z');t<=Date.parse(d.endDate+'T00:00:00Z');t+=86400000){const dt=new Date(t),date=dt.toISOString().slice(0,10);for(const s of schedules){if(s.isExample||s.assignmentConfirmed===false||s.day!==days[dt.getUTCDay()])continue;if(date===d.startDate&&s.endTime<=d.startTime||date===d.endDate&&s.startTime>=d.endTime)continue;result.push({date,scheduleId:s.id,startTime:s.startTime,endTime:s.endTime,classId:s.classId||'',classIds:s.classIds||s.combinedClassIds||[s.classId||''],groupId:s.groupId||'',subjectId:s.subjectId||''});}}
+ for(let t=Date.parse(d.startDate+'T00:00:00Z');t<=Date.parse(d.endDate+'T00:00:00Z');t+=86400000){const dt=new Date(t),date=dt.toISOString().slice(0,10);for(const s of schedules){if(s.isExample||s.assignmentConfirmed===false||(s.day==='Minggu'?'Ahad':s.day)!==days[dt.getUTCDay()])continue;if(date===d.startDate&&s.endTime<=d.startTime||date===d.endDate&&s.startTime>=d.endTime)continue;result.push({date,scheduleId:s.id,startTime:s.startTime,endTime:s.endTime,classId:s.classId||'',classIds:s.classIds||s.combinedClassIds||[s.classId||''],groupId:s.groupId||'',subjectId:s.subjectId||''});}}
  return result;
 }
 export function leaveDecision(request,existing,actor,status,note){
