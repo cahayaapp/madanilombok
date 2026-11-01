@@ -274,7 +274,7 @@ test('unit leadership homes expose all daily monitors as quick cards',async()=>{
  }
  const ctx=ctxFor('admin'),items=MENU_GROUPS.flatMap(g=>g.items).filter(i=>canAccess(i.feature||'dashboard',['admin']));await homes.namespace.renderRoleHome(ctx,items);
  assert.equal(ctx.root.querySelector('.ao-intro h1').textContent,'Beranda');
- assert.equal(ctx.root.querySelectorAll('.premium-quick').length,4);
+ assert.equal(ctx.root.querySelectorAll('.ao-quick-tile').length,8);
 });
 
 test('dorm duty, resident settings and worship include all three assigned male naqibs',async()=>{
@@ -289,14 +289,14 @@ test('dorm duty, resident settings and worship include all three assigned male n
  }finally{database.set('users',beforeUsers);beforeDuty===undefined?database.delete('settings/naqibDuty/staff'):database.set('settings/naqibDuty/staff',beforeDuty);}
 });
 
-test('both admin homes show four primary workspaces and retain other administration routes',async()=>{
+test('both admin homes show eight consistent administration shortcuts',async()=>{
  const expected=['Data Santri','Data SDM','Data Sekolah','Data Asrama','Jadwal Pelajaran','Jadwal Program Keasramaan','Manajemen Fitur','Manajemen User'];
  for(const role of ['admin','super_admin']){
   const ctx=ctxFor(role),clicked=[];ctx.navigate=id=>clicked.push(id);
   const items=MENU_GROUPS.flatMap(g=>g.items).filter(i=>canAccess(i.feature||'dashboard',[role]));
   await homes.namespace.renderRoleHome(ctx,items);
-  const cards=[...ctx.root.querySelectorAll('.premium-quick')];
-  assert.deepEqual(cards.map(c=>c.querySelector('b').textContent),expected.slice(0,4));
+  const cards=[...ctx.root.querySelectorAll('.ao-quick-tile')];
+  assert.deepEqual(cards.map(c=>c.querySelector('b').textContent),expected);
   for(const card of cards){assert.ok(card.querySelector('small').textContent);card.click();}
   assert.deepEqual(clicked,cards.map(c=>c.dataset.homeRoute));
   assert.equal(ctx.root.querySelector('[data-home-route="deposit-admin"]'),null);

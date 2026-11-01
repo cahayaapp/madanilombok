@@ -956,3 +956,8 @@ Insiden packaging ditangani sebelum rilis: defaultignore **/.* ternyata masih me
 - Browser fixture lokal desktop dan 390px diperiksa; tidak ada horizontal overflow mobile. Dashboard dapat digulir, tidak diperkecil hingga teks sukar dibaca. Tidak membaca/menulis database produksi atau mengubah finance/rules.
 - 59 dari 60 tes model/role/rendering lulus (termasuk seluruh 42 tes model admin + rendering). Satu kegagalan existing: tes holiday journal di role-contracts.mjs mengasumsikan path rules $studentId yang tidak tersedia pada rules sekarang; file rules tidak disentuh. 289 JS/MJS/CJS dan 47 JSON valid; diff whitespace bersih.
 - Cache v197, tema portal143. Belum deploy atau uji sesi produksi.
+
+### 1 November — perbaikan akses cepat & palet biru/emas admin
+- Instruksi warna terbaru pengguna: biru dan kuning-oranye emas pada beranda admin. Grafik, kartu, ikon, sidebar beranda dan aksen memakai biru dengan emas #f4b442/oranye #e9951c; aset logo tidak diubah.
+- Semua delapan akses cepat memakai class khusus ao-quick-tile, tanpa premium-quick yang mewariskan padding/font besar. Dua kolom, tinggi seragam 104px, ikon dan judul tanpa deskripsi panjang; label tidak terpecah per huruf.
+- 42 tes model/rendering lulus; syntax modul, 47 JSON dan diff valid. Browser fixture desktop dan 390px: delapan kartu masing-masing 104px, tanpa overflow horizontal. Cache198/tema144. Belum deploy oleh sesi ini.
