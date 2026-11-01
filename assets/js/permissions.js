@@ -14,7 +14,8 @@ export const ROLE_LABELS = {
   naqib: "Naqib",
   konselor: "Konselor",
   kesehatan: "Kesehatan / UKS",
-  kasir: "Kasir",
+  kasir: "Kasir Minimart",
+  bendahara: "Bendahara",
   minimart: "Minimart / Kasir Minimart",
   wali_santri: "Wali Santri"
 };
@@ -117,16 +118,11 @@ const ALL_MENU_GROUPS = [
     ]
   },
   {
-    label: "Keuangan",
+    label: "Bendahara",
     items: [
-      { id: "finance-dashboard", label: "Ringkasan Keuangan", icon: "Rp", feature: "finance.dashboard" },
+      { id: "finance-dashboard", label: "Bendahara", icon: "Rp", feature: "finance.dashboard" },
       { id: "finance-bills", label: "SPP & Tagihan", icon: "▤", feature: "finance.bills" },
-      { id: "finance-payments", label: "Pembayaran", icon: "✓", feature: "finance.payments" },
-      { id: "finance-wallets", label: "Saldo Santri", icon: "◉", feature: "finance.wallets" },
-      { id: "cashier", label: "Kasir Kantin/Koperasi", icon: "▣", feature: "finance.cashier" },
-      { id: "finance-products", label: "Produk & Stok", icon: "□", feature: "finance.products" },
-      { id: "finance-history", label: "Riwayat Transaksi", icon: "↺", feature: "finance.history" },
-      { id: "finance-reports", label: "Laporan Keuangan", icon: "▥", feature: "finance.reports" }
+      { id: "finance-wallets", label: "TopUp Uang Digital Santri", icon: "◉", feature: "finance.wallets" },
     ]
   },
   {label:"Kesehatan / UKS",items:[
@@ -160,7 +156,7 @@ const parentAll = [
   "parent.character","parent.nurturing","parent.mentoring","parent.health","parent.rules","parent.permissions","parent.messages","parent.announcements","parent.finance"
 ];
 const financeAll = [
-  "finance.dashboard","finance.bills","finance.payments","finance.wallets","finance.cashier","finance.products",
+  "finance.dashboard","finance.bills","finance.payments","finance.wallets",
   "finance.history","finance.reports"
 ];
 
@@ -174,7 +170,8 @@ export const ROLE_FEATURES = {
   naqib: naqibAll,
   guru_wali: mentorAll,
   konselor: counselorAll,
-  kasir: ["finance.dashboard","finance.cashier","finance.products","finance.history"],
+  kasir: minimartAll,
+  bendahara: ["finance.dashboard","finance.bills","finance.payments","finance.wallets","finance.history","finance.reports"],
   wali_santri: parentAll,
   head_formal_school: ["academic.schedule","academic.teacher_leave"],
   head_boys_dorm: ["boarding.permits"],

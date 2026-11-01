@@ -17,7 +17,8 @@ export const ROLE_EXPERIENCE = {
   director: {title:'Arahkan prioritas dan putuskan eskalasi pesantren.', focus:'Arah & keputusan', primary:'management-control', quick:['management-control','management-escalations','management-targets','management-systemic'], schedule:'work-schedule', kpi:'management-kpi'},
   admin: {title:'Kelola master data dan layanan administrasi.', focus:'Administrasi', primary:'admin-students', quick:Object.keys(ADMIN_HOME_ROUTES), schedule:'admin-students'},
   super_admin: {title:'Jaga konfigurasi, akses, dan kualitas data pesantren.', focus:'Administrasi sistem', primary:'admin-students', quick:Object.keys(ADMIN_HOME_ROUTES), schedule:'admin-students'},
-  kasir: {title:'Layani transaksi sesuai unit kasir Anda.', focus:'Kasir', primary:'cashier', quick:['cashier','finance-products','finance-history','finance-dashboard'], schedule:'work-schedule', kpi:'work-kpi'},
+  bendahara:{title:'Kelola SPP dan setoran saldo santri.',focus:'Bendahara',primary:'finance-dashboard',quick:['finance-dashboard','finance-bills','finance-wallets'],schedule:'finance-bills'},
+  kasir: {title:'Layani transaksi sesuai unit kasir Anda.', focus:'Kasir', primary:'minimart-pos', quick:['minimart-pos','minimart-products','minimart-history','minimart-shift'], schedule:'minimart-shift', kpi:'work-kpi'},
   wali_santri: {title:'Ikuti kabar dan perkembangan Ananda.', focus:'Ananda', primary:'parent-home', quick:['parent-news','parent-attendance','parent-permission','parent-finance'], schedule:'parent-calendar', kpi:'parent-monthly'}
 };
 export function effectiveProfile(session) {

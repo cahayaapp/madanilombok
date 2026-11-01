@@ -64,7 +64,6 @@ for (const [label, context] of [
  ['revoked',ctx({profile:{role:'minimart',accessRevoked:true}})],
  ['inactive',ctx({profile:{role:'minimart',active:false}})],
  ['parent',ctx({profile:{role:'wali_santri'}})],
- ['legacy cashier',ctx({profile:{role:'kasir',financeUnit:'PUTRA'}})],
  ['missing unit scope',ctx({profile:{roles:['minimart']}})],
  ['wrong unit',ctx({profile:{role:'minimart',financeUnit:'PUTRI'}})]
 ]) test(`authorization rejects ${label}`,()=>assert.throws(()=>apply(fixture(),sale(),context)));

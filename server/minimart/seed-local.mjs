@@ -6,5 +6,5 @@ import {assertEmulatorEnvironment} from './firebase-service.mjs';
 assertEmulatorEnvironment(process.env);
 const app=initializeApp({projectId:process.env.GCLOUD_PROJECT,databaseURL:`https://${process.env.GCLOUD_PROJECT}-default-rtdb.firebaseio.com`});
 await provisionLocalFixtures(getAuth(app),getDatabase(app));
-console.log('Fixture emulator siap. Kredensial akun baru tersimpan privat di /tmp/madani-minimart-accounts.json; akun existing tidak direset.');
+console.log('Fixture emulator siap. Kredensial akun baru tersimpan pada file privat lokal; akun existing tidak direset.');
 process.exit(0);

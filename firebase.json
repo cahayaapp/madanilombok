@@ -10,6 +10,8 @@
       "README.md",
       "CODEX-HANDOFF.md",
       "database.rules.json",
+      "database.spark.rules.json",
+      "firebase.spark.json",
       "seed-admin-profile.example.json",
       "**/.*",
       "**/node_modules/**",
@@ -23,8 +25,14 @@
       "setup/**",
       "assets/js/setup-admin.js",
       "seed/pilot-accounts.json",
-      "server/**"
+      "server/**",
+      "**/*.log",
+      ".git/**",
+      ".firebase/**",
+      "**/.*/**",
+      ".agents/**",
+      ".codex/**"
     ],
-    "cleanUrls": true
+    "cleanUrls": false
   }
 }

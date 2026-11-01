@@ -51,3 +51,13 @@ test('reports separate cash, wallet, discounts and gross profit; refunds counted
  const whole=model.namespace.report(state,'2026-11-01','2026-11-02');assert.equal(whole.net,0);assert.equal(whole.cash,0);assert.equal(whole.profit,0);
  assert.match(model.namespace.csv([['=1+2','normal']]),/"'=1\+2"/);
 });
+test('auth/network denial preserves pending operation until original outcome can be recovered',async()=>{
+ await setup('renderPOS',{execute:async()=>{const error=Error('Login diperlukan');error.definitive=false;throw error;}});await cashCart();await el('#mmCheckout').onsubmit({preventDefault(){}});assert.ok(win.sessionStorage.getItem('madani-minimart-pending:cashier'));assert.ok(el('#mmResume'));assert.equal(el('#mmPay').disabled,true);
+});
+
+test('minimart home opens dedicated POS and category filter preserves cart',async()=>{
+ await setup('renderMinimartHome');assert.ok(el('#mmCheckout'));assert.equal(el('.premium-home'),null);assert.equal(win.document.querySelectorAll('[data-mm-route]').length,6);
+ el('[data-category="Lainnya"]').click();assert.equal(el('[data-category="Lainnya"]').getAttribute('aria-pressed'),'true');el('[data-product=p]').click();change('#mmSearch','missing');assert.equal(el('[data-product=p]'),null);assert.equal(el('#mmItemCount').textContent,'1 item');
+});
+
+test('legacy sales without cost never present unknown gross profit as profit',()=>{const state=baseState();state.sales=[{date:'2026-11-01',total:17000,walletAmount:17000,costUnknown:true,items:[{productId:'p',name:'Buku',qty:1,subtotal:17000,cost:0}]}];const r=model.namespace.report(state,'2026-11-01','2026-11-01');assert.equal(r.revenue,17000);assert.equal(r.profit,null);});

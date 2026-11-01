@@ -43,7 +43,7 @@ const permissions=await load(new URL('assets/js/permissions.js',base).href);awai
 const {ROLE_LABELS,MENU_GROUPS,canAccess}=permissions.namespace;
 const design=await load(new URL('assets/js/workspace-design.js',base).href);await design.evaluate();
 const routes={...work.namespace.WORKSPACE_ROUTES,...extras.namespace.PARENT_EXTRA_ROUTES};
-function ctxFor(role){return {session:{activeRole:role,roles:[role],user:{uid:'teacher',email:'test@example.invalid'},profile:{name:'Pengguna Uji',staffId:'staff1',studentIds:['s1'],classIds:['c1'],menteeStudentIds:['s1'],scopeGender:role==='head_girls_dorm'?'P':role==='head_boys_dorm'?'L':undefined}},master,yearId:'year',year:{name:'Tahun Uji'},root:win.document.getElementById('routeMount'),roleName:ROLE_LABELS[role],navigate:()=>{},openPage:()=>{},rerender:async()=>{}};}
+function ctxFor(role){return {minimartAPI:{parent:async()=>({student:{id:'s1',name:'Santri Putra'},wallet:{spending:0,savings:0},sales:[],bills:[],payments:[]})},session:{activeRole:role,roles:[role],user:{uid:'teacher',email:'test@example.invalid'},profile:{name:'Pengguna Uji',staffId:'staff1',studentIds:['s1'],classIds:['c1'],menteeStudentIds:['s1'],scopeGender:role==='head_girls_dorm'?'P':role==='head_boys_dorm'?'L':undefined}},master,yearId:'year',year:{name:'Tahun Uji'},root:win.document.getElementById('routeMount'),roleName:ROLE_LABELS[role],navigate:()=>{},openPage:()=>{},rerender:async()=>{}};}
 async function settle(){for(let i=0;i<15;i++)await Promise.resolve();}
 function submit(form){form.dispatchEvent(new win.Event('submit',{cancelable:true,bubbles:true}));}
 // Opt-in visual fixtures use the same real renderers and never connect to Firebase.
@@ -66,6 +66,8 @@ test('all 15 homes render and non-finance roles do not request finance collectio
  // Synthetic exports are stable; reset an instrumented export for this test.
  mock.setExport('getNode',repository.getNode);
  const ctx=ctxFor(role);ctx.root.innerHTML='';const items=MENU_GROUPS.flatMap(g=>g.items).filter(i=>canAccess(i.feature||'dashboard',[role]));await homes.namespace.renderRoleHome(ctx,items);
+ if(role==='bendahara'){assert.equal(ctx.root.querySelectorAll('[data-treasury-route]').length,2);assert.match(ctx.root.textContent,/Keuangan Pesantren/);repository.getNode=original;mock.setExport('getNode',original);continue;}
+ if(['minimart','kasir'].includes(role)){assert.ok(ctx.root.querySelector('.mm-shell'));assert.equal(ctx.root.querySelectorAll('[data-mm-route]').length,6);assert.equal(ctx.root.querySelector('.premium-home'),null);repository.getNode=original;mock.setExport('getNode',original);continue;}
  assert.ok(ctx.root.querySelector('.home-role-button'),role);
  assert.ok(ctx.root.querySelector('.premium-home'),role);
  assert.ok(ctx.root.querySelector('.desktop-home-menu[aria-controls="sidebar"]'),role);
@@ -96,6 +98,7 @@ test('legacy role pages still render through the same registered handlers',async
  for(const name of ['academic','boarding','parent','finance']){
   const mod=await load(new URL(`assets/js/modules/${name}.js`,base).href);await mod.evaluate();Object.assign(handlers,mod.namespace);
  }
+ const treasury=await load(new URL('assets/js/treasury/ui.js',base).href);await treasury.evaluate();Object.assign(handlers,treasury.namespace);
  const mentor=await load(new URL('assets/js/mentoring.js',base).href);await mentor.evaluate();Object.assign(handlers,mentor.namespace);
  const leave=await load(new URL('assets/js/teacher/leave.js',base).href);await leave.evaluate();Object.assign(handlers,leave.namespace);
  const permits=await load(new URL('assets/js/student-permits.js',base).href);await permits.evaluate();Object.assign(handlers,permits.namespace);
@@ -177,7 +180,7 @@ test('profile saves only presentation fields and preserves canonical identity an
 });
 
 test('every internal reporting role can submit an active student outside its unit, class and gender scope',async()=>{
- for(const role of Object.keys(ROLE_LABELS).filter(r=>!['wali_santri','naqib','minimart'].includes(r))){
+ for(const role of Object.keys(ROLE_LABELS).filter(r=>!['wali_santri','naqib','minimart','kasir','bendahara'].includes(r))){
   const ctx=ctxFor(role);ctx.session.profile={...ctx.session.profile,unitIds:['u1'],scopeGender:'L',menteeStudentIds:['s1']};ctx.master={...master,students:[...master.students,{id:'other-unit',name:'Santri Lintas Unit',unitId:'u2',gender:'P',status:'active'},{id:'archived',name:'Duplikat',mergedInto:'other-unit',status:'inactive'}]};
   assert.ok(canAccess('workspace.teacher-case',[role]));await routes['teacher-case'](ctx);
   assert.ok(ctx.root.querySelector('[data-student="other-unit"]'));assert.equal(ctx.root.querySelector('[data-student="archived"]'),null);

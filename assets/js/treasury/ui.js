@@ -1,0 +1,32 @@
+import {minimartAPI} from '../minimart/client.js';
+import {pageHeader,panel,table,escapeHtml as e,rupiah as rp} from '../modules/common.js';
+const api=c=>c.minimartAPI||minimartAPI;
+export async function renderTreasuryHome(ctx){
+ ctx.root.innerHTML=pageHeader('Bendahara','Setoran uang digital dan pembayaran SPP santri.')+`<div class="portal-grid">${[['Keuangan Pesantren','Pengelolaan keuangan lembaga akan dikembangkan berikutnya.',''],['SPP Santri','Tagihan, pembayaran, dan riwayat SPP.','finance-bills'],['TopUp Uang Digital Santri','Terima setoran ke saldo belanja yang digunakan kasir.','finance-wallets']].map(([title,desc,route])=>panel(title,`<p>${desc}</p>${route?`<button class="btn btn-primary" data-treasury-route="${route}">Buka</button>`:'<span class="badge">Pengembangan berikutnya</span>'}`)).join('')}</div>`;
+ ctx.root.querySelectorAll('[data-treasury-route]').forEach(b=>b.onclick=()=>ctx.navigate(b.dataset.treasuryRoute));
+}
+async function render(ctx,kind){
+ const storage=`madani-treasury-pending:${ctx.session.user.uid}`;
+ ctx.root.innerHTML=pageHeader(kind==='topup'?'TopUp Uang Digital Santri':'SPP Santri','Pilih identitas santri dari master MadaniApp.')+'<div id="trBody">Memuat…</div>';
+ const host=ctx.root.querySelector('#trBody');
+ try{
+ const data=await api(ctx).treasury({});
+ let pending=JSON.parse(sessionStorage.getItem(storage)||'null');
+ host.innerHTML=`<p id="trNotice" role="status"></p><div id="trPending"></div><label class="field">Cari santri<input type="search" id="trSearch" autocomplete="off" placeholder="Nama, NIS, atau ID santri"></label><label class="field">Santri<select id="trStudent"><option value="">Pilih santri…</option></select></label><div id="trStudentInfo"></div><div id="trForms"></div><div id="trHistory"></div>`;
+ const student=host.querySelector('#trStudent'),notice=host.querySelector('#trNotice');
+ function search(){const selected=student.value,q=host.querySelector('#trSearch').value.toLowerCase();student.innerHTML='<option value="">Pilih santri…</option>'+data.students.filter(s=>s.id===selected||`${s.name} ${s.nis} ${s.id}`.toLowerCase().includes(q)).map(s=>`<option value="${e(s.id)}" ${s.id===selected?'selected':''}>${e(s.name)} · ${e(s.nis||s.id)}</option>`).join('');}
+ const amount='<label class="field">Nominal rupiah<input name="amount" type="number" min="1" step="1" required></label>',method='<label class="field">Metode<select name="method"><option value="CASH">Tunai</option><option value="TRANSFER">Transfer</option></select></label>',submit='<button class="btn btn-primary">Simpan</button>';
+ function draw(){const id=student.value,s=data.students.find(s=>s.id===id),w=data.wallets[id]||{};
+ host.querySelector('#trStudentInfo').textContent=s?`${s.name} · ${s.nis||s.id} · Saldo belanja ${rp(w.spending||0)}`:'';
+ const forms=host.querySelector('#trForms');forms.innerHTML=!s?'':kind==='topup'?panel('Terima Setoran',`<form data-op="topup" class="portal-form">${amount}${method}<label class="field">Keterangan / referensi setoran<input name="note" required maxlength="1000"></label>${submit}</form>`)+panel('PIN Belanja',`<p>${w.pinConfigured?'PIN sudah diatur.':'PIN belum diatur.'}</p><form data-op="wallet-pin" class="portal-form"><label class="field">PIN baru 6 digit<input type="password" name="pin" pattern="[0-9]{6}" maxlength="6" autocomplete="new-password" required></label>${submit}</form>`):panel('Buat Tagihan SPP',`<form data-op="bill-create" class="portal-form"><label class="field">Periode<input name="period" type="month" required></label>${amount}${submit}</form>`)+panel('Terima Pembayaran SPP',`<form data-op="bill-pay" class="portal-form"><label class="field">Tagihan<select name="billId" required><option value="">Pilih tagihan…</option>${Object.entries(data.bills[id]||{}).filter(([,b])=>b.status!=='paid').map(([key,b])=>`<option value="${e(key)}">${e(b.period)} · sisa ${rp(b.amount-(b.paidAmount||0))}</option>`).join('')}</select></label>${amount}${method}${submit}</form>`);
+ const rows=(kind==='topup'?data.topups:data.payments).filter(r=>r.studentId===id);
+ host.querySelector('#trHistory').innerHTML=table(['Referensi','Tanggal','Nominal','Metode'],rows.map(r=>`<tr><td>${e(r.reference)}</td><td>${e(r.date)}</td><td>${rp(r.amount)}</td><td>${e(r.method)}</td></tr>`).join(''),450);
+ forms.querySelectorAll('form').forEach(form=>{form.onsubmit=async ev=>{ev.preventDefault();if(pending)return;const values=Object.fromEntries(new FormData(form));if(values.amount!==undefined)values.amount=Number(values.amount);pending={...values,id:crypto.randomUUID(),studentId:id,type:`treasury:${form.dataset.op}`};const safe={...pending};delete safe.pin;sessionStorage.setItem(storage,JSON.stringify(safe));await send();};});lock();
+ }
+ function lock(){host.querySelectorAll('form button').forEach(b=>b.disabled=!!pending);const target=host.querySelector('#trPending');target.innerHTML=pending?'<p class="notice warning">Ada transaksi yang belum dipastikan.</p><button id="trRetry" class="btn btn-primary">Periksa / ulangi transaksi yang sama</button>':'';if(pending){target.querySelector('p').textContent='Ada transaksi yang belum dipastikan. Jangan membuat setoran pengganti.';target.querySelector('button').onclick=send;}}
+ async function send(){lock();host.querySelector('#trRetry')?.setAttribute('disabled','');try{if(pending.type==='treasury:wallet-pin'&&!pending.pin){const pin=prompt('Masukkan kembali PIN yang sama untuk verifikasi transaksi:');if(!/^\d{6}$/.test(pin||''))throw Error('PIN 6 digit diperlukan.');pending.pin=pin;}const result=await api(ctx).execute(pending);sessionStorage.removeItem(storage);pending=null;await render(ctx,kind);ctx.root.querySelector('#trNotice').textContent=`Tersimpan: ${result.reference||result.id}`;}catch(error){if(error.definitive){pending=null;sessionStorage.removeItem(storage);}notice.textContent=error.message;lock();}}
+ host.querySelector('#trSearch').oninput=search;student.onchange=async()=>{const id=student.value;host.querySelector('#trForms').innerHTML='Memuat saldo santri…';try{if(id){const fresh=await api(ctx).treasury({studentId:id});if(student.value!==id)return;data.wallets[id]=fresh.wallets[id];}draw();}catch(error){notice.textContent=error.message;}};search();draw();
+ }catch(error){host.textContent=error.message;}
+}
+export const renderTreasuryTopup=ctx=>render(ctx,'topup');
+export const renderTreasurySPP=ctx=>render(ctx,'spp');

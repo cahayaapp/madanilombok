@@ -1,0 +1,38 @@
+{
+  "database": {
+    "rules": "database.spark.rules.json"
+  },
+  "hosting": {
+    "public": ".",
+    "ignore": [
+      "firebase.json",
+      ".firebaserc",
+      "README.md",
+      "CODEX-HANDOFF.md",
+      "database.rules.json",
+      "database.spark.rules.json",
+      "seed-admin-profile.example.json",
+      "**/.*",
+      "**/node_modules/**",
+      "AGENTS.md",
+      "docs/**",
+      "tests/**",
+      "scripts/**",
+      "outputs/**",
+      "source-data/**",
+      "*.md",
+      "setup/**",
+      "assets/js/setup-admin.js",
+      "seed/pilot-accounts.json",
+      "server/**",
+      "firebase.spark.json",
+      "**/*.log",
+      ".git/**",
+      ".firebase/**",
+      "**/.*/**",
+      ".agents/**",
+      ".codex/**"
+    ],
+    "cleanUrls": false
+  }
+}

@@ -107,7 +107,7 @@ document.getElementById('loginForm').addEventListener('submit', async event => {
     const credential = await login(document.getElementById('email').value.trim(), document.getElementById('password').value);
     const profile = await getNode(`users/${credential.user.uid}`);
     if (!profile || profile.active === false) throw new Error('Akun belum terdaftar/aktif pada MadaniApp.');
-    location.href = './app/index.html';
+    location.href = './app/index.html?v=196';
   } catch (error) {
     const moduleFailure = isModuleLoadError(error);
     errorBox.textContent = moduleFailure
@@ -124,7 +124,7 @@ loadAuth().then(async ([{ waitForAuth }, { getNode }]) => {
   const user = await waitForAuth();
   if (!user) return;
   const profile = await getNode(`users/${user.uid}`);
-  if (profile && profile.active !== false) location.replace('./app/index.html');
+  if (profile && profile.active !== false) location.replace('./app/index.html?v=196');
 }).catch(() => { /* Keep the public install screen available without a connection. */ });
 function registerWorker() {
   if (!(location.port === '4179' && ['localhost','127.0.0.1'].includes(location.hostname)) && 'serviceWorker' in navigator && window.isSecureContext && /^https?:$/.test(location.protocol)) navigator.serviceWorker.register('./sw.js', { scope: './', updateViaCache: 'none' }).catch(() => { if (!deferredInstallPrompt) hint.textContent = installHelp(); });

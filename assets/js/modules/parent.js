@@ -1,3 +1,4 @@
+import {minimartAPI} from '../minimart/client.js';
 import {minimartLocal} from '../minimart-environment.js';
 import {renderLocalParentFinance} from '../minimart/parent.js';
 import {renderStudentPermits} from '../student-permits.js';
@@ -24,7 +25,7 @@ export async function renderParentHome(ctx) {
   const {children,child}=pickChild(ctx); if(!child){ctx.root.innerHTML=pageHeader("Beranda Wali Santri","Akun wali belum dihubungkan ke data santri.")+`<div class="empty-state">Hubungkan <code>studentIds</code> pada profil user wali.</div>`;return;}
   const ca=ctx.master.classAssignments?.[child.id];const cls=byId(ctx.master.classes||[])[ca?.classId];const ra=ctx.master.roomAssignments?.[child.id];const room=byId(ctx.master.rooms||[])[ra?.roomId];
   const pointsNode=await getNode(`discipline/points/${ctx.yearId}/${child.id}`)||{};const points=Object.values(pointsNode).reduce((s,r)=>s+Number(r.points||0),0);
-  const wallet=await getNode(`finance/wallets/${child.id}`)||{};
+  const wallet=(await (ctx.minimartAPI||minimartAPI).parent({studentId:child.id})).wallet;
   ctx.root.innerHTML=pageHeader("Beranda Anak","Ringkasan perkembangan dan layanan wali santri.",childSwitch(children,child.id))+`<div class="child-hero"><div><span>${escapeHtml(cls?.name||"Kelas belum terhubung")}</span><h2>${escapeHtml(child.name)}</h2><p>${escapeHtml(room?.name?`Asrama · ${room.name}`:child.boardingStatus==="boarding"?"Santri asrama":"Nonasrama")}</p></div><div class="child-avatar">${escapeHtml((child.name||"S").charAt(0))}</div></div><div class="portal-metrics">${metric("Poin Pembinaan",String(points),"akumulasi histori","blue")}${metric("Saldo Belanja",rupiah(wallet.spending||0),"","cyan")}${metric("Tabungan",rupiah(wallet.savings||0),"","violet")}${metric("Status",child.status||"active","data santri","coral")}</div><div class="notice info" style="margin-top:16px">Portal wali mengaktifkan akademik, kehadiran, Tahsin-Tahfiz, asrama/pembinaan, izin, pesan, pengumuman, dan keuangan. Pemantauan penitipan tersedia melalui menu layanan wali.</div>`;
   bindSwitch(ctx);
 }
@@ -131,8 +132,4 @@ export async function renderParentAnnouncements(ctx) {
   const rows=await listNode("announcements");ctx.root.innerHTML=pageHeader("Pengumuman","Informasi resmi Pondok Pesantren Al-Madani.")+`<div class="announcement-grid">${rows.length?rows.filter(r=>r.active!==false).sort((a,b)=>(b.publishedAt||b.createdAt||0)-(a.publishedAt||a.createdAt||0)).map(r=>`<article class="announcement-card"><span>${r.publishedAt?new Date(r.publishedAt).toLocaleDateString("id-ID"):""}</span><h3>${escapeHtml(r.title||"Pengumuman")}</h3><p>${escapeHtml(r.body||"")}</p></article>`).join(""):`<div class="empty-state">Belum ada pengumuman.</div>`}</div>`;
 }
 
-export async function renderParentFinance(ctx) {
-  if(minimartLocal)return renderLocalParentFinance(ctx);
-  const {children,child}=pickChild(ctx);if(!child)return renderParentHome(ctx);const [bills,wallet,pays,tx]=await Promise.all([listNode(`finance/bills/${ctx.yearId}/${child.id}`),getNode(`finance/wallets/${child.id}`),listNode(`finance/payments/${ctx.yearId}`),listNode(`finance/cashier_transactions/${ctx.yearId}`)]);const myPays=pays.filter(p=>p.studentId===child.id),myTx=tx.filter(t=>t.studentId===child.id&&t.status!=="void");
-  ctx.root.innerHTML=pageHeader("Keuangan",`Tagihan, pembayaran, saldo, dan belanja ${child.name}.`,childSwitch(children,child.id))+`<div class="portal-metrics">${metric("Saldo Belanja",rupiah(wallet?.spending||0),"","cyan")}${metric("Tabungan",rupiah(wallet?.savings||0),"","violet")}${metric("Tagihan Belum Lunas",String(bills.filter(b=>b.status!=="paid").length),"","coral")}</div><div class="portal-grid two" style="margin-top:18px">${panel("Tagihan",bills.length?table(["Periode","Nominal","Terbayar","Status"],bills.map(b=>`<tr><td>${escapeHtml(b.period||"—")}</td><td>${rupiah(b.amount)}</td><td>${rupiah(b.paidAmount||0)}</td><td>${badge(b.status||"unpaid")}</td></tr>`).join(""),500):`<div class="empty-state">Belum ada tagihan.</div>`)}${panel("Belanja Terbaru",myTx.length?`<div class="stack-list">${myTx.slice(-10).reverse().map(t=>`<article class="list-card"><div><span>${escapeHtml(t.date||"—")}</span><strong>${escapeHtml((t.items||[]).map(i=>i.name).join(", ")||"Belanja")}</strong><small>${escapeHtml(t.unitId||"")}</small></div><b>${rupiah(t.total)}</b></article>`).join("")}</div>`:`<div class="empty-state">Belum ada transaksi kasir.</div>`)}</div>`;bindSwitch(ctx);
-}
+export async function renderParentFinance(ctx) { return renderLocalParentFinance(ctx); }

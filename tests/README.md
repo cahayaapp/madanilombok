@@ -42,3 +42,21 @@ MADANI_JSDOM_MODULE=/absolute/path/to/jsdom/lib/api.js node --experimental-vm-mo
 - `boarding-rosters.mjs` / `boarding-update-ui.mjs`: referensi siswa, scope perubahan, roster tertunda, jadwal berulang, konflik tujuan dan impor ulang. Rendering juga memeriksa filter bahasa Arab pagi dan kelompok pada portal wali.
 
 Role workflows 2026-10-04: `report-publication.mjs`, `academic-review.mjs`, `operational-workflows.mjs`, `mentoring-ui.mjs`, `health-model.mjs`, `health-ui.mjs`, `health-rules.mjs`, `counselor-model.mjs`. Full suite: 121 passed using JSDOM and simulated data. Firebase Emulator not run (Java runtime unavailable). No operational Firebase writes in tests.
+
+## Minimart — local only
+
+Model/UI/role memakai data sintetis:
+
+```sh
+MADANI_JSDOM_MODULE=/path/to/jsdom/lib/api.js node --experimental-vm-modules --test --test-timeout=30000 tests/minimart-*.mjs
+```
+
+Integrasi Auth/RTDB nyata melalui emulator demo (Java 21 dan dependency `server/minimart` diperlukan):
+
+```sh
+node scripts/minimart-emulator.mjs test
+```
+
+Runner menolak sesi emulator yang sudah aktif, membuat fixture sintetis, menjalankan tes dengan timeout, lalu menghentikan proses miliknya. Tidak mengakses produksi. Uji manual memakai `node scripts/minimart-emulator.mjs serve`; database demo sementara dan reset saat restart. Panduan kredensial privat, browser QA dan keterbatasan ada di `docs/MINIMART-IMPLEMENTATION.md`.
+
+Pembaruan Firebase Spark langsung (1 November): runner test kini memakai port9199/9100 terpisah dari demo, menghasilkan rules aplikasi lengkap, dan menjalankan `server/minimart/spark-tests.mjs`. Semua mutasi diuji melalui REST bertoken pengguna, bukan Admin SDK. Suite lama endpoint HTTP/Workers telah dihapus. Tambahan: `tests/finance-spark-cutover.mjs`, `tests/treasury-ui.mjs`, `tests/treasury-engine.mjs`. Admin SDK hanya dependency emulator/fixture, bukan runtime aplikasi.

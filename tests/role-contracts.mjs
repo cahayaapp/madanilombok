@@ -13,7 +13,7 @@ test('admin navigation exposes administration only while preserving operational 
  for(const role of ['admin','super_admin']){
   const visible=visibleRoleMenu(role,all).filter(i=>canAccess(i.feature||'dashboard',[role]));
   assert.deepEqual(visible.map(i=>i.id).sort(),expected);
-  assert.ok(canAccess('finance.cashier',[role]));
+  assert.ok(canAccess('minimart.pos',[role]));
  }
  assert.deepEqual(visibleRoleMenu('guru_mapel',all),all);
  assert.equal(canAccess('workspace.admin-accounts',['guru_mapel']),false);
@@ -41,7 +41,7 @@ test('management roles have their own workspace instead of routine personnel for
  }
 });
 test('finance access is preserved for cashier and leadership',()=>{
- for(const r of ['kasir','director','deputy_director','admin','super_admin'])assert.ok(ROLE_FEATURES[r].includes('finance.cashier'));
+ for(const r of ['kasir','director','deputy_director','admin','super_admin'])assert.ok(ROLE_FEATURES[r].includes('minimart.pos'));
  assert.equal(canAccess('finance.cashier',['wali_santri']),false);
  assert.equal(canAccess('parent.finance',['wali_santri']),true);
 });

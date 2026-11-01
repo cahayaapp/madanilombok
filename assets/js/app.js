@@ -1,3 +1,4 @@
+import {renderTreasuryHome,renderTreasuryTopup,renderTreasurySPP} from './treasury/ui.js';
 import {MINIMART_ROUTES} from './minimart/ui.js';
 import {decorateWorkspace} from './workspace-design.js';
 import {decorateGuruWali} from './guru-wali-ui.js';
@@ -98,13 +99,13 @@ export const routes = {
   "counselor-self": renderCounselorSelf,
   "counselor-kpi": renderCounselorKpi,
   "counselor-guide": renderCounselorGuide,
-  "finance-dashboard": renderFinanceDashboard,
-  "finance-bills": renderBills,
-  "finance-payments": renderPayments,
-  "finance-wallets": renderWallets,
-  cashier: renderCashier,
-  "finance-products": renderProducts,
-  "finance-history": renderFinanceHistory,
+  "finance-dashboard": renderTreasuryHome,
+  "finance-bills": renderTreasurySPP,
+  "finance-payments": renderTreasurySPP,
+  "finance-wallets": renderTreasuryTopup,
+  cashier: MINIMART_ROUTES['minimart-pos'],
+  "finance-products": MINIMART_ROUTES['minimart-products'],
+  "finance-history": MINIMART_ROUTES['minimart-history'],
   "finance-reports": renderFinanceReports,
   "parent-home": renderParentHome,
   "parent-news": renderParentNews,
@@ -181,9 +182,12 @@ function syncBottomNav() {
 }
 async function renderRoute() {
   const version=++renderVersion;
+  currentRoute=({cashier:'minimart-pos','finance-products':'minimart-products','finance-history':'minimart-history','finance-payments':'finance-bills','finance-reports':'finance-dashboard'})[currentRoute]||currentRoute;
   if(!canRoute(currentRoute)){currentRoute='dashboard';history.replaceState(null,'',`${location.pathname}${location.search}#dashboard`);}
   document.body.dataset.activeRole=activeRole;
-  document.body.dataset.home=String(currentRoute==='dashboard');
+  const minimartView=currentRoute.startsWith('minimart-')||(['minimart','kasir'].includes(activeRole)&&currentRoute==='dashboard');
+  document.body.dataset.minimart=String(minimartView);
+  document.body.dataset.home=String(currentRoute==='dashboard'&&!minimartView);
   renderNav();syncBottomNav();
   document.getElementById('pageTitle').textContent=routeLabel[currentRoute]||'Beranda';
   const mount=document.createElement('div');
@@ -207,7 +211,7 @@ async function renderRoute() {
     if(currentRoute.startsWith('management-'))decorateManagement(ctx);
     decorateCounselorPage(ctx,currentRoute);
     decorateGuruWali(ctx,currentRoute);
-    decorateWorkspace(ctx,currentRoute);
+    if(!minimartView)decorateWorkspace(ctx,currentRoute);
   } catch(error) {
     if(version===renderVersion)mount.innerHTML=`<div class="empty-state error-state"><strong>Gagal memuat halaman</strong><p>${escapeHtml(error.message||String(error))}</p><button type="button" class="btn btn-secondary" id="retryRoute">Coba Lagi</button></div>`;
     mount.querySelector('#retryRoute')?.addEventListener('click',renderRoute);

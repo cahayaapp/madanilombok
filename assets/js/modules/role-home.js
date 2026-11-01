@@ -1,3 +1,4 @@
+import {renderTreasuryHome} from '../treasury/ui.js';
 import {renderMinimartHome} from '../minimart/ui.js';
 import {renderNaqibHome} from '../naqib-home.js';
 import {visibleRoleMenu} from '../role-workspace-catalog.js';
@@ -14,6 +15,8 @@ import {pageHeader,panel,metric,escapeHtml,empty,badge} from './common.js';
 import {renderParentHome} from './parent.js';
 import {renderFinanceDashboard} from './finance.js';
 export async function renderRoleHome(ctx,items) {
+  if(ctx.session.activeRole==='bendahara')return renderTreasuryHome(ctx);
+  if(['minimart','kasir'].includes(ctx.session.activeRole))return renderMinimartHome(ctx);
   items=visibleRoleMenu(ctx.session.activeRole,items);
   try { await renderHomeContent(ctx,items); } finally { mountHomeRoleSwitcher(ctx,items); }
 }

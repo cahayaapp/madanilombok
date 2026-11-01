@@ -31,8 +31,8 @@ export function authorize(ctx, unitId, sensitive = false) {
   const roles = rolesOf(p), supervisor = supervisors.some(r => roles.has(r));
   if (sensitive && !supervisor) fail('Tindakan memerlukan supervisor.');
   if (!supervisor) {
-    if (!roles.has('minimart')) fail('Akses minimart ditolak.');
-    const scope = p.roleScopes?.minimart || p;
+    if (!roles.has('minimart') && !roles.has('kasir')) fail('Akses minimart ditolak.');
+    const scope = (roles.has('minimart') ? p.roleScopes?.minimart : p.roleScopes?.kasir) || p;
     const units = scope.cashierUnits || (scope.financeUnit ? [scope.financeUnit] : []);
     if (!units.includes(unitId)) fail('Unit di luar penugasan kasir.');
   }
@@ -155,7 +155,7 @@ export function applyMinimartOperation(current, request, ctx) {
     if (studentId) {
       key(studentId);
       const student = ctx.students?.[studentId];
-      if (!student || student.active === false || (student.status && student.status !== 'active') || (unit.gender && student.gender !== unit.gender)) fail('Santri tidak tersedia dalam unit ini.');
+      if (!student || student.mergedInto || student.active === false || (student.status && student.status !== 'active') || (unit.gender && student.gender !== unit.gender)) fail('Santri tidak tersedia dalam unit ini.');
     }
     if (walletAmount) {
       if (!studentId) fail('Pilih santri terlebih dahulu.');
@@ -169,7 +169,7 @@ export function applyMinimartOperation(current, request, ctx) {
       mutation(finance, ctx, studentId, -walletAmount, id, id);
     }
     for (const item of items) { products[item.productId].stock -= item.qty; products[item.productId].version = (products[item.productId].version || 0) + 1; }
-    result = {id, reference:`MM-${id}`, unitId, studentId, items, subtotal, discount, total, method:request.method,
+    result = {id, reference:`MM-${id}`, unitId, studentId, studentName:ctx.students?.[studentId]?.name || '', studentNis:ctx.students?.[studentId]?.nis || '', items, subtotal, discount, total, method:request.method,
       walletAmount, cashAmount, cashReceived, change:cashReceived - cashAmount, status:'paid',
       cashierUid:ctx.uid, createdAt:ctx.now, date:businessDate(ctx.now), academicYearId:ctx.yearId};
     if (ctx.requireShift) {
@@ -177,7 +177,10 @@ export function applyMinimartOperation(current, request, ctx) {
     }
     sales[id] = result;
   } else if (type === 'refund') {
-    const saleId = key(request.saleId), sale = sales[saleId];
+    const saleId = key(request.saleId), legacy=request.legacy===true;
+    const source=legacy?finance.cashier_transactions?.[ctx.yearId]:sales;
+    const originalSale=source?.[saleId];
+    const sale=originalSale && (legacy?{...originalSale,walletAmount:originalSale.total,cashAmount:0,items:originalSale.items.map(i=>({...i,cost:i.cost||0}))}:originalSale);
     if (!sale || sale.status !== 'paid' || sale.unitId !== unitId) fail('Transaksi tidak dapat direfund.');
     const reason = note(request.reason), returns = request.returns;
     if (!Array.isArray(returns)) fail('Rincian barang kembali wajib diisi, gunakan daftar kosong bila tidak ada.');
@@ -190,8 +193,8 @@ export function applyMinimartOperation(current, request, ctx) {
       const p = products[item.productId]; p.stock = integer(integer(p.stock) + item.qty); p.version = (p.version || 0) + 1;
     }
     if (sale.walletAmount) mutation(finance, ctx, sale.studentId, sale.walletAmount, saleId, id);
-    sales[saleId] = {...sale, status:'void', voidReason:reason, voidedBy:ctx.uid, voidedAt:ctx.now, refundId:id};
-    result = {saleId, returnedCost:returns.reduce((sum, item) => sum + sale.items.find(i => i.productId === item.productId).cost * item.qty, 0), walletRefund:sale.walletAmount, cashRefund:sale.cashAmount, returns:structuredClone(returns), reason};
+    source[saleId] = {...sale, status:'void', voidReason:reason, voidedBy:ctx.uid, voidedAt:ctx.now, refundId:id};
+    result = {saleId, costUnknown:legacy && originalSale.items.some(i=>i.cost===undefined), returnedCost:returns.reduce((sum, item) => sum + sale.items.find(i => i.productId === item.productId).cost * item.qty, 0), walletRefund:sale.walletAmount, cashRefund:sale.cashAmount, returns:structuredClone(returns), reason};
     if (ctx.requireShift && sale.cashAmount) {
       const shift = openShift();
       if (shift.openingCash + shift.salesCash - shift.refundCash + shift.cashIn - shift.cashOut < sale.cashAmount) fail('Kas shift tidak cukup untuk refund tunai.');
