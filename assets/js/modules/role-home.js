@@ -1,3 +1,4 @@
+import {upgradeAdminHome} from '../admin-home.js';
 import {renderTreasuryHome} from '../treasury/ui.js';
 import {renderMinimartHome} from '../minimart/ui.js';
 import {renderNaqibHome} from '../naqib-home.js';
@@ -18,7 +19,7 @@ export async function renderRoleHome(ctx,items) {
   if(ctx.session.activeRole==='bendahara')return renderTreasuryHome(ctx);
   if(['minimart','kasir'].includes(ctx.session.activeRole))return renderMinimartHome(ctx);
   items=visibleRoleMenu(ctx.session.activeRole,items);
-  try { await renderHomeContent(ctx,items); } finally { mountHomeRoleSwitcher(ctx,items); }
+  try { await renderHomeContent(ctx,items); } finally { mountHomeRoleSwitcher(ctx,items); if(['admin','super_admin'].includes(ctx.session.activeRole))upgradeAdminHome(ctx,items); }
 }
 async function renderHomeContent(ctx,items) {
   const role=ctx.session.activeRole,exp=ROLE_EXPERIENCE[role];

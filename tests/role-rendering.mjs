@@ -74,7 +74,8 @@ test('all 15 homes render and non-finance roles do not request finance collectio
  assert.ok(ctx.root.querySelector('.desktop-home-account'),role);
  assert.ok(ctx.root.querySelector('.official-greeting').nextElementSibling.matches('.official-date'),role+' date follows greeting');
  assert.ok(ctx.root.querySelectorAll('.premium-quick').length<=4,role);
- assert.ok(ctx.root.querySelectorAll('.premium-menu-grid>.premium-menu').length>0,role);
+ if(['admin','super_admin'].includes(role))assert.equal(ctx.root.querySelectorAll('.ao-card').length,6);
+ else assert.ok(ctx.root.querySelectorAll('.premium-menu-grid>.premium-menu').length>0,role);
  assert.ok(ctx.root.querySelectorAll('.premium-menu-grid>.premium-menu').length<=6,role+' secondary limit');
  const quickLabels=new Set([...ctx.root.querySelectorAll('.premium-quick>b')].map(b=>b.textContent));
  assert.ok([...ctx.root.querySelectorAll('.premium-menu-grid>.premium-menu>b')].every(b=>!quickLabels.has(b.textContent)),role);
@@ -272,7 +273,7 @@ test('unit leadership homes expose all daily monitors as quick cards',async()=>{
   for(const id of expected){const b=ctx.root.querySelector(`.premium-quick-grid [data-home-route="${id}"]`);assert.ok(b.querySelector('small').textContent);assert.equal(ctx.root.querySelector(`.premium-menu-grid [data-home-route="${id}"]`),null);}
  }
  const ctx=ctxFor('admin'),items=MENU_GROUPS.flatMap(g=>g.items).filter(i=>canAccess(i.feature||'dashboard',['admin']));await homes.namespace.renderRoleHome(ctx,items);
- assert.equal(ctx.root.querySelector('.premium-section-head h2').textContent,'Menu Utama');
+ assert.equal(ctx.root.querySelector('.ao-intro h1').textContent,'Beranda');
  assert.equal(ctx.root.querySelectorAll('.premium-quick').length,4);
 });
 

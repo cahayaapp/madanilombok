@@ -6,6 +6,7 @@ export function fitHomeViewport(holder){
  const nav=document.querySelector?.('.mobile-bottom-nav');
  const fit=()=>{
   if(!holder.isConnected){observer.disconnect();return;}
+  if(holder.classList.contains('admin-overview')){holder.style.removeProperty('transform');root.classList.add('home-needs-scroll');root.style.removeProperty('height');root.style.removeProperty('max-height');return;}
   let available=root.clientHeight;
   const navBox=nav?.getBoundingClientRect();
   if(navBox?.height>0&&root.getBoundingClientRect){
