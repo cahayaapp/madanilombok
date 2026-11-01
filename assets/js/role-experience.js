@@ -3,6 +3,7 @@ import {counselorGender} from './boarding-personnel-scope.js';
 import {teachingGroups} from './group-teachers.js';
 // Navigation and role composition are data-only; no Firebase reads or writes here.
 export const ROLE_EXPERIENCE = {
+  minimart:{title:'Layani belanja santri dengan cepat dan teliti.',focus:'Minimart',primary:'minimart-pos',quick:['minimart-pos','minimart-products','minimart-history','minimart-shift'],schedule:'minimart-shift'},
   kesehatan:{title:'Pelayanan kesehatan dan UKS santri.',focus:'Kesehatan / UKS',primary:'health-examination',quick:['health-journal','health-examination','health-permits','health-stock'],schedule:'work-schedule'},
   guru_mapel: {title:'Siap mengajar dan mendampingi hari ini.', focus:'Pembelajaran', primary:'teacher-attendance', quick:['teacher-attendance','student-attendance','lesson-plans','grades'], schedule:'schedule', kpi:'teacher-kpi'},
   mentor_tahsin_tahfiz: {title:'Dampingi bacaan dan perkembangan hafalan santri.', focus:'Tahsin & Tahfiz', primary:'quran', quick:['quran','work-schedule','work-profile','work-guide'], schedule:'work-schedule', kpi:'work-kpi'},

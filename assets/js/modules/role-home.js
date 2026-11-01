@@ -1,3 +1,4 @@
+import {renderMinimartHome} from '../minimart/ui.js';
 import {renderNaqibHome} from '../naqib-home.js';
 import {visibleRoleMenu} from '../role-workspace-catalog.js';
 import {mountHomeRoleSwitcher} from '../home-role-switcher.js';
@@ -32,6 +33,7 @@ async function renderHomeContent(ctx,items) {
   if(role==='guru_mapel')return renderTeacherHome(ctx);
   if(role==='naqib')return renderNaqibHome(ctx,items);
   if(role==='wali_santri') return renderParentHome(ctx);
+  if(role==='minimart') return renderMinimartHome(ctx);
   if(role==='kasir') return renderFinanceDashboard(ctx);
   const name=ctx.session.profile.displayName||ctx.session.profile.name||'Pengguna';
   const date=localDate(),uid=ctx.session.user.uid;

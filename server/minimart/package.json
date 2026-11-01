@@ -1,0 +1,8 @@
+{
+  "name": "madani-minimart-local",
+  "private": true,
+  "type": "module",
+  "scripts": {"test:emulator": "node ../../scripts/minimart-emulator.mjs test", "start:local": "node ../../scripts/minimart-emulator.mjs serve"},
+  "dependencies": {"firebase-admin": "^13.0.0"},
+  "devDependencies": {"firebase-tools": "^14.0.0", "firebase": "10.7.1"}
+}

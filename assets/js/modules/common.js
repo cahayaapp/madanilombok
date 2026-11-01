@@ -41,7 +41,7 @@ export function studentOptions(students, selected = "") {
 }
 
 export function table(headers, rowsHtml, minWidth = 760) {
-  return `<div class="table-card"><div class="table-scroll"><table class="data-table" style="min-width:${minWidth}px"><thead><tr>${headers.map(h => `<th>${escapeHtml(h)}</th>`).join("")}</tr></thead><tbody>${rowsHtml || `<tr><td colspan="${headers.length}" class="muted">Belum ada data.</td></tr>`}</tbody></table></div></div>`;
+  return `<div class="table-card"><p class="table-scroll-hint">Geser tabel untuk melihat kolom lainnya <span aria-hidden="true">↔</span></p><div class="table-scroll" tabindex="0" role="region" aria-label="Tabel data, dapat digeser horizontal"><table class="data-table" style="min-width:${minWidth}px"><thead><tr>${headers.map(h => `<th>${escapeHtml(h)}</th>`).join("")}</tr></thead><tbody>${rowsHtml || `<tr><td colspan="${headers.length}" class="muted">Belum ada data.</td></tr>`}</tbody></table></div></div>`;
 }
 
 export function formRow(label, control, full = false) {

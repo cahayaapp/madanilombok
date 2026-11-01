@@ -1,3 +1,6 @@
+import {MINIMART_ROUTES} from './minimart/ui.js';
+import {decorateWorkspace} from './workspace-design.js';
+import {decorateGuruWali} from './guru-wali-ui.js';
 import {CONTROL_UNIT_ROUTES} from './leadership-monitor-model.js';
 import { mountAdminSidebar } from './admin-sidebar.js';
 import {prefetchCounselorCases} from './counselor-data.js';
@@ -50,6 +53,7 @@ let activeRole = "";
 const root = document.getElementById("content");
 
 export const routes = {
+  ...MINIMART_ROUTES,
   "student-permit-review": renderStudentPermits,
   "teacher-leave": renderTeacherLeave,
   ...WORKSPACE_ROUTES,
@@ -169,7 +173,7 @@ function syncBottomNav() {
     const key=button.dataset.shellNav;
     if(key==='schedule'){const label=button.querySelector('span:last-child');if(label)label.textContent=['admin','super_admin'].includes(activeRole)?'Data':'Jadwal';}
     button.style.visibility=key!=='more'&&!targets[key]?'hidden':'';button.disabled=key!=='more'&&!targets[key];
-    if(!['home','more'].includes(key)&&targets[key]){const label=button.querySelector('span:last-child');if(label)label.textContent=menuSettings(activeRole).bottom?(routeLabel[targets[key]]||key):({schedule:['admin','super_admin'].includes(activeRole)?'Data':'Jadwal',messages:'Pesan',profile:'Profil'}[key]||key);}
+    if(!['home','more'].includes(key)&&targets[key]){const label=button.querySelector('span:last-child');if(label)label.textContent=menuSettings(activeRole).bottom?(routeLabel[targets[key]]||key):({schedule:activeRole==='minimart'?'Shift':['admin','super_admin'].includes(activeRole)?'Data':'Jadwal',messages:'Pesan',profile:'Profil'}[key]||key);}
     const active=key!=='more'&&targets[key]===currentRoute;
     button.classList.toggle('active',active);
     if(active)button.setAttribute('aria-current','page');else button.removeAttribute('aria-current');
@@ -191,7 +195,7 @@ async function renderRoute() {
     if(version!==renderVersion)return;
   }
   const scopedSession=sessionForRole(session,activeRole);
-  const ctx={session:scopedSession,master,yearId:currentAcademicYearId(),year:currentAcademicYear(),root:mount,navigate,rerender:renderRoute,roleName:roleLabel([activeRole])};
+  const ctx={session:scopedSession,master,yearId:currentAcademicYearId(),year:currentAcademicYear(),root:mount,route:currentRoute,navigate,rerender:renderRoute,roleName:roleLabel([activeRole])};
   mountWorkspaceHeader(ctx);
   ctx.updateProfile=changes=>{Object.assign(session.profile,changes);document.getElementById('userName').textContent=session.profile.displayName||session.profile.name;};
   ctx.refreshMaster=async()=>{const fresh=await loadMaster(true);master=fresh;ctx.master=fresh;ctx.yearId=currentAcademicYearId();ctx.year=currentAcademicYear();};
@@ -202,6 +206,8 @@ async function renderRoute() {
     if(activeRole==='naqib'&&currentRoute.startsWith('naqib-'))decorateNaqibPage(ctx);
     if(currentRoute.startsWith('management-'))decorateManagement(ctx);
     decorateCounselorPage(ctx,currentRoute);
+    decorateGuruWali(ctx,currentRoute);
+    decorateWorkspace(ctx,currentRoute);
   } catch(error) {
     if(version===renderVersion)mount.innerHTML=`<div class="empty-state error-state"><strong>Gagal memuat halaman</strong><p>${escapeHtml(error.message||String(error))}</p><button type="button" class="btn btn-secondary" id="retryRoute">Coba Lagi</button></div>`;
     mount.querySelector('#retryRoute')?.addEventListener('click',renderRoute);

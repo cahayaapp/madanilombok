@@ -31,3 +31,6 @@ test('empty denominators remain unavailable, never fabricated zero percent',()=>
 test('school calendar breaks exclude expected attendance instead of marking everyone missing',()=>{
  const r=calculate({...base,data:{calendar:{break:{date:'2026-10-19',effectMode:'all',title:'Libur'}}}});assert.equal(r.missing.length,0);assert.equal(r.teacherUnknown,null);
 });
+test('archived Quran records do not contribute to active achievement',()=>{
+ const r=calculate({...base,data:{quran:{old:{studentId:'a',date:'2026-10-19',type:'Tahfiz',activity:'Ziyadah',lines:99,deletedAt:1},active:{studentId:'a',date:'2026-10-19',type:'Tahfiz',activity:'Ziyadah',lines:5}},quranTargets:{a:{dailyLines:10}}}});assert.equal(r.quranCount,1);assert.equal(r.qMet,0);
+});

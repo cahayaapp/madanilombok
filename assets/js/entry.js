@@ -127,7 +127,7 @@ loadAuth().then(async ([{ waitForAuth }, { getNode }]) => {
   if (profile && profile.active !== false) location.replace('./app/index.html');
 }).catch(() => { /* Keep the public install screen available without a connection. */ });
 function registerWorker() {
-  if ('serviceWorker' in navigator && window.isSecureContext && /^https?:$/.test(location.protocol)) navigator.serviceWorker.register('./sw.js', { scope: './', updateViaCache: 'none' }).catch(() => { if (!deferredInstallPrompt) hint.textContent = installHelp(); });
+  if (!(location.port === '4179' && ['localhost','127.0.0.1'].includes(location.hostname)) && 'serviceWorker' in navigator && window.isSecureContext && /^https?:$/.test(location.protocol)) navigator.serviceWorker.register('./sw.js', { scope: './', updateViaCache: 'none' }).catch(() => { if (!deferredInstallPrompt) hint.textContent = installHelp(); });
 }
 if (document.readyState === 'complete') registerWorker();
 else window.addEventListener('load', registerWorker, { once: true });

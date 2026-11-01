@@ -34,7 +34,7 @@ export function educationQuality({session,master,data={},from,to,gender='',staff
  const mentoring=collect(data.mentoring,r=>!!r.studentId&&!!r.date&&!!r.target).filter(r=>scope.studentIds.has(r.studentId)&&dated(r));
  const latest=new Map();mentoring.forEach(r=>{if(!latest.has(r.studentId)||latest.get(r.studentId).date<r.date)latest.set(r.studentId,r);});
  const character=[...latest.values()].flatMap(r=>Object.values(r.clarification?.answers||{})).map(Number).filter(n=>n>=1&&n<=5);
- const quran=collect(data.quran,r=>!!r.studentId&&!!r.date).filter(r=>scope.studentIds.has(r.studentId)&&dated(r)&&r.type==='Tahfiz'&&r.activity==='Ziyadah');
+ const quran=collect(data.quran,r=>!!r.studentId&&!!r.date&&!r.deletedAt).filter(r=>scope.studentIds.has(r.studentId)&&dated(r)&&r.type==='Tahfiz'&&r.activity==='Ziyadah');
  const daily=new Map();quran.forEach(r=>{const key=r.studentId+'/'+r.date;daily.set(key,{studentId:r.studentId,lines:(daily.get(key)?.lines||0)+Number(r.lines||0)});});
  const qDays=[...daily.values()].filter(r=>Number(data.quranTargets?.[r.studentId]?.dailyLines)>0),qMet=qDays.filter(r=>r.lines>=Number(data.quranTargets[r.studentId].dailyLines));
  const materials=collect(data.materials,r=>!!r.material&&!!r.date).filter(r=>dated(r)&&r.active!==false&&!r.isExample&&teacherScope(r));

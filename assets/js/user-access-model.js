@@ -5,7 +5,7 @@ export const SCOPE_FIELDS={
  kesehatan:['unitIds','scopeGender'],
  guru_mapel:['unitIds','classIds','subjectIds'],mentor_tahsin_tahfiz:['unitIds','groupIds','scopeGender'],guru_wali:['classIds','menteeStudentIds','scopeGender'],
  naqib:['scopeGender'],konselor:['scopeGender','counselorLevel'],head_formal_school:['unitIds','classIds'],head_boys_dorm:[],head_girls_dorm:[],
- director:['unitIds'],deputy_director:['unitIds'],kasir:['financeUnit'],wali_santri:['studentIds'],admin:[],super_admin:[]
+ director:['unitIds'],deputy_director:['unitIds'],kasir:['financeUnit'],minimart:['financeUnit'],wali_santri:['studentIds'],admin:[],super_admin:[]
 };
 export const FIELD_LABELS={unitIds:'Unit sekolah',classIds:'Kelas / rombel',subjectIds:'Mata pelajaran',groupIds:'Halaqah / kelompok',menteeStudentIds:'Santri binaan',studentIds:'Anak terotorisasi',scopeGender:'Lingkup putra / putri',financeUnit:'Unit kasir',counselorLevel:'Level Konselor'};
 export const FIELD_MASTER={unitIds:'units',classIds:'classes',subjectIds:'subjects',groupIds:'groups',menteeStudentIds:'students',studentIds:'students'};
@@ -25,7 +25,7 @@ export function validateUserDraft(d,master={}){
  for(const role of d.roles){const s=d.roleScopes[role]||{};
   for(const key of SCOPE_FIELDS[role]||[]){if(FIELD_MASTER[key]){const values=s[key]||[];if(!Array.isArray(values)||values.some(id=>!master[FIELD_MASTER[key]]?.some(r=>r.id===id)))throw Error(`${FIELD_LABELS[key]} tidak sesuai master.`);}}
   if(s.scopeGender&&!['L','P'].includes(s.scopeGender))throw Error('Scope gender tidak valid.');
-  if(role==='kasir'&&!['PUTRA','PUTRI'].includes(s.financeUnit))throw Error('Pilih unit kasir Putra atau Putri.');
+  if(['kasir','minimart'].includes(role)&&!['PUTRA','PUTRI'].includes(s.financeUnit))throw Error('Pilih unit kasir Putra atau Putri.');
   if(role==='wali_santri'&&!s.studentIds?.length)throw Error('Hubungkan minimal satu anak untuk Wali Santri.');
   if(role==='head_formal_school'&&!s.unitIds?.length)throw Error('Pilih unit penugasan Kepala Sekolah.');
   if(s.counselorLevel&&!['PEMULA','MADYA'].includes(s.counselorLevel))throw Error('Level Konselor tidak valid.');
@@ -41,7 +41,7 @@ export function applyUserDraft(current,d,master,actorUid,targetUid,eventId){
   const s={unitIds:[],classIds:[],subjectIds:[],groupIds:[],studentIds:[],menteeStudentIds:[],scopeGender:'',genderScope:'',financeUnit:'',cashierUnits:[],...copy(d.roleScopes[role]||{})};
   if(s.unitIds.length&&!s.classIds.length)s.classIds=(master.classes||[]).filter(c=>s.unitIds.includes(c.unitId)).map(c=>c.id);
   s.genderScope=s.scopeGender||'';
-  if(role==='kasir')s.cashierUnits=[s.financeUnit];
+  if(['kasir','minimart'].includes(role))s.cashierUnits=[s.financeUnit];
   if(role==='head_boys_dorm')s.scopeGender=s.genderScope='L';
   if(role==='head_girls_dorm')s.scopeGender=s.genderScope='P';
   return [role,s];

@@ -1,3 +1,4 @@
+import {renderMentorRoster,renderMentorGuide} from '../guru-wali-ui.js';
 import {readCounselorCases} from '../counselor-data.js';
 import {mountCaseTreatment,renderCounselorBook,renderCounselorEvaluation} from '../counselor-review.js';
 import {mountCaseQueue} from '../counselor-queue.js';
@@ -120,8 +121,7 @@ export async function renderNaqibHistory(ctx) {
 }
 
 export async function renderMenteeList(ctx) {
-  const list=mentees(ctx);
-  ctx.root.innerHTML=pageHeader("Santri Binaan Guru Wali","Guru Wali menggantikan Mentor untuk mentoring individu.")+table(["Santri","Kelas","Unit","Status Asrama"],list.map(s=>{const ca=ctx.master.classAssignments?.[s.id];const c=byId(ctx.master.classes||[])[ca?.classId];return `<tr><td><strong>${escapeHtml(s.name)}</strong><br><small class="muted">${escapeHtml(s.studentNo||s.id)}</small></td><td>${escapeHtml(c?.name||"—")}</td><td>${escapeHtml(s.unitId||"—")}</td><td>${badge(s.boardingStatus||"—")}</td></tr>`}).join(""));
+  renderMentorRoster(ctx,mentees(ctx));
 }
 
 export async function renderMentoring(ctx) {
@@ -246,7 +246,7 @@ export async function renderMentoringKpi(ctx) {
 }
 
 export async function renderMentoringGuide(ctx) {
-  ctx.root.innerHTML=pageHeader("Panduan Guru Wali","Alur mentoring individu yang konsisten dalam satu rekam.")+panel("Workflow Mentoring",`<div class="guide-steps"><b>1.</b> Pilih santri binaan.<br><b>2.</b> Bahas self-assessment santri.<br><b>3.</b> Isi apresiasi/hal yang disyukuri.<br><b>4.</b> Pilih fokus <strong>PERBAIKI</strong> atau <strong>TINGKATKAN</strong>.<br><b>5.</b> Tetapkan target, Strong Why, dan strategi/How.<br><b>6.</b> Pada pertemuan berikutnya, buka Target & Hasil dan perbarui rekam yang sama menjadi TERCAPAI, CUKUP BERKEMBANG, atau BELUM TERCAPAI.</div>`);
+  renderMentorGuide(ctx);
 }
 
 export async function renderCaseEscalation(ctx) {

@@ -22,7 +22,8 @@
       "*.md",
       "setup/**",
       "assets/js/setup-admin.js",
-      "seed/pilot-accounts.json"
+      "seed/pilot-accounts.json",
+      "server/**"
     ],
     "cleanUrls": true
   }

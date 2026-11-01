@@ -26,3 +26,12 @@ test('interview scores update immediately, handle partial answers and ties, and 
  await M.renderMentorForm(ctx);await click('[data-student=s1]');assert.match($('[data-dimension-score=emosional]').textContent,/2 \/ 5/);assert.doesNotMatch($('#dimensionScores').textContent,/sementara/);
  $('#mentoringDate').value='2026-01-01';$('#mentoringDate').dispatchEvent(new win.Event('change'));await flush();assert.match($('#dimensionScores').textContent,/Skor muncul otomatis/);
 });
+test('premium roster search and guide keep navigation within Guru Wali',async()=>{
+ const ui=await load(new URL('assets/js/guru-wali-ui.js',base).href);await ui.evaluate();let destination='';const scoped={...ctx,navigate:r=>destination=r};
+ ui.namespace.renderMentorRoster(scoped,[ctx.master.students[0]]);ui.namespace.decorateGuruWali(scoped,'mentee-list');
+ assert.equal(ctx.root.querySelectorAll('.mentor-student-card').length,1);assert.doesNotMatch(ctx.root.textContent,/Di luar penugasan/);
+ $('#mentorRosterSearch').value='tidak ditemukan';$('#mentorRosterSearch').dispatchEvent(new win.Event('input'));assert.equal(ctx.root.querySelectorAll('.mentor-student-card').length,0);
+ $('#mentorRosterSearch').value='VII';$('#mentorRosterSearch').dispatchEvent(new win.Event('input'));assert.equal(ctx.root.querySelectorAll('.mentor-student-card').length,1);
+ await click('[data-mentor-home]');assert.equal(destination,'dashboard');await click('[data-mentor-route=mentoring]');assert.equal(destination,'mentoring');
+ ui.namespace.renderMentorGuide(scoped);ui.namespace.decorateGuruWali(scoped,'mentoring-guide');assert.equal(ctx.root.querySelectorAll('.mentor-guide-step').length,5);await click('#mentorGuideStart');assert.equal(destination,'mentoring');
+});

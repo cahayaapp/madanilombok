@@ -872,3 +872,29 @@ Added eighth Admin workspace Manajemen Fitur in portal and console navigation. L
 - Daftar review memakai kartu identitas/inisial, badge status, alasan/kontak/penanganan kelas, rincian pertemuan collapsible dan catatan peninjau dengan waktu WITA. Filter Semua/Menunggu/Disetujui/Ditolak/Dibatalkan beserta hitungan dan empty state.
 - Pembatasan unit dan handler keputusan tetap memakai leave-model; tidak mengubah persetujuan atau data produksi. Identitas logo Madani dipertahankan, nama/foto contoh referensi tidak disalin.
 - 57 tes lokal UI/alur izin/role lulus, syntax modul dan diff bersih. Preview data simulasi desktop dan 390px diperiksa; lebar kartu mobile diperbaiki setelah inspeksi. Tema139/SW190, belum deployment hosting.
+
+## 1 November 2026 — desain premium Guru Wali
+- Tema khusus Guru Wali mencakup workspace pendampingan dan menu pendukung, dengan hero tosca, aksen emas, kartu putih, kontrol terbaca, serta tata letak responsif.
+- Santri Binaan memakai ringkasan jumlah aktual, pencarian nama/kelas/unit, kartu identitas dan navigasi mentoring/riwayat. Panduan memakai lima langkah pendampingan. Form, ringkasan skor, target/riwayat dan dialog hasil mendapat desain terpadu serta tab dan tombol kembali.
+- Scope santri dan handler simpan mentoring/hasil tetap dipertahankan; tidak mengubah database, rules, keuangan atau menu yang dinonaktifkan.
+- 64 tes role/rendering/mentoring lulus; 164 JavaScript lolos syntax dan 41 JSON valid, diff bersih. Preview fixture form desktop dan roster/form mobile 390px diperiksa. Belum uji sesi produksi atau deploy hosting. Tema140/SW191.
+
+## 1 November 2026 — kartu Ziyadah/Muraja’ah mengikuti Cahaya
+- Referensi struktur dibaca langsung dari fajrulislam/guru/inputSetoranTahfiz.html. Kartu santri tertutup awal, badge kelas/setoran bulanan, buka/tutup semua, mode satu/banyak surat, target tersimpan/editor, total ayat/baris/Lahn Jali/predikat, catatan, ringkasan dan riwayat bulanan diterapkan dengan identitas Madani. Status Tahfiz CAHAYA dikecualikan sesuai instruksi pengguna.
+- Enam jenis Muraja’ah Madani dipertahankan; periode Harian/Pekanan/Bulanan ditambahkan sebagai frequency. Riwayat lama tidak dipaksakan masuk kategori periode. Estimasi juz memakai bobot halaman referensi dan diberi label estimasi; ayat dihitung unik agar setoran tumpang tindih tidak menggandakan capaian.
+- Target dapat disimpan tanpa merender ulang draft. Edit memperbarui ID setoran yang sama dengan pemeriksaan versi; hanya pencatat yang mendapat tombol edit/hapus. Hapus melalui konfirmasi menyimpan deletedAt/deletedBy, dan pembaca orang tua/kontrol mutu menyaring rekam tersebut. Tidak ada database live atau rules yang diubah.
+- 114 tes terkait UI/model/role/rendering/kontrol mutu/repository lulus setelah mock impor repository yang tertinggal diperbarui. 165 JS lolos syntax, 41 JSON valid, diff bersih. Preview fixture desktop/mobile 390px diperiksa, termasuk koreksi badge yang menjepit nama. Tema141/SW192; belum deploy hosting atau uji sesi produksi.
+- Bukan klaim seluruh modul laporan/export Tahfiz Cahaya disalin; perubahan berfokus pada kartu input dan riwayat. Target bulanan dihitung dari hari aktif jadwal halaqah dan kalender pendidikan bila sumber tersedia.
+
+## 1 November 2026 — Minimart: audit dan fondasi backend terisolasi
+- Detail audit, skema, kontrak dan urutan lanjutan: `docs/MINIMART-IMPLEMENTATION.md`. Audit terarah selesai; jangan ulang pemetaan auth/finance/parent yang sudah dicatat.
+- `server/minimart/engine.mjs`: kernel transaksi immutable untuk metadata produk, barang masuk, koreksi stok supervisor, keranjang CASH/WALLET/MIXED, PIN/limit existing, idempotensi, audit dan refund penuh dengan rincian stok kembali. Memakai spending wallet dan produk existing; tidak membuat dompet/santri paralel.
+- `firebase-service.mjs`: adapter Admin SDK dependency-injected, token terverifikasi, context server dan satu transaksi ancestor finance. Sengaja hanya mengizinkan emulator loopback/project demo. Belum endpoint atau UI aplikasi; backend dikecualikan dari hosting.
+- 38 tes minimart model/adapter mock lulus, 61 bersama role/route/user-management. Simulasi CAS membuktikan perilaku retry model, bukan concurrency Firebase. Java runtime belum tersedia; belum uji Emulator/staging.
+- BELUM siap operasional: role/editor/navigasi/POS UI/struk, backend endpoint, rules dan migrasi writer finance lama, rate limit PIN, shift, laporan, ekspor dan riwayat wali masih tersisa. Grant ancestor finance saat ini terlalu luas; deny child tidak cukup. Tidak mengaktifkan pembayaran setengah jadi.
+- Akun mart@madani.app belum diperiksa/dibuat/diubah; password tidak disimpan. Tidak deploy, mengubah rules, atau menulis database produksi. Pekerjaan ini tidak mengedit modul keuangan existing maupun perubahan UI lain yang sedang berlangsung pada working tree.
+
+## 1 November 2026 — penyelarasan halaman yang belum diperbarui
+- Lapisan workspace-design dan tema bersama diterapkan pada halaman keuangan, wali, UKS, akademik, pimpinan dan menu pendukung; desain khusus yang telah diperbarui dipertahankan. Admin user mendapat toolbar/tabel/dialog selaras. Rincian: docs/UI-REFRESH-2026-11-01.md.
+- Tidak mengganti form/handler, tidak mengubah role/rules, alur keuangan atau mengaktifkan menu yang dinonaktifkan. Salinan teks informasi keuangan dibersihkan dari istilah implementasi.
+- 105 tes lulus mencakup 241 kombinasi workspace dan 163 kombinasi halaman lama; 166 JS, 41 JSON dan diff valid. Preview kasir desktop serta wali/UKS 390px diperiksa dan layout checklist UKS diperbaiki. Tema142/SW193; belum deploy/tes produksi.

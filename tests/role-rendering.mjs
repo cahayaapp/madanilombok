@@ -41,6 +41,7 @@ const extras=await load(new URL('assets/js/modules/parent-extras.js',base).href)
 const homes=await load(new URL('assets/js/modules/role-home.js',base).href);await homes.evaluate();
 const permissions=await load(new URL('assets/js/permissions.js',base).href);await permissions.evaluate();
 const {ROLE_LABELS,MENU_GROUPS,canAccess}=permissions.namespace;
+const design=await load(new URL('assets/js/workspace-design.js',base).href);await design.evaluate();
 const routes={...work.namespace.WORKSPACE_ROUTES,...extras.namespace.PARENT_EXTRA_ROUTES};
 function ctxFor(role){return {session:{activeRole:role,roles:[role],user:{uid:'teacher',email:'test@example.invalid'},profile:{name:'Pengguna Uji',staffId:'staff1',studentIds:['s1'],classIds:['c1'],menteeStudentIds:['s1'],scopeGender:role==='head_girls_dorm'?'P':role==='head_boys_dorm'?'L':undefined}},master,yearId:'year',year:{name:'Tahun Uji'},root:win.document.getElementById('routeMount'),roleName:ROLE_LABELS[role],navigate:()=>{},openPage:()=>{},rerender:async()=>{}};}
 async function settle(){for(let i=0;i<15;i++)await Promise.resolve();}
@@ -55,7 +56,7 @@ function exportVisual(ctx,role,route){
 test('every permitted new workspace renders for each assigned role using an isolated fake repository',async()=>{
  let count=0;
  for(const role of Object.keys(ROLE_LABELS))for(const [id,handler] of Object.entries(routes))if(canAccess(`workspace.${id}`,[role])){
- const ctx=ctxFor(role);ctx.root.innerHTML='';await handler(ctx);assert.ok(ctx.root.textContent.trim(),`${role}/${id} empty`);assert.equal(ctx.root.querySelectorAll('script').length,0);exportVisual(ctx,role,id);count++;
+ const ctx=ctxFor(role);ctx.root.innerHTML='';ctx.root.className='';await handler(ctx);design.namespace.decorateWorkspace(ctx,id);assert.ok(ctx.root.textContent.trim(),`${role}/${id} empty`);assert.equal(ctx.root.querySelectorAll('script').length,0);exportVisual(ctx,role,id);count++;
  }
  assert.ok(count>100);console.log(`Rendered ${count} role/workspace combinations without Firebase.`);
 });
@@ -104,7 +105,7 @@ test('legacy role pages still render through the same registered handlers',async
  for(const role of Object.keys(ROLE_LABELS))for(const [id,handler] of mapped){
   const menu=MENU_GROUPS.flatMap(g=>g.items).find(i=>i.id===id);
   if(!menu||!canAccess(menu.feature,[role]))continue;
-  assert.equal(typeof handler,'function',id);const ctx=ctxFor(role);ctx.root.innerHTML='';await handler(ctx);assert.ok(ctx.root.textContent.trim(),`${role}/${id}`);exportVisual(ctx,role,id);count++;
+  assert.equal(typeof handler,'function',id);const ctx=ctxFor(role);ctx.root.innerHTML='';ctx.root.className='';await handler(ctx);design.namespace.decorateWorkspace(ctx,id);assert.ok(ctx.root.textContent.trim(),`${role}/${id}`);exportVisual(ctx,role,id);count++;
  }
  console.log(`Rendered ${count} legacy role/page combinations without Firebase.`);
 });
@@ -176,7 +177,7 @@ test('profile saves only presentation fields and preserves canonical identity an
 });
 
 test('every internal reporting role can submit an active student outside its unit, class and gender scope',async()=>{
- for(const role of Object.keys(ROLE_LABELS).filter(r=>!['wali_santri','naqib'].includes(r))){
+ for(const role of Object.keys(ROLE_LABELS).filter(r=>!['wali_santri','naqib','minimart'].includes(r))){
   const ctx=ctxFor(role);ctx.session.profile={...ctx.session.profile,unitIds:['u1'],scopeGender:'L',menteeStudentIds:['s1']};ctx.master={...master,students:[...master.students,{id:'other-unit',name:'Santri Lintas Unit',unitId:'u2',gender:'P',status:'active'},{id:'archived',name:'Duplikat',mergedInto:'other-unit',status:'inactive'}]};
   assert.ok(canAccess('workspace.teacher-case',[role]));await routes['teacher-case'](ctx);
   assert.ok(ctx.root.querySelector('[data-student="other-unit"]'));assert.equal(ctx.root.querySelector('[data-student="archived"]'),null);
@@ -635,4 +636,9 @@ test('director and deputy control opens six scoped unit reports without changing
   assert.equal(JSON.stringify(ctx.session),session);
  }
  assert.equal(writes.length,before);
+});
+
+test('workspace refresh preserves form listeners and controls, adds one safe back action, and leaves reviewed screens intact',()=>{
+ const ctx=ctxFor('kasir');ctx.root.className='';ctx.root.innerHTML='<div class="portal-section-head"><div><h2>Kasir</h2></div></div><form><input name="pin" type="password"><button disabled>Bayar</button></form>';let clicked=false,route='';ctx.navigate=r=>route=r;const form=ctx.root.querySelector('form');form.addEventListener('submit',e=>{e.preventDefault();clicked=true;});const input=form.querySelector('input');input.value='123456';design.namespace.decorateWorkspace(ctx,'cashier');design.namespace.decorateWorkspace(ctx,'cashier');assert.equal(ctx.root.querySelectorAll('[data-workspace-home]').length,1);assert.equal(form.querySelector('input'),input);assert.equal(input.value,'123456');assert.equal(form.querySelector('button').disabled,true);submit(form);assert.equal(clicked,true);ctx.root.querySelector('[data-workspace-home]').click();assert.equal(route,'dashboard');
+ for(const route of ['dashboard','teacher-leave','mentoring','quran-ziyadah']){ctx.root.className='';ctx.root.innerHTML='<header class="teacher-header"><h1>Ruang Kerja</h1></header>';design.namespace.decorateWorkspace(ctx,route);assert.equal(ctx.root.classList.contains('workspace-refresh'),false);}
 });

@@ -1,0 +1,23 @@
+{
+  "rules": {
+    ".read": false,
+    ".write": false,
+    "madani_app": {
+      "academic_years": {
+        ".read": "auth != null && root.child('madani_app/users').child(auth.uid).child('active').val() === true && root.child('madani_app/users').child(auth.uid).child('accessRevoked').val() !== true"
+      },
+      "settings": {
+        ".read": "auth != null && root.child('madani_app/users').child(auth.uid).child('active').val() === true && root.child('madani_app/users').child(auth.uid).child('accessRevoked').val() !== true"
+      },
+      "users": {
+        "$uid": {
+          ".read": "auth != null && root.child('madani_app/users').child(auth.uid).child('active').val() === true && root.child('madani_app/users').child(auth.uid).child('accessRevoked').val() !== true && auth.uid === $uid"
+        }
+      },
+      "finance": {
+        ".read": false,
+        ".write": false
+      }
+    }
+  }
+}

@@ -15,10 +15,19 @@ export const ROLE_LABELS = {
   konselor: "Konselor",
   kesehatan: "Kesehatan / UKS",
   kasir: "Kasir",
+  minimart: "Minimart / Kasir Minimart",
   wali_santri: "Wali Santri"
 };
 
 const ALL_MENU_GROUPS = [
+  {label:"Minimart",items:[
+    {id:"minimart-pos",label:"Kasir / POS",icon:"▣",feature:"minimart.pos"},
+    {id:"minimart-products",label:"Produk & Stok",icon:"▦",feature:"minimart.products"},
+    {id:"minimart-inventory",label:"Barang Masuk & Opname",icon:"⇅",feature:"minimart.inventory"},
+    {id:"minimart-history",label:"Riwayat Minimart",icon:"↺",feature:"minimart.history"},
+    {id:"minimart-reports",label:"Laporan Minimart",icon:"▥",feature:"minimart.reports"},
+    {id:"minimart-shift",label:"Kas & Shift",icon:"◷",feature:"minimart.shift"}
+  ]},
   {
     label: "Utama",
     items: [
@@ -155,9 +164,11 @@ const financeAll = [
   "finance.history","finance.reports"
 ];
 
+const minimartAll=['minimart.pos','minimart.products','minimart.inventory','minimart.history','minimart.reports','minimart.shift'];
 const healthAll=["health.journal","health.examination","health.permits","health.stock"];
 export const ROLE_FEATURES = {
   kesehatan:healthAll,
+  minimart:minimartAll,
   guru_mapel: ["academic.teacher_leave","academic.teacher_attendance","academic.student_attendance","academic.grades","academic.schedule","academic.lesson_plans"],
   mentor_tahsin_tahfiz: ["academic.quran","academic.teacher_attendance","academic.student_attendance"],
   naqib: naqibAll,
@@ -168,10 +179,10 @@ export const ROLE_FEATURES = {
   head_formal_school: ["academic.schedule","academic.teacher_leave"],
   head_boys_dorm: ["boarding.permits"],
   head_girls_dorm: ["boarding.permits"],
-  deputy_director: [...financeAll,"health.review"],
-  director: [...financeAll,"health.review"],
-  admin: [...academicAll,...naqibAll,...mentorAll,...counselorAll,...financeAll,...healthAll],
-  super_admin: [...academicAll,...naqibAll,...mentorAll,...counselorAll,...financeAll,...healthAll]
+  deputy_director: [...financeAll,...minimartAll,"health.review"],
+  director: [...financeAll,...minimartAll,"health.review"],
+  admin: [...academicAll,...naqibAll,...mentorAll,...counselorAll,...financeAll,...healthAll,...minimartAll],
+  super_admin: [...academicAll,...naqibAll,...mentorAll,...counselorAll,...financeAll,...healthAll,...minimartAll]
 };
 
 export function featuresForRoles(roles = []) {

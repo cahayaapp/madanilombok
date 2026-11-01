@@ -1,3 +1,4 @@
+import {minimartLocal} from './minimart-environment.js';
 import {gemaLessonStudents} from './gema-lessons.js';
 import { getNode, listNode, getCurrentAcademicYearId } from "./repository.js";
 
@@ -10,6 +11,11 @@ const state = {
 
 export async function loadMaster(force = false) {
   if (state.master && !force) return state.master;
+  if (minimartLocal) {
+    const yearId=await getCurrentAcademicYearId();state.yearId=yearId;state.year=yearId?await getNode(`academic_years/${yearId}`):null;
+    state.master={students:[],staff:[],classes:[],units:[],rooms:[],groups:[],subjects:[],programs:[],recurringSchedules:[],academicSchedules:[],dailySchedules:[],dormitories:[],classAssignments:{},roomAssignments:{},groupAssignments:{},mentorAssignments:{}};
+    state.loadedAt=Date.now();return state.master;
+  }
   const [students, staff, classes, units, rooms, groups, subjects, programs, academicSchedules, dailySchedules, dormitories, recurringSchedules] = await Promise.all([
     listNode("students"), listNode("staff"), listNode("classes"), listNode("units"), listNode("rooms"),
     listNode("groups"), listNode("subjects"), listNode("programs"), listNode("schedules/academic"), listNode("schedules/daily"), listNode("dormitories"), listNode("schedules/recurring")
