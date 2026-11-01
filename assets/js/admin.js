@@ -1,3 +1,5 @@
+import {relationChecklist} from './relation-checklist.js';
+import {ROLE_LABELS} from './permissions.js';
 import {mountBoardingRundown} from './boarding-rundown.js';
 import {mountFormalSchedules} from './formal-schedules.js';
 import {mountAdminHeader,bindAdminDrawer} from './admin-header.js';
@@ -95,8 +97,11 @@ const entityConfig = {
     fields:[
       {name:"name",label:"Nama Lengkap",required:true},{name:"gender",label:"Jenis Kelamin",type:"select",options:genderOptions,required:true},{name:"phone",label:"No. HP"},{name:"email",label:"Email",type:"email"},
       {name:"employmentStatus",label:"Status Kepegawaian",type:"select",options:["Tetap","Kontrak","Khidmat","Part Time","Relawan"].map(v=>({value:v,label:v}))},
-      {name:"roles",label:"Peran / Tugas",placeholder:"Guru, Musyrif, Pembina Tahfiz",help:"Pisahkan beberapa peran dengan koma."},
-      {name:"unitIds",label:"Unit Tugas",type:"multirelation",relation:"units",help:"Boleh memilih lebih dari satu unit."},
+      {name:"roles",label:"Peran / Tugas",type:"multichoice",options:Object.entries(ROLE_LABELS).map(([value,label])=>({value,label})),full:true,help:"Centang semua tugas yang sesuai. Hak akses akun tetap dikelola melalui Manajemen User."},
+      {name:"unitIds",label:"Lembaga / Unit Tugas",type:"multirelation",relation:"units",full:true,help:"Centang satu atau beberapa lembaga."},
+      {name:"classIds",label:"Kelas Penugasan",type:"multirelation",relation:"classes",full:true},
+      {name:"subjectIds",label:"Mata Pelajaran",type:"multirelation",relation:"subjects",full:true},
+      {name:"groupIds",label:"Halaqah / Kelompok",type:"multirelation",relation:"groups",full:true,help:"Data penugasan SDM. Perubahan ini tidak otomatis mengubah jadwal atau cakupan akun yang sudah ada."},
       {name:"status",label:"Status",type:"select",options:activeOptions,default:"active"}
     ]
   },
@@ -334,8 +339,8 @@ function fieldMarkup(field,value) {
   let control;
   if(field.type==="boolean"||field.type==="select"||field.type==="relation"||field.type==="relationUnion"){
     const opts=fieldOptions(field); if(value!==""&&value!==null&&!opts.some(o=>String(o.value)===String(value)))opts.push({value,label:String(value)}); control=`<select name="${field.name}" ${required}><option value="">— Pilih —</option>${opts.map(o=>`<option value="${escapeHtml(o.value)}" ${String(o.value)===String(value)?"selected":""}>${escapeHtml(o.label)}</option>`).join("")}</select>`;
-  }else if(field.type==="multirelation"){
-    const opts=fieldOptions(field); const selected=Array.isArray(value)?value:[]; control=`<select name="${field.name}" multiple size="5">${opts.map(o=>`<option value="${escapeHtml(o.value)}" ${selected.includes(o.value)?"selected":""}>${escapeHtml(o.label)}</option>`).join("")}</select>`;
+  }else if(field.type==="multirelation"||field.type==="multichoice"){
+    return `<fieldset class="${cls} checklist-field"><legend>${escapeHtml(field.label)}</legend>${relationChecklist(field.name,fieldOptions(field),value)}${field.help?`<small class="muted">${escapeHtml(field.help)}</small>`:''}</fieldset>`;
   }else if(field.type==="textarea") control=`<textarea name="${field.name}" ${required} placeholder="${escapeHtml(field.placeholder||"")}">${safe}</textarea>`;
   else control=`<input name="${field.name}" type="${field.type||"text"}" value="${safe}" ${required} ${field.step?`step="${escapeHtml(field.step)}"`:""} ${field.min!==undefined?`min="${field.min}"`:""} ${field.max!==undefined?`max="${field.max}"`:""} placeholder="${escapeHtml(field.placeholder||"")}" />`;
   return `<label class="${cls}"><span>${field.label}${field.required?" *":""}</span>${control}${field.help?`<small class="muted">${escapeHtml(field.help)}</small>`:""}</label>`;
@@ -345,7 +350,7 @@ function closeForm(){ $("#modalBackdrop").classList.add("hidden"); editState=nul
 
 async function submitForm(event){
   event.preventDefault(); if(!editState)return; const {section,id}=editState; const cfg=entityConfig[section]; const fd=new FormData(event.currentTarget); const data={};
-  cfg.fields.forEach(f=>{let v=f.type==="multirelation"?fd.getAll(f.name):(fd.get(f.name)??""); if(f.type==="number"&&v!=="")v=Number(v); if(f.type==="boolean")v=v===""?null:v==="true"; if(f.name==="roles")v=String(v).split(",").map(x=>x.trim()).filter(Boolean); data[f.name]=v;});
+  cfg.fields.forEach(f=>{let v=["multirelation","multichoice"].includes(f.type)?fd.getAll(f.name):(fd.get(f.name)??""); if(f.type==="number"&&v!=="")v=Number(v); if(f.type==="boolean")v=v===""?null:v==="true"; if(f.name==="roles"&&!Array.isArray(v))v=String(v).split(",").map(x=>x.trim()).filter(Boolean); data[f.name]=v;});
   if(section==="quran-placements") {
     if(data.programQuran==="TAHSIN"&&!data.tahsinLevel){toast("Pilih level Tahsin.","error");return;}
     if(data.programQuran==="TAHFIZ")data.tahsinLevel="";

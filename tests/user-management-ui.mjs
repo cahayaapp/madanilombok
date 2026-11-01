@@ -43,3 +43,15 @@ test('new account credentials download once, clear password input, and never app
 test('failed creation never offers credentials',async()=>{
  const {root,ui,change,dom}=setup({create:async()=>{throw Error('Creation failed');}});ui.open();root.querySelector('#userNameInput').value='Baru';root.querySelector('#userEmailInput').value='baru@example.test';root.querySelector('#userPasswordInput').value='Initial123!';const box=root.querySelector('[data-pick-role="admin"]');box.checked=true;change(box);root.querySelector('#userEditorForm').dispatchEvent(new dom.window.Event('submit',{cancelable:true}));await settle();assert.equal(root.querySelector('#newUserCredentials').hidden,true);assert.match(root.querySelector('#userEditorError').textContent,/Creation failed/);
 });
+
+test('assignment checklists save multiple units and classes and retain selections while toggling roles',async()=>{
+ master.units.push({id:'smp',name:'SMP'});master.classes.push({id:'c2',name:'Kelas VII',unitId:'smp'});
+ try{
+ const {root,ui,profiles,change,events,dom}=setup();ui.open(profiles[1]);
+ for(const key of ['unitIds','classIds'])for(const input of root.querySelectorAll(`[data-scope-role="guru_mapel"][data-scope-field="${key}"] input`))input.checked=true;
+ const role=root.querySelector('[data-pick-role="guru_wali"]');role.checked=true;change(role);
+ assert.equal(root.querySelectorAll('[data-scope-role="guru_mapel"][data-scope-field="classIds"] input:checked').length,2);
+ root.querySelector('#userEditorForm').dispatchEvent(new dom.window.Event('submit',{cancelable:true}));await settle();
+ assert.deepEqual(events[0][2].roleScopes.guru_mapel.unitIds,['smk','smp']);assert.deepEqual(events[0][2].roleScopes.guru_mapel.classIds,['c1','c2']);
+ }finally{master.units.pop();master.classes.pop();}
+});
