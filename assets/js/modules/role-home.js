@@ -1,4 +1,4 @@
-import {upgradeAdminHome} from '../admin-home.js';
+import {upgradeAdminHome} from '../admin-home.js?v=199';
 import {renderTreasuryHome} from '../treasury/ui.js';
 import {renderMinimartHome} from '../minimart/ui.js';
 import {renderNaqibHome} from '../naqib-home.js';

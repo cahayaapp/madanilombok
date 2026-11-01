@@ -961,3 +961,8 @@ Insiden packaging ditangani sebelum rilis: defaultignore **/.* ternyata masih me
 - Instruksi warna terbaru pengguna: biru dan kuning-oranye emas pada beranda admin. Grafik, kartu, ikon, sidebar beranda dan aksen memakai biru dengan emas #f4b442/oranye #e9951c; aset logo tidak diubah.
 - Semua delapan akses cepat memakai class khusus ao-quick-tile, tanpa premium-quick yang mewariskan padding/font besar. Dua kolom, tinggi seragam 104px, ikon dan judul tanpa deskripsi panjang; label tidak terpecah per huruf.
 - 42 tes model/rendering lulus; syntax modul, 47 JSON dan diff valid. Browser fixture desktop dan 390px: delapan kartu masing-masing 104px, tanpa overflow horizontal. Cache198/tema144. Belum deploy oleh sesi ini.
+
+### Koreksi warna & kompatibilitas kartu lama — 1 November
+- Pengguna mengoreksi warna menjadi hijau tosca dan kuning-oranye emas, menggantikan permintaan biru. Palet admin dikembalikan ke tosca/logo dan emas; logo tetap.
+- Screenshot memperlihatkan CSS baru bersama empat kartu legacy premium-quick. Normalisasi CSS kini menyasar seluruh tombol langsung ao-quick dengan specificity di atas gaya lama, menyembunyikan deskripsi/dekorasi dan menetapkan ukuran border-box 104px, dua kolom serta jarak12px. Berlaku untuk markup baru maupun lama.
+- Uji browser sengaja memakai empat kartu legacy: delapan kartu seragam 104px termasuk border, tanpa tumpang tindih; 390px tanpa overflow horizontal. 42 tes model/rendering lulus; syntax, JSON, diff valid. Import admin-home diberi versi199, tema145/cache199. Belum deployment oleh sesi ini.

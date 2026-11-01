@@ -2,7 +2,7 @@ import {escapeHtml as e} from './utils.js';
 import {icon} from './teacher/ui.js';
 import {ADMIN_HOME_ROUTES,ADMIN_WORKSPACES} from './admin-workspaces.js';
 const active=r=>!r.mergedInto&&(!r.status||r.status==='active');
-const colors=['#1677b8','#164e80','#f4b442','#ffe5a0','#e9951c','#8ec5eb'];
+const colors=['#00a39d','#007d76','#f4b442','#ffe5a0','#e9951c','#80cdc0'];
 export function adminHomeData(master={},yearId='',now=new Date()){
  const students=(master.students||[]).filter(active),classes=(master.classes||[]).filter(active),staff=(master.staff||[]).filter(active);
  const classRows=classes.map(c=>({...c,L:0,P:0,other:0}));
