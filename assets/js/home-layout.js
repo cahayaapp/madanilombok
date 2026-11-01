@@ -1,5 +1,6 @@
 import {menuSelection,roleMenuItems} from './menu-layout.js';
 import {canAccess} from './permissions.js';
+import {COACHING_MENU_ROLES} from './role-workspace-catalog.js';
 import {ADMIN_HOME_ROUTES, ADMIN_WORKSPACES} from './admin-workspaces.js';
 import {icon} from './teacher/ui.js';
 import {escapeHtml as e} from './utils.js';
@@ -56,6 +57,12 @@ export function arrangeHome(ctx,items=[]){
  const fromIds=ids=>ids.map(id=>catalog.find(i=>i.id===id)).filter(Boolean).map(make);
  if(selectedQuick!==null)quick=fromIds(selectedQuick).slice(0,4);
  if(selectedOther!==null)rest.splice(0,rest.length,...fromIds(selectedOther));
+ // Keep the explicitly requested coaching entry visible even with an older saved menu.
+ if(COACHING_MENU_ROLES.includes(ctx.session.activeRole)){
+  const coaching=available.find(i=>i.id==='management-coaching');
+  for(let i=rest.length-1;i>=0;i--)if(route(rest[i])==='management-coaching')rest.splice(i,1);
+  if(coaching&&!quick.some(b=>route(b)==='management-coaching'))rest.unshift(make(coaching));
+ }
  const styleCard=(b,index,primary)=>{
   const title=combinedLabels[route(b)]||b.querySelector('strong,b')?.textContent.trim()||b.textContent.trim();
   const sub=combinedLabels[route(b)]?'Pantau kehadiran dan ketepatan waktu':QUICK_DESCRIPTIONS[route(b)]||b.querySelector('small')?.textContent.trim()||'Buka ruang kerja Anda';

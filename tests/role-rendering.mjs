@@ -646,3 +646,13 @@ test('workspace refresh preserves form listeners and controls, adds one safe bac
  const ctx=ctxFor('kasir');ctx.root.className='';ctx.root.innerHTML='<div class="portal-section-head"><div><h2>Kasir</h2></div></div><form><input name="pin" type="password"><button disabled>Bayar</button></form>';let clicked=false,route='';ctx.navigate=r=>route=r;const form=ctx.root.querySelector('form');form.addEventListener('submit',e=>{e.preventDefault();clicked=true;});const input=form.querySelector('input');input.value='123456';design.namespace.decorateWorkspace(ctx,'cashier');design.namespace.decorateWorkspace(ctx,'cashier');assert.equal(ctx.root.querySelectorAll('[data-workspace-home]').length,1);assert.equal(form.querySelector('input'),input);assert.equal(input.value,'123456');assert.equal(form.querySelector('button').disabled,true);submit(form);assert.equal(clicked,true);ctx.root.querySelector('[data-workspace-home]').click();assert.equal(route,'dashboard');
  for(const route of ['dashboard','teacher-leave','mentoring','quran-ziyadah']){ctx.root.className='';ctx.root.innerHTML='<header class="teacher-header"><h1>Ruang Kerja</h1></header>';design.namespace.decorateWorkspace(ctx,route);assert.equal(ctx.root.classList.contains('workspace-refresh'),false);}
 });
+
+test('five leadership homes expose coaching and director homes omit cashier menus',async()=>{
+ for(const role of ['head_formal_school','head_boys_dorm','head_girls_dorm','director','deputy_director']){
+  const ctx=ctxFor(role),clicked=[];ctx.navigate=id=>clicked.push(id);
+  const items=MENU_GROUPS.flatMap(g=>g.items).filter(i=>canAccess(i.feature||'dashboard',[role]));
+  await homes.namespace.renderRoleHome(ctx,items);
+  const coaching=ctx.root.querySelector('.premium-home [data-home-route="management-coaching"]');assert.ok(coaching,role);coaching.click();assert.deepEqual(clicked,['management-coaching']);
+  if(['director','deputy_director'].includes(role))assert.equal(ctx.root.querySelector('[data-home-route^="finance-"],[data-home-route^="minimart-"]'),null);
+ }
+});

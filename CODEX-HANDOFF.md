@@ -966,3 +966,15 @@ Insiden packaging ditangani sebelum rilis: defaultignore **/.* ternyata masih me
 - Pengguna mengoreksi warna menjadi hijau tosca dan kuning-oranye emas, menggantikan permintaan biru. Palet admin dikembalikan ke tosca/logo dan emas; logo tetap.
 - Screenshot memperlihatkan CSS baru bersama empat kartu legacy premium-quick. Normalisasi CSS kini menyasar seluruh tombol langsung ao-quick dengan specificity di atas gaya lama, menyembunyikan deskripsi/dekorasi dan menetapkan ukuran border-box 104px, dua kolom serta jarak12px. Berlaku untuk markup baru maupun lama.
 - Uji browser sengaja memakai empat kartu legacy: delapan kartu seragam 104px termasuk border, tanpa tumpang tindih; 390px tanpa overflow horizontal. 42 tes model/rendering lulus; syntax, JSON, diff valid. Import admin-home diberi versi199, tema145/cache199. Belum deployment oleh sesi ini.
+
+## 1 November — menu Pembinaan Personil pimpinan
+- Permintaan pengguna: tampilkan Pembinaan Personil pada Kepala Sekolah Formal, Kepala Asrama Putra/Putri, Direktur dan Wakil Direktur. Memakai route/alur management-coaching existing (catatan/target/tenggat/riwayat), tanpa membuat modul atau data paralel.
+- Entry sidebar dipertahankan meskipun konfigurasi sidebar tersimpan lama belum mencantumkannya; beranda memprioritaskan coaching pada menu lainnya jika belum menjadi akses cepat. Batas menu utama4/menu lainnya6 tetap berlaku, tanpa duplikasi coaching.
+- Direktur/Wakil Direktur menyaring finance-*, minimart-* dan cashier dari sidebar, katalog, beranda serta pilihan bottom tersimpan. Ini perubahan presentasi menu sesuai instruksi, bukan pencabutan hak server/finance. Role Bendahara/Minimart dan fungsi transaksi tidak berubah.
+- 43 tes menu/rendering +6 workflow +17 kontrak role lulus. Satu kegagalan kontrak existing tetap pada path rules Jurnal Liburan; rules tidak diedit. 290 JS/MJS/CJS,47 JSON dan diff valid. Cache200; belum deployment/pengujian produksi, tidak menulis database.
+
+### 1 November — pembinaan beberapa personil sekaligus
+- Pembinaan baru memakai checkbox satu/banyak personil sesuai managedPeople role aktif. Saat simpan, daftar akun dibaca ulang dan seluruh pilihan divalidasi sebelum write. Tanpa pilihan atau akun dicabut ditolak.
+- createWorkspaceRecord menerima array opsional dan menulis satu record per personUid beserta audit individual dalam satu update atomik; pemanggil single-record tetap mendapat bentuk hasil lama. Node/schema workspaces/{year}/coaching dan rules tetap, tidak membuat node batch atau mengubah finance.
+- Edit riwayat tetap satu personil/record, target/evaluasi lainnya tidak diubah. Temuan individual hanya dapat ditautkan jika memilih satu personil; pembinaan bersama memakai Pembinaan langsung.
+- 65 tes model/UI/menu/registry/repository mock lulus, mencakup dua pilihan, pilihan kosong, akun dicabut setelah form dibuka, edit individual dan satu atomic patch plus audit. 291 JS/MJS/CJS,47 JSON valid; diff bersih. Ini bukan uji write Firebase/produksi. Cache201/tema146; belum deploy.

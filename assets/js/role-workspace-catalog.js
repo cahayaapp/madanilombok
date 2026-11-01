@@ -26,8 +26,11 @@ export function workspaceFeatures(role){return (WORKSPACE_GRANTS[role]||[]).map(
 export const MANAGEMENT_ROLES=['head_formal_school','head_boys_dorm','head_girls_dorm','deputy_director','director','admin','super_admin'];
 export const LEADERSHIP_ROLES=['deputy_director','director','admin','super_admin'];
 
+export const COACHING_MENU_ROLES=['head_formal_school','head_boys_dorm','head_girls_dorm','director','deputy_director'];
+
 // Presentation only: retain existing authorization and operational records.
 export function visibleRoleMenu(role,items){
+ if(['director','deputy_director'].includes(role))return items.filter(item=>!item.id.startsWith('finance-')&&!item.id.startsWith('minimart-')&&item.id!=='cashier');
  if(role==='konselor')return items.filter(item=>['dashboard','case-inbox','counseling-book','violation-evaluation','warning-letter','work-profile','counselor-guide','education-calendar'].includes(item.id));
  const adminMenus=new Set(['dashboard',...Object.keys(ADMIN_HOME_ROUTES),'work-profile','work-messages','work-guide']);
  return ['admin','super_admin'].includes(role)?items.filter(item=>adminMenus.has(item.id)):items;

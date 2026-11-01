@@ -183,14 +183,18 @@ export async function writeAudit(action, entity, entityId, actorUid, detail = {}
 
 /** Additive workspace records: server clock and audit in one atomic update. */
 export async function createWorkspaceRecord(path, data, actorUid) {
-  const target=push(ref(db,pathFor(path)));
-  const audit=push(ref(db,pathFor('audit_logs')));
-  const record={...data,createdBy:actorUid,updatedBy:actorUid,createdAt:serverTimestamp(),updatedAt:serverTimestamp()};
-  await update(ref(db,pathFor('')),{
-    [`${path}/${target.key}`]:record,
-    [`audit_logs/${audit.key}`]:{action:'workspace_create',path,recordId:target.key,actorUid,createdAt:serverTimestamp()}
+  const batch=Array.isArray(data),items=batch?data:[data];
+  if(!items.length)throw Error('Pilih minimal satu personil.');
+  const patch={},records=items.map(item=>{
+    const target=push(ref(db,pathFor(path))),audit=push(ref(db,pathFor('audit_logs')));
+    const record={...item,createdBy:actorUid,updatedBy:actorUid,createdAt:serverTimestamp(),updatedAt:serverTimestamp()};
+    patch[`${path}/${target.key}`]=record;
+    patch[`audit_logs/${audit.key}`]={action:'workspace_create',path,recordId:target.key,actorUid,createdAt:serverTimestamp()};
+    return {id:target.key,...record};
   });
-  return {id:target.key,...record};
+  // One update makes all person records and their audit entries succeed or fail together.
+  await update(ref(db,pathFor('')),patch);
+  return batch?records:records[0];
 }
 
 /** Compare-and-transition prevents stale screens from overwriting newer workflow state. */

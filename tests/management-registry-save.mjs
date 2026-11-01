@@ -14,7 +14,7 @@ for(const [route,collection] of Object.entries(registries))for(const editing of 
   const data={title:'Example',date:'2026-10-31',scope:'all',personUid:'person',condition:'Observed',discussion:'Discussed',status:'OPEN',kind:'ARAH',result:'',reviewDate:'2026-11-01'};
   const old=editing?{id:'record',...data,academicYearId:'y',createdBy:'original',createdAt:1,updatedBy:'original',updatedAt:1,version:2,history:{original:{status:'OPEN'}}}:null;
   let save,written;
-  const form={elements:[],querySelectorAll:()=>[{value:'education'}],reset(){}};
+  const form={elements:[],querySelectorAll:selector=>[{value:selector.includes('data-coaching-person')?'person':'education'}],reset(){}};
   const elements=new Map();
   const edit={dataset:{edit:'record'}};
   const root={querySelector(selector){if(selector==='#registryForm')return form;if(!elements.has(selector))elements.set(selector,{value:''});return elements.get(selector);},querySelectorAll:()=>editing?[edit]:[]};
@@ -23,7 +23,7 @@ for(const [route,collection] of Object.entries(registries))for(const editing of 
    './boarding-personnel-scope.js':{dormPersonnel:()=>[]},
    './repository.js':{
     listNode:async path=>path==='users'?[{id:'person',name:'Person',active:true}]:path===`workspaces/y/${collection}`&&old?[old]:[],
-    createWorkspaceRecord:async(path,payload,actor)=>{assert.equal(path,`workspaces/y/${collection}`);written={...payload,createdBy:actor,updatedBy:actor,createdAt:1,updatedAt:1};},
+    createWorkspaceRecord:async(path,payload,actor)=>{assert.equal(path,`workspaces/y/${collection}`);written={...(Array.isArray(payload)?payload[0]:payload),createdBy:actor,updatedBy:actor,createdAt:1,updatedAt:1};},
     transitionWorkspaceRecord:async(path,id,transition,actor)=>{assert.equal(path,`workspaces/y/${collection}`);assert.equal(id,'record');written={...transition(old),updatedBy:actor,updatedAt:2};},
     commitCaseOperation:noop
    },

@@ -1,7 +1,7 @@
 import test from 'node:test';import assert from 'node:assert/strict';import vm from 'node:vm';import {readFileSync,writeFileSync,mkdirSync} from 'node:fs';import {createRequire} from 'node:module';import {fileURLToPath} from 'node:url';import {webcrypto} from 'node:crypto';
 const require=createRequire(import.meta.url),{JSDOM}=require(process.env.MADANI_JSDOM_MODULE||'jsdom'),base=new URL('../',import.meta.url),dom=new JSDOM('<main id="content"></main>',{url:'http://localhost/app/index.html'}),win=dom.window;
 let db={},writes=[];const read=p=>p.split('/').reduce((v,k)=>v?.[k],db)||null;const put=(p,v)=>{const parts=p.split('/');let o=db;for(const k of parts.slice(0,-1))o=o[k]??={};o[parts.at(-1)]=v;writes.push(p);};
-const repository={commitReportPublication:async(year,data,actor)=>{put(`academic/report_publications/${year}/${data.studentId}/${data.type}__${data.period}`,{...data,status:'PUBLISHED',actor});},submitFindingResponse:async(year,finding,id,data,actor)=>{put(`workspaces/${year}/finding_responses/${id}`,{...data,findingId:finding,actorUid:actor});},requestExamRevision:async()=>{throw Error('Separate model tests');},getCurrentAcademicYearId:async()=>'year',getNode:async p=>read(p),listNode:async p=>Object.entries(read(p)||{}).map(([id,r])=>({id,...r})),createWorkspaceRecord:async(p,r,actor)=>{const id='new-record';put(`${p}/${id}`,{...r,createdBy:actor});return {id,...r};},saveWorkspaceRecord:async(p,id,r)=>{put(`${p}/${id}`,r);return r;},transitionWorkspaceRecord:async(p,id,fn)=>{const r=fn(read(`${p}/${id}`));put(`${p}/${id}`,r);return r;},commitCaseOperation:async()=>{throw Error('Separate model tests');},saveTeacherSession:async(p,r,o)=>{if((read(p)?.version||0)!==o.expectedVersion)throw Error('Data berubah');put(p,r);return r;}};
+const repository={commitReportPublication:async(year,data,actor)=>{put(`academic/report_publications/${year}/${data.studentId}/${data.type}__${data.period}`,{...data,status:'PUBLISHED',actor});},submitFindingResponse:async(year,finding,id,data,actor)=>{put(`workspaces/${year}/finding_responses/${id}`,{...data,findingId:finding,actorUid:actor});},requestExamRevision:async()=>{throw Error('Separate model tests');},getCurrentAcademicYearId:async()=>'year',getNode:async p=>read(p),listNode:async p=>Object.entries(read(p)||{}).map(([id,r])=>({id,...r})),createWorkspaceRecord:async(p,r,actor)=>{if(Array.isArray(r)){return r.map((row,i)=>{const id='batch-'+i;put(`${p}/${id}`,{...row,createdBy:actor});return {id,...row};});}const id='new-record';put(`${p}/${id}`,{...r,createdBy:actor});return {id,...r};},saveWorkspaceRecord:async(p,id,r)=>{put(`${p}/${id}`,r);return r;},transitionWorkspaceRecord:async(p,id,fn)=>{const r=fn(read(`${p}/${id}`));put(`${p}/${id}`,r);return r;},commitCaseOperation:async()=>{throw Error('Separate model tests');},saveTeacherSession:async(p,r,o)=>{if((read(p)?.version||0)!==o.expectedVersion)throw Error('Data berubah');put(p,r);return r;}};
 const context=vm.createContext({console,document:win.document,window:win,FormData:win.FormData,Intl,Date,URL,crypto:webcrypto,requestAnimationFrame:f=>f(),setTimeout:()=>0,clearTimeout});const exports=Object.keys(repository),mock=new vm.SyntheticModule(exports,function(){for(const k of exports)this.setExport(k,repository[k]);},{context}),cache=new Map();function getModule(url){if(url.endsWith('/repository.js'))return mock;if(!cache.has(url))cache.set(url,new vm.SourceTextModule(readFileSync(fileURLToPath(url),'utf8'),{context,identifier:url}));return cache.get(url);}async function load(url){const mod=getModule(url);if(mod.status==='unlinked')await mod.link((s,p)=>getModule(new URL(s,p.identifier).href));return mod;}
 const registry=await load(new URL('assets/js/management-registry.js',base).href);await registry.evaluate();const naqib=await load(new URL('assets/js/naqib-assessment.js',base).href);await naqib.evaluate();const worship=await load(new URL('assets/js/staff-worship.js',base).href);await worship.evaluate();const R=registry.namespace,N=naqib.namespace,W=worship.namespace;
 const ctx={root:win.document.querySelector('main'),yearId:'year',session:{activeRole:'director',roles:['director'],user:{uid:'dir'},profile:{name:'Direktur'}},master:{students:[{id:'s1',name:'Santri Uji',gender:'L',boardingStatus:'boarding'}],classes:[],staff:[{id:'staff1',name:'Guru Uji'}],classAssignments:{}},navigate:()=>{},rerender:async()=>{}};
@@ -29,4 +29,28 @@ test('worship refuses save when selected personnel are removed after loading',as
  await W.renderStaffWorship(c);await click('[data-status="Sakit"]');
  put('workspaces/year/resident_staff/boarding-L__staff1',{staffId:'staff1',scope:'boarding-L',resident:false});
  await click('#saveWorship');assert.equal(read('workspaces/year/staff_worship'),null);assert.match(ctx.root.textContent,/Penetapan personil berubah/);
+});
+
+
+test('coaching selects multiple eligible personnel and edits one record without changing the others',async()=>{
+ db={users:{a:{name:'Guru A',role:'guru_mapel'},b:{name:'Guru B',role:'guru_mapel'},outsider:{name:'Kasir',role:'minimart'}}};writes=[];
+ const c={...ctx,session:{...ctx.session,activeRole:'head_formal_school'}};
+ await R.renderRegistry(c,'management-coaching');
+ assert.equal(ctx.root.querySelectorAll('[data-coaching-person]').length,2);
+ fill({title:'Pembinaan bersama',date:'2026-11-01',scope:'education',discussion:'Evaluasi pembelajaran',reviewDate:'2026-11-07',status:'OPEN'});
+ await submit('#registryForm');assert.equal(read('workspaces/year/coaching'),null);
+ for(const el of ctx.root.querySelectorAll('[data-coaching-person]'))el.checked=true;
+ await submit('#registryForm');
+ const rows=Object.values(read('workspaces/year/coaching'));assert.equal(rows.length,2);assert.deepEqual(rows.map(r=>r.personUid),['a','b']);assert.ok(rows.every(r=>r.academicYearId==='year'&&r.discussion==='Evaluasi pembelajaran'));
+ await R.renderRegistry(c,'management-coaching');await click('[data-edit="batch-0"]');assert.equal($('#coachingPeople').hidden,true);assert.equal($('#singlePerson').hidden,false);
+ fill({result:'Hasil Guru A',status:'COMPLETE'});await submit('#registryForm');assert.equal(read('workspaces/year/coaching/batch-0').version,2);assert.equal(read('workspaces/year/coaching/batch-1').status,'OPEN');
+ await click('#newRecord');assert.equal($('#coachingPeople').hidden,false);
+});
+
+test('coaching rejects a selected person whose access was revoked before saving',async()=>{
+ db={users:{a:{name:'Guru A',role:'guru_mapel',active:true},b:{name:'Guru B',role:'guru_mapel',active:true}}};
+ const c={...ctx,session:{...ctx.session,activeRole:'head_formal_school'}};await R.renderRegistry(c,'management-coaching');
+ for(const el of ctx.root.querySelectorAll('[data-coaching-person]'))el.checked=true;
+ fill({title:'Pembinaan',date:'2026-11-01',scope:'education',discussion:'Evaluasi',reviewDate:'2026-11-07',status:'OPEN'});
+ db.users.b.active=false;await submit('#registryForm');assert.equal(read('workspaces/year/coaching'),null);
 });

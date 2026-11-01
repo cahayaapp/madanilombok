@@ -1,5 +1,5 @@
 import {MENU_GROUPS,featuresForRoles} from './permissions.js';
-import {visibleRoleMenu} from './role-workspace-catalog.js';
+import {visibleRoleMenu,COACHING_MENU_ROLES} from './role-workspace-catalog.js';
 import {ROLE_EXPERIENCE} from './role-experience.js';
 import {menuSettings} from './feature-switches.js';
 export function roleMenuItems(role){
@@ -13,9 +13,9 @@ export function menuSelection(role,section,fallback){
  const saved=menuSettings(role)?.[section];
  return Array.isArray(saved)?saved:saved&&typeof saved==='object'?Object.keys(saved).filter(k=>saved[k]===true):fallback;
 }
-export function menuVisible(role,section,id){const selected=menuSelection(role,section,null);return selected===null||selected.includes(id);}
+export function menuVisible(role,section,id){if(!visibleRoleMenu(role,[{id}]).length)return false;if(section==='sidebar'&&id==='management-coaching'&&COACHING_MENU_ROLES.includes(role))return true;const selected=menuSelection(role,section,null);return selected===null||selected.includes(id);}
 export function configuredBottom(role,defaults,canRoute){
  const config=menuSettings(role)?.bottom;
  if(!config)return defaults;
- return {...defaults,...Object.fromEntries(['schedule','messages','profile'].map(slot=>[slot,canRoute(config[slot])?config[slot]:null])),home:'dashboard'};
+ return {...defaults,...Object.fromEntries(['schedule','messages','profile'].map(slot=>[slot,visibleRoleMenu(role,[{id:config[slot]||''}]).length&&canRoute(config[slot])?config[slot]:null])),home:'dashboard'};
 }
