@@ -27,3 +27,5 @@ test('consecutive lessons merge into one session, but breaks, classes and teache
  const result=mergeConsecutiveSchedules(slots);assert.equal(result.length,4);assert.equal(result[0].id,'a');assert.equal(result[0].endTime,'10:00');assert.deepEqual(result[0].sourceScheduleIds,['a','b','c']);assert.equal(slots[0].endTime,'08:40');assert.deepEqual(attendanceForSchedule({b:{status:'TERLAMBAT'}},result[0]),{status:'TERLAMBAT'});
 });
 import {mergeConsecutiveSchedules,attendanceForSchedule} from '../assets/js/teacher/model.js';
+
+test('disabled attendance radius accepts distant coordinates without requiring a campus zone',()=>{const c={latitude:-8,longitude:116,accuracy:12};for(const zone of [null,{latitude:0,longitude:0,radiusMeter:1}]){assert.deepEqual(verifyLocation(c,zone,{enforceRadius:false}),{...c,radiusEnforced:false});}assert.throws(()=>verifyLocation({...c,accuracy:NaN},null,{enforceRadius:false}),/valid/);});

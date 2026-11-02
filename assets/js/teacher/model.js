@@ -55,9 +55,10 @@ export function calendarBreaks(calendar, schedule, year) {
   return [...dates];
 }
 export function distanceMeters(a,b,c,d){const rad=x=>x*Math.PI/180,q=Math.sin(rad(c-a)/2)**2+Math.cos(rad(a))*Math.cos(rad(c))*Math.sin(rad(d-b)/2)**2;return 6371000*2*Math.atan2(Math.sqrt(q),Math.sqrt(1-q));}
-export function verifyLocation(coords,zone) {
-  if(!zone||zone.active===false||zone.status==='inactive'||![zone.latitude,zone.longitude,zone.radiusMeter].every(x=>x!==null&&x!==''&&Number.isFinite(Number(x)))||Math.abs(+zone.latitude)>90||Math.abs(+zone.longitude)>180||+zone.radiusMeter<=0)throw Error('Lokasi absensi Madani belum dikonfigurasi. Hubungi administrator.');
+export function verifyLocation(coords,zone,{enforceRadius=true}={}) {
   if(!coords||![coords.latitude,coords.longitude,coords.accuracy].every(Number.isFinite)||coords.accuracy<0)throw Error('GPS belum memberikan koordinat yang valid.');
+  if(!enforceRadius)return {latitude:coords.latitude,longitude:coords.longitude,accuracy:Math.round(coords.accuracy),radiusEnforced:false};
+  if(!zone||zone.active===false||zone.status==='inactive'||![zone.latitude,zone.longitude,zone.radiusMeter].every(x=>x!==null&&x!==''&&Number.isFinite(Number(x)))||Math.abs(+zone.latitude)>90||Math.abs(+zone.longitude)>180||+zone.radiusMeter<=0)throw Error('Lokasi absensi Madani belum dikonfigurasi. Hubungi administrator.');
   const distance=distanceMeters(coords.latitude,coords.longitude,+zone.latitude,+zone.longitude),tolerance=Math.min(Math.max(coords.accuracy,35),350),effective=Math.max(0,distance-tolerance-60);
   if(effective>+zone.radiusMeter)throw Error(`Anda berada di luar zona ${zone.name||'Madani'}. Jarak ${Math.round(distance)} m, radius ${zone.radiusMeter} m.`);
   return {latitude:coords.latitude,longitude:coords.longitude,accuracy:Math.round(coords.accuracy),distance:Math.round(distance),effectiveDistance:Math.round(effective),radiusMeter:+zone.radiusMeter,locationId:zone.id||'campus',locationName:zone.name||'Madani'};

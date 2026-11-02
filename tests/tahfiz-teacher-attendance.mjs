@@ -19,7 +19,7 @@ test('both teaching roles open daily attendance directly and save their own teac
    saveTeacherSession:async(path,data,options)=>{writes.push({path,data,options});records[data.scheduleId]=data;return data;}};
   const context=vm.createContext({console,document:win.document,window:win,sessionStorage:win.sessionStorage,localStorage:win.localStorage,Intl,Date,URL,setTimeout,clearTimeout});
   const repoMock=new vm.SyntheticModule(repoNames,function(){for(const n of repoNames)this.setExport(n,repo[n]||(()=>{throw Error(`Unexpected repository call: ${n}`);}));},{context});
-  const gpsMock=new vm.SyntheticModule(['attendanceCoordinates'],function(){this.setExport('attendanceCoordinates',async()=>{if(gpsFails)throw Error('Lokasi ditolak');return {latitude:0,longitude:0,accuracy:10};});},{context});
+  const gpsMock=new vm.SyntheticModule(['attendanceCoordinates'],function(){this.setExport('attendanceCoordinates',async()=>{if(gpsFails)throw Error('Lokasi ditolak');return {latitude:-8,longitude:116,accuracy:10};});},{context});
   const cache=new Map();
   function load(url){
    if(url.endsWith('/repository.js'))return repoMock;
@@ -48,7 +48,7 @@ test('both teaching roles open daily attendance directly and save their own teac
   gpsFails=false;await button.onclick();assert.equal(writes.length,1);
   const {path,data,options}=writes[0];
   assert.ok(path.startsWith(`academic/teaching_attendance/year/staff/${now.date}/`));
-  assert.equal(data.teacherUid,'uid');assert.equal(options.createOnly,true);assert.equal(options.actorUid,'uid');
+  assert.equal(data.location.radiusEnforced,false);assert.equal(data.location.latitude,-8);assert.equal(data.teacherUid,'uid');assert.equal(options.createOnly,true);assert.equal(options.actorUid,'uid');
   assert.equal(role==='guru_mapel'?data.classId:data.groupId,role==='guru_mapel'?'class':'group');
   await handler(ctx);assert.equal(ctx.root.querySelectorAll('[data-attend]').length,0);
   assert.match(ctx.root.textContent,/Sudah Absen/);
