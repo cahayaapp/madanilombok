@@ -12,3 +12,9 @@ Atas instruksi pengguna, penggabungan LIVE dilakukan lewat sesi Super Admin Safa
 Verifikasi lokal: 20 tes user management/model guru/jadwal formal lulus; 293 JS/MJS/CJS lolos syntax; 59 JSON valid. Role/route suite: 17 dari 18 lulus; pemeriksaan aturan Jurnal Liburan gagal karena fixture mengakses node rules yang tidak tersedia (`$studentId`). Tidak memperbaiki aturan di luar scope penggabungan ini.
 
 Batas bukti: verifikasi menggunakan pembacaan database live dan fungsi jadwal/validasi aplikasi dalam sesi admin. Login langsung sebagai Ida, uji GPS perangkat, dan penulisan workflow dengan kredensial Ida tidak dilakukan. Tidak mengklaim semua workflow telah diuji secara end-to-end.
+
+## Pemeriksaan ulang laporan jadwal formal tidak terlihat
+
+Profil tujuan dibaca ulang dari live, diproses memakai `sessionForRole(..., 'guru_mapel')` yang benar-benar digunakan portal, lalu model dan renderer `renderTeacherSchedule` dari kode produksi dijalankan dengan master terbaru pada elemen DOM terpisah (tanpa menulis data atau membuka sesi login Ida). Renderer menghasilkan 23 kartu, termasuk 16 kartu formal, dan tab Semua serta seluruh hari.
+
+Distribusi sesi formal: Senin 5, Selasa 5, Kamis 3, Sabtu 3; Minggu/Rabu/Jumat 0. Pada Rabu 11 November 2026, layar Presensi Guru / Jadwal Hari Ini memang hanya menampilkan Bahasa Arab pagi. Ini kemungkinan penjelasan laporan pengguna, belum konfirmasi layar perangkat Ida. Kamis: SKI 8 Putri 09:20–10:00 dan 10:20–11:00; SKI 9 Putra 13:30–14:50 WITA. Tidak menggeser atau menambah jadwal untuk membuat sesi formal muncul pada hari tanpa penugasan. Perlu membedakan laporan layar harian dengan menu Jadwal tab Semua sebelum menyimpulkan ada kegagalan perangkat/cache.
