@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="id">
+<head>
+ <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+ <meta name="theme-color" content="#053d3c"><meta name="robots" content="noindex,nofollow,noarchive"><meta name="referrer" content="no-referrer">
+ <title>Madani Live — Ruang Inspirasi & Informasi</title>
+ <meta name="description" content="Layar informasi Pondok Pesantren Al-Madani. Inspirasi, waktu salat, setoran Al-Qur’an, dan aktivitas hari ini.">
+ <link rel="icon" href="/assets/brand/logo.svg" type="image/svg+xml">
+ <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+ <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+ <link rel="stylesheet" href="/assets/css/live.css?v=1"><link rel="stylesheet" href="/assets/css/brand-theme.css?v=147">
+</head>
+<body class="live-screen">
+ <div class="ambient" aria-hidden="true"><div class="orb orb-one"></div><div class="orb orb-two"></div><div class="orb orb-three"></div><div class="grain"></div><svg class="geometry" viewBox="0 0 800 800"><defs><pattern id="star-grid" width="120" height="120" patternUnits="userSpaceOnUse"><path d="M60 10 75 45 110 60 75 75 60 110 45 75 10 60 45 45Z M25 25H95V95H25Z" fill="none" stroke="currentColor" stroke-width=".6"/></pattern></defs><rect width="800" height="800" fill="url(#star-grid)"/></svg><div class="light-ray"></div></div>
+ <main class="tv-shell">
+  <header class="live-header">
+   <a class="live-brand" href="/" aria-label="MadaniApp"><img src="/assets/brand/logo.svg" alt="MadaniApp"><div><strong>MADANI<span>LIVE</span></strong><small>PONDOK PESANTREN AL-MADANI</small></div></a>
+   <div class="header-center"><span class="live-dot"></span><span>RUANG INSPIRASI & INFORMASI</span></div>
+   <div class="live-date"><span id="dateLine"></span><small id="hijriLine"></small></div>
+  </header>
+  <section class="main-stage" aria-label="Siaran Madani Live">
+   <aside class="clock-rail">
+    <div class="rail-label"><span class="tiny-star">✦</span> HARI INI DI AL-MADANI</div>
+    <div class="clock-face"><time id="clock">--:--</time><div class="clock-meta"><span id="seconds">00</span><span>WITA</span></div></div>
+    <div class="rail-divider"></div>
+    <div class="next-prayer"><span>SALAT BERIKUTNYA</span><h2 id="nextPrayer">—</h2><div id="countdown">-- : -- : --</div><small id="nextTime"></small></div>
+    <div class="campus-mark"><svg viewBox="0 0 200 110" aria-hidden="true"><path d="M8 100H192M34 100V54H44V100M36 54V29L39 20L42 29V54M156 100V54H166V100M158 54V29L161 20L164 29V54M56 100V60H144V100M56 60C66 38 88 30 100 15C112 30 134 38 144 60M100 15V5M93 6H107M88 100V78Q100 58 112 78V100"/></svg><span>Ilmu. Adab. Amal.</span></div>
+   </aside>
+   <div class="scene-window">
+    <div class="scene-topline"><span id="sceneEyebrow">SEJENAK UNTUK BERTUMBUH</span><span class="scene-number"><b id="sceneNumber">01</b> / 04</span></div>
+    <div id="sceneContent" class="scene-content"></div>
+    <div class="scene-bottom"><div class="scene-navigation" id="sceneNavigation" aria-label="Pilih tampilan"></div><div class="sync-state" id="syncState"><span></span> Menghubungkan siaran</div></div>
+   </div>
+  </section>
+  <section class="prayer-dock" aria-label="Jadwal salat kampus"><div class="prayer-caption"><span class="prayer-symbol">☀</span><div><b>Waktu Salat</b><small>KAMPUS AL-MADANI · WITA</small></div></div><div id="prayerTimes" class="prayer-times"></div><div class="prayer-method">Hisab kampus<small>Subuh 20° · Isya 18°</small></div></section>
+  <footer class="live-footer"><span class="footer-label"><i></i> MADANI HARI INI</span><div class="ticker-window"><div class="ticker-track"><span>Jadikan setiap hari kesempatan untuk bertumbuh. &nbsp; ✦ &nbsp; Ilmu yang bermanfaat dimulai dari adab yang baik. &nbsp; ✦ &nbsp; Satu ayat, satu langkah, satu kebaikan. &nbsp; ✦ &nbsp; </span><span aria-hidden="true">Jadikan setiap hari kesempatan untuk bertumbuh. &nbsp; ✦ &nbsp; Ilmu yang bermanfaat dimulai dari adab yang baik. &nbsp; ✦ &nbsp; Satu ayat, satu langkah, satu kebaikan. &nbsp; ✦ &nbsp; </span></div></div><span class="footer-domain">app.almadanilombok.com/live</span></footer>
+ </main>
+ <div class="tv-controls" id="tvControls"><button id="previousScene" aria-label="Tampilan sebelumnya">←</button><button id="pauseScene" aria-label="Jeda pergantian tampilan">Ⅱ</button><button id="nextScene" aria-label="Tampilan berikutnya">→</button><button id="fullscreen" aria-label="Layar penuh">⛶</button></div>
+ <div class="demo-banner" id="demoBanner" hidden>PRATINJAU · DATA CONTOH</div>
+ <script type="module" src="/assets/js/live.js?v=1"></script>
+</body>
+</html>

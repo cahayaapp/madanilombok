@@ -1266,6 +1266,113 @@
         ".read": false,
         ".write": false
       }
+    },
+    "madani_live": {
+      "current": {
+        ".read": "data.child('enabled').val() === true && data.child('expiresAt').val() > now",
+        ".write": "auth != null && root.child('madani_app/users').child(auth.uid).exists() && root.child('madani_app/users').child(auth.uid).child('active').val() !== false && root.child('madani_app/users').child(auth.uid).child('accessRevoked').val() !== true && (root.child('madani_app/users').child(auth.uid).child('role').val() === 'admin' || root.child('madani_app/users').child(auth.uid).child('role').val() === 'super_admin' || root.child('madani_app/users').child(auth.uid).child('roleFlags/admin').val() === true || root.child('madani_app/users').child(auth.uid).child('roleFlags/super_admin').val() === true || root.child('madani_app/users').child(auth.uid).child('roles/admin').val() === true || root.child('madani_app/users').child(auth.uid).child('roles/super_admin').val() === true)",
+        ".validate": "newData.hasChildren(['version','enabled','date','updatedAt','expiresAt','quran','teachers','students']) && (newData.child('enabled').val() === false || (newData.child('updatedAt').val() >= now - 120000 && newData.child('updatedAt').val() <= now + 60000 && newData.child('expiresAt').val() > now && newData.child('expiresAt').val() <= now + 86400000))",
+        "version": {
+          ".validate": "newData.val() === 1"
+        },
+        "enabled": {
+          ".validate": "newData.isBoolean()"
+        },
+        "date": {
+          ".validate": "newData.isString() && newData.val().matches(/^[0-9]{4}-[0-9]{2}-[0-9]{2}$/)"
+        },
+        "updatedAt": {
+          ".validate": "newData.isNumber()"
+        },
+        "expiresAt": {
+          ".validate": "newData.isNumber()"
+        },
+        "quran": {
+          ".validate": "newData.hasChildren(['total'])",
+          "total": {
+            ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() <= 1000"
+          },
+          "rows": {
+            "$index": {
+              ".validate": "$index.matches(/^[0-9]{1,3}$/) && newData.hasChildren(['name','status'])",
+              "name": {
+                ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 120"
+              },
+              "label": {
+                ".validate": "newData.isString() && newData.val().length <= 100"
+              },
+              "status": {
+                ".validate": "newData.val() === 'submitted' || newData.val() === 'pending'"
+              },
+              "$other": {
+                ".validate": false
+              }
+            }
+          },
+          "$other": {
+            ".validate": false
+          }
+        },
+        "teachers": {
+          ".validate": "newData.hasChildren(['total'])",
+          "total": {
+            ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() <= 1000"
+          },
+          "rows": {
+            "$index": {
+              ".validate": "$index.matches(/^[0-9]{1,3}$/) && newData.hasChildren(['name','status'])",
+              "name": {
+                ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 120"
+              },
+              "label": {
+                ".validate": "newData.isString() && newData.val().length <= 100"
+              },
+              "status": {
+                ".validate": "newData.val() === 'present' || newData.val() === 'excused' || newData.val() === 'absent' || newData.val() === 'missing' || newData.val() === 'upcoming'"
+              },
+              "$other": {
+                ".validate": false
+              }
+            }
+          },
+          "$other": {
+            ".validate": false
+          }
+        },
+        "students": {
+          ".validate": "newData.hasChildren(['total'])",
+          "total": {
+            ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() <= 1000"
+          },
+          "rows": {
+            "$index": {
+              ".validate": "$index.matches(/^[0-9]{1,3}$/) && newData.hasChildren(['name','status'])",
+              "name": {
+                ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 120"
+              },
+              "label": {
+                ".validate": "newData.isString() && newData.val().length <= 100"
+              },
+              "status": {
+                ".validate": "newData.val() === 'present' || newData.val() === 'excused' || newData.val() === 'sick' || newData.val() === 'absent' || newData.val() === 'pending'"
+              },
+              "$other": {
+                ".validate": false
+              }
+            }
+          },
+          "$other": {
+            ".validate": false
+          }
+        },
+        "$other": {
+          ".validate": false
+        }
+      },
+      "$other": {
+        ".read": false,
+        ".write": false
+      }
     }
   }
 }
