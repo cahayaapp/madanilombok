@@ -24,8 +24,21 @@ export function buildLiveSnapshot({master,sources,scheduledTeachers=[],now=new D
  const label=s=>classes.get(master.classAssignments?.[s.id]?.classId)?.name||'';
  const quranGroups=(master.groups||[]).filter(g=>enrolled(g)&&g.programType!=='arabic'&&g.programType!=='lesson'&&/tahf|tahs|qur|halaq/i.test(`${g.type||''} ${g.name||''}`));
  const quranIds=new Set(quranGroups.flatMap(g=>Object.entries(master.groupAssignments?.[g.id]||{}).filter(([,m])=>m&&m!==false&&m.status!=='inactive').map(([id])=>id)).filter(id=>studentMap.has(id)));
- const submitted=new Set(records(sources.quran,r=>!!r.studentId&&!!r.date).filter(r=>r.date===date&&active(r)&&r.status!=='deleted'&&quranIds.has(r.studentId)).map(r=>r.studentId));
- const quran=[...quranIds].map(id=>row(studentMap.get(id),label(studentMap.get(id)),submitted.has(id)?'submitted':'pending')).sort(byName);
+ const deposits=records(sources.quran,r=>!!r.studentId&&!!r.date).filter(r=>r.date===date&&active(r)&&r.status!=='deleted'&&quranIds.has(r.studentId));
+ const submitted=new Set(deposits.map(r=>r.studentId)),tahfizLines=new Map();
+ for(const record of deposits){
+  // Baris Tahsin/Murojaah and verse counts are not new Tahfiz lines.
+  if(String(record.type||'').trim().toLowerCase()!=='tahfiz')continue;
+  const value=record.lines;
+  if(typeof value!=='number'&&!(typeof value==='string'&&/^\d+$/.test(value.trim())))continue;
+  const lines=Number(value);if(!Number.isSafeInteger(lines)||lines<=0)continue;
+  const total=(tahfizLines.get(record.studentId)||0)+lines;
+  if(!Number.isSafeInteger(total))throw Error('Jumlah baris Tahfiz tidak valid.');
+  tahfizLines.set(record.studentId,total);
+ }
+ const quran=[...quranIds].map(id=>({...row(studentMap.get(id),label(studentMap.get(id)),submitted.has(id)?'submitted':'pending'),...(tahfizLines.has(id)?{tahfizLines:tahfizLines.get(id)}:{})})).sort(byName);
+ const totalTahfizLines=[...tahfizLines.values()].reduce((sum,lines)=>sum+lines,0);
+ if(!Number.isSafeInteger(totalTahfizLines))throw Error('Total baris Tahfiz tidak valid.');
  const latest=new Map();
  const register=(id,r,rank)=>{if(!studentMap.has(id)||r.deletedAt||r.attendanceManagedBy||r.date!==date)return;const status=normalizeStatus(r.status);if(status==='pending')return;const old=latest.get(id),key=stamp(r);if(!old||key>old.key||key===old.key&&rank>old.rank)latest.set(id,{status,key,rank});};
  for(const r of records(sources.learning,r=>!!r.students&&!!r.date)){
@@ -47,7 +60,7 @@ export function buildLiveSnapshot({master,sources,scheduledTeachers=[],now=new D
  for(const id of new Set([...attended,...absent]))if(staffMap.has(id)&&!schedules.has(id))schedules.set(id,{id,startMinute:0,label:'Kehadiran tercatat'});
  const teachers=[...schedules.values()].map(s=>row(staffMap.get(s.id),s.label||'Jadwal hari ini',attended.has(s.id)?'present':approved.has(s.id)?'excused':absent.has(s.id)?'absent':s.startMinute>minute?'upcoming':'missing')).sort(byName);
  const section=rows=>({total:rows.length,rows});
- return {version:1,enabled:true,date,updatedAt:now.getTime(),expiresAt:endOfCampusDay(date),quran:section(quran),teachers:section(teachers),students:section(attendance)};
+ return {version:1,enabled:true,date,updatedAt:now.getTime(),expiresAt:endOfCampusDay(date),quran:{...section(quran),totalTahfizLines},teachers:section(teachers),students:section(attendance)};
 }
 export function validateLiveSnapshot(input,now=Date.now()){
  if(!input||input.version!==1||input.enabled!==true||input.date!==campusClock(new Date(now)).date||!Number.isFinite(input.updatedAt)||input.updatedAt>now+60000||!Number.isFinite(input.expiresAt)||input.expiresAt<=now)throw Error('Siaran hari ini belum tersedia.');
@@ -55,8 +68,18 @@ export function validateLiveSnapshot(input,now=Date.now()){
  for(const [section,statuses]of Object.entries(LIVE_BUCKETS)){
   const value=input[section],raw=Array.isArray(value?.rows)?value.rows:Object.values(value?.rows||{});
   if(!value||!Number.isInteger(value.total)||value.total<0||raw.length!==value.total||raw.length>1000)throw Error('Ringkasan siaran belum lengkap.');
-  const rows=raw.map(r=>{if(!r||typeof r.name!=='string'||!r.name.trim()||!statuses.includes(r.status))throw Error('Data siaran tidak valid.');return {name:cleanName(r.name),label:cleanName(r.label).slice(0,100),status:r.status};});
+  const rows=raw.map(r=>{
+   if(!r||typeof r.name!=='string'||!r.name.trim()||!statuses.includes(r.status))throw Error('Data siaran tidak valid.');
+   const result={name:cleanName(r.name),label:cleanName(r.label).slice(0,100),status:r.status};
+   if(section==='quran'&&r.tahfizLines!==undefined){if(!Number.isSafeInteger(r.tahfizLines)||r.tahfizLines<=0||r.status!=='submitted')throw Error('Baris Tahfiz tidak valid.');result.tahfizLines=r.tahfizLines;}
+   return result;
+  });
   result[section]={total:rows.length,rows};
+  if(section==='quran'&&value.totalTahfizLines!==undefined){
+   const sum=rows.reduce((n,r)=>n+(r.tahfizLines||0),0);
+   if(!Number.isSafeInteger(value.totalTahfizLines)||value.totalTahfizLines<0||value.totalTahfizLines!==sum)throw Error('Total baris Tahfiz tidak valid.');
+   result[section].totalTahfizLines=value.totalTahfizLines;
+  }
  }
  return result;
 }

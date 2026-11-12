@@ -15,6 +15,10 @@ test('teachers follow the students in their actual teaching targets, including m
  const now=new Date('2026-11-12T01:00:00Z'),master={students:[{id:'a',gender:'L'},{id:'b',gender:'P'}],staff:[{id:'t',name:'Guru'}],users:[{id:'u',staffId:'t',role:'guru_mapel',classIds:['c']}],classes:[{id:'c',unitId:'UNIT-SMK'}],subjects:[],groups:[],classAssignments:{a:{classId:'c'},b:{classId:'c'}},academicSchedules:[{id:'s',staffId:'t',classId:'c',subjectId:'m',day:'Kamis',startTime:'08:00',endTime:'09:00',academicYearId:'Y'}]};
  const schedules=scheduledLiveTeachers(master,{},'Y',now);assert.equal(schedules.length,1);assert.deepEqual(schedules[0].units,['putra','putri']);
 });
+test('line totals follow the selected unit and the combined total counts each student once',()=>{
+ const date='2026-11-12',master={students:[{id:'a',name:'Putra',gender:'L'},{id:'b',name:'Putri',gender:'P'}],staff:[],classes:[],groups:[{id:'g',name:'Tahfiz'}],groupAssignments:{g:{a:true,b:true}}},sources={quran:{a:{studentId:'a',date,type:'Tahfiz',lines:12},b:{studentId:'b',date,type:'Tahfiz',lines:8}}};
+ const s=buildLiveUnits({master,sources,year:'Y',now:new Date(date+'T01:00:00Z'),scheduledTeachers:[]});assert.equal(s.putra.quran.totalTahfizLines,12);assert.equal(s.putri.quran.totalTahfizLines,8);assert.equal(s.gabungan.quran.totalTahfizLines,20);
+});
 test('scheduled publisher fails closed on missing sources and writes only three public snapshots',async()=>{
  const source={students:{a:{name:'Contoh',gender:'L',nisn:'PRIVATE'}},staff:{t:{name:'Guru'}},classes:{c:{name:'Kelas'}},'settings/currentAcademicYearId':'Y'};
  let broken=false;const writes=[],reads=[];

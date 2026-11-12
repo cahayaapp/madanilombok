@@ -22,10 +22,11 @@ test('selector links to the three public unit screens',()=>{
 });
 test('TV paginates names safely, selects channels, pauses and clears yesterday',async()=>{
  const env=await environment('live/putra/index.html','https://app.almadanilombok.com/live/putra/');let requests=0;
- env.w.matchMedia=()=>({matches:false,addEventListener:()=>{}});const data={...feed(),unit:'putra'};data.quran.rows[0].name='Santri <img onerror="bad()">';
+ env.w.matchMedia=()=>({matches:false,addEventListener:()=>{}});const data={...feed(),unit:'putra'};data.quran.rows[0].name='Santri <img onerror="bad()">';data.quran.rows[0].tahfizLines=15;data.quran.rows[1].tahfizLines=7;data.quran.totalTahfizLines=22;
  env.w.fetch=async(url,options)=>{requests++;assert(url.endsWith('/madani_live/putra.json'));assert.equal(options.credentials,'omit');return {ok:true,json:async()=>data};};
  await env.run('live/tv.js');const d=env.w.document;
  d.querySelectorAll('#channels button')[2].click();assert.match(d.querySelector('#stage h1').textContent,/Sudah setoran/);assert.equal(d.querySelectorAll('.person').length,9);assert.equal(d.querySelectorAll('img[onerror]').length,0);assert.match(d.querySelector('#clock').textContent,/09:00/);
+ assert.match(d.querySelector('#stage .meta').textContent,/Tahfiz hari ini: 22 baris tercatat/);assert.match(d.querySelector('.person small').textContent,/Tahfiz 15 baris/);
  d.querySelector('#pause').click();assert(d.body.classList.contains('paused'));env.advance(TIME+60000);env.intervals[0]();assert.match(d.querySelector('#stage h1').textContent,/Sudah setoran/);
  d.querySelector('#next').click();assert.match(d.querySelector('#stage h1').textContent,/Belum tercatat/);
  env.advance(Date.parse('2026-11-12T16:01:00Z'));env.intervals[0]();await settle();d.querySelectorAll('#channels button')[2].click();assert(!d.querySelector('#stage').textContent.includes('Santri Contoh'));assert.match(d.querySelector('#stage').textContent,/belum tersedia|Menunggu/);assert(requests>=2);env.dom.window.close();

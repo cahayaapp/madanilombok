@@ -1306,11 +1306,17 @@
               },
               "$other": {
                 ".validate": false
+              },
+              "tahfizLines": {
+                ".validate": "newData.isNumber() && newData.val() <= 9007199254740991 && newData.val() % 1 === 0 && newData.val() > 0 && newData.parent().child('status').val() === 'submitted'"
               }
             }
           },
           "$other": {
             ".validate": false
+          },
+          "totalTahfizLines": {
+            ".validate": "newData.isNumber() && newData.val() <= 9007199254740991 && newData.val() % 1 === 0 && newData.val() >= 0"
           }
         },
         "teachers": {
@@ -1411,11 +1417,17 @@
               },
               "$other": {
                 ".validate": false
+              },
+              "tahfizLines": {
+                ".validate": "newData.isNumber() && newData.val() <= 9007199254740991 && newData.val() % 1 === 0 && newData.val() > 0 && newData.parent().child('status').val() === 'submitted'"
               }
             }
           },
           "$other": {
             ".validate": false
+          },
+          "totalTahfizLines": {
+            ".validate": "newData.isNumber() && newData.val() <= 9007199254740991 && newData.val() % 1 === 0 && newData.val() >= 0"
           }
         },
         "teachers": {
@@ -1515,11 +1527,17 @@
               },
               "$other": {
                 ".validate": false
+              },
+              "tahfizLines": {
+                ".validate": "newData.isNumber() && newData.val() <= 9007199254740991 && newData.val() % 1 === 0 && newData.val() > 0 && newData.parent().child('status').val() === 'submitted'"
               }
             }
           },
           "$other": {
             ".validate": false
+          },
+          "totalTahfizLines": {
+            ".validate": "newData.isNumber() && newData.val() <= 9007199254740991 && newData.val() % 1 === 0 && newData.val() >= 0"
           }
         },
         "teachers": {
@@ -1619,11 +1637,17 @@
               },
               "$other": {
                 ".validate": false
+              },
+              "tahfizLines": {
+                ".validate": "newData.isNumber() && newData.val() <= 9007199254740991 && newData.val() % 1 === 0 && newData.val() > 0 && newData.parent().child('status').val() === 'submitted'"
               }
             }
           },
           "$other": {
             ".validate": false
+          },
+          "totalTahfizLines": {
+            ".validate": "newData.isNumber() && newData.val() <= 9007199254740991 && newData.val() % 1 === 0 && newData.val() >= 0"
           }
         },
         "teachers": {

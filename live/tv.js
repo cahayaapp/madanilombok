@@ -1,4 +1,4 @@
-import {validateLiveSnapshot,LIVE_BUCKETS,bucket} from '../assets/js/live-model.js';
+import {validateLiveSnapshot,LIVE_BUCKETS,bucket} from '../assets/js/live-model.js?v=3';
 import {campusClock,prayerTimes,nextPrayer} from '../assets/js/live-prayer.js';
 
 const $=id=>document.getElementById(id),unit=document.documentElement.dataset.unit;
@@ -23,10 +23,11 @@ const populations={Setoran:'peserta Al-Qur’an',Guru:'guru dalam rekap',Santri:
 const time=new Intl.DateTimeFormat('id-ID',{timeZone:'Asia/Makassar',hour:'2-digit',minute:'2-digit',hourCycle:'h23'});
 const calendar=new Intl.DateTimeFormat('id-ID',{timeZone:'Asia/Makassar',weekday:'long',day:'numeric',month:'long',year:'numeric'});
 const percent=new Intl.NumberFormat('id-ID',{style:'percent',maximumFractionDigits:1});
+const number=new Intl.NumberFormat('id-ID');
 let snapshot=null,slides=[],position=0,quoteIndex=0,paused=false,currentDay='',lastClock='',prayerKey='',fetching=false,sourceDown=false,nextSlide=0;
 function element(tag,cls,text){const node=document.createElement(tag);if(cls)node.className=cls;if(text!==undefined)node.textContent=text;return node;}
 function demoSnapshot(){
- const now=new Date(),section=(statuses,prefix)=>{const rows=statuses.flatMap((status,s)=>Array.from({length:status==='present'||status==='submitted'?16:3},(_,i)=>({name:`${prefix} Contoh ${s+1}.${i+1}`,label:'Data demonstrasi',status})));return {total:rows.length,rows};};
+ const now=new Date(),section=(statuses,prefix)=>{const rows=statuses.flatMap((status,s)=>Array.from({length:status==='present'||status==='submitted'?16:3},(_,i)=>({name:`${prefix} Contoh ${s+1}.${i+1}`,label:'Data demonstrasi',status,...(status==='submitted'?{tahfizLines:(i+1)*3}:{})})));return {total:rows.length,rows,...(statuses.includes('submitted')?{totalTahfizLines:rows.reduce((sum,r)=>sum+(r.tahfizLines||0),0)}:{})};};
  return {version:1,enabled:true,unit,date:campusClock(now).date,updatedAt:+now,expiresAt:+now+3600000,...Object.fromEntries(Object.entries(LIVE_BUCKETS).map(([key,statuses])=>[key,section(statuses,key==='teachers'?'Guru':'Santri')]))};
 }
 function build(){
@@ -53,8 +54,9 @@ function paint(){
  else{
   heading(s.title);const count=s.list.length,summary=element('p','meta'),stamp=time.format(new Date(snapshot.updatedAt));
   if(s.total)summary.append(element('strong','share',percent.format(count/s.total)),document.createTextNode(` · ${count} dari ${s.total} ${populations[s.channel]}`));else summary.textContent=`0 ${populations[s.channel]}`;
+  if(s.channel==='Setoran'&&snapshot.quran.totalTahfizLines!==undefined)summary.append(document.createTextNode(` · Tahfiz hari ini: ${number.format(snapshot.quran.totalTahfizLines)} baris tercatat`));
   summary.append(document.createTextNode(` · ${sourceDown||Date.now()-snapshot.updatedAt>75*60000?'Pembaruan tertunda · data pukul ':'Data pukul '}${stamp} WITA${count>s.size?` · Halaman ${s.start/s.size+1}/${Math.ceil(count/s.size)}`:''}`));scene.append(summary);
-  if(count){const grid=element('div','names');s.list.slice(s.start,s.start+s.size).forEach((r,i)=>{const label=element('div','person',r.name);label.style.setProperty('--i',i);if(r.label)label.append(element('small','',r.label));grid.append(label);});scene.append(grid);}
+  if(count){const grid=element('div','names');s.list.slice(s.start,s.start+s.size).forEach((r,i)=>{const label=element('div','person',r.name);label.style.setProperty('--i',i);const detail=[r.label,...(s.channel==='Setoran'&&r.tahfizLines!==undefined?[`Tahfiz ${number.format(r.tahfizLines)} baris`]:[])].filter(Boolean).join(' · ');if(detail)label.append(element('small','',detail));grid.append(label);});scene.append(grid);}
   else description('Belum ada nama pada kategori ini.');
  }
  $('stage').replaceChildren(scene);for(const button of $('channels').children){if(button.textContent===s.channel)button.setAttribute('aria-current','true');else button.removeAttribute('aria-current');}

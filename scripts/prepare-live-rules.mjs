@@ -10,7 +10,7 @@ export function liveRules(){return {current:{
  version:{'.validate':'newData.val() === 1'},enabled:{'.validate':'newData.isBoolean()'},date:{'.validate':"newData.isString() && newData.val().matches(/^[0-9]{4}-[0-9]{2}-[0-9]{2}$/)"},updatedAt:{'.validate':'newData.isNumber()'},expiresAt:{'.validate':'newData.isNumber()'},
  quran:section(['submitted','pending']),teachers:section(['present','excused','absent','missing','upcoming']),students:section(['present','excused','sick','absent','pending']),'$other':{'.validate':false}
 },'$other':{'.read':false,'.write':false}};}
-export function unitLiveRules(){
+function previousUnitLiveRules(){
  const result=liveRules();
  for(const unit of ['putra','putri','gabungan']){
   result[unit]=structuredClone(result.current);
@@ -19,10 +19,19 @@ export function unitLiveRules(){
  }
  return result;
 }
+export function unitLiveRules(){
+ const result=previousUnitLiveRules();
+ const integer="newData.isNumber() && newData.val() <= 9007199254740991 && newData.val() % 1 === 0";
+ for(const key of ['current','putra','putri','gabungan']){
+  result[key].quran.totalTahfizLines={'.validate':`${integer} && newData.val() >= 0`};
+  result[key].quran.rows.$index.tahfizLines={'.validate':`${integer} && newData.val() > 0 && newData.parent().child('status').val() === 'submitted'`};
+ }
+ return result;
+}
 export function prepareLiveRules(existing){
  const result=structuredClone(existing);result.rules??={};
  const branch=result.rules.madani_live;
- if(branch&&![liveRules(),unitLiveRules()].some(known=>JSON.stringify(branch)===JSON.stringify(known)))throw Error('Aturan madani_live sudah ada dan berbeda. Periksa sebelum mengganti.');
+ if(branch&&![liveRules(),previousUnitLiveRules(),unitLiveRules()].some(known=>JSON.stringify(branch)===JSON.stringify(known)))throw Error('Aturan madani_live sudah ada dan berbeda. Periksa sebelum mengganti.');
  result.rules.madani_live=unitLiveRules();return result;
 }
 if(process.argv[1]&&import.meta.url===pathToFileURL(process.argv[1]).href){const [input,output]=process.argv.slice(2);if(!input||!output)throw Error('Usage: prepare-live-rules.mjs EXISTING_RULES OUTPUT');writeFileSync(output,JSON.stringify(prepareLiveRules(JSON.parse(readFileSync(input,'utf8'))),null,2)+'\n');console.log('Prepared madani_live only; all pre-existing rules preserved.');}
