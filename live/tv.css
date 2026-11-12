@@ -1,0 +1,39 @@
+:root{color-scheme:dark;--ivory:#fff8e5;--gold:#f6cc82;--mint:#a7ebcc;--line:#c6e8dc42;font-family:Inter,"Segoe UI",system-ui,sans-serif;background:#082c30;color:var(--ivory)}
+*{box-sizing:border-box}
+html.live-tv,html.live-tv body{background:#053d3c!important;color:#fff8e5;font-family:Inter,"Segoe UI",system-ui,sans-serif!important}body{margin:0;isolation:isolate}.live-tv h1{font-family:Georgia,"Times New Roman",serif!important}
+.landscape,.light{position:fixed;inset:0;z-index:-1;pointer-events:none}
+.landscape{background:linear-gradient(92deg,#052c2eef 5%,#103d3bc9 48%,#19363871),linear-gradient(0deg,#041e28 1%,transparent 80%),url('/assets/brand/home-mosque.svg') right bottom/auto 95% no-repeat;transform-origin:70% 55%;animation:drift 32s ease-in-out infinite alternate}
+.light{background:radial-gradient(ellipse at 72% 12%,#efbd720e,transparent 48%),linear-gradient(117deg,transparent 43%,#84d5c211 51%,transparent 60%);background-size:150% 100%;animation:shine 21s ease-in-out infinite alternate}
+main{width:min(100%,2200px);min-height:100vh;min-height:100svh;margin:auto;padding:clamp(20px,3.3vw,66px) 5vw clamp(12px,2vh,32px);display:flex;flex-direction:column;gap:clamp(12px,2vh,32px)}
+header,.brand,.toolbar,.buttons,.rail-title,.clock{display:flex;align-items:center}
+header,.toolbar{justify-content:space-between;gap:12px}
+.brand{gap:1vw}.brand img{width:clamp(42px,4vw,80px);border-radius:25%}.brand b{font-size:clamp(16px,1.7vw,34px);letter-spacing:.06em}.brand i{font-family:Georgia,serif;font-weight:400;color:var(--gold);letter-spacing:0}
+small{display:block}.brand small,.clock small,.rail-title small{color:#cfdfdb;font-size:clamp(11px,1vw,20px)}
+.clock{display:grid;grid-template-columns:auto auto;gap:0 .45em;justify-items:end;font-variant-numeric:tabular-nums}.clock time{font-size:clamp(24px,3vw,66px);line-height:1;font-weight:550}.clock span{align-self:end;color:var(--gold);font-size:.8em}.clock small{grid-column:span 2;margin-top:.4em}
+#stage{flex:1;display:grid;align-content:center;padding:2vh 0;min-height:0}
+.scene{animation:enter .85s cubic-bezier(.16,.8,.25,1) both}
+.kicker{margin:0 0 .7em;color:var(--mint);font-weight:650;letter-spacing:.18em;text-transform:uppercase;font-size:clamp(12px,1.05vw,22px)}
+h1{font-family:Georgia,"Times New Roman",serif;font-weight:400;font-size:clamp(38px,4.7vw,100px);line-height:1.04;letter-spacing:-.04em;margin:0 0 .23em}
+.quote h1{font-size:clamp(42px,6.6vw,144px);max-width:17ch;line-height:1.04;text-wrap:balance}
+.rule{width:clamp(70px,9vw,165px);height:3px;background:linear-gradient(90deg,var(--gold),transparent);margin:1.7em 0 0}
+.meta{font-size:clamp(13px,1.15vw,26px);color:#d9e5de;margin:0 0 1em}.names{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.45em 1.5em}
+.person{border-bottom:1px solid var(--line);padding:.5em 0;font-weight:550;font-size:clamp(15px,1.43vw,34px);line-height:1.24;overflow-wrap:anywhere;animation:enter .6s both;animation-delay:calc(var(--i)*24ms)}
+.big-time{font-variant-numeric:tabular-nums;color:var(--gold);font-size:clamp(44px,6vw,124px)}
+footer{margin-top:auto}.rail{display:flex;align-items:stretch;border-block:1px solid var(--line);background:#052d32b8;backdrop-filter:blur(12px)}
+.rail-title{flex-direction:column;align-items:flex-start;justify-content:center;padding:.9em 1.4em .9em 0;min-width:15%;gap:.35em}.rail-title span{font-family:Georgia,serif;font-size:clamp(19px,1.7vw,38px)}
+#prayers{display:flex;flex:1;align-items:stretch}.prayer{flex:1;display:grid;align-content:center;gap:.2em;border-left:1px solid var(--line);padding:.65em 1.1vw}.prayer small{color:#d7e5df;font-size:clamp(11px,1vw,22px)}.prayer strong{font-size:clamp(18px,2vw,46px);font-variant-numeric:tabular-nums}.prayer.active{background:#eec67520;box-shadow:inset 0 -3px var(--gold);color:var(--gold)}
+.toolbar{padding-top:1vh}button{font:inherit;color:#cfdfd9;border:0;background:none;cursor:pointer;min-height:36px}button:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+nav{display:flex;gap:1.1vw;flex-wrap:wrap}nav button{font-size:clamp(11px,.95vw,20px);padding:3px 0;border-bottom:2px solid transparent}nav button[aria-current]{color:white;border-color:var(--mint)}.buttons button{font-size:clamp(17px,1.4vw,32px);min-width:36px}
+@keyframes enter{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+@keyframes drift{to{transform:scale(1.065) translateX(-.7%)}}
+@keyframes shine{to{background-position:100% 0}}
+body.paused :is(.landscape,.light){animation-play-state:paused}
+@media(max-width:650px){main{padding:20px 5vw 12px}.names{grid-template-columns:1fr 1fr;gap:.15em .8em}.rail{display:block}.rail-title{flex-direction:row;align-items:center;justify-content:space-between;padding:.5em 0}.prayer{padding:.45em .3em}.toolbar{align-items:flex-start}nav{gap:9px}.buttons button{min-width:28px}}
+@media(max-height:550px) and (min-width:651px){main{padding-block:10px;gap:6px}#stage{padding:4px 0}.person{padding:.3em 0}.clock time{font-size:24px}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important}}
+
+.selector a{color:var(--ivory);text-decoration:none;border:1px solid var(--line);border-radius:12px;padding:1em 1.6em;background:#143d40}.selector a:focus-visible,.selector a:hover{border-color:var(--gold)}
+
+.share{font-size:1.4em;color:var(--gold);font-variant-numeric:tabular-nums}
+
+.brand a{display:flex;align-items:center;gap:1vw;color:inherit;text-decoration:none}.demo-banner{position:fixed;right:12px;top:8px;font-size:11px;color:#f6cc82}.selector .brand-icon{width:72px;margin-bottom:20px}.person small{font-size:.6em;color:#c2dcd5;margin-top:.25em;font-weight:400}.source-note{font-size:.7em;color:#cfdfdb}.scene{overflow-wrap:anywhere}button[disabled]{opacity:.5}

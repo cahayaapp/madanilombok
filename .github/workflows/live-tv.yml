@@ -1,0 +1,39 @@
+name: Madani Live
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '7,37 * * * *'
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/publish-live.mjs'
+      - 'assets/js/live-*.js'
+      - '.github/workflows/live-tv.yml'
+permissions:
+  contents: read
+  id-token: write
+concurrency:
+  group: madani-live
+  cancel-in-progress: false
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - id: google
+        uses: google-github-actions/auth@v3
+        with:
+          workload_identity_provider: projects/986196180038/locations/global/workloadIdentityPools/madani-live-github/providers/github
+          service_account: madani-live@madanilombok-f692d.iam.gserviceaccount.com
+          token_format: access_token
+          access_token_scopes: https://www.googleapis.com/auth/firebase.database,https://www.googleapis.com/auth/userinfo.email
+          create_credentials_file: false
+      - run: node scripts/publish-live.mjs
+        env:
+          MADANI_LIVE_ACCESS_TOKEN: ${{ steps.google.outputs.access_token }}

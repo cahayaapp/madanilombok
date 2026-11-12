@@ -1,55 +1,68 @@
 # Madani Live TV
 
-Halaman publik: `https://app.almadanilombok.com/live` (GitHub Pages, domain induk MadaniApp). Studio admin: `https://app.almadanilombok.com/admin/live.html`.
+Konsep mengikuti layar referensi pengguna di https://cahayaapp.com/live/: pilih unit, lalu satu kategori memenuhi layar dan berganti otomatis. Seluruh data, logo, warna, koordinat, dan zona waktu tetap Madani. Tidak ada migrasi data Cahaya.
 
 ## Penggunaan
 
-1. Buka Studio dengan akun Admin/Super Admin. Tinjau daftar nama/status, centang persetujuan publikasi nama, lalu pilih **Mulai Siaran Publik**.
-2. Biarkan tab Studio terbuka pada komputer administrator selama siaran. Sumber Firebase didengarkan langsung; snapshot diperiksa/diperbarui tiap 30 detik, master setiap 5 menit. Halaman TV tidak memerlukan login.
-3. Buka `/live` pada TV. Empat layar berganti otomatis: inspirasi, setoran Al-Qur’an, guru, santri. Nama berpindah halaman setiap 7 detik (empat nama per kategori per halaman). Jam, hitung mundur salat, dan jadwal salat tetap terlihat.
-4. `F`: layar penuh, `Spasi`: jeda, panah kiri/kanan: ganti layar. Tombol layar penuh juga meminta screen wake lock bila browser mendukungnya. Browser TV tetap dapat memiliki pengaturan tidur sendiri.
-5. **Hentikan Siaran** mencabut pembacaan publik snapshot. Menutup tab Studio menghentikan sinkronisasi, tetapi snapshot terakhir masih tersedia sampai tengah malam WITA; layar menandai keterlambatan setelah 3 menit. Ini bukan layanan agregasi server yang berjalan saat seluruh tab admin ditutup.
+Buka https://app.almadanilombok.com/live dan pilih **Putra**, **Putri**, atau **Gabungan**. URL langsung:
 
-`?demo=1` menampilkan data contoh yang diberi label jelas. Mode normal tidak pernah mengganti data kosong dengan contoh. `?scene=0` sampai `3` memilih layar awal.
+- `/live/putra/`
+- `/live/putri/`
+- `/live/gabungan/`
 
-## Definisi angka dan nama
+Setiap layar memutar Renungan, Salat, Setoran, Guru, dan Santri. Nama ditampilkan per kategori beserta jumlah, persentase, waktu data, dan nomor halaman. Maksimal 12 nama di desktop / 8 di ponsel per halaman; halaman bernama berganti setelah 13 detik, layar lainnya 9 detik. Jadwal salat dan jam WITA tetap terlihat. Tombol kanal, jeda, berikutnya, dan layar penuh tersedia; panah dan Spasi juga bekerja. Animasi menghormati `prefers-reduced-motion`.
 
-- **Setoran:** santri aktif yang terdaftar pada halaqah Al-Qur’an aktif, dihitung sekali per ID. Setoran Tahsin/Tahfiz/Muroja’ah hari ini yang tersimpan dan belum dihapus dihitung; setoran berulang tidak menggandakan jumlah. Santri tanpa setoran hari ini berstatus **Belum Setoran**, bukan pelanggaran/alfa.
-- **Guru:** guru mapel/pembina pada jadwal hari ini yang sudah terkonfirmasi, mengikuti penggabungan jadwal, scope per role, serta kalender pendidikan aplikasi. Kehadiran nyata tetap masuk bila jadwal diperbaiki kemudian. Satu guru dihitung sekali: hadir lebih diutamakan, lalu izin disetujui/status izin atau sakit lama, lalu tidak hadir yang tercatat, jadwal mendatang, dan belum absen. Pengajuan izin pending/ditolak tidak dianggap izin disetujui. Jadwal yang belum mulai tidak dianggap belum absen.
-- **Santri:** santri aktif yang belum digabung/diarsipkan. Status memakai rekam final terakhir hari ini dari KBM dan program asrama, dengan fallback presensi akademik lama. Rekam pembukaan belum final, rekam dihapus, atau presensi yang didelegasikan ke sumber lain tidak dipaksakan menjadi hadir/alfa. Tidak ada rekam yang sah berarti **belum memiliki presensi final**, ditampilkan sebagai jumlah terpisah.
-- Semua tanggal operasional mengikuti `Asia/Makassar` (WITA), sesuai kampus dan aplikasi. Layar serta API menolak snapshot kemarin/kedaluwarsa.
+Tidak memerlukan login atau tab Studio terbuka. `/admin/live.html` hanya menjadi pintasan menuju pilihan layar. Mekanisme Studio manual sebelumnya sudah diganti.
 
-## Data publik yang disetujui pengguna
+`?demo=1` pada URL unit menampilkan data sintetis dengan label **PRATINJAU · DATA CONTOH**. Mode normal tidak memakai contoh sebagai fallback.
 
-Pengguna meminta nama guru dan santri tampil pada halaman yang dapat diakses siapa pun. Proyeksi publik hanya berisi `name`, `label` (kelas/unit), dan `status`, ditambah total, tanggal, waktu pembaruan, dan kedaluwarsa. Tidak memuat NISN/NIK, UID, nomor telepon, GPS, alasan izin, diagnosis, nilai, catatan pembinaan, atau data keuangan. Hasil perhitungan dibangun ulang melalui allowlist; record sumber tidak disalin langsung.
+## Pembaruan otomatis
 
-Satu snapshot berada di **`madani_live/current`**, terpisah dari `madani_app`. Hanya administrator aktif dapat menulis; semua field tak dikenal ditolak. Pembacaan anonim hanya diizinkan saat `enabled=true` dan `expiresAt>now`. Tidak dibuat arsip publik per tanggal. Halaman menggunakan noindex/noarchive, tanpa query berisi nama, tanpa penyimpanan roster ke localStorage, dan tanpa login atau izin GPS pada TV.
+`.github/workflows/live-tv.yml` menjalankan `scripts/publish-live.mjs` setiap menit 07 dan 37, saat file penerbit berubah di main, atau melalui Run workflow. Jadwal GitHub dapat tertunda; ini pembaruan berkala, bukan streaming per detik. TV memeriksa snapshot setiap 5 menit dan menandai keterlambatan setelah 75 menit. Saat hari WITA berganti, nama kemarin dibersihkan sampai snapshot hari baru tersedia.
 
-Studio memuat data sumber untuk pratinjau, tetapi tidak menulis sebelum persetujuan dan tombol mulai. Persetujuan tindakan publikasi melalui alat browser harus dipenuhi sebelum agen menekan tombol tersebut.
+Workflow dirancang menggunakan Workload Identity Federation Google, tanpa menyimpan kunci service account atau token pribadi di repository. Rencana identitas (belum diterapkan):
+
+- Project `madanilombok-f692d` / `986196180038`.
+- Pool `madani-live-github`, provider `github`, issuer `https://token.actions.githubusercontent.com`.
+- Penerima: hanya repository GitHub `cahayaapp/madanilombok`, branch `refs/heads/main`, workflow `.github/workflows/live-tv.yml`; verifikasi numeric repository ID dan owner ID saat setup.
+- Service account `madani-live@madanilombok-f692d.iam.gserviceaccount.com`.
+- `roles/iam.workloadIdentityUser` hanya pada service account tersebut untuk principal repository terverifikasi.
+- `roles/firebasedatabase.admin` pada project untuk service account penerbit. Ini izin admin pada RTDB project, bukan pembatasan izin ke node; kode penerbit membatasi baca ke sumber fitur dan tulis ke `madani_live` saja. Jangan menyatakan pembatasan kode sebagai batas IAM.
+- API IAM, IAM Credentials, dan STS perlu diaktifkan jika belum aktif. Tidak ada perubahan billing atau DNS.
+
+Penyiapan IAM **ditolak oleh pemeriksaan persetujuan otomatis** pada 12 November 2026 karena belum ada otorisasi spesifik pengguna atas penerima, izin, dan cakupan produksi. Tidak ada resource/izin IAM yang dibuat. Memerlukan persetujuan khusus sebelum setup. Karena itu workflow belum bisa diklaim berjalan otomatis.
+
+Rujukan teknis: [federasi identitas deployment](https://docs.cloud.google.com/iam/docs/workload-identity-federation-with-deployment-pipelines), [Google GitHub auth](https://github.com/google-github-actions/auth), [jadwal GitHub Actions](https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows#schedule), [Firebase REST authentication](https://firebase.google.com/docs/database/rest/auth).
+
+## Definisi data
+
+- **Unit:** santri mengikuti `gender` master, bukan menebak nama. Gender belum diketahui tampil hanya di Gabungan. Guru mengikuti santri pada kelas/kelompok jadwal mengajarnya; kelas campuran dapat membuat guru muncul di kedua layar. Gabungan memakai ID canonical dan menghitung tiap orang sekali.
+- **Setoran:** anggota aktif halaqah Al-Qur’an aktif, di luar kelompok Bahasa Arab/mapel. Setoran Tahsin/Tahfiz/Muroja’ah hari ini yang tersimpan dan belum dihapus dihitung sekali per santri. Belum setoran bukan alfa.
+- **Guru:** mengikuti jadwal aktif terkonfirmasi, scope per role, kalender pendidikan. Status hadir diutamakan, lalu izin disetujui/sakit tercatat, tidak hadir tercatat, jadwal mendatang, dan belum absen. Tidak menyamakan jadwal mendatang dengan absen. Guru unit tanpa jadwal yang dapat dikaitkan tidak ditebak dari gender guru; rekam nyata tanpa jadwal tetap dapat tampil pada Gabungan.
+- **Santri:** memakai presensi FINAL terakhir hari ini dari KBM/program asrama dengan fallback presensi lama; tidak ada data menjadi **belum tercatat**, bukan alfa. Satu santri dihitung sekali.
+- Semua tanggal mengikuti `Asia/Makassar` / WITA. Snapshot kedaluwarsa tengah malam kampus.
+
+Proyeksi publik hanya berisi nama, label kelas/unit, status, total, unit, tanggal, waktu pembaruan, dan kedaluwarsa. Tidak memuat NISN/NIK, UID, kontak, GPS, alasan izin, diagnosis, nilai, konseling, atau keuangan. Data masuk dibangun kembali melalui allowlist, divalidasi sebelum tulis. Tidak ada arsip publik atau roster localStorage. TV hanya membaca `madani_live/{putra,putri,gabungan}`; penolakan akses membersihkan nama lama.
+
+Penerbit membaca node sumber bernama, bukan seluruh database. Node historis yang bertingkat per tahun disaring hari ini di proses penerbit; belum menggunakan indeks harian baru. Kegagalan salah satu sumber membatalkan seluruh publikasi agar ringkasan parsial tidak mengganti data lengkap. Tulis memakai PATCH tiga snapshot publik, tidak mengubah sumber. Tidak membuka cabang `madani_app` ke publik.
 
 ## Waktu salat
 
-Hisab lokal memakai koordinat kampus dari titik Google Maps yang diberikan pengguna pada 6 Oktober 2026: `-8.5854457, 116.5755207`, UTC+8, Subuh 20°, Isya 18°, Asar standar, ihtiyat 2 menit. Perhitungan mengikuti persamaan posisi matahari/jam sudut pada [PrayTimes](https://praytimes.org/calculation). Angka ini berlabel **Hisab kampus**, bukan klaim jadwal resmi kota. Rujukan verifikasi masjid/admin: [Bimas Islam Kemenag](https://bimasislam.kemenag.go.id/jadwal-sholat); [penjelasan kriteria Subuh Kemenag](https://kemenag.go.id/nasional/kriteria-waktu-subuh-20-derajat-benar-secara-fikih-dan-sains-qq3pfh).
+Hisab lokal memakai koordinat kampus yang diberikan pengguna: `-8.5854457, 116.5755207`, UTC+8, Subuh 20°, Isya 18°, Asar standar, ihtiyat 2 menit. Berlabel **Hisab kampus**, bukan jadwal resmi Kemenag. Rujukan: [PrayTimes](https://praytimes.org/calculation), [Bimas Islam](https://bimasislam.kemenag.go.id/jadwal-sholat).
 
-## Publikasi dan verifikasi
+## Publikasi dan verifikasi 12 November 2026
 
-`scripts/prepare-live-rules.mjs` hanya menambahkan cabang `madani_live` pada salinan aturan produksi terbaru. Jangan deploy seluruh rules lokal yang berpotensi berbeda dari produksi. Sebelum menerapkan, baca ulang `/.settings/rules`, pastikan tidak berubah, regenerasi kandidat, dan lakukan dry run. Seluruh nilai lama, termasuk keuangan, harus identik.
+- 63 pengujian Live, proyeksi unit, rendering role/route, dan kontrak keuangan lulus. Mencakup isolasi unit, duplikasi nama/ID, kelas campuran, sumber gagal, proyeksi field, penolakan akses, pergantian hari, paginasi, dan jeda. Pengujian memakai data sintetis, tanpa write operasional.
+- JavaScript diperiksa sintaksnya, JSON dan workflow divalidasi, `git diff --check` bersih.
+- Browser 1280×720: 12 nama tampil utuh tanpa overflow; layar Gabungan memakai data contoh berlabel.
+- Pembacaan sumber nyata berhasil: 115 santri Putra, 131 Putri, 246 Gabungan; 60/75/135 peserta Al-Qur’an; 30/29/38 guru pada saat pemeriksaan. Ini jumlah populasi rekap, bukan semuanya berstatus hadir.
+- Aturan publik unit telah lolos dry run dan dideploy. Readback sama persis dengan kandidat; seluruh aturan privat dan keuangan identik dengan salinan produksi sebelum perubahan.
+- Tiga snapshot asli hari ini berhasil disimpan hanya pada `madani_live`, lalu diverifikasi HTTP 200 tanpa login dan lolos validasi tanggal/isi. Ini penerbitan satu kali, bukan bukti otomasi sudah aktif.
+- Frontend masih harus dipush ke GitHub Pages. Terminal tidak memiliki autentikasi GitHub; GitHub Desktop sedang dipakai untuk repository `fajrulislam`. Jangan menyebut URL Madani Live sudah tayang sebelum HTTP dan tampilan produksi diverifikasi.
+- Otomasi IAM masih menunggu persetujuan yang dijelaskan di atas. Penerbitan satu snapshot tidak membuktikan jadwal otomatis aktif.
 
-Frontend dipublikasikan melalui branch GitHub Pages yang ada. Commit hanya file fitur Live; pekerjaan maintenance akun lain yang belum selesai tidak disertakan. Tidak membuat Site/domain lain atau mengubah DNS.
-
-Tes lokal:
+Perintah tes:
 
 ```sh
-node --test tests/live-display.mjs
-MADANI_JSDOM_MODULE=/absolute/path/to/jsdom/lib/api.js node --experimental-vm-modules --test tests/live-ui.mjs
+MADANI_JSDOM_MODULE=/absolute/path/to/jsdom/lib/api.js node --experimental-vm-modules --test tests/live-display.mjs tests/live-ui.mjs tests/live-projection.mjs tests/role-rendering.mjs tests/finance-spark-cutover.mjs
 ```
-
-15 pengujian mencakup deduplikasi/kelayakan, sumber final, izin pending, jadwal mendatang, proyeksi field publik, data kedaluwarsa, pergantian hari WITA, urutan salat, aturan tambahan tanpa perubahan cabang lama, rendering nama, tidak ada injeksi HTML, pencabutan pembacaan, pratinjau tanpa write, publikasi setelah persetujuan, kegagalan sumber parsial, serta penghentian siaran. Tes memakai data sintetis dan repository/SDK tiruan; tidak menulis data produksi.
-
-### Verifikasi 12 November 2026
-
-- 64 tes Live, rendering role/route, manajemen pengguna, serta kontrak cutover keuangan lulus. Renderer memeriksa 244 kombinasi workspace dan 142 halaman lama dengan repository tiruan.
-- Dua tes lama pada `tests/access-rules.mjs` masih gagal karena mengharapkan `.read` pada root aplikasi dan akses tulis keuangan model lama. Kegagalan yang sama direproduksi terhadap `database.rules.json` dari HEAD sebelum perubahan Live. Nilai setiap aturan lama dibuktikan identik setelah penambahan cabang baru; aturan keuangan tidak diperbaiki/diubah sebagai bagian fitur ini.
-- Pratinjau browser: 1920×1080, 3840×2160, serta 390×844 diperiksa tanpa overflow horizontal atau nama terpotong di luar panel. Pratinjau memakai data contoh berlabel, bukan data santri nyata.
-- Firebase CLI memvalidasi kandidat aturan melalui dry run. Aturan produksi dibaca ulang sebelum penerapan, tetap identik dengan snapshot awal. Deployment kandidat yang hanya menambahkan `madani_live` berhasil. Tidak ada data operasional atau snapshot nama yang ditulis saat pengujian.
-- Pada pemeriksaan sesi VS Code terakhir, Studio kembali diarahkan ke halaman masuk. Aktivasi data asli memerlukan sesi admin aktif dan persetujuan publikasi nama. Keberhasilan publikasi halaman tidak boleh disamakan dengan siaran nama aktif sebelum langkah ini diverifikasi.
