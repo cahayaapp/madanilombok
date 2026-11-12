@@ -20,17 +20,17 @@ Tidak memerlukan login atau tab Studio terbuka. `/admin/live.html` hanya menjadi
 
 `.github/workflows/live-tv.yml` menjalankan `scripts/publish-live.mjs` setiap menit 07 dan 37, saat file penerbit berubah di main, atau melalui Run workflow. Jadwal GitHub dapat tertunda; ini pembaruan berkala, bukan streaming per detik. TV memeriksa snapshot setiap 5 menit dan menandai keterlambatan setelah 75 menit. Saat hari WITA berganti, nama kemarin dibersihkan sampai snapshot hari baru tersedia.
 
-Workflow dirancang menggunakan Workload Identity Federation Google, tanpa menyimpan kunci service account atau token pribadi di repository. Rencana identitas (belum diterapkan):
+Workflow dirancang menggunakan Workload Identity Federation Google, tanpa menyimpan kunci service account atau token pribadi di repository. Identitas yang sudah diterapkan setelah persetujuan pengguna:
 
 - Project `madanilombok-f692d` / `986196180038`.
 - Pool `madani-live-github`, provider `github`, issuer `https://token.actions.githubusercontent.com`.
-- Penerima: hanya repository GitHub `cahayaapp/madanilombok`, branch `refs/heads/main`, workflow `.github/workflows/live-tv.yml`; verifikasi numeric repository ID dan owner ID saat setup.
+- Penerima: hanya repository GitHub `cahayaapp/madanilombok`, branch `refs/heads/main`, workflow `.github/workflows/live-tv.yml`; numeric repository ID `1319164515` dan owner ID telah diverifikasi saat setup serta dikunci dalam condition provider.
 - Service account `madani-live@madanilombok-f692d.iam.gserviceaccount.com`.
 - `roles/iam.workloadIdentityUser` hanya pada service account tersebut untuk principal repository terverifikasi.
 - `roles/firebasedatabase.admin` pada project untuk service account penerbit. Ini izin admin pada RTDB project, bukan pembatasan izin ke node; kode penerbit membatasi baca ke sumber fitur dan tulis ke `madani_live` saja. Jangan menyatakan pembatasan kode sebagai batas IAM.
-- API IAM, IAM Credentials, dan STS perlu diaktifkan jika belum aktif. Tidak ada perubahan billing atau DNS.
+- API IAM, IAM Credentials, dan STS sudah diaktifkan. Tidak ada perubahan billing atau DNS.
 
-Penyiapan IAM **ditolak oleh pemeriksaan persetujuan otomatis** pada 12 November 2026 karena belum ada otorisasi spesifik pengguna atas penerima, izin, dan cakupan produksi. Tidak ada resource/izin IAM yang dibuat. Memerlukan persetujuan khusus sebelum setup. Karena itu workflow belum bisa diklaim berjalan otomatis.
+Penyiapan IAM awalnya ditolak oleh pemeriksaan persetujuan otomatis. Pengguna kemudian memberikan persetujuan spesifik **Izinkan penyiapan pembaruan otomatis**. Setelah persetujuan itu, identitas, provider, serta dua binding di atas berhasil dibuat dan readback diverifikasi. Tidak dibuat private key. Keberhasilan job GitHub pertama tetap harus diverifikasi setelah push; kesiapan IAM tidak disamakan dengan job terjadwal yang sudah berjalan.
 
 Rujukan teknis: [federasi identitas deployment](https://docs.cloud.google.com/iam/docs/workload-identity-federation-with-deployment-pipelines), [Google GitHub auth](https://github.com/google-github-actions/auth), [jadwal GitHub Actions](https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows#schedule), [Firebase REST authentication](https://firebase.google.com/docs/database/rest/auth).
 
@@ -54,12 +54,12 @@ Hisab lokal memakai koordinat kampus yang diberikan pengguna: `-8.5854457, 116.5
 
 - 63 pengujian Live, proyeksi unit, rendering role/route, dan kontrak keuangan lulus. Mencakup isolasi unit, duplikasi nama/ID, kelas campuran, sumber gagal, proyeksi field, penolakan akses, pergantian hari, paginasi, dan jeda. Pengujian memakai data sintetis, tanpa write operasional.
 - JavaScript diperiksa sintaksnya, JSON dan workflow divalidasi, `git diff --check` bersih.
-- Browser 1280×720: 12 nama tampil utuh tanpa overflow; layar Gabungan memakai data contoh berlabel.
+- Browser 1280×720: 12 nama tampil utuh tanpa overflow; pratinjau visual memakai data contoh berlabel. Pratinjau Gabungan normal kemudian berhasil menampilkan 12 nama asli pada kategori Guru Hadir (20 dari 38 guru), tanpa login.
 - Pembacaan sumber nyata berhasil: 115 santri Putra, 131 Putri, 246 Gabungan; 60/75/135 peserta Al-Qur’an; 30/29/38 guru pada saat pemeriksaan. Ini jumlah populasi rekap, bukan semuanya berstatus hadir.
 - Aturan publik unit telah lolos dry run dan dideploy. Readback sama persis dengan kandidat; seluruh aturan privat dan keuangan identik dengan salinan produksi sebelum perubahan.
 - Tiga snapshot asli hari ini berhasil disimpan hanya pada `madani_live`, lalu diverifikasi HTTP 200 tanpa login dan lolos validasi tanggal/isi. Ini penerbitan satu kali, bukan bukti otomasi sudah aktif.
-- Frontend masih harus dipush ke GitHub Pages. Terminal tidak memiliki autentikasi GitHub; GitHub Desktop sedang dipakai untuk repository `fajrulislam`. Jangan menyebut URL Madani Live sudah tayang sebelum HTTP dan tampilan produksi diverifikasi.
-- Otomasi IAM masih menunggu persetujuan yang dijelaskan di atas. Penerbitan satu snapshot tidak membuktikan jadwal otomatis aktif.
+- Frontend masih harus dipush ke GitHub Pages. Terminal tidak memiliki autentikasi GitHub; pengguna memilih publikasi melalui GitHub Desktop yang sudah login. Pemilih repository melalui alat native belum merespons, sehingga pemilihan `madanilombok` telah diserahkan kepada pengguna. Jangan menyebut URL Madani Live sudah tayang sebelum HTTP dan tampilan produksi diverifikasi.
+- Otomasi IAM sudah disiapkan dan diverifikasi setelah persetujuan pengguna; uji job GitHub menunggu push. Penerbitan satu snapshot tidak membuktikan jadwal otomatis aktif.
 
 Perintah tes:
 
