@@ -19,7 +19,7 @@ function previousUnitLiveRules(){
  }
  return result;
 }
-export function unitLiveRules(){
+function lineUnitLiveRules(){
  const result=previousUnitLiveRules();
  const integer="newData.isNumber() && newData.val() <= 9007199254740991 && newData.val() % 1 === 0";
  for(const key of ['current','putra','putri','gabungan']){
@@ -28,10 +28,15 @@ export function unitLiveRules(){
  }
  return result;
 }
+export function unitLiveRules(){
+ const result=lineUnitLiveRules();
+ for(const key of ['current','putra','putri','gabungan'])result[key].counselor=section(['pemula','madya']);
+ return result;
+}
 export function prepareLiveRules(existing){
  const result=structuredClone(existing);result.rules??={};
  const branch=result.rules.madani_live;
- if(branch&&![liveRules(),previousUnitLiveRules(),unitLiveRules()].some(known=>JSON.stringify(branch)===JSON.stringify(known)))throw Error('Aturan madani_live sudah ada dan berbeda. Periksa sebelum mengganti.');
+ if(branch&&![liveRules(),previousUnitLiveRules(),lineUnitLiveRules(),unitLiveRules()].some(known=>JSON.stringify(branch)===JSON.stringify(known)))throw Error('Aturan madani_live sudah ada dan berbeda. Periksa sebelum mengganti.');
  result.rules.madani_live=unitLiveRules();return result;
 }
 if(process.argv[1]&&import.meta.url===pathToFileURL(process.argv[1]).href){const [input,output]=process.argv.slice(2);if(!input||!output)throw Error('Usage: prepare-live-rules.mjs EXISTING_RULES OUTPUT');writeFileSync(output,JSON.stringify(prepareLiveRules(JSON.parse(readFileSync(input,'utf8'))),null,2)+'\n');console.log('Prepared madani_live only; all pre-existing rules preserved.');}

@@ -10,7 +10,7 @@ Buka https://app.almadanilombok.com/live dan pilih **Putra**, **Putri**, atau **
 - `/live/putri/`
 - `/live/gabungan/`
 
-Setiap layar memutar Renungan, Salat, Setoran, Guru, dan Santri. Nama ditampilkan per kategori beserta jumlah, persentase, waktu data, dan nomor halaman. Maksimal 12 nama di desktop / 8 di ponsel per halaman; halaman bernama berganti setelah 13 detik, layar lainnya 9 detik. Jadwal salat dan jam WITA tetap terlihat. Tombol kanal, jeda, berikutnya, dan layar penuh tersedia; panah dan Spasi juga bekerja. Animasi menghormati `prefers-reduced-motion`.
+Setiap layar memutar Renungan, Salat, Setoran, Guru, Santri, dan Konselor. Nama ditampilkan per kategori beserta jumlah, persentase, waktu data, dan nomor halaman. Maksimal 12 nama di desktop / 8 di ponsel per halaman; halaman bernama berganti setelah 13 detik, layar lainnya 9 detik. Jadwal salat dan jam WITA tetap terlihat. Tombol kanal, jeda, berikutnya, dan layar penuh tersedia; panah dan Spasi juga bekerja. Animasi menghormati `prefers-reduced-motion`.
 
 Tidak memerlukan login atau tab Studio terbuka. `/admin/live.html` hanya menjadi pintasan menuju pilihan layar. Mekanisme Studio manual sebelumnya sudah diganti.
 
@@ -42,7 +42,7 @@ Rujukan teknis: [federasi identitas deployment](https://docs.cloud.google.com/ia
 - **Santri:** memakai presensi FINAL terakhir hari ini dari KBM/program asrama dengan fallback presensi lama; tidak ada data menjadi **belum tercatat**, bukan alfa. Satu santri dihitung sekali.
 - Semua tanggal mengikuti `Asia/Makassar` / WITA. Snapshot kedaluwarsa tengah malam kampus.
 
-Proyeksi publik hanya berisi nama, label kelas/unit, status, jumlah baris Tahfiz, total, unit, tanggal, waktu pembaruan, dan kedaluwarsa. Tidak memuat NISN/NIK, UID, kontak, GPS, alasan izin, diagnosis, nilai, konseling, atau keuangan. Data masuk dibangun kembali melalui allowlist, divalidasi sebelum tulis. Tidak ada arsip publik atau roster localStorage. TV hanya membaca `madani_live/{putra,putri,gabungan}`; penolakan akses membersihkan nama lama.
+Proyeksi publik hanya berisi nama, label kelas/unit, status/tingkat panggilan konselor, jumlah baris Tahfiz, total, unit, tanggal, waktu pembaruan, dan kedaluwarsa. Tidak memuat NISN/NIK, UID, kontak, GPS, alasan izin, diagnosis, nilai, konseling, atau keuangan. Data masuk dibangun kembali melalui allowlist, divalidasi sebelum tulis. Tidak ada arsip publik atau roster localStorage. TV hanya membaca `madani_live/{putra,putri,gabungan}`; penolakan akses membersihkan nama lama.
 
 Penerbit membaca node sumber bernama, bukan seluruh database. Node historis yang bertingkat per tahun disaring hari ini di proses penerbit; belum menggunakan indeks harian baru. Kegagalan salah satu sumber membatalkan seluruh publikasi agar ringkasan parsial tidak mengganti data lengkap. Tulis memakai PATCH tiga snapshot publik, tidak mengubah sumber. Tidak membuka cabang `madani_app` ke publik.
 
@@ -64,7 +64,7 @@ Hisab lokal memakai koordinat kampus yang diberikan pengguna: `-8.5854457, 116.5
 Perintah tes:
 
 ```sh
-MADANI_JSDOM_MODULE=/absolute/path/to/jsdom/lib/api.js node --experimental-vm-modules --test tests/live-display.mjs tests/live-ui.mjs tests/live-projection.mjs tests/role-rendering.mjs tests/finance-spark-cutover.mjs
+MADANI_JSDOM_MODULE=/absolute/path/to/jsdom/lib/api.js node --experimental-vm-modules --test tests/live-display.mjs tests/live-ui.mjs tests/live-projection.mjs tests/live-counselor.mjs tests/role-rendering.mjs tests/finance-spark-cutover.mjs
 ```
 
 ## Tambahan jumlah baris Tahfiz
@@ -76,3 +76,13 @@ Hanya `lines` dari setoran bertipe `Tahfiz` yang aktif pada tanggal WITA hari in
 Proyeksi menambahkan `quran.totalTahfizLines` dan `quran.rows[].tahfizLines` (opsional untuk santri yang memiliki angka baris). Feed versi lama tetap dapat dibaca. Nilai diperiksa sebagai bilangan bulat aman; total harus sama dengan jumlah baris semua santri pada snapshot. Aturan baru hanya menambah kedua field angka ini pada cabang publik, tanpa perubahan aturan operasional atau finance.
 
 Verifikasi lokal: 22 tes Live/model/proyeksi/UI lulus. Pratinjau 1280×720 menampilkan 12 nama dengan informasi baris tanpa overflow atau nama terpotong. Contoh visual memakai data sintetis berlabel.
+
+## Panggilan Konselor
+
+Kanal **Konselor** memutar **Menghadap Konselor Pemula** dan **Menghadap Konselor Madya** di ketiga pilihan unit. Daftar hari ini berasal dari antrean Madani: laporan kasus bertanggal hari ini dan kandidat klarifikasi Alfa/Terlambat dari presensi FINAL. Dua hari sebelumnya ikut dibaca sebagai konteks routing tiga hari berturut-turut, tetapi tidak menjadi nama panggilan lama. Daftar ini bukan kalender janji temu baru dan tidak menulis kasus atau poin.
+
+Routing menggunakan `routeCounselorCase` dan kandidat menggunakan `attendanceReferrals`/`unrepresentedAttendance`, sama dengan inbox internal. Santri SD dan kasus penanganan Wali Kelas dikecualikan. Kasus selesai/tidak terbukti, tabayyun tidak terbukti, konsekuensi/evaluasi, menunggu pimpinan, terhapus, santri tidak aktif/digabung, dan tanggal lain tidak tampil. Sumber presensi yang sudah diwakili kasus tertutup tidak dibuat ulang sebagai panggilan virtual. Bila satu santri memiliki beberapa kasus hari ini, namanya dihitung sekali; Madya diutamakan apabila salah satunya membutuhkan Madya.
+
+Hanya `counselor: {total, rows: [{name,label,status}]}` masuk snapshot publik; `status` hanya `pemula`/`madya`. Tidak ada ID kasus, alasan, kategori pelanggaran, poin, kesimpulan, foto, pernyataan, atau narasi konseling. Node kasus privat dibaca hanya dalam proses penerbit. Kegagalan sumber kasus membatalkan seluruh update snapshot. Feed lama tanpa bagian ini tetap dapat dibaca; kanal menunggu data, bukan menampilkan nol yang belum diketahui.
+
+Verifikasi: 72 tes Live, routing/rendering role dan kontrak finance lulus; JavaScript/JSON/rules valid. Pratinjau 1280×720 memuat 12 nama panggilan tanpa terpotong atau overflow. Pemeriksaan read-only data asli menghasilkan 11 nama Putra, 0 Putri, 11 Gabungan pada saat pemeriksaan; data akan mengikuti pembaruan berikutnya. Aturan hanya menambah section publik `counselor`; semua aturan privat dan finance dipertahankan identik.

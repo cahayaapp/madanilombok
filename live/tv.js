@@ -1,11 +1,11 @@
-import {validateLiveSnapshot,LIVE_BUCKETS,bucket} from '../assets/js/live-model.js?v=3';
+import {validateLiveSnapshot,LIVE_BUCKETS,bucket} from '../assets/js/live-model.js?v=4';
 import {campusClock,prayerTimes,nextPrayer} from '../assets/js/live-prayer.js';
 
 const $=id=>document.getElementById(id),unit=document.documentElement.dataset.unit;
 if(!['putra','putri','gabungan'].includes(unit))throw Error('Pilih unit tayangan.');
 const feed=`https://madanilombok-f692d-default-rtdb.firebaseio.com/madani_live/${unit}.json`;
 const params=new URLSearchParams(location.search),demo=params.get('demo')==='1';
-const channels=['Renungan','Salat','Setoran','Guru','Santri'];
+const channels=['Renungan','Salat','Setoran','Guru','Santri','Konselor'];
 const quotes=[
  'Satu ayat yang dijaga hari ini menjadi bekal untuk esok.',
  'Ilmu tumbuh saat kita berani bertanya dan tekun mengulang.',
@@ -16,10 +16,11 @@ const quotes=[
 const categories={
  Setoran:['quran',{submitted:'Sudah setoran',pending:'Belum tercatat setoran'}],
  Guru:['teachers',{present:'Guru hadir',excused:'Guru izin / sakit',absent:'Guru tidak hadir',missing:'Guru belum absen',upcoming:'Guru · jadwal berikutnya'}],
- Santri:['students',{present:'Santri hadir',excused:'Santri izin',sick:'Santri sakit',absent:'Santri alfa',pending:'Santri belum tercatat presensi'}]
+ Santri:['students',{present:'Santri hadir',excused:'Santri izin',sick:'Santri sakit',absent:'Santri alfa',pending:'Santri belum tercatat presensi'}],
+ Konselor:['counselor',{pemula:'Menghadap Konselor Pemula',madya:'Menghadap Konselor Madya'}]
 };
-const info={Setoran:'Setoran Al-Qur’an hari ini',Guru:'Presensi mengajar hari ini',Santri:'Presensi final terakhir hari ini'};
-const populations={Setoran:'peserta Al-Qur’an',Guru:'guru dalam rekap',Santri:'santri aktif'};
+const info={Setoran:'Setoran Al-Qur’an hari ini',Guru:'Presensi mengajar hari ini',Santri:'Presensi final terakhir hari ini',Konselor:'Panggilan konselor hari ini'};
+const populations={Setoran:'peserta Al-Qur’an',Guru:'guru dalam rekap',Santri:'santri aktif',Konselor:'santri yang dipanggil'};
 const time=new Intl.DateTimeFormat('id-ID',{timeZone:'Asia/Makassar',hour:'2-digit',minute:'2-digit',hourCycle:'h23'});
 const calendar=new Intl.DateTimeFormat('id-ID',{timeZone:'Asia/Makassar',weekday:'long',day:'numeric',month:'long',year:'numeric'});
 const percent=new Intl.NumberFormat('id-ID',{style:'percent',maximumFractionDigits:1});
@@ -27,13 +28,13 @@ const number=new Intl.NumberFormat('id-ID');
 let snapshot=null,slides=[],position=0,quoteIndex=0,paused=false,currentDay='',lastClock='',prayerKey='',fetching=false,sourceDown=false,nextSlide=0;
 function element(tag,cls,text){const node=document.createElement(tag);if(cls)node.className=cls;if(text!==undefined)node.textContent=text;return node;}
 function demoSnapshot(){
- const now=new Date(),section=(statuses,prefix)=>{const rows=statuses.flatMap((status,s)=>Array.from({length:status==='present'||status==='submitted'?16:3},(_,i)=>({name:`${prefix} Contoh ${s+1}.${i+1}`,label:'Data demonstrasi',status,...(status==='submitted'?{tahfizLines:(i+1)*3}:{})})));return {total:rows.length,rows,...(statuses.includes('submitted')?{totalTahfizLines:rows.reduce((sum,r)=>sum+(r.tahfizLines||0),0)}:{})};};
+ const now=new Date(),section=(statuses,prefix)=>{const rows=statuses.flatMap((status,s)=>Array.from({length:['present','submitted','pemula'].includes(status)?16:3},(_,i)=>({name:`${prefix} Contoh ${s+1}.${i+1}`,label:'Data demonstrasi',status,...(status==='submitted'?{tahfizLines:(i+1)*3}:{})})));return {total:rows.length,rows,...(statuses.includes('submitted')?{totalTahfizLines:rows.reduce((sum,r)=>sum+(r.tahfizLines||0),0)}:{})};};
  return {version:1,enabled:true,unit,date:campusClock(now).date,updatedAt:+now,expiresAt:+now+3600000,...Object.fromEntries(Object.entries(LIVE_BUCKETS).map(([key,statuses])=>[key,section(statuses,key==='teachers'?'Guru':'Santri')]))};
 }
 function build(){
  const old=slides[position],pages=[{channel:'Renungan'},{channel:'Salat'}],size=innerWidth<=650?8:12;
  for(const [channel,[section,labels]]of Object.entries(categories)){
-  if(!snapshot){pages.push({channel});continue;}
+  if(!snapshot?.[section]){pages.push({channel});continue;}
   for(const [status,title]of Object.entries(labels)){
    const list=bucket(snapshot,section,status);
    for(let start=0;start<Math.max(1,list.length);start+=size)pages.push({channel,title,list,start,size,total:snapshot[section].total});
@@ -50,7 +51,7 @@ function paint(){
   scene.classList.add('quote');heading(quotes[quoteIndex%quotes.length]);scene.append(element('div','rule'));
  }else if(s.channel==='Salat'){
   const p=nextPrayer();heading('Menjelang '+p.label);scene.append(element('strong','big-time',p.time+' WITA'));description(p.tomorrow?'Subuh berikutnya · besok':'Waktu salat berikutnya');
- }else if(!snapshot){heading(s.channel==='Setoran'?'Setoran Al-Qur’an':'Presensi '+s.channel.toLowerCase());description(sourceDown?'Koneksi ringkasan belum tersedia. Layar akan mencoba lagi.':'Menunggu ringkasan hari ini.');}
+ }else if(!snapshot?.[categories[s.channel][0]]){heading(s.channel==='Setoran'?'Setoran Al-Qur’an':s.channel==='Konselor'?'Panggilan konselor':'Presensi '+s.channel.toLowerCase());description(sourceDown?'Koneksi ringkasan belum tersedia. Layar akan mencoba lagi.':'Menunggu ringkasan hari ini.');}
  else{
   heading(s.title);const count=s.list.length,summary=element('p','meta'),stamp=time.format(new Date(snapshot.updatedAt));
   if(s.total)summary.append(element('strong','share',percent.format(count/s.total)),document.createTextNode(` · ${count} dari ${s.total} ${populations[s.channel]}`));else summary.textContent=`0 ${populations[s.channel]}`;

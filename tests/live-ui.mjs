@@ -36,3 +36,9 @@ test('public permission denial clears names and wrong-unit snapshots are rejecte
  env.w.fetch=async()=>mode==='deny'?{ok:false,status:403}:{ok:true,json:async()=>({...feed(),unit:mode==='wrong'?'putri':'putra'})};await env.run('live/tv.js');const d=env.w.document;d.querySelectorAll('#channels button')[2].click();assert.equal(d.querySelectorAll('.person').length,0);
  mode='ok';env.intervals[1]();await settle();d.querySelectorAll('#channels button')[2].click();assert(d.querySelector('.person'));mode='deny';env.intervals[1]();await settle();assert.equal(d.querySelectorAll('.person').length,0);env.dom.window.close();
 });
+test('counselor channel waits for new feed data then renders only approved names and levels',async()=>{
+ const env=await environment('live/putra/index.html','https://app.almadanilombok.com/live/putra/');env.w.matchMedia=()=>({matches:false,addEventListener:()=>{}});const data={...feed(),unit:'putra'};
+ env.w.fetch=async()=>({ok:true,json:async()=>data});await env.run('live/tv.js');const d=env.w.document;
+ d.querySelectorAll('#channels button')[5].click();assert.match(d.querySelector('#stage').textContent,/Menunggu ringkasan/);
+ data.counselor={total:2,rows:[{name:'Santri Pemula',label:'Kelas Contoh',status:'pemula',description:'PRIVATE'},{name:'Santri Madya',label:'Kelas Lain',status:'madya'}]};env.intervals[1]();await settle();d.querySelectorAll('#channels button')[5].click();assert.match(d.querySelector('#stage h1').textContent,/Konselor Pemula/);assert.match(d.querySelector('.person').textContent,/Santri Pemula/);assert(!d.querySelector('#stage').textContent.includes('PRIVATE'));d.querySelector('#next').click();assert.match(d.querySelector('#stage h1').textContent,/Konselor Madya/);assert.match(d.querySelector('.person').textContent,/Santri Madya/);env.dom.window.close();
+});

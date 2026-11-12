@@ -20,15 +20,17 @@ export async function publishLive({token,fetcher=fetch,now=new Date(),check=fals
  if(typeof year!=='string'||!year||year.includes('/'))throw Error('Tahun ajaran aktif belum tersedia.');
  const date=campusClock(now).date;
  const masterPaths={students:'students',staff:'staff',users:'users',classes:'classes',groups:'groups',units:'units',subjects:'subjects',academicSchedules:'schedules/academic',dailySchedules:'schedules/daily',classAssignments:`assignments/classes/${year}`,groupAssignments:`assignments/groups/${year}`};
- const sourcePaths={quran:`academic/quran_records/${year}`,learning:`academic/learning_sessions/${year}`,teacherAttendance:`academic/teaching_attendance/${year}`,legacyTeachers:`academic/teacher_attendance/${year}`,legacyStudents:`academic/student_attendance/${year}`,teacherLeaves:`academic/teacher_leaves/${year}`,boarding:`boarding/program_attendance/${year}/${date}`,calendar:'parent/calendar'};
+ const preceding=[1,2].map(n=>new Date(Date.parse(date+'T12:00:00Z')-n*86400000).toISOString().slice(0,10));
+ const sourcePaths={quran:`academic/quran_records/${year}`,learning:`academic/learning_sessions/${year}`,teacherAttendance:`academic/teaching_attendance/${year}`,legacyTeachers:`academic/teacher_attendance/${year}`,legacyStudents:`academic/student_attendance/${year}`,teacherLeaves:`academic/teacher_leaves/${year}`,boarding:`boarding/program_attendance/${year}/${date}`,calendar:'parent/calendar',cases:`boarding/cases/${year}`,...Object.fromEntries(preceding.map((date,i)=>[`boardingHistory${i}`,`boarding/program_attendance/${year}/${date}`]))};
  const object=async paths=>Object.fromEntries(await Promise.all(Object.entries(paths).map(async([key,path])=>[key,await read(path)])));
  const [raw,sources]=await Promise.all([object(masterPaths),object(sourcePaths)]);
  if(!raw.students||!raw.staff||!raw.classes)throw Error('Master santri, staf, atau kelas belum tersedia.');
+ sources.counselorBoarding={[date]:sources.boarding||{},...Object.fromEntries(preceding.map((date,i)=>[date,sources[`boardingHistory${i}`]||{}]))};
  const master=Object.fromEntries(Object.entries(raw).map(([key,value])=>[key,key.endsWith('Assignments')?value||{}:Object.entries(value||{}).map(([id,row])=>({...row,id}))]));
  const snapshots=buildLiveUnits({master,sources,year,now});
  for(const snapshot of Object.values(snapshots))validateLiveSnapshot(snapshot,+now);
  if(campusClock().date!==date)throw Error('Hari WITA berubah. Ulangi penerbitan.');
  if(!check)await request('madani_live','PATCH',snapshots);
- return {date,counts:Object.fromEntries(Object.entries(snapshots).map(([unit,s])=>[unit,{quran:s.quran.total,teachers:s.teachers.total,students:s.students.total}]))};
+ return {date,counts:Object.fromEntries(Object.entries(snapshots).map(([unit,s])=>[unit,{quran:s.quran.total,teachers:s.teachers.total,students:s.students.total,counselor:s.counselor.total}]))};
 }
 if(process.argv[1]&&import.meta.url===pathToFileURL(process.argv[1]).href)publishLive({check:process.argv.includes('--check')}).then(result=>console.log(JSON.stringify(result))).catch(error=>{console.error(error.message);process.exitCode=1;});

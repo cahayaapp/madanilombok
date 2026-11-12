@@ -1,10 +1,10 @@
 import {campusClock,endOfCampusDay} from './live-prayer.js';
-export const LIVE_BUCKETS={quran:['submitted','pending'],teachers:['present','excused','absent','missing','upcoming'],students:['present','excused','sick','absent','pending']};
+export const LIVE_BUCKETS={quran:['submitted','pending'],teachers:['present','excused','absent','missing','upcoming'],students:['present','excused','sick','absent','pending'],counselor:['pemula','madya']};
 export const LIVE_FEED_URL='https://madanilombok-f692d-default-rtdb.firebaseio.com/madani_live/current.json';
 const active=r=>r&&r.status!=='inactive'&&r.active!==false&&!r.mergedInto&&!r.deletedAt;
 const enrolled=r=>active(r)&&(!r.status||r.status==='active');
 const cleanName=s=>String(s||'').replace(/[\u0000-\u001f\u007f]/g,'').trim().slice(0,120);
-const row=(person,label,status)=>({name:cleanName(person.name),label:cleanName(label).slice(0,100),status});
+export const liveRow=(person,label,status)=>({name:cleanName(person.name),label:cleanName(label).slice(0,100),status});
 const byName=(a,b)=>a.name.localeCompare(b.name,'id');
 export function records(node,predicate,result=[]){
  if(!node||typeof node!=='object')return result;
@@ -36,7 +36,7 @@ export function buildLiveSnapshot({master,sources,scheduledTeachers=[],now=new D
   if(!Number.isSafeInteger(total))throw Error('Jumlah baris Tahfiz tidak valid.');
   tahfizLines.set(record.studentId,total);
  }
- const quran=[...quranIds].map(id=>({...row(studentMap.get(id),label(studentMap.get(id)),submitted.has(id)?'submitted':'pending'),...(tahfizLines.has(id)?{tahfizLines:tahfizLines.get(id)}:{})})).sort(byName);
+ const quran=[...quranIds].map(id=>({...liveRow(studentMap.get(id),label(studentMap.get(id)),submitted.has(id)?'submitted':'pending'),...(tahfizLines.has(id)?{tahfizLines:tahfizLines.get(id)}:{})})).sort(byName);
  const totalTahfizLines=[...tahfizLines.values()].reduce((sum,lines)=>sum+lines,0);
  if(!Number.isSafeInteger(totalTahfizLines))throw Error('Total baris Tahfiz tidak valid.');
  const latest=new Map();
@@ -47,7 +47,7 @@ export function buildLiveSnapshot({master,sources,scheduledTeachers=[],now=new D
  }
  for(const r of records(sources.boarding,r=>!!r.studentId&&!!r.date&&!!r.programId))if(r.stage==='FINAL'||!r.stage)register(r.studentId,r,2);
  for(const [classId,days]of Object.entries(sources.legacyStudents||{}))for(const [id,r]of Object.entries(days?.[date]||{}))register(id,{...r,date,classId},1);
- const attendance=students.map(s=>row(s,label(s),latest.get(s.id)?.status||'pending')).sort(byName);
+ const attendance=students.map(s=>liveRow(s,label(s),latest.get(s.id)?.status||'pending')).sort(byName);
  const attended=new Set(records(sources.teacherAttendance,r=>!!r.staffId&&!!r.date).filter(r=>r.date===date&&!r.deletedAt&&['present'].includes(normalizeStatus(r.status))).map(r=>r.staffId));
  for(const r of records(sources.legacyTeachers,r=>!!r.staffId&&!!r.date))if(r.date===date&&!r.deletedAt&&(r.checkIn||normalizeStatus(r.status)==='present'))attended.add(r.staffId);
  const approved=new Set(records(sources.teacherLeaves,r=>!!r.staffId&&!!r.startDate&&!!r.endDate).filter(r=>r.decision?.status==='approved'&&r.startDate<=date&&r.endDate>=date&&!r.deletedAt).map(r=>r.staffId));
@@ -58,7 +58,7 @@ export function buildLiveSnapshot({master,sources,scheduledTeachers=[],now=new D
  for(const s of scheduledTeachers){if(!staffMap.has(s.id))continue;const old=schedules.get(s.id);if(!old||s.startMinute<old.startMinute)schedules.set(s.id,s);}
  // Include an actual attendance record even when the corresponding timetable was corrected later.
  for(const id of new Set([...attended,...absent]))if(staffMap.has(id)&&!schedules.has(id))schedules.set(id,{id,startMinute:0,label:'Kehadiran tercatat'});
- const teachers=[...schedules.values()].map(s=>row(staffMap.get(s.id),s.label||'Jadwal hari ini',attended.has(s.id)?'present':approved.has(s.id)?'excused':absent.has(s.id)?'absent':s.startMinute>minute?'upcoming':'missing')).sort(byName);
+ const teachers=[...schedules.values()].map(s=>liveRow(staffMap.get(s.id),s.label||'Jadwal hari ini',attended.has(s.id)?'present':approved.has(s.id)?'excused':absent.has(s.id)?'absent':s.startMinute>minute?'upcoming':'missing')).sort(byName);
  const section=rows=>({total:rows.length,rows});
  return {version:1,enabled:true,date,updatedAt:now.getTime(),expiresAt:endOfCampusDay(date),quran:{...section(quran),totalTahfizLines},teachers:section(teachers),students:section(attendance)};
 }
@@ -67,6 +67,7 @@ export function validateLiveSnapshot(input,now=Date.now()){
  const result={version:1,enabled:true,date:input.date,updatedAt:input.updatedAt,expiresAt:input.expiresAt};
  for(const [section,statuses]of Object.entries(LIVE_BUCKETS)){
   const value=input[section],raw=Array.isArray(value?.rows)?value.rows:Object.values(value?.rows||{});
+  if(section==='counselor'&&value===undefined)continue;
   if(!value||!Number.isInteger(value.total)||value.total<0||raw.length!==value.total||raw.length>1000)throw Error('Ringkasan siaran belum lengkap.');
   const rows=raw.map(r=>{
    if(!r||typeof r.name!=='string'||!r.name.trim()||!statuses.includes(r.status))throw Error('Data siaran tidak valid.');

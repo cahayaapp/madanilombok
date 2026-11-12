@@ -21,14 +21,14 @@ test('line totals follow the selected unit and the combined total counts each st
 });
 test('scheduled publisher fails closed on missing sources and writes only three public snapshots',async()=>{
  const source={students:{a:{name:'Contoh',gender:'L',nisn:'PRIVATE'}},staff:{t:{name:'Guru'}},classes:{c:{name:'Kelas'}},'settings/currentAcademicYearId':'Y'};
- let broken=false;const writes=[],reads=[];
+ let broken='';const writes=[],reads=[];
  const fetcher=async(url,options)=>{
   const path=new URL(url).pathname.replace(/^\//,'').replace(/\.json$/,'');
   if(options.method==='PATCH'){writes.push({path,value:JSON.parse(options.body)});return {ok:true,json:async()=>null};}
-  reads.push(path);return broken&&path.includes('/academic/quran_records/')?{ok:false,status:403}:{ok:true,json:async()=>source[path.replace(/^madani_app\//,'')]||null};
+  reads.push(path);return broken&&path.includes(broken)?{ok:false,status:403}:{ok:true,json:async()=>source[path.replace(/^madani_app\//,'')]||null};
  };
  await publishLive({token:'mock',fetcher});assert.equal(writes.length,1);assert.equal(writes[0].path,'madani_live');assert.deepEqual(Object.keys(writes[0].value),['putra','putri','gabungan']);assert(!JSON.stringify(writes).includes('PRIVATE'));assert(!reads.some(p=>p.includes('finance')));
- broken=true;await assert.rejects(publishLive({token:'mock',fetcher}),/gagal/);assert.equal(writes.length,1);
+ for(const path of ['/academic/quran_records/','/boarding/cases/']){broken=path;await assert.rejects(publishLive({token:'mock',fetcher}),/gagal/);assert.equal(writes.length,1);}
 });
 test('rules isolate the three allowed public paths and all frontend screens remain anonymous',()=>{
  const rules=unitLiveRules();for(const unit of ['putra','putri','gabungan']){assert.match(rules[unit]['.read'],/expiresAt/);assert.equal(rules[unit].unit['.validate'],`newData.val() === '${unit}'`);}

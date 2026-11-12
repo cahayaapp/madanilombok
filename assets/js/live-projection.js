@@ -2,6 +2,7 @@
 import {teacherSchedules,calendarBreaks} from './teacher/model.js';
 import {buildLiveSnapshot} from './live-model.js';
 import {campusClock} from './live-prayer.js';
+import {buildLiveCounselor} from './live-counselor.js';
 
 export const LIVE_UNITS=['putra','putri','gabungan'];
 export function studentUnit(student){
@@ -49,6 +50,6 @@ export function buildLiveUnits({master,sources,year,now=new Date(),scheduledTeac
   const schedules=unit==='gabungan'?scheduledTeachers:scheduledTeachers.filter(s=>s.units?.includes(unit));
   const staffIds=new Set(schedules.map(s=>s.id));
   const scoped=unit==='gabungan'?master:{...master,students:master.students.filter(s=>studentUnit(s)===unit),staff:master.staff.filter(s=>staffIds.has(s.id))};
-  return [unit,{...buildLiveSnapshot({master:scoped,sources,scheduledTeachers:schedules,now}),unit}];
+  return [unit,{...buildLiveSnapshot({master:scoped,sources,scheduledTeachers:schedules,now}),counselor:buildLiveCounselor(scoped,sources,now),unit}];
  }));
 }
