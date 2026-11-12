@@ -1,0 +1,18 @@
+{
+  "id": "syamsul-hakim-mentor-2026-11-11-v1",
+  "academicYearId": "TA-2026-2027-GANJIL",
+  "unitId": "UNIT-SMK",
+  "source": "User-confirmed Dapodik screenshot XI TJKT, 11 November 2026",
+  "targetEmail": "hakim@madani.app",
+  "targetStaffId": "AMD-SDM-0078",
+  "addRole": "guru_wali",
+  "preserveExistingRoles": true,
+  "preserveMentoringHistory": true,
+  "records": [
+    {"studentId":"AMD-SMK-0001","studentName":"Abdul Rohim","mentorStaffId":"AMD-SDM-0078"},
+    {"studentId":"AMD-SMK-0002","studentName":"Adhes Soedirat","mentorStaffId":"AMD-SDM-0078"},
+    {"studentId":"AMD-SMK-0013","studentName":"ANAM ABQORI","mentorStaffId":"AMD-SDM-0078"},
+    {"studentId":"AMD-SMK-0014","studentName":"Andreas Dwi Santoso","mentorStaffId":"AMD-SDM-0078"},
+    {"studentId":"AMD-SMK-0018","studentName":"BAIN AZIQRA","mentorStaffId":"AMD-SDM-0078"}
+  ]
+}
